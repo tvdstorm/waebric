@@ -2,7 +2,7 @@ package com.uva.se.test;
 import junit.framework.TestCase;
 
 
-public class TestMe extends TestCase {
+public class MainTest extends TestCase {
 
 	
 	public void testMe(){

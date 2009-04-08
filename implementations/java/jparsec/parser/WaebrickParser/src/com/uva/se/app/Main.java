@@ -4,7 +4,7 @@ import jfun.parsec.Parser;
 import jfun.parsec.Words;
 
 
-public class MainTest {
+public class Main {
 
 	/**
 	 * @param args
