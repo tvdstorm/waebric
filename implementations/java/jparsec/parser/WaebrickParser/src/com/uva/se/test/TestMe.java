@@ -1,4 +1,4 @@
-package com.se.test;
+package com.uva.se.test;
 import junit.framework.TestCase;
 
 
