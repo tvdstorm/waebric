@@ -1,4 +1,4 @@
-package com.se;
+package com.uva.se.app;
 import jfun.parsec.Lexers;
 import jfun.parsec.Parser;
 import jfun.parsec.Words;
