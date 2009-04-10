@@ -1,0 +1,25 @@
+<project name="JavaCup" default="build">
+
+
+<target name="build" depends="compile">
+			
+</target>
+
+<target name="compile" depends="JFlex"> 
+        <javac srcdir="." destdir="." debug="on" verbose="yes"/>  		
+ </target>
+
+ <target name="JFlex"> 
+ 	<JFlex file="src/waebric.flex"/> 
+  	<move file="src/WaebricLexer.java" todir="lexer/" />
+ </target>
+	
+ <target name="clean">
+   <delete file="lexer/WaebricLexer.java"/>
+   <delete>      
+   <fileset dir="." includes="**/*~"/>
+   <fileset dir="." includes="**/*.class"/>
+   </delete>
+  </target>
+
+</project>
