@@ -1,0 +1,199 @@
+/**
+* JTB file
+*/
+
+options {
+  JDK_VERSION = "1.5";
+}
+
+PARSER_BEGIN(eg3) 
+package WaeberLexer;
+import WaeberLexer.syntaxtree.*;
+import WaeberLexer.visitor.*;
+import java.io.*;
+
+public class eg3 {
+  public static void main(String args[]) {
+    System.out.println("Reading from Waebric File...");
+
+	String fileData = ""; // innitialisatie problemen voorkomen
+	
+	// Een snelle oplossing om de file in te lezen doormiddel van ReadLine
+	// In de toekomst kan hier een andere soort reader worden ingezet die de hele file inleest
+	try
+    {
+    	// Dit moet in de toekomst via arguments
+    	FileReader fr = new FileReader("c:\\waebricfile.wae"); 
+		BufferedReader br = new BufferedReader(fr); 
+
+		String s;
+		
+		while((s = br.readLine()) != null) 
+		{ 
+			fileData += s + "\r\n";
+		}
+		
+		// Als laatst wordt er een EOF geplaatst, voor de toekomstige parser
+		fileData += "ENDOFFILE";
+    }
+    catch (Exception e)
+    {
+    	System.out.println("IO Exceptie, controleer bestand: " + e.getMessage());
+    } 	    
+
+	// De eg3 constructor accepteerd alleen maar inputstreams
+	// De string wordt omgezet naar inputstring zodat de gegenereerde code intact blijft
+	// Daarnaast worden bij nieuwe generatie wijzigingen overschreven
+	ByteArrayInputStream bs = new ByteArrayInputStream(fileData.getBytes());
+    
+    new eg3(bs);
+    try 
+    {
+ 		Start start = eg3.Start();
+      	Visitor v = new MyVisitor();
+      	start.accept(v);
+    } 
+    catch (Exception e) 
+    {
+    	//Hier moet een duidelijke melding van worden gemaakt
+      	System.out.println("Fout: " + e.getMessage());
+    }
+  }
+}
+
+class MyVisitor extends DepthFirstVisitor {
+ public void visit(NodeToken n) { 
+  // De tokenkind wordt hier opgevangen
+  // Deze moet nog worden verwerkt voor de parser
+  // Voorlopig wordt er een nummer getoond
+  // Nummer moet nog worden omgezet naar de naam van de token
+  System.out.println(n.tokenImage + "     ->     " + n.kind);
+ }
+}
+PARSER_END(eg3)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+| <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
+}
+
+TOKEN : /* GETALLEN */{  < INTEGER_LITERAL: <DECIMAL_LITERAL> >|  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >}
+
+// Gereserveerde woorden
+TOKEN : //
+{
+< MODULE: "module" > 	|
+< SITE: "site" >		|
+< END: "end" >			|
+< DEF: "def" >			|
+< ECHO: "echo" >		|
+< YIELD: "yield" >		|
+< EACH: "each" >		|
+< IF: "if" >			|
+< LET: "let" >			|
+< COMMENT: "comment" >	|
+< CDATA: "cdata" >		|
+< IMPORT: "import" >
+}
+
+// End of file toevoegen zodat de software weet dat deze kan stoppen
+TOKEN : //
+{
+< ENDOFFILE: "ENDOFFILE">
+}
+
+TOKEN : /* IDENTIFIERS */
+{
+  < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* >
+|  < #LETTER: ["_","a"-"z","A"-"Z"] >
+|  < #DIGIT: ["0"-"9"] >
+}
+
+// Operator -> Experimenteel
+// Momenteel worden alle vreemde tekens die kunnen voorkomen 
+// opgevangen om de leesbaarheid van een file te vergroten
+TOKEN :
+{
+	<PLUS: "+">			|
+	<MINUS: "-">		|
+	<IS: "=">			|
+	<OPAR: "{">			|
+	<CPAR: "}">			|
+	<OBRACE: "(">		|
+	<CBRACE: ")"> 		|
+	<SLASH: "/">		|
+	<DOT: ".">			|
+	<COLON: ":">    	|
+	<QUOTATION: "\"">	|
+	<SEMICOLON: ";">	|
+	<COMMA: ",">		|
+	<AMPERSAND: "&">	|
+	<FLOATINGPOINT: "'">|
+	<AT: "@">
+}
+
+void Start():{}
+{
+  	Expression() <ENDOFFILE>
+}
+// Expressie is erg ruim genomen en eigenlijk geen expressie. 
+// Het gaat hier echter alleen om het herkennen van de tokens, voorlopig
+void Expression():{ } 
+{
+	(<MODULE> | 
+	<SITE> | 
+	<END> | 
+	<DEF> | 
+	<ECHO> | 
+	<YIELD> | 
+	<EACH> | 
+	<IF> | 
+	<LET> | 
+	<COMMENT> | 
+	<CDATA> | 
+	<IMPORT> | 
+	<IDENTIFIER> | 
+	<INTEGER_LITERAL> |
+	<PLUS> |
+	<MINUS> |
+	<IS> |
+	<OPAR> |
+	<CPAR> |
+	<OBRACE> |
+	<CBRACE> |
+	<SLASH> |
+	<DOT> |
+	<COLON> |
+	<QUOTATION> |
+	<SEMICOLON> |
+	<COMMA> |
+	<AMPERSAND> |
+	<FLOATINGPOINT> |
+	<AT>
+	)*
+	//AdditiveExpression()
+}
+
+// Onderstaande methodes hebben we niet nodig, maar ik kan ze niet weghalen zonder errors
+void AdditiveExpression():{}
+{
+  //MultiplicativeExpression() ( ( "+" | "-" ) MultiplicativeExpression() )*
+}
+void MultiplicativeExpression():{}
+{
+  //UnaryExpression() ( ( "*" | "/" | "%" ) UnaryExpression() )*
+}
+void UnaryExpression():{}
+{
+  //"(" Expression() ")" | Identifier()
+}
+void Identifier():{}
+{
+  //<IDENTIFIER>
+}
+void MyInteger():{}{  //<INTEGER_LITERAL>}
