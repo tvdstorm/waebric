@@ -1,3 +1,5 @@
+// Todo: Lay down restrictions for grammer e.g. make sure keywords are not used for id_con
+
 Package waebric;
 
 Helpers
@@ -33,6 +35,10 @@ Tokens
 	semi_colon = ';';
 	comma = ',';
 	dot = '.';
+	number_sign = '#';
+	dollar_sign = '$';
+	at_sign = '@';
+	percent_sign = '%';
 	
 	// Operators
 	colon = ':';
@@ -48,6 +54,7 @@ Tokens
 	
 	// Identifier
 	id_con = letter (letter | digit | minus)*;
+	nat_con = digit+;
 	
 	// Miscellaneous
 	path_element = ([input_character - [' ' + [9 + [13 + [10 + ['.' + ['/' + '\']]]]]]])*;
@@ -68,16 +75,18 @@ Productions
 		{site}		site_declaration;
 	
 	// Imports
-	import_declaration = T.import module_id_declaration;
+	import_declaration = import module_id_declaration;
 
 	// Site
 	site_declaration = site mappings_declaration end;
 	
+	// Mappings
 	mappings_declaration = 
 		{single}									mapping_declaration |
 		{multiple}	mappings_declaration semi_colon mapping_declaration;
 	mapping_declaration = path_declaration colon markup_declaration;
 	
+	// Path & filenames
 	path_declaration = 
 		{dirname_filename}	dir_name slash file_name |
 		{filename}			file_name;
@@ -87,8 +96,40 @@ Productions
 		{multi_depth}	directory slash path_element;
 	file_name = path_element dot file_ext; 
 
-// TODO: Replace invalid grammer	
-	markup_declaration = if;  
+	// Markup	
+	markup_declaration = 
+		{designator_with_arguments}	designator_declaration arguments_declaration |
+		{designator}				designator_declaration;
+	
+	// Designator
+	designator_declaration = id_con attribute_declaration*;
+	
+	// Attributes
+	attribute_declaration =
+		{number_sign}		number_sign id_con |
+		{dot}				dot id_con |
+		{dollar_sign}		dollar_sign id_con |
+		{colon}				colon id_con |
+		{at_width_height}	at_sign [w]:nat_con percent_sign [h]:nat_con |
+		{at_width}			at_sign [w]:nat_con;
+	
+	// Arguments
+	arguments_declaration = l_paren arguments r_paren;
+	arguments =
+		{single}					argument |
+		{multiple}	arguments comma argument;
+		
+	argument = 
+		{argument}						   expression |
+		{argument_with_var}		var assign expression;
+		  
+	// Variable
+	var = id_con;
 
-// TODO: Replace invalid grammer
+// TODO: Grammer from this point on incomplete...
+
+	// Expressions
+	expression = if;
+
+	// Function declaration
 	function_declaration = if; 
