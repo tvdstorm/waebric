@@ -1,0 +1,94 @@
+Package waebric;
+
+Helpers
+	input_character = [0x32..0x126];
+	not_star = [input_character - '*'];
+	not_star_not_slash = [not_star - '/'];
+	letter = ['a'..'z'] | ['A'..'Z'];
+	digit = ['0'..'9'];
+	minus = '-';
+
+Tokens
+	// Keywords
+	module = 'module';
+	if = 'if';
+	else = 'else';
+	each = 'each';
+	let = 'let';
+	def = 'def';
+	in = 'in';
+	end = 'end';
+	comment = 'comment';
+	echo = 'echo';
+	cdata = 'cdata';
+	yield = 'yield';
+	import = 'import'; 
+	site = 'site';
+	
+	// Separators
+	l_paren = '(';
+	r_paren = ')';
+	l_brace = '{';
+	r_brace = '}';
+	semi_colon = ';';
+	comma = ',';
+	dot = '.';
+	
+	// Operators
+	colon = ':';
+	assign = '=';
+	slash = '/';
+
+	// Comments	
+	comments = 
+		'/*' (not_star_not_slash not_star* '*'+)* '/' |
+		'//' input_character* '\n';
+		
+	whitespace = (' ' | 13 | 10 | 9)*;
+	
+	// Identifier
+	id_con = letter (letter | digit | minus)*;
+	
+	// Miscellaneous
+	path_element = ([input_character - [' ' + [9 + [13 + [10 + ['.' + ['/' + '\']]]]]]])*;
+	file_ext = (letter | digit)+;
+				
+Ignored Tokens
+	comment,
+	whitespace;
+	
+Productions
+	// Module definition
+	modules = module_declaration*;
+	module_declaration = module module_id_declaration module_element_declaration*;
+	module_id_declaration = id_con;
+	module_element_declaration = 
+		{function}	function_declaration | 
+		{import}	import_declaration | 
+		{site}		site_declaration;
+	
+	// Imports
+	import_declaration = T.import module_id_declaration;
+
+	// Site
+	site_declaration = site mappings_declaration end;
+	
+	mappings_declaration = 
+		{single}									mapping_declaration |
+		{multiple}	mappings_declaration semi_colon mapping_declaration;
+	mapping_declaration = path_declaration colon markup_declaration;
+	
+	path_declaration = 
+		{dirname_filename}	dir_name slash file_name |
+		{filename}			file_name;
+	dir_name = directory;
+	directory =
+		{single_depth}					path_element |
+		{multi_depth}	directory slash path_element;
+	file_name = path_element dot file_ext; 
+
+// TODO: Replace invalid grammer	
+	markup_declaration = if;  
+
+// TODO: Replace invalid grammer
+	function_declaration = if; 
