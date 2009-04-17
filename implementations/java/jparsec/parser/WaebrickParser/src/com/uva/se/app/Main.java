@@ -26,6 +26,7 @@ public class Main {
 
 	
 	static final Parser<?> TOKENIZER = TERMINALS.tokenizer();
+	//static final Parser<?> TOKENIZER = Parsers.or(Keyw)
 	
 	  static final Parser<String> TOKENS = Parsers.ANY_TOKEN.map(new Map<Object, String>() {
 	      public String map(Object s) {
@@ -48,6 +49,8 @@ public class Main {
 	public void doiets(){
 		System.out.println("Start parser");
 		PARSER.parse("module import echo");
+		//TOKENIZER.parse("module import");
+		//PARSER.
 		System.out.println("End parser");
 
 	}
