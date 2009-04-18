@@ -1,14 +1,26 @@
 // Todo: Lay down restrictions for grammer e.g. make sure keywords are not used for id_con
+//       Should this be done in the parser code???
 
 Package waebric;
 
 Helpers
-	input_character = [0x32..0x126];
+	input_character = [32..126];
 	not_star = [input_character - '*'];
 	not_star_not_slash = [not_star - '/'];
-	letter = ['a'..'z'] | ['A'..'Z'];
+	letter = ['a'..'z'] + ['A'..'Z'];
 	digit = ['0'..'9'];
 	minus = '-';
+	amp = '\&';
+	esc_quote = ('\\' | '\"');	
+	str_char = ('\n' | '\t' | '\"' | '\\' | '\' digit digit digit | [input_character - [[10 + 9] + ['"' + '\']]]);
+	
+	// Used for text
+	text_char = [[input_character - [['&' + '"'] + '<']] + [[10 + 13] + 9]];
+	text_char_ref = 
+		'&#' digit+ ';' |
+		'&#x' (digit | letter)+ ';';
+		
+	text_entity_ref = '&' (letter | '_' | '"') (letter | digit | '.' | '-' | '_' | ':')* ';';
 
 Tokens
 	// Keywords
@@ -26,12 +38,17 @@ Tokens
 	yield = 'yield';
 	import = 'import'; 
 	site = 'site';
+	list = 'list';
+	record = 'record';
+	string = 'string';
 	
 	// Separators
 	l_paren = '(';
 	r_paren = ')';
 	l_brace = '{';
 	r_brace = '}';
+	l_bracket = '[';
+	r_bracket = ']';
 	semi_colon = ';';
 	comma = ',';
 	dot = '.';
@@ -39,6 +56,10 @@ Tokens
 	dollar_sign = '$';
 	at_sign = '@';
 	percent_sign = '%';
+	question_mark = '?';
+	exclam_mark = '!';
+	and = '&&';
+	or = '||';	
 	
 	// Operators
 	colon = ':';
@@ -55,13 +76,16 @@ Tokens
 	// Identifier
 	id_con = letter (letter | digit | minus)*;
 	nat_con = digit+;
+	symbol_con = ''' [input_character - [[[')' + ' '] + [9 + 10]] + [[13 + ';'] + [',' + '>']]]]*;
+	str_con = '"' str_char* '"';
 	
 	// Miscellaneous
-	path_element = ([input_character - [' ' + [9 + [13 + [10 + ['.' + ['/' + '\']]]]]]])*;
+	path_element = ([input_character - [[[' ' + 9] + [13 + 10]] + [['.' + '/'] + '\']]])+;
 	file_ext = (letter | digit)+;
+	text = '"' (text_char | esc_quote | amp | text_char_ref | text_entity_ref)* '"';
 				
 Ignored Tokens
-	comment,
+	comments,
 	whitespace;
 	
 Productions
@@ -116,20 +140,79 @@ Productions
 	// Arguments
 	arguments_declaration = l_paren arguments r_paren;
 	arguments =
-		{single}					argument |
-		{multiple}	arguments comma argument;
+		{single}					argument_declaration |
+		{multiple}	arguments comma argument_declaration;
 		
-	argument = 
-		{argument}						   expression |
-		{argument_with_var}		var assign expression;
+	argument_declaration = 
+		{argument}						   			   expression_declaration |
+		{argument_with_var}		var_declaration assign expression_declaration;
 		  
 	// Variable
-	var = id_con;
-
-// TODO: Grammer from this point on incomplete...
+	var_declaration = id_con;
 
 	// Expressions
-	expression = if;
-
+	expression_declaration =  
+		{text}					text |
+		{var}					var_declaration |
+		{symbol_con}			symbol_con |
+		{nat_con}				nat_con |
+		{expression_idcon}		expression_declaration dot id_con |
+		{multiple_expressions}	l_bracket expressions r_bracket |
+		{key_value_pairs}		l_brace key_value_pairs r_brace;
+		
+	expressions = 
+		{single}					  expression_declaration |
+		{multiple}	expressions comma expression_declaration ;
+	
+	// Key Value Pairs
+	key_value_pairs = 
+		{single}						  key_value_pair_declaration |
+		{multiple}	key_value_pairs comma key_value_pair_declaration;
+	key_value_pair_declaration = id_con colon expression_declaration;
+	 
 	// Function declaration
-	function_declaration = if; 
+	function_declaration = def id_con formals_declaration? statement_declaration* end;
+	
+	// Formals declaration
+	formals_declaration = l_paren formals r_paren;
+	formals =
+		{single}				  var_declaration |
+		{multiple}	formals comma var_declaration;
+		
+	// Statement declaration
+	statement_declaration = 
+		{if}				if_declaration |
+//		{if_else}			if_else_declaration |
+		{each}				each_declaration |
+		{let}				let_declaration |
+		{function_body}		l_brace statement_declaration* r_brace |		
+		{comment}			comment str_con semi_colon |
+		{echo}				echo expression_declaration semi_colon |
+//		{echo}				echo embedding_declaration semi_colon |
+		{cdata}				cdata expression_declaration semi_colon |
+		{yield}				yield semi_colon;
+	
+	if_declaration = if l_paren predicate r_paren statement_declaration;
+//	if_else_declaration = if l_paren predicate r_paren [if_statement]:statement_declaration else [else_statement]:statement_declaration;
+	each_declaration = each l_paren var_declaration colon expression_declaration r_paren statement_declaration;  
+	let_declaration = let assignment_declaration+ in statement_declaration* end;
+
+	// Assignment declaration
+	assignment_declaration = var_declaration assign expression_declaration semi_colon;
+	
+	// Predicate declaration
+	predicate = 
+		{expression}		expression_declaration |
+		{expression_type}	expression_declaration dot type_declaration question_mark |
+		{not_predicate}		exclam_mark predicate;
+
+//		Not working yet for unknown reasons...
+//		{and_predicate}		[left]:predicate and [right]:predicate
+//		{or_predicate}		[left]:predicate or [right]:predicate;
+
+		
+	// Type declaration
+	type_declaration =
+		{list}		list |
+		{record}	record |
+		{string}	string;
