@@ -83,6 +83,9 @@ Tokens
 	path_element = ([input_character - [[[' ' + 9] + [13 + 10]] + [['.' + '/'] + '\']]])+;
 	file_ext = (letter | digit)+;
 	text = '"' (text_char | esc_quote | amp | text_char_ref | text_entity_ref)* '"';
+	pre_text = '"' text_char* '<';
+	post_text = '>' text_char* '"';
+	mid_text = '>' text_char* '<';
 				
 Ignored Tokens
 	comments,
@@ -181,21 +184,39 @@ Productions
 		
 	// Statement declaration
 	statement_declaration = 
-		{if}				if_declaration |
-//		{if_else}			if_else_declaration |
+		{if}				if l_paren predicate r_paren statement_declaration |
+		{if_else}			if l_paren predicate r_paren statement_no_short_if_declaration else statement_declaration |
 		{each}				each_declaration |
 		{let}				let_declaration |
-		{function_body}		l_brace statement_declaration* r_brace |		
-		{comment}			comment str_con semi_colon |
-		{echo}				echo expression_declaration semi_colon |
-//		{echo}				echo embedding_declaration semi_colon |
-		{cdata}				cdata expression_declaration semi_colon |
-		{yield}				yield semi_colon;
+		{function_body}		function_body_declaration |
+		{comment}			comment_declaration |
+		{echo_expression}	echo_expression_declaration |
+		{echo_embedding}	echo_embedding_declaration |
+		{cdata}				cdata_declaration |
+		{yield}				yield_declaration;		
+
+	statement_no_short_if_declaration = 
+		{if_else}			if l_paren predicate r_paren [if_no_short_if]:statement_no_short_if_declaration else [else_no_short_if]:statement_no_short_if_declaration |
+		{each}				each_no_short_if_declaration |
+		{let}				let_declaration |
+		{function_body}		function_body_declaration |
+		{comment}			comment_declaration |
+		{echo_expression}	echo_expression_declaration |
+		{echo_embedding}	echo_embedding_declaration |
+		{cdata}				cdata_declaration |
+		{yield}				yield_declaration;		
+
+		
+	each_declaration = each l_paren var_declaration colon expression_declaration r_paren statement_declaration;
+	each_no_short_if_declaration = each l_paren var_declaration colon expression_declaration r_paren statement_no_short_if_declaration;
 	
-	if_declaration = if l_paren predicate r_paren statement_declaration;
-//	if_else_declaration = if l_paren predicate r_paren [if_statement]:statement_declaration else [else_statement]:statement_declaration;
-	each_declaration = each l_paren var_declaration colon expression_declaration r_paren statement_declaration;  
-	let_declaration = let assignment_declaration+ in statement_declaration* end;
+	let_declaration = let assignment_declaration+ in statement_declaration* end;	
+	function_body_declaration = l_brace statement_declaration* r_brace;
+	comment_declaration = comment str_con semi_colon;
+	echo_expression_declaration= echo expression_declaration semi_colon;
+	echo_embedding_declaration = echo embedding_declaration semi_colon;
+	cdata_declaration = cdata expression_declaration semi_colon;
+	yield_declaration = yield semi_colon;
 
 	// Assignment declaration
 	assignment_declaration = var_declaration assign expression_declaration semi_colon;
@@ -205,10 +226,8 @@ Productions
 		{expression}		expression_declaration |
 		{expression_type}	expression_declaration dot type_declaration question_mark |
 		{not_predicate}		exclam_mark predicate;
-
-//		Not working yet for unknown reasons...
-//		{and_predicate}		[left]:predicate and [right]:predicate
-//		{or_predicate}		[left]:predicate or [right]:predicate;
+//		{and_predicate}		[left_and]:predicate and [right_and]:predicate |
+//		{or_predicate}		predicate or expression_declaration;
 
 		
 	// Type declaration
@@ -216,3 +235,17 @@ Productions
 		{list}		list |
 		{record}	record |
 		{string}	string;
+		
+	// Embedding declaration
+	embedding_declaration = embed_declaration text_trail_declaration;
+	
+	// Text trail declaration
+	text_trail_declaration =
+		{posttext}		post_text |
+		{midtext}		mid_text embed_declaration text_trail_declaration;
+		
+	// Embed declaration
+	embed_declaration = 
+		{markup_expression}		markup_declaration* expression_declaration |
+		{markup_markup}			markup_declaration* markup_declaration |
+		{designator}			designator_declaration;	
