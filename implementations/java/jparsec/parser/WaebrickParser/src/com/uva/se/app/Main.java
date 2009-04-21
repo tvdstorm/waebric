@@ -19,7 +19,7 @@ public class Main {
 		  "module", "import", "site", "def", "echo", "each" // all other keywords
 		};
 	
-	static final Parser<Void> IGNORED =
+	static final Parser< Void > IGNORED =
 		   Parsers.or(Scanners.JAVA_LINE_COMMENT, Scanners.JAVA_BLOCK_COMMENT, Scanners.WHITESPACES).skipMany();
 	
 	private static final Terminals TERMINALS = Terminals.caseSensitive(OPERATORS, KEYWORDS);
@@ -36,7 +36,7 @@ public class Main {
 	    });
 
 	public static final Parser<String> PARSER = TOKENS.from(TOKENIZER, IGNORED);
-
+	
 	
 
 	public static void main(String[] args) {
