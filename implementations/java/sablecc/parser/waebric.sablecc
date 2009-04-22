@@ -1,13 +1,13 @@
 // Todo: Lay down restrictions for grammer e.g. make sure keywords are not used for id_con
 //       Should this be done in the parser code???
 
-Package waebric;
+Package sablecc.waebric;
 
 Helpers
 	input_character = [32..126];
 	not_star = [input_character - '*'];
 	not_star_not_slash = [not_star - '/'];
-	letter = ['a'..'z'] + ['A'..'Z'];
+	letter = ['a'..'z'] | ['A'..'Z'];
 	digit = ['0'..'9'];
 	minus = '-';
 	amp = '\&';
@@ -41,7 +41,8 @@ Tokens
 	list = 'list';
 	record = 'record';
 	string = 'string';
-	
+
+
 	// Separators
 	l_paren = '(';
 	r_paren = ')';
@@ -156,12 +157,12 @@ Productions
 	// Expressions
 	expression_declaration =  
 		{text}					text |
-		{var}					var_declaration |
+		{id_con}				id_con |
 		{symbol_con}			symbol_con |
 		{nat_con}				nat_con |
-		{expression_idcon}		expression_declaration dot id_con |
+//		{expression_idcon}		expression_declaration dot id_con |
 		{multiple_expressions}	l_bracket expressions r_bracket |
-		{key_value_pairs}		l_brace key_value_pairs r_brace;
+		{key_value_pairs}		l_brace key_value_pairs r_brace;		
 		
 	expressions = 
 		{single}					  expression_declaration |
@@ -226,7 +227,7 @@ Productions
 		{expression}		expression_declaration |
 		{expression_type}	expression_declaration dot type_declaration question_mark |
 		{not_predicate}		exclam_mark predicate;
-//		{and_predicate}		[left_and]:predicate and [right_and]:predicate |
+//		{and_predicate}		[left_and]:predicate and [right_and]:predicate
 //		{or_predicate}		predicate or expression_declaration;
 
 		
@@ -237,15 +238,13 @@ Productions
 		{string}	string;
 		
 	// Embedding declaration
-	embedding_declaration = embed_declaration text_trail_declaration;
+	embedding_declaration = pre_text embed_declaration text_trail_declaration;
 	
 	// Text trail declaration
 	text_trail_declaration =
 		{posttext}		post_text |
 		{midtext}		mid_text embed_declaration text_trail_declaration;
 		
-	// Embed declaration
 	embed_declaration = 
-		{markup_expression}		markup_declaration* expression_declaration |
-		{markup_markup}			markup_declaration* markup_declaration |
-		{designator}			designator_declaration;	
+//		{markup_markup}			markup_declaration* markup_declaration |
+		{markup_expression}		markup_declaration* expression_declaration;
