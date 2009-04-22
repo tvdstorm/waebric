@@ -1,4 +1,4 @@
-package com.uva.se.app.parser;
+package com.uva.se.wparse.parser;
 import static org.codehaus.jparsec.misc.Mapper._;
 
 import java.util.List;
@@ -14,6 +14,8 @@ import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.pattern.CharPredicate;
 import org.codehaus.jparsec.pattern.Patterns;
 
+import sun.misc.JavaLangAccess;
+
 
 
 public final class TerminalParser {
@@ -26,7 +28,7 @@ public final class TerminalParser {
 
 	  private static final String[] OPERATORS = {
 	    "=", ";", "+", "&&", "||",
-	    "(", ")", "[", "]", "{", "}",".",
+	    "(", ")", "[", "]", "{", "}",".", ",","/",
 	  };
 	  
 	  private static final String[] KEYWORDS = {
@@ -36,34 +38,40 @@ public final class TerminalParser {
 	  
 	  
 		
-	  private static final CharPredicate IDENTIFIER_START = new CharPredicate() {
-		    public boolean isChar(char c) {
-		    	 Pattern p = Pattern.compile("[a-zA-Z]");
-		    	 Matcher m = p.matcher(String.valueOf(c));
-		    	 return m.matches();
-		    }
-		  };
-		  
-		  private static final CharPredicate IDENTIFIER_PART = new CharPredicate() {
-		    public boolean isChar(char c) {
-		    	Pattern p = Pattern.compile("[a-zA-Z0-9]");
-		    	 Matcher m = p.matcher(String.valueOf(c));
-		    	 return m.matches();
-		    }
-		  };
-		  
-		  static final Parser<String> IDENTIFIER = Scanners.pattern(
-		      Patterns.isChar(IDENTIFIER_START).next(Patterns.isChar(IDENTIFIER_PART).many()),
-		      "identifier").source();
-	
 	  
-	  private static final Terminals TERMS = Terminals.caseSensitive(IDENTIFIER, OPERATORS, KEYWORDS);
+		  
+//		  private static final CharPredicate PATH_ELEMENT = new CharPredicate() {
+//			    public boolean isChar(char c) {
+//			    	Pattern p = Pattern.compile("[a-zA-Z0-9]");
+//			    	 Matcher m = p.matcher(String.valueOf(c));
+//			    	 return m.matches();
+//			    }
+//			  };
+//			  
+//			  
+//			  private static final CharPredicate PATH_SEPARATOR = new CharPredicate() {
+//				    public boolean isChar(char c) {
+//				    
+//				    	 return '/' == c;
+//				    }
+//				  };
+//			  
+//		  
+//				 public static final Parser<String> PATH = Scanners.pattern(
+//					      Patterns.isChar(PATH_ELEMENT).many().next( Patterns.sequence(Patterns.isChar(PATH_SEPARATOR),  Patterns.isChar(PATH_ELEMENT).many()).many()  ),
+//					      "path").source();
+	
+				  
+	  //static final Parser<String>  tokenParser = Parsers.or(PATH, IDENTIFIER);
+	  private static final Terminals TERMS = Terminals.caseSensitive(WaebrickLexer.IDENTIFIER, OPERATORS, KEYWORDS);
 	  
 	  static final Parser<?> TOKENIZER = Parsers.or(
 		      //JavaLexer.SCIENTIFIC_NUMBER_LITERAL,
 		      Terminals.StringLiteral.DOUBLE_QUOTE_TOKENIZER,
 		      Terminals.CharLiteral.SINGLE_QUOTE_TOKENIZER,
-		      TERMS.tokenizer() );  //, JavaLexer.DECIMAL_POINT_NUMBER, JavaLexer.INTEGER);
+		      TERMS.tokenizer() 
+		    ,WaebrickLexer.MAPPING
+	  		);  //, JavaLexer.DECIMAL_POINT_NUMBER, JavaLexer.INTEGER);
 	  
 	  
 	  
@@ -79,7 +87,7 @@ public final class TerminalParser {
 
 
 
-	  private final static String SOURCE = "hoi123 && begin || /*this is comment*/module && end";
+	  private final static String SOURCE = " path1/path2/path3  hoi123 && begin || /*this is comment*/module && end";
 	
 	public void doParse(){
 		

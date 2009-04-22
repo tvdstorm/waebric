@@ -1,4 +1,4 @@
-package com.uva.se.app;
+package com.uva.se.wparse;
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.Scanners;
