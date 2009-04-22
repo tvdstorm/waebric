@@ -1,4 +1,4 @@
-package com.uva.se.app.parser;
+package com.uva.se.wparse.parser;
 
 
 
@@ -9,12 +9,13 @@ import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.functors.Binary;
 import org.codehaus.jparsec.misc.Mapper;
 
-import com.uva.se.app.model.BinaryExpression;
-import com.uva.se.app.model.Expression;
-import com.uva.se.app.model.Identifier;
-import com.uva.se.app.model.ModuleBody;
-import com.uva.se.app.model.Operator;
-import com.uva.se.app.model.StringLiteral;
+import com.uva.se.wparse.model.BinaryExpression;
+import com.uva.se.wparse.model.Expression;
+import com.uva.se.wparse.model.Identifier;
+import com.uva.se.wparse.model.MappingDef;
+import com.uva.se.wparse.model.ModuleBody;
+import com.uva.se.wparse.model.Operator;
+import com.uva.se.wparse.model.StringLiteral;
 
 public class ExpressionParser {
 
@@ -25,6 +26,9 @@ public class ExpressionParser {
 	
 	  static final Parser<Expression> STRING_LITERAL = 
 	      curry(StringLiteral.class).sequence(Terminals.StringLiteral.PARSER);
+	  
+	  
+
 	  
 	  
 	  //de andere expressions nog toevoegen

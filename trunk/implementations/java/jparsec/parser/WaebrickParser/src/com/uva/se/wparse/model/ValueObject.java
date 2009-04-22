@@ -1,4 +1,4 @@
-package com.uva.se.app.model;
+package com.uva.se.wparse.model;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;

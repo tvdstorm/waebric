@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and       *
  * limitations under the License.                                            *
  *****************************************************************************/
-package com.uva.se.app.util;
+package com.uva.se.wparse.util;
 
 import java.util.Arrays;
 

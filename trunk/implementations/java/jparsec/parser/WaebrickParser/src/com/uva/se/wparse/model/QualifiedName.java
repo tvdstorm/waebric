@@ -1,9 +1,9 @@
-package com.uva.se.app.model;
+package com.uva.se.wparse.model;
 
 import java.util.List;
 
 
-import com.uva.se.app.util.Strings;
+import com.uva.se.wparse.util.Strings;
 
 
 public final class QualifiedName extends ValueObject {

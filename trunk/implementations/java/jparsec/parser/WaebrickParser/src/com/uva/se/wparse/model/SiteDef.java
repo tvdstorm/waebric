@@ -1,21 +1,27 @@
-package com.uva.se.app.model;
+package com.uva.se.wparse.model;
 
 import java.util.List;
 
 
-public final class MethodDef extends ValueObject implements Member {
+
+public final class SiteDef extends ValueObject implements Member {
   
   public final String name;
-  //public final List<String> parameters;
+  public final List<MappingDef> paths;
   
   
   
   
-  public MethodDef( String name){ //, List<String> parameters) {
+  public SiteDef( String name, List<MappingDef> paths){
     
     this.name = name;
-    //this.parameters = parameters;
-    
+    this.paths =null; // paths;
+    System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
+  }
+  
+  @Override public String toString() {
+	  return "site " + name + " end";
+	  
   }
 
 //  @Override public String toString() {

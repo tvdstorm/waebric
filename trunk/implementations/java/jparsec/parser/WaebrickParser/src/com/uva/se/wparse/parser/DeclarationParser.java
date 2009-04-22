@@ -1,27 +1,23 @@
-package com.uva.se.app.parser;
+package com.uva.se.wparse.parser;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.Iterator;
 import java.util.List;
-
-import com.uva.se.app.model.Declaration;
-import com.uva.se.app.model.Expression;
-import com.uva.se.app.model.Member;
-import com.uva.se.app.model.MethodDef;
-import com.uva.se.app.model.ModuleBody;
-import com.uva.se.app.model.ModuleDef;
-import com.uva.se.app.model.QualifiedName;
 
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.misc.Mapper;
+
+import com.uva.se.wparse.model.Declaration;
+import com.uva.se.wparse.model.Expression;
+import com.uva.se.wparse.model.MappingDef;
+import com.uva.se.wparse.model.Member;
+import com.uva.se.wparse.model.MethodDef;
+import com.uva.se.wparse.model.ModuleBody;
+import com.uva.se.wparse.model.ModuleDef;
+import com.uva.se.wparse.model.QualifiedName;
+import com.uva.se.wparse.model.SiteDef;
 
 /**
  * Parses class, interface, enum, annotation declarations.
@@ -77,11 +73,34 @@ public final class DeclarationParser {
   
   static Parser<Member> methodDef( /*Parser<Statement> stmt */) {
     return Mapper.<Member>curry(MethodDef.class).sequence(
-        TerminalParser.term("def"), Terminals.Identifier.PARSER,
+        TerminalParser.term("def"), Terminals.Identifier.PARSER,TerminalParser.term("("), Terminals.Identifier.PARSER.optional(),
+        Parsers.sequence(TerminalParser.term(","), Terminals.Identifier.PARSER).many() ,TerminalParser.term(")"),
         //add parameter hier nog
         //Parsers.or( /*StatementParser.blockStatement(stmt),*/  TerminalParser.term(";").retn(null)),
         TerminalParser.term("end"));
   }
+  
+  
+  static final Parser<MappingDef> PATH =
+      Parsers.<MappingDef>tokenType(MappingDef.class, "Mapping element");
+  
+  
+//  static Parser<MappingDef> mappingDef() {
+//	    return Mapper.<MappingDef>curry(MappingDef.class).sequence(
+//	        Terminals.Identifier.PARSER, Parsers.sequence(TerminalParser.term("/"), Terminals.Identifier.PARSER.optional() ).many()  );
+//
+//	  }
+  
+  static Parser<Member> siteDef( /*Parser<Statement> stmt */) {
+	    return Mapper.<Member>curry(SiteDef.class).sequence(
+	        TerminalParser.term("site"), Terminals.Identifier.PARSER,
+	        PATH.many(),
+	        //mappingDef(),
+	        TerminalParser.term("end"));
+	  }
+  
+  
+  
 //  
 //  static Parser<Member> initializerDef(Parser<Statement> stmt) {
 //    return Mapper.<Member>curry(ClassInitializerDef.class).sequence(
@@ -152,7 +171,7 @@ public final class DeclarationParser {
 //        enumDef(expr, member), annotationDef(mod, member));
 //    decRef.set(declaration);
     return Mapper.curry(ModuleDef.class).sequence(
-    		MODULE, Parsers.or(methodDef().many(), expr.many()) );
+    		MODULE, Parsers.or(methodDef(), siteDef(), expr).many() );
   }
   
   /** Parses any Java source.  */
@@ -178,14 +197,14 @@ public final class DeclarationParser {
   
 //////////////test lines	  
   
-  private final static String SOURCE = "module testModule   \"test\" && test2 ";
+  private final static String SOURCE = "module testModule def myMethod( testp1, testp2, testp3) end site mySite p1/p2/p3 end \"test\" && test2 ";
 	
 	public void doParse(){
 		
 		System.out.println("Start parser");
 		
 		ModuleDef md = parse(SOURCE);
-		
+		System.out.println("print objects: " + md.toString());
 		System.out.println("End parser");
 	}
 	

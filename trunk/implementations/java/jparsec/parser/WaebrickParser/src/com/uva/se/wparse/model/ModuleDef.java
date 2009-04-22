@@ -1,4 +1,4 @@
-package com.uva.se.app.model;
+package com.uva.se.wparse.model;
 
 import java.util.ArrayList;
 
