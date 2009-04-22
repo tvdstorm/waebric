@@ -1,4 +1,4 @@
-module home
+module ldta
 
 site
  index.html: main
@@ -9,11 +9,11 @@ def css(url, media)
 end
 
 def workshop(year,location)
-  a(href="<year>/index.html") "<year> <location>";
+  a(href= year + "/index.html") "<year> <location>";
 end
 
 def sciencedirect(issn, volume, issue, year) 
-  a(href="http://www.sciencedirect.com/science/publication?issn=<issn>&amp;volume=<volume>&amp;issue=<issue>") year;
+  a(href="http://www.sciencedirect.com/science/publication?issn=" + issn + "&amp;volume=" + volume + "&amp;issue=" + issue) year;
 end
 
 def entcs(volume, issue, year)
