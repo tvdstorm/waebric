@@ -1,0 +1,8 @@
+module pipi.langkous.konijn
+
+site
+    dirrethje/blartef/home.html: home("joepie", "olé", {y : 3}, {z : 4, a : 784754} );
+end
+
+def home( blaat, pipo, clown )hello end
+def home( blaat, pipo, clown )hello end

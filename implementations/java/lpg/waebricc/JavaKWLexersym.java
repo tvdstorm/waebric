@@ -1,0 +1,70 @@
+package waebricc;
+
+public interface JavaKWLexersym {
+    public final static int
+      Char_DollarSign = 17,
+      Char__ = 18,
+      Char_a = 5,
+      Char_b = 19,
+      Char_c = 6,
+      Char_d = 2,
+      Char_e = 1,
+      Char_f = 11,
+      Char_g = 20,
+      Char_h = 12,
+      Char_i = 7,
+      Char_j = 21,
+      Char_k = 22,
+      Char_l = 3,
+      Char_m = 8,
+      Char_n = 9,
+      Char_o = 10,
+      Char_p = 23,
+      Char_q = 24,
+      Char_r = 25,
+      Char_s = 13,
+      Char_t = 4,
+      Char_u = 14,
+      Char_v = 26,
+      Char_w = 27,
+      Char_x = 28,
+      Char_y = 15,
+      Char_z = 29,
+      Char_EOF = 16;
+
+    public final static String orderedTerminalSymbols[] = {
+                 "",
+                 "e",
+                 "d",
+                 "l",
+                 "t",
+                 "a",
+                 "c",
+                 "i",
+                 "m",
+                 "n",
+                 "o",
+                 "f",
+                 "h",
+                 "s",
+                 "u",
+                 "y",
+                 "EOF",
+                 "DollarSign",
+                 "_",
+                 "b",
+                 "g",
+                 "j",
+                 "k",
+                 "p",
+                 "q",
+                 "r",
+                 "v",
+                 "w",
+                 "x",
+                 "z"
+             };
+
+    public final static int numTokenKinds = orderedTerminalSymbols.length;
+    public final static boolean isValidForParser = true;
+}
