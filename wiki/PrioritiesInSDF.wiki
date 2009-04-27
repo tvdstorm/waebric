@@ -1,4 +1,5 @@
 #summary Priorities in SDF
+#labels Featured
 
 = An informal explanation of priorities in SDF =
 
@@ -13,6 +14,15 @@ Exp "+" Exp -> Exp {left}
 
 
 This reads that multiplication binds stronger (hence ">") than addition. Another way of looking at this is, is to consider this at the level of the generated parse trees: the priority states trees derived using the "+" rule may never be *direct* children of trees generated using the "`*`" rule. Note that this works because the "`*`" rule has Exp arguments on the left, and the "+" rule produces an Exp.
+
+This priority mechanism works _transitively_. If, additionally, the following declaration had been present:
+{{{
+"-" Exp     -> Exp 
+>
+Exp "*" Exp -> Exp {left}
+}}} 
+this would imply that both "`*`" and "+" cannot be direct children of "-". E.g. you cannot parse "- x `*` x" or "- x + x" as "- (x `*` x)" and "- (x + x)" respectively.
+
 
 NB: the left attribute states that "x `*` x `*` x" is parsed as "(x `*` x) `*` x". In other words, the "`*`" rule may not be itself a direct child of its right argument: "x `*` (x `*` x)" is an invalid parse.
 
