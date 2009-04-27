@@ -1,10 +1,11 @@
 // Todo: Lay down restrictions for grammer e.g. make sure keywords are not used for id_con
 //       Should this be done in the parser code???
 
-Package sablecc.waebric;
+Package org.sablecc.grammar.waebric;
 
 Helpers
-	input_character = [32..126];
+	all = [0x000 .. 0xffff];
+	input_character = [32..127];
 	not_star = [input_character - '*'];
 	not_star_not_slash = [not_star - '/'];
 	letter = ['a'..'z'] | ['A'..'Z'];
@@ -15,12 +16,16 @@ Helpers
 	str_char = ('\n' | '\t' | '\"' | '\\' | '\' digit digit digit | [input_character - [[10 + 9] + ['"' + '\']]]);
 	
 	// Used for text
-	text_char = [[input_character - [['&' + '"'] + '<']] + [[10 + 13] + 9]];
+	text_char = [input_character - [['&' + '"'] + '<']];
 	text_char_ref = 
 		'&#' digit+ ';' |
 		'&#x' (digit | letter)+ ';';
 		
 	text_entity_ref = '&' (letter | '_' | '"') (letter | digit | '.' | '-' | '_' | ':')* ';';
+	
+States
+	normal,
+	site;
 
 Tokens
 	// Keywords
@@ -66,11 +71,12 @@ Tokens
 	colon = ':';
 	assign = '=';
 	slash = '/';
+	plus = '+';
 
 	// Comments	
 	comments = 
 		'/*' (not_star_not_slash not_star* '*'+)* '/' |
-		'//' input_character* '\n';
+		'//' input_character* (13 | 10)+;
 		
 	whitespace = (' ' | 13 | 10 | 9)*;
 	
@@ -78,15 +84,14 @@ Tokens
 	id_con = letter (letter | digit | minus)*;
 	nat_con = digit+;
 	symbol_con = ''' [input_character - [[[')' + ' '] + [9 + 10]] + [[13 + ';'] + [',' + '>']]]]*;
-	str_con = '"' str_char* '"';
+	str_con = '\"' str_char* '"';
 	
 	// Miscellaneous
-	path_element = ([input_character - [[[' ' + 9] + [13 + 10]] + [['.' + '/'] + '\']]])+;
-	file_ext = (letter | digit)+;
-	text = '"' (text_char | esc_quote | amp | text_char_ref | text_entity_ref)* '"';
+	filename = ([input_character - [[[' ' + 9] + [13 + 10]] + ['.' + '\']]])+ '.' (digit | letter)+;
+	text = '"' (text_char | esc_quote | amp | text_char_ref | text_entity_ref)* '"';		
 	pre_text = '"' text_char* '<';
 	post_text = '>' text_char* '"';
-	mid_text = '>' text_char* '<';
+	mid_text = '>' text_char* '<';	
 				
 Ignored Tokens
 	comments,
@@ -94,9 +99,10 @@ Ignored Tokens
 	
 Productions
 	// Module definition
-	modules = module_declaration*;
 	module_declaration = module module_id_declaration module_element_declaration*;
-	module_id_declaration = id_con;
+	module_id_declaration = 
+		{single}	id_con | 
+		{multiple}	module_id_declaration dot id_con;
 	module_element_declaration = 
 		{function}	function_declaration | 
 		{import}	import_declaration | 
@@ -112,17 +118,7 @@ Productions
 	mappings_declaration = 
 		{single}									mapping_declaration |
 		{multiple}	mappings_declaration semi_colon mapping_declaration;
-	mapping_declaration = path_declaration colon markup_declaration;
-	
-	// Path & filenames
-	path_declaration = 
-		{dirname_filename}	dir_name slash file_name |
-		{filename}			file_name;
-	dir_name = directory;
-	directory =
-		{single_depth}					path_element |
-		{multi_depth}	directory slash path_element;
-	file_name = path_element dot file_ext; 
+	mapping_declaration = filename colon markup_declaration;
 
 	// Markup	
 	markup_declaration = 
@@ -142,14 +138,14 @@ Productions
 		{at_width}			at_sign [w]:nat_con;
 	
 	// Arguments
-	arguments_declaration = l_paren arguments r_paren;
+	arguments_declaration = l_paren arguments? r_paren;
 	arguments =
 		{single}					argument_declaration |
 		{multiple}	arguments comma argument_declaration;
 		
 	argument_declaration = 
-		{argument}						   			   expression_declaration |
-		{argument_with_var}		var_declaration assign expression_declaration;
+		{argument}				expression_declaration |
+		{argument_with_addign}	id_con assign expression_declaration;
 		  
 	// Variable
 	var_declaration = id_con;
@@ -160,9 +156,19 @@ Productions
 		{id_con}				id_con |
 		{symbol_con}			symbol_con |
 		{nat_con}				nat_con |
-//		{expression_idcon}		expression_declaration dot id_con |
+//		{expression_idcon}		expression_no_expression_declaration dot id_con |
+//		{expression_plus}		[left]:expression_no_expression_declaration plus [right]:expression_declaration |
+		{expression_plus}		[left]:expression_no_expression_declaration plus [right]:expression_no_expression_declaration |
 		{multiple_expressions}	l_bracket expressions r_bracket |
-		{key_value_pairs}		l_brace key_value_pairs r_brace;		
+		{key_value_pairs}		l_brace key_value_pairs r_brace;
+		
+	expression_no_expression_declaration =		
+		{text}					text |
+		{id_con}				id_con |
+		{symbol_con}			symbol_con |
+		{nat_con}				nat_con |
+		{multiple_expressions}	l_bracket expressions r_bracket |
+		{key_value_pairs}		l_brace key_value_pairs r_brace;
 		
 	expressions = 
 		{single}					  expression_declaration |
@@ -175,18 +181,26 @@ Productions
 	key_value_pair_declaration = id_con colon expression_declaration;
 	 
 	// Function declaration
-	function_declaration = def id_con formals_declaration? statement_declaration* end;
+	function_declaration = def id_con formals_declaration statement_declaration* end;
 	
 	// Formals declaration
-	formals_declaration = l_paren formals r_paren;
+	formals_declaration = 
+		{empty}		|
+		{available}	l_paren formals? r_paren;
 	formals =
-		{single}				  var_declaration |
-		{multiple}	formals comma var_declaration;
+		{single}				  id_con |
+		{multiple}	formals comma id_con;
 		
 	// Statement declaration
 	statement_declaration = 
-		{if}				if l_paren predicate r_paren statement_declaration |
-		{if_else}			if l_paren predicate r_paren statement_no_short_if_declaration else statement_declaration |
+		{statement_no_markup}	statement_no_markup_declaration |
+		{markup_statement}		markup_declaration+ statement_no_markup_declaration |
+		{markup_single}			markup_declaration semi_colon |
+		{markup_multiple}		[multiple]:markup_declaration+ [single]:markup_declaration semi_colon |
+		{markup_expression}		markup_declaration+ expression_declaration semi_colon |
+		{embedding}				markup_declaration+ embedding_declaration semi_colon;
+
+	statement_no_markup_declaration =
 		{each}				each_declaration |
 		{let}				let_declaration |
 		{function_body}		function_body_declaration |
@@ -194,22 +208,9 @@ Productions
 		{echo_expression}	echo_expression_declaration |
 		{echo_embedding}	echo_embedding_declaration |
 		{cdata}				cdata_declaration |
-		{yield}				yield_declaration;		
-
-	statement_no_short_if_declaration = 
-		{if_else}			if l_paren predicate r_paren [if_no_short_if]:statement_no_short_if_declaration else [else_no_short_if]:statement_no_short_if_declaration |
-		{each}				each_no_short_if_declaration |
-		{let}				let_declaration |
-		{function_body}		function_body_declaration |
-		{comment}			comment_declaration |
-		{echo_expression}	echo_expression_declaration |
-		{echo_embedding}	echo_embedding_declaration |
-		{cdata}				cdata_declaration |
-		{yield}				yield_declaration;		
-
-		
-	each_declaration = each l_paren var_declaration colon expression_declaration r_paren statement_declaration;
-	each_no_short_if_declaration = each l_paren var_declaration colon expression_declaration r_paren statement_no_short_if_declaration;
+		{yield}				yield_declaration;
+					
+	each_declaration = each l_paren id_con colon expression_declaration r_paren statement_declaration;
 	
 	let_declaration = let assignment_declaration+ in statement_declaration* end;	
 	function_body_declaration = l_brace statement_declaration* r_brace;
@@ -220,7 +221,9 @@ Productions
 	yield_declaration = yield semi_colon;
 
 	// Assignment declaration
-	assignment_declaration = var_declaration assign expression_declaration semi_colon;
+	assignment_declaration = 
+		{expression}	id_con assign expression_declaration semi_colon |
+		{statement}		id_con l_paren formals? r_paren assign statement_declaration;
 	
 	// Predicate declaration
 	predicate = 
