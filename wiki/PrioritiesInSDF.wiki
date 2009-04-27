@@ -26,7 +26,7 @@ this would imply that both "`*`" and "+" cannot be direct children of "-". E.g. 
 
 NB: the left attribute states that "x `*` x `*` x" is parsed as "(x `*` x) `*` x". In other words, the "`*`" rule may not be itself a direct child of its right argument: "x `*` (x `*` x)" is an invalid parse.
 
-Prioritity relations can also be encoded in the grammar rules themsevles, in grammar formalism that do not feature the mechanisms present in SDF. For the example, it could work as follows (using SDF notation):
+Prioritity relations can also be encoded in the grammar rules themsevles, in grammar formalisms that do not feature the mechanisms present in SDF. For the example, it could work as follows (using SDF notation):
 
 
 {{{
