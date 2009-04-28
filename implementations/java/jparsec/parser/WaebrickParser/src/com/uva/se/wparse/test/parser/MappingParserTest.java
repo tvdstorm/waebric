@@ -1,0 +1,55 @@
+/*
+ * File			: MappingParserTest.java
+ * Project		: WaebrickParser
+ * 				: Practicum opdracht Software Construction
+ * 
+ * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
+ * 
+ * 
+ * Description	:
+ * 
+ */
+package com.uva.se.wparse.test.parser;
+
+import junit.framework.TestCase;
+
+import org.codehaus.jparsec.Parser;
+
+import com.uva.se.wparse.model.declaration.Mapping;
+import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.markup.Markup;
+import com.uva.se.wparse.parser.ExpressionParser;
+import com.uva.se.wparse.parser.MappingParser;
+import com.uva.se.wparse.parser.MarkupParser;
+import com.uva.se.wparse.parser.TerminalParser;
+
+public class MappingParserTest extends TestCase {
+	
+	Parser<Markup> markupParser = null;
+	Parser<Expression> expParser = null;
+	Parser<Mapping> mappingParser = null;
+
+	protected void setUp() throws Exception {
+		expParser =  ExpressionParser.expression(null);
+		markupParser = MarkupParser.markup(expParser);
+		mappingParser = MappingParser.mapping(markupParser);
+	}
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+	
+	
+	
+	public void testMapping(){
+		String source = " wpath1/xpath2/yfile.ext : idCon#desgn";
+		TerminalParser.parse(mappingParser, source);
+	}
+	
+	public void testMappingWithEmptyArgs(){
+		String source = " wpath1/xpath2/yfile.ext : idCon#desgn()";
+		TerminalParser.parse(mappingParser, source);
+	}
+
+
+}
