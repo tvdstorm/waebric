@@ -1,0 +1,40 @@
+
+
+module abon
+
+site
+  site2/abonnementen.html: abonnementen()
+end
+
+def abonnementen 
+  layout singlecolumn {
+   header("Abonnee worden?");
+
+   p "Voor 30 euro krijg je een jaargang van ons literaire tijdschrift
+	  thuisgestuurd. Draag je Lava een extra warm hart toe? Neem dan voor
+	  40 euro een steunabonnement.  Je kunt natuurlijk ook een abonnement
+	  cadeau doen.";
+	  
+	  
+	    p "Een acceptgiro voor betaling volgt. Alle portokosten zijn
+	  inbegrepen. Abonnementen worden stilzwijgend verlengd.
+	  Opzegging kan alleen schriftelijk geschieden
+	  v&oacute;&oacute;r toezending van het laatste nummer van
+	  iedere jaargang.";
+	  
+   
+  }
+  
+     p {
+     echo "Je kunt je abonneren door:";
+     }
+     
+     p {
+          echo "test 2 Je kunt je abonneren door:";
+       }
+     
+
+  
+  
+  
+end
