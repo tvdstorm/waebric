@@ -100,13 +100,11 @@ public final class DeclarationParser {
   }
   
   
-  private static Mapper<Declaration> curry(
-      Class<? extends Declaration> clazz, Object... curryArgs) {
-    return Mapper.curry(clazz, curryArgs);
-  }
-  
-
-  private final static String SOURCE = " module testModule def mydef()  <em id.id2 1234 >  end";
+//  private static Mapper<Declaration> curry(
+//      Class<? extends Declaration> clazz, Object... curryArgs) {
+//    return Mapper.curry(clazz, curryArgs);
+//  }
+//  
   
   public ModuleDef doParse(){
 		
@@ -114,7 +112,7 @@ public final class DeclarationParser {
 		BufferedReader reader = null; 
 		StringBuilder contents = new StringBuilder();
 		try{
-			InputStream inputStream = this.getClass().getResourceAsStream("../../wae/kopij_test.wae");
+			InputStream inputStream = this.getClass().getResourceAsStream("../../wae/test.wae");
 			reader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 			
