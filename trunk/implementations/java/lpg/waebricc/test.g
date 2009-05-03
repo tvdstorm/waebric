@@ -5,6 +5,7 @@
 %options template=dtParserTemplateD.g
 %options import_terminals=ExprLexer.g
 %options lalr=2
+%options backtrack
 %options parent_saved
 
 %Terminals
@@ -30,6 +31,9 @@
     echo
     cdata
     yield
+    list
+    record
+    string
     
     LPAREN    ::= '('
     RPAREN    ::= ')'
@@ -148,7 +152,7 @@
     
     Markup ::= Designator ArgumentsOpt
     MarkupOpt$$Markup ::= %empty | Markups
-    Markups$$Markup ::= Markup Markups | Markup
+    Markups$$Markup ::= Markups Markup | Markup
     
     ArgumentsOpt$$Argument ::= '(' ')' | '(' Arguments ')'
     
@@ -165,13 +169,13 @@
     
     Expressions$$Expression ::= Expression ',' Expressions | Expression
     
-    Expression ::= Var | ExpressionString | ExpressionMember | ExpressionCollection | ExpressionPair | ExpressionConstant
+    Expression ::= Var | ExpressionString | ExpressionCollection | ExpressionPair | ExpressionConstant
     
     ExpressionString ::= 'StringLiteral'$String 
     
     ExpressionConstant ::= 'IntegerLiteral'$IntegerString
     
-    ExpressionMember ::= Expression '.' 'IDENTIFIER'$Member
+    --ExpressionMember ::= Expression '.' 'IDENTIFIER'$Member
     
     ExpressionCollection ::= '[' ExpressionOpt ']'
     
@@ -200,16 +204,19 @@
     -- Statememt
     --
         
-    Statement ::= StatementEach | StatementLet | StatementComment | StatementBlock | StatementEchoExpression | StatementEchoEmbedding | StatementCData | StatementYield
+    Statement ::= StatementEach | StatementLet | StatementComment | StatementBlock | StatementEchoExpression | StatementEchoEmbedding | StatementCData | StatementYield | StatementIf
     
     --StatementIf ::= 'if' '(' Predicate ')' Statement StatementElseOpt
+    StatementIf ::= 'if' '(' Predicate ')' Statement
+    StatementIfElse ::= StatementIf 'else' Statement
+    
     --StatementElseOpt ::= %empty | 'else' Statement
     
     StatementEach ::= 'each' '(' Var ':' Expression ')' Statement
     
     StatementLet ::= 'let' Assignments 'in' StatementOpt 'end'
     
-    StatementBlock ::= '{' Var '}'
+    StatementBlock ::= '{' StatementOpt '}'
     StatementOpt$$Statement ::= %empty | Statements
     Statements$$Statement ::= Statement Statements | Statement
     
@@ -220,6 +227,18 @@
     StatementEchoEmbedding ::= 'echo' Embedding ';'
     StatementCData ::= 'cdata' Expression ';'
     StatementYield ::= 'yield' ';'
+
+	--
+	-- Type
+	--
+	
+	Type ::= 'list' | 'record' | 'string'
+	
+    --
+    -- Predicate
+    --	
+    
+    Predicate ::= Expression | Expression '.' Type
     
     --
     -- Var
@@ -248,17 +267,15 @@
     Attributes$$Attribute ::= Attribute Attributes | Attribute
     
     Attribute ::= '#' 'IDENTIFIER'$Name
-    Attribute ::= '.' 'IDENTIFIER'$Name
+    --Attribute ::= '.' 'IDENTIFIER'$Name
     --Attribute ::= '$' 'IDENTIFIER'$Name
-    Attribute ::= ':' 'IDENTIFIER'$Name
+    --Attribute ::= ':' 'IDENTIFIER'$Name
     --Attribute ::= '@' 'IDENTIFIER' iets met natcon
     --Attribute ::= '@' 'IDENTIFIER' iets met natcon
     
     
-    
-    
-        
-    Function ::= 'def' 'IDENTIFIER'$Name '(' ParameterDeclOpt ')' Var 'end'
+           
+    Function ::= 'def' 'IDENTIFIER'$Name '(' ParameterDeclOpt ')' StatementOpt 'end'
     
     ParameterDeclOpt$$ParameterDecl ::= %empty | ParameterDecls
     

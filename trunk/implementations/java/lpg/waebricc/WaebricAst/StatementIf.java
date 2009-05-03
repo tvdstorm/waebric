@@ -4,30 +4,25 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 67:  StatementEach ::= each ( Var : Expression ) Statement
+ *<li>Rule 65:  StatementIf ::= if ( Predicate ) Statement
  *</b>
  */
-public class StatementEach extends Ast implements IStatementEach
+public class StatementIf extends Ast implements IStatementIf
 {
-    private Var _Var;
-    private IExpression _Expression;
+    private IPredicate _Predicate;
     private IStatement _Statement;
 
-    public Var getVar() { return _Var; }
-    public IExpression getExpression() { return _Expression; }
+    public IPredicate getPredicate() { return _Predicate; }
     public IStatement getStatement() { return _Statement; }
 
-    public StatementEach(IToken leftIToken, IToken rightIToken,
-                         Var _Var,
-                         IExpression _Expression,
-                         IStatement _Statement)
+    public StatementIf(IToken leftIToken, IToken rightIToken,
+                       IPredicate _Predicate,
+                       IStatement _Statement)
     {
         super(leftIToken, rightIToken);
 
-        this._Var = _Var;
-        ((Ast) _Var).setParent(this);
-        this._Expression = _Expression;
-        ((Ast) _Expression).setParent(this);
+        this._Predicate = _Predicate;
+        ((Ast) _Predicate).setParent(this);
         this._Statement = _Statement;
         ((Ast) _Statement).setParent(this);
         initialize();
@@ -39,8 +34,7 @@ public class StatementEach extends Ast implements IStatementEach
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_Var);
-        list.add(_Expression);
+        list.add(_Predicate);
         list.add(_Statement);
         return list;
     }
@@ -48,11 +42,10 @@ public class StatementEach extends Ast implements IStatementEach
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof StatementEach)) return false;
+        if (! (o instanceof StatementIf)) return false;
         if (! super.equals(o)) return false;
-        StatementEach other = (StatementEach) o;
-        if (! _Var.equals(other._Var)) return false;
-        if (! _Expression.equals(other._Expression)) return false;
+        StatementIf other = (StatementIf) o;
+        if (! _Predicate.equals(other._Predicate)) return false;
         if (! _Statement.equals(other._Statement)) return false;
         return true;
     }
@@ -60,8 +53,7 @@ public class StatementEach extends Ast implements IStatementEach
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_Var.hashCode());
-        hash = hash * 31 + (_Expression.hashCode());
+        hash = hash * 31 + (_Predicate.hashCode());
         hash = hash * 31 + (_Statement.hashCode());
         return hash;
     }

@@ -7,6 +7,8 @@ package waebricc;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.sound.sampled.Control.Type;
+
 import lpg.runtime.*;
 import waebricc.WaebricAst.*;
 
@@ -78,6 +80,7 @@ public class PrettyPrintVisitor extends AbstractVisitor
     	indent++;
     	prettyPrint("function " + n.getName());
     	n.getParameterDeclOpt().accept(this);
+    	n.getStatementOpt().accept(this);
     	indent--;
 	}
     
@@ -161,10 +164,80 @@ public class PrettyPrintVisitor extends AbstractVisitor
     { 
     	indent++;
     	prettyPrint("keyvaluepair " + n.getKey());
-    	visitChilds(n.getChildren());
+    	//visitChilds(n.getChildren());
+    	n.getExpression().accept(this);
     	indent--;
     } 
     
+    public void visit(StatementList n)
+    {
+    	indent++;
+    	//prettyPrint("StatementBlock " + n.getn);
+    	visitChilds(n.getChildren());
+    	indent--;
+    }
+    
+    public void visit(StatementYield n) 
+    {
+    	indent++;
+    	prettyPrint("Yield statement");
+    	indent--;
+    }
+
+    public void visit(StatementCData n)
+    {
+    	indent++;
+    	prettyPrint("CData statement: ");
+    	visitChilds(n.getChildren());
+    	indent--;
+    }
+    
+    public void visit(StatementIf n)
+    {
+    	indent++;
+    	prettyPrint("If statement ");
+    	n.getPredicate().accept(this);
+    	n.getStatement().accept(this);	
+    	indent--;
+    }
+    
+    public void visit(Statement n) 
+    {
+    	indent++;
+    	prettyPrint("Statement");
+    	indent--;
+    }
+
+    public void visit(Predicate n)
+    {
+    	indent++;
+    	prettyPrint("Predicate ");
+    	n.getExpression().accept(this);
+    	n.getType().accept(this);
+    	indent--;
+    }
+
+    public void visit(Type0 n)
+    {
+    	indent++;
+    	prettyPrint("Type list " );
+    	indent--;
+    }
+
+    public void visit(Type1 n)
+    {
+    	indent++;
+    	prettyPrint("Type record " );
+    	indent--;
+    }
+
+    public void visit(Type2 n)
+    {
+    	indent++;
+    	prettyPrint("Type string " );
+    	indent--;
+    }
+
     public void visit(ExpressionConstant n)
     { 
     	indent++;

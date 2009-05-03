@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 53:  KeyValuePair ::= IDENTIFIER$Key : Expression
+ *<li>Rule 51:  KeyValuePair ::= IDENTIFIER$Key : Expression
  *</b>
  */
 public class KeyValuePair extends Ast implements IKeyValuePair

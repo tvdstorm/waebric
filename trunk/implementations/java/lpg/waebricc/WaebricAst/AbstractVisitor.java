@@ -58,9 +58,6 @@ public abstract class AbstractVisitor implements Visitor, ArgumentVisitor
     public void visit(ExpressionConstant n) { unimplementedVisitor("visit(ExpressionConstant)"); }
     public void visit(ExpressionConstant n, Object o) { unimplementedVisitor("visit(ExpressionConstant, Object)"); }
 
-    public void visit(ExpressionMember n) { unimplementedVisitor("visit(ExpressionMember)"); }
-    public void visit(ExpressionMember n, Object o) { unimplementedVisitor("visit(ExpressionMember, Object)"); }
-
     public void visit(ExpressionCollection n) { unimplementedVisitor("visit(ExpressionCollection)"); }
     public void visit(ExpressionCollection n, Object o) { unimplementedVisitor("visit(ExpressionCollection, Object)"); }
 
@@ -78,6 +75,12 @@ public abstract class AbstractVisitor implements Visitor, ArgumentVisitor
 
     public void visit(Embed n) { unimplementedVisitor("visit(Embed)"); }
     public void visit(Embed n, Object o) { unimplementedVisitor("visit(Embed, Object)"); }
+
+    public void visit(StatementIf n) { unimplementedVisitor("visit(StatementIf)"); }
+    public void visit(StatementIf n, Object o) { unimplementedVisitor("visit(StatementIf, Object)"); }
+
+    public void visit(StatementIfElse n) { unimplementedVisitor("visit(StatementIfElse)"); }
+    public void visit(StatementIfElse n, Object o) { unimplementedVisitor("visit(StatementIfElse, Object)"); }
 
     public void visit(StatementEach n) { unimplementedVisitor("visit(StatementEach)"); }
     public void visit(StatementEach n, Object o) { unimplementedVisitor("visit(StatementEach, Object)"); }
@@ -106,6 +109,9 @@ public abstract class AbstractVisitor implements Visitor, ArgumentVisitor
     public void visit(StatementYield n) { unimplementedVisitor("visit(StatementYield)"); }
     public void visit(StatementYield n, Object o) { unimplementedVisitor("visit(StatementYield, Object)"); }
 
+    public void visit(Predicate n) { unimplementedVisitor("visit(Predicate)"); }
+    public void visit(Predicate n, Object o) { unimplementedVisitor("visit(Predicate, Object)"); }
+
     public void visit(Var n) { unimplementedVisitor("visit(Var)"); }
     public void visit(Var n, Object o) { unimplementedVisitor("visit(Var, Object)"); }
 
@@ -120,6 +126,9 @@ public abstract class AbstractVisitor implements Visitor, ArgumentVisitor
 
     public void visit(AttributeList n) { unimplementedVisitor("visit(AttributeList)"); }
     public void visit(AttributeList n, Object o) { unimplementedVisitor("visit(AttributeList, Object)"); }
+
+    public void visit(Attribute n) { unimplementedVisitor("visit(Attribute)"); }
+    public void visit(Attribute n, Object o) { unimplementedVisitor("visit(Attribute, Object)"); }
 
     public void visit(Function n) { unimplementedVisitor("visit(Function)"); }
     public void visit(Function n, Object o) { unimplementedVisitor("visit(Function, Object)"); }
@@ -136,14 +145,14 @@ public abstract class AbstractVisitor implements Visitor, ArgumentVisitor
     public void visit(TextTail1 n) { unimplementedVisitor("visit(TextTail1)"); }
     public void visit(TextTail1 n, Object o) { unimplementedVisitor("visit(TextTail1, Object)"); }
 
-    public void visit(Attribute0 n) { unimplementedVisitor("visit(Attribute0)"); }
-    public void visit(Attribute0 n, Object o) { unimplementedVisitor("visit(Attribute0, Object)"); }
+    public void visit(Type0 n) { unimplementedVisitor("visit(Type0)"); }
+    public void visit(Type0 n, Object o) { unimplementedVisitor("visit(Type0, Object)"); }
 
-    public void visit(Attribute1 n) { unimplementedVisitor("visit(Attribute1)"); }
-    public void visit(Attribute1 n, Object o) { unimplementedVisitor("visit(Attribute1, Object)"); }
+    public void visit(Type1 n) { unimplementedVisitor("visit(Type1)"); }
+    public void visit(Type1 n, Object o) { unimplementedVisitor("visit(Type1, Object)"); }
 
-    public void visit(Attribute2 n) { unimplementedVisitor("visit(Attribute2)"); }
-    public void visit(Attribute2 n, Object o) { unimplementedVisitor("visit(Attribute2, Object)"); }
+    public void visit(Type2 n) { unimplementedVisitor("visit(Type2)"); }
+    public void visit(Type2 n, Object o) { unimplementedVisitor("visit(Type2, Object)"); }
 
 
     public void visit(Ast n)
@@ -166,13 +175,14 @@ public abstract class AbstractVisitor implements Visitor, ArgumentVisitor
         else if (n instanceof ExpressionList) visit((ExpressionList) n);
         else if (n instanceof ExpressionString) visit((ExpressionString) n);
         else if (n instanceof ExpressionConstant) visit((ExpressionConstant) n);
-        else if (n instanceof ExpressionMember) visit((ExpressionMember) n);
         else if (n instanceof ExpressionCollection) visit((ExpressionCollection) n);
         else if (n instanceof ExpressionPair) visit((ExpressionPair) n);
         else if (n instanceof KeyValuePairList) visit((KeyValuePairList) n);
         else if (n instanceof KeyValuePair) visit((KeyValuePair) n);
         else if (n instanceof Embedding) visit((Embedding) n);
         else if (n instanceof Embed) visit((Embed) n);
+        else if (n instanceof StatementIf) visit((StatementIf) n);
+        else if (n instanceof StatementIfElse) visit((StatementIfElse) n);
         else if (n instanceof StatementEach) visit((StatementEach) n);
         else if (n instanceof StatementLet) visit((StatementLet) n);
         else if (n instanceof StatementBlock) visit((StatementBlock) n);
@@ -182,19 +192,21 @@ public abstract class AbstractVisitor implements Visitor, ArgumentVisitor
         else if (n instanceof StatementEchoEmbedding) visit((StatementEchoEmbedding) n);
         else if (n instanceof StatementCData) visit((StatementCData) n);
         else if (n instanceof StatementYield) visit((StatementYield) n);
+        else if (n instanceof Predicate) visit((Predicate) n);
         else if (n instanceof Var) visit((Var) n);
         else if (n instanceof AssignmentList) visit((AssignmentList) n);
         else if (n instanceof Assignment) visit((Assignment) n);
         else if (n instanceof Designator) visit((Designator) n);
         else if (n instanceof AttributeList) visit((AttributeList) n);
+        else if (n instanceof Attribute) visit((Attribute) n);
         else if (n instanceof Function) visit((Function) n);
         else if (n instanceof ParameterDeclList) visit((ParameterDeclList) n);
         else if (n instanceof Name) visit((Name) n);
         else if (n instanceof TextTail0) visit((TextTail0) n);
         else if (n instanceof TextTail1) visit((TextTail1) n);
-        else if (n instanceof Attribute0) visit((Attribute0) n);
-        else if (n instanceof Attribute1) visit((Attribute1) n);
-        else if (n instanceof Attribute2) visit((Attribute2) n);
+        else if (n instanceof Type0) visit((Type0) n);
+        else if (n instanceof Type1) visit((Type1) n);
+        else if (n instanceof Type2) visit((Type2) n);
         throw new UnsupportedOperationException("visit(" + n.getClass().toString() + ")");
     }
     public void visit(Ast n, Object o)
@@ -217,13 +229,14 @@ public abstract class AbstractVisitor implements Visitor, ArgumentVisitor
         else if (n instanceof ExpressionList) visit((ExpressionList) n, o);
         else if (n instanceof ExpressionString) visit((ExpressionString) n, o);
         else if (n instanceof ExpressionConstant) visit((ExpressionConstant) n, o);
-        else if (n instanceof ExpressionMember) visit((ExpressionMember) n, o);
         else if (n instanceof ExpressionCollection) visit((ExpressionCollection) n, o);
         else if (n instanceof ExpressionPair) visit((ExpressionPair) n, o);
         else if (n instanceof KeyValuePairList) visit((KeyValuePairList) n, o);
         else if (n instanceof KeyValuePair) visit((KeyValuePair) n, o);
         else if (n instanceof Embedding) visit((Embedding) n, o);
         else if (n instanceof Embed) visit((Embed) n, o);
+        else if (n instanceof StatementIf) visit((StatementIf) n, o);
+        else if (n instanceof StatementIfElse) visit((StatementIfElse) n, o);
         else if (n instanceof StatementEach) visit((StatementEach) n, o);
         else if (n instanceof StatementLet) visit((StatementLet) n, o);
         else if (n instanceof StatementBlock) visit((StatementBlock) n, o);
@@ -233,19 +246,21 @@ public abstract class AbstractVisitor implements Visitor, ArgumentVisitor
         else if (n instanceof StatementEchoEmbedding) visit((StatementEchoEmbedding) n, o);
         else if (n instanceof StatementCData) visit((StatementCData) n, o);
         else if (n instanceof StatementYield) visit((StatementYield) n, o);
+        else if (n instanceof Predicate) visit((Predicate) n, o);
         else if (n instanceof Var) visit((Var) n, o);
         else if (n instanceof AssignmentList) visit((AssignmentList) n, o);
         else if (n instanceof Assignment) visit((Assignment) n, o);
         else if (n instanceof Designator) visit((Designator) n, o);
         else if (n instanceof AttributeList) visit((AttributeList) n, o);
+        else if (n instanceof Attribute) visit((Attribute) n, o);
         else if (n instanceof Function) visit((Function) n, o);
         else if (n instanceof ParameterDeclList) visit((ParameterDeclList) n, o);
         else if (n instanceof Name) visit((Name) n, o);
         else if (n instanceof TextTail0) visit((TextTail0) n, o);
         else if (n instanceof TextTail1) visit((TextTail1) n, o);
-        else if (n instanceof Attribute0) visit((Attribute0) n, o);
-        else if (n instanceof Attribute1) visit((Attribute1) n, o);
-        else if (n instanceof Attribute2) visit((Attribute2) n, o);
+        else if (n instanceof Type0) visit((Type0) n, o);
+        else if (n instanceof Type1) visit((Type1) n, o);
+        else if (n instanceof Type2) visit((Type2) n, o);
         throw new UnsupportedOperationException("visit(" + n.getClass().toString() + ")");
     }
 }

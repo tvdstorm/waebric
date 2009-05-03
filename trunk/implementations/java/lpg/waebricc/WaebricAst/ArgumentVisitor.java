@@ -20,13 +20,14 @@ public interface ArgumentVisitor
     void visit(ExpressionList n, Object o);
     void visit(ExpressionString n, Object o);
     void visit(ExpressionConstant n, Object o);
-    void visit(ExpressionMember n, Object o);
     void visit(ExpressionCollection n, Object o);
     void visit(ExpressionPair n, Object o);
     void visit(KeyValuePairList n, Object o);
     void visit(KeyValuePair n, Object o);
     void visit(Embedding n, Object o);
     void visit(Embed n, Object o);
+    void visit(StatementIf n, Object o);
+    void visit(StatementIfElse n, Object o);
     void visit(StatementEach n, Object o);
     void visit(StatementLet n, Object o);
     void visit(StatementBlock n, Object o);
@@ -36,19 +37,21 @@ public interface ArgumentVisitor
     void visit(StatementEchoEmbedding n, Object o);
     void visit(StatementCData n, Object o);
     void visit(StatementYield n, Object o);
+    void visit(Predicate n, Object o);
     void visit(Var n, Object o);
     void visit(AssignmentList n, Object o);
     void visit(Assignment n, Object o);
     void visit(Designator n, Object o);
     void visit(AttributeList n, Object o);
+    void visit(Attribute n, Object o);
     void visit(Function n, Object o);
     void visit(ParameterDeclList n, Object o);
     void visit(Name n, Object o);
     void visit(TextTail0 n, Object o);
     void visit(TextTail1 n, Object o);
-    void visit(Attribute0 n, Object o);
-    void visit(Attribute1 n, Object o);
-    void visit(Attribute2 n, Object o);
+    void visit(Type0 n, Object o);
+    void visit(Type1 n, Object o);
+    void visit(Type2 n, Object o);
 
     void visit(Ast n, Object o);
 }

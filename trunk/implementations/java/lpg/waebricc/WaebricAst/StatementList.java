@@ -4,10 +4,10 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 69:  StatementOpt ::= $Empty
- *<li>Rule 70:  StatementOpt ::= Statements
- *<li>Rule 71:  Statements ::= Statement Statements
- *<li>Rule 72:  Statements ::= Statement
+ *<li>Rule 70:  StatementOpt ::= $Empty
+ *<li>Rule 71:  StatementOpt ::= Statements
+ *<li>Rule 72:  Statements ::= Statement Statements
+ *<li>Rule 73:  Statements ::= Statement
  *</b>
  */
 public class StatementList extends AbstractAstList implements IStatementOpt, IStatements

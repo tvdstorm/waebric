@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 73:  StatementComment ::= comment StringLiteral ;
+ *<li>Rule 74:  StatementComment ::= comment StringLiteral ;
  *</b>
  */
 public class StatementComment extends Ast implements IStatementComment

@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 82:  Designator ::= IDENTIFIER$Name AttributeOpt
+ *<li>Rule 88:  Designator ::= IDENTIFIER$Name AttributeOpt
  *</b>
  */
 public class Designator extends Ast implements IDesignator

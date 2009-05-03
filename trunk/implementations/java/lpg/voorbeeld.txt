@@ -4,5 +4,5 @@ site
     dirrethje/blartef/home.html: home("joepie", "olé", {y : 3}, {z : 4, a : 784754} );
 end
 
-def home( blaat, pipo, clown )hello end
-def home( blaat, pipo, clown )hello end
+def home( blaat, pipo, clown ) yield; cdata "hello"; end
+def home2( blaat, pipo, clown ) yield; if ("helloworld".string) cdata "lpg rules"; end

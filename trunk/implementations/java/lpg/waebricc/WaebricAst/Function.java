@@ -4,23 +4,23 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 90:  Function ::= def IDENTIFIER$Name ( ParameterDeclOpt ) Var end
+ *<li>Rule 94:  Function ::= def IDENTIFIER$Name ( ParameterDeclOpt ) StatementOpt end
  *</b>
  */
 public class Function extends Ast implements IFunction
 {
     private AstToken _Name;
     private ParameterDeclList _ParameterDeclOpt;
-    private Var _Var;
+    private StatementList _StatementOpt;
 
     public AstToken getName() { return _Name; }
     public ParameterDeclList getParameterDeclOpt() { return _ParameterDeclOpt; }
-    public Var getVar() { return _Var; }
+    public StatementList getStatementOpt() { return _StatementOpt; }
 
     public Function(IToken leftIToken, IToken rightIToken,
                     AstToken _Name,
                     ParameterDeclList _ParameterDeclOpt,
-                    Var _Var)
+                    StatementList _StatementOpt)
     {
         super(leftIToken, rightIToken);
 
@@ -28,8 +28,8 @@ public class Function extends Ast implements IFunction
         ((Ast) _Name).setParent(this);
         this._ParameterDeclOpt = _ParameterDeclOpt;
         ((Ast) _ParameterDeclOpt).setParent(this);
-        this._Var = _Var;
-        ((Ast) _Var).setParent(this);
+        this._StatementOpt = _StatementOpt;
+        ((Ast) _StatementOpt).setParent(this);
         initialize();
     }
 
@@ -41,7 +41,7 @@ public class Function extends Ast implements IFunction
         java.util.ArrayList list = new java.util.ArrayList();
         list.add(_Name);
         list.add(_ParameterDeclOpt);
-        list.add(_Var);
+        list.add(_StatementOpt);
         return list;
     }
 
@@ -53,7 +53,7 @@ public class Function extends Ast implements IFunction
         Function other = (Function) o;
         if (! _Name.equals(other._Name)) return false;
         if (! _ParameterDeclOpt.equals(other._ParameterDeclOpt)) return false;
-        if (! _Var.equals(other._Var)) return false;
+        if (! _StatementOpt.equals(other._StatementOpt)) return false;
         return true;
     }
 
@@ -62,7 +62,7 @@ public class Function extends Ast implements IFunction
         int hash = super.hashCode();
         hash = hash * 31 + (_Name.hashCode());
         hash = hash * 31 + (_ParameterDeclOpt.hashCode());
-        hash = hash * 31 + (_Var.hashCode());
+        hash = hash * 31 + (_StatementOpt.hashCode());
         return hash;
     }
 

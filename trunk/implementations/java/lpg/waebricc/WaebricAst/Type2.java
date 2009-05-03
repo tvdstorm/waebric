@@ -4,14 +4,12 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 43:  ExpressionString ::= StringLiteral$String
+ *<li>Rule 81:  Type ::= string
  *</b>
  */
-public class ExpressionString extends AstToken implements IExpressionString
+public class Type2 extends AstToken implements IType
 {
-    public IToken getString() { return leftIToken; }
-
-    public ExpressionString(IToken token) { super(token); initialize(); }
+    public Type2(IToken token) { super(token); initialize(); }
 
     public void accept(Visitor v) { v.visit(this); }
     public void accept(ArgumentVisitor v, Object o) { v.visit(this, o); }

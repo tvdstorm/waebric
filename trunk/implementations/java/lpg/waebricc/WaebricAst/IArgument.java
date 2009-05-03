@@ -9,7 +9,6 @@ import lpg.runtime.*;
  *<li>Argument
  *<li>ExpressionString
  *<li>ExpressionConstant
- *<li>ExpressionMember
  *<li>ExpressionCollection
  *<li>ExpressionPair
  *<li>Var

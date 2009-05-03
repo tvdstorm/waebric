@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 55:  TextTail ::= MidText Embed TextTail
+ *<li>Rule 53:  TextTail ::= MidText Embed TextTail
  *</b>
  */
 public class TextTail0 extends Ast implements ITextTail

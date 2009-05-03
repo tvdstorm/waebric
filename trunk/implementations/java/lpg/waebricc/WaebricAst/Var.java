@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 78:  Var ::= IDENTIFIER$Name
+ *<li>Rule 84:  Var ::= IDENTIFIER$Name
  *</b>
  */
 public class Var extends AstToken implements IVar

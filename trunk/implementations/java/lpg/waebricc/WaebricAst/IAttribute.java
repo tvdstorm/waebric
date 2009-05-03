@@ -3,14 +3,7 @@ package waebricc.WaebricAst;
 import lpg.runtime.*;
 
 /**
- * is implemented by:
- *<b>
- *<ul>
- *<li>Attribute0
- *<li>Attribute1
- *<li>Attribute2
- *</ul>
- *</b>
+ * is implemented by <b>Attribute</b>
  */
 public interface IAttribute
 {

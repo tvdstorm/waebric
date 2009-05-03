@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 48:  ExpressionPair ::= { KeyValuePairOpt }
+ *<li>Rule 46:  ExpressionPair ::= { KeyValuePairOpt }
  *</b>
  */
 public class ExpressionPair extends Ast implements IExpressionPair

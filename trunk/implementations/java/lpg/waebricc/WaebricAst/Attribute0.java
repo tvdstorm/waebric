@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 87:  Attribute ::= # IDENTIFIER$Name
+ *<li>Rule 85:  Attribute ::= # IDENTIFIER$Name
  *</b>
  */
 public class Attribute0 extends Ast implements IAttribute

@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 67:  StatementLet ::= let Assignments in StatementOpt end
+ *<li>Rule 68:  StatementLet ::= let Assignments in StatementOpt end
  *</b>
  */
 public class StatementLet extends Ast implements IStatementLet
