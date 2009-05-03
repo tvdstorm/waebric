@@ -20,13 +20,14 @@ public interface Visitor
     void visit(ExpressionList n);
     void visit(ExpressionString n);
     void visit(ExpressionConstant n);
-    void visit(ExpressionMember n);
     void visit(ExpressionCollection n);
     void visit(ExpressionPair n);
     void visit(KeyValuePairList n);
     void visit(KeyValuePair n);
     void visit(Embedding n);
     void visit(Embed n);
+    void visit(StatementIf n);
+    void visit(StatementIfElse n);
     void visit(StatementEach n);
     void visit(StatementLet n);
     void visit(StatementBlock n);
@@ -36,19 +37,21 @@ public interface Visitor
     void visit(StatementEchoEmbedding n);
     void visit(StatementCData n);
     void visit(StatementYield n);
+    void visit(Predicate n);
     void visit(Var n);
     void visit(AssignmentList n);
     void visit(Assignment n);
     void visit(Designator n);
     void visit(AttributeList n);
+    void visit(Attribute n);
     void visit(Function n);
     void visit(ParameterDeclList n);
     void visit(Name n);
     void visit(TextTail0 n);
     void visit(TextTail1 n);
-    void visit(Attribute0 n);
-    void visit(Attribute1 n);
-    void visit(Attribute2 n);
+    void visit(Type0 n);
+    void visit(Type1 n);
+    void visit(Type2 n);
 
     void visit(Ast n);
 }

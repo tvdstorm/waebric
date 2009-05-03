@@ -6,19 +6,16 @@ import lpg.runtime.*;
  * is implemented by:
  *<b>
  *<ul>
- *<li>StatementIf
- *<li>StatementEach
- *<li>StatementLet
- *<li>StatementBlock
- *<li>StatementComment
- *<li>StatementEchoExpression
- *<li>StatementEchoEmbedding
- *<li>StatementCData
- *<li>StatementYield
+ *<li>ExpressionString
+ *<li>ExpressionConstant
+ *<li>ExpressionCollection
+ *<li>ExpressionPair
+ *<li>Predicate
+ *<li>Var
  *</ul>
  *</b>
  */
-public interface IStatement
+public interface IPredicate
 {
     public IToken getLeftIToken();
     public IToken getRightIToken();

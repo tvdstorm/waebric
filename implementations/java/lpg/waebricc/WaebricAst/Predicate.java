@@ -3,33 +3,32 @@ package waebricc.WaebricAst;
 import lpg.runtime.*;
 
 /**
+ *<em>
+ *<li>Rule 82:  Predicate ::= Expression
+ *</em>
+ *<p>
  *<b>
- *<li>Rule 67:  StatementEach ::= each ( Var : Expression ) Statement
+ *<li>Rule 83:  Predicate ::= Expression . Type
  *</b>
  */
-public class StatementEach extends Ast implements IStatementEach
+public class Predicate extends Ast implements IPredicate
 {
-    private Var _Var;
     private IExpression _Expression;
-    private IStatement _Statement;
+    private IType _Type;
 
-    public Var getVar() { return _Var; }
     public IExpression getExpression() { return _Expression; }
-    public IStatement getStatement() { return _Statement; }
+    public IType getType() { return _Type; }
 
-    public StatementEach(IToken leftIToken, IToken rightIToken,
-                         Var _Var,
-                         IExpression _Expression,
-                         IStatement _Statement)
+    public Predicate(IToken leftIToken, IToken rightIToken,
+                     IExpression _Expression,
+                     IType _Type)
     {
         super(leftIToken, rightIToken);
 
-        this._Var = _Var;
-        ((Ast) _Var).setParent(this);
         this._Expression = _Expression;
         ((Ast) _Expression).setParent(this);
-        this._Statement = _Statement;
-        ((Ast) _Statement).setParent(this);
+        this._Type = _Type;
+        ((Ast) _Type).setParent(this);
         initialize();
     }
 
@@ -39,30 +38,27 @@ public class StatementEach extends Ast implements IStatementEach
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_Var);
         list.add(_Expression);
-        list.add(_Statement);
+        list.add(_Type);
         return list;
     }
 
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof StatementEach)) return false;
+        if (! (o instanceof Predicate)) return false;
         if (! super.equals(o)) return false;
-        StatementEach other = (StatementEach) o;
-        if (! _Var.equals(other._Var)) return false;
+        Predicate other = (Predicate) o;
         if (! _Expression.equals(other._Expression)) return false;
-        if (! _Statement.equals(other._Statement)) return false;
+        if (! _Type.equals(other._Type)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_Var.hashCode());
         hash = hash * 31 + (_Expression.hashCode());
-        hash = hash * 31 + (_Statement.hashCode());
+        hash = hash * 31 + (_Type.hashCode());
         return hash;
     }
 

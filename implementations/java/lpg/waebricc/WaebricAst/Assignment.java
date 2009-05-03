@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 81:  Assignment ::= Var = Expression ;
+ *<li>Rule 87:  Assignment ::= Var = Expression ;
  *</b>
  */
 public class Assignment extends Ast implements IAssignment

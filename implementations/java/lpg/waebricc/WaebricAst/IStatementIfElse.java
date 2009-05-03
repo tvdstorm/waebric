@@ -3,22 +3,9 @@ package waebricc.WaebricAst;
 import lpg.runtime.*;
 
 /**
- * is implemented by:
- *<b>
- *<ul>
- *<li>StatementIf
- *<li>StatementEach
- *<li>StatementLet
- *<li>StatementBlock
- *<li>StatementComment
- *<li>StatementEchoExpression
- *<li>StatementEchoEmbedding
- *<li>StatementCData
- *<li>StatementYield
- *</ul>
- *</b>
+ * is implemented by <b>StatementIfElse</b>
  */
-public interface IStatement
+public interface IStatementIfElse
 {
     public IToken getLeftIToken();
     public IToken getRightIToken();

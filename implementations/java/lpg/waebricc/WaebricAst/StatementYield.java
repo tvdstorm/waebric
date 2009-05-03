@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 77:  StatementYield ::= yield ;
+ *<li>Rule 78:  StatementYield ::= yield ;
  *</b>
  */
 public class StatementYield extends Ast implements IStatementYield

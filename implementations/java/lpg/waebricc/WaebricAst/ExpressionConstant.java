@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 45:  ExpressionConstant ::= IntegerLiteral$IntegerString
+ *<li>Rule 44:  ExpressionConstant ::= IntegerLiteral$IntegerString
  *</b>
  */
 public class ExpressionConstant extends AstToken implements IExpressionConstant

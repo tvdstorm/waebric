@@ -3,31 +3,25 @@ package waebricc.WaebricAst;
 import lpg.runtime.*;
 
 /**
+ *<em>
+ *<li>Rule 68:  StatementElseOpt ::= $Empty
+ *</em>
+ *<p>
  *<b>
- *<li>Rule 67:  StatementEach ::= each ( Var : Expression ) Statement
+ *<li>Rule 69:  StatementElseOpt ::= else Statement
  *</b>
  */
-public class StatementEach extends Ast implements IStatementEach
+public class StatementElseOpt extends Ast implements IStatementElseOpt
 {
-    private Var _Var;
-    private IExpression _Expression;
     private IStatement _Statement;
 
-    public Var getVar() { return _Var; }
-    public IExpression getExpression() { return _Expression; }
     public IStatement getStatement() { return _Statement; }
 
-    public StatementEach(IToken leftIToken, IToken rightIToken,
-                         Var _Var,
-                         IExpression _Expression,
-                         IStatement _Statement)
+    public StatementElseOpt(IToken leftIToken, IToken rightIToken,
+                            IStatement _Statement)
     {
         super(leftIToken, rightIToken);
 
-        this._Var = _Var;
-        ((Ast) _Var).setParent(this);
-        this._Expression = _Expression;
-        ((Ast) _Expression).setParent(this);
         this._Statement = _Statement;
         ((Ast) _Statement).setParent(this);
         initialize();
@@ -39,8 +33,6 @@ public class StatementEach extends Ast implements IStatementEach
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_Var);
-        list.add(_Expression);
         list.add(_Statement);
         return list;
     }
@@ -48,11 +40,9 @@ public class StatementEach extends Ast implements IStatementEach
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (! (o instanceof StatementEach)) return false;
+        if (! (o instanceof StatementElseOpt)) return false;
         if (! super.equals(o)) return false;
-        StatementEach other = (StatementEach) o;
-        if (! _Var.equals(other._Var)) return false;
-        if (! _Expression.equals(other._Expression)) return false;
+        StatementElseOpt other = (StatementElseOpt) o;
         if (! _Statement.equals(other._Statement)) return false;
         return true;
     }
@@ -60,8 +50,6 @@ public class StatementEach extends Ast implements IStatementEach
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_Var.hashCode());
-        hash = hash * 31 + (_Expression.hashCode());
         hash = hash * 31 + (_Statement.hashCode());
         return hash;
     }

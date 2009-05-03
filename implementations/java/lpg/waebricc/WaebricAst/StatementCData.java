@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 76:  StatementCData ::= cdata Expression ;
+ *<li>Rule 77:  StatementCData ::= cdata Expression ;
  *</b>
  */
 public class StatementCData extends Ast implements IStatementCData

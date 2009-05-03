@@ -4,10 +4,10 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 91:  ParameterDeclOpt ::= $Empty
- *<li>Rule 92:  ParameterDeclOpt ::= ParameterDecls
- *<li>Rule 93:  ParameterDecls ::= ParameterDecl , ParameterDecls
- *<li>Rule 94:  ParameterDecls ::= ParameterDecl
+ *<li>Rule 95:  ParameterDeclOpt ::= $Empty
+ *<li>Rule 96:  ParameterDeclOpt ::= ParameterDecls
+ *<li>Rule 97:  ParameterDecls ::= ParameterDecl , ParameterDecls
+ *<li>Rule 98:  ParameterDecls ::= ParameterDecl
  *</b>
  */
 public class ParameterDeclList extends AbstractAstList implements IParameterDeclOpt, IParameterDecls

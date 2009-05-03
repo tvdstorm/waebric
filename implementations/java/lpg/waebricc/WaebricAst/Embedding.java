@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 54:  Embedding ::= PreText Embed TextTail
+ *<li>Rule 52:  Embedding ::= PreText Embed TextTail
  *</b>
  */
 public class Embedding extends Ast implements IEmbedding

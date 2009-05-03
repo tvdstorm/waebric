@@ -12,6 +12,9 @@ import lpg.runtime.*;
  *<li>Name
  *<li>TextTail0
  *<li>TextTail1
+ *<li>Type0
+ *<li>Type1
+ *<li>Type2
  *</ul>
  *</b>
  */

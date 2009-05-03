@@ -6,7 +6,7 @@ import lpg.runtime.*;
  *<b>
  *<li>Rule 24:  MarkupOpt ::= $Empty
  *<li>Rule 25:  MarkupOpt ::= Markups
- *<li>Rule 26:  Markups ::= Markup Markups
+ *<li>Rule 26:  Markups ::= Markups Markup
  *<li>Rule 27:  Markups ::= Markup
  *</b>
  */

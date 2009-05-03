@@ -4,8 +4,8 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 79:  Assignments ::= Assignment Assignments
- *<li>Rule 80:  Assignments ::= Assignment
+ *<li>Rule 85:  Assignments ::= Assignment Assignments
+ *<li>Rule 86:  Assignments ::= Assignment
  *</b>
  */
 public class AssignmentList extends AbstractAstList implements IAssignments

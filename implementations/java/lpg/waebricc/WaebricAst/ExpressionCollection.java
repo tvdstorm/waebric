@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 47:  ExpressionCollection ::= [ ExpressionOpt ]
+ *<li>Rule 45:  ExpressionCollection ::= [ ExpressionOpt ]
  *</b>
  */
 public class ExpressionCollection extends Ast implements IExpressionCollection

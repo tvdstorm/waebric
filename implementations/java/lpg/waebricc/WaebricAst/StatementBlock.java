@@ -4,22 +4,22 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 68:  StatementBlock ::= { Var }
+ *<li>Rule 69:  StatementBlock ::= { StatementOpt }
  *</b>
  */
 public class StatementBlock extends Ast implements IStatementBlock
 {
-    private Var _Var;
+    private StatementList _StatementOpt;
 
-    public Var getVar() { return _Var; }
+    public StatementList getStatementOpt() { return _StatementOpt; }
 
     public StatementBlock(IToken leftIToken, IToken rightIToken,
-                          Var _Var)
+                          StatementList _StatementOpt)
     {
         super(leftIToken, rightIToken);
 
-        this._Var = _Var;
-        ((Ast) _Var).setParent(this);
+        this._StatementOpt = _StatementOpt;
+        ((Ast) _StatementOpt).setParent(this);
         initialize();
     }
 
@@ -29,7 +29,7 @@ public class StatementBlock extends Ast implements IStatementBlock
     public java.util.ArrayList getAllChildren()
     {
         java.util.ArrayList list = new java.util.ArrayList();
-        list.add(_Var);
+        list.add(_StatementOpt);
         return list;
     }
 
@@ -39,14 +39,14 @@ public class StatementBlock extends Ast implements IStatementBlock
         if (! (o instanceof StatementBlock)) return false;
         if (! super.equals(o)) return false;
         StatementBlock other = (StatementBlock) o;
-        if (! _Var.equals(other._Var)) return false;
+        if (! _StatementOpt.equals(other._StatementOpt)) return false;
         return true;
     }
 
     public int hashCode()
     {
         int hash = super.hashCode();
-        hash = hash * 31 + (_Var.hashCode());
+        hash = hash * 31 + (_StatementOpt.hashCode());
         return hash;
     }
 

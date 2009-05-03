@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 75:  StatementEchoEmbedding ::= echo Embedding ;
+ *<li>Rule 76:  StatementEchoEmbedding ::= echo Embedding ;
  *</b>
  */
 public class StatementEchoEmbedding extends Ast implements IStatementEchoEmbedding

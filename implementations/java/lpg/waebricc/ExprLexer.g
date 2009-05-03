@@ -6,7 +6,7 @@
 %options package=javaparser
 %options template=LexerTemplateD.g
 %options filter=JavaKWLexer.g
-%options lalr=2
+%options lalr=3
 
 %Define
     --

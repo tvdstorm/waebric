@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 96:  Name ::= IDENTIFIER$Name
+ *<li>Rule 100:  Name ::= IDENTIFIER$Name
  *</b>
  */
 public class Name extends AstToken implements IName

@@ -20,13 +20,14 @@ public interface ResultVisitor
     Object visit(ExpressionList n);
     Object visit(ExpressionString n);
     Object visit(ExpressionConstant n);
-    Object visit(ExpressionMember n);
     Object visit(ExpressionCollection n);
     Object visit(ExpressionPair n);
     Object visit(KeyValuePairList n);
     Object visit(KeyValuePair n);
     Object visit(Embedding n);
     Object visit(Embed n);
+    Object visit(StatementIf n);
+    Object visit(StatementIfElse n);
     Object visit(StatementEach n);
     Object visit(StatementLet n);
     Object visit(StatementBlock n);
@@ -36,19 +37,21 @@ public interface ResultVisitor
     Object visit(StatementEchoEmbedding n);
     Object visit(StatementCData n);
     Object visit(StatementYield n);
+    Object visit(Predicate n);
     Object visit(Var n);
     Object visit(AssignmentList n);
     Object visit(Assignment n);
     Object visit(Designator n);
     Object visit(AttributeList n);
+    Object visit(Attribute n);
     Object visit(Function n);
     Object visit(ParameterDeclList n);
     Object visit(Name n);
     Object visit(TextTail0 n);
     Object visit(TextTail1 n);
-    Object visit(Attribute0 n);
-    Object visit(Attribute1 n);
-    Object visit(Attribute2 n);
+    Object visit(Type0 n);
+    Object visit(Type1 n);
+    Object visit(Type2 n);
 
     Object visit(Ast n);
 }

@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 74:  StatementEchoExpression ::= echo Expression ;
+ *<li>Rule 75:  StatementEchoExpression ::= echo Expression ;
  *</b>
  */
 public class StatementEchoExpression extends Ast implements IStatementEchoExpression

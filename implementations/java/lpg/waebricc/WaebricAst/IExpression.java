@@ -6,13 +6,12 @@ package waebricc.WaebricAst;
  *<ul>
  *<li>ExpressionString
  *<li>ExpressionConstant
- *<li>ExpressionMember
  *<li>ExpressionCollection
  *<li>ExpressionPair
  *<li>Var
  *</ul>
  *</b>
  */
-public interface IExpression extends IArgument {}
+public interface IExpression extends IArgument, IPredicate {}
 
 

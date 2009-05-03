@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 57:  Embed ::= MarkupOpt Expression
+ *<li>Rule 55:  Embed ::= MarkupOpt Expression
  *</b>
  */
 public class Embed extends Ast implements IEmbed

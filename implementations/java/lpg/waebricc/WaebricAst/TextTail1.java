@@ -4,7 +4,7 @@ import lpg.runtime.*;
 
 /**
  *<b>
- *<li>Rule 56:  TextTail ::= PostText
+ *<li>Rule 54:  TextTail ::= PostText
  *</b>
  */
 public class TextTail1 extends AstToken implements ITextTail
