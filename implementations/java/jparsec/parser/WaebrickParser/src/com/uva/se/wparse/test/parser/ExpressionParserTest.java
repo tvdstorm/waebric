@@ -1,12 +1,19 @@
 /*
  * File			: ExpressionParserTest.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.test.parser;
@@ -77,6 +84,11 @@ public class ExpressionParserTest extends TestCase {
 	
 	public void testStringExpression(){
 		String source = "testString";
+		TerminalParser.parse(expParser, source);
+	}
+	
+	public void testAdvancedString(){
+		String source = "\"test ? with non a-zA-Z chars : & * % $ # @ !, . ( ) ^ 1 2 3 4 5 6 7 8 9 0 \"";
 		TerminalParser.parse(expParser, source);
 	}
 	

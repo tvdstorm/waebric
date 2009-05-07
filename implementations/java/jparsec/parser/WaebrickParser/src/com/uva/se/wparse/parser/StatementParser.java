@@ -1,12 +1,19 @@
 /*
  * File			: StatementParser.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 
@@ -17,6 +24,7 @@ import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.misc.Mapper;
 
+import com.sun.java_cup.internal.terminal;
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Argument;
@@ -30,6 +38,7 @@ import com.uva.se.wparse.model.statement.CommentStatement;
 import com.uva.se.wparse.model.statement.EachStatement;
 import com.uva.se.wparse.model.statement.EchoEmbeddingStatement;
 import com.uva.se.wparse.model.statement.EchoExprStatement;
+import com.uva.se.wparse.model.statement.EmbedTest;
 import com.uva.se.wparse.model.statement.IfElseStatement;
 import com.uva.se.wparse.model.statement.IfStatement;
 import com.uva.se.wparse.model.statement.LetInStatement;
@@ -54,7 +63,7 @@ public final class StatementParser {
   }
   
   static Parser<Statement> echoEmbedding(Parser<Embedding> embedding) {
-	  return curry( EchoEmbeddingStatement.class).sequence( TerminalParser.term("echo"), embedding  ,TerminalParser.term(";") );
+	  return curry( EchoEmbeddingStatement.class).sequence( TerminalParser.term("echo"), TerminalParser.term("\""), embedding, TerminalParser.term("\"") ,TerminalParser.term(";") );
   }
   
   static Parser<Statement> cdata(Parser<Expression> expr) {
@@ -91,10 +100,10 @@ public final class StatementParser {
 	}
 	
 	  
-		static Parser<Statement> letInStatement2(Parser<Assignment> ass, Parser<Statement> stmt) {
-			return curry(LetInStatement.class)
-			    .sequence(TerminalParser.term("let"), ass, TerminalParser.term("in"), stmt.many(), TerminalParser.term("end"));
-		}
+//		static Parser<Statement> letInStatement2(Parser<Assignment> ass, Parser<Statement> stmt) {
+//			return curry(LetInStatement.class)
+//			    .sequence(TerminalParser.term("let"), ass, TerminalParser.term("in"), stmt.many(), TerminalParser.term("end"));
+//		}
 
 		static Parser<Statement> markupStatement(Parser<Markup> markup) {
 			return curry(MarkupStatements.class).sequence(markup.atLeast(2), TerminalParser.term(";"));
@@ -109,20 +118,22 @@ public final class StatementParser {
 		}
 		
 		static Parser<Statement> markupEmbeddingStatement(Parser<Markup> markup, Parser<Embedding> embedding) {
-			return curry(MarkupEmbeddingStatement.class).sequence(markup.many1(), embedding, TerminalParser.term(";"));
+			return curry(MarkupEmbeddingStatement.class).sequence(markup.many1(), TerminalParser.term("\""), embedding, TerminalParser.term("\""),  TerminalParser.term(";"));
 		}
 		
 		static Parser<Statement> markupAndStatementStatement(Parser<Markup> markup, Parser<Statement> statementParser) {
 			return curry(MarkupAndStatementStatement.class).sequence(markup.many1(), statementParser);
 		}
 		
-		
 
   public static Parser<Statement> statement(Parser<Expression> expr, Parser<Markup> markup) {
     Parser.Reference<Statement> ref = Parser.newReference();
     Parser<Statement> lazy = ref.lazy();
     Parser<Assignment> assignmentParser = AssignmentParser.assignment(lazy, expr);
-    Parser<Embedding> embeddingParser = EmbeddingParser.embedding(markup, expr);
+    EmbeddingParser embedding = new EmbeddingParser();
+    Parser<Embedding> embeddingParser = embedding.getParser(markup, expr);
+    
+    //Parser<Argument> argumentParser = ArgumentParser.arguments(expr);
     @SuppressWarnings("unchecked")
     Parser<Statement> parser = Parsers.or(
         ifStatement(expr, lazy),
@@ -130,16 +141,19 @@ public final class StatementParser {
         eachStatement(expr, lazy),
         blockStatement(lazy),
         letInStatement(assignmentParser, lazy),
-        letInStatement2(assignmentParser, lazy),
+      //  letInStatement2(assignmentParser, lazy),
     	comment(),
-    	echo(expr),
+    	singleMarkupStatement(markup),
+    	markupEmbeddingStatement(markup, embeddingParser),
     	echoEmbedding(embeddingParser),
+    	echo(expr),
     	cdata(expr),
     	yield(),
-    	singleMarkupStatement(markup),
     	markupStatement(markup),
+    	
+    	//
     	markupExpressionStatement(markup, expr),
-    	markupEmbeddingStatement(markup, embeddingParser),
+    	
     	markupAndStatementStatement(markup, lazy)
     	);
     ref.set(parser);

@@ -1,12 +1,19 @@
 /*
  * File			: DeclarationParserTest.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.test.parser;
@@ -34,61 +41,71 @@ public class DeclarationParserTest extends TestCase {
 	
 	public void testEmptyModule(){
 		String source = "module myModule";
-		ModuleDef md = DeclarationParser.parse(source);
+		DeclarationParser declarationParser = new DeclarationParser();
+		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
 	public void testModuleWith2Imports(){
 		String source = "module myModule import myImport1 import myImport2";
-		ModuleDef md = DeclarationParser.parse(source);
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
 	public void testModuleWithMethod(){
 		String source = "module myModule def myDef end";
-		ModuleDef md = DeclarationParser.parse(source);
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
 	public void testModuleWith2Methods(){
 		String source = "module myModule def myDef end def mydef2() end";
-		ModuleDef md = DeclarationParser.parse(source);
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
 	public void testModuleWithEmptySite(){
 		String source = "module myModule \n site \n end"; 
-		ModuleDef md = DeclarationParser.parse(source);
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
 	public void testModuleWithSite(){
 		String source = "module myModule \n site wpath1/xpath2/yfile.ext : idCon#desgn() \n end"; 
-		ModuleDef md = DeclarationParser.parse(source);
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
 	public void testModuleWithSiteAndMethod(){
 		String source = "module myModule site wpath1/xpath2/yfile.ext : idCon#desgn() end def myMethod() end"; 
-		ModuleDef md = DeclarationParser.parse(source);
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
 	public void testModuleWithImportAndSiteAndMethod(){
 		String source = "module myModule import package.package2.utils site wpath1/xpath2/yfile.ext : idCon#desgn() end def myMethod() end"; 
-		ModuleDef md = DeclarationParser.parse(source);
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
 	public void testModuleWithSiteAndMethodWithParameters(){
 		String source = "module myModule site wpath1/xpath2/yfile.ext : idCon#desgn() end def myMethod(param1, param2) end"; 
-		ModuleDef md = DeclarationParser.parse(source);
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
-	public void testModule(){
+	public void testModulWithSitee(){
 		String source = "module abon site site2/abonnementen.html: abonnementen() end"; 
-		ModuleDef md = DeclarationParser.parse(source);
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	

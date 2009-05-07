@@ -4,12 +4,14 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="src/jparsec-2.0.jar"/>
-	<classpathentry kind="lib" path="/Users/maarten/Documents/school/Software Construction/workspace/WaebrickParser/src/asm-3.1.jar"/>
-	<classpathentry kind="lib" path="/Users/maarten/Documents/school/Software Construction/workspace/WaebrickParser/src/asm-analysis-3.1.jar"/>
-	<classpathentry kind="lib" path="/Users/maarten/Documents/school/Software Construction/workspace/WaebrickParser/src/asm-commons-3.1.jar"/>
-	<classpathentry kind="lib" path="/Users/maarten/Documents/school/Software Construction/workspace/WaebrickParser/src/asm-tree-3.1.jar"/>
-	<classpathentry kind="lib" path="/Users/maarten/Documents/school/Software Construction/workspace/WaebrickParser/src/asm-util-3.1.jar"/>
-	<classpathentry kind="lib" path="/Users/maarten/Documents/school/Software Construction/workspace/WaebrickParser/src/asm-xml-3.1.jar"/>
-	<classpathentry kind="lib" path="/Users/maarten/Documents/school/Software Construction/workspace/WaebrickParser/src/cglib-2.2.jar"/>
+	<classpathentry kind="lib" path="src/asm-3.1.jar"/>
+	<classpathentry kind="lib" path="src/asm-analysis-3.1.jar"/>
+	<classpathentry kind="lib" path="src/asm-commons-3.1.jar"/>
+	<classpathentry kind="lib" path="src/asm-tree-3.1.jar"/>
+	<classpathentry kind="lib" path="src/asm-util-3.1.jar"/>
+	<classpathentry kind="lib" path="src/asm-xml-3.1.jar"/>
+	<classpathentry kind="lib" path="src/cglib-2.2.jar"/>
+	<classpathentry kind="lib" path="src/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="src/TableLayout-bin-jdk1.5-2007-04-21.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

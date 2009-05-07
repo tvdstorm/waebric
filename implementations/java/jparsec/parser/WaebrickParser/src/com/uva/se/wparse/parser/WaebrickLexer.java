@@ -1,12 +1,19 @@
 /*
  * File			: WaebrickLexer.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 
@@ -69,6 +76,17 @@ public final class WaebrickLexer {
 			 public static final Parser<String> PATH =  Scanners.pattern(
 				      Patterns.isChar(PATH_ELEMENT).many().next( Patterns.sequence(Patterns.isChar(PATH_SEPARATOR),
 				    		  Patterns.isChar(PATH_ELEMENT).many()).many()  ),"path").source();
-  
+			 
+			 
+			 
+
+			  
+//			  private static final CharPredicate STRING_PRE_POST_FIX = new CharPredicate() {
+//				    public boolean isChar(char c) {
+//				    
+//				    	 return '\"' != c;
+//				    }
+//				  };
+				  
 
 }

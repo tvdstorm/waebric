@@ -1,12 +1,19 @@
 /*
  * File			: AttributeParserTest.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.test.parser;
@@ -34,7 +41,8 @@ public class AttributeParserTest extends TestCase {
 		super.setUp();
 		attributeParser = AttributeParser.attributes();
 		expParser =  ExpressionParser.expression(null);
-		argumentParser = ArgumentParser.arguments(expParser);
+		ArgumentParser argParser = new ArgumentParser();
+		argumentParser = argParser.arguments(expParser);
 	}
 
 	protected void tearDown() throws Exception {

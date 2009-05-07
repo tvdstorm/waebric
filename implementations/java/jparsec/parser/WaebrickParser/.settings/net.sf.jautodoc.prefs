@@ -1,0 +1,7 @@
+#Thu May 07 20:07:07 CEST 2009
+add_header=true
+eclipse.preferences.version=1
+header_text=/*\n * File\t\t\t\: ${file_name}\n * Project\t\t\: ${project_name}\n * \t\t\t\t\: Waebrick Parser, practicum opdracht Software Construction\n * \n * Author\t\t\: M. Wullink, L. Vinke, M. v.d. Laar\n * \n * Description\t\:\n * \n * \n * Change history\n * -----------------------------------------------------------\n * Date\t\t\tChange\t\t\t\t \n * -----------------------------------------------------------\n * 07-05-2009\tInitial version.\n * \n * \n */
+project_specific_settings=true
+replace_header=true
+replacements=<?xml version\="1.0" standalone\="yes"?>\n\n<replacements>\n<replacement key\="get" scope\="1" mode\="0">Gets the</replacement>\n<replacement key\="set" scope\="1" mode\="0">Sets the</replacement>\n<replacement key\="add" scope\="1" mode\="0">Adds the</replacement>\n<replacement key\="edit" scope\="1" mode\="0">Edits the</replacement>\n<replacement key\="remove" scope\="1" mode\="0">Removes the</replacement>\n<replacement key\="init" scope\="1" mode\="0">Inits the</replacement>\n<replacement key\="parse" scope\="1" mode\="0">Parses the</replacement>\n<replacement key\="create" scope\="1" mode\="0">Creates the</replacement>\n<replacement key\="build" scope\="1" mode\="0">Builds the</replacement>\n<replacement key\="is" scope\="1" mode\="0">Checks if is</replacement>\n<replacement key\="print" scope\="1" mode\="0">Prints the</replacement>\n<replacement key\="has" scope\="1" mode\="0">Checks for</replacement>\n</replacements>\n\n

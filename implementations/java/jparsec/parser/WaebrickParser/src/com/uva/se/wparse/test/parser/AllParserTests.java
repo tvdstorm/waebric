@@ -1,12 +1,19 @@
 /*
  * File			: AllParserTests.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.test.parser;
@@ -27,6 +34,8 @@ public class AllParserTests {
 		suite.addTestSuite(DeclarationParserTest.class);
 		suite.addTestSuite(MarkupParserTest.class);
 		suite.addTestSuite(ExpressionParserTest.class);
+		suite.addTestSuite(ArgumentParserTest.class);
+		
 		//$JUnit-END$
 		return suite;
 	}

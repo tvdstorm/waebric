@@ -1,12 +1,19 @@
 /*
  * File			: StatementParserTest.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.test.parser;
@@ -29,19 +36,17 @@ import com.uva.se.wparse.parser.TerminalParser;
 
 public class StatementParserTest extends TestCase {
 
-	//Parser<Attribute> attributeParser = null;
 	Parser<Markup> markupParser = null;
 	Parser<Expression> expParser = null;
-	 Parser<Argument> argumentParser = null;
-	 Parser<Statement> statemenParser = null;
+	Parser<Argument> argumentParser = null;
+	Parser<Statement> statemenParser = null;
 
-	
 	protected void setUp() throws Exception {
 		super.setUp();
-		//attributeParser = AttributeParser.attributes();
-		expParser =  ExpressionParser.expression(null);
+		expParser = ExpressionParser.expression(null);
 		markupParser = MarkupParser.markup(expParser);
-		argumentParser = ArgumentParser.arguments(expParser);
+		ArgumentParser argParser = new ArgumentParser();
+		argumentParser = argParser.arguments(expParser);
 		statemenParser = StatementParser.statement(expParser, markupParser);
 
 	}
@@ -50,83 +55,116 @@ public class StatementParserTest extends TestCase {
 		super.tearDown();
 		expParser = null;
 	}
-	
-	public void testEchoEmbedSymbolStatement(){
-		String source = "echo <em 'SYMBOL > ;";
+
+	public void testEchoEmbedSymbolStatement() {
+		String source = "echo \"<em 'SYMBOL >\" ;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testEchoEmbedStringStatement(){
-		String source = "echo <em \"Martin Pieters\"> ;";
+
+	public void testEchoEmbedStringStatement() {
+		String source = "echo \"<em \"Martin Pieters\">\" ;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	
-	public void testMarkupWithEmbedding(){
-		String source = "idcon#idcon2 <em 'SYMBOL > ;";
+
+	public void testMarkupWithEmbedding() {
+		String source = "idcon#idcon2 \"<em 'SYMBOL >\" ;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMarkupWithEmbedding2(){
-		String source = "idcon#idcon2 <em 'SYMBOL > ;";
-		TerminalParser.parse(statemenParser, source);
-	}
-	
-	
-	public void testLetInStatement(){
-		String source = "let td(img, alt) = td img(width=\"160\",height=\"160\", alt=alt,src=img) ; " +
-		"in echo \"test\"; end";
-    
-   
-		TerminalParser.parse(statemenParser, source);
-	}
-	
-	public void testMarkupStatement(){
+
+	public void testMarkupStatement() {
 		String source = "td img ; ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testBlockStatement(){
+
+	public void testBlockStatement() {
 		String source = "{ echo \"no nesting here\"; } ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testNestedBlockStatement(){
+
+	public void testNestedBlockStatement() {
 		String source = "{ { echo \"nesting here\"; } } ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testBlockStatementWithMarkup(){
+
+	public void testBlockStatementWithMarkup() {
 		String source = "td img { echo \"no nesting here\"; } ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testBlockStatementWithMarkupAndNesting(){
+
+	public void testBlockStatementWithMarkupAndNesting() {
 		String source = "p1 { p2 { echo \" nesting here\";}  } ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	
-	
-	
-	public void testLetInAdvancedStatement(){
-		String source = "let td(img, alt) = td img(width=\"160\",height=\"160\", alt=alt,src=img); " +
-		"in  tr { td(\"images/lavakaft_13-34.jpg\", \"lava 13-34\"); "+
-	     "td(\"images/lavakaft_14-1.jpg\", \"lava 14-1\"); " +
-	     "td(\"images/lavakaft_14-2.jpg\", \"lava 14-2\"); } end";
-    
-   
+
+	public void testLetInStatement() {
+		String source = "let td(img, alt) = td img(width=\"160\",height=\"160\", alt=alt,src=img) ; "
+				+ "in echo \"test\"; end";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	
-	public void testMarkupStatementWithEmailAddress(){
-		String source = "p \"Stuur korte verhalen, gedichten, graphic stories en illustraties als attachment naar .\" " +
-		"<a(href=\"mailto_redactie_lavaliterair.nl\") \"redactie_lavaliterair.nl\">	;";
+
+	public void testMarkupBlockStatement() {
+		String source = "td(\"images/lavakaft_14-1.jpg\", \"lava 14-1\");";
 		TerminalParser.parse(statemenParser, source);
 	}
-    
-	
-	
+
+	public void testLetInAdvancedStatement() {
+		String source = "let td(img, alt) = td img(width=\"160\",height=\"160\", alt=alt,src=img); "
+				+ "in  tr { td(\"images/lavakaft_13-34.jpg\", \"lava 13-34\"); "
+				+ "td(\"images/lavakaft_14-1.jpg\", \"lava 14-1\"); "
+				+ "td(\"images/lavakaft_14-2.jpg\", \"lava 14-2\"); } end";
+
+		TerminalParser.parse(statemenParser, source);
+	}
+
+	public void testMarkupStatementWithEmailAddress() {
+		String source = "p \"Stuur korte verhalen, gedichten, graphic stories en illustraties als attachment naar. "
+				+ "<a (href=\"mailto:redactie@lavaliterair.nl\") \"redactie@lavaliterair.nl\"> post. end\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+
+	public void testEchoEmailAddress() {
+		String source = "echo \" test@test.nl\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+
+	public void testMarkupAndEchoMailtoEmailAddress() {
+		String source = "designator#test echo \" mailto:test@test.nl\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+
+	public void testTextAndMailtoEmailAddress() {
+		String source = "echo \"stuur mail naar <a (href=\"mailto:test@test.nl\") \"test@test.nl\"> \"; ";
+		TerminalParser.parse(statemenParser, source);
+	}
+
+	public void testEmbeddedMarkupStatement() {
+		String source = "li \"pre text <a (href=mailto:testtest1.nl) testtest2.nl> post text \";";
+		TerminalParser.parse(statemenParser, source);
+	}
+
+	public void testEmbeddedMarkupAndExpressionStatement() {
+		String source = "li (href=\"mailto:test@test.nl\") \"test@test.nl\" ;";
+		TerminalParser.parse(statemenParser, source);
+	}
+
+	public void testEmbeddedMarkupWithExpression() {
+		String source = "li.td \"pre text <a (href=\"mailto:mail1@domain1.nl\") \"mail2@domain2.nl\"> post text\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+
+	public void testEchoEmbeddedMarkupWithExpression() {
+		String source = "echo \"pre text <a (href=\"mailto:mail1@domain1.nl\") \"mail2@domain2.nl\"> post text\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+
+	public void testMarkupWithText() {
+		String source = "li \"test text end \";";
+		TerminalParser.parse(statemenParser, source);
+	}
+
+	public void testMarkupMethodCall() {
+		String source = "header(\"Abonnee worden?\");";
+		TerminalParser.parse(statemenParser, source);
+	}
 
 }
