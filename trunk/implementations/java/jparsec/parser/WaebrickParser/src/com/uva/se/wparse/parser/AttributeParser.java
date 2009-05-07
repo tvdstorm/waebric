@@ -1,12 +1,19 @@
 /*
  * File			: AttributeParser.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.parser;
@@ -23,10 +30,8 @@ import com.uva.se.wparse.model.markup.SingleAttribute;
 public class AttributeParser {
 	
 	static Parser<Attribute> singleAttribute() {
-		return curryAttribute(SingleAttribute.class).sequence(
-				Parsers.or(TerminalParser.term("#"), TerminalParser.term("."),
-						TerminalParser.term("$"), TerminalParser.term(":")),
-				Terminals.Identifier.PARSER);
+		return curryAttribute(SingleAttribute.class).sequence(	Parsers.or(TerminalParser.term("#"), TerminalParser.term("."),
+						TerminalParser.term("$"), TerminalParser.term(":")), Terminals.Identifier.PARSER);
 	}
 
 	static Parser<Attribute> multipleAttribute() {
@@ -38,7 +43,6 @@ public class AttributeParser {
 
 
 	public static Parser<Attribute> attributes() {
-		@SuppressWarnings("unchecked")
 		Parser<Attribute> parser = Parsers.or(
 				singleAttribute(),
 				multipleAttribute()

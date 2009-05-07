@@ -1,12 +1,19 @@
 /*
  * File			: MarkupParser.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.parser;
@@ -27,23 +34,28 @@ public class MarkupParser {
 
 
 	public static Parser<Markup> markupDesignator(Parser<Attribute> attributeParser) {
-		return curry(Designator.class).sequence(Terminals.Identifier.PARSER, 
-				attributeParser.many());
+		return curry(Designator.class).sequence(Terminals.Identifier.PARSER, attributeParser.many());
 	}
-	static Parser<Markup> markupArguments(Parser<Attribute> attribute, Parser<Argument> argumentParser) {
-		return curry(MarkupArgument.class).sequence(markupDesignator(attribute).many1() ,  argumentParser	);
+	
+	//this method is used for arguments that are quoted
+	static Parser<Markup> markupArguments(Parser<Attribute> attribute, Parser<Argument> argumentParser, Parser<Expression> expr) {
+		ArgumentParser argParser = new  ArgumentParser();
+		return curry(MarkupArgument.class).sequence(markupDesignator(attribute).many1() ,
+				argParser.blockArgument(argumentParser)	);
 	}
 	
 	
 	public static Parser<Markup> markup(Parser<Expression> expr) {
 		Parser.Reference<Markup> ref = Parser.newReference();
-		Parser<Markup> lazy = ref.lazy();
-		Parser<Argument> argumentParser = ArgumentParser.arguments(expr);
+		ArgumentParser argumentParser = new ArgumentParser();
+		Parser<Argument> argParser = argumentParser.arguments(expr);
 		Parser<Attribute> attributeParser = AttributeParser.attributes();
-		@SuppressWarnings("unchecked")
 		Parser<Markup> parser = Parsers.or(
-			markupArguments(attributeParser, argumentParser) ,
+				//markupArguments2(attributeParser, argumentParser) ,
+			markupArguments(attributeParser, argParser, expr) ,
 			markupDesignator(attributeParser)
+			
+			
 		);
 		ref.set(parser);
 		return parser;

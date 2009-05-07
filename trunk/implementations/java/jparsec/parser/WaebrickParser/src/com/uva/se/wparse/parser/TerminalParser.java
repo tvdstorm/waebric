@@ -1,36 +1,43 @@
 /*
  * File			: TerminalParser.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.parser;
 import static org.codehaus.jparsec.misc.Mapper._;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.Scanners;
 import org.codehaus.jparsec.Terminals;
-import org.codehaus.jparsec.Tokens.Fragment;
-import org.codehaus.jparsec.functors.Map;
-import org.codehaus.jparsec.pattern.CharPredicate;
-import org.codehaus.jparsec.pattern.Patterns;
-
-import sun.misc.JavaLangAccess;
 
 
 
 public final class TerminalParser {
+	
+	//keep a global reference to the original input source
+	private static String source = "";
+	
+	public static String getSource() {
+		return source;
+	}
 
+	public static void setSource(String source) {
+		TerminalParser.source = source;
+	}
 	
 	static final Parser<Void> IGNORED =
 		   Parsers.or(Scanners.JAVA_LINE_COMMENT, Scanners.JAVA_BLOCK_COMMENT, Scanners.WHITESPACES).skipMany();
@@ -39,12 +46,14 @@ public final class TerminalParser {
 
 	  private static final String[] OPERATORS = {
 	    "=", ";", "+", "&&", "||",":",
-	    "(", ")", "[", "]", "{", "}",".", ",","#","$","@", "%","<", ">","'","/",
+	    "(", ")", "[", "]", "{", "}",".", ",","#","$","@", "%","<", ">","'","/","\"","?","-", "&", "*", "!", "^", "_",
 	  };
+	  
+	  //zA-Z chars : & * % $ # @ !, . ( ) ^\
 	  
 	  private static final String[] KEYWORDS = {
 	    "module", "import", "def", "end", "site", "list", "record",
-	    "string", "comment", "echo", "cdata", "yield", "if", "each", "let", "else","in",
+	    "string", "comment", "echo", "cdata", "yield", "if", "each", "let", "else","in", 
 	  };
 	  
 	  
@@ -52,8 +61,8 @@ public final class TerminalParser {
 	  private static final Terminals TERMS = Terminals.caseSensitive(WaebrickLexer.IDENTIFIER, OPERATORS, KEYWORDS);
 	  
 	  static final Parser<?> TOKENIZER = Parsers.or(
-		      Terminals.StringLiteral.DOUBLE_QUOTE_TOKENIZER,
-		      Terminals.CharLiteral.SINGLE_QUOTE_TOKENIZER,
+		      //Terminals.StringLiteral.DOUBLE_QUOTE_TOKENIZER,
+		      //Terminals.CharLiteral.SINGLE_QUOTE_TOKENIZER,
 		      Terminals.IntegerLiteral.TOKENIZER,
 		      TERMS.tokenizer()
 	  		);  
@@ -63,8 +72,9 @@ public final class TerminalParser {
 
 	
 	public static <T> T parse(Parser<T> parser, String source) {
-		    return parser.from(TOKENIZER, IGNORED.skipMany()).parse(source);
-		  }
+		setSource(source);
+		return parser.from(TOKENIZER, IGNORED.skipMany()).parse(source);
+	}
 	
 
 	

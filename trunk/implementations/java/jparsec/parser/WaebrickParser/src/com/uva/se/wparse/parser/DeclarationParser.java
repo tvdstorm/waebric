@@ -1,19 +1,25 @@
 /*
  * File			: DeclarationParser.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.parser;
 
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,7 +31,6 @@ import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.misc.Mapper;
 
-import com.uva.se.wparse.model.declaration.Declaration;
 import com.uva.se.wparse.model.declaration.Mapping;
 import com.uva.se.wparse.model.declaration.Member;
 import com.uva.se.wparse.model.declaration.MethodDef;
@@ -42,6 +47,8 @@ import com.uva.se.wparse.model.statement.Statement;
 
 public final class DeclarationParser {
 	
+
+	
   static Parser<ModuleBody> body(Parser<Member> member) {
     return Mapper.curry(ModuleBody.class).sequence(
         member.many().map(new Map<List<Member>, List<Member>>() {
@@ -52,8 +59,9 @@ public final class DeclarationParser {
   }
 
   static Parser<Member> methodDef( Parser<Statement> stmt, Parser<Expression> expr,   Parser<Embedding> embedding  ) {
-	  Parser<Argument>  argParser = ArgumentParser.arguments(expr);
-	  Parser<Argument>  blockArgParser = ArgumentParser.blockArgument(argParser);
+	  ArgumentParser argumentParser = new ArgumentParser();
+	  Parser<Argument>  argParser = argumentParser.arguments(expr);
+	  Parser<Argument>  blockArgParser = argumentParser.blockArgument(argParser);
 	  
     return Mapper.<Member>curry(MethodDef.class).sequence(
         TerminalParser.term("def"), Terminals.Identifier.PARSER,
@@ -85,28 +93,23 @@ public final class DeclarationParser {
     Parser<Expression> expr = ExpressionParser.expression(body(memberRef.lazy()));
     Parser<Markup> markup = MarkupParser.markup(expr);
     Parser<Statement> stmt = StatementParser.statement(expr,markup); 
-    Parser<Embedding> embedding = EmbeddingParser.embedding(markup, expr);
+    EmbeddingParser embedding = new EmbeddingParser();
+    Parser<Embedding> embeddingParser = embedding.getParser(markup, expr);
     
     Parser<Mapping> mappingParser = MappingParser.mapping(markup);
     
 
     return Mapper.curry(ModuleDef.class).sequence(
-    		MODULE, importParser.many(), Parsers.or(methodDef(stmt, expr,embedding), siteDef(mappingParser)).many() );
+    		MODULE, importParser.many(), Parsers.or(methodDef(stmt, expr,embeddingParser), siteDef(mappingParser)).many() );
   }
   
   /** Parses any Java source.  */
-  public static ModuleDef parse(String source) {
+  public ModuleDef parse(String source) {
     return TerminalParser.parse(module(), source);
   }
   
   
-//  private static Mapper<Declaration> curry(
-//      Class<? extends Declaration> clazz, Object... curryArgs) {
-//    return Mapper.curry(clazz, curryArgs);
-//  }
-//  
-  
-  public ModuleDef doParse(){
+  private ModuleDef doParse(){
 		
 		
 		BufferedReader reader = null; 
@@ -131,6 +134,7 @@ public final class DeclarationParser {
 			}
 			
 		}
+		TerminalParser.setSource(contents.toString());
 		System.out.println("Parser input = " + contents.toString());
 		return parse(contents.toString());
 	}
@@ -143,6 +147,8 @@ public final class DeclarationParser {
 		System.out.println("print objects: " + md.toString());
 		System.out.println("End parsing");
 	}
+
+
   
   
 }

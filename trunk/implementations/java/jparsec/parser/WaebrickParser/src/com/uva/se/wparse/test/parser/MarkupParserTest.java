@@ -1,12 +1,19 @@
 /*
  * File			: MarkupParserTest.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.test.parser;
@@ -49,13 +56,35 @@ public class MarkupParserTest extends TestCase {
 		TerminalParser.parse(markupParser, source);
 	}
 	
-	public void testMarkupDesignator2(){
+	public void testMarkupComplexDesignator(){
 		String source = "desigID@100%200#part2.part3";
 		TerminalParser.parse(markupParser, source);
 	}
 	
-	public void testMarkupDesignator3(){
+	public void testMarkupDesignatorPound(){
 		String source = "desigID#part2";
+		TerminalParser.parse(markupParser, source);
+	}
+	
+	/**
+	 * This test must fail to succeed.
+	 */
+	public void testMarkupDesignatorDotMustFail(){
+		String source = "desigID.part2 \"test test2\"";
+		try {
+			TerminalParser.parse(markupParser, source);
+		} catch (Exception e) {
+			//exception is expected for this method, if no exception
+			//occurs then the unit test must fail.
+			return;
+		}
+		//no error occurred, return fail status for test
+		assertNotNull(null);
+	}
+	
+
+	public void testMarkupDesignatorDot(){
+		String source = "desigID.part2 ";
 		TerminalParser.parse(markupParser, source);
 	}
 	
@@ -77,8 +106,27 @@ public class MarkupParserTest extends TestCase {
 	}
 	
 	
-	public void testMarkupList(){
-		String source = "img(var = var2, var3 = var4) img2(var = var5, var6 = var7)";
+//	public void testMarkupList(){
+//		String source = "img(var = var2, var3 = var4) img2(var = var5, var6 = var7)";
+//		TerminalParser.parse(markupParser, source);
+//	}
+	
+	public void testEmbeddedMarkup(){
+		//echo "stuur <a (href=\"mailto:test@test.nl\") \"test@test.nl\">";
+		String source = "test (href=\"mailto:test@test.nl\")";
+		TerminalParser.parse(markupParser, source);
+	}
+	
+//	public void testDesignatorAndMarkup(){
+//		String source = "a (href=\"mailto:testtest.nl\") \"test@test.nl\"";
+//		//a (href=\"mailto:test@test.nl\") \"test@test.nl\"
+//		TerminalParser.parse(markupParser, source);
+//	}
+	
+	
+	
+	public void testMarkupMethodCall(){
+		String source = "header(\"Abonnee worden?\")";
 		TerminalParser.parse(markupParser, source);
 	}
 

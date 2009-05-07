@@ -1,12 +1,19 @@
 /*
  * File			: EmbeddingParserTest.java
  * Project		: WaebrickParser
- * 				: Practicum opdracht Software Construction
+ * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
- * Authors		: M. Wullink, L. Vinke, M. v.d. Laar
- * 
+ * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
  * Description	:
+ * 
+ * 
+ * Change history
+ * -----------------------------------------------------------
+ * Date			Change				 
+ * -----------------------------------------------------------
+ * 07-05-2009	Initial version.
+ * 
  * 
  */
 package com.uva.se.wparse.test.parser;
@@ -17,11 +24,7 @@ import org.codehaus.jparsec.Parser;
 
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.expression.Expression;
-import com.uva.se.wparse.model.markup.Argument;
-import com.uva.se.wparse.model.markup.Attribute;
 import com.uva.se.wparse.model.markup.Markup;
-import com.uva.se.wparse.parser.ArgumentParser;
-import com.uva.se.wparse.parser.AttributeParser;
 import com.uva.se.wparse.parser.EmbeddingParser;
 import com.uva.se.wparse.parser.ExpressionParser;
 import com.uva.se.wparse.parser.MarkupParser;
@@ -36,7 +39,8 @@ public class EmbeddingParserTest extends TestCase {
 	protected void setUp() throws Exception {
 		expParser =  ExpressionParser.expression(null);
 		markupParser = MarkupParser.markup(expParser);
-		embeddingParser = EmbeddingParser.embedding(markupParser, expParser);
+		EmbeddingParser embedding = new EmbeddingParser();
+		embeddingParser = embedding.getParser(markupParser, expParser);
 	}
 
 	protected void tearDown() throws Exception {
@@ -45,45 +49,63 @@ public class EmbeddingParserTest extends TestCase {
 	
 	
 	
-	public void testMarkupIdent(){
-		String source = "<em blaat >";
-		TerminalParser.parse(embeddingParser, source);
-	}
-	
-	public void testMarkupWithIdent(){
-		String source = "<em desigID#part2.part3 blaat.de blaat>";
-		TerminalParser.parse(embeddingParser, source);
-	}
+//	public void testMarkupIdent(){
+//		String source = "pre text <em blaat > post text";
+//		TerminalParser.parse(embeddingParser, source);
+//	}
+//	
+//	public void testMarkupWithIdent(){
+//		String source = "<em desigID#part2.part3 blaat.de blaat>";
+//		TerminalParser.parse(embeddingParser, source);
+//	}
 	
 	public void testMarkupWithString(){
 		String source = "<em desigID#part2.part3 \"Martin Pieters\">";
 		TerminalParser.parse(embeddingParser, source);
 	}
 	
-	public void testMarkupWithExpression(){
-		String source = "<em desigID#part2.part3 blaat.de >";
-		TerminalParser.parse(embeddingParser, source);
-	}
+//	public void testMarkupWithExpression(){
+//		String source = "<em desigID#part2.part3 blaat.de >";
+//		TerminalParser.parse(embeddingParser, source);
+//	}
 	
 	public void testWithSymbol(){
 		String source = "<em 'SYMBOL >";
 		TerminalParser.parse(embeddingParser, source);
 	}
 	
-	public void testNOTSymbol(){
-		String source = "<em ident.test NOTSYMBOL >";
-		TerminalParser.parse(embeddingParser, source);
-	}
+//	public void testNOTSymbol(){
+//		String source = "<em ident.test NOTSYMBOL >";
+//		TerminalParser.parse(embeddingParser, source);
+//	}
 	
 	public void testWithString(){
 		String source = "<em \"stringie\" >";
 		TerminalParser.parse(embeddingParser, source);
 	}
 	
+	public void testWithQuotedString(){
+		String source = "<em \"'De Nomadensnaar'\">";
+		TerminalParser.parse(embeddingParser, source);
+	}
+	
+	
+	 
+	
 	public void testMarkupWithSymbol(){
 		String source = "<em markup1#markup2.markup3 'SYMBOL >";
 		TerminalParser.parse(embeddingParser, source);
 	}
 
+	public void testEmbeddedWithBlockArgument(){
+		String source = "<a (href=\"mailto:test@test.nl\") \"test@test.nl\">";
+		TerminalParser.parse(embeddingParser, source);
+	}
+	
+	public void testEmbeddedMarkup(){
+		String source = "pre text <a (href=\"mailto:test@test.nl\") \"test@test.nl\"> post text";
+					   //pre text <a (href=\"mailto:mail1@domain1.nl\") \"mail2@domain2.nl\"> post text
+		TerminalParser.parse(embeddingParser, source);
+	}
 
 }
