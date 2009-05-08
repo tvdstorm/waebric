@@ -1,0 +1,22 @@
+
+Todo list
+
+- create input interface
+- create output interface
+- design interfaces between application modules
+- create output generator
+- add javadoc comments
+- refactor code according to code complete.
+- exception handling
+- documentation
+
+Parser bugs
+
+1)  // style comment line not recognized yet  
+example
+	 echo \"test\";  \\comment line 
+
+2) multiple embedding inside literal string not recognized yet
+example
+	P "Contactredacteur <em "Erna Staal">, Lava-hoofdredacteur <em "Xavier van
+	    Leeuwe"> en literair agent <em "Paul Sebes">.";

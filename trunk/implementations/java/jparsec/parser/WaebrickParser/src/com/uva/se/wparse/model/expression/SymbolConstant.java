@@ -25,9 +25,9 @@ public class SymbolConstant implements Expression {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SymbolConstant.class);
 
-	private String symbol;
+	private Object symbol;
 
-	public SymbolConstant(String symbol) {
+	public SymbolConstant(Object symbol) {
 		this.symbol = symbol;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());
@@ -36,7 +36,7 @@ public class SymbolConstant implements Expression {
 
 	@Override
 	public String toString() {
-		return symbol;
+		return "'" + symbol.toString();
 	}
 	
 	
