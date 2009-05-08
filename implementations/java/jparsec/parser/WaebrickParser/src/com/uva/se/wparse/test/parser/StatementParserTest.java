@@ -56,6 +56,11 @@ public class StatementParserTest extends TestCase {
 		expParser = null;
 	}
 
+	public void testEchoString() {
+		String source = "echo \"Hello World!\" ;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
 	public void testEchoEmbedSymbolStatement() {
 		String source = "echo \"<em 'SYMBOL >\" ;";
 		TerminalParser.parse(statemenParser, source);
@@ -65,6 +70,32 @@ public class StatementParserTest extends TestCase {
 		String source = "echo \"<em \"Martin Pieters\">\" ;";
 		TerminalParser.parse(statemenParser, source);
 	}
+	
+	public void testEchoEmailAddress() {
+		String source = "echo \" test@test.nl\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testEchoEmbeddedMarkupWithExpression() {
+		String source = "echo \"pre text <a (href=\"mailto:mail1@domain1.nl\") \"mail2@domain2.nl\"> post text\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testComment() {
+		String source = "comment \"comment line\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testCdataString() {
+		String source = "cdata \"cdata line\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testCdataKeyValueBlock() {
+		String source = "cdata {key1:value1, key2:value2};";
+		TerminalParser.parse(statemenParser, source);
+	}
+
 
 	public void testMarkupWithEmbedding() {
 		String source = "idcon#idcon2 \"<em 'SYMBOL >\" ;";
@@ -76,8 +107,13 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 
-	public void testBlockStatement() {
+	public void testBlockSingleStatement() {
 		String source = "{ echo \"no nesting here\"; } ";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testBlockMultipleStatement() {
+		String source = "{ echo \"no nesting here\";  echo \"still no nesting here\"; } ";
 		TerminalParser.parse(statemenParser, source);
 	}
 
@@ -122,11 +158,7 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 
-	public void testEchoEmailAddress() {
-		String source = "echo \" test@test.nl\";";
-		TerminalParser.parse(statemenParser, source);
-	}
-
+	
 	public void testMarkupAndEchoMailtoEmailAddress() {
 		String source = "designator#test echo \" mailto:test@test.nl\";";
 		TerminalParser.parse(statemenParser, source);
@@ -152,10 +184,6 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 
-	public void testEchoEmbeddedMarkupWithExpression() {
-		String source = "echo \"pre text <a (href=\"mailto:mail1@domain1.nl\") \"mail2@domain2.nl\"> post text\";";
-		TerminalParser.parse(statemenParser, source);
-	}
 
 	public void testMarkupWithText() {
 		String source = "li \"test text end \";";
@@ -166,5 +194,68 @@ public class StatementParserTest extends TestCase {
 		String source = "header(\"Abonnee worden?\");";
 		TerminalParser.parse(statemenParser, source);
 	}
+	
+	public void testIfPredicateNoElse() {
+		String source = "if ( myList.list? ) echo \"myList is a list\" ;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testIfPredicateElse() {
+		String source = "if ( myList.list? ) echo \"myList is a list\"; else echo \"myList is NOT a list\" ;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testEach() {
+		String source = "each (  variable : [var1, var2, var3] ) echo \"do x for each item\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testYield() {
+		String source = "yield;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupMethod(){
+		String source = "header(\"Literaire Prijs de Brandende Pen 2007\");";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupWithUrl(){
+		String source = "td a(href=\"http://www.nrcboeken.nl/nieuws/jan-aelberts-wint-brandende-pen\") img(height=30, src=\"images/logos/nrcboeken_logo.gif\");";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupWithUrlArgument(){
+		String source = "td a(href=\"http://www.nrcboeken.nl/nieuws/janaelbertswintbrandendepen\");";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupList(){
+		String source = "td a(href=\"test1\") img(height=\"30\");";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupWithMultipleArguments(){
+		String source = "img(height=30, src=\"images/logos/nrcboeken_logo.gif\");";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	
+	public void testEchoDoubleSlashes(){
+		String source = "echo \" //  \";";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	
+	public void testEchoStringWithLineComment(){
+		String source = "echo \"test commentline\";  // this is comment ";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testEchoStringWithBlockComment(){
+		String source = "echo \"test commentline\";  /* this is comment line1 \n comment line2 */ ";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
 
 }

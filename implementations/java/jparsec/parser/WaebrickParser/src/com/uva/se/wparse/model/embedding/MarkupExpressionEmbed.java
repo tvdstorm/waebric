@@ -18,19 +18,25 @@
  */
 package com.uva.se.wparse.model.embedding;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
 
 public class MarkupExpressionEmbed implements Embedding {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpressionEmbed.class);
 
 	private Markup markup;
 	private Expression expr;
 	
 	
 	public MarkupExpressionEmbed(Markup markup, Expression expr) {
-		super();
 		this.markup = markup;
 		this.expr = expr;
+		if(logger.isDebugEnabled()){
+			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());
+		}
 	}
 
 

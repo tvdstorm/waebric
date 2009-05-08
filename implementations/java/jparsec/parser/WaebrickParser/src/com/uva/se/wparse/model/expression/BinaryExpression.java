@@ -21,8 +21,9 @@ package com.uva.se.wparse.model.expression;
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.predicate.Predicate;
 
-public final class BinaryExpression extends ValueObject implements Expression {
+public final class BinaryExpression extends ValueObject implements Expression, Predicate {
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(BinaryExpression.class);
 
@@ -41,6 +42,6 @@ public final class BinaryExpression extends ValueObject implements Expression {
 
 	@Override
 	public String toString() {
-		return "(" + left + " " + op + " " + right + ")";
+		return left.toString() + op.toString() + right.toString();
 	}
 }

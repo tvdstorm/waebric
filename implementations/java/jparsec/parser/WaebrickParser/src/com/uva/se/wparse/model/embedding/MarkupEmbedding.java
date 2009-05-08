@@ -20,32 +20,34 @@ package com.uva.se.wparse.model.embedding;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
 public class MarkupEmbedding implements Embedding {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbedding.class);
 
 	private String preText;
 	private List<Markup> markup;
 	private Object follower;
-	//private Expression expression;
 	private String postText;
 	
-//	private Object dummy1;
-//	private Object dummy2;
 
 	public MarkupEmbedding( List<String> preText, List<Markup> markup, Object follower, List<String> postText){ 
 		this.preText = Strings.join("", preText);
 		this.markup = markup;
 		this.follower = follower;
-		//this.expression = expression;
 		this.postText = Strings.join("", postText);
-		System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
+		if(logger.isDebugEnabled()){
+			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());
+		}
 	}
 
 	@Override
 	public String toString() {
-		return Strings.join(" " + preText) + " < " + Strings.join(" ", markup) + " " + follower + " > " +  Strings.join(" " + postText);
+		return preText + " < " + Strings.join(" ", markup) + " " + follower + " > " +  postText;
 	
 	}
 }

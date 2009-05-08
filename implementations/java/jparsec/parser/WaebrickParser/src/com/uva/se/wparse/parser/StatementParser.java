@@ -24,21 +24,17 @@ import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.misc.Mapper;
 
-import com.sun.java_cup.internal.terminal;
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.expression.Expression;
-import com.uva.se.wparse.model.markup.Argument;
-import com.uva.se.wparse.model.markup.Attribute;
 import com.uva.se.wparse.model.markup.Markup;
+import com.uva.se.wparse.model.predicate.Predicate;
 import com.uva.se.wparse.model.statement.Assignment;
-import com.uva.se.wparse.model.statement.AssignmentWithFormals;
 import com.uva.se.wparse.model.statement.BlockStatement;
 import com.uva.se.wparse.model.statement.CdataStatement;
 import com.uva.se.wparse.model.statement.CommentStatement;
 import com.uva.se.wparse.model.statement.EachStatement;
 import com.uva.se.wparse.model.statement.EchoEmbeddingStatement;
-import com.uva.se.wparse.model.statement.EchoExprStatement;
-import com.uva.se.wparse.model.statement.EmbedTest;
+import com.uva.se.wparse.model.statement.EchoExpressionStatement;
 import com.uva.se.wparse.model.statement.IfElseStatement;
 import com.uva.se.wparse.model.statement.IfStatement;
 import com.uva.se.wparse.model.statement.LetInStatement;
@@ -55,11 +51,11 @@ public final class StatementParser {
 	
 	
   static Parser<Statement> comment() {
-	  return curry( CommentStatement.class).sequence( TerminalParser.term("comment"),  Terminals.StringLiteral.PARSER  ,TerminalParser.term(";") );
+	  return curry( CommentStatement.class).sequence( TerminalParser.term("comment"), ExpressionParser.STRING_LITERAL  ,TerminalParser.term(";") );
   }
 	
   static Parser<Statement> echo(Parser<Expression> expr) {
-	  return curry( EchoExprStatement.class).sequence( TerminalParser.term("echo"), expr  ,TerminalParser.term(";") );
+	  return curry( EchoExpressionStatement.class).sequence( TerminalParser.term("echo"), expr  ,TerminalParser.term(";") );
   }
   
   static Parser<Statement> echoEmbedding(Parser<Embedding> embedding) {
@@ -74,14 +70,14 @@ public final class StatementParser {
 	  return curry( YieldStatement.class).sequence( TerminalParser.term("yield").source(), TerminalParser.term(";") );
   }
   
-	static Parser<Statement> ifStatement(Parser<Expression> expr, Parser<Statement> stmt) {
+	static Parser<Statement> ifStatement(Parser<Predicate> predicateParser, Parser<Statement> stmt) {
 	return curry(IfStatement.class)
-	    .sequence(TerminalParser.phrase("if ("), expr, TerminalParser.term(")"), stmt).notFollowedBy(TerminalParser.term("else"));
+	    .sequence(TerminalParser.phrase("if ("), predicateParser, TerminalParser.term(")"), stmt).notFollowedBy(TerminalParser.term("else"));
 	}
 	
-	static Parser<Statement> ifElseStatement(Parser<Expression> expr, Parser<Statement> stmt) {
+	static Parser<Statement> ifElseStatement(Parser<Predicate> predicateParser, Parser<Statement> stmt) {
 		return curry(IfElseStatement.class)
-		    .sequence(TerminalParser.phrase("if ("), expr, TerminalParser.term(")"), stmt, TerminalParser.term("else"), stmt);
+		    .sequence(TerminalParser.phrase("if ("), predicateParser, TerminalParser.term(")"), stmt, TerminalParser.term("else"), stmt);
 	}
 	
 	static Parser<Statement> eachStatement(Parser<Expression> expr, Parser<Statement> stmt) {
@@ -100,10 +96,6 @@ public final class StatementParser {
 	}
 	
 	  
-//		static Parser<Statement> letInStatement2(Parser<Assignment> ass, Parser<Statement> stmt) {
-//			return curry(LetInStatement.class)
-//			    .sequence(TerminalParser.term("let"), ass, TerminalParser.term("in"), stmt.many(), TerminalParser.term("end"));
-//		}
 
 		static Parser<Statement> markupStatement(Parser<Markup> markup) {
 			return curry(MarkupStatements.class).sequence(markup.atLeast(2), TerminalParser.term(";"));
@@ -125,36 +117,36 @@ public final class StatementParser {
 			return curry(MarkupAndStatementStatement.class).sequence(markup.many1(), statementParser);
 		}
 		
+		
 
-  public static Parser<Statement> statement(Parser<Expression> expr, Parser<Markup> markup) {
+  public static Parser<Statement> statement(Parser<Expression> expressionParser, Parser<Markup> markup) {
     Parser.Reference<Statement> ref = Parser.newReference();
     Parser<Statement> lazy = ref.lazy();
-    Parser<Assignment> assignmentParser = AssignmentParser.assignment(lazy, expr);
+    Parser<Assignment> assignmentParser = AssignmentParser.assignment(lazy, expressionParser);
     EmbeddingParser embedding = new EmbeddingParser();
-    Parser<Embedding> embeddingParser = embedding.getParser(markup, expr);
+    Parser<Embedding> embeddingParser = embedding.getParser(markup, expressionParser);
     
-    //Parser<Argument> argumentParser = ArgumentParser.arguments(expr);
+    PredicateParser predicateParserContainer = new PredicateParser();
+    Parser<Predicate> predicateParser = predicateParserContainer.predicates(expressionParser);
+    
     @SuppressWarnings("unchecked")
     Parser<Statement> parser = Parsers.or(
-        ifStatement(expr, lazy),
-        ifElseStatement(expr, lazy),
-        eachStatement(expr, lazy),
+    	ifElseStatement(predicateParser, lazy),
+        ifStatement(predicateParser, lazy),
+        
+        eachStatement(expressionParser, lazy),
         blockStatement(lazy),
         letInStatement(assignmentParser, lazy),
-      //  letInStatement2(assignmentParser, lazy),
     	comment(),
     	singleMarkupStatement(markup),
     	markupEmbeddingStatement(markup, embeddingParser),
     	echoEmbedding(embeddingParser),
-    	echo(expr),
-    	cdata(expr),
+    	echo(expressionParser),
+    	cdata(expressionParser),
     	yield(),
     	markupStatement(markup),
-    	
-    	//
-    	markupExpressionStatement(markup, expr),
-    	
-    	markupAndStatementStatement(markup, lazy)
+    	markupExpressionStatement(markup, expressionParser),
+     	markupAndStatementStatement(markup, lazy)
     	);
     ref.set(parser);
     return parser;

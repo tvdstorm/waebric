@@ -18,17 +18,24 @@
  */
 package com.uva.se.wparse.model.statement;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.markup.Markup;
 
 
 
 public class MarkupStatement implements Statement, Markup {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupStatement.class);
 
 	private Markup markup;
 
 	public MarkupStatement(Markup markup){ 
 		this.markup = markup;
-		 System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 
 	@Override

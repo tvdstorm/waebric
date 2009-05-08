@@ -20,19 +20,27 @@ package com.uva.se.wparse.model.declaration;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
-
 public final class QualifiedName extends ValueObject {
-  private List<String> names;
 
-  public QualifiedName(List<String> names) {
-    this.names = names;
-  }
-  
-  @Override public String toString() {
-    return Strings.join(".", names);
-  }
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(QualifiedName.class);
+	private List<String> names;
+
+	public QualifiedName(List<String> names) {
+		this.names = names;
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
+	}
+
+	@Override
+	public String toString() {
+		return Strings.join(".", names);
+	}
 }

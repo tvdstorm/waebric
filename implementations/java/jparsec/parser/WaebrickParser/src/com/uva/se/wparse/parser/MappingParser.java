@@ -42,7 +42,6 @@ public class MappingParser {
 	  
 
 	public static Parser<Mapping> mapping(Parser<Markup> markup) {
-		@SuppressWarnings("unchecked")
 		Parser<Mapping> parser = Parsers.or(
 				mappingDef(markup)
 		);

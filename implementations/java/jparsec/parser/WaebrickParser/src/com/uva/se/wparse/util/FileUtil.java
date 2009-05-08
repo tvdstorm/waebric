@@ -25,9 +25,9 @@ import java.io.IOException;
 
 public class FileUtil {
 
-	public static String readFile(File fileName) throws IOException {
+	public static String readFile(File file) throws IOException {
 		StringBuilder contents = new StringBuilder();
-		BufferedReader in = new BufferedReader(new FileReader(fileName));
+		BufferedReader in = new BufferedReader(new FileReader(file));
 		String line = null;
 
 		while ((line = in.readLine()) != null) {

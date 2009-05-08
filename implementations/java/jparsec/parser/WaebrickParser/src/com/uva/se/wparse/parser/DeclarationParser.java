@@ -19,10 +19,6 @@
 package com.uva.se.wparse.parser;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import org.codehaus.jparsec.Parser;
@@ -73,8 +69,7 @@ public final class DeclarationParser {
   
   static Parser<Member> siteDef( Parser<Mapping> mappingParser) {
 	    return Mapper.<Member>curry(SiteDef.class).sequence(
-	        TerminalParser.term("site"),// Terminals.Identifier.PARSER,
-	        //PATH.many(),
+	        TerminalParser.term("site"),
 	        mappingParser.many(),
 	        TerminalParser.term("end"));
 	  }
@@ -84,7 +79,7 @@ public final class DeclarationParser {
       Mapper.curry(QualifiedName.class).sequence(Terminals.Identifier.PARSER.sepBy1(TerminalParser.term(".")));
  
   
-  static final Parser<QualifiedName> MODULE = Parsers.sequence(TerminalParser.term("module"), QUALIFIED_NAME);
+  static final Parser<QualifiedName> MODULE = Parsers.sequence(TerminalParser.term(TerminalParser.KEYWORD_MODULE), QUALIFIED_NAME);
   
   static final Parser<QualifiedName> importParser = Parsers.sequence(TerminalParser.term("import"), QUALIFIED_NAME);
   
@@ -103,52 +98,11 @@ public final class DeclarationParser {
     		MODULE, importParser.many(), Parsers.or(methodDef(stmt, expr,embeddingParser), siteDef(mappingParser)).many() );
   }
   
-  /** Parses any Java source.  */
+  
   public ModuleDef parse(String source) {
     return TerminalParser.parse(module(), source);
   }
   
   
-  private ModuleDef doParse(){
-		
-		
-		BufferedReader reader = null; 
-		StringBuilder contents = new StringBuilder();
-		try{
-			InputStream inputStream = this.getClass().getResourceAsStream("../../wae/test.wae");
-			reader = new BufferedReader(new InputStreamReader(inputStream));
-			String line = null;
-			
-			while((line = reader.readLine()) != null){
-				contents.append(line + "\n");
-				
-			}
-		}catch (Exception e) {
-			System.out.println("Error while reading file, error: " );
-			e.printStackTrace();
-		}finally{
-			try {
-				reader.close();
-			} catch (IOException e) {
-				// ignore
-			}
-			
-		}
-		TerminalParser.setSource(contents.toString());
-		System.out.println("Parser input = " + contents.toString());
-		return parse(contents.toString());
-	}
-	
-	
-	public static void main(String[] args) {
-		System.out.println("Start parsing");
-		DeclarationParser dp = new DeclarationParser();
-		ModuleDef md = dp.doParse();
-		System.out.println("print objects: " + md.toString());
-		System.out.println("End parsing");
-	}
 
-
-  
-  
 }

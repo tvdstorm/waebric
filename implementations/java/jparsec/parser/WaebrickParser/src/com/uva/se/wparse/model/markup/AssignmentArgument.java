@@ -16,13 +16,16 @@
  * 
  * 
  */
-package com.uva.se.wparse.model.statement;
+package com.uva.se.wparse.model.markup;
+
+import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.expression.Expression;
-import com.uva.se.wparse.model.markup.Argument;
 
 public class AssignmentArgument implements Argument {
 
+	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentArgument.class);
+	
 	private String var;
 	private Expression expression;
 	
@@ -31,6 +34,10 @@ public class AssignmentArgument implements Argument {
 		super();
 		this.var = var;
 		this.expression = expression;
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 
 

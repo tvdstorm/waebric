@@ -18,21 +18,27 @@
  */
 package com.uva.se.wparse.model.statement;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.expression.Expression;
 
-public class EchoExprStatement implements Statement {
+public class EchoExpressionStatement implements Statement {
 
+	private static org.apache.log4j.Logger logger = Logger.getLogger(EchoExpressionStatement.class);
 	
 	private Expression expr;
 
-	public EchoExprStatement(Expression expr) {
+	public EchoExpressionStatement(Expression expr) {
 		this.expr = expr;
-		System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 
 	@Override
 	public String toString() {
-		return expr.toString();
+		return "echo " + expr.toString();
 	}
 	
 	

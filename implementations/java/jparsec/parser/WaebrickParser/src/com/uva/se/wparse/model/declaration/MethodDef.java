@@ -20,31 +20,36 @@ package com.uva.se.wparse.model.declaration;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.markup.Argument;
 import com.uva.se.wparse.model.statement.Statement;
 
-
-
 public final class MethodDef extends ValueObject implements Member {
-  
-  private String name;
-  private Argument arguments;
-  private List<Statement> statements;
-  
-  
-  public MethodDef( String name,  Argument arguments,  List<Statement> statements){ 
-    
-    this.name = name;
-    this.arguments = arguments;
-    this.statements = statements;
-    System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
-  }
-  
-  @Override public String toString() {
-	  return "def " + name + "("  + arguments + ")" + statements + " end";
-	  
-  }
 
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(MethodDef.class);
+
+	private String name;
+	private Argument arguments;
+	private List<Statement> statements;
+
+	public MethodDef(String name, Argument arguments, List<Statement> statements) {
+
+		this.name = name;
+		this.arguments = arguments;
+		this.statements = statements;
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "def " + name + "(" + arguments + ")" + statements + " end";
+
+	}
 
 }

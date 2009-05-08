@@ -35,20 +35,20 @@ import com.uva.se.wparse.model.statement.Statement;
 public final class AssignmentParser {
 	
 	  private static Parser<Assignment> assignmentNormal(Parser<Expression> expr) {
-		    return curry(AssignmentNormal.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term("="), expr, TerminalParser.term(";"));
+		    return curry(AssignmentNormal.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term("="), expr); 
 	  }
 	  
  
 	
 	  private static Parser<Assignment> assignmentFormals(Parser<Statement> stmt) {
-		    return curry(AssignmentWithFormals.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term("("), Terminals.Identifier.PARSER.sepBy1(TerminalParser.term(",")),
+		    return curry(AssignmentWithFormals.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term("("),
+		    		Terminals.Identifier.PARSER.sepBy1(TerminalParser.term(",")),
 		    		TerminalParser.term(")"), TerminalParser.term("="), stmt   );
 	  }
 
 
   public static Parser<Assignment> assignment(Parser<Statement> stmt, Parser<Expression> expr) {
     Parser.Reference<Assignment> ref = Parser.newReference();
-    @SuppressWarnings("unchecked")
     Parser<Assignment> parser = Parsers.or(
     	assignmentFormals(stmt),
     	assignmentNormal(expr)

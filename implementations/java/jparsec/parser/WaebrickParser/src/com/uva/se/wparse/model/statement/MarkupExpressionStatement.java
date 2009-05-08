@@ -20,17 +20,24 @@ package com.uva.se.wparse.model.statement;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
 
 public class MarkupExpressionStatement extends MarkupStatements implements Statement, Markup {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpressionStatement.class);
 
 	private Expression expr;
 
 	public MarkupExpressionStatement(List<Markup> markup, Expression expr){ 
 		super(markup);
 		this.expr = expr;
-		System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 
 	@Override

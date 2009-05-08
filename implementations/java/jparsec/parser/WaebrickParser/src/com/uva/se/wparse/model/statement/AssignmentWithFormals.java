@@ -20,10 +20,16 @@ package com.uva.se.wparse.model.statement;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
 public final class AssignmentWithFormals extends ValueObject implements	Assignment {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentWithFormals.class);
+	
+	
 	private String identifier;
 	private ArrayList<String> formals;
 	private Statement statement;
@@ -33,7 +39,10 @@ public final class AssignmentWithFormals extends ValueObject implements	Assignme
 		this.identifier = identifier;
 		this.formals = formals;
 		this.statement = statement;
-		System.out.println("debug -- inside " + this.getClass().getSimpleName()	+ " constructor");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 
 	@Override

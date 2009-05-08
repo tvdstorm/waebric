@@ -20,9 +20,15 @@ package com.uva.se.wparse.model.declaration;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.common.ValueObject;
 
 public final class ModuleDef extends ValueObject {
+
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(ModuleDef.class);
+
 	private ArrayList<ModuleBody> body;
 	private QualifiedName name;
 	private ArrayList<QualifiedName> imports;
@@ -32,8 +38,10 @@ public final class ModuleDef extends ValueObject {
 		this.body = body;
 		this.name = name;
 		this.imports = imports;
-		System.out.println("debug -- inside " + this.getClass().getName()
-				+ " constructor");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 
 	@Override

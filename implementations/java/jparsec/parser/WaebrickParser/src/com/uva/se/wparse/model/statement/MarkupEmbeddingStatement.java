@@ -20,24 +20,28 @@ package com.uva.se.wparse.model.statement;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.markup.Markup;
 
-public class MarkupEmbeddingStatement /*extends MarkupStatements*/ implements Statement, Markup {
+public class MarkupEmbeddingStatement extends MarkupStatements implements Statement, Markup {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbeddingStatement.class);
 
 	private Embedding embedding;
-	private List<Markup> markup;
 
 	public MarkupEmbeddingStatement(List<Markup> markup, Embedding embedding){
-	//public MarkupEmbeddingStatement( Embedding embedding){ 
-		this.markup = markup;
+		super(markup);
 		this.embedding = embedding;
-		 System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
+		if(logger.isDebugEnabled()){
+			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + super.toString() + " " + embedding );
+		}
 	}
 
 	@Override
 	public String toString() {
-		return markup + " " + embedding;
+		return super.toString() + " " + embedding;
 	};
 	
 	

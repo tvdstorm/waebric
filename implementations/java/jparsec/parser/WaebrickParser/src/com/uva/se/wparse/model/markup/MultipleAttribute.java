@@ -18,15 +18,22 @@
  */
 package com.uva.se.wparse.model.markup;
 
+import org.apache.log4j.Logger;
+
 public class MultipleAttribute implements Attribute  {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MultipleAttribute.class);
 
 	private String width;
 	private String height;
 	
 	public MultipleAttribute(String width, String height) {
-		super();
 		this.width = width;
 		this.height = height;
+		 if (logger.isDebugEnabled()) {
+				logger.debug("Creating " + this.getClass().getSimpleName()
+						+ " with values : " + toString());
+			}
 	}
 	
 	@Override

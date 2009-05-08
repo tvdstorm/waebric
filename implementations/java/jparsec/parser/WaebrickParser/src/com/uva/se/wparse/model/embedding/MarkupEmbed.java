@@ -20,10 +20,14 @@ package com.uva.se.wparse.model.embedding;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
 public class MarkupEmbed implements Embedding {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbed.class);
 
 	private String id;
 	private List<Markup> markup;
@@ -33,6 +37,9 @@ public class MarkupEmbed implements Embedding {
 		this.id =id;
 		this.markup = markup;
 		this.follower = follower;
+		if(logger.isDebugEnabled()){
+			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());
+		}
 	}
 
 	@Override

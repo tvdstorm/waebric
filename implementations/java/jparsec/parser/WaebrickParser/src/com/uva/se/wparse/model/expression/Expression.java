@@ -20,4 +20,5 @@ package com.uva.se.wparse.model.expression;
 
 
 
-public interface Expression extends Predicate{}
+
+public interface Expression{}

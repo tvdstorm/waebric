@@ -19,28 +19,36 @@
 
 package com.uva.se.wparse.model.statement;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 
-
-
-
-
 public final class IfElseStatement extends ValueObject implements Statement {
+
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(IfElseStatement.class);
+
 	private Expression condition;
-	private Statement thenStmt;
-	private Statement elseStmt;
-  
-  public IfElseStatement(Expression condition, Statement thenStmt, Statement elseStmt) {
-    this.condition = condition;
-    this.thenStmt = thenStmt;
-    this.elseStmt = elseStmt;
-    System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
-  }
-  
-  @Override public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("if (").append(condition).append(") ").append(thenStmt).append(" else ").append(elseStmt);
-       return builder.toString();
-  }
+	private Statement thenStatement;
+	private Statement elseStatement;
+
+	public IfElseStatement(Expression condition, Statement thenStatement,
+			Statement elseStatement) {
+		this.condition = condition;
+		this.thenStatement = thenStatement;
+		this.elseStatement = elseStatement;
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("if (").append(condition).append(") ").append(
+				thenStatement).append(" else ").append(elseStatement);
+		return builder.toString();
+	}
 }

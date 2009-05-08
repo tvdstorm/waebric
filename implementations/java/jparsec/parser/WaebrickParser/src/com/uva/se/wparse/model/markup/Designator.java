@@ -20,16 +20,25 @@ package com.uva.se.wparse.model.markup;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import com.uva.se.wparse.model.statement.AssignmentWithFormals;
+
 
 public class Designator implements Markup{
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(Designator.class);
 
 	private String identifier;
 	private List<Attribute> attributes;
 	
 	public Designator(String identifier, List<Attribute> attributes) {
-		super();
 		this.identifier = identifier;
 		this.attributes = attributes;
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 	
 	@Override

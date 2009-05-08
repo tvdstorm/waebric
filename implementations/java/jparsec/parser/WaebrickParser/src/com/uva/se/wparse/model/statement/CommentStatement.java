@@ -18,21 +18,29 @@
  */
 package com.uva.se.wparse.model.statement;
 
+import org.apache.log4j.Logger;
+
+import com.uva.se.wparse.model.expression.StringLiteral;
+
 
 public class CommentStatement implements Statement {
 
-	
-	private String comment;
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(CommentStatement.class);
 
-	public CommentStatement(String comment) {
+	private StringLiteral comment;
+
+	public CommentStatement(StringLiteral comment) {
 		this.comment = comment;
-		System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 
 	@Override
 	public String toString() {
-		return comment;
+		return "comment " + comment;
 	}
-	
-	
+
 }
