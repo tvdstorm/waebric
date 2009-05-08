@@ -9,6 +9,7 @@ Todo list
 - refactor code according to code complete.
 - exception handling
 - documentation
+- move text labels and message text to external resource file
 
 Parser bugs
 
