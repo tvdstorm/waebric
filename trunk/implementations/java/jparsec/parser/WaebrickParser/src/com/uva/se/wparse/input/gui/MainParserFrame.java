@@ -50,6 +50,8 @@ public class MainParserFrame extends javax.swing.JFrame {
 	JTextArea txtParserOutput;
 	
 
+	private  String sourceData  = "";
+	
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -88,17 +90,20 @@ public class MainParserFrame extends javax.swing.JFrame {
 				fileChooser.showOpenDialog(MainParserFrame.this);
 				
 				 sourceFile = fileChooser.getSelectedFile();
-				 String sourceData  = "";
-				 try {
-					 sourceData  = FileUtil.readFile(sourceFile);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				DeclarationParser dp = new DeclarationParser();
-				ModuleDef md = dp.parse(sourceData);
-				txtParserOutput.setText(md.toString());			}
+				// String sourceData  = "";
+				 if(sourceFile != null){
+					 try {
+						 sourceData  = FileUtil.readFile(sourceFile);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					DeclarationParser dp = new DeclarationParser();
+					ModuleDef md = dp.parse(sourceData);
+					txtParserOutput.setText(md.toString());	
+				 }
+			}
 			
 		});
 		
@@ -123,6 +128,10 @@ public class MainParserFrame extends javax.swing.JFrame {
 		pack();
 		setSize(600, 300);
 
+	}
+
+	public String getSourceData() {
+		return sourceData;
 	}
 	
 

@@ -18,16 +18,23 @@
  */
 package com.uva.se.wparse.model.statement;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.embedding.Embedding;
+import com.uva.se.wparse.model.expression.BinaryExpression;
 
 public class EchoEmbeddingStatement implements Statement {
 
+	private static org.apache.log4j.Logger logger = Logger.getLogger(EchoEmbeddingStatement.class);
 	
 	private Embedding embedding;
 
 	public EchoEmbeddingStatement(Embedding embedding) {
 		this.embedding = embedding;
-		System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 
 	@Override

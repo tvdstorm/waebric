@@ -17,61 +17,69 @@
  * 
  */
 package com.uva.se.wparse;
-import org.codehaus.jparsec.Parser;
-import org.codehaus.jparsec.Parsers;
-import org.codehaus.jparsec.Scanners;
-import org.codehaus.jparsec.Terminals;
-import org.codehaus.jparsec.functors.Map;
+import java.io.File;
+
+import javax.swing.SwingUtilities;
+
+import org.apache.log4j.Logger;
+
+import com.uva.se.wparse.input.gui.MainParserFrame;
+import com.uva.se.wparse.model.declaration.ModuleDef;
+import com.uva.se.wparse.parser.DeclarationParser;
+import com.uva.se.wparse.util.FileUtil;
 
 
 public class Main {
-
-
-	
-	private static final String[] OPERATORS = {
-		  "&&", "||" // and all other operators.
-		};
-
-	
-	private static final String[] KEYWORDS = {
-		  "module", "import", "site", "def", "echo", "each" // all other keywords
-		};
-	
-	static final Parser< Void > IGNORED =
-		   Parsers.or(Scanners.JAVA_LINE_COMMENT, Scanners.JAVA_BLOCK_COMMENT, Scanners.WHITESPACES).skipMany();
-	
-	private static final Terminals TERMINALS = Terminals.caseSensitive(OPERATORS, KEYWORDS);
-
-	
-	static final Parser<?> TOKENIZER = TERMINALS.tokenizer();
-	//static final Parser<?> TOKENIZER = Parsers.or(Keyw)
-	
-	  static final Parser<String> TOKENS = Parsers.ANY_TOKEN.map(new Map<Object, String>() {
-	      public String map(Object s) {
-	    	System.out.println("TOKEN FOUND == " + s.toString());
-	        return "test";
-	      }
-	    });
-
-	public static final Parser<String> PARSER = TOKENS.from(TOKENIZER, IGNORED);
-	
-	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(Main.class);
 
 	public static void main(String[] args) {
 
-		Main m = new Main();
-		m.doiets();
+		if(args.length > 0){
+			if(args[0].equals("-i")){
+				if(logger.isDebugEnabled()){
+					logger.debug("Started in Interactive mode");
+				}
+				
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						MainParserFrame inst = new MainParserFrame();
+						inst.setLocationRelativeTo(null);
+						inst.setVisible(true);
+					}
+				});
+			}else if ( (args.length == 2) && args[0].equals("-c")){
+				if(logger.isDebugEnabled()){
+					logger.debug("Started in commandline mode");
+				}
+				
+				File file = new File(args[1]);
+				if(logger.isDebugEnabled()){
+					logger.debug("Loading filet: " + file.toString());
+				}
+				try {
+					if(file.exists()){
+						String source = FileUtil.readFile(file);
+						DeclarationParser dp = new DeclarationParser();
+						ModuleDef md = dp.parse(source);
+						
+						if(logger.isDebugEnabled()){
+							logger.debug("Parser result: " + md.toString());
+						}
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//TODO: Lammert got some stuff to do here :-)
+			}else{
+				
+				//illegal start option provided, handle with error msg
+			}
+		}
 
 	}
 	
-	public void doiets(){
-		System.out.println("Start parser");
-		PARSER.parse("module import echo");
-		//TOKENIZER.parse("module import");
-		//PARSER.
-		System.out.println("End parser");
-
-	}
 
 	
 }

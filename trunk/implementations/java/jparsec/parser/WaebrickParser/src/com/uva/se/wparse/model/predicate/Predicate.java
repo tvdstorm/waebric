@@ -1,5 +1,5 @@
 /*
- * File			: ParserInput.java
+ * File			: Predicate.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -16,12 +16,10 @@
  * 
  * 
  */
-package com.uva.se.wparse.input;
+package com.uva.se.wparse.model.predicate;
 
-public interface ParserInput {
+import com.uva.se.wparse.model.expression.Expression;
 
-	
-	public String getSource();
-	
-	
+public interface Predicate extends Expression {
+
 }

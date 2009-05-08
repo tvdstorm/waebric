@@ -21,10 +21,14 @@ package com.uva.se.wparse.model.statement;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.common.ValueObject;
 
 
 public final class LetInStatement extends ValueObject implements Statement {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(LetInStatement.class);
 
 	private Object expr;
 	private ArrayList<Statement> stmt;
@@ -32,7 +36,10 @@ public final class LetInStatement extends ValueObject implements Statement {
   public LetInStatement( Object expr, ArrayList<Statement> stm) {
     this.expr = expr;
     this.stmt = stm;
-    System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
+    if (logger.isDebugEnabled()) {
+		logger.debug("Creating " + this.getClass().getSimpleName()
+				+ " with values : " + toString());
+	}
   }
   
   @Override public String toString() {

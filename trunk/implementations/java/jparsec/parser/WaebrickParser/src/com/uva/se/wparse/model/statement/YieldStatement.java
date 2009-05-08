@@ -18,15 +18,21 @@
  */
 package com.uva.se.wparse.model.statement;
 
-import com.uva.se.wparse.model.expression.StringLiteral;
+import org.apache.log4j.Logger;
 
 public class YieldStatement implements Statement {
+	
+	private static org.apache.log4j.Logger logger = Logger
+	.getLogger(EachStatement.class);
 
-	private StringLiteral yield;
+	private String yield;
 
-	public YieldStatement(StringLiteral yield) {
+	public YieldStatement(String yield) {
 		this.yield = yield;
-		System.out.println("debug -- inside " + this.getClass().getSimpleName() + " constructor");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 
 	@Override

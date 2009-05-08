@@ -18,18 +18,26 @@
  */
 package com.uva.se.wparse.model.statement;
 
+import org.apache.log4j.Logger;
+
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 
 public final class AssignmentNormal extends ValueObject implements Assignment {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentNormal.class);
+	
+	
 	private String left;
 	private Expression right;
 
 	public AssignmentNormal(String left, Expression right) {
 		this.left = left;
 		this.right = right;
-		System.out.println("debug -- inside " + this.getClass().getSimpleName()
-				+ " constructor");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
 
 	@Override

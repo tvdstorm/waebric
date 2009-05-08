@@ -48,36 +48,16 @@ public class EmbeddingParserTest extends TestCase {
 	}
 	
 	
-	
-//	public void testMarkupIdent(){
-//		String source = "pre text <em blaat > post text";
-//		TerminalParser.parse(embeddingParser, source);
-//	}
-//	
-//	public void testMarkupWithIdent(){
-//		String source = "<em desigID#part2.part3 blaat.de blaat>";
-//		TerminalParser.parse(embeddingParser, source);
-//	}
-	
 	public void testMarkupWithString(){
 		String source = "<em desigID#part2.part3 \"Martin Pieters\">";
 		TerminalParser.parse(embeddingParser, source);
 	}
-	
-//	public void testMarkupWithExpression(){
-//		String source = "<em desigID#part2.part3 blaat.de >";
-//		TerminalParser.parse(embeddingParser, source);
-//	}
-	
+
 	public void testWithSymbol(){
 		String source = "<em 'SYMBOL >";
 		TerminalParser.parse(embeddingParser, source);
 	}
 	
-//	public void testNOTSymbol(){
-//		String source = "<em ident.test NOTSYMBOL >";
-//		TerminalParser.parse(embeddingParser, source);
-//	}
 	
 	public void testWithString(){
 		String source = "<em \"stringie\" >";
@@ -104,7 +84,6 @@ public class EmbeddingParserTest extends TestCase {
 	
 	public void testEmbeddedMarkup(){
 		String source = "pre text <a (href=\"mailto:test@test.nl\") \"test@test.nl\"> post text";
-					   //pre text <a (href=\"mailto:mail1@domain1.nl\") \"mail2@domain2.nl\"> post text
 		TerminalParser.parse(embeddingParser, source);
 	}
 

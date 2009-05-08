@@ -20,13 +20,15 @@ package com.uva.se.wparse.test.parser;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
+/**
+ * 
+ * Test suite that runs all the separate unit test classes in this package
+ *
+ */
 public class AllParserTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(
-				"Test for com.uva.se.wparse.test.parser");
-		//$JUnit-BEGIN$
+		TestSuite suite = new TestSuite("All parser unit tests");
 		suite.addTestSuite(StatementParserTest.class);
 		suite.addTestSuite(EmbeddingParserTest.class);
 		suite.addTestSuite(AttributeParserTest.class);
@@ -35,8 +37,8 @@ public class AllParserTests {
 		suite.addTestSuite(MarkupParserTest.class);
 		suite.addTestSuite(ExpressionParserTest.class);
 		suite.addTestSuite(ArgumentParserTest.class);
-		
-		//$JUnit-END$
+		suite.addTestSuite(AssignmentParserTest.class);
+		suite.addTestSuite(PredicateParserTest.class);
 		return suite;
 	}
 

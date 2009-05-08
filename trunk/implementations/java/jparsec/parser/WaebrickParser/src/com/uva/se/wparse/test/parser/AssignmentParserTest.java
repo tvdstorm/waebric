@@ -24,21 +24,35 @@ import org.codehaus.jparsec.Parser;
 
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Argument;
+import com.uva.se.wparse.model.markup.Markup;
+import com.uva.se.wparse.model.statement.Assignment;
+import com.uva.se.wparse.model.statement.Statement;
 import com.uva.se.wparse.parser.ArgumentParser;
+import com.uva.se.wparse.parser.AssignmentParser;
 import com.uva.se.wparse.parser.ExpressionParser;
+import com.uva.se.wparse.parser.MarkupParser;
+import com.uva.se.wparse.parser.StatementParser;
 import com.uva.se.wparse.parser.TerminalParser;
 
-public class ArgumentParserTest extends TestCase {
+public class AssignmentParserTest extends TestCase {
 	
 
+	Parser<Markup> markupParser = null;
 	Parser<Expression> expParser = null;
 	Parser<Argument> argumentParser = null;
+	Parser<Statement> statemenParser = null;
+	Parser<Assignment> assignmentParser = null;
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		expParser =  ExpressionParser.expression(null);
+		expParser = ExpressionParser.expression(null);
+		markupParser = MarkupParser.markup(expParser);
 		ArgumentParser argParser = new ArgumentParser();
 		argumentParser = argParser.arguments(expParser);
+		statemenParser = StatementParser.statement(expParser, markupParser);
+		
+		//AssignmentParser assParser = new AssignmentParser();
+		assignmentParser = AssignmentParser.assignment(statemenParser, expParser);
 	}
 
 	protected void tearDown() throws Exception {
@@ -46,39 +60,10 @@ public class ArgumentParserTest extends TestCase {
 	}
 	
 
-	public void testStringLiteralArgument(){
-		String source = "var = \"this is a string\"";
-		TerminalParser.parse(argumentParser, source);
-	}
 	
-	public void testIdentifierArgument(){
-		String source = "var = var2";
-		TerminalParser.parse(argumentParser, source);
-	}
-	
-	public void testBlockArguments(){
-		String source = "(var = var2, var3 = var4)";
-		TerminalParser.parse(argumentParser, source);
-	}
-	
-	public void testBlockArguments2(){
-		String source = "(var, var2)";
-		TerminalParser.parse(argumentParser, source);
-	}
-	
-	public void testBlockArguments3(){
-		String source = "(var, var2, var3 = var4)";
-		TerminalParser.parse(argumentParser, source);
-	}
-	
-	public void testBlockArgumentStringLiteral(){
-		String source = "(var=\"stringliteral\")";
-		TerminalParser.parse(argumentParser, source);
-	}
-	
-	public void testBlockStringLiteral(){
-		String source = "(\"stringliteral\")";
-		TerminalParser.parse(argumentParser, source);
+	public void testAssignmentNormal(){
+		String source = "identifier = testvalue";
+		TerminalParser.parse(assignmentParser, source);
 	}
 	
 

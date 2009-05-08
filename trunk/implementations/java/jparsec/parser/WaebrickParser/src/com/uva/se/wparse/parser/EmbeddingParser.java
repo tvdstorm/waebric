@@ -33,25 +33,14 @@ import com.uva.se.wparse.model.markup.Markup;
 public class EmbeddingParser {
 
 
-//	static Parser<Embedding> markupEmbedding(Parser<Markup> markup) {
-//		return curry(MarkupEmbed.class).sequence(TerminalParser.term("<"),
-//				Terminals.Identifier.PARSER, markup.many(), markup, TerminalParser.term(">"));
-//	}
-	
-	public EmbeddingParser() {
-
-	}
-
 	private Parser<Embedding> markupEmbedding(Parser<Markup> markup, Parser<Expression> expression) {
 		return curry(MarkupEmbedding.class).sequence(
-				//Terminals.Identifier.PARSER.many(),
-				ExpressionParser.TEXT2.many(),
+				ExpressionParser.EMBEDDED_TEXT.many(),
 				TerminalParser.term("<"),
 				markup.many(),
 				Parsers.or(markup, expression),
 				TerminalParser.term(">"),
-				//Terminals.Identifier.PARSER.many()
-				ExpressionParser.TEXT2.many()
+				ExpressionParser.EMBEDDED_TEXT.many()
 				);
 	}
 	
@@ -59,14 +48,6 @@ public class EmbeddingParser {
 		return curry(MarkupEmbed.class).sequence(TerminalParser.term("<"),
 				Terminals.Identifier.PARSER, markup.many(), expression, TerminalParser.term(">"));
 	}
-//	
-//	private Parser<Embedding> markupExpression(Parser<Markup> markup, Parser<Expression> expression) {
-//		  return curry( MarkupEmbed.class).sequence(TerminalParser.term("<"),
-//				   Terminals.Identifier.PARSER, markup.many(), Parsers.or(markup, expression ),
-//				   TerminalParser.term(">"));
-//	  }
-	  
-
 	
 	public Parser<Embedding> getParser(Parser<Markup> markup, Parser<Expression> expression) {
 		@SuppressWarnings("unchecked")

@@ -25,10 +25,9 @@ import org.codehaus.jparsec.misc.Mapper;
 
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Argument;
+import com.uva.se.wparse.model.markup.AssignmentArgument;
 import com.uva.se.wparse.model.markup.BlockArgument;
 import com.uva.se.wparse.model.markup.SingleArgument;
-import com.uva.se.wparse.model.statement.AssignmentArgument;
-import com.uva.se.wparse.model.statement.AssignmentArgument2;
 
 public class ArgumentParser {
 	
@@ -39,10 +38,10 @@ public class ArgumentParser {
 	}
 	
 	private Parser<Argument> assignmentArgumentString(Parser<Expression> expr) {
-		return curry(AssignmentArgument2.class).sequence(
-				Terminals.Identifier.PARSER, TerminalParser.term("="), TerminalParser.term("\""),
-				ExpressionParser.LITERAL_TEXT.many(),
-				TerminalParser.term("\""));
+		return curry(AssignmentArgument.class).sequence(
+				Terminals.Identifier.PARSER, TerminalParser.term("="),
+				ExpressionParser.STRING_LITERAL
+				);
 	}
 	
 	
@@ -54,7 +53,6 @@ public class ArgumentParser {
 	public Parser<Argument> blockArgument(Parser<Argument> arg) {
 		return curry(BlockArgument.class).sequence(
 				TerminalParser.term("("),
-				//Parsers.or(arg,expr ).sepBy(TerminalParser.term(",")),
 				arg.sepBy(TerminalParser.term(",")),
 				TerminalParser.term(")")
 				);
@@ -65,14 +63,10 @@ public class ArgumentParser {
 		Parser.Reference<Argument> ref = Parser.newReference();
 		Parser<Argument> lazy = ref.lazy();
 
-		@SuppressWarnings("unchecked")
 		Parser<Argument> parser = Parsers.or(
 				blockArgument(lazy),
 				assignmentArgument(expr),
-				
 				assignmentArgumentString(expr),
-				
-				
 				singleArgument(expr)
 				);
 		ref.set(parser);

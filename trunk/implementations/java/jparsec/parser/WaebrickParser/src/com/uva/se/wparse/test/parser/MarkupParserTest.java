@@ -105,30 +105,22 @@ public class MarkupParserTest extends TestCase {
 		TerminalParser.parse(markupParser, source);
 	}
 	
-	
-//	public void testMarkupList(){
-//		String source = "img(var = var2, var3 = var4) img2(var = var5, var6 = var7)";
-//		TerminalParser.parse(markupParser, source);
-//	}
-	
 	public void testEmbeddedMarkup(){
-		//echo "stuur <a (href=\"mailto:test@test.nl\") \"test@test.nl\">";
 		String source = "test (href=\"mailto:test@test.nl\")";
 		TerminalParser.parse(markupParser, source);
 	}
-	
-//	public void testDesignatorAndMarkup(){
-//		String source = "a (href=\"mailto:testtest.nl\") \"test@test.nl\"";
-//		//a (href=\"mailto:test@test.nl\") \"test@test.nl\"
-//		TerminalParser.parse(markupParser, source);
-//	}
-	
-	
 	
 	public void testMarkupMethodCall(){
 		String source = "header(\"Abonnee worden?\")";
 		TerminalParser.parse(markupParser, source);
 	}
+	
+	public void testMarkupMethodCall2(){
+		String source = "header(\"Literaire Prijs de Brandende Pen 2007\")";
+		TerminalParser.parse(markupParser, source);
+	}
+	
+	
 
 
 }
