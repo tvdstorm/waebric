@@ -121,6 +121,13 @@ public class MarkupParserTest extends TestCase {
 	}
 	
 	
+	public void testMarkDiffArgumentTypes(){
+		String source = "table(border='0, width='800, summary=\"Brandende Pen 2006 in de pers\")";
+		TerminalParser.parse(markupParser, source);
+	}
+	
+	 
+	
 
 
 }

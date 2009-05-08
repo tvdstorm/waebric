@@ -99,12 +99,12 @@ public class ExpressionParser {
 
 	private static Parser<Expression> symbolConstant = curry(
 			SymbolConstant.class).sequence(TerminalParser.term("'"),
-			Terminals.Identifier.PARSER);
+					Parsers.or(Terminals.Identifier.PARSER, numberExpression())
+			);
 
 	public static Parser<Expression> STRING_LITERAL = curry(
 			StringLiteral.class).sequence(TerminalParser.term("\""),
 					LITERAL_TEXT.many(),
-					//TerminalParser.term("/"),TerminalParser.term("/"),LITERAL_TEXT.many(),  //, LITERAL_TEXT).many(),
 					TerminalParser.term("\""));
 
 	private static Parser<Expression> blockExpression(Parser<Expression> expr) {

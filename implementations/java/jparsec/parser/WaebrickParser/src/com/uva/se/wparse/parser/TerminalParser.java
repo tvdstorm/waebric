@@ -84,8 +84,11 @@ public final class TerminalParser {
 	  
 
 		
-	  private static Parser<Void> IGNORED = Parsers.or(  Scanners.JAVA_LINE_COMMENT,
-					   Scanners.JAVA_BLOCK_COMMENT, Scanners.WHITESPACES).skipMany();
+	  private static Parser<Void> IGNORED = Parsers.or( 
+			  			/*TODO: removed the java line comment scanner, because of conflict 
+			  			with http:// in string literal */
+			  			//Scanners.JAVA_LINE_COMMENT,
+			  			Scanners.JAVA_BLOCK_COMMENT, Scanners.WHITESPACES).skipMany();
 
 	
 	public static <T> T parse(Parser<T> parser, String source) {

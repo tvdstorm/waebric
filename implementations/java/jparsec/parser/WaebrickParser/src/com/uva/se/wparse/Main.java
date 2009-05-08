@@ -32,6 +32,8 @@ import com.uva.se.wparse.util.FileUtil;
 public class Main {
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Main.class);
 
+	//TODO: Lammert got some stuff to do here :-)
+	
 	public static void main(String[] args) {
 
 		if(args.length > 0){
@@ -71,7 +73,7 @@ public class Main {
 					e.printStackTrace();
 				}
 				
-				//TODO: Lammert got some stuff to do here :-)
+				
 			}else{
 				
 				//illegal start option provided, handle with error msg
