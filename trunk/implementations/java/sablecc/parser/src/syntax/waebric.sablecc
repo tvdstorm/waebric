@@ -1,6 +1,8 @@
 // Todo: Lay down restrictions for grammer e.g. make sure keywords are not used for id_con
 //       Should this be done in the parser code???
 
+
+
 Package org.sablecc.grammar.waebric;
 
 Helpers
@@ -99,6 +101,7 @@ Ignored Tokens
 	
 Productions
 	// Module definition
+	modules = module_declaration*;
 	module_declaration = module module_id_declaration module_element_declaration*;
 	module_id_declaration = 
 		{single}	id_con | 
@@ -121,10 +124,13 @@ Productions
 	mapping_declaration = filename colon markup_declaration;
 
 	// Markup	
-	markup_declaration = 
+	markup_declaration =
 		{designator_with_arguments}	designator_declaration arguments_declaration |
 		{designator}				designator_declaration;
 	
+	markup_no_designator_declaration = 
+		{designator_with_arguments}	designator_declaration arguments_declaration;
+
 	// Designator
 	designator_declaration = id_con attribute_declaration*;
 	
@@ -144,8 +150,8 @@ Productions
 		{multiple}	arguments comma argument_declaration;
 		
 	argument_declaration = 
-		{argument}				expression_declaration |
-		{argument_with_addign}	id_con assign expression_declaration;
+		{var_argument}	var_declaration assign expression_declaration |
+		{argument}							   expression_declaration;
 		  
 	// Variable
 	var_declaration = id_con;
@@ -153,22 +159,33 @@ Productions
 	// Expressions
 	expression_declaration =  
 		{text}					text |
-		{id_con}				id_con |
+		{var}					var_declaration |
 		{symbol_con}			symbol_con |
 		{nat_con}				nat_con |
-//		{expression_idcon}		expression_no_expression_declaration dot id_con |
-//		{expression_plus}		[left]:expression_no_expression_declaration plus [right]:expression_declaration |
-		{expression_plus}		[left]:expression_no_expression_declaration plus [right]:expression_no_expression_declaration |
-		{multiple_expressions}	l_bracket expressions r_bracket |
-		{key_value_pairs}		l_brace key_value_pairs r_brace;
+		{expression_idcon}		expression_no_var_declaration dot id_con |		
+//		{expression_plus}		[left]:expression_no_plus_declaration plus [right]:expression_declaration |
+		{multiple_expressions}	l_bracket expressions? r_bracket |
+		{key_value_pairs}		l_brace key_value_pairs? r_brace;
 		
-	expression_no_expression_declaration =		
+	expression_no_var_declaration =  
 		{text}					text |
-		{id_con}				id_con |
 		{symbol_con}			symbol_con |
 		{nat_con}				nat_con |
-		{multiple_expressions}	l_bracket expressions r_bracket |
-		{key_value_pairs}		l_brace key_value_pairs r_brace;
+		{expression_idcon}		expression_no_var_declaration dot id_con |		
+//		{expression_plus}		[left]:expression_no_plus_declaration plus [right]:expression_declaration |
+		{multiple_expressions}	l_bracket expressions? r_bracket |
+		{key_value_pairs}		l_brace key_value_pairs? r_brace;		
+		
+/*
+	expression_no_plus_declaration =  
+		{text}					text |
+		{var}					var_declaration |
+		{symbol_con}			symbol_con |
+		{nat_con}				nat_con |
+		{expression_idcon}		expression_declaration dot id_con |		
+		{multiple_expressions}	l_bracket expressions? r_bracket |
+		{key_value_pairs}		l_brace key_value_pairs? r_brace;
+*/		
 		
 	expressions = 
 		{single}					  expression_declaration |
@@ -188,8 +205,8 @@ Productions
 		{empty}		|
 		{available}	l_paren formals? r_paren;
 	formals =
-		{single}				  id_con |
-		{multiple}	formals comma id_con;
+		{single}				  var_declaration |
+		{multiple}	formals comma var_declaration;
 		
 	// Statement declaration
 	statement_declaration = 
@@ -197,42 +214,36 @@ Productions
 		{markup_statement}		markup_declaration+ statement_no_markup_declaration |
 		{markup_single}			markup_declaration semi_colon |
 		{markup_multiple}		[multiple]:markup_declaration+ [single]:markup_declaration semi_colon |
-		{markup_expression}		markup_declaration+ expression_declaration semi_colon |
+		{markup_expression}		markup_declaration+ expression_no_var_declaration semi_colon |
 		{embedding}				markup_declaration+ embedding_declaration semi_colon;
 
 	statement_no_markup_declaration =
-		{each}				each_declaration |
-		{let}				let_declaration |
-		{function_body}		function_body_declaration |
-		{comment}			comment_declaration |
-		{echo_expression}	echo_expression_declaration |
-		{echo_embedding}	echo_embedding_declaration |
-		{cdata}				cdata_declaration |
-		{yield}				yield_declaration;
+		{each}				each l_paren var_declaration colon expression_declaration r_paren statement_declaration |
+		{let}				let assignment_declaration+ in statement_declaration* end |
+		{multiple}			l_brace statement_declaration* r_brace |
+		{comment}			comment str_con semi_colon |
+		{echo_expression}	echo expression_declaration semi_colon |
+		{echo_embedding}	echo embedding_declaration semi_colon |
+		{cdata}				cdata expression_declaration semi_colon |
+		{yield}				yield semi_colon;
 					
-	each_declaration = each l_paren id_con colon expression_declaration r_paren statement_declaration;
-	
-	let_declaration = let assignment_declaration+ in statement_declaration* end;	
-	function_body_declaration = l_brace statement_declaration* r_brace;
-	comment_declaration = comment str_con semi_colon;
-	echo_expression_declaration= echo expression_declaration semi_colon;
-	echo_embedding_declaration = echo embedding_declaration semi_colon;
-	cdata_declaration = cdata expression_declaration semi_colon;
-	yield_declaration = yield semi_colon;
-
 	// Assignment declaration
 	assignment_declaration = 
-		{expression}	id_con assign expression_declaration semi_colon |
-		{statement}		id_con l_paren formals? r_paren assign statement_declaration;
+		{expression}	var_declaration assign expression_declaration semi_colon |
+		{statement}		id_con formals_declaration assign statement_declaration;
 	
 	// Predicate declaration
 	predicate = 
 		{expression}		expression_declaration |
 		{expression_type}	expression_declaration dot type_declaration question_mark |
-		{not_predicate}		exclam_mark predicate;
-//		{and_predicate}		[left_and]:predicate and [right_and]:predicate
-//		{or_predicate}		predicate or expression_declaration;
+		{not_predicate}		exclam_mark predicate |
+		{and_predicate}		predicate_no_and_or and predicate |
+		{or_predicate}		predicate_no_and_or or expression_declaration;
 
+	predicate_no_and_or =
+		{expression}		expression_declaration |
+		{expression_type}	expression_declaration dot type_declaration question_mark |
+		{not_predicate}		exclam_mark predicate;
 		
 	// Type declaration
 	type_declaration =
@@ -241,13 +252,13 @@ Productions
 		{string}	string;
 		
 	// Embedding declaration
-	embedding_declaration = pre_text embed_declaration text_trail_declaration;
+	embedding_declaration = pre_text embed_declaration text_tail_declaration;
 	
 	// Text trail declaration
-	text_trail_declaration =
+	text_tail_declaration =
 		{posttext}		post_text |
-		{midtext}		mid_text embed_declaration text_trail_declaration;
+		{midtext}		mid_text embed_declaration text_tail_declaration;
 		
 	embed_declaration = 
-//		{markup_markup}			markup_declaration* markup_declaration |
+//		{markup_markup}			[multiple]:markup_declaration* [single]:markup_declaration |
 		{markup_expression}		markup_declaration* expression_declaration;
