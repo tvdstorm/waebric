@@ -101,164 +101,215 @@ Ignored Tokens
 	
 Productions
 	// Module definition
-	modules = module_declaration*;
-	module_declaration = module module_id_declaration module_element_declaration*;
-	module_id_declaration = 
-		{single}	id_con | 
-		{multiple}	module_id_declaration dot id_con;
-	module_element_declaration = 
-		{function}	function_declaration | 
-		{import}	import_declaration | 
-		{site}		site_declaration;
+	modules = 
+			P.module*
+		;
+	
+	module = 
+			T.module P.module_id P.module_element*
+		;
+	
+	module_id = 
+			{single}	T.id_con					
+		|	{multiple}	P.module_id T.dot T.id_con	
+		;
+
+/*
+	module_id {-> module_id} = 
+			{single}	T.id_con					{-> New module_id.single(id_con)}
+		|	{multiple}	P.module_id T.dot T.id_con	{-> New module_id.multiple(module_id, id_con)}
+		;
+	*/	
+	module_element = 
+			{function}	P.function	{-> New module_element.function(function)}
+		|	{import}	P.import	{-> New module_element.import(import)}
+		|	{site}		P.site		{-> New module_element.site(site)}
+		;
 	
 	// Imports
-	import_declaration = import module_id_declaration;
+	import = 
+			T.import P.module_id
+		;
 
 	// Site
-	site_declaration = site mappings_declaration end;
+	site = 
+			T.site P.mappings T.end
+		;
 	
 	// Mappings
-	mappings_declaration = 
-		{single}									mapping_declaration |
-		{multiple}	mappings_declaration semi_colon mapping_declaration;
-	mapping_declaration = filename colon markup_declaration;
+	mappings = 
+			{single}	P.mapping
+		|	{multiple}	P.mappings T.semi_colon P.mapping
+		;
+		
+	mapping = 
+			T.filename T.colon P.markup
+		;
 
 	// Markup	
-	markup_declaration =
-		{designator_with_arguments}	designator_declaration arguments_declaration |
-		{designator}				designator_declaration;
+	markup =
+			{designator_with_args}	P.designator P.arguments 
+		|	{designator}			P.designator
+		;
 	
-	markup_no_designator_declaration = 
-		{designator_with_arguments}	designator_declaration arguments_declaration;
+	markup_no_designator = 
+			{designator_with_args}	P.designator P.arguments
+		;
 
 	// Designator
-	designator_declaration = id_con attribute_declaration*;
+	designator = 
+			T.id_con P.attribute*
+		;
 	
 	// Attributes
-	attribute_declaration =
-		{number_sign}		number_sign id_con |
-		{dot}				dot id_con |
-		{dollar_sign}		dollar_sign id_con |
-		{colon}				colon id_con |
-		{at_width_height}	at_sign [w]:nat_con percent_sign [h]:nat_con |
-		{at_width}			at_sign [w]:nat_con;
+	attribute =
+			{number_sign}		T.number_sign T.id_con 
+		|	{dot}				T.dot T.id_con 
+		|	{dollar_sign}		T.dollar_sign T.id_con 
+		|	{colon}				T.colon T.id_con 
+		|	{at_width_height}	T.at_sign [w]:T.nat_con T.percent_sign [h]:T.nat_con 
+		|	{at_width}			T.at_sign [w]:T.nat_con
+		;
 	
 	// Arguments
-	arguments_declaration = l_paren arguments? r_paren;
-	arguments =
-		{single}					argument_declaration |
-		{multiple}	arguments comma argument_declaration;
+	arguments = 
+			T.l_paren P.argument_list? T.r_paren
+		;
 		
-	argument_declaration = 
-		{var_argument}	var_declaration assign expression_declaration |
-		{argument}							   expression_declaration;
+	argument_list =
+			{single}	P.argument 
+		|	{multiple}	P.argument_list T.comma P.argument
+		;
+		
+	argument = 
+			{assign}	T.id_con T.assign P.expression 
+		|	{argument}	P.expression
+		;
 		  
-	// Variable
-	var_declaration = id_con;
-
 	// Expressions
-	expression_declaration =  
-		{text}					text |
-		{var}					var_declaration |
-		{symbol_con}			symbol_con |
-		{nat_con}				nat_con |
-		{expression_idcon}		expression_no_var_declaration dot id_con |		
-//		{expression_plus}		[left]:expression_no_plus_declaration plus [right]:expression_declaration |
-		{multiple_expressions}	l_bracket expressions? r_bracket |
-		{key_value_pairs}		l_brace key_value_pairs? r_brace;
+	expression =  
+			{text}					T.text 
+		|	{idcon}					T.id_con 
+		|	{symbol_con}			T.symbol_con 
+		|	{nat_con}				T.nat_con 
+		|	{expression_idcon}		P.expression_no_idcon T.dot T.id_con 
+		|	{multiple_expressions}	T.l_bracket P.expressions? T.r_bracket 
+		|	{key_value_pairs}		T.l_brace P.key_value_pairs? T.r_brace
+		;
 		
-	expression_no_var_declaration =  
-		{text}					text |
-		{symbol_con}			symbol_con |
-		{nat_con}				nat_con |
-		{expression_idcon}		expression_no_var_declaration dot id_con |		
-//		{expression_plus}		[left]:expression_no_plus_declaration plus [right]:expression_declaration |
-		{multiple_expressions}	l_bracket expressions? r_bracket |
-		{key_value_pairs}		l_brace key_value_pairs? r_brace;		
-		
-/*
-	expression_no_plus_declaration =  
-		{text}					text |
-		{var}					var_declaration |
-		{symbol_con}			symbol_con |
-		{nat_con}				nat_con |
-		{expression_idcon}		expression_declaration dot id_con |		
-		{multiple_expressions}	l_bracket expressions? r_bracket |
-		{key_value_pairs}		l_brace key_value_pairs? r_brace;
-*/		
+	expression_no_idcon =  
+			{text}					T.text 
+		|	{symbol_con}			T.symbol_con 
+		|	{nat_con}				T.nat_con 
+		|	{expression_idcon}		P.expression_no_idcon T.dot T.id_con 
+		|	{multiple_expressions}	T.l_bracket P.expressions? T.r_bracket 
+		|	{key_value_pairs}		T.l_brace P.key_value_pairs? T.r_brace
+		;		
 		
 	expressions = 
-		{single}					  expression_declaration |
-		{multiple}	expressions comma expression_declaration ;
+			{single}	P.expression 
+		|	{multiple}	P.expressions T.comma P.expression
+		;
 	
 	// Key Value Pairs
 	key_value_pairs = 
-		{single}						  key_value_pair_declaration |
-		{multiple}	key_value_pairs comma key_value_pair_declaration;
-	key_value_pair_declaration = id_con colon expression_declaration;
-	 
-	// Function declaration
-	function_declaration = def id_con formals_declaration statement_declaration* end;
-	
-	// Formals declaration
-	formals_declaration = 
-		{empty}		|
-		{available}	l_paren formals? r_paren;
-	formals =
-		{single}				  var_declaration |
-		{multiple}	formals comma var_declaration;
+			{single}	P.key_value_pair 
+		|	{multiple}	P.key_value_pairs T.comma P.key_value_pair
+		;
 		
-	// Statement declaration
-	statement_declaration = 
-		{statement_no_markup}	statement_no_markup_declaration |
-		{markup_statement}		markup_declaration+ statement_no_markup_declaration |
-		{markup_single}			markup_declaration semi_colon |
-		{markup_multiple}		[multiple]:markup_declaration+ [single]:markup_declaration semi_colon |
-		{markup_expression}		markup_declaration+ expression_no_var_declaration semi_colon |
-		{embedding}				markup_declaration+ embedding_declaration semi_colon;
-
-	statement_no_markup_declaration =
-		{each}				each l_paren var_declaration colon expression_declaration r_paren statement_declaration |
-		{let}				let assignment_declaration+ in statement_declaration* end |
-		{multiple}			l_brace statement_declaration* r_brace |
-		{comment}			comment str_con semi_colon |
-		{echo_expression}	echo expression_declaration semi_colon |
-		{echo_embedding}	echo embedding_declaration semi_colon |
-		{cdata}				cdata expression_declaration semi_colon |
-		{yield}				yield semi_colon;
-					
-	// Assignment declaration
-	assignment_declaration = 
-		{expression}	var_declaration assign expression_declaration semi_colon |
-		{statement}		id_con formals_declaration assign statement_declaration;
+	key_value_pair = 
+			T.id_con T.colon P.expression
+		;
+	 
+	// Function
+	function {-> module_element} = 
+			T.def T.id_con P.formals P.statement* T.end
+		;
 	
-	// Predicate declaration
+	// Formals
+	formals = 
+			{empty}		
+		|	{available}	T.l_paren P.formal? T.r_paren
+		;
+		
+	formal =
+			{single}	T.id_con 
+		|	{multiple}	P.formal T.comma T.id_con
+		;
+		
+	// Statement
+	statement = 
+			{statement_no_markup}	P.statement_no_markup
+		|	{markup_statement}		P.markup+ P.statement_no_markup
+		|	{markup_single}			P.markup T.semi_colon
+		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup T.semi_colon
+		|	{markup_expression}		P.markup+ P.expression_no_idcon T.semi_colon
+		|	{embedding}				P.markup+ P.embedding T.semi_colon
+		;
+
+	statement_no_markup =
+			{each}				T.each T.l_paren T.id_con T.colon P.expression T.r_paren P.statement
+		|	{let}				T.let P.assignment+ T.in P.statement* T.end
+		|	{multiple}			T.l_brace P.statement* T.r_brace
+		|	{comment}			T.comment T.str_con T.semi_colon
+		|	{echo_expression}	T.echo P.expression T.semi_colon
+		|	{echo_embedding}	T.echo P.embedding T.semi_colon
+		|	{cdata}				T.cdata P.expression T.semi_colon
+		|	{yield}				T.yield T.semi_colon
+		;
+					
+	// Assignment
+	assignment = 
+			{expression}	T.id_con T.assign P.expression T.semi_colon
+		|	{statement}		T.id_con P.formals T.assign P.statement
+		;
+	
+	// Predicate
 	predicate = 
-		{expression}		expression_declaration |
-		{expression_type}	expression_declaration dot type_declaration question_mark |
-		{not_predicate}		exclam_mark predicate |
-		{and_predicate}		predicate_no_and_or and predicate |
-		{or_predicate}		predicate_no_and_or or expression_declaration;
+			{expression}		P.expression
+		|	{expression_type}	P.expression T.dot P.type T.question_mark
+		|	{not_predicate}		T.exclam_mark P.predicate
+		|	{and_predicate}		P.predicate_no_and_or T.and P.predicate
+		|	{or_predicate}		P.predicate_no_and_or T.or P.expression
+		;
 
 	predicate_no_and_or =
-		{expression}		expression_declaration |
-		{expression_type}	expression_declaration dot type_declaration question_mark |
-		{not_predicate}		exclam_mark predicate;
+			{expression}		P.expression
+		|	{expression_type}	P.expression T.dot P.type T.question_mark
+		|	{not_predicate}		T.exclam_mark P.predicate
+		;
 		
-	// Type declaration
-	type_declaration =
-		{list}		list |
-		{record}	record |
-		{string}	string;
+	// Type
+	type =
+			{list}		T.list
+		|	{record}	T.record
+		|	{string}	T.string
+		;
 		
-	// Embedding declaration
-	embedding_declaration = pre_text embed_declaration text_tail_declaration;
+	// Embedding
+	embedding = 
+			T.pre_text P.embed P.text_tail
+		;
 	
-	// Text trail declaration
-	text_tail_declaration =
-		{posttext}		post_text |
-		{midtext}		mid_text embed_declaration text_tail_declaration;
+	// Text trail
+	text_tail =
+			{posttext}	T.post_text
+		|	{midtext}	T.mid_text P.embed P.text_tail
+		;
 		
-	embed_declaration = 
-//		{markup_markup}			[multiple]:markup_declaration* [single]:markup_declaration |
-		{markup_expression}		markup_declaration* expression_declaration;
+	embed = 
+//			{markup_markup}			[multiple]:P.markup* [single]:P.markup
+	/*|*/	{markup_expression}		P.markup* P.expression
+		;
+		
+Abstract Syntax Tree
+
+	modules =
+			module*
+		;
+		
+	module_element =
+			{function}	function
+		|	{import}	import
+		|	{site}		site
+		;
