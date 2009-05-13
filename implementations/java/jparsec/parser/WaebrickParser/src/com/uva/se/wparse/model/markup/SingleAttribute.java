@@ -25,11 +25,12 @@ public class SingleAttribute implements Attribute  {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SingleAttribute.class);
 
-	private Token prefix;
+	private String symbol;
 	private String identifier;
 	
-	public SingleAttribute(Token prefix, String identifier) {
-		this.prefix = prefix;
+	public SingleAttribute(Token symbolToken, String identifier) {
+		this.symbol = symbolToken.toString();
+		//this.symbol = symbol;
 		this.identifier = identifier;
 		 if (logger.isDebugEnabled()) {
 				logger.debug("Creating " + this.getClass().getSimpleName()
@@ -39,7 +40,7 @@ public class SingleAttribute implements Attribute  {
 	
 	@Override
 	public String toString() {
-		return prefix + identifier;
+		return symbol + identifier;
 	}
 	
 	

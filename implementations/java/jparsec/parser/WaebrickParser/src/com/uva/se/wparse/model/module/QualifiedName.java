@@ -1,5 +1,5 @@
 /*
- * File			: MethodDef.java
+ * File			: QualifiedName.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -16,30 +16,23 @@
  * 
  * 
  */
-package com.uva.se.wparse.model.declaration;
+package com.uva.se.wparse.model.module;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
-import com.uva.se.wparse.model.markup.Argument;
-import com.uva.se.wparse.model.statement.Statement;
+import com.uva.se.wparse.util.Strings;
 
-public final class MethodDef extends ValueObject implements Member {
+public final class QualifiedName extends ValueObject {
 
 	private static org.apache.log4j.Logger logger = Logger
-			.getLogger(MethodDef.class);
+			.getLogger(QualifiedName.class);
+	private List<String> names;
 
-	private String name;
-	private Argument arguments;
-	private List<Statement> statements;
-
-	public MethodDef(String name, Argument arguments, List<Statement> statements) {
-
-		this.name = name;
-		this.arguments = arguments;
-		this.statements = statements;
+	public QualifiedName(List<String> names) {
+		this.names = names;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -48,8 +41,6 @@ public final class MethodDef extends ValueObject implements Member {
 
 	@Override
 	public String toString() {
-		return "def " + name + "(" + arguments + ")" + statements + " end";
-
+		return Strings.join(".", names);
 	}
-
 }

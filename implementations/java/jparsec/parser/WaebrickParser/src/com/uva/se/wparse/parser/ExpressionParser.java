@@ -27,7 +27,6 @@ import org.codehaus.jparsec.TokenMap;
 import org.codehaus.jparsec.functors.Binary;
 import org.codehaus.jparsec.misc.Mapper;
 
-import com.uva.se.wparse.model.declaration.ModuleBody;
 import com.uva.se.wparse.model.expression.BinaryExpression;
 import com.uva.se.wparse.model.expression.BlockExpression;
 import com.uva.se.wparse.model.expression.BlockKeyValueExpression;
@@ -38,6 +37,7 @@ import com.uva.se.wparse.model.expression.NaturalExpression;
 import com.uva.se.wparse.model.expression.Operator;
 import com.uva.se.wparse.model.expression.StringLiteral;
 import com.uva.se.wparse.model.expression.SymbolConstant;
+import com.uva.se.wparse.model.module.ModuleBody;
 
 public class ExpressionParser {
 
