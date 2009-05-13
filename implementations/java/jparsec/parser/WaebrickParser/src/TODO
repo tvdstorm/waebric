@@ -15,7 +15,7 @@ Parser bugs
 
 1)  // style comment line not recognized yet  
 example
-	 echo \"test\";  \\comment line 
+	 echo \"test\";  //comment line 
 
 2) multiple embedding inside literal string not recognized yet
 example
