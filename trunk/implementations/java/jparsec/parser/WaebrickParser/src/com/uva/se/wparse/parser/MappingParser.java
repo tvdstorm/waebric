@@ -23,8 +23,8 @@ import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.misc.Mapper;
 
-import com.uva.se.wparse.model.declaration.Mapping;
 import com.uva.se.wparse.model.markup.Markup;
+import com.uva.se.wparse.model.module.Mapping;
 
 
 public class MappingParser {

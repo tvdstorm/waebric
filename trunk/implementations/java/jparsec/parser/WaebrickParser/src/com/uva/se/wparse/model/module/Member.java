@@ -16,7 +16,7 @@
  * 
  * 
  */
-package com.uva.se.wparse.model.declaration;
+package com.uva.se.wparse.model.module;
 
 
 public interface Member {}

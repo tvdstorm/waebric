@@ -20,7 +20,7 @@ package com.uva.se.wparse.test.parser;
 
 import junit.framework.TestCase;
 
-import com.uva.se.wparse.model.declaration.ModuleDef;
+import com.uva.se.wparse.model.module.ModuleDef;
 import com.uva.se.wparse.parser.DeclarationParser;
 
 public class DeclarationParserTest extends TestCase {

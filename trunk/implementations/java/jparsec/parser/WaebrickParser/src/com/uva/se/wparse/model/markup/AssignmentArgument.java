@@ -31,7 +31,6 @@ public class AssignmentArgument implements Argument {
 	
 	
 	public AssignmentArgument(String var, Expression expression) {
-		super();
 		this.var = var;
 		this.expression = expression;
 		if (logger.isDebugEnabled()) {

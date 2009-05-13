@@ -22,9 +22,9 @@ import junit.framework.TestCase;
 
 import org.codehaus.jparsec.Parser;
 
-import com.uva.se.wparse.model.declaration.Mapping;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
+import com.uva.se.wparse.model.module.Mapping;
 import com.uva.se.wparse.parser.ExpressionParser;
 import com.uva.se.wparse.parser.MappingParser;
 import com.uva.se.wparse.parser.MarkupParser;

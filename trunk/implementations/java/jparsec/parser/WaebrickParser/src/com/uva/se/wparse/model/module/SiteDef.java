@@ -1,5 +1,5 @@
 /*
- * File			: QualifiedName.java
+ * File			: SiteDef.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -16,7 +16,7 @@
  * 
  * 
  */
-package com.uva.se.wparse.model.declaration;
+package com.uva.se.wparse.model.module;
 
 import java.util.List;
 
@@ -25,14 +25,14 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
-public final class QualifiedName extends ValueObject {
+public final class SiteDef extends ValueObject implements Member {
 
 	private static org.apache.log4j.Logger logger = Logger
-			.getLogger(QualifiedName.class);
-	private List<String> names;
+			.getLogger(SiteDef.class);
+	private List<Mapping> mappings;
 
-	public QualifiedName(List<String> names) {
-		this.names = names;
+	public SiteDef(List<Mapping> mappings) {
+		this.mappings = mappings;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -41,6 +41,8 @@ public final class QualifiedName extends ValueObject {
 
 	@Override
 	public String toString() {
-		return Strings.join(".", names);
+		return "site " + Strings.join(" ", mappings) + " end";
+
 	}
+
 }

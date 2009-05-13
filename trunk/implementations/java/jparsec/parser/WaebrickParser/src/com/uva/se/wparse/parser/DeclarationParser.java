@@ -27,21 +27,21 @@ import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.misc.Mapper;
 
-import com.uva.se.wparse.model.declaration.Mapping;
-import com.uva.se.wparse.model.declaration.Member;
-import com.uva.se.wparse.model.declaration.MethodDef;
-import com.uva.se.wparse.model.declaration.ModuleBody;
-import com.uva.se.wparse.model.declaration.ModuleDef;
-import com.uva.se.wparse.model.declaration.QualifiedName;
-import com.uva.se.wparse.model.declaration.SiteDef;
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Argument;
 import com.uva.se.wparse.model.markup.Markup;
+import com.uva.se.wparse.model.module.FunctionDef;
+import com.uva.se.wparse.model.module.Mapping;
+import com.uva.se.wparse.model.module.Member;
+import com.uva.se.wparse.model.module.ModuleBody;
+import com.uva.se.wparse.model.module.ModuleDef;
+import com.uva.se.wparse.model.module.QualifiedName;
+import com.uva.se.wparse.model.module.SiteDef;
 import com.uva.se.wparse.model.statement.Statement;
 
 
-public final class DeclarationParser {
+public final class DeclarationParser implements WeabrickParser {
 	
 
 	
@@ -59,7 +59,7 @@ public final class DeclarationParser {
 	  Parser<Argument>  argParser = argumentParser.arguments(expr);
 	  Parser<Argument>  blockArgParser = argumentParser.blockArgument(argParser);
 	  
-    return Mapper.<Member>curry(MethodDef.class).sequence(
+    return Mapper.<Member>curry(FunctionDef.class).sequence(
         TerminalParser.term("def"), Terminals.Identifier.PARSER,
         blockArgParser.optional(),
         Parsers.or(stmt, expr, embedding).many(),
