@@ -33,15 +33,20 @@ import com.uva.se.wparse.model.markup.Markup;
 public class EmbeddingParser {
 
 
-	private Parser<Embedding> markupEmbedding(Parser<Markup> markup, Parser<Expression> expression) {
+	private Parser<Embedding> markupEmbedding(Parser<Markup> markup, Parser<Expression> expression, Parser<Embedding> embeddingParser) {
 		return curry(MarkupEmbedding.class).sequence(
 				ExpressionParser.EMBEDDED_TEXT.many(),
 				TerminalParser.term("<"),
 				markup.many(),
 				Parsers.or(markup, expression),
 				TerminalParser.term(">"),
+				//Parsers.or(ExpressionParser.EMBEDDED_TEXT.many(), embeddingParser)
 				ExpressionParser.EMBEDDED_TEXT.many()
 				);
+	}
+	
+	private Parser<Embedding> multipleEmbedding( Parser<Embedding> embeddingParser) {
+		return curry(MarkupEmbedding.class).sequence(embeddingParser.many1());
 	}
 	
 	private Parser<Embedding> expressionEmbedding(Parser<Markup> markup, Parser<Expression> expression) {
@@ -51,11 +56,15 @@ public class EmbeddingParser {
 	
 	public Parser<Embedding> getParser(Parser<Markup> markup, Parser<Expression> expression) {
 		@SuppressWarnings("unchecked")
+		Parser.Reference<Embedding> ref = Parser.newReference();
+		Parser<Embedding> lazy = ref.lazy();
 		Parser<Embedding> parser = Parsers.or(
 				//markupEmbedding(markup),
-				markupEmbedding(markup, expression)
+				//multipleEmbedding(lazy),
+				markupEmbedding(markup, expression, lazy)
 				//expressionEmbedding(markup, expression)
 				);
+		ref.set(parser);
 		return parser;
 	}
 	

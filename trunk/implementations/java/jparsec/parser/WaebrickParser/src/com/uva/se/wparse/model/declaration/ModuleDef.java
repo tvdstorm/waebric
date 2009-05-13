@@ -23,8 +23,9 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WabrickParseTree;
 
-public final class ModuleDef extends ValueObject {
+public final class ModuleDef extends ValueObject implements WabrickParseTree {
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(ModuleDef.class);

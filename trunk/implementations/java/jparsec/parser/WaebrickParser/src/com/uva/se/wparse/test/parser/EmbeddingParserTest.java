@@ -86,5 +86,10 @@ public class EmbeddingParserTest extends TestCase {
 		String source = "pre text <a (href=\"mailto:test@test.nl\") \"test@test.nl\"> post text";
 		TerminalParser.parse(embeddingParser, source);
 	}
+	
+	public void testMultipleEmbeddedMarkup(){
+		String source = "pre text <a (href=\"mailto:test@test.nl\") \"test@test.nl\"> mid text <a (href=\"mailto:test@test.nl\") \"test@test.nl\"> post text";
+		TerminalParser.parse(embeddingParser, source);
+	}
 
 }

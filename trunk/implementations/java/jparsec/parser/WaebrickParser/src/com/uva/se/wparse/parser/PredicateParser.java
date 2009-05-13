@@ -67,7 +67,7 @@ public final class PredicateParser {
 	        .infixl(binary(Operator.AND), 10)
 	        .infixl(binary(Operator.OR), 10)
 	        .build(parser);
-	    ref.set(parser);
+	   // ref.set(parser);
 		
 		ref.set(parser);
 		return parser;
