@@ -26,6 +26,7 @@ import org.codehaus.jparsec.misc.Mapper;
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.embedding.MarkupEmbed;
 import com.uva.se.wparse.model.embedding.MarkupEmbedding;
+import com.uva.se.wparse.model.embedding.MultipleMarkupEmbedding;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
 
@@ -40,19 +41,19 @@ public class EmbeddingParser {
 				markup.many(),
 				Parsers.or(markup, expression),
 				TerminalParser.term(">"),
-				//Parsers.or(ExpressionParser.EMBEDDED_TEXT.many(), embeddingParser)
+				//Parsers.or(ExpressionParser.EMBEDDED_TEXT.many(), embeddingParser.many())
 				ExpressionParser.EMBEDDED_TEXT.many()
 				);
 	}
 	
-	private Parser<Embedding> multipleEmbedding( Parser<Embedding> embeddingParser) {
-		return curry(MarkupEmbedding.class).sequence(embeddingParser.many1());
-	}
+//	private Parser<Embedding> multipleEmbedding( Parser<Embedding> embeddingParser) {
+//		return curry(MultipleMarkupEmbedding.class).sequence(embeddingParser.many());
+//	}
 	
-	private Parser<Embedding> expressionEmbedding(Parser<Markup> markup, Parser<Expression> expression) {
-		return curry(MarkupEmbed.class).sequence(TerminalParser.term("<"),
-				Terminals.Identifier.PARSER, markup.many(), expression, TerminalParser.term(">"));
-	}
+//	private Parser<Embedding> expressionEmbedding(Parser<Markup> markup, Parser<Expression> expression) {
+//		return curry(MarkupEmbed.class).sequence(TerminalParser.term("<"),
+//				Terminals.Identifier.PARSER, markup.many(), expression, TerminalParser.term(">"));
+//	}
 	
 	public Parser<Embedding> getParser(Parser<Markup> markup, Parser<Expression> expression) {
 		@SuppressWarnings("unchecked")
@@ -60,8 +61,9 @@ public class EmbeddingParser {
 		Parser<Embedding> lazy = ref.lazy();
 		Parser<Embedding> parser = Parsers.or(
 				//markupEmbedding(markup),
-				//multipleEmbedding(lazy),
+				
 				markupEmbedding(markup, expression, lazy)
+				//multipleEmbedding(lazy)
 				//expressionEmbedding(markup, expression)
 				);
 		ref.set(parser);
