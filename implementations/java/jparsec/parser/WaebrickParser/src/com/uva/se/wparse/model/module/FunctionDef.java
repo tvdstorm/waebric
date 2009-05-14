@@ -48,8 +48,17 @@ public final class FunctionDef extends ValueObject implements Member {
 
 	@Override
 	public String toString() {
-		return "def " + name + "(" + arguments + ")" + statements + " end";
-
+		String result = "def " + name + "(";
+		if(arguments != null){
+			result = result + arguments;
+		}
+		 result = result +  ")";
+		 if(statements != null){
+			 result = result + statements;
+		 }
+		 
+		 result = result + " end";
+		 return result;
 	}
 
 }

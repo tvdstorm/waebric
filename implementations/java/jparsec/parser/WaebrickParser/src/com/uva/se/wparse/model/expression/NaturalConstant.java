@@ -22,13 +22,13 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 
-public final class NaturalExpression extends ValueObject implements Expression {
+public final class NaturalConstant extends ValueObject implements Expression {
 
 	private static org.apache.log4j.Logger logger = Logger
-			.getLogger(NaturalExpression.class);
+			.getLogger(NaturalConstant.class);
 	private String natural;
 
-	public NaturalExpression(String natural) {
+	public NaturalConstant(String natural) {
 		this.natural = natural;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()

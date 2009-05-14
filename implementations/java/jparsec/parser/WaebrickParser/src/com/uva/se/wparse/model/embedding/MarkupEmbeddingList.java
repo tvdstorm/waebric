@@ -6,9 +6,9 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.util.Strings;
 
-public class MultipleMarkupEmbedding implements Embedding {
+public class MarkupEmbeddingList implements Embedding {
 
-	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbedding.class);
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbeddingList.class);
 	
 	/*contains a list of MarkupEmbedding objects, if there are more then
 	 * 1 items in the list the postText property of the objects ( instead of the last object in the list)
@@ -17,7 +17,7 @@ public class MultipleMarkupEmbedding implements Embedding {
 	
 	private List<Embedding> embedding = null;
 
-	public MultipleMarkupEmbedding(List<Embedding> embedding) {
+	public MarkupEmbeddingList(List<Embedding> embedding) {
 		this.embedding = embedding;
 		if(logger.isDebugEnabled()){
 			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());

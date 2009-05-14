@@ -33,7 +33,7 @@ import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.expression.ExpressionDotIdentifier;
 import com.uva.se.wparse.model.expression.Identifier;
 import com.uva.se.wparse.model.expression.KeyValuePair;
-import com.uva.se.wparse.model.expression.NaturalExpression;
+import com.uva.se.wparse.model.expression.NaturalConstant;
 import com.uva.se.wparse.model.expression.Operator;
 import com.uva.se.wparse.model.expression.StringLiteral;
 import com.uva.se.wparse.model.expression.SymbolConstant;
@@ -72,7 +72,8 @@ public class ExpressionParser {
 
 				public String map(Token token) {
 					if (!token.value().toString().equals("\"")
-							&& !token.value().toString().equals("<")) {
+							&& !token.value().toString().equals("<")
+							&& !token.value().toString().equals(">")) {
 						int prefixIndex = token.index() - 1;
 						if (prefixIndex > 0) {
 							// get the token to the left of the current token
@@ -100,7 +101,7 @@ public class ExpressionParser {
 
 	private static Parser<Expression> symbolConstant = curry(
 			SymbolConstant.class).sequence(TerminalParser.term("'"),
-					Parsers.or(Terminals.Identifier.PARSER, numberExpression())
+					Parsers.or(/*Terminals.Identifier.PARSER*/  EMBEDDED_TEXT.many(), numberExpression())
 			);
 
 	public static Parser<Expression> STRING_LITERAL = curry(
@@ -128,7 +129,7 @@ public class ExpressionParser {
 	}
 
 	private static Parser<Expression> numberExpression() {
-		return curry(NaturalExpression.class).sequence(
+		return curry(NaturalConstant.class).sequence(
 				Terminals.IntegerLiteral.PARSER);
 	}
 
