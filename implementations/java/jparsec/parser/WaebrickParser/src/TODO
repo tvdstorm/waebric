@@ -10,6 +10,7 @@ Todo list
 - exception handling
 - documentation
 - move text labels and message text to external resource file
+- test
 
 Parser bugs
 
