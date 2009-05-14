@@ -24,15 +24,15 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.predicate.Predicate;
 
-public final class IfStatement extends ValueObject implements Statement {
+public final class If extends ValueObject implements Statement {
 
 	private static org.apache.log4j.Logger logger = Logger
-			.getLogger(IfStatement.class);
+			.getLogger(If.class);
 
 	private Predicate condition;
 	private Statement then;
 
-	public IfStatement(Predicate condition, Statement then) {
+	public If(Predicate condition, Statement then) {
 		this.condition = condition;
 		this.then = then;
 		if (logger.isDebugEnabled()) {

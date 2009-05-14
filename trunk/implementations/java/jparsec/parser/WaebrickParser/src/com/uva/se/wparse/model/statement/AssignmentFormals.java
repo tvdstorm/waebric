@@ -25,16 +25,16 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
-public final class AssignmentWithFormals extends ValueObject implements	Assignment {
+public final class AssignmentFormals extends ValueObject implements	Assignment {
 	
-	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentWithFormals.class);
+	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentFormals.class);
 	
 	
 	private String identifier;
 	private ArrayList<String> formals;
 	private Statement statement;
 
-	public AssignmentWithFormals(String identifier, ArrayList<String> formals,
+	public AssignmentFormals(String identifier, ArrayList<String> formals,
 			Statement statement) {
 		this.identifier = identifier;
 		this.formals = formals;

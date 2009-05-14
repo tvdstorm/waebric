@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.statement.AssignmentWithFormals;
+import com.uva.se.wparse.model.statement.AssignmentFormals;
 
 
 public class Designator implements Markup{

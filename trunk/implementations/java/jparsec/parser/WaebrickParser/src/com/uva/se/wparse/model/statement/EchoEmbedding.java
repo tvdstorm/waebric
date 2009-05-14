@@ -1,5 +1,5 @@
 /*
- * File			: MarkupStatement.java
+ * File			: EchoEmbeddingStatement.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -20,18 +20,17 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.markup.Markup;
+import com.uva.se.wparse.model.embedding.Embedding;
+import com.uva.se.wparse.model.expression.BinaryExpression;
 
+public class EchoEmbedding implements Statement {
 
-
-public class MarkupStatement implements Statement, Markup {
+	private static org.apache.log4j.Logger logger = Logger.getLogger(EchoEmbedding.class);
 	
-	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupStatement.class);
+	private Embedding embedding;
 
-	private Markup markup;
-
-	public MarkupStatement(Markup markup){ 
-		this.markup = markup;
+	public EchoEmbedding(Embedding embedding) {
+		this.embedding = embedding;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -40,12 +39,8 @@ public class MarkupStatement implements Statement, Markup {
 
 	@Override
 	public String toString() {
-		return markup.toString();
-	};
-	
-	
-	
-	
+		return embedding.toString();
+	}
 	
 	
 }

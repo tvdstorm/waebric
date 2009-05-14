@@ -1,5 +1,5 @@
 /*
- * File			: EchoExprStatement.java
+ * File			: CdataStatement.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -22,13 +22,14 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.expression.Expression;
 
-public class EchoExpressionStatement implements Statement {
+public class Cdata implements Statement {
 
-	private static org.apache.log4j.Logger logger = Logger.getLogger(EchoExpressionStatement.class);
-	
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(Cdata.class);
+
 	private Expression expr;
 
-	public EchoExpressionStatement(Expression expr) {
+	public Cdata(Expression expr) {
 		this.expr = expr;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
@@ -38,8 +39,7 @@ public class EchoExpressionStatement implements Statement {
 
 	@Override
 	public String toString() {
-		return "echo " + expr.toString();
+		return "cdata " + expr.toString();
 	}
-	
-	
+
 }

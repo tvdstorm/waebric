@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
-import com.uva.se.wparse.model.statement.AssignmentWithFormals;
+import com.uva.se.wparse.model.statement.AssignmentFormals;
 import com.uva.se.wparse.util.Strings;
 
 
