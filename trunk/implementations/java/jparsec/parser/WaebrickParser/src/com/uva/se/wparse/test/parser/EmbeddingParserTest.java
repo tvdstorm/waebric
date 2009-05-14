@@ -91,5 +91,16 @@ public class EmbeddingParserTest extends TestCase {
 		String source = "pre text <a (href=\"mailto:test@test.nl\") \"test@test.nl\"> mid text <a (href=\"mailto:test@test.nl\") \"test@test.nl\"> post text";
 		TerminalParser.parse(embeddingParser, source);
 	}
+	
+	public void testMultipleEmbeddedMarkupWithSymbolUrl(){
+		String source = "De redactie van literair tijdschrift Lava beoogt de belangstelling" +
+						"voor het Nederlandstalige korte verhaal en haar schrijvers te " +
+						"stimuleren. Wij publiceren al dertien jaar de beste teksten van de " +
+						"nieuwste generatie auteurs. Voor meer informatie: <a(href=\"http://www.lavaliterair.nl\") 'http://www.lavaliterair.nl> post";
+						
+		TerminalParser.parse(embeddingParser, source);
+	}
 
+	
+	  
 }

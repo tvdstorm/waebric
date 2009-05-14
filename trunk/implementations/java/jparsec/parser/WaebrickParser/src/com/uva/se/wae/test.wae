@@ -21,7 +21,7 @@ def brandendepen
 	  hem horen&quot;, aldus de jury. Vandecasteele won een masterclass literair
 	  debuteren ter waarde van 1350 euro. De 27-jarige Vlaming is naast
 	  schrijver ook theatermaker en treedt op als stand-up comedian.";
-/*    p "De redactie van Lava, initiatiefnemer van de Brandende Pen, ontving
+    p "De redactie van Lava, initiatiefnemer van de Brandende Pen, ontving
 	  meer dan 300 inzendingen. De beste twintig korte verhalen zijn
 	  gepubliceerd in het dubbeldikke winternummer, Lava 13.3 dat
 	  verkrijgbaar is in de betere boekhandel. Het literaire tijdschrift
@@ -34,7 +34,7 @@ def brandendepen
 	  voor het Nederlandstalige korte verhaal en haar schrijvers te
 	  stimuleren. Wij publiceren al dertien jaar de beste teksten van de
 	  nieuwste generatie auteurs. Voor meer informatie: 
-           <a(href="http://www.lavaliterair.nl") 'http://www.lavaliterair.nl>.";*/
+           <a(href="http://www.lavaliterair.nl") 'http://www.lavaliterair.nl>.";
     brandendepen2007fotos;
 
     header("Uitreiking Brandende Pen 2006 in de pers");

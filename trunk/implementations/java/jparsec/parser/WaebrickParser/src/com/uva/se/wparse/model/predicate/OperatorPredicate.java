@@ -43,6 +43,6 @@ public final class OperatorPredicate extends ValueObject implements Expression, 
 
 	@Override
 	public String toString() {
-		return left.toString() + op.toString() + right.toString();
+		return left.toString() + " " + op.toString() + " " + right.toString();
 	}
 }
