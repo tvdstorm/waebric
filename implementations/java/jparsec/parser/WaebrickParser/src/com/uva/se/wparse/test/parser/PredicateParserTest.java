@@ -85,6 +85,11 @@ public class PredicateParserTest extends TestCase {
 		TerminalParser.parse(predicateParser, source);
 	}
 	
+	public void testPredicateAndOperatorMultipleExpression(){
+		String source = "myString.string? && myList.list? && mylist2.list?";
+		TerminalParser.parse(predicateParser, source);
+	}
+	
 	public void testNotLeftPredicateAndOperatorExpression(){
 		String source = "!myString.string? && myList.list?";
 		TerminalParser.parse(predicateParser, source);
