@@ -35,9 +35,9 @@ example
 	
 	//declaration package wordt module
 	
-	MarkupExpressionEmbed wordt MarkupExpression
+	//MarkupExpressionEmbed wordt MarkupExpression
 	
-	binaryexpression en operator refacator naar OrPredicate en AndPredicate
+	//binaryexpression en operator refacator naar OrPredicate en AndPredicate
 	
 	AssignmentNormal is duplicate van assignmentArguments, moet worden AssignmentExpression en AssignmentNormal moet weg
 	

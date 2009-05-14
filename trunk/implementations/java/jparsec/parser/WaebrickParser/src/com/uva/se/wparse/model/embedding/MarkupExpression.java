@@ -23,15 +23,15 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
 
-public class MarkupExpressionEmbed implements Embedding {
+public class MarkupExpression implements Embedding {
 	
-	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpressionEmbed.class);
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpression.class);
 
 	private Markup markup;
 	private Expression expr;
 	
 	
-	public MarkupExpressionEmbed(Markup markup, Expression expr) {
+	public MarkupExpression(Markup markup, Expression expr) {
 		this.markup = markup;
 		this.expr = expr;
 		if(logger.isDebugEnabled()){
