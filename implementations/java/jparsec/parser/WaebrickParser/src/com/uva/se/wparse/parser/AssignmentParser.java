@@ -26,8 +26,8 @@ import org.codehaus.jparsec.misc.Mapper;
 
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.statement.Assignment;
-import com.uva.se.wparse.model.statement.AssignmentNormal;
-import com.uva.se.wparse.model.statement.AssignmentWithFormals;
+import com.uva.se.wparse.model.statement.AssignmentExpression;
+import com.uva.se.wparse.model.statement.AssignmentFormals;
 import com.uva.se.wparse.model.statement.Statement;
 
 
@@ -35,13 +35,13 @@ import com.uva.se.wparse.model.statement.Statement;
 public final class AssignmentParser {
 	
 	  private static Parser<Assignment> assignmentNormal(Parser<Expression> expr) {
-		    return curry(AssignmentNormal.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term("="), expr); 
+		    return curry(AssignmentExpression.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term("="), expr); 
 	  }
 	  
  
 	
 	  private static Parser<Assignment> assignmentFormals(Parser<Statement> stmt) {
-		    return curry(AssignmentWithFormals.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term("("),
+		    return curry(AssignmentFormals.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term("("),
 		    		Terminals.Identifier.PARSER.sepBy1(TerminalParser.term(",")),
 		    		TerminalParser.term(")"), TerminalParser.term("="), stmt   );
 	  }

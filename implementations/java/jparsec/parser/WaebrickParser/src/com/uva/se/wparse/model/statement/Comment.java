@@ -1,5 +1,5 @@
 /*
- * File			: YieldStatement.java
+ * File			: CommentStatement.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -20,15 +20,18 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-public class YieldStatement implements Statement {
-	
+import com.uva.se.wparse.model.expression.StringLiteral;
+
+
+public class Comment implements Statement {
+
 	private static org.apache.log4j.Logger logger = Logger
-	.getLogger(EachStatement.class);
+			.getLogger(Comment.class);
 
-	private String yield;
+	private StringLiteral comment;
 
-	public YieldStatement(String yield) {
-		this.yield = yield;
+	public Comment(StringLiteral comment) {
+		this.comment = comment;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -37,8 +40,7 @@ public class YieldStatement implements Statement {
 
 	@Override
 	public String toString() {
-		return yield.toString();
+		return "comment " + comment;
 	}
-	
-	
+
 }

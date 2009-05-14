@@ -1,5 +1,5 @@
 /*
- * File			: MarkupStatements.java
+ * File			: YieldStatement.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -18,20 +18,17 @@
  */
 package com.uva.se.wparse.model.statement;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.markup.Markup;
-
-public class MarkupStatements implements Statement, Markup {
+public class Yield implements Statement {
 	
-	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupStatements.class);
+	private static org.apache.log4j.Logger logger = Logger
+	.getLogger(Each.class);
 
-	private List<Markup> markup;
+	private String yield;
 
-	public MarkupStatements(List<Markup> markup){ 
-		this.markup = markup;
+	public Yield(String yield) {
+		this.yield = yield;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -40,12 +37,8 @@ public class MarkupStatements implements Statement, Markup {
 
 	@Override
 	public String toString() {
-		return markup.toString();
-	};
-	
-	
-	
-	
+		return yield.toString();
+	}
 	
 	
 }

@@ -1,5 +1,5 @@
 /*
- * File			: IfElseStatement.java
+ * File			: EachStatement.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -16,7 +16,6 @@
  * 
  * 
  */
-
 package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
@@ -24,20 +23,19 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 
-public final class IfElseStatement extends ValueObject implements Statement {
+public final class Each extends ValueObject implements Statement {
 
 	private static org.apache.log4j.Logger logger = Logger
-			.getLogger(IfElseStatement.class);
+			.getLogger(Each.class);
 
-	private Expression condition;
-	private Statement thenStatement;
-	private Statement elseStatement;
+	private String var;
+	private Expression expr;
+	private Statement stmt;
 
-	public IfElseStatement(Expression condition, Statement thenStatement,
-			Statement elseStatement) {
-		this.condition = condition;
-		this.thenStatement = thenStatement;
-		this.elseStatement = elseStatement;
+	public Each(String var, Expression expr, Statement stm) {
+		this.var = var;
+		this.expr = expr;
+		this.stmt = stm;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -47,8 +45,8 @@ public final class IfElseStatement extends ValueObject implements Statement {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("if (").append(condition).append(") ").append(
-				thenStatement).append(" else ").append(elseStatement);
+		builder.append("each (").append(var).append(": ").append(expr).append(
+				") ").append(stmt);
 		return builder.toString();
 	}
 }

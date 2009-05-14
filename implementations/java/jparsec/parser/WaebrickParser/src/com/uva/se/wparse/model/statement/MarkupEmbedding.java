@@ -25,13 +25,13 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.markup.Markup;
 
-public class MarkupEmbeddingStatement extends MarkupStatements implements Statement, Markup {
+public class MarkupEmbedding extends MultipleMarkup implements Statement, Markup {
 	
-	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbeddingStatement.class);
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbedding.class);
 
 	private Embedding embedding;
 
-	public MarkupEmbeddingStatement(List<Markup> markup, Embedding embedding){
+	public MarkupEmbedding(List<Markup> markup, Embedding embedding){
 		super(markup);
 		this.embedding = embedding;
 		if(logger.isDebugEnabled()){

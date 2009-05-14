@@ -29,92 +29,92 @@ import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.model.predicate.Predicate;
 import com.uva.se.wparse.model.statement.Assignment;
-import com.uva.se.wparse.model.statement.BlockStatement;
-import com.uva.se.wparse.model.statement.CdataStatement;
-import com.uva.se.wparse.model.statement.CommentStatement;
-import com.uva.se.wparse.model.statement.EachStatement;
-import com.uva.se.wparse.model.statement.EchoEmbeddingStatement;
-import com.uva.se.wparse.model.statement.EchoExpressionStatement;
-import com.uva.se.wparse.model.statement.IfElseStatement;
-import com.uva.se.wparse.model.statement.IfStatement;
-import com.uva.se.wparse.model.statement.LetInStatement;
-import com.uva.se.wparse.model.statement.MarkupAndStatementStatement;
-import com.uva.se.wparse.model.statement.MarkupEmbeddingStatement;
-import com.uva.se.wparse.model.statement.MarkupExpressionStatement;
-import com.uva.se.wparse.model.statement.MarkupStatement;
-import com.uva.se.wparse.model.statement.MarkupStatements;
+import com.uva.se.wparse.model.statement.Block;
+import com.uva.se.wparse.model.statement.Cdata;
+import com.uva.se.wparse.model.statement.Comment;
+import com.uva.se.wparse.model.statement.Each;
+import com.uva.se.wparse.model.statement.EchoEmbedding;
+import com.uva.se.wparse.model.statement.EchoExpression;
+import com.uva.se.wparse.model.statement.IfElse;
+import com.uva.se.wparse.model.statement.If;
+import com.uva.se.wparse.model.statement.LetIn;
+import com.uva.se.wparse.model.statement.MarkupAndStatement;
+import com.uva.se.wparse.model.statement.MarkupEmbedding;
+import com.uva.se.wparse.model.statement.MarkupExpression;
+import com.uva.se.wparse.model.statement.SingleMarkup;
+import com.uva.se.wparse.model.statement.MultipleMarkup;
 import com.uva.se.wparse.model.statement.Statement;
-import com.uva.se.wparse.model.statement.YieldStatement;
+import com.uva.se.wparse.model.statement.Yield;
 
 
 public final class StatementParser {
 	
 	
   static Parser<Statement> comment() {
-	  return curry( CommentStatement.class).sequence( TerminalParser.term("comment"), ExpressionParser.STRING_LITERAL  ,TerminalParser.term(";") );
+	  return curry( Comment.class).sequence( TerminalParser.term("comment"), ExpressionParser.STRING_LITERAL  ,TerminalParser.term(";") );
   }
 	
   static Parser<Statement> echo(Parser<Expression> expr) {
-	  return curry( EchoExpressionStatement.class).sequence( TerminalParser.term("echo"), expr  ,TerminalParser.term(";") );
+	  return curry( EchoExpression.class).sequence( TerminalParser.term("echo"), expr  ,TerminalParser.term(";") );
   }
   
   static Parser<Statement> echoEmbedding(Parser<Embedding> embedding) {
-	  return curry( EchoEmbeddingStatement.class).sequence( TerminalParser.term("echo"), TerminalParser.term("\""), embedding, TerminalParser.term("\"") ,TerminalParser.term(";") );
+	  return curry( EchoEmbedding.class).sequence( TerminalParser.term("echo"), TerminalParser.term("\""), embedding, TerminalParser.term("\"") ,TerminalParser.term(";") );
   }
   
   static Parser<Statement> cdata(Parser<Expression> expr) {
-	  return curry( CdataStatement.class).sequence( TerminalParser.term("cdata"), expr  ,TerminalParser.term(";") );
+	  return curry( Cdata.class).sequence( TerminalParser.term("cdata"), expr  ,TerminalParser.term(";") );
   }
  
   static Parser<Statement> yield() {
-	  return curry( YieldStatement.class).sequence( TerminalParser.term("yield").source(), TerminalParser.term(";") );
+	  return curry( Yield.class).sequence( TerminalParser.term("yield").source(), TerminalParser.term(";") );
   }
   
 	static Parser<Statement> ifStatement(Parser<Predicate> predicateParser, Parser<Statement> stmt) {
-	return curry(IfStatement.class)
+	return curry(If.class)
 	    .sequence(TerminalParser.phrase("if ("), predicateParser, TerminalParser.term(")"), stmt).notFollowedBy(TerminalParser.term("else"));
 	}
 	
 	static Parser<Statement> ifElseStatement(Parser<Predicate> predicateParser, Parser<Statement> stmt) {
-		return curry(IfElseStatement.class)
+		return curry(IfElse.class)
 		    .sequence(TerminalParser.phrase("if ("), predicateParser, TerminalParser.term(")"), stmt, TerminalParser.term("else"), stmt);
 	}
 	
 	static Parser<Statement> eachStatement(Parser<Expression> expr, Parser<Statement> stmt) {
-		return curry(EachStatement.class)
+		return curry(Each.class)
 		    .sequence(TerminalParser.phrase("each ("), Terminals.Identifier.PARSER, TerminalParser.term(":"), expr, TerminalParser.term(")"), stmt);
 	}
 	
 	static Parser<Statement> blockStatement(Parser<Statement> stmt) {
-		return curry(BlockStatement.class)
+		return curry(Block.class)
 		    .sequence(TerminalParser.phrase("{"), stmt.many(), TerminalParser.term("}"));
 	}
 	
 	static Parser<Statement> letInStatement(Parser<Assignment> ass, Parser<Statement> stmt) {
-		return curry(LetInStatement.class)
+		return curry(LetIn.class)
 		    .sequence(TerminalParser.term("let"), ass.many1(), TerminalParser.term("in"), stmt.many(), TerminalParser.term("end"));
 	}
 	
 	  
 
 		static Parser<Statement> markupStatement(Parser<Markup> markup) {
-			return curry(MarkupStatements.class).sequence(markup.atLeast(2), TerminalParser.term(";"));
+			return curry(MultipleMarkup.class).sequence(markup.atLeast(2), TerminalParser.term(";"));
 		}
 		
 		static Parser<Statement> singleMarkupStatement(Parser<Markup> markup) {
-			return curry(MarkupStatement.class).sequence(markup, TerminalParser.term(";"));
+			return curry(SingleMarkup.class).sequence(markup, TerminalParser.term(";"));
 		}
 		
 		static Parser<Statement> markupExpressionStatement(Parser<Markup> markup, Parser<Expression> expr) {
-			return curry(MarkupExpressionStatement.class).sequence(markup.many1(), expr, TerminalParser.term(";"));
+			return curry(MarkupExpression.class).sequence(markup.many1(), expr, TerminalParser.term(";"));
 		}
 		
 		static Parser<Statement> markupEmbeddingStatement(Parser<Markup> markup, Parser<Embedding> embedding) {
-			return curry(MarkupEmbeddingStatement.class).sequence(markup.many1(), TerminalParser.term("\""), embedding, TerminalParser.term("\""),  TerminalParser.term(";"));
+			return curry(MarkupEmbedding.class).sequence(markup.many1(), TerminalParser.term("\""), embedding, TerminalParser.term("\""),  TerminalParser.term(";"));
 		}
 		
 		static Parser<Statement> markupAndStatementStatement(Parser<Markup> markup, Parser<Statement> statementParser) {
-			return curry(MarkupAndStatementStatement.class).sequence(markup.many1(), statementParser);
+			return curry(MarkupAndStatement.class).sequence(markup.many1(), statementParser);
 		}
 		
 		

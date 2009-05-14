@@ -1,5 +1,5 @@
 /*
- * File			: EchoEmbeddingStatement.java
+ * File			: EchoExprStatement.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -20,17 +20,16 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.embedding.Embedding;
-import com.uva.se.wparse.model.expression.BinaryExpression;
+import com.uva.se.wparse.model.expression.Expression;
 
-public class EchoEmbeddingStatement implements Statement {
+public class EchoExpression implements Statement {
 
-	private static org.apache.log4j.Logger logger = Logger.getLogger(EchoEmbeddingStatement.class);
+	private static org.apache.log4j.Logger logger = Logger.getLogger(EchoExpression.class);
 	
-	private Embedding embedding;
+	private Expression expr;
 
-	public EchoEmbeddingStatement(Embedding embedding) {
-		this.embedding = embedding;
+	public EchoExpression(Expression expr) {
+		this.expr = expr;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -39,7 +38,7 @@ public class EchoEmbeddingStatement implements Statement {
 
 	@Override
 	public String toString() {
-		return embedding.toString();
+		return "echo " + expr.toString();
 	}
 	
 	

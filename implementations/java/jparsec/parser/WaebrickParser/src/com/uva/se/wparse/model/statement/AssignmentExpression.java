@@ -1,5 +1,5 @@
 /*
- * File			: MarkupExpressionStatement.java
+ * File			: AssignmentNormal.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -18,22 +18,22 @@
  */
 package com.uva.se.wparse.model.statement;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
-import com.uva.se.wparse.model.markup.Markup;
 
-public class MarkupExpressionStatement extends MarkupStatements implements Statement, Markup {
+public final class AssignmentExpression extends ValueObject implements Assignment {
 	
-	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpressionStatement.class);
+	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentExpression.class);
+	
+	
+	private String left;
+	private Expression right;
 
-	private Expression expr;
-
-	public MarkupExpressionStatement(List<Markup> markup, Expression expr){ 
-		super(markup);
-		this.expr = expr;
+	public AssignmentExpression(String left, Expression right) {
+		this.left = left;
+		this.right = right;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -42,12 +42,6 @@ public class MarkupExpressionStatement extends MarkupStatements implements State
 
 	@Override
 	public String toString() {
-		return super.toString() + " " + expr;
-	};
-	
-	
-	
-	
-	
-	
+		return left + " = " + right;
+	}
 }

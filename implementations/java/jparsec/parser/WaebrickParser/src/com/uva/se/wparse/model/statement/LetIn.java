@@ -26,14 +26,14 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 
 
-public final class LetInStatement extends ValueObject implements Statement {
+public final class LetIn extends ValueObject implements Statement {
 	
-	private static org.apache.log4j.Logger logger = Logger.getLogger(LetInStatement.class);
+	private static org.apache.log4j.Logger logger = Logger.getLogger(LetIn.class);
 
 	private Object expr;
 	private ArrayList<Statement> stmt;
   
-  public LetInStatement( Object expr, ArrayList<Statement> stm) {
+  public LetIn( Object expr, ArrayList<Statement> stm) {
     this.expr = expr;
     this.stmt = stm;
     if (logger.isDebugEnabled()) {

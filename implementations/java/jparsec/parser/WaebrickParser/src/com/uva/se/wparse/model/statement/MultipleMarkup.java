@@ -1,5 +1,5 @@
 /*
- * File			: MarkupAndStatementStatement.java
+ * File			: MarkupStatements.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -23,20 +23,15 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.markup.Markup;
-import com.uva.se.wparse.util.Strings;
 
-
-
-public class MarkupAndStatementStatement implements Statement, Markup {
-
-	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupAndStatementStatement.class);
+public class MultipleMarkup implements Statement, Markup {
 	
-	private List<Markup> markup;
-	private Statement statement;
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MultipleMarkup.class);
 
-	public MarkupAndStatementStatement(List<Markup> markup, Statement statement){ 
+	private List<Markup> markup;
+
+	public MultipleMarkup(List<Markup> markup){ 
 		this.markup = markup;
-		this.statement = statement;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -45,7 +40,7 @@ public class MarkupAndStatementStatement implements Statement, Markup {
 
 	@Override
 	public String toString() {
-		return Strings.join(" ", markup) + " " + statement;
+		return markup.toString();
 	};
 	
 	

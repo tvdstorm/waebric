@@ -1,5 +1,5 @@
 /*
- * File			: AssignmentNormal.java
+ * File			: IfElseStatement.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -16,6 +16,7 @@
  * 
  * 
  */
+
 package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
@@ -23,17 +24,20 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 
-public final class AssignmentNormal extends ValueObject implements Assignment {
-	
-	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentNormal.class);
-	
-	
-	private String left;
-	private Expression right;
+public final class IfElse extends ValueObject implements Statement {
 
-	public AssignmentNormal(String left, Expression right) {
-		this.left = left;
-		this.right = right;
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(IfElse.class);
+
+	private Expression condition;
+	private Statement thenStatement;
+	private Statement elseStatement;
+
+	public IfElse(Expression condition, Statement thenStatement,
+			Statement elseStatement) {
+		this.condition = condition;
+		this.thenStatement = thenStatement;
+		this.elseStatement = elseStatement;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -42,6 +46,9 @@ public final class AssignmentNormal extends ValueObject implements Assignment {
 
 	@Override
 	public String toString() {
-		return left + " = " + right;
+		StringBuilder builder = new StringBuilder();
+		builder.append("if (").append(condition).append(") ").append(
+				thenStatement).append(" else ").append(elseStatement);
+		return builder.toString();
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * File			: EachStatement.java
+ * File			: MarkupExpressionStatement.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -18,24 +18,22 @@
  */
 package com.uva.se.wparse.model.statement;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.markup.Markup;
 
-public final class EachStatement extends ValueObject implements Statement {
+public class MarkupExpression extends MultipleMarkup implements Statement, Markup {
+	
+	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpression.class);
 
-	private static org.apache.log4j.Logger logger = Logger
-			.getLogger(EachStatement.class);
-
-	private String var;
 	private Expression expr;
-	private Statement stmt;
 
-	public EachStatement(String var, Expression expr, Statement stm) {
-		this.var = var;
+	public MarkupExpression(List<Markup> markup, Expression expr){ 
+		super(markup);
 		this.expr = expr;
-		this.stmt = stm;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -44,9 +42,12 @@ public final class EachStatement extends ValueObject implements Statement {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("each (").append(var).append(": ").append(expr).append(
-				") ").append(stmt);
-		return builder.toString();
-	}
+		return super.toString() + " " + expr;
+	};
+	
+	
+	
+	
+	
+	
 }
