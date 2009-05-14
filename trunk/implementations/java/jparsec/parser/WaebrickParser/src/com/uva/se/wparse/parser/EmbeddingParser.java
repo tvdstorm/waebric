@@ -24,7 +24,7 @@ import org.codehaus.jparsec.misc.Mapper;
 
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.embedding.MarkupEmbedding;
-import com.uva.se.wparse.model.embedding.MultipleMarkupEmbedding;
+import com.uva.se.wparse.model.embedding.MarkupEmbeddingList;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
 
@@ -44,7 +44,7 @@ public class EmbeddingParser {
 	}
 	
 	private Parser<Embedding> multipleEmbedding( Parser<Markup> markup, Parser<Expression> expression, Parser<Embedding> embeddingParser) {
-		return curry(MultipleMarkupEmbedding.class).sequence(markupEmbedding(markup, expression, embeddingParser).many());
+		return curry(MarkupEmbeddingList.class).sequence(markupEmbedding(markup, expression, embeddingParser).many());
 	}
 	
 	public Parser<Embedding> getParser(Parser<Markup> markup, Parser<Expression> expression) {

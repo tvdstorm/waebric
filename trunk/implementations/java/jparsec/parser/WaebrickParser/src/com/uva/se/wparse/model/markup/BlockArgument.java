@@ -34,7 +34,7 @@ public final class BlockArgument extends ValueObject implements Argument {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(BlockArgument.class);
 	
-	private List<Argument> args;
+	private List<Argument> args = null;
 
   public BlockArgument(List<Argument> args) {
     this.args = Collections.unmodifiableList(args);
@@ -45,6 +45,10 @@ public final class BlockArgument extends ValueObject implements Argument {
   }
   
   @Override public String toString() {
-    return "{" + Strings.join(" ", args) + "}";
+	  if(args != null){
+		  return "{" + Strings.join(" ", args) + "}";
+	  }else{
+		  return "{ }";
+	  }
   }
 }

@@ -18,17 +18,21 @@
  */
 package com.uva.se.wparse.model.expression;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
+
+import com.uva.se.wparse.util.Strings;
 
 
 public class SymbolConstant implements Expression {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SymbolConstant.class);
 
-	private Object symbol;
+	private String symbol;
 
-	public SymbolConstant(Object symbol) {
-		this.symbol = symbol;
+	public SymbolConstant(List<String> symbolParts) {
+		this.symbol = Strings.join("", symbolParts);
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());
 		}
