@@ -37,7 +37,6 @@ import javax.swing.WindowConstants;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 import com.uva.se.wparse.parser.DeclarationParser;
 import com.uva.se.wparse.parser.WeabrickParser;
-import com.uva.se.wparse.resource.ResourceLoader;
 import com.uva.se.wparse.resource.Resources;
 import com.uva.se.wparse.util.FileUtil;
 
@@ -55,8 +54,6 @@ public class ParserGui extends javax.swing.JFrame {
 	
 	private  String sourceData  = "";
 	
-	private ResourceLoader resourceLoader = ResourceLoader.getInstance();
-
 
 	public ParserGui() {
 		super();

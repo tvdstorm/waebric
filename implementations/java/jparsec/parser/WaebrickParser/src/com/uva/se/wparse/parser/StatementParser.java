@@ -126,8 +126,8 @@ public final class StatementParser {
     EmbeddingParser embedding = new EmbeddingParser();
     Parser<Embedding> embeddingParser = embedding.getParser(markup, expressionParser);
     
-    PredicateParser predicateParserContainer = new PredicateParser();
-    Parser<Predicate> predicateParser = predicateParserContainer.predicates(expressionParser);
+    //PredicateParser predicateParserContainer = new PredicateParser();
+    Parser<Predicate> predicateParser = PredicateParser.predicates(expressionParser);
     
     @SuppressWarnings("unchecked")
     Parser<Statement> parser = Parsers.or(

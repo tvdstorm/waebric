@@ -25,16 +25,16 @@ import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.functors.Binary;
 import org.codehaus.jparsec.misc.Mapper;
 
-import com.uva.se.wparse.model.expression.BinaryExpression;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.expression.Operator;
+import com.uva.se.wparse.model.predicate.OperatorPredicate;
 import com.uva.se.wparse.model.predicate.NotPredicate;
 import com.uva.se.wparse.model.predicate.Predicate;
 import com.uva.se.wparse.model.predicate.TypeCheckPredicate;
 
 public final class PredicateParser {
 
-	private Parser<Predicate> typeCheck(Parser<Expression> expressionParser) {
+	private static Parser<Predicate> typeCheck(Parser<Expression> expressionParser) {
 		return curry(TypeCheckPredicate.class).sequence(
 				expressionParser,
 				TerminalParser.term("."),
@@ -47,12 +47,12 @@ public final class PredicateParser {
 	}
 	
 	
-	private Parser<Predicate> notPredicate(Parser<Predicate> predicateParser) {
+	private static Parser<Predicate> notPredicate(Parser<Predicate> predicateParser) {
 		return curry(NotPredicate.class).sequence(
 				TerminalParser.term("!"), predicateParser );
 	}
 
-	public Parser<Predicate> predicates(Parser<Expression> expressionParser) {
+	public static Parser<Predicate> predicates(Parser<Expression> expressionParser) {
 		//create a expression parser that does not parse for the dot operator
 		Parser<Expression> expressionParserNoOperators = ExpressionParser.expressionParserNoOperator();
 		Parser.Reference<Predicate> ref = Parser.newReference();
@@ -75,7 +75,7 @@ public final class PredicateParser {
 	
 	
 	private static Parser<Binary<Predicate>> binary(Operator op) {
-	    return TerminalParser.term(op.toString()).next(curry(BinaryExpression.class, op).binary());
+	    return TerminalParser.term(op.toString()).next(curry(OperatorPredicate.class, op).binary());
 	}
 	
 	
