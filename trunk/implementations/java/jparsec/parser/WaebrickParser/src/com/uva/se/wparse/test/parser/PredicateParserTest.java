@@ -38,8 +38,7 @@ public class PredicateParserTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		expressionParser = ExpressionParser.expression(null);
-		PredicateParser predicateParserContainer = new PredicateParser();
-		predicateParser = predicateParserContainer.predicates(expressionParser);
+		predicateParser = PredicateParser.predicates(expressionParser);
 	}
 
 	protected void tearDown() throws Exception {

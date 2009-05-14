@@ -16,22 +16,23 @@
  * 
  * 
  */
-package com.uva.se.wparse.model.expression;
+package com.uva.se.wparse.model.predicate;
 
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
-import com.uva.se.wparse.model.predicate.Predicate;
+import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.expression.Operator;
 
-public final class BinaryExpression extends ValueObject implements Expression, Predicate {
+public final class OperatorPredicate extends ValueObject implements Expression, Predicate {
 
-	private static org.apache.log4j.Logger logger = Logger.getLogger(BinaryExpression.class);
+	private static org.apache.log4j.Logger logger = Logger.getLogger(OperatorPredicate.class);
 
 	public final Expression left;
 	public final Operator op;
 	public final Expression right;
 
-	public BinaryExpression(Expression left, Operator op, Expression right) {
+	public OperatorPredicate(Expression left, Operator op, Expression right) {
 		this.left = left;
 		this.op = op;
 		this.right = right;

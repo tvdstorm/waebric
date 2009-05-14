@@ -22,15 +22,15 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 
-public final class IdentDotExpression extends ValueObject implements Expression {
+public final class ExpressionDotIdentifier extends ValueObject implements Expression {
 
 	private static org.apache.log4j.Logger logger = Logger
-			.getLogger(IdentDotExpression.class);
-	private String ident;
+			.getLogger(ExpressionDotIdentifier.class);
+	private Expression identifier;
 	private Expression expr;
 
-	public IdentDotExpression(String ident, Expression expr) {
-		this.ident = ident;
+	public ExpressionDotIdentifier(Expression identifier, Operator op, Expression expr) {
+		this.identifier = identifier;
 		this.expr = expr;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
@@ -40,6 +40,6 @@ public final class IdentDotExpression extends ValueObject implements Expression 
 
 	@Override
 	public String toString() {
-		return expr + "." + ident;
+		return expr + "." + identifier;
 	}
 }

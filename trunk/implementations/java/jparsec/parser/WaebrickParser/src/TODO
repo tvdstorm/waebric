@@ -31,9 +31,9 @@ example
 	
 	AssignmentArgument rename naar varAssignment
 	
-	classes in statement package niet allemaal op statement laten eindigen
+	//classes in statement package niet allemaal op statement laten eindigen
 	
-	declaration package wordt module
+	//declaration package wordt module
 	
 	MarkupExpressionEmbed wordt MarkupExpression
 	

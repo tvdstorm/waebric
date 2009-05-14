@@ -21,7 +21,7 @@ package com.uva.se.wparse.model.statement;
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.embedding.Embedding;
-import com.uva.se.wparse.model.expression.BinaryExpression;
+import com.uva.se.wparse.model.predicate.OperatorPredicate;
 
 public class EchoEmbedding implements Statement {
 

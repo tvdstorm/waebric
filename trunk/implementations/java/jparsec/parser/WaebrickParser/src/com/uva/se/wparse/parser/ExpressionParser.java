@@ -27,10 +27,10 @@ import org.codehaus.jparsec.TokenMap;
 import org.codehaus.jparsec.functors.Binary;
 import org.codehaus.jparsec.misc.Mapper;
 
-import com.uva.se.wparse.model.expression.BinaryExpression;
 import com.uva.se.wparse.model.expression.BlockExpression;
 import com.uva.se.wparse.model.expression.BlockKeyValueExpression;
 import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.expression.ExpressionDotIdentifier;
 import com.uva.se.wparse.model.expression.Identifier;
 import com.uva.se.wparse.model.expression.KeyValuePair;
 import com.uva.se.wparse.model.expression.NaturalExpression;
@@ -38,6 +38,7 @@ import com.uva.se.wparse.model.expression.Operator;
 import com.uva.se.wparse.model.expression.StringLiteral;
 import com.uva.se.wparse.model.expression.SymbolConstant;
 import com.uva.se.wparse.model.module.ModuleBody;
+import com.uva.se.wparse.model.predicate.OperatorPredicate;
 
 public class ExpressionParser {
 
@@ -164,7 +165,7 @@ public class ExpressionParser {
 
 	private static Parser<Binary<Expression>> binary(Operator op) {
 		return TerminalParser.term(op.toString()).next(
-				curry(BinaryExpression.class, op).binary());
+				curry(ExpressionDotIdentifier.class, op).binary());
 	}
 
 	private static Mapper<Expression> curry(Class<? extends Expression> clazz,
