@@ -1,0 +1,12 @@
+/* Multi line comments, muhahah!!! 
+ * Author: Jeroen van Schagen
+ */
+module test
+
+	def main
+		html {
+			// Single line comments, still deadly
+			head title "Hello comments";
+			body p "Hello comments";
+		}
+	end
