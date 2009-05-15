@@ -1,5 +1,6 @@
 module test
 
+	/*Comments muhahah*/
 	def main 
 		html { 
 			head title "Hello";
