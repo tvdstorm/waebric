@@ -195,6 +195,11 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 	
+	public void testMarkupMethodCallInsideBlock() {
+		String source = "{header(\"Abonnee worden?\");}";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
 	public void testIfPredicateNoElse() {
 		String source = "if ( myList.list? ) echo \"myList is a list\" ;";
 		TerminalParser.parse(statemenParser, source);
@@ -216,9 +221,10 @@ public class StatementParserTest extends TestCase {
 	}
 	
 	public void testMarkupMethod(){
-		String source = "header(\"Literaire Prijs de Brandende Pen 2007\");";
+		String source = "header (\"Literaire Prijs de Brandende Pen 2007\");";
 		TerminalParser.parse(statemenParser, source);
 	}
+	
 	
 	public void testMarkupWithUrl(){
 		String source = "td a(href=\"http://www.nrcboeken.nl/nieuws/jan-aelberts-wint-brandende-pen\") img(height=30, src=\"images/logos/nrcboeken_logo.gif\");";
@@ -263,6 +269,16 @@ public class StatementParserTest extends TestCase {
 	
 	public void testEchoStringWithBlockComment(){
 		String source = "echo \"test commentline\";  /* this is comment line1 \n comment line2 */ ";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testSingleMarkup(){
+		String source = "markuptest;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testSingleMarkupWithDash(){
+		String source = "markuptest-with-dash;";
 		TerminalParser.parse(statemenParser, source);
 	}
 	

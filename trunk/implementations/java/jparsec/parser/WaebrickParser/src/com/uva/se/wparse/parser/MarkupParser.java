@@ -20,7 +20,6 @@ package com.uva.se.wparse.parser;
 
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
-import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.misc.Mapper;
 
 import com.uva.se.wparse.model.expression.Expression;
@@ -34,7 +33,7 @@ public class MarkupParser {
 
 
 	public static Parser<Markup> markupDesignator(Parser<Attribute> attributeParser) {
-		return curry(Designator.class).sequence(Terminals.Identifier.PARSER, attributeParser.many());
+		return curry(Designator.class).sequence(ExpressionParser.IDENTIFIER.source(), attributeParser.many());
 	}
 	
 	//this method is used for arguments that are quoted
@@ -51,7 +50,6 @@ public class MarkupParser {
 		Parser<Argument> argParser = argumentParser.arguments(expr);
 		Parser<Attribute> attributeParser = AttributeParser.attributes();
 		Parser<Markup> parser = Parsers.or(
-				//markupArguments2(attributeParser, argumentParser) ,
 			markupArguments(attributeParser, argParser, expr) ,
 			markupDesignator(attributeParser)
 			

@@ -18,6 +18,8 @@
  */
 package com.uva.se.wparse.test.parser;
 
+import java.util.regex.Pattern;
+
 import junit.framework.TestCase;
 
 import com.uva.se.wparse.model.module.ModuleDef;
@@ -54,7 +56,14 @@ public class DeclarationParserTest extends TestCase {
 	}
 	
 	public void testModuleWithMethod(){
-		String source = "module myModule def myDef end";
+		String source = "module myModule def myDef() end";
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
+		assertNotNull(md);
+	}
+	
+	public void testModuleWithMethodParameter(){
+		String source = "module myModule def myDef(\"param1\") end";
 		DeclarationParser declarationParser = new DeclarationParser(); 		
 		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
@@ -102,11 +111,39 @@ public class DeclarationParserTest extends TestCase {
 		assertNotNull(md);
 	}
 	
-	public void testModulWithSitee(){
+	public void testModulWithSite(){
 		String source = "module abon site site2/abonnementen.html: abonnementen() end"; 
 		DeclarationParser declarationParser = new DeclarationParser(); 		
 		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
+	}
+	
+	
+	public void testModulWithFunctionAndMarkup(){
+		String source = "module brand def func1 header(\"Abonnee worden?\"); end"; 
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
+		assertNotNull(md);
+	}
+	
+	
+	public void testModulWithFunctionAndSingleMarkup(){
+		String source = "module brand def func1 brandende-pen-500-test-pers; end"; 
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
+		assertNotNull(md);
+	}
+	
+	public void testModulWithFunctionNameWithDash(){
+		String source = "module brand def func1-name-500-func end"; 
+		DeclarationParser declarationParser = new DeclarationParser(); 		
+		ModuleDef md = declarationParser.parse(source);
+		assertNotNull(md);
+	}
+	
+	public void testRegexp(){
+		boolean b = Pattern.matches("^[A-Za-z][A-Za-z\\-0-9]*", "Test122-blaat");
+		assertTrue(b);
 	}
 	
 	

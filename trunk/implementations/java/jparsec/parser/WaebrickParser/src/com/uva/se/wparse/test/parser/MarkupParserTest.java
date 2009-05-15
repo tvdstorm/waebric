@@ -66,6 +66,11 @@ public class MarkupParserTest extends TestCase {
 		TerminalParser.parse(markupParser, source);
 	}
 	
+	public void testMarkupName(){
+		String source = "markup-with-dash";
+		TerminalParser.parse(markupParser, source);
+	}
+	
 	/**
 	 * This test must fail to succeed.
 	 */
@@ -122,11 +127,23 @@ public class MarkupParserTest extends TestCase {
 	
 	
 	public void testMarkDiffArgumentTypes(){
-		String source = "table(border='0, width='800, summary=\"Brandende Pen 2006 in de pers\")";
+		String source = "table(border='0#4, width='800, summary=\"Brandende Pen 2006 in de pers\")";
 		TerminalParser.parse(markupParser, source);
 	}
 	
+	public void testMarkupWithSymbolArgument(){
+		String source = "markup('symbol)";
+		TerminalParser.parse(markupParser, source);
+	}
+	
+	public void testMarkupWithAdvancedSymbolArgument(){
+		String source = "markup('images/brpen06_christiaanweijts.jpg)";
+		TerminalParser.parse(markupParser, source);
+	}
+	
+	
 	 
+	
 	
 
 

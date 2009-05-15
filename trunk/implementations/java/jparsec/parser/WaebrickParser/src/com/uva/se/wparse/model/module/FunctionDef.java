@@ -31,9 +31,9 @@ public final class FunctionDef extends ValueObject implements Member {
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(FunctionDef.class);
 
-	private String name;
-	private Argument arguments;
-	private List<Statement> statements;
+	private String name = "";
+	private Argument arguments = null;
+	private List<Statement> statements = null;
 
 	public FunctionDef(String name, Argument arguments, List<Statement> statements) {
 
@@ -45,6 +45,26 @@ public final class FunctionDef extends ValueObject implements Member {
 					+ " with values : " + toString());
 		}
 	}
+	
+	
+
+	public String getName() {
+		return name;
+	}
+
+
+
+	public Argument getArguments() {
+		return arguments;
+	}
+
+
+
+	public List<Statement> getStatements() {
+		return statements;
+	}
+
+
 
 	@Override
 	public String toString() {

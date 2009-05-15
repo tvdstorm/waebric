@@ -48,6 +48,16 @@ public class ExpressionParserTest extends TestCase {
 		terminal.parse(expressionParser, source);
 	}
 	
+	public void testIdentifier(){
+		String source = "varhead-vartail";
+		terminal.parse(expressionParser, source);
+	}
+	
+	public void testIdentifierMultipleDash(){
+		String source = "varhead-vartail---vartail2";
+		terminal.parse(expressionParser, source);
+	}
+	
 	public void testIdentDotExpression(){
 		String source = "var.var2";
 		terminal.parse(expressionParser, source);

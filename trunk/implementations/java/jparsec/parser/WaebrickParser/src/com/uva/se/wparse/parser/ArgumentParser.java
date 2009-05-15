@@ -20,7 +20,6 @@ package com.uva.se.wparse.parser;
 
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
-import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.misc.Mapper;
 
 import com.uva.se.wparse.model.expression.Expression;
@@ -34,12 +33,12 @@ public class ArgumentParser {
 
 	private Parser<Argument> assignmentArgument(Parser<Expression> expr) {
 		return curry(AssignmentArgument.class).sequence(
-				Terminals.Identifier.PARSER, TerminalParser.term("="),  expr);
+				ExpressionParser.IDENTIFIER.source(), TerminalParser.term("="),  expr);
 	}
 	
 	private Parser<Argument> assignmentArgumentString(Parser<Expression> expr) {
 		return curry(AssignmentArgument.class).sequence(
-				Terminals.Identifier.PARSER, TerminalParser.term("="),
+				ExpressionParser.IDENTIFIER.source(), TerminalParser.term("="),
 				ExpressionParser.STRING_LITERAL
 				);
 	}
