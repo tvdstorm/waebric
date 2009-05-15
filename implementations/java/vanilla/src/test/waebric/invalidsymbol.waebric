@@ -1,7 +1,8 @@
 module test
 
-	/*Comments muhahah*/
-	def main jeweettoch 
+	def main 
+		invalidsymbol 
+		
 		html { 
 			head title "Hello";
 			body p "Hello";
