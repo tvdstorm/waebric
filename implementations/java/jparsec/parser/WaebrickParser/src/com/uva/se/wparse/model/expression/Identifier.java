@@ -25,10 +25,10 @@ import com.uva.se.wparse.model.common.ValueObject;
 public final class Identifier extends ValueObject implements Expression {
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Identifier.class);
 
-	private String name;
+	private String identifier;
 
-	public Identifier(String name) {
-		this.name = name;
+	public Identifier(String identifier, String identifier2) {
+		this.identifier = identifier + identifier2;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());
 		}
@@ -36,6 +36,6 @@ public final class Identifier extends ValueObject implements Expression {
 
 	@Override
 	public String toString() {
-		return name;
+		return identifier;
 	}
 }

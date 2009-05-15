@@ -18,6 +18,8 @@
  */
 package com.uva.se.wparse.parser;
 
+import java.util.regex.Pattern;
+
 import org.codehaus.jparsec.OperatorTable;
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
@@ -38,7 +40,6 @@ import com.uva.se.wparse.model.expression.Operator;
 import com.uva.se.wparse.model.expression.StringLiteral;
 import com.uva.se.wparse.model.expression.SymbolConstant;
 import com.uva.se.wparse.model.module.ModuleBody;
-import com.uva.se.wparse.model.predicate.OperatorPredicate;
 
 public class ExpressionParser {
 
@@ -94,14 +95,74 @@ public class ExpressionParser {
 			}
 
 			));
+	
+	
+	
+	public static Parser SYMBOL_TEXT = Parsers.sequence(Parsers
+			.token(new TokenMap<String>() {
+
+				public String map(Token token) {
+
+					String value = token.value().toString();
+					char[] chars = value.toCharArray();
+					for (int i = 0; i < chars.length; i++) {
+						if ((chars[i] < 31) || (chars[i] > 127)
+								|| (chars[i] == '\t') || (chars[i] == '\n')
+								|| (chars[i] == '\r') || (chars[i] == ';')
+								|| (chars[i] == ',') || (chars[i] == '>')
+								|| (chars[i] == ')')
+
+						) {
+							// the control and extend ascii chars are not
+							// supported.
+							return null;
+						}
+					}
+					return token.value().toString();
+				}
+
+			}
+
+			));
+	
+	
+	public static Parser ID_CON = Parsers.sequence(Parsers.token(new TokenMap<String>() {
+
+				public String map(Token token) {
+					
+					int prefixIndex = token.index() - 1;
+					if (prefixIndex > 0) {
+						// get the token to the left of the current token
+						char prefixChar = TerminalParser.getSource()
+								.charAt(prefixIndex);
+						if (prefixChar == ' ') {
+							return null; 
+						}
+					}
+					
+					String value = token.value().toString();
+					boolean isIdentifier = Pattern.matches("[A-Za-z\\-0-9]*", value);
+					if(!isIdentifier){
+						return null;
+					}
+					return token.value().toString();
+				}
+
+			}
+
+			));
 
 	
-	private static Parser<Expression> IDENTIFIER = curry(Identifier.class)
-			.sequence(Terminals.Identifier.PARSER);
+	public static Parser<Expression> IDENTIFIER = curry(Identifier.class).sequence(Terminals.Identifier.PARSER, ID_CON.many().source());
+			//.sequence(Terminals.Identifier.PARSER, Parsers.sequence( TerminalParser.term("-").many(), Terminals.Identifier.PARSER.many(),
+			//		Terminals.IntegerLiteral.PARSER.many() ).many().source()    );
 
+	/**
+	 * Not allowed are control characters 0-31, and extended ascii 127-255
+	 */
 	private static Parser<Expression> symbolConstant = curry(
 			SymbolConstant.class).sequence(TerminalParser.term("'"),
-					Parsers.or(/*Terminals.Identifier.PARSER*/  EMBEDDED_TEXT.many(), numberExpression())
+					Parsers.or(/*Terminals.Identifier.PARSER*/  SYMBOL_TEXT.many())
 			);
 
 	public static Parser<Expression> STRING_LITERAL = curry(

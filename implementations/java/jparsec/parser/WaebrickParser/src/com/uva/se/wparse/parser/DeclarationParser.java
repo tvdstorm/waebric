@@ -54,15 +54,16 @@ public final class DeclarationParser implements WeabrickParser {
         }));
   }
 
-  static Parser<Member> methodDef( Parser<Statement> stmt, Parser<Expression> expr,   Parser<Embedding> embedding  ) {
+  static Parser<Member> methodDef( Parser<Statement> statementParser, Parser<Expression> expr,   Parser<Embedding> embedding  ) {
 	  ArgumentParser argumentParser = new ArgumentParser();
 	  Parser<Argument>  argParser = argumentParser.arguments(expr);
 	  Parser<Argument>  blockArgParser = argumentParser.blockArgument(argParser);
 	  
     return Mapper.<Member>curry(FunctionDef.class).sequence(
-        TerminalParser.term("def"), Terminals.Identifier.PARSER,
+        TerminalParser.term("def"), ExpressionParser.IDENTIFIER.source(),   //Terminals.Identifier.PARSER.source(),
         blockArgParser.optional(),
-        Parsers.or(stmt, expr, embedding).many(),
+        statementParser.many(),
+        //Parsers.or(stmt, expr, embedding).many(),
         TerminalParser.term("end"));
   }
   
