@@ -57,7 +57,6 @@ public final class PredicateParser {
 		Parser<Expression> expressionParserNoOperators = ExpressionParser.expressionParserNoOperator();
 		Parser.Reference<Predicate> ref = Parser.newReference();
 		Parser<Predicate> lazy = ref.lazy();
-		@SuppressWarnings("unchecked")
 		Parser<Predicate> parser = Parsers.or(
 						typeCheck(expressionParserNoOperators),
 						notPredicate(lazy));
@@ -67,9 +66,7 @@ public final class PredicateParser {
 	        .infixl(binary(Operator.AND), 10)
 	        .infixl(binary(Operator.OR), 10)
 	        .build(parser);
-	   // ref.set(parser);
-		
-		ref.set(parser);
+			ref.set(parser);
 		return parser;
 	}
 	

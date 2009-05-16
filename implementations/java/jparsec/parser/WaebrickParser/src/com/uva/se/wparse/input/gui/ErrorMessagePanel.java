@@ -10,6 +10,8 @@ import javax.swing.JTextArea;
 
 public class ErrorMessagePanel extends JPanel {
 
+	private static final long serialVersionUID = 6505744285671769458L;
+	
 	JScrollPane messageScrollPane = new JScrollPane();
 	JTextArea messageTextArea = new JTextArea();
 	String message;
@@ -21,6 +23,8 @@ public class ErrorMessagePanel extends JPanel {
 
 	}
 
+	
+	@SuppressWarnings("unused")
 	private ErrorMessagePanel() {
 	}
 
