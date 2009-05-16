@@ -19,8 +19,6 @@
 package com.uva.se.wparse.parser;
 
 import org.codehaus.jparsec.Parser;
-import org.codehaus.jparsec.Parsers;
-import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.misc.Mapper;
 
 import com.uva.se.wparse.model.markup.Markup;
@@ -30,30 +28,14 @@ public class MappingParser {
 
 	static Parser<Mapping> mappingDef(Parser<Markup> markup) {
 		return curry(Mapping.class).sequence(
-				//Terminals.Identifier.PARSER.sepBy(TerminalParser.term("/")), // dir
-				ExpressionParser.IDENTIFIER2.sepBy(TerminalParser.term("/")).followedBy(TerminalParser.term(".")), // dir
-				//TerminalParser.term("."),
+				ExpressionParser.PATH_ELEMENT.sepBy(TerminalParser.term("/")).followedBy(TerminalParser.term(".")), // dir
 				ExpressionParser.FILE_EXT, // extention
 				TerminalParser.term(":"),
-				markup
-				//, TerminalParser.term(";")
+				markup  //markup function call
 				);
 
 	}
 	
-//	static Parser<Mapping> mappingDef(Parser<Markup> markup) {
-//		return curry(Mapping.class).sequence(
-//				Terminals.Identifier.PARSER.sepBy(TerminalParser.term("/")), //path
-//				Terminals.Identifier.PARSER.source(), //filename
-//				TerminalParser.term("."),  
-//				Terminals.Identifier.PARSER, //extention
-//				TerminalParser.term(":"), 
-//				markup						//markup
-//				//TerminalParser.term(";")
-//				);
-//
-//	}
-//	
 
 
 	public static Parser<Mapping> mapping(Parser<Markup> markup) {

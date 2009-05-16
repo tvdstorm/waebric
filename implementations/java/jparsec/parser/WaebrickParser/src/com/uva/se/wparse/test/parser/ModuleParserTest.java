@@ -70,7 +70,7 @@ public class ModuleParserTest extends TestCase {
 	}
 	
 	public void testModuleWith2Methods(){
-		String source = "module myModule def myDef end def mydef-2() end";
+		String source = "module myModule def my-2-Def end def mydef-2() end";
 		ModuleParser declarationParser = new ModuleParser(); 		
 		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);

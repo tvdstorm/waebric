@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.expression.Identifier;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
@@ -30,12 +31,14 @@ public class Mapping extends ValueObject {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Mapping.class);
 
-	private List<String> path;
-	private String extention;
-	private Markup markup;
+	private List<Identifier> path = null;
+	private Identifier file = null;
+	private String extention = "";
+	private Markup markup = null;
 	
 	
-	public Mapping(List<String> path, String extention, Markup markup) {
+	public Mapping(List<Identifier> path, String extention, Markup markup) {
+		this.file = path.remove(path.size()-1);
 		this.path = path;
 		this.extention = extention;
 		this.markup = markup;
@@ -47,7 +50,7 @@ public class Mapping extends ValueObject {
 
 	@Override
 	public String toString() {
-		return Strings.join("/", path) + "." + extention + ":" + markup;
+		return Strings.join("/", path) + "/" + file + "." + extention + ":" + markup;
 	}
 	
 	
