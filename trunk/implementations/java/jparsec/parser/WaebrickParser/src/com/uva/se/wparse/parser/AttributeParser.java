@@ -30,14 +30,18 @@ import com.uva.se.wparse.model.markup.SingleAttribute;
 public class AttributeParser {
 	
 	static Parser<Attribute> singleAttribute() {
-		return curryAttribute(SingleAttribute.class).sequence(	Parsers.or(TerminalParser.term("#"), TerminalParser.term("."),
-						TerminalParser.term("$"), TerminalParser.term(":")), Terminals.Identifier.PARSER);
+		return curryAttribute(SingleAttribute.class).sequence(	Parsers.or(TerminalParser.term("#"),
+				TerminalParser.term("."), TerminalParser.term("$"), TerminalParser.term(":")),
+				ExpressionParser.IDENTIFIER.source()
+		);
 	}
 
 	static Parser<Attribute> multipleAttribute() {
 		return curryAttribute(MultipleAttribute.class).sequence(
 				TerminalParser.term("@"),
-				Terminals.IntegerLiteral.PARSER, Parsers.sequence(TerminalParser.term("%"),Terminals.IntegerLiteral.PARSER).optional());
+				Terminals.IntegerLiteral.PARSER,
+				Parsers.sequence(TerminalParser.term("%"),
+				Terminals.IntegerLiteral.PARSER).optional());
 	}
 	
 

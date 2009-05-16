@@ -30,7 +30,6 @@ public class SingleAttribute implements Attribute  {
 	
 	public SingleAttribute(Token symbolToken, String identifier) {
 		this.symbol = symbolToken.toString();
-		//this.symbol = symbol;
 		this.identifier = identifier;
 		 if (logger.isDebugEnabled()) {
 				logger.debug("Creating " + this.getClass().getSimpleName()
