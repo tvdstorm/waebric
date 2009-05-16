@@ -43,6 +43,7 @@ import com.uva.se.wparse.model.module.ModuleBody;
 
 public class ExpressionParser {
 
+	@SuppressWarnings("unchecked")
 	public static Parser LITERAL_TEXT = Parsers.sequence(Parsers
 			.token(new TokenMap<String>() {
 				public String map(Token token) {
@@ -68,6 +69,7 @@ public class ExpressionParser {
 
 			));
 
+	@SuppressWarnings("unchecked")
 	public static Parser EMBEDDED_TEXT = Parsers.sequence(Parsers
 			.token(new TokenMap<String>() {
 
@@ -97,7 +99,7 @@ public class ExpressionParser {
 			));
 	
 	
-	
+	@SuppressWarnings("unchecked")
 	public static Parser SYMBOL_TEXT = Parsers.sequence(Parsers
 			.token(new TokenMap<String>() {
 
@@ -125,7 +127,7 @@ public class ExpressionParser {
 
 			));
 	
-	
+	@SuppressWarnings("unchecked")
 	public static Parser ID_CON = Parsers.sequence(Parsers.token(new TokenMap<String>() {
 
 				public String map(Token token) {
@@ -151,7 +153,7 @@ public class ExpressionParser {
 			}
 
 			));
-	
+	@SuppressWarnings("unchecked")
 	public static Parser ID_CON_START = Parsers.sequence(Parsers.token(new TokenMap<String>() {
 
 		public String map(Token token) {
@@ -169,7 +171,7 @@ public class ExpressionParser {
 
 	));
 	
-
+	@SuppressWarnings("unchecked")
 	public static Parser FILE_EXT = Parsers.sequence(Parsers.token(new TokenMap<String>() {
 
 		public String map(Token token) {
@@ -196,6 +198,7 @@ public class ExpressionParser {
 	/**
 	 * Not allowed are control characters 0-31, and extended ascii 127-255
 	 */
+	@SuppressWarnings("unchecked")
 	private static Parser<Expression> symbolConstant = curry(
 			SymbolConstant.class).sequence(TerminalParser.term("'"),
 					Parsers.or(SYMBOL_TEXT.many())

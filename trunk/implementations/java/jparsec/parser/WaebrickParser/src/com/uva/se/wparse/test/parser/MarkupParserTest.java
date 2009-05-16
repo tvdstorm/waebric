@@ -23,11 +23,7 @@ import junit.framework.TestCase;
 import org.codehaus.jparsec.Parser;
 
 import com.uva.se.wparse.model.expression.Expression;
-import com.uva.se.wparse.model.markup.Argument;
-import com.uva.se.wparse.model.markup.Attribute;
 import com.uva.se.wparse.model.markup.Markup;
-import com.uva.se.wparse.parser.ArgumentParser;
-import com.uva.se.wparse.parser.AttributeParser;
 import com.uva.se.wparse.parser.ExpressionParser;
 import com.uva.se.wparse.parser.MarkupParser;
 import com.uva.se.wparse.parser.TerminalParser;

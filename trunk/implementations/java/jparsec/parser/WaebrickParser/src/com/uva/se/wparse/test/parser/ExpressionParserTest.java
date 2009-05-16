@@ -30,10 +30,8 @@ public class ExpressionParserTest extends TestCase {
 	
 
 	Parser<Expression> expressionParser = null;
-	TerminalParser terminal = null;
 
 	protected void setUp() throws Exception {
-		terminal = new TerminalParser();
 		expressionParser =  ExpressionParser.expression(null);
 	}
 
@@ -45,39 +43,39 @@ public class ExpressionParserTest extends TestCase {
 	
 	public void testVarExpression(){
 		String source = "var";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testIdentifier(){
 		String source = "varhead-vartail";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testIdentifierMultipleDash(){
 		String source = "varhead-vartail---vartail2";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testIdentifierMultipleDashWithNumbers(){
 		String source = "div.span-7.colborder";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testIdentDotExpression(){
 		String source = "var.var2";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}	
 	
 	public void testNaturalDotExpression(){
 		String source = "12345.var2";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	
 	public void testNotDotExpression(){
 		String source = "myList.list?";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -89,42 +87,42 @@ public class ExpressionParserTest extends TestCase {
 	
 	public void testBlockExpression(){
 		String source = "[var, var2, var3]";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testIdentBlockExpression(){
 		String source = "[var1, var2, var3].var4";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testKeyValueBlockExpression(){
 		String source = "{var1:var2, var2:var3, var4:var4}.var6";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testKeyValueExpression(){
 		String source = "{key:value, key2:value2}";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testNaturalExpression(){
 		String source = "123456";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testStringExpression(){
 		String source = "testString";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testAdvancedString(){
 		String source = "\"test ? with non a-zA-Z chars : & * % $ # @ !, . ( ) ^ 1 2 3 4 5 6 7 8 9 0 \"";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	public void testSymbolExpression(){
 		String source = "'symbolName";
-		terminal.parse(expressionParser, source);
+		TerminalParser.parse(expressionParser, source);
 	}
 	
 	
@@ -133,7 +131,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalIf() {
 		String source = "if";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -145,7 +143,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalComment() {
 		String source = "comment";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -157,7 +155,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalEcho() {
 		String source = "echo";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -169,7 +167,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalCdata() {
 		String source = "cdata";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -182,7 +180,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalEach() {
 		String source = "each";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -194,7 +192,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalLet() {
 		String source = "let";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -207,7 +205,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalYield() {
 		String source = "yield";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -219,7 +217,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalModule() {
 		String source = "module";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -231,7 +229,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalImport() {
 		String source = "import";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -243,7 +241,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalDef() {
 		String source = "def";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -255,7 +253,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalEnd() {
 		String source = "end";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);
@@ -268,7 +266,7 @@ public class ExpressionParserTest extends TestCase {
 	public void testIllegalSite() {
 		String source = "site";
 		try {
-			terminal.parse(expressionParser, source);
+			TerminalParser.parse(expressionParser, source);
 		} catch (Exception e) {
 			//failure of parsing the string was required to pass the test.
 			assertNull(null);

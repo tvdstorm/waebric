@@ -18,8 +18,6 @@
  */
 package com.uva.se.wparse.test.parser;
 
-import java.util.regex.Pattern;
-
 import junit.framework.TestCase;
 
 import com.uva.se.wparse.model.module.ModuleDef;

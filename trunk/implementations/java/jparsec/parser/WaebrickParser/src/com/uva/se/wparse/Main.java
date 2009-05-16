@@ -27,7 +27,6 @@ import com.uva.se.wparse.input.gui.ParserGui;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 import com.uva.se.wparse.parser.ModuleParser;
 import com.uva.se.wparse.parser.WeabrickParser;
-import com.uva.se.wparse.resource.ResourceLoader;
 import com.uva.se.wparse.resource.Resources;
 import com.uva.se.wparse.util.FileUtil;
 
