@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.input.gui.ParserGui;
 import com.uva.se.wparse.model.common.WabrickParseTree;
-import com.uva.se.wparse.parser.DeclarationParser;
+import com.uva.se.wparse.parser.ModuleParser;
 import com.uva.se.wparse.parser.WeabrickParser;
 import com.uva.se.wparse.resource.ResourceLoader;
 import com.uva.se.wparse.resource.Resources;
@@ -117,7 +117,7 @@ public class Main {
 				//read the contents of the file to a string.
 				String source = FileUtil.readFile(file);
 				//start the parser
-				WeabrickParser weabrickParser = new DeclarationParser();
+				WeabrickParser weabrickParser = new ModuleParser();
 				WabrickParseTree parseTree = weabrickParser.parse(source);
 				//done with parsing, now convert the parsetree to correct output.
 				

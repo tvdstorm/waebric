@@ -58,6 +58,11 @@ public class ExpressionParserTest extends TestCase {
 		terminal.parse(expressionParser, source);
 	}
 	
+	public void testIdentifierMultipleDashWithNumbers(){
+		String source = "div.span-7.colborder";
+		terminal.parse(expressionParser, source);
+	}
+	
 	public void testIdentDotExpression(){
 		String source = "var.var2";
 		terminal.parse(expressionParser, source);

@@ -35,7 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import com.uva.se.wparse.model.common.WabrickParseTree;
-import com.uva.se.wparse.parser.DeclarationParser;
+import com.uva.se.wparse.parser.ModuleParser;
 import com.uva.se.wparse.parser.WeabrickParser;
 import com.uva.se.wparse.resource.Resources;
 import com.uva.se.wparse.util.FileUtil;
@@ -101,6 +101,7 @@ public class ParserGui extends javax.swing.JFrame {
 		getContentPane().add(lblParserOutput, "1,2");
 		getContentPane().add(scrollArea, "1,3");
 
+		setTitle(Resources.GUI_TITLE.getResource());
 		//set the size of the gui
 		pack();
 		setSize(700, 300);
@@ -137,7 +138,7 @@ public class ParserGui extends javax.swing.JFrame {
 					showErrorDialog(error);
 				}
 
-				WeabrickParser weabrickParser = new DeclarationParser();
+				WeabrickParser weabrickParser = new ModuleParser();
 				WabrickParseTree parseTree = null;
 				try {
 					parseTree = weabrickParser.parse(sourceData);

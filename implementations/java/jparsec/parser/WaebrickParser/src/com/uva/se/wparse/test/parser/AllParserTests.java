@@ -33,7 +33,7 @@ public class AllParserTests {
 		suite.addTestSuite(EmbeddingParserTest.class);
 		suite.addTestSuite(AttributeParserTest.class);
 		suite.addTestSuite(MappingParserTest.class);
-		suite.addTestSuite(DeclarationParserTest.class);
+		suite.addTestSuite(ModuleParserTest.class);
 		suite.addTestSuite(MarkupParserTest.class);
 		suite.addTestSuite(ExpressionParserTest.class);
 		suite.addTestSuite(ArgumentParserTest.class);

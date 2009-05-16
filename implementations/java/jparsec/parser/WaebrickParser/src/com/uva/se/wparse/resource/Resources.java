@@ -3,6 +3,8 @@ package com.uva.se.wparse.resource;
 public enum Resources {
 	MAIN_ERROR_NOARGS("main.error.noargs"),
 	GUI_BUTTON_LOAD("gui.button.load"),
+	GUI_TITLE("gui.title"),
+	
 	
 	PARSER_ERROR("parser.error"),
 	FILE_ERROR("file.error"),
