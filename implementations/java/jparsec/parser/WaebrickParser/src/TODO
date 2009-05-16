@@ -18,17 +18,14 @@ Parser bugs
 example
 	 echo \"test\";  //comment line 
 
-2) multiple embedding inside literal string not recognized yet
-example
-	P "Contactredacteur <em "Erna Staal">, Lava-hoofdredacteur <em "Xavier van
-	    Leeuwe"> en literair agent <em "Paul Sebes">.";
+2) advanced let in statements like in over.wae do not parse correct yet.
 	    
 	    
 	    ----- terras opmerkingen  ----
 	    
 	//SingleAttribute mist de attribute tekens, maak hier aparte classes voor
 	
-	MultipleAttribute ook splitsen in een class met alleen width en 1 met width EN height.
+	//MultipleAttribute ook splitsen in een class met alleen width en 1 met width EN height.
 	
 	AssignmentArgument rename naar varAssignment
 	
