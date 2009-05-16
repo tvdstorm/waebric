@@ -75,45 +75,45 @@ public final class StatementParser {
 	    .sequence(TerminalParser.phrase("if ("), predicateParser, TerminalParser.term(")"), stmt).notFollowedBy(TerminalParser.term("else"));
 	}
 	
-	private static Parser<Statement> ifElseStatement(Parser<Predicate> predicateParser, Parser<Statement> stmt) {
+	private static Parser<Statement> ifElse(Parser<Predicate> predicateParser, Parser<Statement> stmt) {
 		return curry(IfElse.class)
 		    .sequence(TerminalParser.phrase("if ("), predicateParser, TerminalParser.term(")"), stmt, TerminalParser.term("else"), stmt);
 	}
 	
-	private static Parser<Statement> eachStatement(Parser<Expression> expr, Parser<Statement> stmt) {
+	private static Parser<Statement> each(Parser<Expression> expr, Parser<Statement> stmt) {
 		return curry(Each.class)
 		    .sequence(TerminalParser.phrase("each ("), Terminals.Identifier.PARSER, TerminalParser.term(":"), expr, TerminalParser.term(")"), stmt);
 	}
 	
-	private static Parser<Statement> blockStatement(Parser<Statement> stmt) {
+	private static Parser<Statement> block(Parser<Statement> stmt) {
 		return curry(Block.class)
 		    .sequence(TerminalParser.phrase("{"), stmt.many(), TerminalParser.term("}"));
 	}
 	
-	private static Parser<Statement> letInStatement(Parser<Assignment> ass, Parser<Statement> stmt) {
+	private static Parser<Statement> letIn(Parser<Assignment> ass, Parser<Statement> stmt) {
 		return curry(LetIn.class)
 		    .sequence(TerminalParser.term("let"), ass.many1(), TerminalParser.term("in"), stmt.many(), TerminalParser.term("end"));
 	}
 	
 	  
 
-	private	static Parser<Statement> markupStatement(Parser<Markup> markup) {
+	private	static Parser<Statement> markup(Parser<Markup> markup) {
 			return curry(MultipleMarkup.class).sequence(markup.atLeast(2), TerminalParser.term(";"));
 		}
 		
-	private	static Parser<Statement> singleMarkupStatement(Parser<Markup> markup) {
+	private	static Parser<Statement> singleMarkup(Parser<Markup> markup) {
 			return curry(SingleMarkup.class).sequence(markup, TerminalParser.term(";"));
 		}
 		
-	private	static Parser<Statement> markupExpressionStatement(Parser<Markup> markup, Parser<Expression> expr) {
+	private	static Parser<Statement> markupExpression(Parser<Markup> markup, Parser<Expression> expr) {
 			return curry(MarkupExpression.class).sequence(markup.many1(), expr, TerminalParser.term(";"));
 		}
 		
-	private	static Parser<Statement> markupEmbeddingStatement(Parser<Markup> markup, Parser<Embedding> embedding) {
+	private	static Parser<Statement> markupEmbedding(Parser<Markup> markup, Parser<Embedding> embedding) {
 			return curry(MarkupEmbedding.class).sequence(markup.many1(), TerminalParser.term("\""), embedding, TerminalParser.term("\""),  TerminalParser.term(";"));
 		}
 		
-	private	static Parser<Statement> markupAndStatementStatement(Parser<Markup> markup, Parser<Statement> statementParser) {
+	private	static Parser<Statement> markupAndStatement(Parser<Markup> markup, Parser<Statement> statementParser) {
 			return curry(MarkupAndStatement.class).sequence(markup.many1(), statementParser);
 		}
 		
@@ -125,28 +125,25 @@ public final class StatementParser {
     Parser<Assignment> assignmentParser = AssignmentParser.assignment(lazy, expressionParser);
     EmbeddingParser embedding = new EmbeddingParser();
     Parser<Embedding> embeddingParser = embedding.getParser(markup, expressionParser);
-    
-    //PredicateParser predicateParserContainer = new PredicateParser();
     Parser<Predicate> predicateParser = PredicateParser.predicates(expressionParser);
     
     @SuppressWarnings("unchecked")
     Parser<Statement> parser = Parsers.or(
-    	ifElseStatement(predicateParser, lazy),
+    	ifElse(predicateParser, lazy),
         ifStatement(predicateParser, lazy),
-        
-        eachStatement(expressionParser, lazy),
-        blockStatement(lazy),
-        letInStatement(assignmentParser, lazy),
+        each(expressionParser, lazy),
+        letIn(assignmentParser, lazy),
     	comment(),
-    	singleMarkupStatement(markup),
-    	markupEmbeddingStatement(markup, embeddingParser),
+    	singleMarkup(markup),
+    	markupEmbedding(markup, embeddingParser),
     	echoEmbedding(embeddingParser),
     	echo(expressionParser),
     	cdata(expressionParser),
     	yield(),
-    	markupStatement(markup),
-    	markupExpressionStatement(markup, expressionParser),
-     	markupAndStatementStatement(markup, lazy)
+    	markup(markup),
+    	markupExpression(markup, expressionParser),
+     	markupAndStatement(markup, lazy),
+     	block(lazy)
     	);
     ref.set(parser);
     return parser;

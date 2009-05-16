@@ -149,6 +149,13 @@ public class StatementParserTest extends TestCase {
 
 		TerminalParser.parse(statemenParser, source);
 	}
+	
+	public void testLetInComplexAssignment() {
+		String source = "let td(img, alt, pdf) = td(width=200) { img@160%160(src=img,alt=alt); " +
+						"br; a(href=pdf,target=\"_blank\") yield; } in echo \"in complex let statement\"; end";
+
+		TerminalParser.parse(statemenParser, source);
+	}
 
 	public void testMarkupStatementWithEmailAddress() {
 		String source = "p \"Stuur korte verhalen, gedichten, graphic stories en illustraties als attachment naar. "
@@ -287,6 +294,34 @@ public class StatementParserTest extends TestCase {
 	
 	public void testMarkupBlockWithNumber() {
 		String source = "div.span-getal.part5-555.colborder { uitreiking09;}";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupEmptyBlock() {
+		String source = "markup-prefix { }";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupLetInBlock() {
+		String source = "markup-prefix { let td(img, alt, pdf) = td(width=200) { img@160%160(src=img,alt=alt); " +
+		"br; a(href=pdf,target=\"_blank\") yield; } in echo \"in complex let statement\"; end  }";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupLetInBlockWithOtherStatements() {
+		String source = "markup-prefix { let td(img, alt, pdf) = td(width=200) { img@160%160(src=img,alt=alt); " +
+		"br; a(href=pdf,target=\"_blank\") yield; } in echo \"test\"; end comment \"test comment\"; }";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupSimpleLetInBlockWithOtherStatements() {
+		String source = "markup-prefix { let test = \"test2\" " +
+		"in echo \"test\"; end }";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupBlockNestingWithOtherStatements() {
+		String source = "markup-prefix { nested-markup { echo \"nested echo\"; } echo \"in complex let statement\"; yield; }";
 		TerminalParser.parse(statemenParser, source);
 	}
 
