@@ -286,5 +286,10 @@ public class StatementParserTest extends TestCase {
 		String source = "div.span-getal.colborder { uitreiking09;}";
 		TerminalParser.parse(statemenParser, source);
 	}
+	
+	public void testMarkupBlockWithNumber() {
+		String source = "div.span-getal.part5-555.colborder { uitreiking09;}";
+		TerminalParser.parse(statemenParser, source);
+	}
 
 }

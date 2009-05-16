@@ -186,7 +186,9 @@ public class ExpressionParser {
 
 	));
 	
-	public static Parser<Expression> IDENTIFIER = curry(Identifier.class).sequence(Terminals.Identifier.PARSER, ID_CON.many().source());
+	//public static Parser<Expression> IDENTIFIER = curry(Identifier.class).sequence(Terminals.Identifier.PARSER, ID_CON.many().source());
+	
+	public static Parser<Expression> IDENTIFIER = curry(Identifier.class).sequence(ID_CON_START.source(), ID_CON.many().source());
 	
 	public static Parser<Expression> PATH_ELEMENT = curry(Identifier.class).sequence(ID_CON_START.source(), ID_CON.many().source());
 	
