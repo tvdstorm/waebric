@@ -24,7 +24,6 @@ import java.util.List;
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.Terminals;
-import org.codehaus.jparsec.Token;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.misc.Mapper;
 
@@ -61,7 +60,7 @@ public final class ModuleParser implements WeabrickParser {
 	  Parser<Argument>  blockArgParser = argumentParser.blockArgument(argParser);
 	  
     return Mapper.<Member>curry(FunctionDef.class).sequence(
-        TerminalParser.term("def"), ExpressionParser.IDENTIFIER.source(),   //Terminals.Identifier.PARSER.source(),
+        TerminalParser.term("def"), ExpressionParser.IDENTIFIER.source(),
         blockArgParser.optional(),
         statementParser.many(),
         TerminalParser.term("end"));
@@ -69,12 +68,10 @@ public final class ModuleParser implements WeabrickParser {
   
   
   static Parser<Member> siteDef( Parser<Mapping> mappingParser) {
-	  
-	// Parser<Token> p = Terminals.caseInsensitive(new String[0], new String[]{"site"}).token("site");
 	    return Mapper.<Member>curry(SiteDef.class).sequence(
 	       TerminalParser.term("site"),
-	        mappingParser.sepBy(TerminalParser.term(";")),
-	        TerminalParser.term("end"));
+	       mappingParser.sepBy(TerminalParser.term(";")),
+	       TerminalParser.term("end"));
 	  }
   
 

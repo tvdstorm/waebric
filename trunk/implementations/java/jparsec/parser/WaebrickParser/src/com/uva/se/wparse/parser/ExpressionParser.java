@@ -155,16 +155,7 @@ public class ExpressionParser {
 	public static Parser ID_CON_START = Parsers.sequence(Parsers.token(new TokenMap<String>() {
 
 		public String map(Token token) {
-			
-//			int prefixIndex = token.index() - 1;
-//			if (prefixIndex > 0) {
-//				// get the token to the left of the current token
-//				char prefixChar = TerminalParser.getSource()
-//						.charAt(prefixIndex);
-//				if (prefixChar == ' ') {
-//					return null; 
-//				}
-//			}
+
 			
 			String value = token.value().toString();
 			boolean isIdentifier = Pattern.matches("^[A-Za-z].*", value);
@@ -178,44 +169,7 @@ public class ExpressionParser {
 
 	));
 	
-	
-//	public static Parser PATH_ELEMENT = Parsers.sequence(Parsers
-//			.token(new TokenMap<String>() {
-//
-//				public String map(Token token) {
-//
-//					String value = token.value().toString();
-//					char[] chars = value.toCharArray();
-//					for (int i = 0; i < chars.length; i++) {
-//						if ((chars[i] < 31) || (chars[i] > 127)
-//								|| (chars[i] == '\t') || (chars[i] == '\n')
-//								|| (chars[i] == '\r') || (chars[i] == '.')
-//								|| (chars[i] == '/') || (chars[i] == '\\')
-//								|| (chars[i] == ' ')
-//
-//						) {
-//							
-//							return null;
-//						}
-//					}
-//					
-//					int index = token.index();
-//					if (index > 0) {
-//						// get the token to the left of the current token
-//						char postfixChar = TerminalParser.getSource()
-//								.charAt(index + token.length());
-//						if (postfixChar == '.') {
-//							return null; 
-//						}
-//					}
-//					return token.value().toString();
-//				}
-//
-//			}
-//
-//			));
-//	
-//
+
 	public static Parser FILE_EXT = Parsers.sequence(Parsers.token(new TokenMap<String>() {
 
 		public String map(Token token) {
@@ -234,24 +188,15 @@ public class ExpressionParser {
 	
 	public static Parser<Expression> IDENTIFIER = curry(Identifier.class).sequence(Terminals.Identifier.PARSER, ID_CON.many().source());
 	
-	public static Parser<Expression> IDENTIFIER2 = curry(Identifier.class).sequence(ID_CON_START.source(), ID_CON.many().source());
+	public static Parser<Expression> PATH_ELEMENT = curry(Identifier.class).sequence(ID_CON_START.source(), ID_CON.many().source());
 	
-	
-	
-//	public static Parser<Expression> PATH = curry(Identifier.class).sequence(ID_CON_START.source(), ID_CON.many().source());
-	
-//	public static Parser<Expression> PATH2 = curry(Identifier.class).sequence(Parsers.sequence(PATH_ELEMENT.source(),
-//			TerminalParser.term("/")).many1(), PATH_ELEMENT.source(), TerminalParser.term("."), FILE_EXT			);
-	
-	//.sequence(Terminals.Identifier.PARSER, Parsers.sequence( TerminalParser.term("-").many(), Terminals.Identifier.PARSER.many(),
-			//		Terminals.IntegerLiteral.PARSER.many() ).many().source()    );
 
 	/**
 	 * Not allowed are control characters 0-31, and extended ascii 127-255
 	 */
 	private static Parser<Expression> symbolConstant = curry(
 			SymbolConstant.class).sequence(TerminalParser.term("'"),
-					Parsers.or(/*Terminals.Identifier.PARSER*/  SYMBOL_TEXT.many())
+					Parsers.or(SYMBOL_TEXT.many())
 			);
 
 	public static Parser<Expression> STRING_LITERAL = curry(
