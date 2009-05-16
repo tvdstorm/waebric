@@ -1,16 +1,16 @@
 
 Todo list
 
-- create input interface
+
 - create output interface
-- design interfaces between application modules
+
 - create output generator
 - add javadoc comments
 - refactor code according to code complete.
 - exception handling
 - documentation
 - move text labels and message text to external resource file
-- test
+
 
 Parser bugs
 

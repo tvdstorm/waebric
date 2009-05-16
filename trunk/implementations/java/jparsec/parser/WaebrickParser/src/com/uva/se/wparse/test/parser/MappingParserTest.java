@@ -25,6 +25,8 @@ import org.codehaus.jparsec.Parser;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.model.module.Mapping;
+import com.uva.se.wparse.model.module.ModuleDef;
+import com.uva.se.wparse.parser.ModuleParser;
 import com.uva.se.wparse.parser.ExpressionParser;
 import com.uva.se.wparse.parser.MappingParser;
 import com.uva.se.wparse.parser.MarkupParser;
@@ -49,14 +51,36 @@ public class MappingParserTest extends TestCase {
 	
 	
 	public void testMapping(){
-		String source = " wpath1/xpath2/yfile.ext : idCon#desgn";
+		String source = "wpath1/xpath2/yfile.ext : idCon#desgn";
 		TerminalParser.parse(mappingParser, source);
 	}
 	
 	public void testMappingWithEmptyArgs(){
-		String source = " wpath1/xpath2/yfile.ext : idCon#desgn()";
+		String source = "wpath1/xpath2/yfile.ext : idCon#desgn()";
 		TerminalParser.parse(mappingParser, source);
 	}
+	
+	public void testMappingStartsWithSite(){
+		String source = "site/xpath2/yfile.ext : idCon#desgn()";
+		TerminalParser.parse(mappingParser, source);
+	}
+	
+	public void testMappingStartsWithSiteHtml(){
+		String source = "site/brandendepen.html: brandende-pen()";
+		TerminalParser.parse(mappingParser, source);
+	}
+	
+	public void testSiteMapping(){
+		String source = "site/abonnementen.html: abonnementen()"; 
+		TerminalParser.parse(mappingParser, source);
+	}
+	
+	public void testDebug(){
+		String source = "wpath1/xpath2/yfile.ext : bla";
+		TerminalParser.parse(mappingParser, source);
+	}
+	
+	
 
 
 }

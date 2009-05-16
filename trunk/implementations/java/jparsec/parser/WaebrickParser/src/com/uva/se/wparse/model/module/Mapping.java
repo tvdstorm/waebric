@@ -47,7 +47,7 @@ public class Mapping extends ValueObject {
 
 	@Override
 	public String toString() {
-		return Strings.join("/", path) + extention + ":" + markup;
+		return Strings.join("/", path) + "." + extention + ":" + markup;
 	}
 	
 	

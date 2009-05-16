@@ -151,10 +151,99 @@ public class ExpressionParser {
 			}
 
 			));
+	
+	public static Parser ID_CON_START = Parsers.sequence(Parsers.token(new TokenMap<String>() {
 
+		public String map(Token token) {
+			
+//			int prefixIndex = token.index() - 1;
+//			if (prefixIndex > 0) {
+//				// get the token to the left of the current token
+//				char prefixChar = TerminalParser.getSource()
+//						.charAt(prefixIndex);
+//				if (prefixChar == ' ') {
+//					return null; 
+//				}
+//			}
+			
+			String value = token.value().toString();
+			boolean isIdentifier = Pattern.matches("^[A-Za-z].*", value);
+			if(!isIdentifier){
+				return null;
+			}
+			return token.value().toString();
+		}
+
+	}
+
+	));
+	
+	
+//	public static Parser PATH_ELEMENT = Parsers.sequence(Parsers
+//			.token(new TokenMap<String>() {
+//
+//				public String map(Token token) {
+//
+//					String value = token.value().toString();
+//					char[] chars = value.toCharArray();
+//					for (int i = 0; i < chars.length; i++) {
+//						if ((chars[i] < 31) || (chars[i] > 127)
+//								|| (chars[i] == '\t') || (chars[i] == '\n')
+//								|| (chars[i] == '\r') || (chars[i] == '.')
+//								|| (chars[i] == '/') || (chars[i] == '\\')
+//								|| (chars[i] == ' ')
+//
+//						) {
+//							
+//							return null;
+//						}
+//					}
+//					
+//					int index = token.index();
+//					if (index > 0) {
+//						// get the token to the left of the current token
+//						char postfixChar = TerminalParser.getSource()
+//								.charAt(index + token.length());
+//						if (postfixChar == '.') {
+//							return null; 
+//						}
+//					}
+//					return token.value().toString();
+//				}
+//
+//			}
+//
+//			));
+//	
+//
+	public static Parser FILE_EXT = Parsers.sequence(Parsers.token(new TokenMap<String>() {
+
+		public String map(Token token) {
+			
+			String value = token.value().toString();
+			boolean isIdentifier = Pattern.matches("[A-Za-z0-9]*", value);
+			if(!isIdentifier){
+				return null;
+			}
+			return token.value().toString();
+		}
+
+	}
+
+	));
 	
 	public static Parser<Expression> IDENTIFIER = curry(Identifier.class).sequence(Terminals.Identifier.PARSER, ID_CON.many().source());
-			//.sequence(Terminals.Identifier.PARSER, Parsers.sequence( TerminalParser.term("-").many(), Terminals.Identifier.PARSER.many(),
+	
+	public static Parser<Expression> IDENTIFIER2 = curry(Identifier.class).sequence(ID_CON_START.source(), ID_CON.many().source());
+	
+	
+	
+//	public static Parser<Expression> PATH = curry(Identifier.class).sequence(ID_CON_START.source(), ID_CON.many().source());
+	
+//	public static Parser<Expression> PATH2 = curry(Identifier.class).sequence(Parsers.sequence(PATH_ELEMENT.source(),
+//			TerminalParser.term("/")).many1(), PATH_ELEMENT.source(), TerminalParser.term("."), FILE_EXT			);
+	
+	//.sequence(Terminals.Identifier.PARSER, Parsers.sequence( TerminalParser.term("-").many(), Terminals.Identifier.PARSER.many(),
 			//		Terminals.IntegerLiteral.PARSER.many() ).many().source()    );
 
 	/**

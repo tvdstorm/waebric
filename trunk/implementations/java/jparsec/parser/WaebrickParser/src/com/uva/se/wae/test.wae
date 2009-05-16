@@ -4,16 +4,21 @@ module brand
 import utils
 
 site
-  site2/brandendepen.html: brandendepen()
+  site2/brandendepen.html: brandende-pen()
 end
 
-def brandendepen
- layout singlecolumn {
-   bp2009;
+def brandende-pen
+ layout single-column {
+   bp-2009;
 
    header("Literaire Prijs de Brandende Pen 2007");
 
-
+    p "<em 'UTRECHT> - De Vlaamse schrijver <em "Joost Vandecasteele"> heeft afgelopen
+	  zaterdag literatuurprijs De Brandende Pen gewonnen. Zijn tekst
+	  &quot;Nooit meer vrede&quot; werd bekroond tot het beste korte verhaal van
+	  2007 door jury-leden <em "Hanneke Groenteman">, schrijver <em "Christiaan
+	    Weijts">, Contactredacteur <em "Erna Staal">, Lava-hoofdredacteur <em "Xavier van
+	    Leeuwe"> en literair agent <em "Paul Sebes">.";
     p "&quot;Het is een lekker vlerkerig verhaal vol humor. De dialogen zijn
 	  pakkend en de tekst roept sterke, filmische beelden op. Met zijn
 	  krachtige en vettige proza bereikt de auteur een idiote vaart die doet
@@ -35,22 +40,22 @@ def brandendepen
 	  stimuleren. Wij publiceren al dertien jaar de beste teksten van de
 	  nieuwste generatie auteurs. Voor meer informatie: 
            <a(href="http://www.lavaliterair.nl") 'http://www.lavaliterair.nl>.";
-    brandendepen2007fotos;
+    brandende-pen-2007-fotos;
 
     header("Uitreiking Brandende Pen 2006 in de pers");
     p "Klik op een afbeelding voor een vergroting.";
-    brandendepen2006pers;
+    brandende-pen-2006-pers;
     header("Uitreiking Brandende Pen 2006 in foto's");
-    brandendepen2006fotos();
+    brandende-pen-2006-fotos();
   }
 end
 
 
-def bp2009
+def bp-2009
 
     header("Jan Aelberts wint De Brandende Pen 2009");
 
-/*    p {
+    p {
       echo "<em "UTRECHT"> &mdash; De 23-jarige Vlaamse schrijver <em "Jan Aelberts"> heeft De
 Brandende Pen 2009 gewonnen voor het beste korte verhaal. De juryleden
 <em "Micha&euml;l Zeeman">, <em "Zeger van Herwaarden">, <em "Wilma de Rek"> en <em "Xavier van
@@ -61,7 +66,7 @@ de auteur zijn personages met oprechte interesse tegemoet treedt. Een
 verhaal over vriendschap, over Vlaanderen en zijn akkers, over de
 zelfkant van het stadsleven. Een eigentijdse Trainspotting met uppers,
 downers en alles ertussenin.&quot;";
-    }  */
+    }
 
     p { 
      echo "Schrijfster Basje Boer uit Amsterdam
@@ -84,7 +89,7 @@ in Lava 15.1 die te krijgen is in de betere boekhandel.";
 
 header("Brandende Pen 2009 in foto's");
 
-brandendepen2009fotos;
+brandende-pen-2009-fotos;
 
 header("Brandende Pen 2009 in de pers");
 
@@ -267,4 +272,88 @@ van de Brandende Pen 2009 wordt bekendgemaakt.";
 end
 
 
+def brandende-pen-2006-pers
+  let
+     td(img, thumb, medium, date) = td { 
+       a(target='_blank, href=img) 
+        img@139%100(border=0, src=thumb, align='left, alt=medium);
+        echo medium; br; echo date;
+      }
+  in
+             
+  table(border='0, width='800, summary="Brandende Pen 2006 in de pers") {
+    tr {
+      td('images/brpen06_pub_nrcnext.jpg, 'images/brpen06_pubthumb_nrcnext.jpg,
+		  "NRC Next", "8 november 2006");
+      td('images/brpen06_pub_telegraaf.jpg, 'images/brpen06_pubthumb_telegraaf.jpg,
+		  "De Telegraaf", "");
+      td('images/brpen06_pub_volkskrant.jpg, 'images/brpen06_pubthumb_volkskrant.jpg,
+		  "De Volkskrant", "");
+    }
+    tr {
+      td('images/brpen06_pub_nl30.jpg, 'images/brpen06_pubthumb_nl30.jpg,
+		  "NL30", "");
+      td('images/brpen06_pub_literaireprijzen.jpg, 'images/brpen06_pubthumb_literaireprijzen.jpg,
+		  "literaireprijzen.nl", "");
+      td('images/brpen06_pub_8weekly.jpg, 'images/brpen06_pubthumb_8weekly.jpg,
+		  "8 Weekly", "");  
+    }
+  }
+  end
+end
 
+def brandende-pen-2006-fotos
+  let 
+    td(img) = td(align='center) img@343%223(src=img, alt="Brandende Pen");
+  in
+   table(summary="Foto's Brandende Pen 2006") {
+    tr {
+      td('images/brpen06_christiaanweijts.jpg);
+      td('images/brpen06_christiaanfloorarieke.jpg);
+    }
+    tr {
+      td('images/brpen06_martinpietersechristiaanweijts.jpg);
+      td('images/brpen06_ministers.jpg);
+    }
+    tr {
+      td('images/brpen06_publiek.jpg);
+    }
+   }
+  end
+end
+
+def brandende-pen-2007-fotos
+  let 
+    td(img) = td(align='center) img@336%223(border=0, src=img, alt="Brandende Pen");
+  in
+   table(summary="Brandende Pen 2007") {
+    tr {
+      td('images/brpen07_04.jpg); td('images/brpen07_02.jpg);
+    }
+    tr {
+      td('images/brpen07_01.jpg); td('images/brpen07_03.jpg);
+    }
+    tr {
+      td('images/brpen07_05.jpg); td('images/brpen07_06.jpg);
+    }
+   }
+  end
+end
+
+def brandende-pen-2009-fotos
+  let 
+    td(img) = td(align='center) img(height=225,border=0, src=img, alt="Brandende Pen");
+  in
+   table(summary="Brandende Pen 2009") {
+    tr {
+      td('images/jury.jpg); td('images/joost.jpg);
+    }
+    tr {
+      td('images/zeeman.jpg); td('images/jan.jpg);
+    }
+    tr {
+      td('images/janlezend.jpg); td('images/derekzeeman.jpg);
+    }
+   }
+  end
+end
