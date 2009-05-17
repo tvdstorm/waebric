@@ -5,7 +5,6 @@
 %options template=dtParserTemplateD.g
 %options import_terminals=ExprLexer.g
 %options lalr=2
-%options backtrack
 %options parent_saved
 
 %Terminals
@@ -17,6 +16,8 @@
     PreText
     MidText
     PostText
+    AND_AND
+    OR_OR
            
     module 
     site 
@@ -49,8 +50,10 @@
     SLASH     ::= '/'
     SHARP     ::= '#'
     EQUAL     ::= '='
-    XOR     ::= '^' 
-    
+    XOR       ::= '^' 
+    NOT       ::= '!'
+    AND       ::= '&'
+	OR        ::= '|'    
     
 %End
 
@@ -204,15 +207,13 @@
     -- Statememt
     --
         
-    Statement ::= StatementEach | StatementLet | StatementComment | StatementBlock | StatementEchoExpression | StatementEchoEmbedding | StatementCData | StatementYield | StatementIf
+    Statement ::= StatementEach | StatementLet | StatementComment | StatementBlock | StatementEchoExpression | StatementEchoEmbedding | StatementCData | StatementYield | StatementIf | StatementMarkup
     
-    --StatementIf ::= 'if' '(' Predicate ')' Statement StatementElseOpt
-    StatementIf ::= 'if' '(' Predicate ')' Statement
-    StatementIfElse ::= StatementIf 'else' Statement
+    StatementIf ::= 'if' '(' Predicate ')' Statement StatementElseOpt
     
-    --StatementElseOpt ::= %empty | 'else' Statement
+    StatementElseOpt ::= %empty | 'else' Statement
     
-    StatementEach ::= 'each' '(' Var ':' Expression ')' Statement
+    StatementEach ::= 'each' '(' Var ':' Expression ')' Statement 
     
     StatementLet ::= 'let' Assignments 'in' StatementOpt 'end'
     
@@ -222,11 +223,13 @@
     
     -- TODO: fix StringLiteral
     
-    StatementComment ::= 'comment' 'StringLiteral' ';'
+    StatementComment ::= 'comment' ExpressionString ';'
     StatementEchoExpression ::= 'echo' Expression ';'
     StatementEchoEmbedding ::= 'echo' Embedding ';'
     StatementCData ::= 'cdata' Expression ';'
     StatementYield ::= 'yield' ';'
+    
+    StatementMarkup ::= Markup ";"
 
 	--
 	-- Type
@@ -239,6 +242,11 @@
     --	
     
     Predicate ::= Expression | Expression '.' Type
+    
+    Predicate ::= '!' Predicate
+    -- can not place 2 token next to each other
+    Predicate ::= '(' Predicate ')' 'AND_AND'$AndPredicate '(' Predicate ')'
+    Predicate ::= '(' Predicate ')' 'OR_OR'$OrPredicate '(' Predicate ')'
     
     --
     -- Var
@@ -255,7 +263,7 @@
     --
     -- Designator
     --
-    
+    -- TODO: designator seems not to be completed? (IdCon...)
     Designator ::= 'IDENTIFIER'$Name AttributeOpt
     
     -- 
@@ -286,9 +294,4 @@
     Name ::= 'IDENTIFIER'$Name
     
     
-    
-    
-    
-    
-
 %End            
