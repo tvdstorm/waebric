@@ -62,9 +62,16 @@ public class AssignmentParserTest extends TestCase {
 
 	
 	public void testAssignmentNormal(){
-		String source = "identifier = testvalue";
+		String source = "identifier = testvalue;";
 		TerminalParser.parse(assignmentParser, source);
 	}
+	
+	public void testAssignmentWithRul(){
+		String source = "link = \"http://www.vpro.nl/programma/deavonden/afleveringen/34639264/items/35915764/media/35915897/\";";
+		TerminalParser.parse(assignmentParser, source);
+	}
+	
+	
 	
 
 

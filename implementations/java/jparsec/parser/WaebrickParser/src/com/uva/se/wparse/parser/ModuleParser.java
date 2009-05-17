@@ -62,8 +62,9 @@ public final class ModuleParser implements WeabrickParser {
     return Mapper.<Member>curry(FunctionDef.class).sequence(
         TerminalParser.term("def"), ExpressionParser.IDENTIFIER.source(),
         blockArgParser.optional(),
-        statementParser.many(),
-        TerminalParser.term("end"));
+        statementParser.many(),  
+        TerminalParser.term("end")
+        );
   }
   
   
@@ -71,7 +72,8 @@ public final class ModuleParser implements WeabrickParser {
 	    return Mapper.<Member>curry(SiteDef.class).sequence(
 	       TerminalParser.term("site"),
 	       mappingParser.sepBy(TerminalParser.term(";")),
-	       TerminalParser.term("end"));
+	       TerminalParser.term("end")
+	       );
 	  }
   
 
