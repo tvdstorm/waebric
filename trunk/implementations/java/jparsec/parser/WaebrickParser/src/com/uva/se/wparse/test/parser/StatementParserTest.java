@@ -310,12 +310,12 @@ public class StatementParserTest extends TestCase {
 	
 	public void testMarkupLetInBlockWithOtherStatements() {
 		String source = "markup-prefix { let td(img, alt, pdf) = td(width=200) { img@160%160(src=img,alt=alt); " +
-		"br; a(href=pdf,target=\"_blank\") yield; } in echo \"test\"; end comment \"test comment\"; }";
+		"br; a(href=pdf,target=\"_blank\") yield; } in echo \"test\"; end comment \"test\"; }";
 		TerminalParser.parse(statemenParser, source);
 	}
 	
 	public void testMarkupSimpleLetInBlockWithOtherStatements() {
-		String source = "markup-prefix { let test = \"test2\" " +
+		String source = "markup-prefix { let test = \"test2\"; " +
 		"in echo \"test\"; end }";
 		TerminalParser.parse(statemenParser, source);
 	}
@@ -324,5 +324,26 @@ public class StatementParserTest extends TestCase {
 		String source = "markup-prefix { nested-markup { echo \"nested echo\"; } echo \"in complex let statement\"; yield; }";
 		TerminalParser.parse(statemenParser, source);
 	}
+	
+	
+	public void testMarkupUrl(){
+		String source = "li a(href=\"http://www.crosswinds.net/~rugdichter/\") \"RuGdichters\"; ";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testEchoJavaScript(){
+		String source = "echo \" var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\"); " +
+						"document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/ga.js' " +
+						"type='text/javascript'%3E%3C/script%3E\"));  \"; ";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testEchoNestedString(){
+		String source = "echo \" begin \" middle \"  end \" ;";
+		//source = source.replace("\"", "\\\"");
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	  
 
 }

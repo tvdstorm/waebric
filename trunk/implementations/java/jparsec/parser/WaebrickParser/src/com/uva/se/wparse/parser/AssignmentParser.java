@@ -35,7 +35,11 @@ import com.uva.se.wparse.model.statement.Statement;
 public final class AssignmentParser {
 	
 	  private static Parser<Assignment> assignmentNormal(Parser<Expression> expr) {
-		    return curry(AssignmentExpression.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term("="), expr); 
+		    return curry(AssignmentExpression.class).sequence(Terminals.Identifier.PARSER,
+		    		TerminalParser.term("="),
+		    		expr,
+		    		TerminalParser.term(";")
+		    		); 
 	  }
 	  
  

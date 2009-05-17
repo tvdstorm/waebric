@@ -145,6 +145,8 @@ public final class StatementParser {
      	markupAndStatement(markup, lazy),
      	block(lazy)
     	);
+    //Parser<Statement> parser2 = Parsers.or(parser, block(parser));
+    
     ref.set(parser);
     return parser;
   }
