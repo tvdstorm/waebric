@@ -2,7 +2,7 @@ module test
 
 	def main
 		html { 
-			head title "Hello";
-			body p "Hello";
+			head title "Hello world";
+			body p "Hello world";
 		}
 	end
