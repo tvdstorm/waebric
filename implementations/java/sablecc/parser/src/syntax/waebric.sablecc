@@ -8,7 +8,7 @@ Package org.sablecc.grammar.waebric;
 Helpers
 	all = [0x000 .. 0xffff];
 	input_character = [32..127];
-	not_star = [input_character - '*'];
+	not_star = [all - '*'];
 	not_star_not_slash = [not_star - '/'];
 	letter = ['a'..'z'] | ['A'..'Z'];
 	digit = ['0'..'9'];
@@ -17,18 +17,20 @@ Helpers
 	esc_quote = ('\\' | '\"');	
 	str_char = ('\n' | '\t' | '\"' | '\\' | '\' digit digit digit | [input_character - [[10 + 9] + ['"' + '\']]]);
 	
+	tab = 09; 
+	cf = 13;
+	lf = 10;
+	
 	// Used for text
-	text_char = [input_character - [['&' + '"'] + '<']];
+	basic_text_char = [[input_character + [[tab + cf] + lf]] - [['&' + '"'] + '<']];
 	text_char_ref = 
 		'&#' digit+ ';' |
 		'&#x' (digit | letter)+ ';';
 		
 	text_entity_ref = '&' (letter | '_' | '"') (letter | digit | '.' | '-' | '_' | ':')* ';';
 	
-States
-	normal,
-	site;
-
+	text_char = (basic_text_char | esc_quote | amp | text_char_ref | text_entity_ref);
+	
 Tokens
 	// Keywords
 	module = 'module';
@@ -48,8 +50,8 @@ Tokens
 	list = 'list';
 	record = 'record';
 	string = 'string';
-
-
+		
+		
 	// Separators
 	l_paren = '(';
 	r_paren = ')';
@@ -80,17 +82,17 @@ Tokens
 		'/*' (not_star_not_slash not_star* '*'+)* '/' |
 		'//' input_character* (13 | 10)+;
 		
-	whitespace = (' ' | 13 | 10 | 9)*;
+	whitespace = (' ' | cf | lf | tab)*;
 	
 	// Identifier
-	id_con = letter (letter | digit | minus)*;
+	id_con = letter (letter | digit | minus )*;
 	nat_con = digit+;
 	symbol_con = ''' [input_character - [[[')' + ' '] + [9 + 10]] + [[13 + ';'] + [',' + '>']]]]*;
 	str_con = '\"' str_char* '"';
-	
-	// Miscellaneous
-	filename = ([input_character - [[[' ' + 9] + [13 + 10]] + ['.' + '\']]])+ '.' (digit | letter)+;
-	text = '"' (text_char | esc_quote | amp | text_char_ref | text_entity_ref)* '"';		
+		
+		// Miscellaneous
+	filename = '[' ([input_character - [[[' ' + 9] + [13 + 10]] + ['.' + '\']]])+ '.' (digit | letter)+ ']';
+	text = '"' text_char* '"';		
 	pre_text = '"' text_char* '<';
 	post_text = '>' text_char* '"';
 	mid_text = '>' text_char* '<';	
@@ -109,21 +111,15 @@ Productions
 			T.module P.module_id P.module_element*
 		;
 	
-	module_id = 
-			{single}	T.id_con					
-		|	{multiple}	P.module_id T.dot T.id_con	
+	module_id  = 
+			{single}	T.id_con
+		|	{multiple}	P.module_id T.dot T.id_con
 		;
 
-/*
-	module_id {-> module_id} = 
-			{single}	T.id_con					{-> New module_id.single(id_con)}
-		|	{multiple}	P.module_id T.dot T.id_con	{-> New module_id.multiple(module_id, id_con)}
-		;
-	*/	
 	module_element = 
-			{function}	P.function	{-> New module_element.function(function)}
-		|	{import}	P.import	{-> New module_element.import(import)}
-		|	{site}		P.site		{-> New module_element.site(site)}
+			{function}	P.function
+		|	{import}	P.import
+		|	{site}		P.site
 		;
 	
 	// Imports
@@ -222,7 +218,7 @@ Productions
 		;
 	 
 	// Function
-	function {-> module_element} = 
+	function = 
 			T.def T.id_con P.formals P.statement* T.end
 		;
 	
@@ -300,16 +296,4 @@ Productions
 	embed = 
 //			{markup_markup}			[multiple]:P.markup* [single]:P.markup
 	/*|*/	{markup_expression}		P.markup* P.expression
-		;
-		
-Abstract Syntax Tree
-
-	modules =
-			module*
-		;
-		
-	module_element =
-			{function}	function
-		|	{import}	import
-		|	{site}		site
 		;
