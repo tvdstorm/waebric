@@ -1,4 +1,4 @@
-package org.waebric.gui;
+package org.waebric.adapter;
 /*
  * NOTES
  * AST Walker which creates graphical tree

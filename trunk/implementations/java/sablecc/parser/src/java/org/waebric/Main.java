@@ -8,7 +8,8 @@ import java.io.PushbackReader;
 import org.sablecc.grammar.waebric.lexer.Lexer;
 import org.sablecc.grammar.waebric.node.Start;
 import org.sablecc.grammar.waebric.parser.Parser;
-import org.waebric.gui.ASTDisplay;
+import org.waebric.adapter.ASTDisplay;
+import org.waebric.adapter.TreeWalker;
 
 public class Main {
 	public static void main (String args[])
@@ -26,6 +27,9 @@ public class Main {
 	
 	//	        Calculate calculator = new Calculate ();
 	//	        start.apply (calculator);
+		        
+		        TreeWalker walker = new TreeWalker();
+		        start.apply(walker);
 	
 		        ASTDisplay ad = new ASTDisplay ();
 		        start.apply (ad);
