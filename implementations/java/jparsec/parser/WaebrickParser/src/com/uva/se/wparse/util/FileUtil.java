@@ -22,7 +22,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
 import com.uva.se.wparse.exception.ArgumentNullException;
 
 /**
@@ -45,7 +44,7 @@ public class FileUtil {
 	 * @throws  IOException occurs when the file cannot be read
 	 * @throws  ArgumentNullException if the file isn't specified. 
 	 */
-	public static String readFile(File file) throws IOException,  ArgumentNullException {
+	public static String readFile(File file) throws IOException, ArgumentNullException {
 		
 		if(file == null) {
 			throw new ArgumentNullException("file");
