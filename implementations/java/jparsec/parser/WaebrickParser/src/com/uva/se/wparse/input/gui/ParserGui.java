@@ -137,11 +137,8 @@ public class ParserGui extends javax.swing.JFrame {
 					exception.printStackTrace();
 					String error = Resources.FILE_ERROR.getResource() + "\n" + exception.getMessage();
 					showErrorDialog(error);
-				} catch (ArgumentNullException exception) {
-					//TODO: Hier moet ik nog met Maarten overleggen. Ik vind het lelijk om de
-					//ArgumentNullException's door te laten flowen naar de frontend. 
-				}
-
+				} 
+				
 				WeabrickParser weabrickParser = new ModuleParser();
 				WabrickParseTree parseTree = null;
 				try {
