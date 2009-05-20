@@ -41,7 +41,6 @@ import com.uva.se.wparse.model.expression.Operator;
 import com.uva.se.wparse.model.expression.StringLiteral;
 import com.uva.se.wparse.model.expression.SymbolConstant;
 import com.uva.se.wparse.model.module.ModuleBody;
-import com.uva.se.wparse.model.statement.SingleMarkup;
 
 public class ExpressionParser {
 

@@ -61,7 +61,7 @@ public class ParserGui extends javax.swing.JFrame {
 	}
 
 	private void initGUI() {
-		/*the gui uses tablelaout, which uses 2 dimensional array with
+		/*the gui uses tablelayout, which uses 2 dimensional array with
 		the grid settings */
 		double size[][] = { { 10, TableLayout.FILL, 10, 100, 10 },
 				{ 20, 20, 20, TableLayout.FILL, 30 } };

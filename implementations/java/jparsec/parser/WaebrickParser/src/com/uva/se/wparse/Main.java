@@ -108,7 +108,7 @@ public class Main {
 	private void startCommandLineClient(String fileName){
 		File file = new File(fileName);
 		if(logger.isDebugEnabled()){
-			logger.debug("Loading filet: " + file.toString());
+			logger.debug("Loading file: " + file.toString());
 		}
 		try {
 			//check if the file exists
