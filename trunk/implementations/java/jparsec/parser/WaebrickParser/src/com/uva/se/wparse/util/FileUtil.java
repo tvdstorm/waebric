@@ -44,11 +44,9 @@ public class FileUtil {
 	 * @throws  IOException occurs when the file cannot be read
 	 * @throws  ArgumentNullException if the file isn't specified. 
 	 */
-	public static String readFile(File file) throws IOException, ArgumentNullException {
+	public static String readFile(File file) throws IOException {
 		
-		if(file == null) {
-			throw new ArgumentNullException("file");
-		}
+		assert (file != null) : "readFile.file is null";
 		
 		StringBuilder contents = new StringBuilder();
 		BufferedReader fileReader = new BufferedReader(new FileReader(file));
