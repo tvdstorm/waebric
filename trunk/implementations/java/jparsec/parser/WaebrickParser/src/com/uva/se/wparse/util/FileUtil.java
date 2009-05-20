@@ -23,21 +23,43 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.uva.se.wparse.exception.ArgumentNullException;
+
+/**
+ * A utility class with methods which can be used in the case of file access. 
+ */
 public class FileUtil {
 
-	public static String readFile(File file) throws IOException {
-		StringBuilder contents = new StringBuilder();
-		BufferedReader in = new BufferedReader(new FileReader(file));
-		String line = null;
-
-		while ((line = in.readLine()) != null) {
-			contents.append(line + "\n");
-
-		}
-		in.close();
-
+	/**
+	 * This token can be used for a new line in a file. 
+	 */
+	private static final String NEWLINETOKEN = "\n";
+	
+	/**
+	 * Reads the specified <i>file</i> and returns the contents of that 
+	 * file. 
+	 * 
+	 * @param 	The file to be read 
+	 * @return 	The file contents of the specified file
+	 * 
+	 * @throws  IOException occurs when the file cannot be read
+	 * @throws  ArgumentNullException if the file isn't specified. 
+	 */
+	public static String readFile(File file) throws IOException,  ArgumentNullException {
 		
+		if(file == null) {
+			throw new ArgumentNullException("file");
+		}
+		
+		StringBuilder contents = new StringBuilder();
+		BufferedReader fileReader = new BufferedReader(new FileReader(file));
+		
+		String line = null;
+		while ((line = fileReader.readLine()) != null) {
+			contents.append(line + NEWLINETOKEN);
+		}
+		fileReader.close();
+
 		return contents.toString();
 	}
-
 }
