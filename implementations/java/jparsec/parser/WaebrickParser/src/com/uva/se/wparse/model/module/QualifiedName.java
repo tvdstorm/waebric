@@ -26,7 +26,7 @@ import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
 public final class QualifiedName extends ValueObject {
-
+	
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(QualifiedName.class);
 	private List<String> names;
@@ -42,5 +42,10 @@ public final class QualifiedName extends ValueObject {
 	@Override
 	public String toString() {
 		return Strings.join(".", names);
+	}
+
+	@Override
+	protected String toTransformerOutput() {
+		return outputBracedBlock ( outputQuote(Strings.join(".", names) ) );
 	}
 }

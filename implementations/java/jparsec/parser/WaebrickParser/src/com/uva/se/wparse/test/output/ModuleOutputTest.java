@@ -17,7 +17,7 @@ public class ModuleOutputTest extends TestCase {
 	
 	public void testEmptyModuleOutput(){
 		String source = "module myModule";
-		String expectedOutput = "module(module-id([\"myModule\"]),[])";
+		String expectedOutput = "module(module-id([\"myModule\"]),empty)";
 		assertEquals(expectedOutput, getModuleParserOutput(source));
 	}	
 	
@@ -35,19 +35,19 @@ public class ModuleOutputTest extends TestCase {
 	
 	public void testModuleWithFunctionOutput(){
 		String source = "module myModule def myDef() end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"myDef\", empty, empty)])"; 
+		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"myDef\",empty,empty)])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
 	
 	public void testModuleWithMethodParameterOutput(){
 		String source = "module myModule def myDef(\"param1\") end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"myDef\", formals([\"param1\"), empty)])"; 
+		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"myDef\", formals([\"param1\"),empty)])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
 	
 	public void testModuleWithTwoMethodsParameterOutput(){
 		String source = "module myModule def my-2-Def end def mydef-2() end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"my-2-def\", empty, empty), def(\"mydef-2\", empty, empty)])"; 
+		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"my-2-def\",empty,empty), def(\"mydef-2\", empty, empty)])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
 

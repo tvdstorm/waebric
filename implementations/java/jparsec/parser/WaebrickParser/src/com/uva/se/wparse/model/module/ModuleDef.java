@@ -26,6 +26,10 @@ import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 
 public final class ModuleDef extends ValueObject implements WabrickParseTree {
+	
+	public static final String OUTPUT_MODULE		= "module";
+	public static final String OUTPUT_MODULE_ID		= "module-id";
+	public static final String OUTPUT_IMPORT		= "import";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(ModuleDef.class);
@@ -48,5 +52,26 @@ public final class ModuleDef extends ValueObject implements WabrickParseTree {
 	@Override
 	public String toString() {
 		return "module " + name + " \n" + imports + body.toString();
+	}
+	
+	@Override
+	public String getTransformerOutput() {
+	  	return toTransformerOutput();
+	}
+	
+	@Override
+	protected String toTransformerOutput() {
+		String moduleId = OUTPUT_MODULE_ID + outputBracedBlock( outputBracedList ( outputQuote(name) ) );
+		
+		String importList = OUTPUT_LIST_EMPTY;
+		if (!imports.isEmpty()){			
+			for(QualifiedName importItem: imports) {
+				importList = outputAddToList(importList, OUTPUT_IMPORT + importItem.toTransformerOutput());
+			}
+		}
+		
+		String moduleElements = outputBracedList ( outputAddToList ( importList, listToTransformerOutput(body) ) ) ;
+				
+		return OUTPUT_MODULE + outputBracedBlock ( outputAddToBlock ( moduleId, moduleElements ) );
 	}
 }

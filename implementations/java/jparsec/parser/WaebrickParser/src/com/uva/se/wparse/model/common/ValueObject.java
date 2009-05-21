@@ -34,8 +34,25 @@ import java.util.concurrent.ConcurrentMap;
  * {@code Object#toString()} on final fields.
  * 
  * @author Ben Yu
+ * @param <E>
+ * @param <T>
  */
 public abstract class ValueObject {
+	
+  public static final String OUTPUT_EMPTY_ELEMENT	= "";  
+  
+  public static final String OUTPUT_QUOTE	 		= "\"";
+  
+  public static final String OUTPUT_BLOCK_EMPTY		= "";
+  public static final String OUTPUT_BLOCK_BEGIN		= "(";
+  public static final String OUTPUT_BLOCK_SEPARATOR	= ",";
+  public static final String OUTPUT_BLOCK_END 		= ")";
+  
+  public static final String OUTPUT_LIST_EMPTY		= "empty";  
+  public static final String OUTPUT_LIST_BEGIN 		= "["; 
+  public static final String OUTPUT_LIST_SEPARATOR 	= ",";
+  public static final String OUTPUT_LIST_END 		= "]";
+  
   
   private volatile List<Object> fieldValues = null;
   
@@ -134,4 +151,82 @@ public abstract class ValueObject {
   }
   
   private static final Field[] NO_FIELD = new Field[0];
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ /* 
+  * Code for Output 
+  */
+  
+  
+  // Default output for a ValueObject
+  protected String toTransformerOutput() {
+	return OUTPUT_EMPTY_ELEMENT;
+  }
+  
+  protected String outputQuote(String textLiteralOutput) {
+	return OUTPUT_QUOTE + textLiteralOutput + OUTPUT_QUOTE;	  
+  }
+  
+  protected String outputQuote(ValueObject valueObject) {
+	return outputQuote(valueObject.toString());	  
+  }
+  
+  protected String outputAddToList(String list, String newListItem) {
+	if (newListItem == OUTPUT_LIST_EMPTY) {
+	  return list;
+	}
+	if (list == OUTPUT_LIST_EMPTY) {
+	  return newListItem;
+	}
+	return list + OUTPUT_LIST_SEPARATOR + newListItem;		  
+  }
+  
+  protected String listToTransformerOutput(ArrayList<? extends ValueObject> listToTransform) {
+    String Result = OUTPUT_LIST_EMPTY;    
+	for (ValueObject valueObject : listToTransform) {
+      Result = outputAddToList(Result, valueObject.toTransformerOutput());
+	}	  
+	return Result.toString();
+  }
+  
+  protected String outputBracedList(String unbracedList) {
+	if ((unbracedList != OUTPUT_LIST_EMPTY) && (unbracedList != "")) {  
+	  return OUTPUT_LIST_BEGIN + unbracedList + OUTPUT_LIST_END;
+	}
+	else
+	{
+	  return unbracedList;	
+	}
+  }
+  
+  protected String blockToTransformerOutput(ArrayList<? extends ValueObject> blockToTransform) {
+	String Result = OUTPUT_BLOCK_EMPTY;    
+	for (ValueObject valueObject : blockToTransform) {
+	  Result = outputAddToList(Result, valueObject.toTransformerOutput());
+	}	  
+	return Result.toString();
+  }
+ 
+  
+  protected String outputAddToBlock(String block, String newBlockItem) {
+	  if (newBlockItem == OUTPUT_BLOCK_EMPTY) {
+		  return block;
+	  }
+	  if (block == OUTPUT_BLOCK_EMPTY) {
+		  return newBlockItem;
+	  }
+	  return block + OUTPUT_BLOCK_SEPARATOR + newBlockItem;
+  }
+  
+  protected String outputBracedBlock(String unbracedBlock) {
+	  return OUTPUT_BLOCK_BEGIN + unbracedBlock + OUTPUT_BLOCK_END;
+  } 
+  
 }
