@@ -7,6 +7,6 @@ public class OutputTransformer implements WaebricParsetreeTransformer{
 	
 	public String transform(WabrickParseTree waebricParseTree){
 		
-		return "";
+		return waebricParseTree.getTransformerOutput();
 	}
 }
