@@ -1,0 +1,28 @@
+ometa Waebric <: Parser {
+  Module          = "module" space ModuleId space ModuleElement spaces end,
+
+  ModuleId        = listOf(#Id, '.'),
+
+  ModuleElement   = Site,
+
+  Site            = "site" spaces Mappings spaces "end",
+  Mappings        = listOf(#Mapping, ';'),
+  Mapping         = Path ":" Markup,
+  Path            = DirName "/" FileName | FileName,
+  DirName         = Directory,
+
+  Directory = spaces,
+  Markup = spaces,
+
+  Id              = letterOrDigit+
+
+}
+
+program = "
+           module homepage.cwi
+
+           site
+             index.html: home('Hello World')
+           end
+          "
+alert(Waebric.matchAll(program, "Module"))
