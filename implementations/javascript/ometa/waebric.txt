@@ -1,9 +1,32 @@
 
 ometa Waebric <: Parser {
 
+  Modules         = Module*,
   Module          = "module" space ModuleId space ModuleElement spaces end,
   ModuleId        = IdCon ("." IdCon)*,
-  ModuleElement   = Site,
+  ModuleElement   = FunctionDef
+                  | Import
+                  | Site,
+  
+  FunctionDef     = "def" IdCon Formals? Statement* "end",
+  Formals         = "(" (Var ",")* ")",
+  Statement       = "if" "(" Predicate ")" Statement
+                  | "if" "(" Predicate ")" Statement "else" Statement
+                  | "each" "(" Var ":" Expression ")" Statement
+                  | "let" Assignment+ "in" Statement* "end"
+                  | "{" Statement* "}"
+                  | "comment" StrCon ","
+                  | "echo" Expression ";"
+                  | "cdata" Expression ";"
+                  | "yield" ";"
+                  | Markup+ Statement
+                  | Markup ";"
+                  | Markup+ Markup ";"
+                  | Markup+ Expression ";"
+                  | Markup+ Embedding ";"
+
+  Import          = spaces,
+
   Site            = "site" spaces Mappings spaces "end",
   Mappings        = listOf(#Mapping, ';'),
   Mapping         = Path spaces ":" spaces Markup,
@@ -25,18 +48,18 @@ ometa Waebric <: Parser {
                   | "@" w:NatCon "%" h:NatCon
                   | "@" w:NatCon,
   Var             = IdCon,
-  IdCon           = letterOrDigit+,
+  IdCon           = letterOrDigit+ | "module" | "import" | "def" | "end" | "site",
   NatCon          = digit+,
-  SymbolCon       = "'" SymbolChar*,
-  SymbolChar      = ~("\t" | "\n" | "\r" | ";" | "," | ">" | 0-31 | 127-255)
+  SymbolCon       = "'" SymbolChar "'",
+  SymbolChar      = letterOrDigit+
   
 }
 
 program = "
-           module homepage.cwi.nl
+           module homepage
 
            site
-             index.html:home('HelloWorld')
+             index.html:home('Bonjour')
            end
           "
-alert(Waebric.matchAll(program, "Module"))
+alert(Waebric.matchAll(program, "Modules"))
