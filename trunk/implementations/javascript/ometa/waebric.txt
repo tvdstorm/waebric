@@ -1,3 +1,4 @@
+
 ometa Waebric <: Parser {
 
   Module          = "module" space ModuleId space ModuleElement spaces end,
@@ -26,14 +27,16 @@ ometa Waebric <: Parser {
   Var             = IdCon,
   IdCon           = letterOrDigit+,
   NatCon          = digit+,
-  SymbolCon       = ~("\t" | "\n" | "\r" | ";" | "," | ">" | 0-31 | 127-255)
+  SymbolCon       = "'" SymbolChar*,
+  SymbolChar      = ~("\t" | "\n" | "\r" | ";" | "," | ">" | 0-31 | 127-255)
+  
 }
 
 program = "
            module homepage.cwi.nl
 
            site
-             index.html:home(HelloWorld)
+             index.html:home('HelloWorld')
            end
           "
 alert(Waebric.matchAll(program, "Module"))
