@@ -1,4 +1,3 @@
-
 ometa Waebric <: Parser {
 
   Module          = "module" space ModuleId space ModuleElement spaces end,
@@ -14,23 +13,27 @@ ometa Waebric <: Parser {
   Argument        = Expression
                   | Var "=" Expression,
   Expression      = Var 
+                  | SymbolCon
                   | NatCon
                   | Expression "." IdCon
-                  | "'" Expression "'",
+                  | "[" listof(#Expression ',') "]"
+                  | "{" listof(#KeyValuePair ',') "}",
+  KeyValuePair    = IdCon ":" Expression,
   Designator      = IdCon,
   Attribute       = ("#" | "." | "$" | ":") IdCon
                   | "@" w:NatCon "%" h:NatCon
                   | "@" w:NatCon,
   Var             = IdCon,
   IdCon           = letterOrDigit+,
-  NatCon          = digit+
+  NatCon          = digit+,
+  SymbolCon       = ~("\t" | "\n" | "\r" | ";" | "," | ">" | 0-31 | 127-255)
 }
 
 program = "
            module homepage.cwi.nl
 
            site
-             index.html:home('test')
+             index.html:home(HelloWorld)
            end
           "
 alert(Waebric.matchAll(program, "Module"))
