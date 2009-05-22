@@ -1,19 +1,15 @@
+
 ometa Waebric <: Parser {
 
   Module          = "module" space ModuleId space ModuleElement spaces end,
-
-  ModuleId        = listOf(#IdCon, '.'),
-
+  ModuleId        = IdCon ("." IdCon)*,
   ModuleElement   = Site,
-
   Site            = "site" spaces Mappings spaces "end",
   Mappings        = listOf(#Mapping, ';'),
   Mapping         = Path spaces ":" spaces Markup,
   Path            = IdCon "." IdCon,
-
   Markup          = Designator Arguments
                   | Designator, 
-
   Arguments       = "(" listOf(#Argument, ',') ")",
   Argument        = Expression
                   | Var "=" Expression,
@@ -21,22 +17,17 @@ ometa Waebric <: Parser {
                   | NatCon
                   | Expression "." IdCon
                   | "'" Expression "'",
-  
-
   Designator      = IdCon,
   Attribute       = ("#" | "." | "$" | ":") IdCon
                   | "@" w:NatCon "%" h:NatCon
                   | "@" w:NatCon,
-
   Var             = IdCon,
   IdCon           = letterOrDigit+,
   NatCon          = digit+
-  
-
 }
 
 program = "
-           module homepage.cwi
+           module homepage.cwi.nl
 
            site
              index.html:home('test')
