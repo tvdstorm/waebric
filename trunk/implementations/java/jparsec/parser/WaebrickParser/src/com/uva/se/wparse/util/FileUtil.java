@@ -22,7 +22,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import com.uva.se.wparse.exception.ArgumentNullException;
 
 /**
  * A utility class with methods which can be used in the case of file access. 
