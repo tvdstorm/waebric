@@ -34,8 +34,6 @@ import java.util.concurrent.ConcurrentMap;
  * {@code Object#toString()} on final fields.
  * 
  * @author Ben Yu
- * @param <E>
- * @param <T>
  */
 public abstract class ValueObject {
 	
@@ -164,20 +162,39 @@ public abstract class ValueObject {
   * Code for Output 
   */
   
-  
-  // Default output for a ValueObject
+  /**
+   * Returns the contents of this node for the output transformer
+   * @return The contents of the current node in the ParserTree (Defaults to OUTPUT_EMPTY_ELEMENT) 
+   */
   protected String toTransformerOutput() {
 	return OUTPUT_EMPTY_ELEMENT;
   }
   
+  /**
+   * Puts quotes around a text literal.
+   * Allows for changing the type of quotes to be used with literals
+   * @param textLiteralOutput the literal to be surrounded by quotes
+   * @return literal surrounded by quotes
+   */
   protected String outputQuote(String textLiteralOutput) {
 	return OUTPUT_QUOTE + textLiteralOutput + OUTPUT_QUOTE;	  
   }
   
+  /**
+   * Puts quotes directly around the contents of a ValueObject
+   * @param valueObject the ValueObject having the contents to be quoted
+   * @return the ValueObject's contents with quotes
+   */
   protected String outputQuote(ValueObject valueObject) {
 	return outputQuote(valueObject.toString());	  
   }
   
+  /**
+   * Adds (a) new element(s) to a list in text form 
+   * @param list is an existing list in text form
+   * @param newListItem is/are (a) new item(s) to be added in text form
+   * @return New list with both the original list and the new item(s)
+   */
   protected String outputAddToList(String list, String newListItem) {
 	if (newListItem == OUTPUT_LIST_EMPTY) {
 	  return list;
@@ -188,6 +205,11 @@ public abstract class ValueObject {
 	return list + OUTPUT_LIST_SEPARATOR + newListItem;		  
   }
   
+  /**
+   * Transforms a List of ValueObjects into a list in text form
+   * @param listToTransform List of ValueObjects to be transformed
+   * @return list of contents of listToTransform in text form
+   */
   protected String listToTransformerOutput(ArrayList<? extends ValueObject> listToTransform) {
     String Result = OUTPUT_LIST_EMPTY;    
 	for (ValueObject valueObject : listToTransform) {
@@ -196,6 +218,11 @@ public abstract class ValueObject {
 	return Result.toString();
   }
   
+  /**
+   * puts list type braces around an unbraced list in text form  
+   * @param unbracedList list in text form, without braces
+   * @return the unbraced list with the begin and end braces for a list
+   */
   protected String outputBracedList(String unbracedList) {
 	if ((unbracedList != OUTPUT_LIST_EMPTY) && (unbracedList != "")) {  
 	  return OUTPUT_LIST_BEGIN + unbracedList + OUTPUT_LIST_END;
@@ -206,6 +233,27 @@ public abstract class ValueObject {
 	}
   }
   
+  /**
+   * Adds (a) new element(s) to a block in text form
+   * @param block is an existing block in text form 
+   * @param newBlockItem is/are (a) new item(s) to be added in text form
+   * @return New block with both the original block and the new item(s)
+   */
+  protected String outputAddToBlock(String block, String newBlockItem) {
+	if (newBlockItem == OUTPUT_BLOCK_EMPTY) {
+	  return block;
+	}
+	if (block == OUTPUT_BLOCK_EMPTY) {
+	  return newBlockItem;
+	}
+	return block + OUTPUT_BLOCK_SEPARATOR + newBlockItem;
+  }
+  
+  /**
+   * Transforms a List of ValueObjects into a block in text form
+   * @param blockToTransform List of ValueObjects to be transformed
+   * @return block of contents of listToTransform in text form
+   */
   protected String blockToTransformerOutput(ArrayList<? extends ValueObject> blockToTransform) {
 	String Result = OUTPUT_BLOCK_EMPTY;    
 	for (ValueObject valueObject : blockToTransform) {
@@ -214,17 +262,11 @@ public abstract class ValueObject {
 	return Result.toString();
   }
  
-  
-  protected String outputAddToBlock(String block, String newBlockItem) {
-	  if (newBlockItem == OUTPUT_BLOCK_EMPTY) {
-		  return block;
-	  }
-	  if (block == OUTPUT_BLOCK_EMPTY) {
-		  return newBlockItem;
-	  }
-	  return block + OUTPUT_BLOCK_SEPARATOR + newBlockItem;
-  }
-  
+  /**
+   * puts block type braces around an unbraced block in text form  
+   * @param unbracedBlock block in text form, without braces
+   * @return the unbraced list with the begin and end braces for a block
+   */
   protected String outputBracedBlock(String unbracedBlock) {
 	  return OUTPUT_BLOCK_BEGIN + unbracedBlock + OUTPUT_BLOCK_END;
   } 
