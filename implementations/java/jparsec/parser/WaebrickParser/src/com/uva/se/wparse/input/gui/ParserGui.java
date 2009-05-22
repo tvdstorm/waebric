@@ -34,7 +34,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import com.uva.se.wparse.exception.ArgumentNullException;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 import com.uva.se.wparse.parser.ModuleParser;
 import com.uva.se.wparse.parser.WeabrickParser;

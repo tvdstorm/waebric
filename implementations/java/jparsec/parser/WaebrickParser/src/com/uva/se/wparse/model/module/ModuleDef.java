@@ -54,7 +54,7 @@ public final class ModuleDef extends ValueObject implements WabrickParseTree {
 		return "module " + name + " \n" + imports + body.toString();
 	}
 	
-	@Override
+	//@Override
 	public String getTransformerOutput() {
 	  	return toTransformerOutput();
 	}
