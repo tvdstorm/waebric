@@ -1,20 +1,37 @@
 ometa Waebric <: Parser {
+
   Module          = "module" space ModuleId space ModuleElement spaces end,
 
-  ModuleId        = listOf(#Id, '.'),
+  ModuleId        = listOf(#IdCon, '.'),
 
   ModuleElement   = Site,
 
   Site            = "site" spaces Mappings spaces "end",
   Mappings        = listOf(#Mapping, ';'),
-  Mapping         = Path ":" Markup,
-  Path            = DirName "/" FileName | FileName,
-  DirName         = Directory,
+  Mapping         = Path spaces ":" spaces Markup,
+  Path            = IdCon "." IdCon,
 
-  Directory = spaces,
-  Markup = spaces,
+  Markup          = Designator Arguments
+                  | Designator, 
 
-  Id              = letterOrDigit+
+  Arguments       = "(" listOf(#Argument, ',') ")",
+  Argument        = Expression
+                  | Var "=" Expression,
+  Expression      = Var 
+                  | NatCon
+                  | Expression "." IdCon
+                  | "'" Expression "'",
+  
+
+  Designator      = IdCon,
+  Attribute       = ("#" | "." | "$" | ":") IdCon
+                  | "@" w:NatCon "%" h:NatCon
+                  | "@" w:NatCon,
+
+  Var             = IdCon,
+  IdCon           = letterOrDigit+,
+  NatCon          = digit+
+  
 
 }
 
@@ -22,7 +39,7 @@ program = "
            module homepage.cwi
 
            site
-             index.html: home('Hello World')
+             index.html:home('test')
            end
           "
 alert(Waebric.matchAll(program, "Module"))
