@@ -27,6 +27,9 @@ import com.uva.se.wparse.model.markup.Argument;
 import com.uva.se.wparse.model.statement.Statement;
 
 public final class FunctionDef extends ValueObject implements Member {
+	
+	public static final String OUTPUT_FUNCTION	= "def";
+	public static final String OUTPUT_ARGUMENTS	= "argument";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(FunctionDef.class);
@@ -37,7 +40,7 @@ public final class FunctionDef extends ValueObject implements Member {
 
 	public FunctionDef(String name, Argument arguments, List<Statement> statements) {
 
-		this.name = name;
+		this.name = name.trim();
 		this.arguments = arguments;
 		this.statements = statements;
 		if (logger.isDebugEnabled()) {
@@ -72,13 +75,27 @@ public final class FunctionDef extends ValueObject implements Member {
 		if(arguments != null){
 			result = result + arguments;
 		}
-		 result = result +  ")";
-		 if(statements != null){
+		result = result +  ")";
+		if(statements != null){
 			 result = result + statements;
-		 }
+		}
 		 
-		 result = result + " end";
-		 return result;
+		result = result + " end";
+		return result;
+	}
+	
+	@Override
+	public String toTransformerOutput() {
+		String NameElement = outputQuote( name );
+		String ArgumentsElement = OUTPUT_LIST_EMPTY;
+		if (arguments instanceof ValueObject ) {
+			String ArgumentTransformerOutput = ((ValueObject) arguments).toTransformerOutput();
+			ArgumentsElement = ArgumentTransformerOutput;
+		}
+		
+		String StatementsElement = OUTPUT_LIST_EMPTY;		
+		
+		return OUTPUT_FUNCTION + outputBracedBlock(NameElement + OUTPUT_BLOCK_SEPARATOR + ArgumentsElement + OUTPUT_BLOCK_SEPARATOR + StatementsElement );
 	}
 
 }

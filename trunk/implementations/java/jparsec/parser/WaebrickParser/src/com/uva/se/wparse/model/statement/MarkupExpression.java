@@ -45,7 +45,10 @@ public class MarkupExpression extends MultipleMarkup implements Statement, Marku
 		return super.toString() + " " + expr;
 	};
 	
-	
+	@Override
+	public String toTransformerOutput() {
+		return "MarkupExpression"; 
+	}
 	
 	
 	
