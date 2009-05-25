@@ -1,11 +1,10 @@
-// Todo: Lay down restrictions for grammer e.g. make sure keywords are not used for id_con
-//       Should this be done in the parser code???
-
-
-
 Package org.sablecc.grammar.waebric;
 
 Helpers
+	tab = 09; 
+	cf = 13;
+	lf = 10;
+
 	all = [0x000 .. 0xffff];
 	input_character = [32..127];
 	not_star = [all - '*'];
@@ -13,16 +12,13 @@ Helpers
 	letter = ['a'..'z'] | ['A'..'Z'];
 	digit = ['0'..'9'];
 	minus = '-';
-	amp = '\&';
+	amp = '&';
 	esc_quote = ('\\' | '\"');	
-	str_char = ('\n' | '\t' | '\"' | '\\' | '\' digit digit digit | [input_character - [[10 + 9] + ['"' + '\']]]);
+	str_char = ('\n' | '\t' | '\"' | '\\' | '\' digit digit digit | [[32..255] - ['"' + '\']]);
 	
-	tab = 09; 
-	cf = 13;
-	lf = 10;
 	
 	// Used for text
-	basic_text_char = [[input_character + [[tab + cf] + lf]] - [['&' + '"'] + '<']];
+	basic_text_char = [[input_character + [[tab + cf] + lf]] - ['"' + '<']];
 	text_char_ref = 
 		'&#' digit+ ';' |
 		'&#x' (digit | letter)+ ';';
@@ -30,6 +26,10 @@ Helpers
 	text_entity_ref = '&' (letter | '_' | '"') (letter | digit | '.' | '-' | '_' | ':')* ';';
 	
 	text_char = (basic_text_char | esc_quote | amp | text_char_ref | text_entity_ref);
+	
+States
+	normal,
+	comment;
 	
 Tokens
 	// Keywords
@@ -41,7 +41,7 @@ Tokens
 	def = 'def';
 	in = 'in';
 	end = 'end';
-	comment = 'comment';
+	{normal->comment}	comment = 'comment';
 	echo = 'echo';
 	cdata = 'cdata';
 	yield = 'yield';
@@ -88,9 +88,10 @@ Tokens
 	id_con = letter (letter | digit | minus )*;
 	nat_con = digit+;
 	symbol_con = ''' [input_character - [[[')' + ' '] + [9 + 10]] + [[13 + ';'] + [',' + '>']]]]*;
-	str_con = '\"' str_char* '"';
+	
+	{comment->normal}	str_con = '"' str_char* '"';
 		
-		// Miscellaneous
+	// Miscellaneous
 	filename = '[' ([input_character - [[[' ' + 9] + [13 + 10]] + ['.' + '\']]])+ '.' (digit | letter)+ ']';
 	text = '"' text_char* '"';		
 	pre_text = '"' text_char* '<';
