@@ -1,9 +1,12 @@
+//TODO: Fix Expression: id_con dot id_con
+
 Package org.sablecc.grammar.waebric;
 
 Helpers
 	tab = 09; 
-	cf = 13;
+	cr = 13;
 	lf = 10;
+	space = ' ';
 
 	all = [0x000 .. 0xffff];
 	input_character = [32..127];
@@ -18,7 +21,7 @@ Helpers
 	
 	
 	// Used for text
-	basic_text_char = [[input_character + [[tab + cf] + lf]] - ['"' + '<']];
+	basic_text_char = [[input_character + [[tab + cr] + lf]] - ['"' + '<']];
 	text_char_ref = 
 		'&#' digit+ ';' |
 		'&#x' (digit | letter)+ ';';
@@ -80,23 +83,23 @@ Tokens
 	// Comments	
 	comments = 
 		'/*' (not_star_not_slash not_star* '*'+)* '/' |
-		'//' input_character* (13 | 10)+;
+		'//' input_character* (lf | cr)+;
 		
-	whitespace = (' ' | cf | lf | tab)*;
+	whitespace = (space | cr | lf | tab)*;
 	
 	// Identifier
 	id_con = letter (letter | digit | minus )*;
 	nat_con = digit+;
-	symbol_con = ''' [input_character - [[[')' + ' '] + [9 + 10]] + [[13 + ';'] + [',' + '>']]]]*;
+	symbol_con = ''' [input_character - [[[')' + space] + [tab + cr]] + [[lf + ';'] + [',' + '>']]]]*;
 	
 	{comment->normal}	str_con = '"' str_char* '"';
 		
 	// Miscellaneous
-	filename = '[' ([input_character - [[[' ' + 9] + [13 + 10]] + ['.' + '\']]])+ '.' (digit | letter)+ ']';
-	text = '"' text_char* '"';		
+	filename = '[' ([input_character - [[[space + tab] + [lf + cr]] + ['.' + '\']]])+ '.' (digit | letter)+ ']';
+	text = '"' text_char* '"';
 	pre_text = '"' text_char* '<';
 	post_text = '>' text_char* '"';
-	mid_text = '>' text_char* '<';	
+	mid_text = '>' text_char* '<';
 				
 Ignored Tokens
 	comments,
@@ -149,10 +152,6 @@ Productions
 		|	{designator}			P.designator
 		;
 	
-	markup_no_designator = 
-			{designator_with_args}	P.designator P.arguments
-		;
-
 	// Designator
 	designator = 
 			T.id_con P.attribute*
@@ -220,13 +219,11 @@ Productions
 	 
 	// Function
 	function = 
-			T.def T.id_con P.formals P.statement* T.end
+			T.def T.id_con P.formals? P.statement* T.end
 		;
 	
-	// Formals
 	formals = 
-			{empty}		
-		|	{available}	T.l_paren P.formal? T.r_paren
+			T.l_paren P.formal? T.r_paren
 		;
 		
 	formal =
@@ -236,13 +233,26 @@ Productions
 		
 	// Statement
 	statement = 
-			{statement_no_markup}	P.statement_no_markup
+			{no_markup}				P.statement_no_markup
 		|	{markup_statement}		P.markup+ P.statement_no_markup
 		|	{markup_single}			P.markup T.semi_colon
 		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup T.semi_colon
 		|	{markup_expression}		P.markup+ P.expression_no_idcon T.semi_colon
 		|	{embedding}				P.markup+ P.embedding T.semi_colon
+		|	{if_then}				T.if T.l_paren P.predicate T.r_paren P.statement
+		|	{if_then_else}			T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement
 		;
+		
+	statement_no_short_if = 
+			{no_markup}				P.statement_no_markup
+		|	{markup_statement}		P.markup+ P.statement_no_markup
+		|	{markup_single}			P.markup T.semi_colon
+		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup T.semi_colon
+		|	{markup_expression}		P.markup+ P.expression_no_idcon T.semi_colon
+		|	{embedding}				P.markup+ P.embedding T.semi_colon
+		|	{if_then_else}			T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement_no_short_if
+		;
+	
 
 	statement_no_markup =
 			{each}				T.each T.l_paren T.id_con T.colon P.expression T.r_paren P.statement
@@ -254,7 +264,7 @@ Productions
 		|	{cdata}				T.cdata P.expression T.semi_colon
 		|	{yield}				T.yield T.semi_colon
 		;
-					
+				
 	// Assignment
 	assignment = 
 			{expression}	T.id_con T.assign P.expression T.semi_colon
@@ -264,16 +274,16 @@ Productions
 	// Predicate
 	predicate = 
 			{expression}		P.expression
-		|	{expression_type}	P.expression T.dot P.type T.question_mark
-		|	{not_predicate}		T.exclam_mark P.predicate
+		|	{expression_type}	P.expression T.colon P.type T.question_mark
+		|	{not_predicate}		T.exclam_mark P.predicate_no_and_or
 		|	{and_predicate}		P.predicate_no_and_or T.and P.predicate
 		|	{or_predicate}		P.predicate_no_and_or T.or P.expression
 		;
 
 	predicate_no_and_or =
 			{expression}		P.expression
-		|	{expression_type}	P.expression T.dot P.type T.question_mark
-		|	{not_predicate}		T.exclam_mark P.predicate
+		|	{expression_type}	P.expression T.colon P.type T.question_mark
+		|	{not_predicate}		T.exclam_mark P.predicate_no_and_or
 		;
 		
 	// Type
@@ -295,6 +305,6 @@ Productions
 		;
 		
 	embed = 
-//			{markup_markup}			[multiple]:P.markup* [single]:P.markup
-	/*|*/	{markup_expression}		P.markup* P.expression
+			{markup_markup}			[multiple]:P.markup* [single]:P.markup
+		|	{markup_expression}		P.markup* P.expression
 		;
