@@ -22,9 +22,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.markup.Markup;
 
-public class MultipleMarkup implements Statement, Markup {
+public class MultipleMarkup extends ValueObject implements Statement, Markup {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MultipleMarkup.class);
 
@@ -39,13 +40,9 @@ public class MultipleMarkup implements Statement, Markup {
 	}
 
 	@Override
-	public String toString() {
-		return markup.toString();
-	};
-	
-	
-	
-	
-	
+	public String toTransformerOutput() {
+		return this.getClass().getName();
+		
+	}
 	
 }

@@ -20,9 +20,10 @@ package com.uva.se.wparse.model.markup;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 
-public class SingleArgument implements Argument {
+public class SingleArgument extends ValueObject implements Argument {
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SingleArgument.class);
 	private Expression expression;
@@ -42,6 +43,9 @@ public class SingleArgument implements Argument {
 		return expression.toString();
 	}
 	
-	
+	  @Override
+	  public String toTransformerOutput() {
+		  return outputQuote( expression.toString() );
+	  } 	
 	
 }

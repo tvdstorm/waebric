@@ -22,10 +22,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
 
-public class MarkupArgument implements Markup {
+public class MarkupArgument extends ValueObject implements Markup {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupArgument.class);
 
@@ -47,6 +48,16 @@ public class MarkupArgument implements Markup {
 		return Strings.join(" ", designator) + " " + arguments;
 	}
 	
-	
+	@Override
+	public String toTransformerOutput() {
+		
+		String DesignatorBlock = "";
+		for (Designator designatorItem: designator){
+			if (designatorItem instanceof ValueObject) {
+				DesignatorBlock = DesignatorBlock + ((ValueObject)designatorItem).toTransformerOutput();
+			}
+		}
+		return "call(tag" + DesignatorBlock + ")";		
+	}	
 	
 }

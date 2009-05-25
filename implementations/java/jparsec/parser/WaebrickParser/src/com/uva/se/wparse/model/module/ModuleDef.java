@@ -60,7 +60,7 @@ public final class ModuleDef extends ValueObject implements WabrickParseTree {
 	}
 	
 	@Override
-	protected String toTransformerOutput() {
+	public String toTransformerOutput() {
 		String moduleId = OUTPUT_MODULE_ID + outputBracedBlock( outputBracedList ( outputQuote(name) ) );
 		
 		String importList = OUTPUT_LIST_EMPTY;

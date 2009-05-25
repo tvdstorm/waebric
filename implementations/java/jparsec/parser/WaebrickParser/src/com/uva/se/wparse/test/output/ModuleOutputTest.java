@@ -41,13 +41,13 @@ public class ModuleOutputTest extends TestCase {
 	
 	public void testModuleWithMethodParameterOutput(){
 		String source = "module myModule def myDef(\"param1\") end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"myDef\", formals([\"param1\"),empty)])"; 
+		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"myDef\",args([\"param1\"]),empty)])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
 	
-	public void testModuleWithTwoMethodsParameterOutput(){
+	public void testModuleWithTwoMethodsOutput(){
 		String source = "module myModule def my-2-Def end def mydef-2() end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"my-2-def\",empty,empty), def(\"mydef-2\", empty, empty)])"; 
+		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"my-2-Def\",empty,empty),def(\"mydef-2\",empty,empty)])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
 
@@ -65,13 +65,13 @@ public class ModuleOutputTest extends TestCase {
 	
 	public void testModuleWithTwoSitesOutput(){
 		String source = "module myModule  site wpath1/xpath2/yfile.ext : site1() ; wpath1/xpath2/yfile.ext : site2() end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[site([mapping(\"wpath1/xpath2/yfile.ext\", call(tag(\"site1\")))]), site([\"wpath1/xpath2/yfile.ext\", call(tag(\"site2\"))])])"; 
+		String expectedOutput = "module(module-id([\"myModule\"]),[site([mapping(\"wpath1/xpath2/yfile.ext\",call(tag(\"site1\")))]),site([mapping(\"wpath1/xpath2/yfile.ext\",call(tag(\"site2\")))])])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}	
 	
 	public void testModuleWithImportSiteAndFunctionOutput(){
 		String source = "module myModule import package.package2.utils site wpath1/xpath2/yfile.ext : idCon#desgn() end def myMethod() end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[import(\"package.package2.utils\"),site([mapping(\"wpath1/xpath2/yfile.ext\",args([attr(\"id\",text(\"desgn\"))]))]),def(\"myMethod\",empty,empty)])"; 
+		String expectedOutput = "module(module-id([\"myModule\"]),[import(\"package.package2.utils\"),site([mapping(\"wpath1/xpath2/yfile.ext\",args([attr(\"id\",text(\"desgn\"))])))]),def(\"myMethod\",empty,empty)])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
 	
@@ -83,25 +83,25 @@ public class ModuleOutputTest extends TestCase {
 	
 	public void testModuleWithSiteOutput(){
 		String source = "module abon site site/abonnementen.html: abonnementen() end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[site([mapping(\"site/abonnementen.html\", call(tag(\"abonnementen\")))])])"; 
+		String expectedOutput = "module(module-id([\"abon\"]),[site([mapping(\"site/abonnementen.html\", call(tag(\"abonnementen\")))])])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}	
 	
 	public void testModuleWithFunctionAndMarkupOutput(){
 		String source = "module brand def func1 header(\"Abonnee worden?\"); end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"func1\",empty,[markup(call(tag(\"header\",[]),args([text(\"Abonnee worden?\")])))])])"; 
+		String expectedOutput = "module(module-id([\"brand\"]),[def(\"func1\",empty,[markup(call(tag(\"header\",[]),args([text(\"Abonnee worden?\")])))])])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}	
 	
 	public void testModulWithFunctionAndSingleMarkupOutput(){
 		String source = "module brand def func1 brandende-pen-500-test-pers; end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"func1\",empty,[markup-stat([header(text(\"brandende-pen-500-test-pers\"))])])])"; 
+		String expectedOutput = "module(module-id([\"brand\"]),[def(\"func1\",empty,[markup-stat([header(text(\"brandende-pen-500-test-pers\"))])])])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
 	
 	public void testModulWithFunctionNameWithDashOutput(){
 		String source = "module brand def func1-name-500-func end"; 
-		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"func1-name-500-func\", empty, empty)])"; 
+		String expectedOutput = "module(module-id([\"brand\"]),[def(\"func1-name-500-func\",empty,empty)])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));
 	}	
 	

@@ -155,7 +155,7 @@ public class ExpressionParser {
 					if(!isIdentifier){
 						return null;
 					}
-					return token.value().toString();
+					return token.value().toString().trim();
 				}
 
 			}

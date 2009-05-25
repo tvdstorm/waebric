@@ -45,7 +45,11 @@ public class MarkupEmbedding extends MultipleMarkup implements Statement, Markup
 	};
 	
 	
-	
+	@Override
+	public String toTransformerOutput() {
+		return this.getClass().getName();
+		
+	}
 	
 	
 	

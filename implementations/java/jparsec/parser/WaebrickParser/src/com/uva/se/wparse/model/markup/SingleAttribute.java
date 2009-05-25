@@ -21,11 +21,14 @@ package com.uva.se.wparse.model.markup;
 import org.apache.log4j.Logger;
 import org.codehaus.jparsec.Token;
 
-public class SingleAttribute implements Attribute  {
+import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.util.Strings;
+
+public class SingleAttribute extends ValueObject implements Attribute  {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SingleAttribute.class);
 
-	private String symbol;
+	private String symbol; //TODO: symbol vervangen door Enum
 	private String identifier;
 	
 	public SingleAttribute(Token symbolToken, String identifier) {
@@ -42,6 +45,9 @@ public class SingleAttribute implements Attribute  {
 		return symbol + identifier;
 	}
 	
-	
+	@Override
+	public String toTransformerOutput() {		
+		return toString() ;
+	}
 	
 }

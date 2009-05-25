@@ -51,6 +51,9 @@ public abstract class ValueObject {
   public static final String OUTPUT_LIST_SEPARATOR 	= ",";
   public static final String OUTPUT_LIST_END 		= "]";
   
+  public static final String OUTPUT_ARGUMENTS		= "args";
+  public static final String OUTPUT_ATTRIBUTE		= "attr";
+  
   
   private volatile List<Object> fieldValues = null;
   
@@ -166,7 +169,7 @@ public abstract class ValueObject {
    * Returns the contents of this node for the output transformer
    * @return The contents of the current node in the ParserTree (Defaults to OUTPUT_EMPTY_ELEMENT) 
    */
-  protected String toTransformerOutput() {
+  public String toTransformerOutput() {
 	return OUTPUT_EMPTY_ELEMENT;
   }
   

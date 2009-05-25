@@ -53,6 +53,15 @@ public class Mapping extends ValueObject {
 		return Strings.join("/", path) + "/" + file + "." + extention + ":" + markup;
 	}
 	
-	
-	
+	//\"wpath1/xpath2/yfile.ext\", call(tag(\"site1\")
+	@Override
+	public String toTransformerOutput() {
+		
+		String markupOutput = OUTPUT_EMPTY_ELEMENT;
+		if (markup instanceof ValueObject) {
+			markupOutput = markupOutput + ((ValueObject) markup).toTransformerOutput();
+		}
+		
+		return outputQuote(Strings.join("/", path) + "/" + file + "." + extention) + "," + markupOutput;
+	}
 }

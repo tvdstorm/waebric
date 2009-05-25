@@ -26,6 +26,9 @@ import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
 public final class SiteDef extends ValueObject implements Member {
+	
+	public static final String OUTPUT_SITE	= "site";
+	public static final String OUTPUT_MAPPING	= "mapping";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(SiteDef.class);
@@ -42,7 +45,24 @@ public final class SiteDef extends ValueObject implements Member {
 	@Override
 	public String toString() {
 		return "site " + Strings.join(" ", mappings) + " end";
-
+	}
+	
+	@Override
+	public String toTransformerOutput() {
+		
+		//site([mapping(\"wpath1/xpath2/yfile.ext\", call(tag(\"site1\")))]), site([\"wpath1/xpath2/yfile.ext\", call(tag(\"site2\"))])
+		
+		String MappingBlock = "";
+		String OutputBlock = "";
+		String Result = "";
+		
+		for (Mapping mapping: mappings) {
+			MappingBlock = OUTPUT_MAPPING + outputBracedBlock( mapping.toTransformerOutput() );
+			OutputBlock = OUTPUT_SITE + outputBracedBlock( outputBracedList( MappingBlock ) );
+			Result = outputAddToBlock( Result, OutputBlock );			
+		}
+		
+		return Result;
 	}
 
 }

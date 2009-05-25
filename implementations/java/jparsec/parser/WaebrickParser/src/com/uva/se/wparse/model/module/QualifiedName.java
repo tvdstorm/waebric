@@ -45,7 +45,7 @@ public final class QualifiedName extends ValueObject {
 	}
 
 	@Override
-	protected String toTransformerOutput() {
+	public String toTransformerOutput() {
 		return outputBracedBlock ( outputQuote(Strings.join(".", names) ) );
 	}
 }
