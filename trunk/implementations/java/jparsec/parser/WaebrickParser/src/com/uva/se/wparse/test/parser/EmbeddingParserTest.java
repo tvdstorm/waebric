@@ -39,8 +39,7 @@ public class EmbeddingParserTest extends TestCase {
 	protected void setUp() throws Exception {
 		expParser =  ExpressionParser.expression(null);
 		markupParser = MarkupParser.markup(expParser);
-		EmbeddingParser embedding = new EmbeddingParser();
-		embeddingParser = embedding.getParser(markupParser, expParser);
+		embeddingParser = EmbeddingParser.getParser(markupParser, expParser);
 	}
 
 	protected void tearDown() throws Exception {

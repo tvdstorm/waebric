@@ -38,6 +38,15 @@ public class MultipleMarkup extends ValueObject implements Statement, Markup {
 					+ " with values : " + toString());
 		}
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return markup.toString();
+	}
+
+
 
 	@Override
 	public String toTransformerOutput() {

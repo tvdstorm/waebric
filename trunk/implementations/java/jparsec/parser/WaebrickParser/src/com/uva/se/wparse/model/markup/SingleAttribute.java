@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.codehaus.jparsec.Token;
 
 import com.uva.se.wparse.model.common.ValueObject;
-import com.uva.se.wparse.util.Strings;
 
 public class SingleAttribute extends ValueObject implements Attribute  {
 	

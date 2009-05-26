@@ -38,9 +38,9 @@ public final class PredicateParser {
 		return curry(TypeCheckPredicate.class).sequence(
 				expressionParser,
 				TerminalParser.term("."),
-				Parsers.or(	TerminalParser.term(TerminalParser.KEYWORD_LIST),
-							TerminalParser.term(TerminalParser.KEYWORD_RECORD),
-							TerminalParser.term(TerminalParser.KEYWORD_STRING)).source(),
+				Parsers.or(	TerminalParser.term(Keywords.LIST.toString()),
+							TerminalParser.term(Keywords.RECORD.toString()),
+							TerminalParser.term(Keywords.STRING.toString())).source(),
 				TerminalParser.term("?")
 
 		);

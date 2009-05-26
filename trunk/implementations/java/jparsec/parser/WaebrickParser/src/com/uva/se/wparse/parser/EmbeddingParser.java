@@ -32,7 +32,7 @@ import com.uva.se.wparse.model.markup.Markup;
 public class EmbeddingParser {
 
 
-	private Parser<Embedding> markupEmbedding(Parser<Markup> markup, Parser<Expression> expression, Parser<Embedding> embeddingParser) {
+	private static Parser<Embedding> markupEmbedding(Parser<Markup> markup, Parser<Expression> expression, Parser<Embedding> embeddingParser) {
 		return curry(MarkupEmbedding.class).sequence(
 				ExpressionParser.EMBEDDED_TEXT.many(),
 				TerminalParser.term("<"),
@@ -43,11 +43,11 @@ public class EmbeddingParser {
 				);
 	}
 	
-	private Parser<Embedding> multipleEmbedding( Parser<Markup> markup, Parser<Expression> expression, Parser<Embedding> embeddingParser) {
+	private static  Parser<Embedding> multipleEmbedding( Parser<Markup> markup, Parser<Expression> expression, Parser<Embedding> embeddingParser) {
 		return curry(MarkupEmbeddingList.class).sequence(markupEmbedding(markup, expression, embeddingParser).many());
 	}
 	
-	public Parser<Embedding> getParser(Parser<Markup> markup, Parser<Expression> expression) {
+	public static  Parser<Embedding> getParser(Parser<Markup> markup, Parser<Expression> expression) {
 		Parser.Reference<Embedding> ref = Parser.newReference();
 		Parser<Embedding> lazy = ref.lazy();
 		Parser<Embedding> parser = multipleEmbedding(markup, expression, lazy);
@@ -57,7 +57,7 @@ public class EmbeddingParser {
 	
 
 
-	private Mapper<Embedding> curry(
+	private static  Mapper<Embedding> curry(
 			Class<? extends Embedding> clazz, Object... curryArgs) {
 		return Mapper.curry(clazz, curryArgs);
 	}

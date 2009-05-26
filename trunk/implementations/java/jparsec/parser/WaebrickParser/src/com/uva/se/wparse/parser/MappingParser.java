@@ -26,7 +26,7 @@ import com.uva.se.wparse.model.module.Mapping;
 
 public class MappingParser {
 
-	static Parser<Mapping> mappingDef(Parser<Markup> markup) {
+	private static Parser<Mapping> mappingDef(Parser<Markup> markup) {
 		return curry(Mapping.class).sequence(
 				ExpressionParser.PATH_ELEMENT.sepBy(TerminalParser.term("/")).followedBy(TerminalParser.term(".")), // dir
 				ExpressionParser.FILE_EXT, // extention
