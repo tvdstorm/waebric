@@ -21,7 +21,7 @@ public class RecursiveMenusOutputTest extends TestCase {
 	public static final String INPUTTEST_MODULE = "module menus";
 	public static final String INPUTTEST_SITE = " site menus.html: main() end";	
 	public static final String INPUTTEST_FUNCTION_MAIN = " def main layout(\"Recursive Menus\") { the-menu(); } end";
-	public static final String INPUTTEST_FUNCTION_CSS = " def css(url, media) link(rel=\"stylesheet\", href=url, type=\"text/css\", media=media) end";
+	public static final String INPUTTEST_FUNCTION_CSS = " def css(url, media) link(rel=\"stylesheet\", href=url, type=\"text/css\", media=media); end";
 	public static final String INPUTTEST_FUNCTION_LAYOUT = " def layout(title) html { head { css(\"blueprint.css\", \"screen, projection\"); title title; } body yield; } end";
 	public static final String INPUTTEST_FUNCTION_THE_MENU = " def the-menu menu({title: \"Menu\", kids: [{title: \"Home\", link: \"/\"}, {title: \"Misc\", kids: [{title: \"Contact\", link: \"contact.html\"}, {title: \"Links\", link: \"links.html\"}]}]}); end";
 	public static final String INPUTTEST_FUNCTION_MENU = " def menu(menu) echo menu.title; ul each (kid: menu.kids) item(kid); end";
