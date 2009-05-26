@@ -20,7 +20,7 @@ package com.uva.se.wparse.parser;
 
 
 
-public enum Keywords {
+public enum Keyword {
 	MODULE 	("module"),
 	IMPORT 	("import"),
 	DEF	 	("def"),
@@ -43,7 +43,7 @@ public enum Keywords {
   
   private final String name;
   
-  private Keywords(final String name) {
+  private Keyword(final String name) {
     this.name = name;
   }
   
@@ -54,7 +54,7 @@ public enum Keywords {
   
   public static String[] toArray() {
 		try {
-			Keywords[] operatorArray = values();
+			Keyword[] operatorArray = values();
 			String[] operators = new String[operatorArray.length];
 
 			for (int i = 0; i < operatorArray.length; i++) {

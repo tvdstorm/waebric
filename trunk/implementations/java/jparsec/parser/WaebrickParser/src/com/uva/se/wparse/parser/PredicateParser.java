@@ -26,7 +26,6 @@ import org.codehaus.jparsec.functors.Binary;
 import org.codehaus.jparsec.misc.Mapper;
 
 import com.uva.se.wparse.model.expression.Expression;
-import com.uva.se.wparse.model.expression.Operator;
 import com.uva.se.wparse.model.predicate.OperatorPredicate;
 import com.uva.se.wparse.model.predicate.NotPredicate;
 import com.uva.se.wparse.model.predicate.Predicate;
@@ -37,11 +36,11 @@ public final class PredicateParser {
 	private static Parser<Predicate> typeCheck(Parser<Expression> expressionParser) {
 		return curry(TypeCheckPredicate.class).sequence(
 				expressionParser,
-				TerminalParser.term("."),
-				Parsers.or(	TerminalParser.term(Keywords.LIST.toString()),
-							TerminalParser.term(Keywords.RECORD.toString()),
-							TerminalParser.term(Keywords.STRING.toString())).source(),
-				TerminalParser.term("?")
+				TerminalParser.term(Operator.DOT.toString()),
+				Parsers.or(	TerminalParser.term(Keyword.LIST.toString()),
+							TerminalParser.term(Keyword.RECORD.toString()),
+							TerminalParser.term(Keyword.STRING.toString())).source(),
+				TerminalParser.term(Operator.QUESTION.toString())
 
 		);
 	}
@@ -49,7 +48,7 @@ public final class PredicateParser {
 	
 	private static Parser<Predicate> notPredicate(Parser<Predicate> predicateParser) {
 		return curry(NotPredicate.class).sequence(
-				TerminalParser.term("!"), predicateParser );
+				TerminalParser.term(Operator.NOT.toString()), predicateParser );
 	}
 
 	public static Parser<Predicate> predicates(Parser<Expression> expressionParser) {

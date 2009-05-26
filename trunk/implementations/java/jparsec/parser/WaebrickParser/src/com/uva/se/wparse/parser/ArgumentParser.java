@@ -33,12 +33,12 @@ public class ArgumentParser {
 
 	private static Parser<Argument> assignmentArgument(Parser<Expression> expr) {
 		return curry(AssignmentArgument.class).sequence(
-				ExpressionParser.IDENTIFIER.source(), TerminalParser.term("="),  expr);
+				ExpressionParser.IDENTIFIER.source(), TerminalParser.term(Operator.EQUALS.toString()),  expr);
 	}
 	
 	private static Parser<Argument> assignmentArgumentString(Parser<Expression> expr) {
 		return curry(AssignmentArgument.class).sequence(
-				ExpressionParser.IDENTIFIER.source(), TerminalParser.term("="),
+				ExpressionParser.IDENTIFIER.source(), TerminalParser.term(Operator.EQUALS.toString()),
 				ExpressionParser.STRING_LITERAL
 				);
 	}
@@ -51,9 +51,9 @@ public class ArgumentParser {
 
 	public static Parser<Argument> blockArgument(Parser<Argument> arg) {
 		return curry(BlockArgument.class).sequence(
-				TerminalParser.term("("),
-				arg.sepBy(TerminalParser.term(",")),
-				TerminalParser.term(")")
+				TerminalParser.term(Operator.ROUND_BRACKET_OPEN.toString()),
+				arg.sepBy(TerminalParser.term(Operator.COMMA.toString())),
+				TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString())
 				);
 	}
 	

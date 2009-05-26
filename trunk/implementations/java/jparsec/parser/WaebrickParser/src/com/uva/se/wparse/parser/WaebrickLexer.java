@@ -29,7 +29,7 @@ import org.codehaus.jparsec.pattern.Patterns;
 
 public class WaebrickLexer {
 
-	private final CharPredicate IDENTIFIER_START = new CharPredicate() {
+	private static final CharPredicate IDENTIFIER_START = new CharPredicate() {
 		public boolean isChar(char c) {
 			Pattern p = Pattern.compile("[a-zA-Z]");
 			Matcher m = p.matcher(String.valueOf(c));
@@ -37,7 +37,7 @@ public class WaebrickLexer {
 		}
 	};
 
-	private final CharPredicate IDENTIFIER_PART = new CharPredicate() {
+	private static final CharPredicate IDENTIFIER_PART = new CharPredicate() {
 		public boolean isChar(char c) {
 			Pattern p = Pattern.compile("[a-zA-Z0-9]");
 			Matcher m = p.matcher(String.valueOf(c));
@@ -45,11 +45,11 @@ public class WaebrickLexer {
 		}
 	};
 
-	private Parser<String> IDENTIFIER = Scanners.pattern(
+	private static Parser<String> IDENTIFIER = Scanners.pattern(
 			Patterns.isChar(IDENTIFIER_START).next(
 					Patterns.isChar(IDENTIFIER_PART).many()), "identifier").source();
 
-	public Parser<String> getIdentifier() {
+	public static Parser<String> getIdentifier() {
 		return IDENTIFIER;
 	}
 	

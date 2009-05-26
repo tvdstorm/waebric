@@ -16,16 +16,15 @@
  * 
  * 
  */
-package com.uva.se.wparse.model.expression;
+package com.uva.se.wparse.parser;
 
 
 
 public enum Operator {
   AND					("&&"),
   OR					("||"),
-  EQ					("="),
   DOT					("."),
-  TOKEN_EQUALS 			("="),
+  EQUALS	 			("="),
   SEMI_COLON			( ";"),
   PLUS	 				( "+"),
   MINUS				 	( "-"),
@@ -45,13 +44,14 @@ public enum Operator {
   LARGER_THEN		 	( ">"),
   APOSTROPHE		 	( "'"),
   SLASH				 	( "/"),
-  DOUBLE_QUOTE 			( "\\\""),
+  DOUBLE_QUOTE 			( "\""),
   QUESTION			 	( "?"),
   AMPERSAND			 	( "&"),
   STAR				 	( "*"),
-  EXCLAMATION		 	( "!"),
+  NOT				 	( "!"),
   CARET				 	( "^"),
-  UNDER_SCORE		 	( "_"),
+  UNDER_CORE		 	( "_"),
+  TILDE				 	( "~"),
     
   ;
   
@@ -66,9 +66,14 @@ public enum Operator {
   }
   
   
+  /**
+   * Convert the enum to a String array
+   * 
+   * @return an array of Strings with values of the enum elements,
+   * returns empty array in case of error.
+   */
   public static String[] toArray() {
 		try {
-			// Class<?> c = Class.forName("Operator.class");
 			Operator[] operatorArray = values();
 			String[] operators = new String[operatorArray.length];
 
@@ -76,11 +81,10 @@ public enum Operator {
 				operators[i] = operatorArray[i].toString();
 			}
 			return operators;
-			// c.getEnumConstants()
 		} catch (Exception e) {
 			// failed to read enum correctly, return empty array.
 		}
-		return null;
+		return new String[]{};
 	}
   
   

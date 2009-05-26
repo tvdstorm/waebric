@@ -35,10 +35,10 @@ public class EmbeddingParser {
 	private static Parser<Embedding> markupEmbedding(Parser<Markup> markup, Parser<Expression> expression, Parser<Embedding> embeddingParser) {
 		return curry(MarkupEmbedding.class).sequence(
 				ExpressionParser.EMBEDDED_TEXT.many(),
-				TerminalParser.term("<"),
+				TerminalParser.term(Operator.SMALLER_THEN.toString()),
 				markup.many(),
 				Parsers.or(markup, expression),
-				TerminalParser.term(">"),
+				TerminalParser.term(Operator.LARGER_THEN.toString()),
 				ExpressionParser.EMBEDDED_TEXT.many()
 				);
 	}

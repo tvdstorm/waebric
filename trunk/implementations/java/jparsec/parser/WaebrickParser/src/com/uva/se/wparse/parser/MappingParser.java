@@ -28,9 +28,9 @@ public class MappingParser {
 
 	private static Parser<Mapping> mappingDef(Parser<Markup> markup) {
 		return curry(Mapping.class).sequence(
-				ExpressionParser.PATH_ELEMENT.sepBy(TerminalParser.term("/")).followedBy(TerminalParser.term(".")), // dir
+				ExpressionParser.PATH_ELEMENT.sepBy(TerminalParser.term(Operator.SLASH.toString())).followedBy(TerminalParser.term(Operator.DOT.toString())), // dir
 				ExpressionParser.FILE_EXT, // extention
-				TerminalParser.term(":"),
+				TerminalParser.term(Operator.COLON.toString()),
 				markup  //markup function call
 				);
 
