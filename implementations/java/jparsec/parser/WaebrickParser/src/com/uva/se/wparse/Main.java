@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.input.gui.ParserGui;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 import com.uva.se.wparse.parser.ModuleParser;
+import com.uva.se.wparse.parser.Operator;
 import com.uva.se.wparse.parser.WeabrickParser;
 import com.uva.se.wparse.resource.Resources;
 import com.uva.se.wparse.util.FileUtil;
@@ -48,7 +49,7 @@ public class Main {
 	
 
 	public Main(String[] arguments) {
-
+		
 		// check the type of client to start
 		if ( (arguments.length == 1) && OPTION_INTERACTIVE.equals(arguments[0])) {
 			// starting in interactive mode

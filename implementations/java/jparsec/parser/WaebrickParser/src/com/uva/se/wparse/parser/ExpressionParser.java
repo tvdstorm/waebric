@@ -36,7 +36,6 @@ import com.uva.se.wparse.model.expression.ExpressionDotIdentifier;
 import com.uva.se.wparse.model.expression.Identifier;
 import com.uva.se.wparse.model.expression.KeyValuePair;
 import com.uva.se.wparse.model.expression.NaturalConstant;
-import com.uva.se.wparse.model.expression.Operator;
 import com.uva.se.wparse.model.expression.StringLiteral;
 import com.uva.se.wparse.model.expression.SymbolConstant;
 import com.uva.se.wparse.model.module.ModuleBody;
@@ -48,12 +47,8 @@ public class ExpressionParser {
 	public static Parser LITERAL_TEXT = Parsers.sequence(Parsers
 			.token(new TokenMap<String>() {
 				public String map(Token token) {
-					///char[] data = token.value().toString().toCharArray();
 					String value = token.value().toString();
-//					if("\"".equals(value)){
-//						value = "\\" + value;
-//					}
-					if (!value.equals("\"")) {
+					if (!value.equals(Operator.DOUBLE_QUOTE.toString())) {
 						int prefixIndex = token.index() - 1;
 						if (prefixIndex > 0) {
 							// get the token to the left of the current token
@@ -80,9 +75,9 @@ public class ExpressionParser {
 			.token(new TokenMap<String>() {
 
 				public String map(Token token) {
-					if (!token.value().toString().equals("\"")
-							&& !token.value().toString().equals("<")
-							&& !token.value().toString().equals(">")) {
+					if (!token.value().toString().equals(Operator.DOUBLE_QUOTE.toString())
+							&& !token.value().toString().equals(Operator.SMALLER_THEN.toString())
+							&& !token.value().toString().equals(Operator.LARGER_THEN.toString())) {
 						int prefixIndex = token.index() - 1;
 						if (prefixIndex > 0) {
 							// get the token to the left of the current token
@@ -168,23 +163,20 @@ public class ExpressionParser {
 			String value = token.value().toString();
 			//check for reserved keyword, if detected then the token
 			//cannot be a identifier.
-			if( Keywords.YIELD.equals(value) ||
-					Keywords.ECHO.toString().equals(value) ||
-					Keywords.COMMENT.toString().equals(value) ||
-					Keywords.CDATA.toString().equals(value) ||
-					Keywords.EACH.toString().equals(value) ||
-					Keywords.LET.toString().equals(value) ||
-					Keywords.YIELD.toString().equals(value) ||
-					Keywords.MODULE.toString().equals(value) ||
-					Keywords.IMPORT.toString().equals(value) ||
-					Keywords.DEF.toString().equals(value) ||
-					Keywords.END.toString().equals(value) ||
-					Keywords.SITE.toString().equals(value)
+			if( Keyword.YIELD.equals(value) ||
+					Keyword.ECHO.toString().equals(value) ||
+					Keyword.COMMENT.toString().equals(value) ||
+					Keyword.CDATA.toString().equals(value) ||
+					Keyword.EACH.toString().equals(value) ||
+					Keyword.LET.toString().equals(value) ||
+					Keyword.YIELD.toString().equals(value) ||
+					Keyword.MODULE.toString().equals(value) ||
+					Keyword.IMPORT.toString().equals(value) ||
+					Keyword.DEF.toString().equals(value) ||
+					Keyword.END.toString().equals(value) ||
+					Keyword.SITE.toString().equals(value)
 						
 				){
-//				if (logger.isDebugEnabled()) {
-//					logger.debug("Illegal identifier < reserved keyword>: " + value );
-//				}
 				return null;
 			}
 			boolean isIdentifier = Pattern.matches("^[A-Za-z].*", value);
@@ -242,9 +234,7 @@ public class ExpressionParser {
 			}
 
 			));
-	
-	//public static Parser<Expression> IDENTIFIER = curry(Identifier.class).sequence(Terminals.Identifier.PARSER, ID_CON.many().source());
-	
+		
 	public static Parser<Expression> IDENTIFIER = curry(Identifier.class).sequence(ID_CON_START.source(), ID_CON.many().source());
 	
 	public static Parser<Expression> PATH_ELEMENT = curry(Identifier.class).sequence(PATH_ELEMENT_TEXT.source(), ID_CON.many().source());
@@ -261,28 +251,28 @@ public class ExpressionParser {
 
 	public static Parser<Expression> STRING_LITERAL = curry(
 			StringLiteral.class).sequence(
-					TerminalParser.term("\""),
+					TerminalParser.term(Operator.DOUBLE_QUOTE.toString()),
 					LITERAL_TEXT.many(),
-					TerminalParser.term("\"")
+					TerminalParser.term(Operator.DOUBLE_QUOTE.toString())
 					);
 
 	private static Parser<Expression> blockExpression(Parser<Expression> expr) {
-		return curry(BlockExpression.class).sequence(TerminalParser.term("["),
-				expr.sepBy(TerminalParser.term(",")), TerminalParser.term("]"));
+		return curry(BlockExpression.class).sequence(TerminalParser.term(Operator.SQUARE_BRACKET_OPEN.toString()),
+				expr.sepBy(TerminalParser.term(Operator.COMMA.toString())), TerminalParser.term(Operator.SQUARE_BRACKET_CLOSE.toString()));
 	}
 
 	private static Parser<Expression> blockKeyValueExpression(
 			Parser<Expression> expr) {
 		return curry(BlockKeyValueExpression.class).sequence(
-				TerminalParser.term("{"),
-				keyValuePairExpression(expr).sepBy(TerminalParser.term(",")),
-				TerminalParser.term("}"));
+				TerminalParser.term(Operator.CURLY_BRACKET_OPEN.toString()),
+				keyValuePairExpression(expr).sepBy(TerminalParser.term(Operator.COMMA.toString())),
+				TerminalParser.term(Operator.CURLY_BRACKET_CLOSE.toString()));
 	}
 
 	private static Parser<Expression> keyValuePairExpression(
 			Parser<Expression> expr) {
 		return curry(KeyValuePair.class).sequence(Terminals.Identifier.PARSER,
-				TerminalParser.term(":"), expr);
+				TerminalParser.term(Operator.COLON.toString()), expr);
 	}
 
 	private static Parser<Expression> numberExpression() {

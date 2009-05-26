@@ -21,6 +21,7 @@ package com.uva.se.wparse.model.expression;
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.parser.Operator;
 
 public final class ExpressionDotIdentifier extends ValueObject implements Expression {
 

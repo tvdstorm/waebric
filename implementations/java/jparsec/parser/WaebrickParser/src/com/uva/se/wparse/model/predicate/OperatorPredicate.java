@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
-import com.uva.se.wparse.model.expression.Operator;
+import com.uva.se.wparse.parser.Operator;
 
 public final class OperatorPredicate extends ValueObject implements Expression, Predicate {
 

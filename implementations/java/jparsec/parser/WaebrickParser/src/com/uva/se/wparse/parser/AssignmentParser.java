@@ -36,18 +36,18 @@ public final class AssignmentParser {
 	
 	  private static Parser<Assignment> assignmentNormal(Parser<Expression> expr) {
 		    return curry(AssignmentExpression.class).sequence(Terminals.Identifier.PARSER,
-		    		TerminalParser.term("="),
+		    		TerminalParser.term(Operator.EQUALS.toString()),
 		    		expr,
-		    		TerminalParser.term(";")
+		    		TerminalParser.term(Operator.SEMI_COLON.toString())
 		    		); 
 	  }
 	  
  
 	
 	  private static Parser<Assignment> assignmentFormals(Parser<Statement> stmt) {
-		    return curry(AssignmentFormals.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term("("),
-		    		Terminals.Identifier.PARSER.sepBy1(TerminalParser.term(",")),
-		    		TerminalParser.term(")"), TerminalParser.term("="), stmt   );
+		    return curry(AssignmentFormals.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term(Operator.ROUND_BRACKET_OPEN.toString()),
+		    		Terminals.Identifier.PARSER.sepBy1(TerminalParser.term(Operator.COMMA.toString())),
+		    		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()), TerminalParser.term(Operator.EQUALS.toString()), stmt   );
 	  }
 
 

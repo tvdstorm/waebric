@@ -51,66 +51,66 @@ public final class StatementParser {
 	
 	
 	private static Parser<Statement> comment() {
-	  return curry( Comment.class).sequence( TerminalParser.term("comment"), ExpressionParser.STRING_LITERAL  ,TerminalParser.term(";") );
+	  return curry( Comment.class).sequence( TerminalParser.term(Keyword.COMMENT.toString()), ExpressionParser.STRING_LITERAL  ,TerminalParser.term(Operator.SEMI_COLON.toString()) );
 	}
 	
 	private static Parser<Statement> echo(Parser<Expression> expr) {
-	  return curry( EchoExpression.class).sequence( TerminalParser.term("echo"), expr  ,TerminalParser.term(";") );
+	  return curry( EchoExpression.class).sequence( TerminalParser.term(Keyword.ECHO.toString()), expr  ,TerminalParser.term(Operator.SEMI_COLON.toString()) );
 	}
   
 	private static Parser<Statement> echoEmbedding(Parser<Embedding> embedding) {
-	  return curry( EchoEmbedding.class).sequence( TerminalParser.term("echo"), TerminalParser.term("\""), embedding, TerminalParser.term("\"") ,TerminalParser.term(";") );
+	  return curry( EchoEmbedding.class).sequence( TerminalParser.term(Keyword.ECHO.toString()), TerminalParser.term(Operator.DOUBLE_QUOTE.toString()), embedding, TerminalParser.term(Operator.DOUBLE_QUOTE.toString()) ,TerminalParser.term(Operator.SEMI_COLON.toString()) );
 	}
   
 	private static Parser<Statement> cdata(Parser<Expression> expr) {
-	  return curry( Cdata.class).sequence( TerminalParser.term("cdata"), expr  ,TerminalParser.term(";") );
+	  return curry( Cdata.class).sequence( TerminalParser.term(Keyword.CDATA.toString()), expr  ,TerminalParser.term(Operator.SEMI_COLON.toString()) );
 	}
  
 	private static Parser<Statement> yield() {
-	  return curry( Yield.class).sequence( TerminalParser.term("yield").source(), TerminalParser.term(";") );
+	  return curry( Yield.class).sequence( TerminalParser.term(Keyword.YIELD.toString()).source(), TerminalParser.term(Operator.SEMI_COLON.toString()) );
 	}
   
 	private static Parser<Statement> ifStatement(Parser<Predicate> predicateParser, Parser<Statement> stmt) {
 		return curry(If.class)
-	    .sequence(TerminalParser.phrase("if ("), predicateParser, TerminalParser.term(")"), stmt).notFollowedBy(TerminalParser.term("else"));
+	    .sequence(TerminalParser.phrase(Keyword.IF.toString() + " " + Operator.ROUND_BRACKET_OPEN.toString()), predicateParser, TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()), stmt).notFollowedBy(TerminalParser.term(Keyword.ELSE.toString()));
 	}
 	
 	private static Parser<Statement> ifElse(Parser<Predicate> predicateParser, Parser<Statement> stmt) {
 		return curry(IfElse.class)
-		    .sequence(TerminalParser.phrase("if ("), predicateParser, TerminalParser.term(")"), stmt, TerminalParser.term("else"), stmt);
+		    .sequence(TerminalParser.phrase(Keyword.IF.toString() + " " + Operator.ROUND_BRACKET_OPEN.toString()), predicateParser, TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()), stmt, TerminalParser.term(Keyword.ELSE.toString()), stmt);
 	}
 	
 	private static Parser<Statement> each(Parser<Expression> expr, Parser<Statement> stmt) {
 		return curry(Each.class)
-		    .sequence(TerminalParser.phrase("each ("), Terminals.Identifier.PARSER, TerminalParser.term(":"), expr, TerminalParser.term(")"), stmt);
+		    .sequence(TerminalParser.phrase(Keyword.EACH.toString() + " " + Operator.ROUND_BRACKET_OPEN.toString()), Terminals.Identifier.PARSER, TerminalParser.term(Operator.COLON.toString()), expr, TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()), stmt);
 	}
 	
 	private static Parser<Statement> block(Parser<Statement> stmt) {
 		return curry(Block.class)
-		    .sequence(TerminalParser.phrase("{"), stmt.many(), TerminalParser.term("}"));
+		    .sequence(TerminalParser.phrase(Operator.CURLY_BRACKET_OPEN.toString()), stmt.many(), TerminalParser.term(Operator.CURLY_BRACKET_CLOSE.toString()));
 	}
 	
 	private static Parser<Statement> letIn(Parser<Assignment> ass, Parser<Statement> stmt) {
 		return curry(LetIn.class)
-		    .sequence(TerminalParser.term("let"), ass.many1(), TerminalParser.term("in"), stmt.many(), TerminalParser.term("end"));
+		    .sequence(TerminalParser.term(Keyword.LET.toString()), ass.many1(), TerminalParser.term(Keyword.IN.toString()), stmt.many(), TerminalParser.term(Keyword.END.toString()));
 	}
 	
 	  
 
 	private	static Parser<Statement> markup(Parser<Markup> markup) {
-			return curry(MultipleMarkup.class).sequence(markup.atLeast(2), TerminalParser.term(";"));
+			return curry(MultipleMarkup.class).sequence(markup.atLeast(2), TerminalParser.term(Operator.SEMI_COLON.toString()));
 		}
 		
 	private	static Parser<Statement> singleMarkup(Parser<Markup> markup) {
-			return curry(SingleMarkup.class).sequence(markup, TerminalParser.term(";"));
+			return curry(SingleMarkup.class).sequence(markup, TerminalParser.term(Operator.SEMI_COLON.toString()));
 		}
 		
 	private	static Parser<Statement> markupExpression(Parser<Markup> markup, Parser<Expression> expr) {
-			return curry(MarkupExpression.class).sequence(markup.many1(), expr, TerminalParser.term(";"));
+			return curry(MarkupExpression.class).sequence(markup.many1(), expr, TerminalParser.term(Operator.SEMI_COLON.toString()));
 		}
 		
 	private	static Parser<Statement> markupEmbedding(Parser<Markup> markup, Parser<Embedding> embedding) {
-			return curry(MarkupEmbedding.class).sequence(markup.many1(), TerminalParser.term("\""), embedding, TerminalParser.term("\""),  TerminalParser.term(";"));
+			return curry(MarkupEmbedding.class).sequence(markup.many1(), TerminalParser.term(Operator.DOUBLE_QUOTE.toString()), embedding, TerminalParser.term(Operator.DOUBLE_QUOTE.toString()),  TerminalParser.term(Operator.SEMI_COLON.toString()));
 		}
 		
 	private	static Parser<Statement> markupAndStatement(Parser<Markup> markup, Parser<Statement> statementParser) {
@@ -144,9 +144,7 @@ public final class StatementParser {
      	markupAndStatement(markup, lazy),
      	block(lazy)
     	);
-    //Parser<Statement> parser2 = Parsers.or(parser, block(parser));
-    
-    ref.set(parser);
+      ref.set(parser);
     return parser;
   }
   
