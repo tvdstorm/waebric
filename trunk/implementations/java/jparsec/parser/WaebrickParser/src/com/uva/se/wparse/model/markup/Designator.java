@@ -57,7 +57,7 @@ public class Designator extends ValueObject implements Markup{
 			
 		}
 		
-		String Result = outputBracedBlock( outputAddToBlock( outputQuote( identifier ), AttributeBlock ) );
+		String Result = outputAddToBlock( outputQuote( identifier ), AttributeBlock );
 		
 		return Result;
 	}	
