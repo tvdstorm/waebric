@@ -32,22 +32,20 @@ import com.uva.se.wparse.model.markup.MarkupArgument;
 public class MarkupParser {
 
 
-	public static Parser<Markup> markupDesignator(Parser<Attribute> attributeParser) {
+	private static Parser<Markup> markupDesignator(Parser<Attribute> attributeParser) {
 		return curry(Designator.class).sequence(ExpressionParser.IDENTIFIER.source(), attributeParser.many());
 	}
 	
 	//this method is used for arguments that are quoted
-	static Parser<Markup> markupArguments(Parser<Attribute> attribute, Parser<Argument> argumentParser, Parser<Expression> expr) {
-		ArgumentParser argParser = new  ArgumentParser();
+	private static Parser<Markup> markupArguments(Parser<Attribute> attribute, Parser<Argument> argumentParser, Parser<Expression> expr) {
 		return curry(MarkupArgument.class).sequence(markupDesignator(attribute).many1() ,
-				argParser.blockArgument(argumentParser)	);
+				ArgumentParser.blockArgument(argumentParser)	);
 	}
 	
 	
 	public static Parser<Markup> markup(Parser<Expression> expr) {
 		Parser.Reference<Markup> ref = Parser.newReference();
-		ArgumentParser argumentParser = new ArgumentParser();
-		Parser<Argument> argParser = argumentParser.arguments(expr);
+		Parser<Argument> argParser = ArgumentParser.arguments(expr);
 		Parser<Attribute> attributeParser = AttributeParser.attributes();
 		Parser<Markup> parser = Parsers.or(
 			markupArguments(attributeParser, argParser, expr) ,

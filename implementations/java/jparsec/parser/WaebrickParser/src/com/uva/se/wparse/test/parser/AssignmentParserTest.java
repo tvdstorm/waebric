@@ -47,8 +47,7 @@ public class AssignmentParserTest extends TestCase {
 		super.setUp();
 		expParser = ExpressionParser.expression(null);
 		markupParser = MarkupParser.markup(expParser);
-		ArgumentParser argParser = new ArgumentParser();
-		argumentParser = argParser.arguments(expParser);
+		argumentParser = ArgumentParser.arguments(expParser);
 		statemenParser = StatementParser.statement(expParser, markupParser);
 		
 		//AssignmentParser assParser = new AssignmentParser();

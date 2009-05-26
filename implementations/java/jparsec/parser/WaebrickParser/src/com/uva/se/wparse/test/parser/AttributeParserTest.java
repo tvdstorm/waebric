@@ -41,8 +41,7 @@ public class AttributeParserTest extends TestCase {
 		super.setUp();
 		attributeParser = AttributeParser.attributes();
 		expParser =  ExpressionParser.expression(null);
-		ArgumentParser argParser = new ArgumentParser();
-		argumentParser = argParser.arguments(expParser);
+		argumentParser = ArgumentParser.arguments(expParser);
 	}
 
 	protected void tearDown() throws Exception {

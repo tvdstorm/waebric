@@ -37,8 +37,7 @@ public class ArgumentParserTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		expParser =  ExpressionParser.expression(null);
-		ArgumentParser argParser = new ArgumentParser();
-		argumentParser = argParser.arguments(expParser);
+		argumentParser = ArgumentParser.arguments(expParser);
 	}
 
 	protected void tearDown() throws Exception {

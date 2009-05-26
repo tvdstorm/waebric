@@ -123,8 +123,7 @@ public final class StatementParser {
     Parser.Reference<Statement> ref = Parser.newReference();
     Parser<Statement> lazy = ref.lazy();
     Parser<Assignment> assignmentParser = AssignmentParser.assignment(lazy, expressionParser);
-    EmbeddingParser embedding = new EmbeddingParser();
-    Parser<Embedding> embeddingParser = embedding.getParser(markup, expressionParser);
+    Parser<Embedding> embeddingParser = EmbeddingParser.getParser(markup, expressionParser);
     Parser<Predicate> predicateParser = PredicateParser.predicates(expressionParser);
     
     @SuppressWarnings("unchecked")

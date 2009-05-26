@@ -45,7 +45,7 @@ public final class ModuleParser implements WeabrickParser {
 	
 
 	
-  static Parser<ModuleBody> body(Parser<Member> member) {
+	private static Parser<ModuleBody> body(Parser<Member> member) {
     return Mapper.curry(ModuleBody.class).sequence(
         member.many().map(new Map<List<Member>, List<Member>>() {
           public List<Member> map(List<Member> from) {
@@ -54,10 +54,9 @@ public final class ModuleParser implements WeabrickParser {
         }));
   }
 
-  static Parser<Member> methodDef( Parser<Statement> statementParser, Parser<Expression> expr,   Parser<Embedding> embedding  ) {
-	  ArgumentParser argumentParser = new ArgumentParser();
-	  Parser<Argument>  argParser = argumentParser.arguments(expr);
-	  Parser<Argument>  blockArgParser = argumentParser.blockArgument(argParser);
+  private static Parser<Member> methodDef( Parser<Statement> statementParser, Parser<Expression> expr,   Parser<Embedding> embedding  ) {
+	  Parser<Argument>  argParser = ArgumentParser.arguments(expr);
+	  Parser<Argument>  blockArgParser = ArgumentParser.blockArgument(argParser);
 	  
     return Mapper.<Member>curry(FunctionDef.class).sequence(
         TerminalParser.term("def"), ExpressionParser.IDENTIFIER.source(),
@@ -68,7 +67,7 @@ public final class ModuleParser implements WeabrickParser {
   }
   
   
-  static Parser<Member> siteDef( Parser<Mapping> mappingParser) {
+  private static Parser<Member> siteDef( Parser<Mapping> mappingParser) {
 	    return Mapper.<Member>curry(SiteDef.class).sequence(
 	       TerminalParser.term("site"),
 	       mappingParser.sepBy(TerminalParser.term(";")),
@@ -77,21 +76,20 @@ public final class ModuleParser implements WeabrickParser {
 	  }
   
 
-  static final Parser<QualifiedName> QUALIFIED_NAME =
+  private static final Parser<QualifiedName> QUALIFIED_NAME =
       Mapper.curry(QualifiedName.class).sequence(Terminals.Identifier.PARSER.sepBy1(TerminalParser.term(".")));
  
   
-  static final Parser<QualifiedName> MODULE = Parsers.sequence(TerminalParser.term(TerminalParser.KEYWORD_MODULE), QUALIFIED_NAME);
+  private static final Parser<QualifiedName> MODULE = Parsers.sequence(TerminalParser.term(Keywords.MODULE.toString()), QUALIFIED_NAME);
   
-  static final Parser<QualifiedName> importParser = Parsers.sequence(TerminalParser.term("import"), QUALIFIED_NAME);
+  private static final Parser<QualifiedName> importParser = Parsers.sequence(TerminalParser.term("import"), QUALIFIED_NAME);
   
   private static Parser<ModuleDef> module() {
     Parser.Reference<Member> memberRef = Parser.newReference();
     Parser<Expression> expr = ExpressionParser.expression(body(memberRef.lazy()));
     Parser<Markup> markup = MarkupParser.markup(expr);
     Parser<Statement> stmt = StatementParser.statement(expr,markup); 
-    EmbeddingParser embedding = new EmbeddingParser();
-    Parser<Embedding> embeddingParser = embedding.getParser(markup, expr);
+    Parser<Embedding> embeddingParser = EmbeddingParser.getParser(markup, expr);
     
     Parser<Mapping> mappingParser = MappingParser.mapping(markup);
     
@@ -102,7 +100,7 @@ public final class ModuleParser implements WeabrickParser {
   
   
   public ModuleDef parse(String source) {
-    return TerminalParser.parse(module(), source);
+    return TerminalParser.parse( ModuleParser.module(), source);
   }
   
   

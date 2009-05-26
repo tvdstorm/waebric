@@ -20,7 +20,6 @@ package com.uva.se.wparse.parser;
 
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
 import org.codehaus.jparsec.OperatorTable;
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
@@ -44,7 +43,6 @@ import com.uva.se.wparse.model.module.ModuleBody;
 
 public class ExpressionParser {
 
-	private static org.apache.log4j.Logger logger = Logger.getLogger(ExpressionParser.class);
 	
 	@SuppressWarnings("unchecked")
 	public static Parser LITERAL_TEXT = Parsers.sequence(Parsers
@@ -170,20 +168,20 @@ public class ExpressionParser {
 			String value = token.value().toString();
 			//check for reserved keyword, if detected then the token
 			//cannot be a identifier.
-			if( TerminalParser.KEYWORD_YIELD.equals(value) ||
-				TerminalParser.KEYWORD_ECHO.equals(value) ||
-				TerminalParser.KEYWORD_COMMENT.equals(value) ||
-				TerminalParser.KEYWORD_CDATA.equals(value) ||
-				TerminalParser.KEYWORD_EACH.equals(value) ||
-				TerminalParser.KEYWORD_LET.equals(value) ||
-				TerminalParser.KEYWORD_YIELD.equals(value) ||
-				TerminalParser.KEYWORD_MODULE.equals(value) ||
-				TerminalParser.KEYWORD_IMPORT.equals(value) ||
-				TerminalParser.KEYWORD_DEF.equals(value) ||
-				TerminalParser.KEYWORD_END.equals(value) ||
-				TerminalParser.KEYWORD_SITE.equals(value)
-					
-			){
+			if( Keywords.YIELD.equals(value) ||
+					Keywords.ECHO.toString().equals(value) ||
+					Keywords.COMMENT.toString().equals(value) ||
+					Keywords.CDATA.toString().equals(value) ||
+					Keywords.EACH.toString().equals(value) ||
+					Keywords.LET.toString().equals(value) ||
+					Keywords.YIELD.toString().equals(value) ||
+					Keywords.MODULE.toString().equals(value) ||
+					Keywords.IMPORT.toString().equals(value) ||
+					Keywords.DEF.toString().equals(value) ||
+					Keywords.END.toString().equals(value) ||
+					Keywords.SITE.toString().equals(value)
+						
+				){
 //				if (logger.isDebugEnabled()) {
 //					logger.debug("Illegal identifier < reserved keyword>: " + value );
 //				}
