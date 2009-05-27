@@ -22,12 +22,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
 
 
-public class MarkupAndStatement implements Statement, Markup {
+public class MarkupAndStatement extends ValueObject implements Statement, Markup {
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupAndStatement.class);
 	
@@ -48,7 +49,11 @@ public class MarkupAndStatement implements Statement, Markup {
 		return Strings.join(" ", markup) + " " + statement;
 	};
 	
-	
+	  @Override
+	  public String toTransformerOutput() {
+		  String Result = "MarkupAndStatement";
+		  return Result;
+	  } 	
 	
 	
 	

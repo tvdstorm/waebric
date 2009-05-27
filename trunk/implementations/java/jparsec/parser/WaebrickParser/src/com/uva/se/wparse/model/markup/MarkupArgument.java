@@ -52,9 +52,7 @@ public class MarkupArgument extends ValueObject implements Markup {
 	}
 	
 	@Override
-	public String toTransformerOutput() {
-		
-		
+	public String toTransformerOutput() {		
 		
 		String DesignatorBlock = "";
 		for (Designator designatorItem: designator){
@@ -69,7 +67,7 @@ public class MarkupArgument extends ValueObject implements Markup {
 		}
 		ArgumentBlock = OUTPUT_ARGUMENTS + outputBracedBlock( OUTPUT_LIST_BEGIN + ArgumentBlock + OUTPUT_LIST_END );
 		
-		return OUTPUT_CALL + outputBracedBlock ( OUTPUT_TAG + outputBracedBlock( DesignatorBlock + OUTPUT_BLOCK_SEPARATOR + OUTPUT_LIST_BEGIN + OUTPUT_LIST_END ) + OUTPUT_BLOCK_SEPARATOR + ArgumentBlock );		
+		return OUTPUT_CALL + outputBracedBlock ( OUTPUT_TAG + outputBracedBlock( DesignatorBlock ) + OUTPUT_BLOCK_SEPARATOR + ArgumentBlock );		
 	}	
 	
 }

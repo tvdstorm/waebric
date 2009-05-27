@@ -57,8 +57,8 @@ public class Designator extends ValueObject implements Markup{
 			
 		}
 		
-		String Result = outputAddToBlock( outputQuote( identifier ), AttributeBlock );
-		
+		String Result = outputQuote( identifier ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_LIST_BEGIN + OUTPUT_LIST_END;
+
 		return Result;
 	}	
 }
