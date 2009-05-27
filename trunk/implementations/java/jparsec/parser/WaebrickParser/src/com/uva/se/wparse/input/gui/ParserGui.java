@@ -134,7 +134,7 @@ public class ParserGui extends javax.swing.JFrame {
 					// throw new InputException("Error while reading file \"" +
 					// sourceFile + "\"" , exception);
 					exception.printStackTrace();
-					String error = Resources.FILE_ERROR.getResource() + "\n" + exception.getMessage();
+					String error = Resources.ERROR_FILE.getResource() + "\n" + exception.getMessage();
 					showErrorDialog(error);
 				} 
 				
@@ -145,7 +145,7 @@ public class ParserGui extends javax.swing.JFrame {
 					//done with parsing, now convert the parsetree to correct output.
 					txtParserOutput.setText(parseTree.toString());
 				} catch (Exception exception) {
-					String error = Resources.PARSER_ERROR.getResource() + "\n" + exception.getMessage();
+					String error = Resources.ERROR_PARSER.getResource() + "\n" + exception.getMessage();
 					showErrorDialog(error);
 
 				}

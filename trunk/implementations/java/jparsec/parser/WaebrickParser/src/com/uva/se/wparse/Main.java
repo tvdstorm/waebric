@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.input.gui.ParserGui;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 import com.uva.se.wparse.parser.ModuleParser;
-import com.uva.se.wparse.parser.Operator;
 import com.uva.se.wparse.parser.WeabrickParser;
 import com.uva.se.wparse.resource.Resources;
 import com.uva.se.wparse.util.FileUtil;
@@ -80,7 +79,7 @@ public class Main {
 		} else {
 			// illegal start option provided, handle with error msg
 			//System.out.println("ERROR: not arguments given");
-			System.out.println(Resources.MAIN_ERROR_NOARGS.getResource() );
+			System.out.println(Resources.ERROR_MAIN_NOARGS.getResource() );
 			// TODO: print help info
 		}
 
