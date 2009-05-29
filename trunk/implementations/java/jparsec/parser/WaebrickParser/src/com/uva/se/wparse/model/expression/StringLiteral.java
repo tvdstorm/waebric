@@ -42,4 +42,9 @@ public final class StringLiteral extends ValueObject implements Expression {
 	public String toString() {
 		return string;
 	}
+	
+	@Override
+	public String toTransformerOutput() {
+		return "text(\"\\\"" + string + "\\\"\")" ;
+	}
 }

@@ -53,17 +53,18 @@ public final class BlockArgument extends ValueObject implements Argument {
   
   @Override
   public String toTransformerOutput() {
-	  String Result = OUTPUT_LIST_EMPTY;
+	  String Result = "";
 	  
 	  if (args != null) {
 		  	for (Argument arg: args) {
 		  		if (arg instanceof ValueObject) {
-		  			Result = outputAddToList(Result, ((ValueObject)arg).toTransformerOutput());		  			
-		  		}		  		
+		  			Result = outputAddToBlock(Result, ((ValueObject)arg).toTransformerOutput());		  			
+		  		}
 		  	}
-		  	if (Result != OUTPUT_LIST_EMPTY) {
-		  		Result = OUTPUT_ARGUMENTS + outputBracedBlock( outputBracedList( Result ));
-		  	}
+		/*  	if (!Result.isEmpty()) {
+		  		//Result = OUTPUT_ARGUMENTS + outputBracedBlock( outputBracedList( Result ));
+		  		Result = outputBracedBlock( outputBracedList( Result ) );
+		  	}*/
 	  }	  
 	  return Result;
   }  

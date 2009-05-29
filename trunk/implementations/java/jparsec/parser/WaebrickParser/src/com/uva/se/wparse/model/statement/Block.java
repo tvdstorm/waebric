@@ -28,6 +28,8 @@ import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
 public final class Block extends ValueObject implements Statement {
+	
+	public static final String OUTPUT_BLOCK = "block";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(Block.class);
@@ -45,5 +47,16 @@ public final class Block extends ValueObject implements Statement {
 	@Override
 	public String toString() {
 		return "{" + Strings.join(" ", statements) + "}";
+	}
+	
+	@Override
+	public String toTransformerOutput() {
+		String statementBlock = "";
+		for (Statement statement: statements){
+			if (statement instanceof ValueObject){
+				statementBlock = outputAddToBlock(statementBlock, ((ValueObject)statement).toTransformerOutput());
+			}			
+		}		
+		return OUTPUT_BLOCK + outputBracedBlock( outputBracedList( statementBlock ) );
 	}
 }

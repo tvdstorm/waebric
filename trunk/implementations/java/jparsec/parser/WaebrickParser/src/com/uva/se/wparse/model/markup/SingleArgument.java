@@ -43,9 +43,14 @@ public class SingleArgument extends ValueObject implements Argument {
 		return expression.toString();
 	}
 	
-	  @Override
-	  public String toTransformerOutput() {
-		  return outputQuote( expression.toString() );
-	  } 	
+	@Override
+	public String toTransformerOutput() {
+		String Result = "";
+		if (expression instanceof ValueObject) {
+			Result = ((ValueObject)expression).toTransformerOutput();			
+		}		
+		
+		return Result;
+	} 	
 	
 }

@@ -27,6 +27,8 @@ import com.uva.se.wparse.model.markup.Markup;
 
 public class SingleMarkup extends ValueObject implements Statement, Markup {
 	
+	public static final String OUTPUT_MARKUP = "markup";
+	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SingleMarkup.class);
 
 	private Markup markup;
@@ -44,11 +46,14 @@ public class SingleMarkup extends ValueObject implements Statement, Markup {
 		return markup.toString();
 	};
 	
-	  @Override
-	  public String toTransformerOutput() {
-
-		  return "SingleMarkup";
-	  } 
+	@Override
+	public String toTransformerOutput() {
+        String Result = "";
+        if (markup instanceof ValueObject) {
+        	Result = ((ValueObject)markup).toTransformerOutput();
+        }		
+		return OUTPUT_MARKUP + outputBracedBlock( Result );
+	} 
 	
 	
 	
