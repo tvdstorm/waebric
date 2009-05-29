@@ -29,6 +29,8 @@ import com.uva.se.wparse.util.Strings;
 
 
 public class MarkupAndStatement extends ValueObject implements Statement, Markup {
+	
+	public static final String OUTPUT_MARKUPSTAT = "markup-stat";
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupAndStatement.class);
 	
@@ -47,15 +49,22 @@ public class MarkupAndStatement extends ValueObject implements Statement, Markup
 	@Override
 	public String toString() {
 		return Strings.join(" ", markup) + " " + statement;
-	};
+	}
 	
-	  @Override
-	  public String toTransformerOutput() {
-		  String Result = "MarkupAndStatement";
-		  return Result;
-	  } 	
-	
-	
-	
-	
+	@Override
+	public String toTransformerOutput() {
+	    String MarkupBlock = "";
+	    for (Markup markupItem: markup) {
+	    	if (markupItem instanceof ValueObject){
+	    		MarkupBlock = outputAddToBlock(MarkupBlock, ((ValueObject)markupItem).toTransformerOutput());
+	    	}
+	    }
+		
+		String statementItem = "";
+		if (statement instanceof ValueObject){
+			statementItem = ((ValueObject)statement).toTransformerOutput();
+		}	
+		
+		return OUTPUT_MARKUPSTAT + outputBracedBlock( outputBracedList ( MarkupBlock ) + OUTPUT_BLOCK_SEPARATOR + statementItem );
+	} 	
 }

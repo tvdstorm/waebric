@@ -38,4 +38,9 @@ public final class Identifier extends ValueObject implements Expression {
 	public String toString() {
 		return identifier;
 	}
+	
+	@Override
+	public String toTransformerOutput() {
+		return outputQuote(identifier);
+	}
 }

@@ -20,7 +20,9 @@ package com.uva.se.wparse.model.markup;
 
 import org.apache.log4j.Logger;
 
-public class MultipleAttribute implements Attribute  {
+import com.uva.se.wparse.model.common.ValueObject;
+
+public class MultipleAttribute extends ValueObject implements Attribute  {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MultipleAttribute.class);
 
@@ -45,6 +47,9 @@ public class MultipleAttribute implements Attribute  {
 		}
 	}
 	
-	
-	
+	@Override
+	public String toTransformerOutput() {
+
+		return "MultipleAttribute";
+	} 
 }

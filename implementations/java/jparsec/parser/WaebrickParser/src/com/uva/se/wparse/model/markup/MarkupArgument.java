@@ -62,8 +62,8 @@ public class MarkupArgument extends ValueObject implements Markup {
 		}
 		
 		String ArgumentBlock = "";
-		if (arguments != null) {
-			//TODO: ArgumentBlock vullen
+		if (arguments instanceof ValueObject) {
+			ArgumentBlock = ((ValueObject)arguments).toTransformerOutput();
 		}
 		ArgumentBlock = OUTPUT_ARGUMENTS + outputBracedBlock( OUTPUT_LIST_BEGIN + ArgumentBlock + OUTPUT_LIST_END );
 		
