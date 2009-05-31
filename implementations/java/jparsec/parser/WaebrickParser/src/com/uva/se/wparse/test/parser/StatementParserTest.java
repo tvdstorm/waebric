@@ -214,6 +214,18 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 	
+	public void testIfPredicateElseWithMarkup() {
+		String source = "if ( myList.list? ) markup1; else markup2 ;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testIfPredicateElseWithMarkupList() {
+		String source = "if (mi.kids) menu(mi); else a(href=mi.link) mi.title;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	
+	
 	public void testEach() {
 		String source = "each (  variable : [var1, var2, var3] ) echo \"do x for each item\";";
 		TerminalParser.parse(statemenParser, source);

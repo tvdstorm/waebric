@@ -261,8 +261,7 @@ public class ExpressionParser {
 				expr.sepBy(TerminalParser.term(Operator.COMMA.toString())), TerminalParser.term(Operator.SQUARE_BRACKET_CLOSE.toString()));
 	}
 
-	private static Parser<Expression> blockKeyValueExpression(
-			Parser<Expression> expr) {
+	private static Parser<Expression> blockKeyValueExpression(Parser<Expression> expr) {
 		return curry(BlockKeyValueExpression.class).sequence(
 				TerminalParser.term(Operator.CURLY_BRACKET_OPEN.toString()),
 				keyValuePairExpression(expr).sepBy(TerminalParser.term(Operator.COMMA.toString())),

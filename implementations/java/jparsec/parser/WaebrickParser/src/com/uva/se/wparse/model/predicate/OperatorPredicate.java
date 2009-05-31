@@ -28,11 +28,11 @@ public final class OperatorPredicate extends ValueObject implements Expression, 
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(OperatorPredicate.class);
 
-	public final Expression left;
+	public final Predicate left;
 	public final Operator op;
-	public final Expression right;
+	public final Predicate right;
 
-	public OperatorPredicate(Expression left, Operator op, Expression right) {
+	public OperatorPredicate(Predicate left, Operator op, Predicate right) {
 		this.left = left;
 		this.op = op;
 		this.right = right;
