@@ -29,6 +29,7 @@ import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.predicate.OperatorPredicate;
 import com.uva.se.wparse.model.predicate.NotPredicate;
 import com.uva.se.wparse.model.predicate.Predicate;
+import com.uva.se.wparse.model.predicate.ExpressionPredicate;
 import com.uva.se.wparse.model.predicate.TypeCheckPredicate;
 
 public final class PredicateParser {
@@ -50,6 +51,10 @@ public final class PredicateParser {
 		return curry(NotPredicate.class).sequence(
 				TerminalParser.term(Operator.NOT.toString()), predicateParser );
 	}
+	
+	private static Parser<Predicate> expressionPredicate(Parser<Expression> expressionParser) {
+		return curry(ExpressionPredicate.class).sequence(expressionParser);
+	}
 
 	public static Parser<Predicate> predicates(Parser<Expression> expressionParser) {
 		//create a expression parser that does not parse for the dot operator
@@ -58,7 +63,9 @@ public final class PredicateParser {
 		Parser<Predicate> lazy = ref.lazy();
 		Parser<Predicate> parser = Parsers.or(
 						typeCheck(expressionParserNoOperators),
-						notPredicate(lazy));
+						notPredicate(lazy),
+						expressionPredicate(expressionParser)
+						);
 		
 		
 		 parser = new OperatorTable<Predicate>()
@@ -68,6 +75,8 @@ public final class PredicateParser {
 			ref.set(parser);
 		return parser;
 	}
+	
+	
 	
 	
 	private static Parser<Binary<Predicate>> binary(Operator op) {

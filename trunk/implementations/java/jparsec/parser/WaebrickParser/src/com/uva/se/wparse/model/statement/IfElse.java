@@ -23,17 +23,18 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.predicate.Predicate;
 
 public final class IfElse extends ValueObject implements Statement {
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(IfElse.class);
 
-	private Expression condition;
+	private Predicate condition;
 	private Statement thenStatement;
 	private Statement elseStatement;
 
-	public IfElse(Expression condition, Statement thenStatement,
+	public IfElse(Predicate condition, Statement thenStatement,
 			Statement elseStatement) {
 		this.condition = condition;
 		this.thenStatement = thenStatement;

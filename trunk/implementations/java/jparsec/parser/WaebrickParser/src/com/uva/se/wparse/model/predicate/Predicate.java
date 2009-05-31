@@ -18,8 +18,7 @@
  */
 package com.uva.se.wparse.model.predicate;
 
-import com.uva.se.wparse.model.expression.Expression;
 
-public interface Predicate extends Expression {
+public interface Predicate {
 
 }
