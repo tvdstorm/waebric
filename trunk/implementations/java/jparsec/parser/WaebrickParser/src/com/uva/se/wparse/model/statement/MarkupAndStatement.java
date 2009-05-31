@@ -56,7 +56,7 @@ public class MarkupAndStatement extends ValueObject implements Statement, Markup
 	    String MarkupBlock = "";
 	    for (Markup markupItem: markup) {
 	    	if (markupItem instanceof ValueObject){
-	    		MarkupBlock = outputAddToBlock(MarkupBlock, ((ValueObject)markupItem).toTransformerOutput());
+	    		MarkupBlock = outputAddToBlock(MarkupBlock, ((ValueObject)markupItem).toTransformerOutput() );
 	    	}
 	    }
 		

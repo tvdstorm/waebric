@@ -27,8 +27,7 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
-public final class BlockKeyValueExpression extends ValueObject implements
-		Expression {
+public final class BlockKeyValueExpression extends ValueObject implements Expression {
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(BlockKeyValueExpression.class);
@@ -46,5 +45,15 @@ public final class BlockKeyValueExpression extends ValueObject implements
 	@Override
 	public String toString() {
 		return "{" + Strings.join(",", keyValuePair) + "}";
+	}
+	
+	@Override
+	public String toTransformerOutput() {
+		String keyValueBlock = OUTPUT_LIST_EMPTY;
+		for (KeyValuePair keyValuePairItem: keyValuePair) {
+			keyValueBlock = outputAddToList( keyValueBlock, keyValuePairItem.toTransformerOutput() );
+		}
+		
+		return "record([" + keyValueBlock + "])";
 	}
 }

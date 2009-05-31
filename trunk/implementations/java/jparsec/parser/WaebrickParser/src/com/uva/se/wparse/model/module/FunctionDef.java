@@ -30,6 +30,8 @@ public final class FunctionDef extends ValueObject implements Member {
 	
 	public static final String OUTPUT_FUNCTION	= "def";
 	public static final String OUTPUT_ARGUMENTS	= "argument";
+	public static final String OUTPUT_FORMALS   = "formals";
+	
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(FunctionDef.class);
@@ -93,7 +95,7 @@ public final class FunctionDef extends ValueObject implements Member {
 			ArgumentsElement = ArgumentTransformerOutput;
 		}
 		if (ArgumentsElement != OUTPUT_LIST_EMPTY) {
-			ArgumentsElement = "formals([" + ArgumentsElement + "])";
+			ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( outputBracedList( ArgumentsElement ) );
 		}
 		
 		String StatementsElement = OUTPUT_LIST_EMPTY;

@@ -49,4 +49,9 @@ public final class AssignmentFormals extends ValueObject implements	Assignment {
 	public String toString() {
 		return identifier + " ( " + Strings.join(",", formals) + " ) = " + statement;
 	}
+	
+	@Override
+	public String toTransformerOutput() {
+		return "AssignmentFormals";
+	}
 }

@@ -47,7 +47,8 @@ public class SingleArgument extends ValueObject implements Argument {
 	public String toTransformerOutput() {
 		String Result = "";
 		if (expression instanceof ValueObject) {
-			Result = ((ValueObject)expression).toTransformerOutput();			
+			Result = ((ValueObject)expression).toTransformerOutput();
+  			//Result += expression.getClass().getSimpleName();
 		}		
 		
 		return Result;

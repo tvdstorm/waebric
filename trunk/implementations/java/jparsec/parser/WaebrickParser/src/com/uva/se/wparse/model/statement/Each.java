@@ -49,4 +49,21 @@ public final class Each extends ValueObject implements Statement {
 				") ").append(stmt);
 		return builder.toString();
 	}
+	
+	@Override
+	public String toTransformerOutput() {
+		String ExpressionItem = "";
+		if (expr instanceof ValueObject) {
+			ExpressionItem = ((ValueObject)expr).toTransformerOutput();
+		}
+		
+		String StatementItem = "";
+		if (stmt instanceof ValueObject) {
+			StatementItem = ((ValueObject)stmt).toTransformerOutput();
+		}
+		
+		
+		
+		return "each(" + outputQuote( var ) + "," + ExpressionItem + "," + StatementItem                  + ")";
+	}
 }

@@ -29,8 +29,6 @@ import com.uva.se.wparse.util.Strings;
 public class MarkupArgument extends ValueObject implements Markup {
 	
 	public static final String OUTPUT_CALL		= "call";
-	public static final String OUTPUT_TAG		= "tag";
-	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupArgument.class);
 
 	private List<Designator> designator;
@@ -67,7 +65,7 @@ public class MarkupArgument extends ValueObject implements Markup {
 		}
 		ArgumentBlock = OUTPUT_ARGUMENTS + outputBracedBlock( OUTPUT_LIST_BEGIN + ArgumentBlock + OUTPUT_LIST_END );
 		
-		return OUTPUT_CALL + outputBracedBlock ( OUTPUT_TAG + outputBracedBlock( DesignatorBlock ) + OUTPUT_BLOCK_SEPARATOR + ArgumentBlock );		
+		return OUTPUT_CALL + outputBracedBlock ( DesignatorBlock + OUTPUT_BLOCK_SEPARATOR + ArgumentBlock );		
 	}	
 	
 }

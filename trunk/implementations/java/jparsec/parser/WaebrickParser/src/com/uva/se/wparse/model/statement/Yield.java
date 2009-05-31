@@ -20,7 +20,9 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-public class Yield implements Statement {
+import com.uva.se.wparse.model.common.ValueObject;
+
+public class Yield extends ValueObject implements Statement {
 	
 	private static org.apache.log4j.Logger logger = Logger
 	.getLogger(Each.class);
@@ -38,6 +40,11 @@ public class Yield implements Statement {
 	@Override
 	public String toString() {
 		return yield.toString();
+	}
+	
+	@Override
+	public String toTransformerOutput() {
+		return yield;		
 	}
 	
 	

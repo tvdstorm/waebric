@@ -20,7 +20,11 @@ package com.uva.se.wparse.model.expression;
 
 import org.apache.log4j.Logger;
 
-public class KeyValuePair implements Expression {
+import com.uva.se.wparse.model.common.ValueObject;
+
+public class KeyValuePair extends ValueObject implements Expression {
+	public static final String OUTPUT_PAIR = "pair";
+	
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(KeyValuePair.class);
 
@@ -39,6 +43,16 @@ public class KeyValuePair implements Expression {
 	@Override
 	public String toString() {
 		return key + ":" + value;
+	}
+	
+	@Override
+	public String toTransformerOutput() {
+		String expressionItem = "";
+		if (value instanceof ValueObject) {
+			expressionItem = ((ValueObject)value).toTransformerOutput();
+		}
+		
+		return OUTPUT_PAIR + outputBracedBlock( outputQuote( key ) + OUTPUT_BLOCK_SEPARATOR + expressionItem );
 	}
 
 }

@@ -27,6 +27,9 @@ import com.uva.se.wparse.model.markup.Markup;
 
 public class MultipleMarkup extends ValueObject implements Statement, Markup {
 	
+	public static final String OUTPUT_TAG		= "tag";
+	public static final String OUTPUT_VAR		= "var";
+	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MultipleMarkup.class);
 
 	private List<Markup> markup;
@@ -50,8 +53,14 @@ public class MultipleMarkup extends ValueObject implements Statement, Markup {
 
 	@Override
 	public String toTransformerOutput() {
-		return this.getClass().getName();
+		String MarkupBlock = "";		
+		for (Markup markupItem: markup) {
+			if (markupItem instanceof ValueObject) {
+				MarkupBlock = outputAddToBlock(MarkupBlock, ((ValueObject)markupItem).toTransformerOutput());
+			}
+		}
 		
+		return "markup-exp([" + MarkupBlock + "])";
 	}
 	
 }

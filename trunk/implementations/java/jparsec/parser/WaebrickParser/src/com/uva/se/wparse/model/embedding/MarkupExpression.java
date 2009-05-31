@@ -20,10 +20,11 @@ package com.uva.se.wparse.model.embedding;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
 
-public class MarkupExpression implements Embedding {
+public class MarkupExpression extends ValueObject implements Embedding {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpression.class);
 
@@ -44,6 +45,13 @@ public class MarkupExpression implements Embedding {
 	public String toString() {
 		return markup.toString() + " " + expr;
 	}
+	
+	
+	@Override
+	public String toTransformerOutput() {
+
+		return "MarkupExpression";
+	}	
 	
 	
 }
