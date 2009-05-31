@@ -46,7 +46,7 @@ public class SingleAttribute extends ValueObject implements Attribute  {
 	
 	@Override
 	public String toTransformerOutput() {		
-		return toString() ;
+		return outputQuote( identifier );
 	}
 	
 }

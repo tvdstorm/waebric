@@ -22,8 +22,12 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.expression.Identifier;
 
 public class AssignmentArgument extends ValueObject implements Argument {
+	
+	public static final String OUTPUT_VAR = "var";
+	
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentArgument.class);
 	
@@ -48,7 +52,15 @@ public class AssignmentArgument extends ValueObject implements Argument {
 	
 	@Override
 	public String toTransformerOutput() {
-		return "attr(\"" + var + "\",text(\"\\\"" + expression + "\\\"\"))";
+		String expressionItem = "";
+		if (expression instanceof ValueObject) {
+			expressionItem = ((ValueObject)expression).toTransformerOutput();
+			if (expression instanceof Identifier){
+				expressionItem = OUTPUT_VAR + outputBracedBlock( expressionItem );
+			}
+		}		
+		
+		return OUTPUT_ATTRIBUTE + outputBracedBlock( "\"" + var + "\"," + expressionItem );
 	}
 	
 	

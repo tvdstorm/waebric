@@ -58,13 +58,9 @@ public final class BlockArgument extends ValueObject implements Argument {
 	  if (args != null) {
 		  	for (Argument arg: args) {
 		  		if (arg instanceof ValueObject) {
-		  			Result = outputAddToBlock(Result, ((ValueObject)arg).toTransformerOutput());		  			
+		  			Result = outputAddToBlock(Result, ((ValueObject)arg).toTransformerOutput());
 		  		}
 		  	}
-		/*  	if (!Result.isEmpty()) {
-		  		//Result = OUTPUT_ARGUMENTS + outputBracedBlock( outputBracedList( Result ));
-		  		Result = outputBracedBlock( outputBracedList( Result ) );
-		  	}*/
 	  }	  
 	  return Result;
   }  

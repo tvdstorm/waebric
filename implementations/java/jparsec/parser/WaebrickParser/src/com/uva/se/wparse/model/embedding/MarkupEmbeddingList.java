@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
-public class MarkupEmbeddingList implements Embedding {
+public class MarkupEmbeddingList extends ValueObject implements Embedding {
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbeddingList.class);
 	
@@ -27,9 +28,14 @@ public class MarkupEmbeddingList implements Embedding {
 	
 	@Override
 	public String toString() {
-		return Strings.join("", embedding);
-	
+		return Strings.join("", embedding);	
 	}
+	
+	
+	@Override
+	public String toTransformerOutput() {
+		return "MarkupEmbeddingList";
+	}	
 	
 	
 }

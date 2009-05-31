@@ -44,4 +44,15 @@ public final class BlockExpression extends ValueObject implements Expression {
   @Override public String toString() {
     return "[" + Strings.join(" ", expr) + "]";
   }
+  
+  @Override 
+  public String toTransformerOutput() {
+	  String ListBlock = OUTPUT_LIST_EMPTY;
+	  
+	  for (Expression expression: expr) {
+		  ListBlock = outputAddToList(ListBlock, ((ValueObject)expression).toTransformerOutput());
+	  }  
+	  
+	  return "list([" + ListBlock + "])";	  
+  }
 }

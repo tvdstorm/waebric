@@ -25,7 +25,9 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 
 
-public class Designator extends ValueObject implements Markup{
+public class Designator extends ValueObject implements Markup{	
+	
+	public static final String OUTPUT_TAG = "tag";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Designator.class);
 
@@ -57,8 +59,8 @@ public class Designator extends ValueObject implements Markup{
 			
 		}
 		
-		String Result = outputQuote( identifier ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_LIST_BEGIN + AttributeBlock + OUTPUT_LIST_END;
+		String Result = outputQuote( identifier.trim() ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_LIST_BEGIN + AttributeBlock + OUTPUT_LIST_END;
 
-		return Result;
+		return OUTPUT_TAG + outputBracedBlock( Result );
 	}	
 }

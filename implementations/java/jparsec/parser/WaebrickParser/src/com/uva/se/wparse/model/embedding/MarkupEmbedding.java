@@ -22,10 +22,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
-public class MarkupEmbedding implements Embedding {
+public class MarkupEmbedding extends ValueObject implements Embedding {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbedding.class);
 
@@ -47,7 +48,12 @@ public class MarkupEmbedding implements Embedding {
 
 	@Override
 	public String toString() {
-		return preText + " < " + Strings.join(" ", markup) + " " + follower + " > " +  postText;
-	
+		return preText + " < " + Strings.join(" ", markup) + " " + follower + " > " +  postText;	
 	}
+	
+	@Override
+	public String toTransformerOutput() {
+
+		return "MarkupEmbedding";
+	}	
 }

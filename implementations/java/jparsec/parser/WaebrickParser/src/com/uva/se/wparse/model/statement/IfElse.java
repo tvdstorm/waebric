@@ -51,4 +51,10 @@ public final class IfElse extends ValueObject implements Statement {
 				thenStatement).append(" else ").append(elseStatement);
 		return builder.toString();
 	}
+	
+	@Override
+	public String toTransformerOutput() {
+		return "if-else(" + ")";
+		
+	}
 }

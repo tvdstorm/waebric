@@ -22,7 +22,8 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 
-public final class Identifier extends ValueObject implements Expression {
+public class Identifier extends ValueObject implements Expression {
+
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Identifier.class);
 
 	private String identifier;

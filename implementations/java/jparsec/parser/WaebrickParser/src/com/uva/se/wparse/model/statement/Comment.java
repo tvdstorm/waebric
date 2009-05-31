@@ -20,10 +20,13 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.StringLiteral;
 
 
-public class Comment implements Statement {
+public class Comment extends ValueObject implements Statement {
+	
+	public static final String OUTPUT_COMMENT = "comment";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(Comment.class);
@@ -41,6 +44,11 @@ public class Comment implements Statement {
 	@Override
 	public String toString() {
 		return "comment " + comment;
+	}
+	
+	@Override
+	public String toTransformerOutput() {
+		return OUTPUT_COMMENT + comment.toTransformerOutput();
 	}
 
 }

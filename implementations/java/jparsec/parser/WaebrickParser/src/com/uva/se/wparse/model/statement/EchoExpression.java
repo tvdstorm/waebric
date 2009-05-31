@@ -20,9 +20,12 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 
-public class EchoExpression implements Statement {
+public class EchoExpression extends ValueObject implements Statement {
+	
+	public static final String OUTPUT_ECHO = "echo";
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(EchoExpression.class);
 	
@@ -39,6 +42,16 @@ public class EchoExpression implements Statement {
 	@Override
 	public String toString() {
 		return "echo " + expr.toString();
+	}
+	
+	@Override
+	public String toTransformerOutput() {
+		String expressionItem = "";
+		if (expr instanceof ValueObject) {
+			expressionItem = ((ValueObject)expr).toTransformerOutput();
+		}
+		
+		return OUTPUT_ECHO + outputBracedBlock( expressionItem );
 	}
 	
 	
