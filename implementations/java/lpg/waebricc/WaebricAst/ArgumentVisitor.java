@@ -1,0 +1,76 @@
+package waebricc.WaebricAst;
+
+public interface ArgumentVisitor
+{
+    void visit(AstToken n, Object o);
+    void visit(ModuleList n, Object o);
+    void visit(Module n, Object o);
+    void visit(ModuleIdList n, Object o);
+    void visit(ModuleBlockList n, Object o);
+    void visit(Site n, Object o);
+    void visit(Import n, Object o);
+    void visit(FunctionWithParameters n, Object o);
+    void visit(FunctionWithoutParameters n, Object o);
+    void visit(ParameterDeclList n, Object o);
+    void visit(Name n, Object o);
+    void visit(MappingList n, Object o);
+    void visit(Mapping n, Object o);
+    void visit(Markup n, Object o);
+    void visit(MarkupList n, Object o);
+    void visit(ArgumentList n, Object o);
+    void visit(Argument n, Object o);
+    void visit(ExpressionList n, Object o);
+    void visit(ExpressionString n, Object o);
+    void visit(ExpressionPlus n, Object o);
+    void visit(ExpressionConstant n, Object o);
+    void visit(ExpressionSymbol n, Object o);
+    void visit(ExpressionCollection n, Object o);
+    void visit(ExpressionPair n, Object o);
+    void visit(KeyValuePairList n, Object o);
+    void visit(KeyValuePair n, Object o);
+    void visit(Embedding n, Object o);
+    void visit(TextTailMidText n, Object o);
+    void visit(TextTailPostText n, Object o);
+    void visit(Embed n, Object o);
+    void visit(StatementIf n, Object o);
+    void visit(StatementIfElse n, Object o);
+    void visit(StatementIfElseNoShortIf n, Object o);
+    void visit(StatementEach n, Object o);
+    void visit(StatementEachNoShortIf n, Object o);
+    void visit(StatementLet n, Object o);
+    void visit(StatementBlock n, Object o);
+    void visit(StatementList n, Object o);
+    void visit(StatementComment n, Object o);
+    void visit(StatementEchoExpression n, Object o);
+    void visit(StatementEchoEmbedding n, Object o);
+    void visit(StatementCData n, Object o);
+    void visit(StatementYield n, Object o);
+    void visit(StatementMarkup n, Object o);
+    void visit(StatementMarkupWithDesignator n, Object o);
+    void visit(StatementMarkupWithExpression n, Object o);
+    void visit(StatementMarkupWithEmbedding n, Object o);
+    void visit(StatementMarkupStatement n, Object o);
+    void visit(StatementMarkupStatementNoShortIf n, Object o);
+    void visit(TypeList n, Object o);
+    void visit(TypeRecord n, Object o);
+    void visit(TypeString n, Object o);
+    void visit(PredicateCheckType n, Object o);
+    void visit(PredicateNegate n, Object o);
+    void visit(PredicateAnd n, Object o);
+    void visit(PredicateOr n, Object o);
+    void visit(Var n, Object o);
+    void visit(AssignmentList n, Object o);
+    void visit(AssignmentExpression n, Object o);
+    void visit(AssignmentStatement n, Object o);
+    void visit(Designator n, Object o);
+    void visit(AttributeList n, Object o);
+    void visit(AttributeSharp n, Object o);
+    void visit(AttributeDot n, Object o);
+    void visit(AttributeDollar n, Object o);
+    void visit(AttributeColon n, Object o);
+    void visit(AttributeWidth n, Object o);
+    void visit(AttributeWidthHeight n, Object o);
+
+    void visit(Ast n, Object o);
+}
+
