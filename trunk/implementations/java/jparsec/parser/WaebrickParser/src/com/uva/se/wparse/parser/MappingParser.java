@@ -26,21 +26,22 @@ import com.uva.se.wparse.model.module.Mapping;
 
 public class MappingParser {
 
-	private static Parser<Mapping> mappingDef(Parser<Markup> markup) {
+	private static Parser<Mapping> mappingDef(Parser<Markup> markupParser) {
 		return curry(Mapping.class).sequence(
-				ExpressionParser.PATH_ELEMENT.sepBy(TerminalParser.term(Operator.SLASH.toString())).followedBy(TerminalParser.term(Operator.DOT.toString())), // dir
+				ExpressionParser.PATH_ELEMENT.sepBy(TerminalParser.term(
+				Operator.SLASH.toString())).followedBy(TerminalParser.term(Operator.DOT.toString())), // dir
 				ExpressionParser.FILE_EXT, // extention
 				TerminalParser.term(Operator.COLON.toString()),
-				markup  //markup function call
+				markupParser  //markup function call
 				);
 
 	}
 	
 
 
-	public static Parser<Mapping> mapping(Parser<Markup> markup) {
+	public static Parser<Mapping> mapping(Parser<Markup> markupParser) {
 		Parser.Reference<Mapping> ref = Parser.newReference();
-		Parser<Mapping> parser = mappingDef(markup);
+		Parser<Mapping> parser = mappingDef(markupParser);
 		ref.set(parser);
 		return parser;
 	}

@@ -44,8 +44,7 @@ public class ExpressionParser {
 
 	
 	@SuppressWarnings("unchecked")
-	public static Parser LITERAL_TEXT = Parsers.sequence(Parsers
-			.token(new TokenMap<String>() {
+	public static Parser LITERAL_TEXT = Parsers.sequence(Parsers.token(new TokenMap<String>() {
 				public String map(Token token) {
 					String value = token.value().toString();
 					if (!value.equals(Operator.DOUBLE_QUOTE.toString())) {
@@ -65,15 +64,11 @@ public class ExpressionParser {
 						return null;
 					}
 				}
-
 			}
-
-			));
+	));
 
 	@SuppressWarnings("unchecked")
-	public static Parser EMBEDDED_TEXT = Parsers.sequence(Parsers
-			.token(new TokenMap<String>() {
-
+	public static Parser EMBEDDED_TEXT = Parsers.sequence(Parsers.token(new TokenMap<String>() {
 				public String map(Token token) {
 					if (!token.value().toString().equals(Operator.DOUBLE_QUOTE.toString())
 							&& !token.value().toString().equals(Operator.SMALLER_THEN.toString())
@@ -101,11 +96,8 @@ public class ExpressionParser {
 	
 	
 	@SuppressWarnings("unchecked")
-	public static Parser SYMBOL_TEXT = Parsers.sequence(Parsers
-			.token(new TokenMap<String>() {
-
+	public static Parser SYMBOL_TEXT = Parsers.sequence(Parsers.token(new TokenMap<String>() {
 				public String map(Token token) {
-
 					String value = token.value().toString();
 					char[] chars = value.toCharArray();
 					for (int i = 0; i < chars.length; i++) {
@@ -114,7 +106,6 @@ public class ExpressionParser {
 								|| (chars[i] == '\r') || (chars[i] == ';')
 								|| (chars[i] == ',') || (chars[i] == '>')
 								|| (chars[i] == ')')
-
 						) {
 							// the control and extend ascii chars are not
 							// supported.
@@ -123,26 +114,20 @@ public class ExpressionParser {
 					}
 					return token.value().toString();
 				}
-
 			}
-
-			));
+	));
 	
 	@SuppressWarnings("unchecked")
 	public static Parser ID_CON = Parsers.sequence(Parsers.token(new TokenMap<String>() {
-
-				public String map(Token token) {
-					
+		public String map(Token token) {
 					int prefixIndex = token.index() - 1;
 					if (prefixIndex > 0) {
 						// get the token to the left of the current token
-						char prefixChar = TerminalParser.getSource()
-								.charAt(prefixIndex);
+						char prefixChar = TerminalParser.getSource().charAt(prefixIndex);
 						if (prefixChar == ' ') {
 							return null; 
 						}
 					}
-					
 					String value = token.value().toString();
 					boolean isIdentifier = Pattern.matches("[A-Za-z\\-0-9]*", value);
 					if(!isIdentifier){
@@ -150,16 +135,12 @@ public class ExpressionParser {
 					}
 					return token.value().toString().trim();
 				}
+		}
+	));
 
-			}
-
-			));
 	@SuppressWarnings("unchecked")
 	public static Parser ID_CON_START = Parsers.sequence(Parsers.token(new TokenMap<String>() {
-
 		public String map(Token token) {
-
-			
 			String value = token.value().toString();
 			//check for reserved keyword, if detected then the token
 			//cannot be a identifier.
@@ -175,7 +156,6 @@ public class ExpressionParser {
 					Keyword.DEF.toString().equals(value) ||
 					Keyword.END.toString().equals(value) ||
 					Keyword.SITE.toString().equals(value)
-						
 				){
 				return null;
 			}
@@ -184,35 +164,27 @@ public class ExpressionParser {
 				return null;
 			}
 			return token.value().toString();
+			}
 		}
-
-	}
-
 	));
 	
 	@SuppressWarnings("unchecked")
 	public static Parser FILE_EXT = Parsers.sequence(Parsers.token(new TokenMap<String>() {
-
-		public String map(Token token) {
-			
-			String value = token.value().toString();
-			boolean isIdentifier = Pattern.matches("[A-Za-z0-9]*", value);
-			if(!isIdentifier){
-				return null;
+			public String map(Token token) {
+					String value = token.value().toString();
+					boolean isIdentifier = Pattern.matches("[A-Za-z0-9]*",
+							value);
+					if (!isIdentifier) {
+						return null;
+					}
+					return token.value().toString();
+				}
 			}
-			return token.value().toString();
-		}
-
-	}
-
 	));
 	
 	@SuppressWarnings("unchecked")
-	public static Parser PATH_ELEMENT_TEXT = Parsers.sequence(Parsers
-			.token(new TokenMap<String>() {
-
+	public static Parser PATH_ELEMENT_TEXT = Parsers.sequence(Parsers.token(new TokenMap<String>() {
 				public String map(Token token) {
-
 					String value = token.value().toString();
 					char[] chars = value.toCharArray();
 					for (int i = 0; i < chars.length; i++) {
@@ -221,7 +193,6 @@ public class ExpressionParser {
 								|| (chars[i] == '\r') || (chars[i] == ' ')
 								|| (chars[i] == '.') || (chars[i] == '/')
 								|| (chars[i] == '\\')
-
 						) {
 							// the control and extend ascii chars are not
 							// supported.
@@ -230,14 +201,18 @@ public class ExpressionParser {
 					}
 					return token.value().toString();
 				}
-
 			}
-
-			));
+	));
 		
-	public static Parser<Expression> IDENTIFIER = curry(Identifier.class).sequence(ID_CON_START.source(), ID_CON.many().source());
+	public static Parser<Expression> IDENTIFIER = curry(Identifier.class).sequence(
+		ID_CON_START.source(),
+		ID_CON.many().source()
+	);
 	
-	public static Parser<Expression> PATH_ELEMENT = curry(Identifier.class).sequence(PATH_ELEMENT_TEXT.source(), ID_CON.many().source());
+	public static Parser<Expression> PATH_ELEMENT = curry(Identifier.class).sequence(
+		PATH_ELEMENT_TEXT.source(),
+		ID_CON.many().source()
+	);
 	
 
 	/**
@@ -245,33 +220,31 @@ public class ExpressionParser {
 	 */
 	@SuppressWarnings("unchecked")
 	private static Parser<Expression> symbolConstant = curry(
-			SymbolConstant.class).sequence(TerminalParser.term("'"),
-					Parsers.or(SYMBOL_TEXT.many())
-			);
+		SymbolConstant.class).sequence(TerminalParser.term("'"),Parsers.or(SYMBOL_TEXT.many())
+	);
 
 	public static Parser<Expression> STRING_LITERAL = curry(
-			StringLiteral.class).sequence(
-					TerminalParser.term(Operator.DOUBLE_QUOTE.toString()),
-					LITERAL_TEXT.many(),
-					TerminalParser.term(Operator.DOUBLE_QUOTE.toString())
-					);
+		StringLiteral.class).sequence(
+		TerminalParser.term(Operator.DOUBLE_QUOTE.toString()),
+		LITERAL_TEXT.many(),
+		TerminalParser.term(Operator.DOUBLE_QUOTE.toString())
+	);
 
-	private static Parser<Expression> blockExpression(Parser<Expression> expr) {
+	private static Parser<Expression> blockExpression(Parser<Expression> expressionParser) {
 		return curry(BlockExpression.class).sequence(TerminalParser.term(Operator.SQUARE_BRACKET_OPEN.toString()),
-				expr.sepBy(TerminalParser.term(Operator.COMMA.toString())), TerminalParser.term(Operator.SQUARE_BRACKET_CLOSE.toString()));
+				expressionParser.sepBy(TerminalParser.term(Operator.COMMA.toString())), TerminalParser.term(Operator.SQUARE_BRACKET_CLOSE.toString()));
 	}
 
-	private static Parser<Expression> blockKeyValueExpression(Parser<Expression> expr) {
+	private static Parser<Expression> blockKeyValueExpression(Parser<Expression> expressionParser) {
 		return curry(BlockKeyValueExpression.class).sequence(
 				TerminalParser.term(Operator.CURLY_BRACKET_OPEN.toString()),
-				keyValuePairExpression(expr).sepBy(TerminalParser.term(Operator.COMMA.toString())),
+				keyValuePairExpression(expressionParser).sepBy(TerminalParser.term(Operator.COMMA.toString())),
 				TerminalParser.term(Operator.CURLY_BRACKET_CLOSE.toString()));
 	}
 
-	private static Parser<Expression> keyValuePairExpression(
-			Parser<Expression> expr) {
+	private static Parser<Expression> keyValuePairExpression(Parser<Expression> expressionParser) {
 		return curry(KeyValuePair.class).sequence(Terminals.Identifier.PARSER,
-				TerminalParser.term(Operator.COLON.toString()), expr);
+				TerminalParser.term(Operator.COLON.toString()), expressionParser);
 	}
 
 	private static Parser<Expression> numberExpression() {
@@ -282,15 +255,15 @@ public class ExpressionParser {
 	private static Parser<Expression> ATOM = Parsers.or(STRING_LITERAL,
 			IDENTIFIER, symbolConstant, numberExpression());
 
-	private static Parser<Expression> expression(Parser<Expression> atom, Parser<ModuleBody> moduleBody) {
+	private static Parser<Expression> expression(Parser<Expression> expressionParser, Parser<ModuleBody> moduleBody) {
 		Parser.Reference<Expression> ref = Parser.newReference();
 		Parser<Expression> lazy = ref.lazy();
-		atom = Parsers.or(keyValuePairExpression(lazy),
+		expressionParser = Parsers.or(keyValuePairExpression(lazy),
 						  blockExpression(lazy),
 						  blockKeyValueExpression(lazy),
-						  atom);
+						  expressionParser);
 		Parser<Expression> parser = new OperatorTable<Expression>().infixl(
-				binary(Operator.DOT), 10).build(atom);
+				binary(Operator.DOT), 10).build(expressionParser);
 		ref.set(parser);
 		return parser;
 	}
@@ -300,8 +273,9 @@ public class ExpressionParser {
 		Parser.Reference<Expression> ref = Parser.newReference();
 		Parser<Expression> lazy = ref.lazy();
 		parser = Parsers.or(keyValuePairExpression(lazy),
-				blockExpression(lazy), blockKeyValueExpression(lazy), parser);
-
+				blockExpression(lazy),
+				blockKeyValueExpression(lazy),
+				parser);
 		ref.set(parser);
 		return parser;
 	}
@@ -311,12 +285,10 @@ public class ExpressionParser {
 	}
 
 	private static Parser<Binary<Expression>> binary(Operator op) {
-		return TerminalParser.term(op.toString()).next(
-				curry(ExpressionDotIdentifier.class, op).binary());
+		return TerminalParser.term(op.toString()).next(curry(ExpressionDotIdentifier.class, op).binary());
 	}
 
-	private static Mapper<Expression> curry(Class<? extends Expression> clazz,
-			Object... args) {
+	private static Mapper<Expression> curry(Class<? extends Expression> clazz, Object... args) {
 		return Mapper.curry(clazz, args);
 	}
 
