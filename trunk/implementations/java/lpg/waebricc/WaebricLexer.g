@@ -1,12 +1,12 @@
 --
--- The Java Lexer
+-- The Waebricc Lexer
 --
 %Options fp=JavaLexer
 %options single-productions
 %options package=javaparser
 %options template=LexerTemplateD.g
 %options filter=JavaKWLexer.g
-%options lalr=3
+%options lalr=10
 
 %Define
     --
@@ -25,51 +25,26 @@
     SlComment
     MlComment
     DocComment
+    SymbolLiteral
+    CommentLiteral
 
     IDENTIFIER
---    PATHELEMENT
+	Path
     IntegerLiteral
-    LongLiteral
-    FloatingPointLiteral
-    DoubleLiteral
-    CharacterLiteral
     StringLiteral
     PreText
     MidText
     PostText
---    PLUS_PLUS
---    MINUS_MINUS
---    EQUAL_EQUAL
---    LESS_EQUAL
---    GREATER_EQUAL
---    NOT_EQUAL
---    LEFT_SHIFT
---    RIGHT_SHIFT
---    UNSIGNED_RIGHT_SHIFT
---    PLUS_EQUAL
---    MINUS_EQUAL
---    MULTIPLY_EQUAL
---    DIVIDE_EQUAL
---    AND_EQUAL
---    OR_EQUAL
---    XOR_EQUAL
---    REMAINDER_EQUAL
---    LEFT_SHIFT_EQUAL
---    RIGHT_SHIFT_EQUAL
---    UNSIGNED_RIGHT_SHIFT_EQUAL
---    OR_OR
---    AND_AND
+    OR_OR
+    AND_AND
     PLUS
     MINUS
     NOT
-    REMAINDER
     XOR
     AND
     MULTIPLY
     OR
     TWIDDLE
---    DIVIDE
---    DOLLAR
     GREATER
     LESS
     LPAREN
@@ -86,7 +61,10 @@
     COMMA
     DOT
     EQUAL
-
+    AT
+    PERCENT
+    
+   
 %End
 
 %Terminals
@@ -167,29 +145,55 @@
     -- unless Ai produces $empty in which case it returns the location of the last character 
     -- derived before reducing Ai to $empty.
     --------------------------------------------------------------------------------
+    
+    CommentTToken ::= 'c' 'o' 'm' 'm' 'e' 'n' 't'
+    /.$BeginAction
+             checkForKeyWord();
+      $EndAction
+    ./
+       
+    CommentSToken ::= '"' '"' | '"' CommentString '"'
+    /.$BeginAction
+           makeToken($_CommentLiteral);
+      $EndAction
+    ./
+    
+    CommentTerminator ::= ';'
+            /.$BeginAction
+                    makeToken($_SEMICOLON);
+          $EndAction
+        ./
+    
+    WSOpt ::= %empty | WS
+    
+    
+    Token ::= CommentTToken WSOpt CommentSToken WSOpt CommentTerminator    
+    
     Token ::= Identifier
         /.$BeginAction
                     checkForKeyWord();
           $EndAction
         ./
         
---    Token ::= PathElement
---        /.$BeginAction
---                    checkForKeyWord();
---          $EndAction
---        ./    
-                            
-    Token ::= '"' SLBody '"'
+    Token ::= Path
         /.$BeginAction
-                    makeToken($_StringLiteral);
+                    makeToken($_Path);
           $EndAction
         ./
-    --TODO: check with Tijs
-    Token ::= '!' TextBody '<'
-        /.$BeginAction
-                    makeToken($_PreText);
-          $EndAction
-        ./
+        
+    Token ::= '"' CombiBody
+    	/.$BeginAction
+    				if( getInputChars()[getRightSpan()] == '<')
+    				{
+    					makeToken($_PreText);
+    				}
+    				else
+    				{
+    					makeToken($_StringLiteral);
+    				}
+    	  $EndAction
+    	./              
+
     Token ::= '>' TextBody '"'
         /.$BeginAction
                     makeToken($_PostText);
@@ -200,25 +204,16 @@
                     makeToken($_MidText);
           $EndAction
         ./
-
-    Token ::= "'" NotSQ "'"
+        
+    Token ::= "'" SymbolCon
         /.$BeginAction
-                    makeToken($_CharacterLiteral);
+                    makeToken($_SymbolLiteral);
           $EndAction
         ./
+        
     Token ::= IntegerLiteral
         /.$BeginAction
                     makeToken($_IntegerLiteral);
-          $EndAction
-        ./
-    Token ::= FloatingPointLiteral
-        /.$BeginAction
-                    makeToken($_FloatingPointLiteral);
-          $EndAction
-        ./
-    Token ::= DoubleLiteral
-        /.$BeginAction
-                    makeToken($_DoubleLiteral);
           $EndAction
         ./
     Token ::= '/' '*' Inside Stars '/'
@@ -243,6 +238,16 @@
                     makeToken($_PLUS);
           $EndAction
         ./
+    Token ::= '@'
+        /.$BeginAction
+                    makeToken($_AT);
+          $EndAction
+        ./   
+    Token ::= '%'
+        /.$BeginAction
+                    makeToken($_PERCENT);
+          $EndAction
+        ./    
     Token ::= '-'
         /.$BeginAction
                     makeToken($_MINUS);
@@ -255,18 +260,12 @@
           $EndAction
         ./
 
---    Token ::= '/'
---        /.$BeginAction
---                    makeToken($_DIVIDE);
---          $EndAction
---        ./
-
     Token ::= '('
         /.$BeginAction
                     makeToken($_LPAREN);
           $EndAction
         ./
-
+              
     Token ::= ')'
         /.$BeginAction
                     makeToken($_RPAREN);
@@ -314,12 +313,6 @@
 --                    makeToken($_DOLLAR);
 --          $EndAction
 --        ./            
-
-    Token ::= '%'
-        /.$BeginAction
-                    makeToken($_REMAINDER);
-          $EndAction
-        ./
         
     Token ::= '/'
         /.$BeginAction
@@ -342,6 +335,18 @@
     Token ::= '&'
         /.$BeginAction
                     makeToken($_AND);
+          $EndAction
+        ./
+
+    Token ::= '&' '&'
+        /.$BeginAction
+                    makeToken($_AND_AND);
+          $EndAction
+        ./
+
+    Token ::= '|' '|'
+        /.$BeginAction
+                    makeToken($_OR_OR);
           $EndAction
         ./
 
@@ -405,23 +410,10 @@
                     | '0' LetterXx HexDigits
                     | '0' LetterXx HexDigits LetterLl
 
-    DoubleLiteral -> Decimal
-                   | Decimal LetterForD
-                   | Decimal Exponent
-                   | Decimal Exponent LetterForD
-                   | Integer Exponent
-                   | Integer Exponent LetterForD
-                   | Integer LetterForD
-
-    FloatingPointLiteral -> Decimal LetterForF
-                          | Decimal Exponent LetterForF
-                          | Integer Exponent LetterForF
-                          | Integer LetterForF
-
     Inside ::= Inside Stars NotSlashOrStar
              | Inside '/'
              | Inside NotSlashOrStar
-             | $empty
+             | %empty
 
     Stars -> '*'
            | Stars '*'
@@ -429,41 +421,33 @@
     SLC ::= '/' '/'
           | SLC NotEol
 
-    SLBody ::= $empty
-             | SLBody NotDQ
-
-    TextBody ::= $empty
+    TextBody ::= %empty
              | TextBody TextChar
-
+             
+    CombiBody ::= '"' | '<'
+    	| TextChar CombiBody
+    		
     Integer -> Digit
              | Integer Digit
 
     HexDigits -> HexDigit
                | HexDigits HexDigit
 
-    Decimal ::= '.' Integer
-              | Integer '.'
-              | Integer '.' Integer
-
-    Exponent ::= LetterEe Integer
-               | LetterEe '-' Integer
-               | LetterEe '+' Integer
-
     WSChar -> Space
             | LF
             | CR
             | HT
             | FF
-
+    		
     Letter -> LowerCaseLetter
-            | UpperCaseLetter
-            | _
-            | '$'
-            | '\u0080..\ufffe'
+    	| UpperCaseLetter
+        | '_'
+        | '$'
+        | '\u0080..\ufffe'
 
     LowerCaseLetter -> a | b | c | d | e | f | g | h | i | j | k | l | m |
-                       n | o | p | q | r | s | t | u | v | w | x | y | z
-
+                       n | o | p | q | r | s | t | u | v | w | x | y | z      
+                       
     UpperCaseLetter -> A | B | C | D | E | F | G | H | I | J | K | L | M |
                        N | O | P | Q | R | S | T | U | V | W | X | Y | Z
 
@@ -476,39 +460,32 @@
     HexDigit -> Digit
               | a..f
 
-    OctalDigits3 -> OctalDigit
-                  | OctalDigit OctalDigit
-                  | OctalDigit OctalDigit OctalDigit
-
-    LetterForD -> 'D'
-                | 'd'
-
-    LetterForF -> 'F'
-                | 'f'
-
     LetterLl -> 'L'
               | 'l'
-
-    LetterEe -> 'E'
-              | 'e'
 
     LetterXx -> 'X'
               | 'x'
 
-
     WS -> WSChar
         | WS WSChar
         
-    --PathElement -> Letter | Digit
-    --           | Identifier Letter
-    --           | Identifier Digit
-    
-    --PathElement -> Digit | Identifier | Digit Identifier
-
     Identifier -> Letter
                 | Identifier Letter
                 | Identifier Digit
+                | Identifier '-'
     
+    CommentString -> NotDQ
+    	| CommentString NotDQ
+
+    PathPrefix -> '.' '/' | '/'
+
+    Path -> PathPrefix PathElement
+
+    PathElement -> Letter | Digit
+		| PathElement Letter
+		| PathElement Digit
+		| PathElement '.'
+		| PathElement '/'
 
     SpecialNotStar -> '+' | '-' | '/' | '(' | ')' | '"' | '!' | '@' | '`' | '~' |
                       '%' | '&' | '^' | ':' | ';' | "'" | '\' | '|' | '{' | '}' |
@@ -519,13 +496,13 @@
                        '%' | '&' | '^' | ':' | ';' | "'" | '\' | '|' | '{' | '}' |
                        '[' | ']' | '?' | ',' | '.' | '<' | '>' | '=' | '#'
 
+    SpecialTextChar -> '+' | '-' | '/' | '(' | ')' | '*' | '!' | '@' | '`' | '~' |
+                    '%' | '&' | '^' | ':' | ';' | "'" | '|' | '{' | '}' |
+                    '[' | ']' | '?' | ',' | '.' | '=' | '#'
+                    
     SpecialNotDQ -> '+' | '-' | '/' | '(' | ')' | '*' | '!' | '@' | '`' | '~' |
                     '%' | '&' | '^' | ':' | ';' | "'" | '|' | '{' | '}' |
-                    '[' | ']' | '?' | ',' | '.' | '<' | '>' | '=' | '#'
-
-    SpecialNotSQ -> '+' | '-' | '*' | '(' | ')' | '"' | '!' | '@' | '`' | '~' |
-                    '%' | '&' | '^' | ':' | ';' | '/' | '|' | '{' | '}' |
-                    '[' | ']' | '?' | ',' | '.' | '<' | '>' | '=' | '#'
+                    '[' | ']' | '?' | ',' | '.' | '=' | '#' | '<' | '>'
 
     NotSlashOrStar -> Letter
                     | Digit
@@ -550,10 +527,21 @@
            | EscapeSequence
            | '\' u HexDigit HexDigit HexDigit HexDigit
            | '\' OctalDigit
+           
+	 SymbolCon -> SymbolChar | SymbolCon SymbolChar
+           
+     SymbolChar -> Letter
+     		| Digit
+     		| SymbolCharSpecial
+     		
+     SymbolCharSpecial ->      '+' | '-' | '*' | '/' |
+             '(' | '"' | '!' | '@' | '`' | '~' | "'" |
+             '%' | '&' | '^' | ':' | '\' | '|' | '{' | '}' |
+             '[' | ']' | '?' | '.' | '<' | '=' | '#'
 
     TextChar -> Letter
            | Digit
-           | SpecialNotDQ
+           | SpecialTextChar
            | Space
            | HT
            | FF
@@ -563,16 +551,6 @@
            | '\' u HexDigit HexDigit HexDigit HexDigit
            | '\' OctalDigit
 
-    NotSQ -> Letter
-           | Digit
-           | SpecialNotSQ
-           | Space
-           | HT
-           | FF
-           | EscapeSequence
-           | '\' u HexDigit HexDigit HexDigit HexDigit
-           | '\' OctalDigits3
-
     EscapeSequence ::= '\' b
                      | '\' t
                      | '\' n
@@ -580,5 +558,7 @@
                      | '\' r
                      | '\' '"'
                      | '\' "'"
+                     | '\' '<'
+                     | '\' '>'
                      | '\' '\'
 %End

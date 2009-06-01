@@ -5,11 +5,11 @@
 %options package=javaparser
 %options template=KeyWordTemplateD.g
 
-$Include
+%Include
     KWLexerLowerCaseMap.g
-$End
+%End
 
-$Export
+%Export
 
     module
     def
@@ -24,19 +24,23 @@ $Export
     echo
     cdata
     yield
+    list
+    record
+    string
+    import
     
-$End
+%End
 
-$Terminals
+%Terminals
     a    b    c    d    e    f    g    h    i    j    k    l    m
     n    o    p    q    r    s    t    u    v    w    x    y    z
-$End
+%End
 
-$Start
+%Start
     KeyWord
-$End
+%End
 
-$Rules
+%Rules
 
 -- The Goal for the parser is a single Keyword
 
@@ -113,10 +117,29 @@ $Rules
           $EndAction
         ./
 
+              | l i s t
+        /.$BeginAction
+            $setResult($_list);
+          $EndAction
+        ./
+              | r e c o r d
+        /.$BeginAction
+            $setResult($_record);
+          $EndAction
+        ./
+              | s t r i n g
+        /.$BeginAction
+            $setResult($_string);
+          $EndAction
+        ./
               | y i e l d
         /.$BeginAction
             $setResult($_yield);
           $EndAction
         ./
-
-$End
+        	  | i m p o r t
+        /.$BeginAction
+            $setResult($_import);
+          $EndAction
+        ./
+%End

@@ -5,7 +5,7 @@ import lpg.runtime.*;
 public class JavaKWLexer extends JavaKWLexerprs implements WaebricParsersym
 {
     private char[] inputChars;
-    private final int keywordKind[] = new int[13 + 1];
+    private final int keywordKind[] = new int[17 + 1];
 
     public int[] getKeywordKinds() { return keywordKind; }
 
@@ -159,9 +159,33 @@ public class JavaKWLexer extends JavaKWLexerprs implements WaebricParsersym
       
     
         //
-        // Rule 13:  KeyWord ::= y i e l d
+        // Rule 13:  KeyWord ::= l i s t
         //
-        keywordKind[13] = (WaebricParsersym.TK_yield);
+        keywordKind[13] = (WaebricParsersym.TK_list);
+      
+    
+        //
+        // Rule 14:  KeyWord ::= r e c o r d
+        //
+        keywordKind[14] = (WaebricParsersym.TK_record);
+      
+    
+        //
+        // Rule 15:  KeyWord ::= s t r i n g
+        //
+        keywordKind[15] = (WaebricParsersym.TK_string);
+      
+    
+        //
+        // Rule 16:  KeyWord ::= y i e l d
+        //
+        keywordKind[16] = (WaebricParsersym.TK_yield);
+      
+    
+        //
+        // Rule 17:  KeyWord ::= i m p o r t
+        //
+        keywordKind[17] = (WaebricParsersym.TK_import);
       
     
 
