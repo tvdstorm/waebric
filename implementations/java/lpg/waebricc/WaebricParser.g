@@ -13,6 +13,9 @@
 %Terminals
    
     IDENTIFIER
+    AND_AND
+    OR_OR
+
     Path
     StringLiteral
     IntegerLiteral
@@ -21,8 +24,6 @@
     PreText
     MidText
     PostText
-    AND_AND
-    OR_OR
            
     module 
     site 
