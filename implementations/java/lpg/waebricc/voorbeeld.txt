@@ -1,0 +1,60 @@
+module pipi.langkous.konijn
+
+site
+    ./dirrethje/blartef/home.html: home("joepie", "olé", {y : 3}, {z : 4, a : 784754} );
+    /path1/default.aspx: home3("attribute1");
+end
+
+def home( blaat, pipo, clown ) 
+    yield; 
+    cdata "hello"; 
+end
+
+def home2( blaat, pipo, clown ) 
+	if ("helloworld".string) 
+	{
+    	cdata "lpg rules"; 
+    	comment "this is comment";
+    } else {
+    	cdata "this is else";
+    	if ("helloworld2".list) 
+    	{
+    		comment "another if statement";
+    	}
+    	if (!"negate predicate".record) 
+    		comment "if without block";
+        else if ("elseif")
+    		comment "else if";
+    	else if ("danglingelse") 
+    		comment "dangling else";
+    		
+    	if (("predicate1".string) && ("predicate2".string)) {
+    		comment "and predicate";
+    	}
+
+    	if (("predicate1".string) || ("predicate2".string)) {
+    		comment "or predicate";
+    	}
+    	
+    }
+    echo "hello world";
+end
+
+def home3( attribute1 ) 
+    each (var1 : 87665543)
+    	cdata "hello"; 
+    let hello = "world"; in 
+    	echo "hello world"; 
+    end
+    {
+    	echo "block 1 - statement 1";
+    	echo "block 1 - statement 2";
+    	echo "block 1 - statement 3";
+    }
+    comment "markup - has to be followed by () ";
+    p();
+    
+    comment "embed";
+    echo "! TextBody <hello> textbody <hello> TextBody ";
+end
+

@@ -13,19 +13,19 @@ public class JavaKWLexerprs implements lpg.runtime.ParseTable, JavaKWLexersym {
     public final static int MAX_NAME_LENGTH = 0;
     public final int getMaxNameLength() { return MAX_NAME_LENGTH; }
 
-    public final static int NUM_STATES = 36;
+    public final static int NUM_STATES = 51;
     public final int getNumStates() { return NUM_STATES; }
 
     public final static int NT_OFFSET = 29;
     public final int getNtOffset() { return NT_OFFSET; }
 
-    public final static int LA_STATE_OFFSET = 66;
+    public final static int LA_STATE_OFFSET = 89;
     public final int getLaStateOffset() { return LA_STATE_OFFSET; }
 
     public final static int MAX_LA = 0;
     public final int getMaxLa() { return MAX_LA; }
 
-    public final static int NUM_RULES = 13;
+    public final static int NUM_RULES = 17;
     public final int getNumRules() { return NUM_RULES; }
 
     public final static int NUM_NONTERMINALS = 2;
@@ -37,22 +37,22 @@ public class JavaKWLexerprs implements lpg.runtime.ParseTable, JavaKWLexersym {
     public final static int SEGMENT_SIZE = 8192;
     public final int getSegmentSize() { return SEGMENT_SIZE; }
 
-    public final static int START_STATE = 14;
+    public final static int START_STATE = 18;
     public final int getStartState() { return START_STATE; }
 
     public final static int IDENTIFIER_SYMBOL = 0;
     public final int getIdentifier_SYMBOL() { return IDENTIFIER_SYMBOL; }
 
-    public final static int EOFT_SYMBOL = 16;
+    public final static int EOFT_SYMBOL = 19;
     public final int getEoftSymbol() { return EOFT_SYMBOL; }
 
     public final static int EOLT_SYMBOL = 30;
     public final int getEoltSymbol() { return EOLT_SYMBOL; }
 
-    public final static int ACCEPT_ACTION = 52;
+    public final static int ACCEPT_ACTION = 71;
     public final int getAcceptAction() { return ACCEPT_ACTION; }
 
-    public final static int ERROR_ACTION = 53;
+    public final static int ERROR_ACTION = 72;
     public final int getErrorAction() { return ERROR_ACTION; }
 
     public final static boolean BACKTRACK = false;
@@ -94,7 +94,7 @@ public class JavaKWLexerprs implements lpg.runtime.ParseTable, JavaKWLexersym {
     public interface BaseCheck {
         public final static byte baseCheck[] = {0,
             6,3,3,4,2,4,4,3,2,7,
-            4,5,5
+            4,5,4,6,6,5,6
         };
     };
     public final static byte baseCheck[] = BaseCheck.baseCheck;
@@ -105,11 +105,13 @@ public class JavaKWLexerprs implements lpg.runtime.ParseTable, JavaKWLexersym {
     public interface BaseAction {
         public final static byte baseAction[] = {
             1,1,1,1,1,1,1,1,1,1,
-            1,1,1,1,1,16,10,6,20,24,
-            23,28,12,36,19,38,40,33,27,42,
-            43,44,5,47,48,50,51,56,53,62,
-            58,64,66,67,69,70,72,74,76,79,
-            82,53,53
+            1,1,1,1,1,1,1,1,1,20,
+            3,6,38,12,28,18,33,14,40,42,
+            43,24,34,46,36,49,50,52,53,56,
+            57,58,60,59,65,67,71,73,77,78,
+            79,82,87,89,90,81,83,93,92,97,
+            98,101,103,106,104,105,115,109,118,120,
+            72,72
         };
     };
     public final static byte baseAction[] = BaseAction.baseAction;
@@ -119,18 +121,21 @@ public class JavaKWLexerprs implements lpg.runtime.ParseTable, JavaKWLexersym {
 
     public interface TermCheck {
         public final static byte termCheck[] = {0,
-            0,1,2,3,0,0,6,7,8,0,
-            6,0,7,13,3,15,5,6,0,0,
-            9,2,0,0,1,16,0,0,10,10,
-            4,9,0,11,7,0,1,0,1,0,
-            8,0,0,0,5,4,0,0,2,0,
-            0,2,0,3,12,0,13,0,11,4,
-            8,0,1,0,1,0,0,10,0,0,
-            2,0,1,0,5,0,3,12,0,1,
-            14,0,0,0,9,4,0,0,0,0,
+            0,1,0,3,4,0,6,7,8,4,
+            10,0,12,0,3,0,5,0,18,6,
+            7,19,9,0,11,8,9,0,1,6,
+            13,4,0,0,2,0,4,0,1,0,
+            1,0,0,1,11,0,5,12,0,0,
+            2,0,0,8,2,0,0,0,0,0,
+            0,10,3,6,0,16,0,3,12,14,
+            0,13,0,7,2,5,0,0,0,2,
+            0,0,0,5,8,4,0,1,0,0,
+            1,0,0,5,14,3,0,0,1,17,
+            0,10,0,0,0,0,3,11,0,0,
+            10,9,7,9,0,0,2,0,1,0,
+            0,2,0,15,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0
+            0,0,0,0,0,0,0,0,0
         };
     };
     public final static byte termCheck[] = TermCheck.termCheck;
@@ -138,15 +143,19 @@ public class JavaKWLexerprs implements lpg.runtime.ParseTable, JavaKWLexersym {
 
     public interface TermAction {
         public final static byte termAction[] = {0,
-            53,22,23,19,53,53,18,20,24,53,
-            42,53,25,21,31,17,32,30,53,53,
-            33,26,53,53,28,52,53,53,35,27,
-            61,62,53,58,29,53,34,53,36,53,
-            38,53,53,53,37,39,53,53,56,53,
-            53,43,53,44,40,53,41,53,55,45,
-            46,53,57,53,60,53,53,64,53,53,
-            66,53,48,53,65,53,49,59,53,54,
-            47,53,53,53,50,63
+            72,27,72,28,25,72,23,24,29,30,
+            22,72,26,72,32,72,33,72,21,39,
+            40,71,42,72,41,36,81,72,35,46,
+            77,34,72,72,37,72,38,72,31,72,
+            43,72,72,45,47,72,44,49,72,72,
+            80,72,72,48,52,72,72,72,72,72,
+            72,51,75,55,72,50,72,56,54,53,
+            72,74,72,57,59,58,72,72,72,85,
+            72,72,72,61,60,62,72,76,72,72,
+            79,72,72,83,78,88,72,72,65,63,
+            72,64,72,72,72,72,86,84,72,72,
+            66,67,68,69,72,72,89,72,73,72,
+            72,82,72,87
         };
     };
     public final static byte termAction[] = TermAction.termAction;
