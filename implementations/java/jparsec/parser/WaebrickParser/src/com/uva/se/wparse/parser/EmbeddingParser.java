@@ -32,33 +32,34 @@ import com.uva.se.wparse.model.markup.Markup;
 public class EmbeddingParser {
 
 
-	private static Parser<Embedding> markupEmbedding(Parser<Markup> markup, Parser<Expression> expression, Parser<Embedding> embeddingParser) {
+	private static Parser<Embedding> markupEmbedding(Parser<Markup> markupParser, Parser<Expression> expressionParser,
+		Parser<Embedding> embeddingParser) {
 		return curry(MarkupEmbedding.class).sequence(
-				ExpressionParser.EMBEDDED_TEXT.many(),
-				TerminalParser.term(Operator.SMALLER_THEN.toString()),
-				markup.many(),
-				Parsers.or(markup, expression),
-				TerminalParser.term(Operator.LARGER_THEN.toString()),
-				ExpressionParser.EMBEDDED_TEXT.many()
-				);
+		ExpressionParser.EMBEDDED_TEXT.many(),
+		TerminalParser.term(Operator.SMALLER_THEN.toString()),
+		markupParser.many(),
+		Parsers.or(markupParser, expressionParser),
+		TerminalParser.term(Operator.LARGER_THEN.toString()),
+		ExpressionParser.EMBEDDED_TEXT.many());
 	}
 	
-	private static  Parser<Embedding> multipleEmbedding( Parser<Markup> markup, Parser<Expression> expression, Parser<Embedding> embeddingParser) {
-		return curry(MarkupEmbeddingList.class).sequence(markupEmbedding(markup, expression, embeddingParser).many());
+	private static  Parser<Embedding> multipleEmbedding( Parser<Markup> markupParser, Parser<Expression> expressionParser,
+		Parser<Embedding> embeddingParser) {
+		return curry(MarkupEmbeddingList.class).sequence(markupEmbedding(markupParser, expressionParser,
+		embeddingParser).many());
 	}
 	
-	public static  Parser<Embedding> getParser(Parser<Markup> markup, Parser<Expression> expression) {
+	public static  Parser<Embedding> getParser(Parser<Markup> markupParser, Parser<Expression> expressionParser) {
 		Parser.Reference<Embedding> ref = Parser.newReference();
 		Parser<Embedding> lazy = ref.lazy();
-		Parser<Embedding> parser = multipleEmbedding(markup, expression, lazy);
+		Parser<Embedding> parser = multipleEmbedding(markupParser, expressionParser, lazy);
 		ref.set(parser);
 		return parser;
 	}
 	
 
 
-	private static  Mapper<Embedding> curry(
-			Class<? extends Embedding> clazz, Object... curryArgs) {
+	private static  Mapper<Embedding> curry(Class<? extends Embedding> clazz, Object... curryArgs) {
 		return Mapper.curry(clazz, curryArgs);
 	}
 }

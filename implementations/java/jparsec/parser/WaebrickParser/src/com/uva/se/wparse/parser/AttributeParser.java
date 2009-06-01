@@ -31,32 +31,26 @@ public class AttributeParser {
 
 	private static Parser<Attribute> singleAttribute() {
 		return curryAttribute(SingleAttribute.class).sequence(
-				Parsers.or(TerminalParser.term(Operator.POUND.toString()),
-						TerminalParser.term(Operator.DOT.toString()),
-						TerminalParser.term(Operator.DOLLAR.toString()),
-						TerminalParser.term(Operator.COLON.toString())),
-				ExpressionParser.IDENTIFIER.source());
+		Parsers.or(TerminalParser.term(Operator.POUND.toString()),
+		TerminalParser.term(Operator.DOT.toString()),
+		TerminalParser.term(Operator.DOLLAR.toString()),
+		TerminalParser.term(Operator.COLON.toString())),
+		ExpressionParser.IDENTIFIER.source());
 	}
 
 	private static Parser<Attribute> multipleAttribute() {
 		return curryAttribute(MultipleAttribute.class).sequence(
-				TerminalParser.term(Operator.AT.toString()),
-				Terminals.IntegerLiteral.PARSER,
-				Parsers.sequence(
-						TerminalParser.term(Operator.PERCENT.toString()),
-						Terminals.IntegerLiteral.PARSER).optional());
+		TerminalParser.term(Operator.AT.toString()),
+		Terminals.IntegerLiteral.PARSER,
+		Parsers.sequence(TerminalParser.term(Operator.PERCENT.toString()),
+		Terminals.IntegerLiteral.PARSER).optional());
 	}
 
 	public static Parser<Attribute> attributes() {
-		Parser<Attribute> parser = Parsers.or(singleAttribute(),
-				multipleAttribute()
-
-		);
-		return parser;
+		return Parsers.or(singleAttribute(), multipleAttribute());
 	}
 
-	private static Mapper<Attribute> curryAttribute(
-			Class<? extends Attribute> clazz, Object... curryArgs) {
+	private static Mapper<Attribute> curryAttribute(Class<? extends Attribute> clazz, Object... curryArgs) {
 		return Mapper.curry(clazz, curryArgs);
 	}
 

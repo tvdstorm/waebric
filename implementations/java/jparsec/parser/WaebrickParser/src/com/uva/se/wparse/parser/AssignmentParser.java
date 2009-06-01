@@ -30,40 +30,32 @@ import com.uva.se.wparse.model.statement.AssignmentExpression;
 import com.uva.se.wparse.model.statement.AssignmentFormals;
 import com.uva.se.wparse.model.statement.Statement;
 
-
-
 public final class AssignmentParser {
-	
-	  private static Parser<Assignment> assignmentNormal(Parser<Expression> expr) {
-		    return curry(AssignmentExpression.class).sequence(Terminals.Identifier.PARSER,
-		    		TerminalParser.term(Operator.EQUALS.toString()),
-		    		expr,
-		    		TerminalParser.term(Operator.SEMI_COLON.toString())
-		    		); 
-	  }
-	  
- 
-	
-	  private static Parser<Assignment> assignmentFormals(Parser<Statement> stmt) {
-		    return curry(AssignmentFormals.class).sequence(Terminals.Identifier.PARSER, TerminalParser.term(Operator.ROUND_BRACKET_OPEN.toString()),
-		    		Terminals.Identifier.PARSER.sepBy1(TerminalParser.term(Operator.COMMA.toString())),
-		    		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()), TerminalParser.term(Operator.EQUALS.toString()), stmt   );
-	  }
 
+	private static Parser<Assignment> assignmentNormal(Parser<Expression> expressionParser) {
+		return curry(AssignmentExpression.class).sequence(Terminals.Identifier.PARSER,
+		TerminalParser.term(Operator.EQUALS.toString()), expressionParser,
+		TerminalParser.term(Operator.SEMI_COLON.toString()));
+	}
 
-  public static Parser<Assignment> assignment(Parser<Statement> stmt, Parser<Expression> expr) {
-    Parser.Reference<Assignment> ref = Parser.newReference();
-    Parser<Assignment> parser = Parsers.or(
-    	assignmentFormals(stmt),
-    	assignmentNormal(expr)
-    	);
-    ref.set(parser);
-    return parser;
-  }
-  
-  private static Mapper<Assignment> curry(Class<? extends Assignment> clazz, Object... curryArgs) {
-    return Mapper.curry(clazz, curryArgs);
-  }
-  
+	private static Parser<Assignment> assignmentFormals(Parser<Statement> statementParser) {
+		return curry(AssignmentFormals.class).sequence(Terminals.Identifier.PARSER,
+		TerminalParser.term(Operator.ROUND_BRACKET_OPEN.toString()),
+		Terminals.Identifier.PARSER.sepBy1(TerminalParser.term(Operator.COMMA.toString())),
+		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()),
+		TerminalParser.term(Operator.EQUALS.toString()), statementParser);
+	}
+
+	public static Parser<Assignment> assignment(Parser<Statement> statementParser, Parser<Expression> expressionParser) {
+ 		Parser.Reference<Assignment> ref = Parser.newReference();
+		Parser<Assignment> parser = Parsers.or(assignmentFormals(statementParser),
+		assignmentNormal(expressionParser));
+		ref.set(parser);
+		return parser;
+	}
+
+	private static Mapper<Assignment> curry(Class<? extends Assignment> clazz, Object... curryArgs) {
+		return Mapper.curry(clazz, curryArgs);
+	}
 
 }

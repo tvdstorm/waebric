@@ -37,28 +37,25 @@ public class MarkupParser {
 	}
 	
 	//this method is used for arguments that are quoted
-	private static Parser<Markup> markupArguments(Parser<Attribute> attribute, Parser<Argument> argumentParser, Parser<Expression> expr) {
-		return curry(MarkupArgument.class).sequence(markupDesignator(attribute).many1() ,
+	private static Parser<Markup> markupArguments(Parser<Attribute> attributeParser, Parser<Argument> argumentParser) {
+		return curry(MarkupArgument.class).sequence(markupDesignator(attributeParser).many1() ,
 				ArgumentParser.blockArgument(argumentParser)	);
 	}
 	
 	
-	public static Parser<Markup> markup(Parser<Expression> expr) {
+	public static Parser<Markup> markup(Parser<Expression> expressionParser) {
 		Parser.Reference<Markup> ref = Parser.newReference();
-		Parser<Argument> argParser = ArgumentParser.arguments(expr);
+		Parser<Argument> argParser = ArgumentParser.arguments(expressionParser);
 		Parser<Attribute> attributeParser = AttributeParser.attributes();
 		Parser<Markup> parser = Parsers.or(
-			markupArguments(attributeParser, argParser, expr) ,
+			markupArguments(attributeParser, argParser) ,
 			markupDesignator(attributeParser)
-			
-			
 		);
 		ref.set(parser);
 		return parser;
 	}
 
-	private static Mapper<Markup> curry(Class<? extends Markup> clazz,
-			Object... curryArgs) {
+	private static Mapper<Markup> curry(Class<? extends Markup> clazz, Object... curryArgs) {
 		return Mapper.curry(clazz, curryArgs);
 	}
 
