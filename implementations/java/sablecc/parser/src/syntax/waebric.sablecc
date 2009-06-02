@@ -146,9 +146,13 @@ Productions
 
 	// Markup	
 	markup =
-			{designator_with_args}	P.designator P.arguments 
+			{designator_with_args}	P.markup_no_short_markup 
 		|	{designator}			P.designator
 		;
+		
+	markup_no_short_markup =
+			{designator_with_args}	P.designator P.arguments
+		; 
 	
 	// Designator
 	designator = 
@@ -181,14 +185,9 @@ Productions
 		;
 		  
 	// Expressions
-	expression =  
-			{text}					T.text 
+	expression =
+			{no_idcon}				P.expression_no_idcon  
 		|	{idcon}					T.id_con 
-		|	{symbol_con}			T.symbol_con 
-		|	{nat_con}				T.nat_con 
-		|	{expression_idcon}		P.expression_no_idcon T.dot T.id_con 
-		|	{multiple_expressions}	T.l_bracket P.expressions? T.r_bracket 
-		|	{key_value_pairs}		T.l_brace P.key_value_pairs? T.r_brace
 		;
 		
 	expression_no_idcon =  
@@ -233,24 +232,24 @@ Productions
 	statement = 
 			{no_markup}				P.statement_no_markup
 		|	{markup_statement}		P.markup+ P.statement_no_markup
-		|	{markup_single}			P.markup T.semi_colon
-		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup T.semi_colon
-		|	{markup_expression}		P.markup+ P.expression_no_idcon T.semi_colon
-		|	{embedding}				P.markup+ P.embedding T.semi_colon
+		|	{markup_no_statement}	statement_markup_no_statement		
 		|	{if_then}				T.if T.l_paren P.predicate T.r_paren P.statement
 		|	{if_then_else}			T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement
 		;
 	
 	statement_no_short_if =	 
-			{no_markup}				P.statement_no_markup_no_short_if			
-		|	{markup_single}			P.markup T.semi_colon
-		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup T.semi_colon
-		|	{markup_expression}		P.markup+ P.expression_no_idcon T.semi_colon		
-		|	{embedding}				P.markup+ P.embedding T.semi_colon
+			{no_markup}				P.statement_no_markup_no_short_if
+		|	{markup_no_statement}	statement_markup_no_statement		
 		|	{if_then_else}			T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement_no_short_if
 		;
-	
-
+		
+	statement_markup_no_statement =
+			{markup_single}			P.markup T.semi_colon
+		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup_no_short_markup T.semi_colon
+		|	{markup_expression}		P.markup+ P.expression_no_idcon T.semi_colon		
+		|	{embedding}				P.markup+ P.embedding T.semi_colon
+		;
+		
 	statement_no_markup =
 			{each}				T.each T.l_paren T.id_con T.colon P.expression T.r_paren P.statement
 		|	{no_short_if}		statement_no_markup_no_short_if
@@ -274,9 +273,7 @@ Productions
 	
 	// Predicate
 	predicate = 
-			{expression}		P.expression
-		|	{expression_type}	P.expression T.colon P.type T.question_mark
-		|	{not_predicate}		T.exclam_mark P.predicate_no_and_or
+			{no_and_or}			predicate_no_and_or
 		|	{and_predicate}		P.predicate_no_and_or T.and P.predicate
 		|	{or_predicate}		P.predicate_no_and_or T.or P.expression
 		;
@@ -306,6 +303,6 @@ Productions
 		;
 		
 	embed = 
-			{markup_markup}			[multiple]:P.markup* [single]:P.markup
+			{markup_markup}			[multiple]:P.markup* [single]:P.markup_no_short_markup
 		|	{markup_expression}		P.markup* P.expression
 		;
