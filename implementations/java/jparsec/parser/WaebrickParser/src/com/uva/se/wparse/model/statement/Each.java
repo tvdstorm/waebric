@@ -24,6 +24,8 @@ import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 
 public final class Each extends ValueObject implements Statement {
+	
+	public static final String OUTPUT_EACH = "each";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(Each.class);
@@ -62,8 +64,6 @@ public final class Each extends ValueObject implements Statement {
 			StatementItem = ((ValueObject)stmt).toTransformerOutput();
 		}
 		
-		
-		
-		return "each(" + outputQuote( var ) + "," + ExpressionItem + "," + StatementItem                  + ")";
+		return OUTPUT_EACH + outputBracedBlock( outputQuote( var ) + OUTPUT_BLOCK_SEPARATOR + ExpressionItem + OUTPUT_BLOCK_SEPARATOR + StatementItem  );
 	}
 }

@@ -25,6 +25,8 @@ import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.predicate.Predicate;
 
 public final class If extends ValueObject implements Statement {
+	
+	public static final String OUTPUT_IF = "if";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(If.class);
@@ -48,4 +50,20 @@ public final class If extends ValueObject implements Statement {
 				.append(";");
 		return builder.toString();
 	}
+	
+	@Override
+	public String toTransformerOutput() {
+		String conditionItem = "";
+		if (condition instanceof ValueObject) {
+			conditionItem = ((ValueObject)condition).toTransformerOutput();
+		}
+		
+		String thenItem = "";
+		if (then instanceof ValueObject) {
+			thenItem = ((ValueObject)then).toTransformerOutput();
+		}		
+		
+		return OUTPUT_IF + outputBracedBlock(conditionItem + OUTPUT_BLOCK_SEPARATOR + thenItem);
+	}
+	
 }

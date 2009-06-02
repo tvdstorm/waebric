@@ -31,6 +31,9 @@ import com.uva.se.wparse.util.Strings;
 
 public final class BlockExpression extends ValueObject implements Expression {
 	private static org.apache.log4j.Logger logger = Logger.getLogger(BlockExpression.class);
+
+  public static final String OUTPUT_LIST = "list";	
+	
   private List<Expression> expr;
 
   public BlockExpression(List<Expression> expr) {
@@ -53,6 +56,6 @@ public final class BlockExpression extends ValueObject implements Expression {
 		  ListBlock = outputAddToList(ListBlock, ((ValueObject)expression).toTransformerOutput());
 	  }  
 	  
-	  return "list([" + ListBlock + "])";	  
+	  return OUTPUT_LIST + outputBracedBlock( outputBracedList( ListBlock ) );	  
   }
 }

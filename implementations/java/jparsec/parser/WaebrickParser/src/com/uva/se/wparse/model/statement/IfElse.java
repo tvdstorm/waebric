@@ -25,6 +25,8 @@ import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.predicate.Predicate;
 
 public final class IfElse extends ValueObject implements Statement {
+	
+	public static final String OUTPUT_IF_ELSE = "if-else";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(IfElse.class);
@@ -54,7 +56,22 @@ public final class IfElse extends ValueObject implements Statement {
 	
 	@Override
 	public String toTransformerOutput() {
-		return "if-else(" + ")";
+		String conditionItem = "";
+		if (condition instanceof ValueObject) {
+			conditionItem = ((ValueObject)condition).toTransformerOutput();
+		}
+		
+		String thenItem = "";
+		if (thenStatement instanceof ValueObject) {
+			thenItem = ((ValueObject)thenStatement).toTransformerOutput();
+		}
+		
+		String elseItem = "";
+		if (elseStatement instanceof ValueObject) {
+			elseItem = ((ValueObject)elseStatement).toTransformerOutput();
+		}
+				
+		return OUTPUT_IF_ELSE + outputBracedBlock(conditionItem + OUTPUT_BLOCK_SEPARATOR + thenItem + OUTPUT_BLOCK_SEPARATOR + elseItem );
 		
 	}
 }

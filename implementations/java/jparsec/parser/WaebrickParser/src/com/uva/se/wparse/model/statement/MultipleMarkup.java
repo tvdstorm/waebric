@@ -27,8 +27,10 @@ import com.uva.se.wparse.model.markup.Markup;
 
 public class MultipleMarkup extends ValueObject implements Statement, Markup {
 	
-	public static final String OUTPUT_TAG		= "tag";
-	public static final String OUTPUT_VAR		= "var";
+	public static final String OUTPUT_TAG				= "tag";
+	public static final String OUTPUT_VAR				= "var";
+	
+	public static final String OUTPUT_MARKUP_MULTIPLE 	= "markup-exp";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MultipleMarkup.class);
 
@@ -60,7 +62,7 @@ public class MultipleMarkup extends ValueObject implements Statement, Markup {
 			}
 		}
 		
-		return "markup-exp([" + MarkupBlock + "])";
+		return OUTPUT_MARKUP_MULTIPLE + outputBracedBlock( outputBracedList( MarkupBlock ) );
 	}
 	
 }

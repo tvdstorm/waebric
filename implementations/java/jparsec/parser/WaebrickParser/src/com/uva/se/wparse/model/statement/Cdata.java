@@ -20,12 +20,15 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 
-public class Cdata implements Statement {
+public class Cdata extends ValueObject implements Statement {
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(Cdata.class);
+	
+	public static final String OUTPUT_CDATA = "cdata";
 
 	private Expression expr;
 
@@ -40,6 +43,16 @@ public class Cdata implements Statement {
 	@Override
 	public String toString() {
 		return "cdata " + expr.toString();
+	}
+	
+	@Override
+	public String toTransformerOutput() {
+		String expressionItem = "";
+		if (expr instanceof ValueObject) {
+			expressionItem = ((ValueObject)expr).toTransformerOutput();			
+		}
+		
+		return OUTPUT_CDATA + outputBracedBlock(expressionItem);
 	}
 
 }

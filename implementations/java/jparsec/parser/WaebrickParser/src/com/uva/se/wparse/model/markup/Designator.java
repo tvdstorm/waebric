@@ -55,8 +55,7 @@ public class Designator extends ValueObject implements Markup{
 		for (Attribute attribute: attributes) {
 			if (attribute instanceof ValueObject){
 				AttributeBlock = AttributeBlock + ((ValueObject)attribute).toTransformerOutput();				
-			}
-			
+			}			
 		}
 		
 		String Result = outputQuote( identifier.trim() ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_LIST_BEGIN + AttributeBlock + OUTPUT_LIST_END;

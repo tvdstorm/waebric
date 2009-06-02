@@ -29,6 +29,8 @@ public final class AssignmentFormals extends ValueObject implements	Assignment {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentFormals.class);
 	
+	public static final String OUTPUT_ASSIGNMENT_FORMALS = "assign-formals";
+	
 	
 	private String identifier;
 	private ArrayList<String> formals;
@@ -52,6 +54,11 @@ public final class AssignmentFormals extends ValueObject implements	Assignment {
 	
 	@Override
 	public String toTransformerOutput() {
-		return "AssignmentFormals";
+		String StatementItem = "";
+		if (statement instanceof ValueObject) {
+			StatementItem = ((ValueObject)statement).toTransformerOutput();
+		}		
+		
+		return OUTPUT_ASSIGNMENT_FORMALS + outputBracedBlock( identifier + OUTPUT_BLOCK_SEPARATOR + outputBracedList( Strings.join( OUTPUT_LIST_SEPARATOR, formals ) ) + OUTPUT_BLOCK_SEPARATOR + StatementItem);
 	}
 }

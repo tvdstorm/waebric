@@ -22,10 +22,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.markup.Markup;
 
 public class MarkupEmbedding extends MultipleMarkup implements Statement, Markup {
+	
+	public static final String OUTPUT_MARKUP_EMBEDDING = "markup-embed";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbedding.class);
 
@@ -47,8 +50,12 @@ public class MarkupEmbedding extends MultipleMarkup implements Statement, Markup
 	
 	@Override
 	public String toTransformerOutput() {
-		return "MarkupEmbedding";
+		String embeddingItem = "";
+		if (embedding instanceof ValueObject) {
+			embeddingItem = ((ValueObject)embedding).toTransformerOutput();
+		}		
 		
+		return OUTPUT_MARKUP_EMBEDDING + outputBracedBlock( embeddingItem );		
 	}
 	
 	

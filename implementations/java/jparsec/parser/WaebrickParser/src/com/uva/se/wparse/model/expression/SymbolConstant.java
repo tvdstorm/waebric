@@ -22,10 +22,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
 
-public class SymbolConstant implements Expression {
+public class SymbolConstant extends ValueObject implements Expression {
+	
+	public static final String OUTPUT_SYMBOL = "symbol";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SymbolConstant.class);
 
@@ -43,5 +46,8 @@ public class SymbolConstant implements Expression {
 		return "'" + symbol.toString();
 	}
 	
-	
+	@Override
+	public String toTransformerOutput() {
+		return OUTPUT_SYMBOL + outputBracedBlock( symbol );
+	}	
 }
