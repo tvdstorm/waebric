@@ -46,8 +46,7 @@ public class MappingParser {
 		return parser;
 	}
 
-	private static Mapper<Mapping> curry(Class<? extends Mapping> clazz,
-			Object... curryArgs) {
+	private static Mapper<Mapping> curry(Class<? extends Mapping> clazz, Object... curryArgs) {
 		return Mapper.curry(clazz, curryArgs);
 	}
 }

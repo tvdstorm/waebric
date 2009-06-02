@@ -26,7 +26,6 @@ import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.misc.Mapper;
 
-import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Argument;
 import com.uva.se.wparse.model.markup.Markup;
@@ -50,11 +49,9 @@ public final class ModuleParser implements WeabrickParser {
 				}));
 	}
 
-	private static Parser<Member> methodDef(Parser<Statement> statementParser,
-			Parser<Expression> expr, Parser<Embedding> embedding) {
-		Parser<Argument> argParser = ArgumentParser.arguments(expr);
-		Parser<Argument> blockArgParser = ArgumentParser
-				.blockArgument(argParser);
+	private static Parser<Member> methodDef(Parser<Statement> statementParser, Parser<Expression> expressionParser) {
+		Parser<Argument> argParser = ArgumentParser.arguments(expressionParser);
+		Parser<Argument> blockArgParser = ArgumentParser.blockArgument(argParser);
 
 		return Mapper.<Member> curry(FunctionDef.class).sequence(
 				TerminalParser.term(Keyword.DEF.toString()),
@@ -84,19 +81,15 @@ public final class ModuleParser implements WeabrickParser {
 
 	private static Parser<ModuleDef> module() {
 		Parser.Reference<Member> memberRef = Parser.newReference();
-		Parser<Expression> expr = ExpressionParser.expression(body(memberRef
-				.lazy()));
-		Parser<Markup> markup = MarkupParser.markup(expr);
-		Parser<Statement> stmt = StatementParser.statement(expr, markup);
-		Parser<Embedding> embeddingParser = EmbeddingParser.getParser(markup,
-				expr);
-
-		Parser<Mapping> mappingParser = MappingParser.mapping(markup);
+		Parser<Expression> expr = ExpressionParser.expression(body(memberRef.lazy()));
+		Parser<Markup> markupParser = MarkupParser.markup(expr);
+		Parser<Statement> statementParser = StatementParser.statement(expr, markupParser);
+		Parser<Mapping> mappingParser = MappingParser.mapping(markupParser);
 
 		return Mapper.curry(ModuleDef.class).sequence(
 				MODULE,
 				importParser.many(),
-				Parsers.or(methodDef(stmt, expr, embeddingParser),
+				Parsers.or(methodDef(statementParser, expr),
 						siteDef(mappingParser)).many());
 	}
 
