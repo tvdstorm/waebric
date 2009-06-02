@@ -79,8 +79,8 @@ public final class PredicateParser {
 	
 	
 	
-	private static Parser<Binary<Predicate>> binary(Operator op) {
-	    return TerminalParser.term(op.toString()).next(curry(OperatorPredicate.class, op).binary());
+	private static Parser<Binary<Predicate>> binary(Operator operator) {
+	    return TerminalParser.term(operator.toString()).next(curry(OperatorPredicate.class, operator).binary());
 	}
 	
 	
