@@ -13,8 +13,6 @@
  * Date			Change				 
  * -----------------------------------------------------------
  * 07-05-2009	Initial version.
- * 
- * 
  */
 package com.uva.se.wparse;
 import java.io.File;
@@ -30,23 +28,37 @@ import com.uva.se.wparse.parser.WeabrickParser;
 import com.uva.se.wparse.resource.Resources;
 import com.uva.se.wparse.util.FileUtil;
 
-	
 /**
- * 
- * The application supports two arguments
+ * The main class of the application. You can start the application 
+ * via this class. The application supports two arguments
  * 
  * -i to start the application in interactive mode with a gui
  * -c <filename> to start the application in commandline mode.
- *
  */
 public class Main {
 
+	/**
+	 * You can use the log4net log functionality via this variable.
+	 */
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Main.class);
 
+	/**
+	 * When you start the application up with the command, you start the 
+	 * application with the command line. 
+	 */
 	private final static String OPTION_COMMANDLINE	= "-c";
+	
+	/**
+	 * When you start the application up with the command, you start the 
+	 * application with the graphical user interface.  
+	 */
 	private final static String OPTION_INTERACTIVE	= "-i";
 	
 
+	/**
+	 * 
+	 * @param arguments
+	 */
 	public Main(String[] arguments) {
 		
 		// check the type of client to start
@@ -72,6 +84,10 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		// check if arguments are present
 		if (args.length > 0) {
@@ -86,8 +102,7 @@ public class Main {
 	}
 	
 	/**
-	 * Start a Swing GUI.
-	 * 
+	 * Start a Swing GUI
 	 */
 	private void startGuiClient(){
 		//Gui is executed asynchronously on the AWT event dispatching thread

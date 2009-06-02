@@ -24,7 +24,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * A utility class with methods which can be used in the case of file access. 
+ * A utility class with methods which can be used in the case of file access.
+ * 
+ * State: refactored, not reviewed.  
  */
 public class FileUtil {
 
@@ -37,11 +39,10 @@ public class FileUtil {
 	 * Reads the specified <i>file</i> and returns the contents of that 
 	 * file. 
 	 * 
-	 * @param 	The file to be read 
-	 * @return 	The file contents of the specified file
+	 * @param The file to be read 
+	 * @return The file contents of the specified file
 	 * 
-	 * @throws  IOException occurs when the file cannot be read
-	 * @throws  ArgumentNullException if the file isn't specified. 
+	 * @throws IOException occurs when the file cannot be read 
 	 */
 	public static String readFile(File file) throws IOException {
 		
