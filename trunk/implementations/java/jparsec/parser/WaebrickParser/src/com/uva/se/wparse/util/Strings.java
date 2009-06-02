@@ -21,44 +21,81 @@ package com.uva.se.wparse.util;
 import java.util.Arrays;
 
 /**
- * Manipulates String.
+ * Several String Manipulation functionality which can separate objects by 
+ * different delimiter. 
  * 
- * @author Ben Yu
+ * State: refactored, not reviewed.  
  */
 public final class Strings {
-  
-  /** Prepends {@code delim} before each object of {@code objects}. */
-  public static String prependEach(String delim, Iterable<?> objects) {
-    StringBuilder builder = new StringBuilder();
-    for (Object obj : objects) {
-      builder.append(delim);
-      builder.append(obj);
-    }
-    return builder.toString();
-  }
-  
-  /** Joins {@code objects} with {@code delim} as the delimiter. */
-  public static String join(String delim, Iterable<?> objects) {
-    return join(new StringBuilder(), delim, objects).toString();
-  }
-  
-  /** Joins {@code objects} with {@code delim} as the delimiter. */
-  public static String join(String delim, Object... objects) {
-    return join(delim, Arrays.asList(objects));
-  }
 
-  /** Joins {@code objects} with {@code delim} as the delimiter. */
-  public static StringBuilder join(StringBuilder builder, String delim, Iterable<?> objects) {
-    int i = 0;
-    for (Object obj : objects) {
-      if (i++ > 0) builder.append(delim);
-      builder.append(obj);
-    }
-    return builder;
-  }
+	/**
+	 * Prepends {@code delimiter} before each object of {@code objects}.
+	 * 
+	 * @param delimiter The delimiter to prepend for each object. 
+	 * @param objects The objects where this function prepends the delimiter. 
+	 * @return
+	 */
+	public static String prependEach(String delimiter, Iterable<?> objects) {
+		StringBuilder builder = new StringBuilder();
+		for (Object object : objects) {
+			builder.append(delimiter);
+			builder.append(object);
+		}
+		return builder.toString();
+	}
+	
+	/**
+	 * Joins {@code objects} with {@code delimiter} as the delimiter.
+	 * 
+	 * @param builder The builder which creates the string
+	 * @param delimiter The delimiter which is added after the objects 
+	 * @param objects The objects which are divided by the delimiter
+	 * @return A StringBuilder with all the objects divided by the delimiter
+	 */
+	public static StringBuilder join(StringBuilder builder, String delimiter,
+			Iterable<?> objects) {
+		
+		int itemIndex = 0;
+		for (Object object : objects) {
+			if (itemIndex++ > 0)
+				builder.append(delimiter);
+			builder.append(object);
+		}
+		return builder;
+	}
 
-  /** Joins {@code objects} with {@code delim} as the delimiter. */
-  public static StringBuilder join(StringBuilder builder, String delim, Object... objects) {
-    return join(builder, delim, Arrays.asList(objects));
-  }
+	/**
+	 * Joins {@code objects} with {@code delimiter} as the delimiter.
+	 * 
+	 * @param delimiter The delimiter which is added after the objects 
+	 * @param objects The objects which are divided by the delimiter
+	 * @return A string with all the objects divided by the delimiter
+	 */
+	public static String join(String delimiter, Iterable<?> objects) {
+		return join(new StringBuilder(), delimiter, objects).toString();
+	}
+
+	/**
+	 * Joins {@code objects} with {@code delimiter} as the delimiter.
+	 * 
+	 * @param delimiter The delimiter which is added after the objects 
+	 * @param objects The objects which are divided by the delimiter
+	 * @return A string with all the objects divided by the delimiter
+	 */
+	public static String join(String delimiter, Object... objects) {
+		return join(delimiter, Arrays.asList(objects));
+	}
+
+	/**
+	 * Joins {@code objects} with {@code delimiter} as the delimiter.
+	 * 
+	 * @param builder The builder which creates the string
+	 * @param delimiter The delimiter which is added after the objects 
+	 * @param objects  The objects which are divided by the delimiter
+	 * @return A StringBuilder with all the objects divided by the delimiter
+	 */
+	public static StringBuilder join(StringBuilder builder, String delimiter,
+			Object... objects) {
+		return join(builder, delimiter, Arrays.asList(objects));
+	}
 }
