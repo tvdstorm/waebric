@@ -1,5 +1,3 @@
-//TODO: Fix Expression: id_con dot id_con
-
 Package org.sablecc.grammar.waebric;
 
 Helpers
@@ -242,13 +240,12 @@ Productions
 		|	{if_then}				T.if T.l_paren P.predicate T.r_paren P.statement
 		|	{if_then_else}			T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement
 		;
-		
-	statement_no_short_if = 
-			{no_markup}				P.statement_no_markup
-		|	{markup_statement}		P.markup+ P.statement_no_markup
+	
+	statement_no_short_if =	 
+			{no_markup}				P.statement_no_markup_no_short_if			
 		|	{markup_single}			P.markup T.semi_colon
 		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup T.semi_colon
-		|	{markup_expression}		P.markup+ P.expression_no_idcon T.semi_colon
+		|	{markup_expression}		P.markup+ P.expression_no_idcon T.semi_colon		
 		|	{embedding}				P.markup+ P.embedding T.semi_colon
 		|	{if_then_else}			T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement_no_short_if
 		;
@@ -256,8 +253,12 @@ Productions
 
 	statement_no_markup =
 			{each}				T.each T.l_paren T.id_con T.colon P.expression T.r_paren P.statement
-		|	{let}				T.let P.assignment+ T.in P.statement* T.end
-		|	{multiple}			T.l_brace P.statement* T.r_brace
+		|	{no_short_if}		statement_no_markup_no_short_if
+		;
+
+	statement_no_markup_no_short_if =
+			{let}				T.let P.assignment+ T.in P.statement* T.end
+		|	{block}				T.l_brace P.statement* T.r_brace
 		|	{comment}			T.comment T.str_con T.semi_colon
 		|	{echo_expression}	T.echo P.expression T.semi_colon
 		|	{echo_embedding}	T.echo P.embedding T.semi_colon
