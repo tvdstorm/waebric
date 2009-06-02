@@ -28,6 +28,8 @@ import com.uva.se.wparse.model.common.ValueObject;
 
 public final class LetIn extends ValueObject implements Statement {
 	
+	public static final String OUTPUT_LETIN = "letin";
+	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(LetIn.class);
 
 	private Object expr;
@@ -47,4 +49,21 @@ public final class LetIn extends ValueObject implements Statement {
     builder.append("let ").append(expr).append(" in ").append(stmt).append("end");
     return builder.toString();
   }
+  
+  	@Override
+  	public String toTransformerOutput() {
+  		String expressionItem = "";
+  		if (expr instanceof ValueObject) {
+  			expressionItem = ((ValueObject)expr).toTransformerOutput();
+  		}
+  		
+  		String statementList = "";
+  		for (Statement statement: stmt) {
+  			if (statement instanceof ValueObject) {
+  				outputAddToList(statementList, ((ValueObject)statement).toTransformerOutput());
+  			}
+  		}
+  		
+  		return OUTPUT_LETIN + outputBracedBlock( expressionItem + OUTPUT_BLOCK_SEPARATOR + outputBracedList( statementList ) );	
+  	}
 }

@@ -24,6 +24,8 @@ import com.uva.se.wparse.model.common.ValueObject;
 
 public class Yield extends ValueObject implements Statement {
 	
+	public static final String OUTPUT_YIELD = "yield";
+	
 	private static org.apache.log4j.Logger logger = Logger
 	.getLogger(Each.class);
 
@@ -44,7 +46,7 @@ public class Yield extends ValueObject implements Statement {
 	
 	@Override
 	public String toTransformerOutput() {
-		return yield;		
+		return OUTPUT_YIELD + outputBracedBlock( yield );		
 	}
 	
 	

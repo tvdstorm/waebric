@@ -40,4 +40,9 @@ public final class NaturalConstant extends ValueObject implements Expression {
 	public String toString() {
 		return natural;
 	}
+	
+	@Override
+	public String toTransformerOutput() {
+		return natural;
+	}
 }

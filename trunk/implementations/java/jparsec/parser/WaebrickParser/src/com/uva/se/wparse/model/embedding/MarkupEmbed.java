@@ -28,6 +28,8 @@ import com.uva.se.wparse.util.Strings;
 
 public class MarkupEmbed extends ValueObject implements Embedding {
 	
+	public static final String OUTPUT_MARKUPEMBED = "markup-embed";
+	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbed.class);
 
 	private String id;
@@ -52,7 +54,19 @@ public class MarkupEmbed extends ValueObject implements Embedding {
 	@Override
 	public String toTransformerOutput() {
 
-		return "MarkupEmbed";
+		String markupList = OUTPUT_LIST_EMPTY;
+		for (Markup markupItem: markup) {
+			if (markupItem instanceof ValueObject) {
+				markupList = outputAddToList(markupList, ((ValueObject)markupItem).toTransformerOutput());       
+			}
+		}
+		
+		String followerItem = "";
+		if (follower instanceof ValueObject) {
+			followerItem = ((ValueObject)follower).toTransformerOutput();
+		}
+		
+		return OUTPUT_MARKUPEMBED + outputBracedBlock( outputQuote(id) + OUTPUT_LIST_SEPARATOR + outputBracedList(markupList) + OUTPUT_LIST_SEPARATOR + followerItem );
 	}	
 	
 }

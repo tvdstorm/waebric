@@ -60,7 +60,7 @@ public class AssignmentArgument extends ValueObject implements Argument {
 			}
 		}		
 		
-		return OUTPUT_ATTRIBUTE + outputBracedBlock( "\"" + var + "\"," + expressionItem );
+		return OUTPUT_ATTRIBUTE + outputBracedBlock( outputQuote( var ) + OUTPUT_BLOCK_SEPARATOR + expressionItem );
 	}
 	
 	

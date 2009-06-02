@@ -28,6 +28,8 @@ import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
 public final class BlockKeyValueExpression extends ValueObject implements Expression {
+	
+	public static final String OUTPUT_KEY_VALUE_BLOCK = "record";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(BlockKeyValueExpression.class);
@@ -54,6 +56,6 @@ public final class BlockKeyValueExpression extends ValueObject implements Expres
 			keyValueBlock = outputAddToList( keyValueBlock, keyValuePairItem.toTransformerOutput() );
 		}
 		
-		return "record([" + keyValueBlock + "])";
+		return OUTPUT_KEY_VALUE_BLOCK + outputBracedBlock( outputBracedList( keyValueBlock ) );
 	}
 }

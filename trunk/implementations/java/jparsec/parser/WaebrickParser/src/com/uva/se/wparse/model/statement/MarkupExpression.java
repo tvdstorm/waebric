@@ -22,10 +22,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
 
 public class MarkupExpression extends MultipleMarkup implements Statement, Markup {
+	
+	public static final String OUTPUT_MARKUP_EXPRESSION = "markup-expr";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpression.class);
 
@@ -47,7 +50,12 @@ public class MarkupExpression extends MultipleMarkup implements Statement, Marku
 	
 	@Override
 	public String toTransformerOutput() {
-		return "MarkupExpression"; 
+		String expressionItem = "";
+		if (expr instanceof ValueObject) {
+			expressionItem = ((ValueObject)expr).toTransformerOutput();
+		}
+		
+		return OUTPUT_MARKUP_EXPRESSION + outputBracedBlock( expressionItem ); 
 	}
 	
 	

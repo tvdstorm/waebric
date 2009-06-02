@@ -58,11 +58,7 @@ public final class ExpressionDotIdentifier extends ValueObject implements Expres
 		String expressionItem = "";
 		if (expr instanceof ValueObject) {
 			expressionItem = ((ValueObject)expr).toTransformerOutput();
-		}
-		
-
-		
-		
+		}		
 		
 		return OUTPUT_FIELD + outputBracedBlock( OUTPUT_VAR + outputBracedBlock( identifierItem ) + OUTPUT_BLOCK_SEPARATOR + expressionItem );
 	}

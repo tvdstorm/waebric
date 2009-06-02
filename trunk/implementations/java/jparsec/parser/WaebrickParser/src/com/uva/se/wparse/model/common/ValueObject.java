@@ -28,19 +28,23 @@ import java.util.ArrayList;
  */
 public abstract class ValueObject {
 	
-  public static final String OUTPUT_EMPTY_ELEMENT	= "";  
+  public static final String OUTPUT_EMPTY_ELEMENT			= "";  
   
-  public static final String OUTPUT_QUOTE	 		= "\"";
+  public static final String OUTPUT_QUOTE_OPEN 				= "\"";
+  public static final String OUTPUT_QUOTE_CLOSE				= "\"";
   
-  public static final String OUTPUT_BLOCK_EMPTY		= "";
-  public static final String OUTPUT_BLOCK_BEGIN		= "(";
-  public static final String OUTPUT_BLOCK_SEPARATOR	= ",";
-  public static final String OUTPUT_BLOCK_END 		= ")";
+  public static final String OUTPUT_LITERAL_QUOTE_OPEN  	= "\"\\\"";
+  public static final String OUTPUT_LITERAL_QUOTE_CLOSE  	= "\\\"\""; 
   
-  public static final String OUTPUT_LIST_EMPTY		= "empty";  
-  public static final String OUTPUT_LIST_BEGIN 		= "["; 
-  public static final String OUTPUT_LIST_SEPARATOR 	= ",";
-  public static final String OUTPUT_LIST_END 		= "]";
+  public static final String OUTPUT_BLOCK_EMPTY				= "";
+  public static final String OUTPUT_BLOCK_BEGIN				= "(";
+  public static final String OUTPUT_BLOCK_SEPARATOR			= ",";
+  public static final String OUTPUT_BLOCK_END 				= ")";
+  
+  public static final String OUTPUT_LIST_EMPTY				= "empty";  
+  public static final String OUTPUT_LIST_BEGIN 				= "["; 
+  public static final String OUTPUT_LIST_SEPARATOR 			= ",";
+  public static final String OUTPUT_LIST_END 				= "]";
   
   public static final String OUTPUT_ARGUMENTS		= "args";
   public static final String OUTPUT_ATTRIBUTE		= "attr";
@@ -64,7 +68,17 @@ public abstract class ValueObject {
    * @return literal surrounded by quotes
    */
   protected String outputQuote(String textLiteralOutput) {
-	return OUTPUT_QUOTE + textLiteralOutput + OUTPUT_QUOTE;	  
+	return OUTPUT_QUOTE_OPEN + textLiteralOutput + OUTPUT_QUOTE_CLOSE;	  
+  }
+  
+  /**
+   * Puts quotes around a text literal.
+   * Allows for changing the type of quotes to be used with literals
+   * @param textLiteralOutput the literal to be surrounded by quotes
+   * @return literal surrounded by quotes
+   */
+  protected String outputLiteralQuote(String textLiteralOutput) {
+	return OUTPUT_LITERAL_QUOTE_OPEN + textLiteralOutput + OUTPUT_LITERAL_QUOTE_CLOSE;	  
   }
   
   /**

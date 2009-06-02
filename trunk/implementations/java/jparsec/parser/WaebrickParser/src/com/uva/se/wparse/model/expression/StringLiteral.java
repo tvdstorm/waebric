@@ -27,6 +27,8 @@ import com.uva.se.wparse.util.Strings;
 
 public final class StringLiteral extends ValueObject implements Expression {
 	
+	public static final String OUTPUT_TEXT = "text";
+	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(StringLiteral.class);
 
 	private String string;
@@ -45,6 +47,6 @@ public final class StringLiteral extends ValueObject implements Expression {
 	
 	@Override
 	public String toTransformerOutput() {
-		return "text(\"\\\"" + string + "\\\"\")" ;
+		return OUTPUT_TEXT + outputBracedBlock( outputLiteralQuote( string ) );
 	}
 }

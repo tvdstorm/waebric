@@ -49,9 +49,6 @@ public final class SiteDef extends ValueObject implements Member {
 	
 	@Override
 	public String toTransformerOutput() {
-		
-		//site([mapping(\"wpath1/xpath2/yfile.ext\", call(tag(\"site1\")))]), site([\"wpath1/xpath2/yfile.ext\", call(tag(\"site2\"))])
-		
 		String MappingBlock = "";
 		String OutputBlock = "";
 		String Result = "";

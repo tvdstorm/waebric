@@ -8,6 +8,8 @@ import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.util.Strings;
 
 public class MarkupEmbeddingList extends ValueObject implements Embedding {
+	
+	public static final String OUTPUT_MARKUP_EMBED_LIST = "markup-embed-list";
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbeddingList.class);
 	
@@ -34,7 +36,14 @@ public class MarkupEmbeddingList extends ValueObject implements Embedding {
 	
 	@Override
 	public String toTransformerOutput() {
-		return "MarkupEmbeddingList";
+		String embeddingList = "";
+		for (Embedding embedItem: embedding) {
+			if (embedItem instanceof ValueObject) {
+				embeddingList = outputAddToList( embeddingList, ((ValueObject)embedItem).toTransformerOutput() );
+			}
+		}		
+		
+		return OUTPUT_MARKUP_EMBED_LIST + outputBracedBlock( outputBracedList( embeddingList ) );
 	}	
 	
 	

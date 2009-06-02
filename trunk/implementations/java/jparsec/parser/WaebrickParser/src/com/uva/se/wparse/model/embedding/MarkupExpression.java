@@ -26,6 +26,8 @@ import com.uva.se.wparse.model.markup.Markup;
 
 public class MarkupExpression extends ValueObject implements Embedding {
 	
+	public static final String OUTPUT_MARKUP_EXPR = "markup-expr";
+	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpression.class);
 
 	private Markup markup;
@@ -49,8 +51,16 @@ public class MarkupExpression extends ValueObject implements Embedding {
 	
 	@Override
 	public String toTransformerOutput() {
+		String markupItem = "";		
+		if (markup instanceof ValueObject) {
+			markupItem = ((ValueObject)markup).toTransformerOutput(); 
+		}
+		String expressionItem = "";
+		if (expr instanceof ValueObject) {
+			expressionItem = ((ValueObject)expr).toTransformerOutput();
+		}		
 
-		return "MarkupExpression";
+		return OUTPUT_MARKUP_EXPR + outputBracedBlock( markupItem + OUTPUT_BLOCK_SEPARATOR + expressionItem );
 	}	
 	
 	

@@ -48,7 +48,7 @@ public class Comment extends ValueObject implements Statement {
 	
 	@Override
 	public String toTransformerOutput() {
-		return OUTPUT_COMMENT + comment.toTransformerOutput();
+		return OUTPUT_COMMENT + outputBracedBlock( comment.toTransformerOutput() );
 	}
 
 }
