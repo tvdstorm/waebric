@@ -186,10 +186,15 @@ Productions
 		  
 	// Expressions
 	expression =
-			{no_idcon}				P.expression_no_idcon  
-		|	{idcon}					T.id_con 
+			{no_plus}				P.expression_no_plus
+		|	{plus_expression}		P.expression_no_plus T.plus P.expression
 		;
 		
+	expression_no_plus =
+			{idcon}					T.id_con 
+		|	{no_idcon}				P.expression_no_idcon
+		;
+
 	expression_no_idcon =  
 			{text}					T.text 
 		|	{symbol_con}			T.symbol_con 
@@ -233,10 +238,15 @@ Productions
 			{no_markup}				P.statement_no_markup
 		|	{markup_statement}		P.markup+ P.statement_no_markup
 		|	{markup_no_statement}	statement_markup_no_statement		
-		|	{if_then}				T.if T.l_paren P.predicate T.r_paren P.statement
-		|	{if_then_else}			T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement
 		;
 	
+	statement_no_markup =
+			{each}				T.each T.l_paren T.id_con T.colon P.expression T.r_paren P.statement
+		|	{if_then}			T.if T.l_paren P.predicate T.r_paren P.statement
+		|	{if_then_else}		T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement
+		|	{no_short_if}		statement_no_markup_no_short_if
+		;
+
 	statement_no_short_if =	 
 			{no_markup}				P.statement_no_markup_no_short_if
 		|	{markup_no_statement}	statement_markup_no_statement		
@@ -245,16 +255,11 @@ Productions
 		
 	statement_markup_no_statement =
 			{markup_single}			P.markup T.semi_colon
-		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup_no_short_markup T.semi_colon
+		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup T.semi_colon
 		|	{markup_expression}		P.markup+ P.expression_no_idcon T.semi_colon		
 		|	{embedding}				P.markup+ P.embedding T.semi_colon
 		;
 		
-	statement_no_markup =
-			{each}				T.each T.l_paren T.id_con T.colon P.expression T.r_paren P.statement
-		|	{no_short_if}		statement_no_markup_no_short_if
-		;
-
 	statement_no_markup_no_short_if =
 			{let}				T.let P.assignment+ T.in P.statement* T.end
 		|	{block}				T.l_brace P.statement* T.r_brace
