@@ -42,6 +42,6 @@ public class Var extends ValueObject implements Expression {
 	
 	@Override
 	public String toTransformerOutput() {
-		return outputQuote(identifier);
+		return "var(" + outputQuote(identifier) + ")";
 	}
 }

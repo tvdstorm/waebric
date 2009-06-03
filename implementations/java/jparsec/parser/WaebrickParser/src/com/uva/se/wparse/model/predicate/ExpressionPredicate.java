@@ -7,8 +7,6 @@ import com.uva.se.wparse.model.expression.Expression;
 
 public class ExpressionPredicate extends ValueObject implements Predicate {
 	
-	public static final String OUTPUT_PREDICATE = "pred";
-	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(ExpressionPredicate.class);
 	
 	private Expression expression = null;
@@ -31,7 +29,7 @@ public class ExpressionPredicate extends ValueObject implements Predicate {
 		if (expression instanceof ValueObject) {
 			expressionItem = ((ValueObject)expression).toTransformerOutput();
 		}
-		return OUTPUT_PREDICATE + outputBracedBlock( expressionItem );
+		return expressionItem;
 	}
 
 }

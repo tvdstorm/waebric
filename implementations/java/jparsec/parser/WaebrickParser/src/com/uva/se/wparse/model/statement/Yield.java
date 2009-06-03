@@ -46,7 +46,7 @@ public class Yield extends ValueObject implements Statement {
 	
 	@Override
 	public String toTransformerOutput() {
-		return OUTPUT_YIELD + outputBracedBlock( yield );		
+		return OUTPUT_YIELD;		
 	}
 	
 	
