@@ -164,7 +164,9 @@ public final class StatementParser {
 
 		@SuppressWarnings("unchecked")
 		Parser<Statement> parser =
-		Parsers.or(ifElse(predicateParser, lazy),
+		Parsers.or(
+		    markupAndStatement(markupParser, lazy),
+		    ifElse(predicateParser, lazy),
 		    ifStatement(predicateParser,lazy),
 		    each(expressionParser, lazy),
 		    letIn(assignmentParser, lazy),
@@ -177,7 +179,7 @@ public final class StatementParser {
 		    yield(),
 		    markup(markupParser),
 		    markupExpression(markupParser, expressionParser),
-		    markupAndStatement(markupParser, lazy),
+		    
 		    block(lazy));
 		ref.set(parser);
 		return parser;
