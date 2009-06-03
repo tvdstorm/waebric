@@ -35,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import com.uva.se.wparse.model.common.WabrickParseTree;
+import com.uva.se.wparse.output.transformer.OutputTransformer;
 import com.uva.se.wparse.parser.ModuleParser;
 import com.uva.se.wparse.parser.WeabrickParser;
 import com.uva.se.wparse.resource.Resources;
@@ -143,7 +144,10 @@ public class ParserGui extends javax.swing.JFrame {
 				try {
 					parseTree = weabrickParser.parse(sourceData);
 					//done with parsing, now convert the parsetree to correct output.
-					txtParserOutput.setText(parseTree.toString());
+					//txtParserOutput.setText(parseTree.toString());
+					OutputTransformer outputTransformer = new OutputTransformer();
+					String output = outputTransformer.transform(parseTree);
+					txtParserOutput.setText(output);
 				} catch (Exception exception) {
 					String error = Resources.ERROR_PARSER.getResource() + "\n" + exception.getMessage();
 					showErrorDialog(error);
