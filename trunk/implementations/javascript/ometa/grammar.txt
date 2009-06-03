@@ -1,9 +1,10 @@
 ometa Waebric <: Parser {
   
   Modules         = Module*,
-  Module          = "module" space ModuleId space ModuleElement spaces end,
+  Module          = "module" space ModuleId space ModuleElement* spaces end,
   ModuleId        = IdCon ("." IdCon)*,
-  ModuleElement   = Site,
+  ModuleElement   = Site
+                  | FunctionDef,
 
   Site            = "site" spaces Mappings spaces "end",
   Mappings        = (Mapping ";" spaces)*,
@@ -25,6 +26,9 @@ ometa Waebric <: Parser {
   Argument        = Var spaces "=" spaces Expression
                   | Expression,
 
+  FunctionDef     = "def" spaces IdCon spaces Formals* spaces Statement* spaces "end",
+  Formals         = "(" Var ("," Var)* ")",
+
   Expression      = "[" spaces Expression ("," spaces Expression)* "]"
                   | "{" spaces KeyValuePair ("," spaces KeyValuePair)* "}"
                   | Expression "." IdCon
@@ -35,35 +39,41 @@ ometa Waebric <: Parser {
 
   KeyValuePair    = IdCon ":" Expression,
    
-  Statement       = "if" "(" Predicate ")" Statement
-                  | "if" "(" Predicate ")" Statement "else" Statement
-                  | "each" "(" Var ":" Expression ")" Statement
+  Statement       = "if" spaces "(" spaces Predicate spaces ")" spaces Statement
+                  | "if" spaces "(" spaces Predicate spaces ")" spaces Statement spaces "else" spaces Statement
+                  | "each" spaces "(" spaces Var spaces ":" spaces Expression spaces ")" spaces Statement
                   | "let" Assignment+ "in" Statement* "end"
-                  | "{" Statement* "}"
-                  | "comment" StrCon ","
-                  | "echo" Expression ";"
-                  | "cdata" Expression ";"
-                  | "yield" ";"
-                  | Markup+ Statement
-                  | Markup ";"
-                  | Markup+ Markup ";"
-                  | Markup+ Expression ";"
-                  | Markup+ Embedding ";",
+                  | "{" spaces Statement* spaces "}"
+                  | "comment" spaces StrCon spaces ","
+                  | "echo" spaces Expression spaces ";" 
+                  | "cdata" spaces Expression spaces ";"
+                  | "yield" ";"  
+                  | Markup+ spaces Statement  
+                  | Markup spaces ";" spaces  
+                  | Markup+ spaces Markup spaces ";" spaces                    
+                  | Markup+ spaces Expression spaces ";" spaces                                 
+                  | Markup+ spaces Embedding spaces ";" spaces,
 
-  Assignment      = Var EqualOperator Expression ";",
+  Predicate       = Expression spaces
+                  | Expression spaces "." spaces Type spaces "?" spaces
+                  | "!" spaces Predicate spaces
+                  | Predicate spaces "&&" spaces Predicate spaces
+                  | Predicate spaces "||" spaces Predicate spaces,
+                  
+
+  Assignment      = Var EqualOperator Expression ";"
+                  | IdCon Formals "=" Statement,
 
   
   Comment         = fromTo('/*', '*/') | fromTo('//', '\n'),
-
   Var             = IdCon,
-  IdCon           = letterOrDigit+,
+  IdCon           = IdChar+,
+  IdChar          = letterOrDigit | "_" | "-",
   NatCon          = digit+,
-  SymbolCon       = "'" SymbolChar*,
-  SymbolChar      = letterOrDigit | "'",  
-
+  SymbolCon       = "'" SymbolChar* "'", 
+  SymbolChar      = letterOrDigit | space | "_" | "-",  
   Text            = "\''" TextChar* "\''",
   TextChar        = letterOrDigit | EscQuote | TextCharRef | TextEntityRef,
-
   TextCharRef     = "&#" digit+ ";"
                   | "&#x" HexaDecimal+ ";",
   TextEntityRef   = "&" XMLSymbol XML* ";",
