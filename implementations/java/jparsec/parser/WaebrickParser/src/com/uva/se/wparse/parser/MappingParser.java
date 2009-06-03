@@ -28,16 +28,15 @@ public class MappingParser {
 
 	private static Parser<Mapping> mappingDef(Parser<Markup> markupParser) {
 		return curry(Mapping.class).sequence(
-				ExpressionParser.PATH_ELEMENT.sepBy(TerminalParser.term(
-				Operator.SLASH.toString())).followedBy(TerminalParser.term(Operator.DOT.toString())), // dir
-				ExpressionParser.FILE_EXT, // extention
-				TerminalParser.term(Operator.COLON.toString()),
-				markupParser  //markup function call
-				);
+		ExpressionParser.PATH_ELEMENT.sepBy(
+		TerminalParser.term(Operator.SLASH.toString())).followedBy(
+		TerminalParser.term(Operator.DOT.toString())), // dir
+		ExpressionParser.FILE_EXT, // extention
+		TerminalParser.term(Operator.COLON.toString()),
+		markupParser // markup function call
+		);
 
 	}
-	
-
 
 	public static Parser<Mapping> mapping(Parser<Markup> markupParser) {
 		Parser.Reference<Mapping> ref = Parser.newReference();
@@ -46,7 +45,8 @@ public class MappingParser {
 		return parser;
 	}
 
-	private static Mapper<Mapping> curry(Class<? extends Mapping> clazz, Object... curryArgs) {
+	private static Mapper<Mapping> curry(Class<? extends Mapping> clazz,
+		Object... curryArgs) {
 		return Mapper.curry(clazz, curryArgs);
 	}
 }

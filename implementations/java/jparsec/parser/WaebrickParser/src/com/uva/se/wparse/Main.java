@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.input.gui.ParserGui;
 import com.uva.se.wparse.model.common.WabrickParseTree;
+import com.uva.se.wparse.output.transformer.OutputTransformer;
 import com.uva.se.wparse.parser.ModuleParser;
 import com.uva.se.wparse.parser.WeabrickParser;
 import com.uva.se.wparse.resource.Resources;
@@ -135,10 +136,11 @@ public class Main {
 				WabrickParseTree parseTree = weabrickParser.parse(source);
 				//done with parsing, now convert the parsetree to correct output.
 				
-				//TODO:Miguel, start hier de output generator
-				
+				OutputTransformer outputTransformer = new OutputTransformer();
+				String output = outputTransformer.transform(parseTree);
+			    System.out.println(output);
 				if(logger.isDebugEnabled()){
-					logger.debug("Parser result: " + parseTree.toString());
+					logger.debug("Parser result: " + output);
 				}
 			}
 		} catch (Exception e) {
