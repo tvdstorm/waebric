@@ -35,13 +35,13 @@ public class ModuleOutputTest extends TestCase {
 	
 	public void testModuleWithFunctionOutput(){
 		String source = "module myModule def myDef() end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"myDef\",empty,empty)])"; 
+		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"myDef\",formals([]),[])])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
 	
 	public void testModuleWithMethodParameterOutput(){
-		String source = "module myModule def myDef(\"param1\") end";
-		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"myDef\",args([\"param1\"]),empty)])"; 
+		String source = "module myModule def myDef(param1) end";
+		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"myDef\",formals([\"param1\"]),empty)])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
 	

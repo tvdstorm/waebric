@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.markup.Argument;
+import com.uva.se.wparse.model.markup.Formals;
 import com.uva.se.wparse.model.statement.Statement;
 
 public final class FunctionDef extends ValueObject implements Member {
@@ -37,13 +38,13 @@ public final class FunctionDef extends ValueObject implements Member {
 			.getLogger(FunctionDef.class);
 
 	private String name = "";
-	private Argument arguments = null;
+	private Formals formals = null;
 	private List<Statement> statements = null;
 
-	public FunctionDef(String name, Argument arguments, List<Statement> statements) {
+	public FunctionDef(String name, Formals formals, List<Statement> statements) {
 
 		this.name = name.trim();
-		this.arguments = arguments;
+		this.formals = formals;
 		this.statements = statements;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
@@ -59,8 +60,8 @@ public final class FunctionDef extends ValueObject implements Member {
 
 
 
-	public Argument getArguments() {
-		return arguments;
+	public Argument getFormals() {
+		return formals;
 	}
 
 
@@ -74,8 +75,8 @@ public final class FunctionDef extends ValueObject implements Member {
 	@Override
 	public String toString() {
 		String result = "def " + name + "(";
-		if(arguments != null){
-			result = result + arguments;
+		if(formals != null){
+			result = result + formals;
 		}
 		result = result +  ")";
 		if(statements != null){
@@ -90,8 +91,8 @@ public final class FunctionDef extends ValueObject implements Member {
 	public String toTransformerOutput() {
 		String NameElement = outputQuote( name );
 		String ArgumentsElement = OUTPUT_LIST_EMPTY;
-		if (arguments instanceof ValueObject ) {
-			String ArgumentTransformerOutput = ((ValueObject) arguments).toTransformerOutput();
+		if (formals instanceof ValueObject ) {
+			String ArgumentTransformerOutput = ((ValueObject) formals).toTransformerOutput();
 			ArgumentsElement = ArgumentTransformerOutput;
 		}
 		if (ArgumentsElement != OUTPUT_LIST_EMPTY) {

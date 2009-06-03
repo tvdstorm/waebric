@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.expression.Identifier;
 import com.uva.se.wparse.model.expression.Var;
 
 public final class Each extends ValueObject implements Statement {
@@ -31,12 +32,12 @@ public final class Each extends ValueObject implements Statement {
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(Each.class);
 
-	private Var var;
+	private Identifier identifier;
 	private Expression expr;
 	private Statement stmt;
 
-	public Each(Var var, Expression expr, Statement stm) {
-		this.var = var;
+	public Each(Identifier identifier, Expression expr, Statement stm) {
+		this.identifier = identifier;
 		this.expr = expr;
 		this.stmt = stm;
 		if (logger.isDebugEnabled()) {
@@ -48,7 +49,7 @@ public final class Each extends ValueObject implements Statement {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("each (").append(var).append(": ").append(expr).append(
+		builder.append("each (").append(identifier).append(": ").append(expr).append(
 				") ").append(stmt);
 		return builder.toString();
 	}
@@ -65,6 +66,6 @@ public final class Each extends ValueObject implements Statement {
 			StatementItem = ((ValueObject)stmt).toTransformerOutput();
 		}
 		
-		return OUTPUT_EACH + outputBracedBlock( outputQuote( var ) + OUTPUT_BLOCK_SEPARATOR + ExpressionItem + OUTPUT_BLOCK_SEPARATOR + StatementItem  );
+		return OUTPUT_EACH + outputBracedBlock( outputQuote( identifier ) + OUTPUT_BLOCK_SEPARATOR + ExpressionItem + OUTPUT_BLOCK_SEPARATOR + StatementItem  );
 	}
 }

@@ -134,6 +134,11 @@ public class StatementParserTest extends TestCase {
 				+ "in echo \"test\"; end";
 		TerminalParser.parse(statemenParser, source);
 	}
+	
+	public void testLetInAssignmentStatement() {
+		String source = "let var1 = expr2; in yield; end";
+		TerminalParser.parse(statemenParser, source);
+	}
 
 	public void testMarkupBlockStatement() {
 		String source = "td(\"images/lavakaft_14-1.jpg\", \"lava 14-1\");";
