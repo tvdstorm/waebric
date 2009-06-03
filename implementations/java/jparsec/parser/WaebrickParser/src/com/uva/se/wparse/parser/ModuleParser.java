@@ -27,7 +27,6 @@ import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.misc.Mapper;
 
 import com.uva.se.wparse.model.expression.Expression;
-import com.uva.se.wparse.model.markup.Argument;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.model.module.FunctionDef;
 import com.uva.se.wparse.model.module.Mapping;
