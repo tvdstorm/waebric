@@ -28,7 +28,7 @@ import com.uva.se.wparse.util.Strings;
 
 public class SymbolConstant extends ValueObject implements Expression {
 	
-	public static final String OUTPUT_SYMBOL = "symbol";
+	public static final String OUTPUT_SYMBOL = "Constant";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SymbolConstant.class);
 

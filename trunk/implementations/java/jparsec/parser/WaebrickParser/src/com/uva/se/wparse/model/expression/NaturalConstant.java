@@ -23,6 +23,8 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 
 public final class NaturalConstant extends ValueObject implements Expression {
+	
+	public static final String OUTPUT_NATCON = "digits"; 
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(NaturalConstant.class);
@@ -43,6 +45,6 @@ public final class NaturalConstant extends ValueObject implements Expression {
 	
 	@Override
 	public String toTransformerOutput() {
-		return natural;
+		return OUTPUT_NATCON + outputBracedBlock( natural );
 	}
 }

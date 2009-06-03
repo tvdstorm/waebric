@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.expression.Identifier;
-import com.uva.se.wparse.model.expression.Var;
 
 public final class Each extends ValueObject implements Statement {
 	

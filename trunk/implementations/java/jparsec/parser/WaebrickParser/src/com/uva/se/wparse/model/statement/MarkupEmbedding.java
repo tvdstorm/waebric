@@ -28,7 +28,7 @@ import com.uva.se.wparse.model.markup.Markup;
 
 public class MarkupEmbedding extends MultipleMarkup implements Statement, Markup {
 	
-	public static final String OUTPUT_MARKUP_EMBEDDING = "markup-embed";
+	public static final String OUTPUT_MARKUP_EMBEDDING = "markup-embedding";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbedding.class);
 

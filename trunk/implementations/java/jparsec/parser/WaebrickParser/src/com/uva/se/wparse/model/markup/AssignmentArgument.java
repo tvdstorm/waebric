@@ -23,20 +23,20 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.expression.Identifier;
+import com.uva.se.wparse.model.expression.Var;
 
 public class AssignmentArgument extends ValueObject implements Argument {
-	
-	public static final String OUTPUT_VAR = "var";
-	
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentArgument.class);
 	
-	private Identifier identifier;
+	public static final String OUTPUT_ASSIGNMENT = "var-bind";
+	
+	private Var var;
 	private Expression expression;
 	
 	
-	public AssignmentArgument(Identifier identifier, Expression expression) {
-		this.identifier = identifier;
+	public AssignmentArgument(Var var, Expression expression) {
+		this.var = var;
 		this.expression = expression;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
@@ -47,7 +47,7 @@ public class AssignmentArgument extends ValueObject implements Argument {
 
 	@Override
 	public String toString() {
-		return identifier + " = " + expression;
+		return var + " = " + expression;
 	}
 	
 	@Override
@@ -56,11 +56,11 @@ public class AssignmentArgument extends ValueObject implements Argument {
 		if (expression instanceof ValueObject) {
 			expressionItem = ((ValueObject)expression).toTransformerOutput();
 			if (expression instanceof Identifier){
-				expressionItem = OUTPUT_VAR + outputBracedBlock( expressionItem );
+				expressionItem = outputBracedBlock( expressionItem );
 			}
 		}		
 		
-		return OUTPUT_ATTRIBUTE + outputBracedBlock( outputQuote( identifier ) + OUTPUT_BLOCK_SEPARATOR + expressionItem );
+		return OUTPUT_ATTRIBUTE + outputBracedBlock( outputQuote( var ) + OUTPUT_BLOCK_SEPARATOR + expressionItem );
 	}
 	
 	

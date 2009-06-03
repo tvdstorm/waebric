@@ -19,7 +19,6 @@
 
 package com.uva.se.wparse.model.statement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -29,7 +28,7 @@ import com.uva.se.wparse.model.common.ValueObject;
 
 public final class LetIn extends ValueObject implements Statement {
 	
-	public static final String OUTPUT_LETIN = "letin";
+	public static final String OUTPUT_LETIN = "let";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(LetIn.class);
 

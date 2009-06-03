@@ -26,7 +26,7 @@ import com.uva.se.wparse.model.expression.StringLiteral;
 
 public class Comment extends ValueObject implements Statement {
 	
-	public static final String OUTPUT_COMMENT = "comment";
+	public static final String OUTPUT_COMMENT = "Comment";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(Comment.class);
