@@ -102,10 +102,13 @@ public final class StatementParser {
 	private static Parser<Statement> each(Parser<Expression> expressionParser,
 		Parser<Statement> statementParser) {
 		return curry(Each.class).sequence(
-		TerminalParser.phrase(Keyword.EACH.toString() + " "
-		+ Operator.ROUND_BRACKET_OPEN.toString()), Terminals.Identifier.PARSER,
-		TerminalParser.term(Operator.COLON.toString()), expressionParser,
-		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()), statementParser);
+		TerminalParser.phrase(Keyword.EACH.toString() + " " +
+		Operator.ROUND_BRACKET_OPEN.toString()),
+		ExpressionParser.VAR,
+		TerminalParser.term(Operator.COLON.toString()),
+		expressionParser,
+		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()),
+		statementParser);
 	}
 
 	private static Parser<Statement> block(Parser<Statement> statementParser) {
@@ -116,10 +119,12 @@ public final class StatementParser {
 	}
 
 	private static Parser<Statement> letIn(Parser<Assignment> assignmentParser,
-		Parser<Statement> stmt) {
+		Parser<Statement> statementParser) {
 		return curry(LetIn.class).sequence(
-		TerminalParser.term(Keyword.LET.toString()), assignmentParser.many1(),
-		TerminalParser.term(Keyword.IN.toString()), stmt.many(),
+		TerminalParser.term(Keyword.LET.toString()),
+		assignmentParser.many1(),
+		TerminalParser.term(Keyword.IN.toString()),
+		statementParser.many(),
 		TerminalParser.term(Keyword.END.toString()));
 	}
 

@@ -1,5 +1,5 @@
 /*
- * File			: Identifier.java
+ * File			: Var.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -22,13 +22,13 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 
-public class Identifier extends ValueObject implements Expression {
+public class Var extends ValueObject implements Expression {
 
-	private static org.apache.log4j.Logger logger = Logger.getLogger(Identifier.class);
+	private static org.apache.log4j.Logger logger = Logger.getLogger(Var.class);
 
 	private String identifier;
 
-	public Identifier(String identifierStart , String identifierEnd) {
+	public Var(String identifierStart , String identifierEnd) {
 		this.identifier = identifierStart + identifierEnd;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());

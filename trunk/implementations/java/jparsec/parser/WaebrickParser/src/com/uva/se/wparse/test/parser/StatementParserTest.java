@@ -227,7 +227,7 @@ public class StatementParserTest extends TestCase {
 	
 	
 	public void testEach() {
-		String source = "each (  variable : [var1, var2, var3] ) echo \"do x for each item\";";
+		String source = "each (  var : [var1, var2, var3] ) echo \"do x for each item\";";
 		TerminalParser.parse(statemenParser, source);
 	}
 	
