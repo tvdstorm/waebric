@@ -61,7 +61,12 @@ public class AssignmentParserTest extends TestCase {
 
 	
 	public void testAssignmentNormal(){
-		String source = "identifier = testvalue;";
+		String source = "var = testvalue;";
+		TerminalParser.parse(assignmentParser, source);
+	}
+	
+	public void testAssignmentFormals(){
+		String source = "idCon ( var1, var2, var3) = echo \"dummy statement\";";
 		TerminalParser.parse(assignmentParser, source);
 	}
 	

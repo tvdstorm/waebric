@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.expression.Identifier;
+import com.uva.se.wparse.model.expression.Var;
 
 public class AssignmentArgument extends ValueObject implements Argument {
 	
@@ -31,11 +32,11 @@ public class AssignmentArgument extends ValueObject implements Argument {
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentArgument.class);
 	
-	private String var;
+	private Var var;
 	private Expression expression;
 	
 	
-	public AssignmentArgument(String var, Expression expression) {
+	public AssignmentArgument(Var var, Expression expression) {
 		this.var = var;
 		this.expression = expression;
 		if (logger.isDebugEnabled()) {

@@ -38,6 +38,7 @@ import com.uva.se.wparse.model.expression.KeyValuePair;
 import com.uva.se.wparse.model.expression.NaturalConstant;
 import com.uva.se.wparse.model.expression.StringLiteral;
 import com.uva.se.wparse.model.expression.SymbolConstant;
+import com.uva.se.wparse.model.expression.Var;
 import com.uva.se.wparse.model.module.ModuleBody;
 
 public class ExpressionParser {
@@ -210,6 +211,11 @@ public class ExpressionParser {
 		ID_CON.many().source()
 	);
 	
+	public static Parser<Expression> VAR = curry(Var.class).sequence(
+	   ID_CON_START.source(),
+	   ID_CON.many().source()
+   );
+	
 	public static Parser<Expression> PATH_ELEMENT = curry(Identifier.class).sequence(
 		PATH_ELEMENT_TEXT.source(),
 		ID_CON.many().source()
@@ -254,7 +260,7 @@ public class ExpressionParser {
 	}
 
 	private static Parser<Expression> ATOM = Parsers.or(STRING_LITERAL,
-			IDENTIFIER, symbolConstant, numberExpression());
+			IDENTIFIER, VAR, symbolConstant, numberExpression());
 
 	private static Parser<Expression> expression(Parser<Expression> expressionParser, Parser<ModuleBody> moduleBody) {
 		Parser.Reference<Expression> ref = Parser.newReference();

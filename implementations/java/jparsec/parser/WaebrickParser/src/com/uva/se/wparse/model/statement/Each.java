@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.expression.Var;
 
 public final class Each extends ValueObject implements Statement {
 	
@@ -30,11 +31,11 @@ public final class Each extends ValueObject implements Statement {
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(Each.class);
 
-	private String var;
+	private Var var;
 	private Expression expr;
 	private Statement stmt;
 
-	public Each(String var, Expression expr, Statement stm) {
+	public Each(Var var, Expression expr, Statement stm) {
 		this.var = var;
 		this.expr = expr;
 		this.stmt = stm;

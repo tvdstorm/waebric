@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.expression.Var;
 
 public final class AssignmentExpression extends ValueObject implements Assignment {
 	
@@ -30,10 +31,10 @@ public final class AssignmentExpression extends ValueObject implements Assignmen
 	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentExpression.class);
 	
 	
-	private String left;
+	private Var left;
 	private Expression right;
 
-	public AssignmentExpression(String left, Expression right) {
+	public AssignmentExpression(Var left, Expression right) {
 		this.left = left;
 		this.right = right;
 		if (logger.isDebugEnabled()) {
