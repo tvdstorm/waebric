@@ -355,6 +355,10 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 	
+	public void testMarkupStatementIfElse(){
+		String source = "li if (mi.kids) menu(mi); else a(href=mi.link) mi.title;";
+		TerminalParser.parse(statemenParser, source);
+	}
 	  
 
 }

@@ -154,7 +154,7 @@ public class ModuleParserTest extends TestCase {
 	}
 	
 	public void testModulWithFunctionAndIfElse(){
-		String source = "module brand def item(mi) li; if (mi.kids) menu(mi); else a(href=mi.link) mi.title; end"; 
+		String source = "module brand def item(mi) li if (mi.kids) menu(mi); else a(href=mi.link) mi.title; end"; 
 		ModuleParser declarationParser = new ModuleParser(); 		
 		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);

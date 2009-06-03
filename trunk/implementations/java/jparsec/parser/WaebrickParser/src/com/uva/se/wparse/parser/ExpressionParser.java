@@ -146,6 +146,7 @@ public class ExpressionParser {
 			//cannot be a identifier.
 			if( Keyword.YIELD.equals(value) ||
 					Keyword.ECHO.toString().equals(value) ||
+					Keyword.IF.toString().equals(value) ||
 					Keyword.COMMENT.toString().equals(value) ||
 					Keyword.CDATA.toString().equals(value) ||
 					Keyword.EACH.toString().equals(value) ||
