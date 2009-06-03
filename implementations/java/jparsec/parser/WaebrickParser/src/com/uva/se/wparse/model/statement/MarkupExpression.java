@@ -28,7 +28,7 @@ import com.uva.se.wparse.model.markup.Markup;
 
 public class MarkupExpression extends MultipleMarkup implements Statement, Markup {
 	
-	public static final String OUTPUT_MARKUP_EXPRESSION = "markup-expr";
+	public static final String OUTPUT_MARKUP_EXPRESSION = "markup-exp";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpression.class);
 

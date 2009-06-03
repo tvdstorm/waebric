@@ -29,7 +29,7 @@ public final class AssignmentFormals extends ValueObject implements	Assignment {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentFormals.class);
 	
-	public static final String OUTPUT_ASSIGNMENT_FORMALS = "assign-formals";
+	public static final String OUTPUT_ASSIGNMENT_FORMALS = "func-bind";
 	
 	
 	private String identifier;

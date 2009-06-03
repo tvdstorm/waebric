@@ -26,7 +26,10 @@ import com.uva.se.wparse.parser.Operator;
 
 public final class OperatorPredicate extends ValueObject implements Expression, Predicate {
 	
-	public static final String OUTPUT_OPERATOR_PREDICATE = "pred-op";
+	public static final String OUTPUT_OPERATOR_PREDICATE 		= "pred-op";
+	
+	public static final String OUTPUT_OPERATOR_PREDICATE_AND 	= "and";
+	public static final String OUTPUT_OPERATOR_PREDICATE_OR 	= "or";
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(OperatorPredicate.class);
 
@@ -62,6 +65,21 @@ public final class OperatorPredicate extends ValueObject implements Expression, 
 			rightItem = ((ValueObject)right).toTransformerOutput();
 		}
 		
-		return OUTPUT_OPERATOR_PREDICATE + outputBracedBlock(operatorItem + OUTPUT_BLOCK_SEPARATOR + leftItem + OUTPUT_BLOCK_SEPARATOR + rightItem);
+		String outputType = "";
+		
+		switch (op) {
+			case AND:
+				outputType = OUTPUT_OPERATOR_PREDICATE_AND;
+				break;
+			case OR:
+				outputType = OUTPUT_OPERATOR_PREDICATE_OR;
+				break;
+			default:
+				outputType = OUTPUT_OPERATOR_PREDICATE;
+				break;	
+		}
+		
+		
+		return outputType + outputBracedBlock(operatorItem + OUTPUT_BLOCK_SEPARATOR + leftItem + OUTPUT_BLOCK_SEPARATOR + rightItem);
 	}
 }

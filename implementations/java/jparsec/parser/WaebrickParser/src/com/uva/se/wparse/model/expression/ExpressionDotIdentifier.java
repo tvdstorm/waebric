@@ -25,7 +25,6 @@ import com.uva.se.wparse.parser.Operator;
 
 public final class ExpressionDotIdentifier extends ValueObject implements Expression {
 	
-	public static final String OUTPUT_VAR 	= "var";
 	public static final String OUTPUT_FIELD = "field";
 
 	private static org.apache.log4j.Logger logger = Logger
@@ -52,14 +51,13 @@ public final class ExpressionDotIdentifier extends ValueObject implements Expres
 		String identifierItem = "";
 		if (identifier instanceof ValueObject) {
 			identifierItem = ((ValueObject)identifier).toTransformerOutput();
-		}
-		
+		}		
 		
 		String expressionItem = "";
 		if (expr instanceof ValueObject) {
 			expressionItem = ((ValueObject)expr).toTransformerOutput();
 		}		
 		
-		return OUTPUT_FIELD + outputBracedBlock( OUTPUT_VAR + outputBracedBlock( identifierItem ) + OUTPUT_BLOCK_SEPARATOR + expressionItem );
+		return OUTPUT_FIELD + outputBracedBlock( identifierItem + OUTPUT_BLOCK_SEPARATOR + expressionItem );
 	}
 }
