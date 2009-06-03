@@ -260,7 +260,7 @@ public class ExpressionParser {
 	}
 
 	private static Parser<Expression> ATOM = Parsers.or(STRING_LITERAL,
-	VAR, IDENTIFIER, symbolConstant, numberExpression());
+	/*IDENTIFIER,*/ VAR, symbolConstant, numberExpression());
 
 	private static Parser<Expression> expression(Parser<Expression> expressionParser, Parser<ModuleBody> moduleBody) {
 		Parser.Reference<Expression> ref = Parser.newReference();

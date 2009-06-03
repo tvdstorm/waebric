@@ -104,7 +104,7 @@ public final class StatementParser {
 		return curry(Each.class).sequence(
 		TerminalParser.phrase(Keyword.EACH.toString() + " " +
 		Operator.ROUND_BRACKET_OPEN.toString()),
-		ExpressionParser.VAR,
+		ExpressionParser.IDENTIFIER,
 		TerminalParser.term(Operator.COLON.toString()),
 		expressionParser,
 		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()),

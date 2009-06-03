@@ -33,17 +33,19 @@ import com.uva.se.wparse.model.statement.Statement;
 public final class AssignmentParser {
 
 	private static Parser<Assignment> assignmentNormal(Parser<Expression> expressionParser) {
-		return curry(AssignmentExpression.class).sequence(ExpressionParser.VAR,
-		TerminalParser.term(Operator.EQUALS.toString()), expressionParser,
+		return curry(AssignmentExpression.class).sequence(ExpressionParser.IDENTIFIER,
+		TerminalParser.term(Operator.EQUALS.toString()),
+		expressionParser,
 		TerminalParser.term(Operator.SEMI_COLON.toString()));
 	}
 
 	private static Parser<Assignment> assignmentFormals(Parser<Statement> statementParser) {
 		return curry(AssignmentFormals.class).sequence(Terminals.Identifier.PARSER,
 		TerminalParser.term(Operator.ROUND_BRACKET_OPEN.toString()),
-		ExpressionParser.VAR.sepBy1(TerminalParser.term(Operator.COMMA.toString())),
+		ExpressionParser.IDENTIFIER.sepBy1(TerminalParser.term(Operator.COMMA.toString())),
 		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()),
-		TerminalParser.term(Operator.EQUALS.toString()), statementParser);
+		TerminalParser.term(Operator.EQUALS.toString()),
+		statementParser);
 	}
 
 	public static Parser<Assignment> assignment(Parser<Statement> statementParser, Parser<Expression> expressionParser) {

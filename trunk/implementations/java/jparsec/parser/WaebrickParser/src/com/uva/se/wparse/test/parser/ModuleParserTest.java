@@ -61,14 +61,14 @@ public class ModuleParserTest extends TestCase {
 	}
 	
 	public void testModuleWithMethodParameter(){
-		String source = "module myModule def myDef(\"param1\") end";
+		String source = "module myModule def myDef(param1) end";
 		ModuleParser declarationParser = new ModuleParser(); 		
 		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
 	public void testModuleWith2Methods(){
-		String source = "module myModule def my-2-Def end def mydef-2() end";
+		String source = "module myModule def my-2-Def() end def mydef-2() end";
 		ModuleParser declarationParser = new ModuleParser(); 		
 		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
@@ -132,7 +132,7 @@ public class ModuleParserTest extends TestCase {
 	
 	
 	public void testModulWithFunctionAndMarkup(){
-		String source = "module brand def func1 header(\"Abonnee worden?\"); end"; 
+		String source = "module brand def func1() header(\"Abonnee worden?\"); end"; 
 		ModuleParser declarationParser = new ModuleParser(); 		
 		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
@@ -140,14 +140,14 @@ public class ModuleParserTest extends TestCase {
 	
 	
 	public void testModulWithFunctionAndSingleMarkup(){
-		String source = "module brand def func1 brandende-pen-500-test-pers; end"; 
+		String source = "module brand def func1() brandende-pen-500-test-pers; end"; 
 		ModuleParser declarationParser = new ModuleParser(); 		
 		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);
 	}
 	
 	public void testModulWithFunctionNameWithDash(){
-		String source = "module brand def func1-name-500-func end"; 
+		String source = "module brand def func1-name-500-func() end"; 
 		ModuleParser declarationParser = new ModuleParser(); 		
 		ModuleDef md = declarationParser.parse(source);
 		assertNotNull(md);

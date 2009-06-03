@@ -51,12 +51,13 @@ public final class ModuleParser implements WeabrickParser {
 
 	private static Parser<Member> methodDef(Parser<Statement> statementParser, Parser<Expression> expressionParser) {
 		Parser<Argument> argParser = ArgumentParser.arguments(expressionParser);
-		Parser<Argument> blockArgParser = ArgumentParser.blockArgument(argParser);
+		//Parser<Argument> blockArgParser = ArgumentParser.blockArgument(argParser);
 
 		return Mapper.<Member> curry(FunctionDef.class).sequence(
 				TerminalParser.term(Keyword.DEF.toString()),
 				ExpressionParser.IDENTIFIER.source(),
-				blockArgParser.optional(),
+				//blockArgParser.optional(),
+				ArgumentParser.formals(),
 				statementParser.many(),
 				TerminalParser.term(Keyword.END.toString()));
 	}
