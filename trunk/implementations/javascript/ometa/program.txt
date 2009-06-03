@@ -1,12 +1,13 @@
 module homepage.cwi.nl
-           
+
    site
      root/index.html: homes('abc','test');             
-     root/about.html: about('nl','mobile', daysInWeek=7, Person.Birthday);
-     root/sites.html: sites([a,b,c,d], {a:b, b:c},[q,w,{e:r},t,y], Person.Birthday);
-     products/product5.html: getProduct @ 5 % 10 # 500 . 800 : 7 $ 5;
+     root/about.html: about('nl','mobile' , daysInWeek=7 , Person.Birthday);
+     root/sites.html: sites([a,b,c,d], {a:b, b:c},[q,w,{e:r},t,y] , Person.Birthday );
+     products/product5.html: getProduct @5 %10 #id .class :type $name;     
    end
 
+   // Here we go 
    def home(msg)
      layout(msg) echo msg;
    end
@@ -14,7 +15,7 @@ module homepage.cwi.nl
    def layout(title)
      html {
        head title msg;
-       body subtitle 'cwi rules';
+       body subtitle 'cwiamsterdam';
        body prices {a:b};
        body products [a,b];
        body birthday Person.Birthday;
@@ -25,11 +26,34 @@ module homepage.cwi.nl
    def menu(menu)
       ul each (kid:menu.kids)
 	menu-item(kid);
+      if (jij.bent.tof)
+	li menu(item);
    end
 
    def menu-item(item)
       if(item.kids)  
 	 li menu(item);
       else 
-	 li a(href=item.link) item.title;
+	 li a(href=item.link) item.title;              
+   end
+
+   /* TESTS FROM PAPER: CAVEAT */
+
+   def testCaveat()
+     p;                  // Markup
+     p p;                // Markup, variable
+     p p();              // Markup, markup
+     echo "<p>";       // Variable
+     echo "<p()>";     // Markup
+     echo "<p p>";     // Markup variable
+     echo "<p p()>";   // Markup markup
+   end  
+
+   /* TESTS FROM PAPER: DATA */
+
+   def testData()
+     p p(123); 
+     p p("abc"); 
+     p p([123,456]);
+     p p({name:"john", age:16});
    end

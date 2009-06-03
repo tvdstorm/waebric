@@ -1,7 +1,7 @@
 ometa Waebric <: Parser {
   
   Modules         = Module*,
-  Module          = "module" space ModuleId space ModuleElement* spaces end,
+  Module          = "module" spaces ModuleId spaces ModuleElement* spaces end -> '<html></html>',
   ModuleId        = IdCon ("." IdCon)*,
   ModuleElement   = Site
                   | FunctionDef,
@@ -11,9 +11,10 @@ ometa Waebric <: Parser {
   Mapping         = Path spaces ":" spaces Markup,
 
   Path            = Directory* FileName, 
-  Directory       = PathElement "/",
-  PathElement     = letterOrDigit+,
-  FileName        = (PathElement ".")+ FileExt,
+  Directory       = PathChar+ "/",
+  PathChar        = cRange('!', '-') | cRange('0','[') | cRange(']','~'),  
+  FileName        = FileChar+ '.' FileExt,
+  FileChar        = PathChar,
   FileExt         = letterOrDigit+,
 
   Markup          = Designator Arguments
@@ -22,73 +23,92 @@ ometa Waebric <: Parser {
   Attribute       = ("#" | "." | "$" | ":") spaces IdCon
                   | "@" spaces NatCon spaces "%" spaces NatCon
                   | "@" spaces NatCon,
-  Arguments       = "(" spaces Argument ("," spaces Argument)* ")",
-  Argument        = Var spaces "=" spaces Expression
-                  | Expression,
+  Arguments       = "(" listOf(#Argument, ',') ")",
+  Argument        = spaces Var spaces "=" spaces Expression
+                  | spaces Expression,
 
-  FunctionDef     = "def" spaces IdCon spaces Formals* spaces Statement* spaces "end",
-  Formals         = "(" Var ("," Var)* ")",
+  FunctionDef     = "def" spaces IdCon spaces Formals spaces Statement* spaces "end"
+                  | "def" spaces IdCon spaces Statement* spaces "end",
 
-  Expression      = "[" spaces Expression ("," spaces Expression)* "]"
-                  | "{" spaces KeyValuePair ("," spaces KeyValuePair)* "}"
-                  | Expression "." IdCon
-                  | Var 
-                  | SymbolCon
-                  | NatCon,
+  Formals         = "(" listOf(#Var, ',') ")",
+
+  Expression      = Expression "." IdCon ~"?"
+                  | Text
+                  | Var
+                  | NatCon
+                  | SymbolCon                  
+                  | "[" spaces Expression ("," spaces Expression)* "]"
+                  | "{" spaces KeyValuePair ("," spaces KeyValuePair)* "}"   
+                  ,
                   
 
   KeyValuePair    = IdCon ":" Expression,
    
-  Statement       = "if" spaces "(" spaces Predicate spaces ")" spaces Statement
+  Statement       = "if" spaces "(" spaces Predicate spaces ")" spaces Statement NoElseMayFollow
                   | "if" spaces "(" spaces Predicate spaces ")" spaces Statement spaces "else" spaces Statement
                   | "each" spaces "(" spaces Var spaces ":" spaces Expression spaces ")" spaces Statement
                   | "let" Assignment+ "in" Statement* "end"
                   | "{" spaces Statement* spaces "}"
                   | "comment" spaces StrCon spaces ","
                   | "echo" spaces Expression spaces ";" 
+                  | "echo" spaces Embedding spaces ";" 
                   | "cdata" spaces Expression spaces ";"
-                  | "yield" ";"  
-                  | Markup+ spaces Statement  
-                  | Markup spaces ";" spaces  
-                  | Markup+ spaces Markup spaces ";" spaces                    
-                  | Markup+ spaces Expression spaces ";" spaces                                 
+                  | "yield" ";" 
+                  | Markup+ spaces Statement 
+                  | Markup spaces ";" spaces 
+                  | Markup+ spaces Markup spaces ";" spaces                  
+                  | Markup+ spaces Expression spaces ";" spaces                          
                   | Markup+ spaces Embedding spaces ";" spaces,
-
-  Predicate       = Expression spaces
-                  | Expression spaces "." spaces Type spaces "?" spaces
-                  | "!" spaces Predicate spaces
-                  | Predicate spaces "&&" spaces Predicate spaces
-                  | Predicate spaces "||" spaces Predicate spaces,
-                  
-
-  Assignment      = Var EqualOperator Expression ";"
-                  | IdCon Formals "=" Statement,
-
   
-  Comment         = fromTo('/*', '*/') | fromTo('//', '\n'),
-  Var             = IdCon,
-  IdCon           = IdChar+,
-  IdChar          = letterOrDigit | "_" | "-",
-  NatCon          = digit+,
-  SymbolCon       = "'" SymbolChar* "'", 
-  SymbolChar      = letterOrDigit | space | "_" | "-",  
-  Text            = "\''" TextChar* "\''",
-  TextChar        = letterOrDigit | EscQuote | TextCharRef | TextEntityRef,
+  NoElseMayFollow = ~"else",
+
+  Predicate       = "!" spaces Predicate spaces
+                  | Predicate spaces "&&" spaces Predicate spaces
+                  | Predicate spaces "||" spaces Predicate spaces
+                  | Expression "." Type "?"
+                  | Expression,
+
+  Type            = "list"
+                  | "record"
+                  | "string",   
+
+  Assignment      = Var "=" Expression ";"
+                  | IdCon Formals "=" Statement, 
+
+  TextEntityRef   = "&" XMLSymbol XML* ";",    
+  TextEntityRefHead = letter | "_" | ":",
+  TextEntityRefTail = letterOrDigit | "." | "-" | "_" | ":",
+
+  Text            = "\"" TextChar* "\"",
+  TextChar        = letterOrDigit | TextCharAdv | Amp | EscQuote | TextCharRef | TextEntityRef,
+  TextCharAdv     = ~('&' | '\"' | '<') '\/' ('\n' | '\r' | '\t'),
   TextCharRef     = "&#" digit+ ";"
                   | "&#x" HexaDecimal+ ";",
-  TextEntityRef   = "&" XMLSymbol XML* ";",
-  HexaDecimal     = char:c ?((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')),
-  XMLRef1         = letter | "_" | ":",
-  XMLRef2         = letterOrDigit | "." | "-" | "_" | ":",
-  EqualOperator   = "=",
-  fromTo :x :y    = seq(x) (~seq(y) char)* seq(y),
-  Amp             = "&",
+ 
+  Embedding       = spaces PreText spaces Embed spaces TextTail spaces,
+  Embed           = Markup spaces Markup* | Markup* spaces Expression,
 
-  PreText         = "\''" TextChar* "<",
-  PostText        = ">" TextChar* "\''",
+  PreText         = "\"" TextChar* "<",
+  PostText        = ">" TextChar* "\"",
   MidText         = ">" TextChar* "<",
-  TextTail        = PostText
+  TextTail        = PostText 
                   | MidText Embed TextTail,
-  Embedding       = PreText Embed TextTail,
-  Embed           = Markup* Markup
+  
+  Var             = IdCon,
+  IdCon           = IdCharHead IdCharTail*,
+  IdCharHead      = letter,
+  IdCharTail      = letterOrDigit+ | '-',
+  NatCon          = digit+,
+  SymbolCon       = "'" SymbolChar*, 
+  SymbolChar      = cRange('!','\(') | cRange('*','+') | cRange('-',':') | cRange('<','=') | cRange('?','~'),
+  StrCon          = "\"" StrChar* "\"",
+  StrChar         = "\\n" | "\\t" | "\\\"" | "\\\\" | "\\" digit digit digit | cRange(' ','!') | cRange('#','[') | cRange(']', '~'),
+  HexaDecimal     = char:c ?((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')),
+  Amp             = "&",  
+  Comment         = fromTo('/*', '*/') | fromTo('//', '\n'),
+  space           = super(#space) | Comment,
+  EscQuote        = '\\' '\"',
+
+  fromTo :x :y    = seq(x) (~seq(y) char)* seq(y),
+  cRange :x :y    = char:c ?(c >= x) ?(c <= y) -> c
 }
