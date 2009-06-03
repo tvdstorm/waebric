@@ -1,9 +1,35 @@
-   module homepage.cwi.nl
-
+module homepage.cwi.nl
+           
    site
      root/index.html: homes('abc','test');             
      root/about.html: about('nl','mobile', daysInWeek=7, Person.Birthday);
      root/sites.html: sites([a,b,c,d], {a:b, b:c},[q,w,{e:r},t,y], Person.Birthday);
      products/product5.html: getProduct @ 5 % 10 # 500 . 800 : 7 $ 5;
    end
-          
+
+   def home(msg)
+     layout(msg) echo msg;
+   end
+
+   def layout(title)
+     html {
+       head title msg;
+       body subtitle 'cwi rules';
+       body prices {a:b};
+       body products [a,b];
+       body birthday Person.Birthday;
+       body table tr td yield;
+     }
+   end
+
+   def menu(menu)
+      ul each (kid:menu.kids)
+	menu-item(kid);
+   end
+
+   def menu-item(item)
+      if(item.kids)  
+	 li menu(item);
+      else 
+	 li a(href=item.link) item.title;
+   end
