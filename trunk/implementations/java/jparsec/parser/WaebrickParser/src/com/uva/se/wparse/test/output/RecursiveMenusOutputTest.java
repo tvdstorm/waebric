@@ -27,7 +27,7 @@ public class RecursiveMenusOutputTest extends TestCase {
 	public static final String INPUTTEST_FUNCTION_LAYOUT = 		" def layout(title) html { head { css(\"blueprint.css\", \"screen,projection\"); title title; } body yield; } end";
 	public static final String INPUTTEST_FUNCTION_THE_MENU = 	" def the-menu menu({title: \"Menu\", kids: [{title: \"Home\", link: \"/\"}, {title: \"Misc\", kids: [{title: \"Contact\", link: \"contact.html\"}, {title: \"Links\", link: \"links.html\"}]}]}); end";
 	public static final String INPUTTEST_FUNCTION_MENU = 		" def menu(menu) echo menu.title; ul each (kid: menu.kids) item(kid); end";
-	public static final String INPUTTEST_FUNCTION_ITEM = 		" def item(mi) li if (mi.kids) menu(mi); else a(href=mi.link) mi.title; end";
+	public static final String INPUTTEST_FUNCTION_ITEM = 		" def item(mi) li; if (mi.kids) menu(mi); else a(href=mi.link) mi.title; end";
 		
 	public String getModuleParserOutput(String WaebricSource){
 		ModuleParser declarationParser = new ModuleParser(); 		
