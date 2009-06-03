@@ -31,12 +31,12 @@ public class AssignmentArgument extends ValueObject implements Argument {
 	
 	public static final String OUTPUT_ASSIGNMENT = "var-bind";
 	
-	private Var var;
+	private Identifier identifier;
 	private Expression expression;
 	
 	
-	public AssignmentArgument(Var var, Expression expression) {
-		this.var = var;
+	public AssignmentArgument(Identifier identifier, Expression expression) {
+		this.identifier = identifier;
 		this.expression = expression;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
@@ -47,7 +47,7 @@ public class AssignmentArgument extends ValueObject implements Argument {
 
 	@Override
 	public String toString() {
-		return var + " = " + expression;
+		return identifier + " = " + expression;
 	}
 	
 	@Override
@@ -60,7 +60,7 @@ public class AssignmentArgument extends ValueObject implements Argument {
 			}
 		}		
 		
-		return OUTPUT_ATTRIBUTE + outputBracedBlock( outputQuote( var ) + OUTPUT_BLOCK_SEPARATOR + expressionItem );
+		return OUTPUT_ATTRIBUTE + outputBracedBlock( outputQuote( identifier ) + OUTPUT_BLOCK_SEPARATOR + expressionItem );
 	}
 	
 	
