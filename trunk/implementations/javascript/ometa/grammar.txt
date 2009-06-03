@@ -1,0 +1,84 @@
+ometa Waebric <: Parser {
+  
+  Modules         = Module*,
+  Module          = "module" space ModuleId space ModuleElement spaces end,
+  ModuleId        = IdCon ("." IdCon)*,
+  ModuleElement   = Site,
+
+  Site            = "site" spaces Mappings spaces "end",
+  Mappings        = (Mapping ";" spaces)*,
+  Mapping         = Path spaces ":" spaces Markup,
+
+  Path            = Directory* FileName, 
+  Directory       = PathElement "/",
+  PathElement     = letterOrDigit+,
+  FileName        = (PathElement ".")+ FileExt,
+  FileExt         = letterOrDigit+,
+
+  Markup          = Designator Arguments
+                  | Designator,  
+  Designator      = IdCon Attribute*,
+  Attribute       = ("#" | "." | "$" | ":") spaces IdCon
+                  | "@" spaces NatCon spaces "%" spaces NatCon
+                  | "@" spaces NatCon,
+  Arguments       = "(" spaces Argument ("," spaces Argument)* ")",
+  Argument        = Var spaces "=" spaces Expression
+                  | Expression,
+
+  Expression      = "[" spaces Expression ("," spaces Expression)* "]"
+                  | "{" spaces KeyValuePair ("," spaces KeyValuePair)* "}"
+                  | Expression "." IdCon
+                  | Var 
+                  | SymbolCon
+                  | NatCon,
+                  
+
+  KeyValuePair    = IdCon ":" Expression,
+   
+  Statement       = "if" "(" Predicate ")" Statement
+                  | "if" "(" Predicate ")" Statement "else" Statement
+                  | "each" "(" Var ":" Expression ")" Statement
+                  | "let" Assignment+ "in" Statement* "end"
+                  | "{" Statement* "}"
+                  | "comment" StrCon ","
+                  | "echo" Expression ";"
+                  | "cdata" Expression ";"
+                  | "yield" ";"
+                  | Markup+ Statement
+                  | Markup ";"
+                  | Markup+ Markup ";"
+                  | Markup+ Expression ";"
+                  | Markup+ Embedding ";",
+
+  Assignment      = Var EqualOperator Expression ";",
+
+  
+  Comment         = fromTo('/*', '*/') | fromTo('//', '\n'),
+
+  Var             = IdCon,
+  IdCon           = letterOrDigit+,
+  NatCon          = digit+,
+  SymbolCon       = "'" SymbolChar*,
+  SymbolChar      = letterOrDigit | "'",  
+
+  Text            = "\''" TextChar* "\''",
+  TextChar        = letterOrDigit | EscQuote | TextCharRef | TextEntityRef,
+
+  TextCharRef     = "&#" digit+ ";"
+                  | "&#x" HexaDecimal+ ";",
+  TextEntityRef   = "&" XMLSymbol XML* ";",
+  HexaDecimal     = char:c ?((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')),
+  XMLRef1         = letter | "_" | ":",
+  XMLRef2         = letterOrDigit | "." | "-" | "_" | ":",
+  EqualOperator   = "=",
+  fromTo :x :y    = seq(x) (~seq(y) char)* seq(y),
+  Amp             = "&",
+
+  PreText         = "\''" TextChar* "<",
+  PostText        = ">" TextChar* "\''",
+  MidText         = ">" TextChar* "<",
+  TextTail        = PostText
+                  | MidText Embed TextTail,
+  Embedding       = PreText Embed TextTail,
+  Embed           = Markup* Markup
+}
