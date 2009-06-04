@@ -1,12 +1,12 @@
 module homepage
 
 site
-	index.html: home("Hello world!")
+	index.html: home("Hello World!")
 end
 
 def home(msg)
-	html {
+	html { 
 		head title msg;
-		body echo msg;
+		body p msg;
 	}
 end

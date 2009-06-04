@@ -1,8 +1,0 @@
-module test
-
-	def main
-		html { 
-			head title "Hello world";
-			body p "Hello world";
-		}
-	end
