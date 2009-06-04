@@ -10,7 +10,7 @@ public class RecursiveMenusOutputTest extends TestCase {
 	
 	public static final String OUTPUTTEST_MODULE_EMPTY = 		"module(module-id([\"menus\"]),[])";
 	
-	public static final String OUTPUTTEST_MODULE_OPEN = 		"module(module-id([\"menus\"]),[";		
+	public static final String OUTPUTTEST_MODULE_OPEN = 		"module(module-id([\"menus\"]),[";
 	public static final String OUTPUTTEST_SITE = 				"site([mapping(\"menus.html\",call(tag(\"main\",[]),args([])))])";
 	public static final String OUTPUTTEST_FUNCTION_MAIN = 		"def(\"main\",formals([]),[markup-stat([call(tag(\"layout\",[]),args([text(\"\\\"Recursive Menus\\\"\")]))],block([markup(call(tag(\"the-menu\",[]),args([])))]))])";
 	public static final String OUTPUTTEST_FUNCTION_CSS = 		"def(\"css\",formals([\"url\",\"media\"]),[markup(call(tag(\"link\",[]),args([attr(\"rel\",text(\"\\\"stylesheet\\\"\")),attr(\"href\",var(\"url\")),attr(\"type\",text(\"\\\"text/css\\\"\")),attr(\"media\",var(\"media\"))])))])";
