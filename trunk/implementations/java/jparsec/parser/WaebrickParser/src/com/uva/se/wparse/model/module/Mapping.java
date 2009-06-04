@@ -62,7 +62,7 @@ public class Mapping extends ValueObject {
 		String pathname = Strings.join("/", path);
 		String fullfilename = outputQuote( filename );
 		if (!pathname.isEmpty()) {
-			fullfilename = outputQuote( pathname ) + "," + fullfilename;
+			fullfilename = OUTPUT_MAPPING_PATH + outputBracedBlock( outputQuote( pathname ) + "," + fullfilename );
 		}
 		
 		String markupOutput = OUTPUT_EMPTY_ELEMENT;
@@ -70,6 +70,6 @@ public class Mapping extends ValueObject {
 			markupOutput = markupOutput + ((ValueObject) markup).toTransformerOutput();
 		}
 	
-		return OUTPUT_MAPPING_PATH + outputBracedBlock( fullfilename ) + OUTPUT_BLOCK_SEPARATOR + markupOutput;
+		return  fullfilename + OUTPUT_BLOCK_SEPARATOR + markupOutput;
 	}
 }

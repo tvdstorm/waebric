@@ -46,13 +46,13 @@ public class AllStatementOutputTest extends TestCase {
 
 	// echo embedding
 	public static final String INPUTTEST_STATEMENT_ECHO_EMBED_TEXT = "module test def main() echo \"<b \"bold\">\"; end";
-	public static final String OUTPUTTEST_STATEMENT_ECHO_EMBED_TEXT = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"\\\\\\\"<\",exp-embedding([tag(\"b\",[])],text(\"\\\"bold\\\"\")),post(\">\\\\\\\"\\\"\")))])])";
+	public static final String OUTPUTTEST_STATEMENT_ECHO_EMBED_TEXT = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"<\",exp-embedding([tag(\"b\",[])],text(\"\\\"bold\\\"\")),post(\">\\\"\")))])])";
 
 	public static final String INPUTTEST_STATEMENT_ECHO_EMBED_INT = "module test def main() echo \"<b 42>\"; end";
-	public static final String OUTPUTTEST_STATEMENT_ECHO_EMBED_INT = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"\\\\\\\"<\",exp-embedding([tag(\"b\",[])],num(42)),post(\">\\\\\\\"\\\"\")))])])";
+	public static final String OUTPUTTEST_STATEMENT_ECHO_EMBED_INT = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"<\",exp-embedding([tag(\"b\",[])],num(42)),post(\">\\\"\")))])])";
 	
 	public static final String INPUTTEST_STATEMENT_ECHO_EMBED_VAR = "module test def main() echo \"<b output>\"; end";
-	public static final String OUTPUTTEST_STATEMENT_ECHO_EMBED_VAR = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"\\\\\\\"<\",exp-embedding([tag(\"b\",[])],var(\"output\")),post(\">\\\\\\\"\\\"\")))])])";
+	public static final String OUTPUTTEST_STATEMENT_ECHO_EMBED_VAR = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"<\",exp-embedding([tag(\"b\",[])],var(\"output\")),post(\">\\\"\")))])])";
 
 	// cdata
 	public static final String INPUTTEST_STATEMENT_CDATA_TEXT = "module test def main() cdata \"cdata\"; end";
