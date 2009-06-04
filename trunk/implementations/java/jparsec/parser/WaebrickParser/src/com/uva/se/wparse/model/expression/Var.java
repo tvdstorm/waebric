@@ -34,6 +34,14 @@ public class Var extends ValueObject implements Expression {
 			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());
 		}
 	}
+	
+	
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+
 
 	@Override
 	public String toString() {

@@ -27,6 +27,7 @@ import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.misc.Mapper;
 
 import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.markup.Formals;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.model.module.FunctionDef;
 import com.uva.se.wparse.model.module.Mapping;
@@ -48,14 +49,23 @@ public final class ModuleParser implements WeabrickParser {
 				}));
 	}
 
+	
+	private static Parser<Formals> formals() {
+		return curry(Formals.class).sequence(
+		TerminalParser.term(Operator.ROUND_BRACKET_OPEN.toString()),
+		ExpressionParser.IDENTIFIER.sepBy(TerminalParser.term(Operator.COMMA.toString())),
+		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()));
+	}
+	
+	private static Mapper<Formals> curry(Class<? extends Formals> clazz, Object... curryArgs) {
+		return Mapper.curry(clazz, curryArgs);
+	}
+	
 	private static Parser<Member> methodDef(Parser<Statement> statementParser, Parser<Expression> expressionParser) {
-		//Parser<Argument> blockArgParser = ArgumentParser.blockArgument(argParser);
-
 		return Mapper.<Member> curry(FunctionDef.class).sequence(
 				TerminalParser.term(Keyword.DEF.toString()),
 				ExpressionParser.IDENTIFIER.source(),
-				//blockArgParser.optional(),
-				ArgumentParser.formals(),
+				formals(),
 				statementParser.many(),
 				TerminalParser.term(Keyword.END.toString()));
 	}
