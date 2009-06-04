@@ -54,10 +54,10 @@ public class MarkupEmbed extends ValueObject implements Embedding {
 	@Override
 	public String toTransformerOutput() {
 
-		String markupList = OUTPUT_LIST_EMPTY;
+		String markupList = "";
 		for (Markup markupItem: markup) {
 			if (markupItem instanceof ValueObject) {
-				markupList = outputAddToList(markupList, ((ValueObject)markupItem).toTransformerOutput());       
+				markupList = outputAddToBlock(markupList, ((ValueObject)markupItem).toTransformerOutput());       
 			}
 		}
 		

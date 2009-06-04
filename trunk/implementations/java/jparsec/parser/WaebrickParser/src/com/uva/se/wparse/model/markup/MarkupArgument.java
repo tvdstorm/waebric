@@ -65,7 +65,7 @@ public class MarkupArgument extends ValueObject implements Markup {
 		}
 		ArgumentBlock = OUTPUT_ARGUMENTS + outputBracedBlock( OUTPUT_LIST_BEGIN + ArgumentBlock + OUTPUT_LIST_END );
 		
-		return OUTPUT_CALL + outputBracedBlock ( DesignatorBlock + OUTPUT_BLOCK_SEPARATOR + ArgumentBlock );		
+		return OUTPUT_CALL + outputBracedBlock( DesignatorBlock + OUTPUT_BLOCK_SEPARATOR + ArgumentBlock );		
 	}	
 	
 }

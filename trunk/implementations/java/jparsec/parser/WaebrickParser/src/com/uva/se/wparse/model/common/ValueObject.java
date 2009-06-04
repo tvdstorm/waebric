@@ -96,7 +96,7 @@ public abstract class ValueObject {
    * @param newListItem is/are (a) new item(s) to be added in text form
    * @return New list with both the original list and the new item(s)
    */
-  protected String outputAddToList(String list, String newListItem) {
+  /* protected String outputAddToList(String list, String newListItem) {
 	if (newListItem == OUTPUT_LIST_EMPTY) {
 	  return list;
 	}
@@ -104,7 +104,7 @@ public abstract class ValueObject {
 	  return newListItem;
 	}
 	return list + OUTPUT_LIST_SEPARATOR + newListItem;		  
-  }
+  } */
   
   /**
    * Transforms a List of ValueObjects into a list in text form
@@ -112,9 +112,9 @@ public abstract class ValueObject {
    * @return list of contents of listToTransform in text form
    */
   protected String listToTransformerOutput(ArrayList<? extends ValueObject> listToTransform) {
-    String Result = OUTPUT_LIST_EMPTY;    
+    String Result = "";    
 	for (ValueObject valueObject : listToTransform) {
-      Result = outputAddToList(Result, valueObject.toTransformerOutput());
+      Result = outputAddToBlock(Result, valueObject.toTransformerOutput());
 	}	  
 	return Result.toString();
   }
@@ -125,7 +125,7 @@ public abstract class ValueObject {
    * @return the unbraced list with the begin and end braces for a list
    */
   protected String outputBracedList(String unbracedList) {
-	if ((unbracedList != OUTPUT_LIST_EMPTY) && (unbracedList != "")) {  
+	if ((unbracedList != OUTPUT_LIST_EMPTY) && (!unbracedList.isEmpty())) {  
 	  return OUTPUT_LIST_BEGIN + unbracedList + OUTPUT_LIST_END;
 	}
 	else
@@ -156,9 +156,9 @@ public abstract class ValueObject {
    * @return block of contents of listToTransform in text form
    */
   protected String blockToTransformerOutput(ArrayList<? extends ValueObject> blockToTransform) {
-	String Result = OUTPUT_BLOCK_EMPTY;    
+	String Result = "";    
 	for (ValueObject valueObject : blockToTransform) {
-	  Result = outputAddToList(Result, valueObject.toTransformerOutput());
+	  Result = outputAddToBlock(Result, valueObject.toTransformerOutput());
 	}	  
 	return Result.toString();
   }

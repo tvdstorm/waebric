@@ -49,7 +49,7 @@ public class AllStatementOutputTest extends TestCase {
 	public static final String OUTPUTTEST_STATEMENT_ECHO_EMBED_TEXT = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"\\\\\\\"<\",exp-embedding([tag(\"b\",[])],text(\"\\\"bold\\\"\")),post(\">\\\\\\\"\\\"\")))])])";
 
 	public static final String INPUTTEST_STATEMENT_ECHO_EMBED_INT = "module test def main() echo \"<b 42>\"; end";
-	public static final String OUTPUTTEST_STATEMENT_ECHO_EMBED_INT = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"\\\\\\\"<\",exp-embedding([tag(\"b\",[])],num(42),post(\">\\\\\\\"\\\"\")))])])";
+	public static final String OUTPUTTEST_STATEMENT_ECHO_EMBED_INT = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"\\\\\\\"<\",exp-embedding([tag(\"b\",[])],num(42)),post(\">\\\\\\\"\\\"\")))])])";
 	
 	public static final String INPUTTEST_STATEMENT_ECHO_EMBED_VAR = "module test def main() echo \"<b output>\"; end";
 	public static final String OUTPUTTEST_STATEMENT_ECHO_EMBED_VAR = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"\\\\\\\"<\",exp-embedding([tag(\"b\",[])],var(\"output\")),post(\">\\\\\\\"\\\"\")))])])";

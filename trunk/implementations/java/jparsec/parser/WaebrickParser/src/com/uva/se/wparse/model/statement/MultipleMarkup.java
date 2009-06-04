@@ -31,35 +31,43 @@ public class MultipleMarkup extends ValueObject implements Statement, Markup {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MultipleMarkup.class);
 
-	private List<Markup> markup;
+	private List<Markup> markupList; 
+	private Markup markup;
+	
+	public MultipleMarkup(List<Markup> markupList){ 
+		// TODO: Add Assert to check markupList.size() >= 2
+		
+		// Definition is "Markup+ Markup"
+		// Split off last Markup
+		this.markupList = markupList;		
+		this.markup = markupList.get( markupList.size() - 1 );
+		this.markupList.remove( markupList.size() - 1 );	
 
-	public MultipleMarkup(List<Markup> markup){ 
-		this.markup = markup;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
 		}
 	}
-	
-	
 
 	@Override
 	public String toString() {
-		return markup.toString();
+		return markupList.toString() + "," + markup.toString();
 	}
-
-
 
 	@Override
 	public String toTransformerOutput() {
-		String MarkupBlock = "";		
-		for (Markup markupItem: markup) {
+		String MarkupBlock = "";
+		for (Markup markupItem: markupList) {			
 			if (markupItem instanceof ValueObject) {
 				MarkupBlock = outputAddToBlock(MarkupBlock, ((ValueObject)markupItem).toTransformerOutput());
-			}
+			}			
 		}
 		
-		return OUTPUT_MARKUP_MULTIPLE + outputBracedBlock( outputBracedList( MarkupBlock ) );
-	}
-	
+		String markupItem = "";
+		if (markup instanceof ValueObject) {
+			markupItem = ((ValueObject)markup).toTransformerOutput();
+		}
+		
+		return OUTPUT_MARKUP_MULTIPLE + outputBracedBlock( outputBracedList( MarkupBlock ) + OUTPUT_BLOCK_SEPARATOR + markupItem );
+	}	
 }

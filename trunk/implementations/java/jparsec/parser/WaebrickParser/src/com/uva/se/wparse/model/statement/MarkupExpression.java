@@ -63,13 +63,19 @@ public class MarkupExpression extends ValueObject implements Statement, Markup {
 	
 	@Override
 	public String toTransformerOutput() {
-		//TODO: miguel, de markup in markupList moet nog naar output
+		String markupBlock = "";
+		for (Markup markupItem: markupList) {
+			if (markupItem instanceof ValueObject) {
+				markupBlock = outputAddToBlock( markupBlock, ((ValueObject)markupItem).toTransformerOutput() );
+			}
+		}		
+		
 		String expressionItem = "";
 		if (expr instanceof ValueObject) {
 			expressionItem = ((ValueObject)expr).toTransformerOutput();
 		}
 		
-		return OUTPUT_MARKUP_EXPRESSION + outputBracedBlock( expressionItem ); 
+		return OUTPUT_MARKUP_EXPRESSION + outputBracedBlock( outputAddToBlock( outputBracedList( markupBlock ), expressionItem ) ); 
 	}
 	
 	

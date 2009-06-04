@@ -31,9 +31,5 @@ public class NotPredicate extends ValueObject implements Predicate {
 		}		
 		
 		return OUTPUT_PREDICATE_NEGATION + outputBracedBlock(predicateItem);
-	}
-	
-	
-	
-	
+	}	
 }

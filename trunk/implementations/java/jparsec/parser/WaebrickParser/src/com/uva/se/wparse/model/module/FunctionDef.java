@@ -89,19 +89,18 @@ public final class FunctionDef extends ValueObject implements Member {
 	@Override
 	public String toTransformerOutput() {
 		String NameElement = outputQuote( name );
-		String ArgumentsElement = OUTPUT_LIST_EMPTY;
+		String ArgumentsElement = "";
 		if (formals instanceof ValueObject ) {
 			String ArgumentTransformerOutput = ((ValueObject) formals).toTransformerOutput();
 			ArgumentsElement = ArgumentTransformerOutput;
 		}
-		//if (!ArgumentsElement.isEmpty() && ArgumentsElement != OUTPUT_LIST_EMPTY ) {
-			ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( OUTPUT_LIST_BEGIN + ArgumentsElement + OUTPUT_LIST_END );
-		//}
+
+		ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( OUTPUT_LIST_BEGIN + ArgumentsElement + OUTPUT_LIST_END );
 	
-		String StatementsElement = OUTPUT_LIST_EMPTY;
+		String StatementsElement = "";
 		for (Statement statement: statements) {
 			if (statement instanceof ValueObject) {
-				StatementsElement = outputAddToList(StatementsElement, ((ValueObject)statement).toTransformerOutput());
+				StatementsElement = outputAddToBlock(StatementsElement, ((ValueObject)statement).toTransformerOutput());
 			}
 		}
 		StatementsElement = outputBracedList(StatementsElement);

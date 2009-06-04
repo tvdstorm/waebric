@@ -26,16 +26,17 @@ import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.markup.Markup;
 
-public class MarkupEmbedding extends MultipleMarkup implements Statement, Markup {
+public class MarkupEmbedding extends ValueObject implements Statement, Markup {
 	
 	public static final String OUTPUT_MARKUP_EMBEDDING = "markup-embedding";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbedding.class);
 
+	private List<Markup> markup;
 	private Embedding embedding;
 
 	public MarkupEmbedding(List<Markup> markup, Embedding embedding){
-		super(markup);
+		this.markup = markup;
 		this.embedding = embedding;
 		if(logger.isDebugEnabled()){
 			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + super.toString() + " " + embedding );
@@ -44,18 +45,26 @@ public class MarkupEmbedding extends MultipleMarkup implements Statement, Markup
 
 	@Override
 	public String toString() {
-		return super.toString() + " " + embedding;
+		return markup.toString() + " " + embedding;
 	};
 	
 	
 	@Override
 	public String toTransformerOutput() {
-		String embeddingItem = "";
+		String markupList = "";
+		for (Markup markupItem: markup) {
+			if (markupItem instanceof ValueObject) {
+				markupList = outputAddToBlock(markupList, ((ValueObject)markupItem).toTransformerOutput());
+			}
+		}
+		
+		
+		String embeddingItem = "";		
 		if (embedding instanceof ValueObject) {
 			embeddingItem = ((ValueObject)embedding).toTransformerOutput();
 		}		
 		
-		return OUTPUT_MARKUP_EMBEDDING + outputBracedBlock( embeddingItem );		
+		return OUTPUT_MARKUP_EMBEDDING + outputBracedBlock( outputAddToBlock( outputBracedList( markupList ), embeddingItem ) ); 
 	}
 	
 	

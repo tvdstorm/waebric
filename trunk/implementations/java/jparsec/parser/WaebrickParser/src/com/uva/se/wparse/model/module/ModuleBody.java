@@ -52,7 +52,7 @@ public final class ModuleBody extends ValueObject {
 		String memberList = "";
 		for (Member member: members) {
 			if (member instanceof ValueObject) {
-				outputAddToList(memberList, ((ValueObject)member).toTransformerOutput());
+				outputAddToBlock(memberList, ((ValueObject)member).toTransformerOutput());
 			}
 		}
 		return OUTPUT_MEMBER_LIST + outputBracedBlock( outputBracedList( memberList ) );
