@@ -9,6 +9,7 @@ public class AllOutputTests {
 		TestSuite suite = new TestSuite("All output unit tests");
 		suite.addTestSuite(ModuleOutputTest.class);
 		suite.addTestSuite(RecursiveMenusOutputTest.class);
+		suite.addTestSuite(AllStatementOutputTest.class);
 		return suite;
 	}
 
