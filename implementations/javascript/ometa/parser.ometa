@@ -1,0 +1,128 @@
+
+ometa WaebricParser <: Parser {
+
+  Modules         	= Module*:program end
+  					-> ['modules', program],
+  Module          	= "module" spaces ModuleId:moduleId spaces ModuleElement*:moduleElement spaces
+                    -> ['module', moduleId, moduleElement],
+  ModuleId        	= listOf(#IdCon, "."):moduleId
+                    -> ['moduleId', moduleId],
+  ModuleElement   	= Site:site
+  					-> site
+                  	| FunctionDef
+                  	| Import,
+
+  Import			= "import" ModuleId,
+
+  Site            	= "site" spaces Mappings:mappings spaces "end" -> ['site', mappings],
+  Mappings          = listOf(#Mapping, ";"):mapping -> mapping
+  					| spaces,
+  Mapping         	= spaces Path:path spaces ":" spaces Markup:markup spaces -> ['mapping', path, markup],
+
+  Path            	= Directory:dir FileName:file -> ['path', "\"".concat(dir.toString().substring(0, dir.length - 1)).concat("\""), file]
+                    | FileName:file -> file,
+  Directory       	= PathElement+:pathElement -> pathElement.join(''),
+  PathElement       = PathChar+:elem "/":sep -> elem.join('').concat(sep),
+  PathChar        	= cRange('!', '-') | cRange('0','[') | cRange(']','~'),
+  FileName        	= FileChar+:fileChar '.' FileExt:fileExt -> "\"".concat(fileChar.join('').concat('.').concat(fileExt.join(''))).concat("\""),
+  FileChar        	= PathChar,
+  FileExt         	= letterOrDigit+,
+
+  Markup          	= Designator:tag Arguments:args -> ['call', tag, args]
+                  	| Designator:tag -> ['call', tag],
+  Designator      	= IdCon:idCon Attribute*:attr -> ['tag', idCon, attr],
+  Attribute       	= "#" spaces IdCon:idCon -> ['id', idCon]
+                    | "." spaces IdCon:idClass -> ['class', idClass]
+                    | "$" spaces IdCon:idName -> ['name', idName]
+                    | ":" spaces IdCon:idType -> ['type', idType]
+                  	| "@" spaces NatCon:width spaces "%" spaces NatCon:height  -> ['width-height', width, height]
+                  	| "@" spaces NatCon:width -> ['width', width],
+  Arguments       	= "(" listOf(#Argument, ','):args ")" -> ['args', args] ,
+  Argument        	= spaces Var:idVar spaces "=" spaces Expression:expr -> ['attr', idVar, expr]
+                  	| spaces Expression:expr -> expr,
+
+  FunctionDef     	= "def" spaces IdCon spaces Formals spaces Statement* spaces "end"
+                  	| "def" spaces IdCon spaces Statement* spaces "end",
+
+  Formals         	= "(" listOf(#Var, ',') ")",
+
+  Expression      	= spaces Expression spaces "." spaces IdCon ~"?"
+                  	| spaces Text:idText spaces -> ['text', idText]
+                  	| spaces Var:idVar spaces -> ['var', idVar]
+                  	| spaces NatCon:idNatCon spaces -> ['num', idNatCon]
+                  	| spaces SymbolCon:idSymbolCon spaces -> ['sym', idSymbolCon]
+                  	| spaces "[" listOf(#Expression, ','):expr "]" -> ['list', expr]
+                  	| spaces "{" listOf(#KeyValuePair, ','):record "}" -> ['record', record]
+                  	,
+
+
+  KeyValuePair    	= spaces IdCon:idCon spaces ":" Expression:expr -> ['pair', idCon, expr],
+
+  Statement       	= "if" spaces "(" spaces Predicate spaces ")" spaces Statement NoElseMayFollow
+                  	| "if" spaces "(" spaces Predicate spaces ")" spaces Statement spaces "else" spaces Statement
+     	            | "each" spaces "(" spaces Var spaces ":" spaces Expression spaces ")" spaces Statement
+    	           	| "let" Assignment+ "in" Statement* "end"
+	             	| "{" spaces Statement* spaces "}"
+                  	| "comment" spaces StrCon spaces ","
+                  	| "echo" spaces Expression spaces ";"
+                  	| "echo" spaces Embedding spaces ";"
+                  	| "cdata" spaces Expression spaces ";"
+                  	| "yield" ";"
+                  	| Markup+ spaces Statement
+                  	| Markup spaces ";" spaces
+                  	| Markup+ spaces Markup spaces ";" spaces
+                  	| Markup+ spaces Expression spaces ";" spaces
+                  	| Markup+ spaces Embedding spaces ";" spaces,
+
+  NoElseMayFollow 	= ~"else",
+
+  Predicate       	= "!" spaces Predicate spaces
+                  	| Predicate spaces "&&" spaces Predicate spaces
+                  	| Predicate spaces "||" spaces Predicate spaces
+                  	| Expression "." Type "?"
+                  	| Expression,
+
+  Type            	= "list"
+                  	| "record"
+                  	| "string",
+
+  Assignment      	= Var "=" Expression ";"
+                  	| IdCon Formals "=" Statement,
+
+  TextEntityRef   	= "&" XMLSymbol XML* ";",
+  TextEntityRefHead = letter | "_" | ":",
+  TextEntityRefTail = letterOrDigit | "." | "-" | "_" | ":",
+
+  Text            	= "\"":prefix TextChar*:idText "\"":suffix -> prefix.concat(idText.join('')).concat(suffix),
+  TextChar        	= TextSymbolChar | Amp | EscQuote | TextCharRef | TextEntityRef | space,
+  TextSymbolChar 	= cRange(' ','!') | cRange('#','%') | cRange('\'',';') | cRange('=','~'),
+  TextCharRef     	= "&#" digit+ ";"
+                  	| "&#x" HexaDecimal+ ";",
+
+  Embedding       	= spaces PreText spaces Embed spaces TextTail spaces,
+  Embed           	= Markup spaces Markup* | Markup* spaces Expression,
+
+  PreText         	= "\"" TextChar* "<",
+  PostText        	= ">" TextChar* "\"",
+  MidText         	= ">" TextChar* "<",
+  TextTail        	= PostText
+                  	| MidText Embed TextTail,
+
+  Var             	= IdCon,
+  IdCon           	= IdCharHead:head IdCharTail*:tail -> "\"".concat(head.concat(tail.join(''))).concat("\""),
+  IdCharHead      	= letter,
+  IdCharTail      	= letterOrDigit | '-',
+  NatCon          	= digit+:d -> d.join(''),
+  SymbolCon       	= "'":prefix SymbolChar*:idSymbolCon -> prefix.concat(idSymbolCon.join('')),
+  SymbolChar      	= cRange('!','\(') | cRange('*','+') | cRange('-',':') | cRange('<','=') | cRange('?','~'),
+  StrCon          	= "\"" StrChar* "\"",
+  StrChar         	= "\\n" | "\\t" | "\\\"" | "\\\\" | "\\" digit digit digit | cRange(' ','!') | cRange('#','[') | cRange(']', '~'),
+  HexaDecimal     	= char:c ?((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')),
+  Amp             	= "&",
+  Comment         	= fromTo('/*', '*/') | fromTo('//', '\n'),
+  space           	= super(#space) | Comment,
+  EscQuote        	= '\\' '\"',
+
+  fromTo :x :y    	= seq(x) (~seq(y) char)* seq(y),
+  cRange :x :y    	= char:c ?(c >= x) ?(c <= y) -> c
+}
