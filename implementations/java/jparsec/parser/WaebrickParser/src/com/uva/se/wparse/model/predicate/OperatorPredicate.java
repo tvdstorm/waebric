@@ -53,8 +53,7 @@ public final class OperatorPredicate extends ValueObject implements Expression, 
 	
 	@Override
 	public String toTransformerOutput() {
-		String operatorItem = op.toString();
-		
+
 		String leftItem = "";
 		if (left instanceof ValueObject) {
 			leftItem = ((ValueObject)left).toTransformerOutput();
@@ -80,6 +79,6 @@ public final class OperatorPredicate extends ValueObject implements Expression, 
 		}
 		
 		
-		return outputType + outputBracedBlock(operatorItem + OUTPUT_BLOCK_SEPARATOR + leftItem + OUTPUT_BLOCK_SEPARATOR + rightItem);
+		return outputType + outputBracedBlock(leftItem + OUTPUT_BLOCK_SEPARATOR + rightItem);
 	}
 }

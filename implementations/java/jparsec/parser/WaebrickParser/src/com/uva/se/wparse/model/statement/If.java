@@ -27,6 +27,7 @@ import com.uva.se.wparse.model.predicate.Predicate;
 public final class If extends ValueObject implements Statement {
 	
 	public static final String OUTPUT_IF = "if";
+	public static final String OUTPUT_NO_ELSE = "appl(prod([],cf(sort(\"NoElseMayFollow\")),no-attrs),[])";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(If.class);
@@ -63,7 +64,7 @@ public final class If extends ValueObject implements Statement {
 			thenItem = ((ValueObject)then).toTransformerOutput();
 		}		
 		
-		return OUTPUT_IF + outputBracedBlock(conditionItem + OUTPUT_BLOCK_SEPARATOR + thenItem);
+		return OUTPUT_IF + outputBracedBlock(conditionItem + OUTPUT_BLOCK_SEPARATOR + thenItem + OUTPUT_BLOCK_SEPARATOR + OUTPUT_NO_ELSE);
 	}
 	
 }

@@ -23,7 +23,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
-import com.uva.se.wparse.model.markup.Argument;
 import com.uva.se.wparse.model.markup.Formals;
 import com.uva.se.wparse.model.statement.Statement;
 
@@ -95,10 +94,10 @@ public final class FunctionDef extends ValueObject implements Member {
 			String ArgumentTransformerOutput = ((ValueObject) formals).toTransformerOutput();
 			ArgumentsElement = ArgumentTransformerOutput;
 		}
-		if (ArgumentsElement != OUTPUT_LIST_EMPTY) {
-			ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( outputBracedList( ArgumentsElement ) );
-		}
-		
+		//if (!ArgumentsElement.isEmpty() && ArgumentsElement != OUTPUT_LIST_EMPTY ) {
+			ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( OUTPUT_LIST_BEGIN + ArgumentsElement + OUTPUT_LIST_END );
+		//}
+	
 		String StatementsElement = OUTPUT_LIST_EMPTY;
 		for (Statement statement: statements) {
 			if (statement instanceof ValueObject) {

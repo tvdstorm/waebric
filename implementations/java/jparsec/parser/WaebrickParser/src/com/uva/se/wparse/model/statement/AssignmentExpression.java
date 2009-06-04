@@ -26,7 +26,7 @@ import com.uva.se.wparse.model.expression.Identifier;
 
 public final class AssignmentExpression extends ValueObject implements Assignment {
 	
-	public static final String OUTPUT_ASSIGNMENT = "assign";
+	public static final String OUTPUT_ASSIGNMENT = "var-bind";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentExpression.class);
 	
@@ -55,6 +55,6 @@ public final class AssignmentExpression extends ValueObject implements Assignmen
 			rightItem = ((ValueObject)right).toTransformerOutput();
 		}		
 		
-		return OUTPUT_ASSIGNMENT + outputBracedBlock( left + OUTPUT_BLOCK_SEPARATOR + rightItem );
+		return OUTPUT_ASSIGNMENT + outputBracedBlock( outputQuote( left ) + OUTPUT_BLOCK_SEPARATOR + rightItem );
 	}
 }

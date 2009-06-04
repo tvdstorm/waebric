@@ -7,7 +7,7 @@ import com.uva.se.wparse.model.expression.Expression;
 
 public class TypeCheckPredicate extends ValueObject implements Predicate {
 	
-	public static final String OUTPUT_PREDICATE_TYPE_CHECK = "pred-type";
+	public static final String OUTPUT_PREDICATE_TYPE_CHECK = "is-a";
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(TypeCheckPredicate.class);
 	
@@ -34,7 +34,7 @@ public class TypeCheckPredicate extends ValueObject implements Predicate {
 			expressionItem = ((ValueObject)expression).toTransformerOutput();
 		}		
 		
-		return OUTPUT_PREDICATE_TYPE_CHECK + outputBracedBlock( expressionItem + OUTPUT_BLOCK_SEPARATOR + type );
+		return OUTPUT_PREDICATE_TYPE_CHECK + outputBracedBlock( expressionItem + OUTPUT_BLOCK_SEPARATOR + type + "-type" );
 	}
 	
 	

@@ -24,7 +24,8 @@ import com.uva.se.wparse.model.common.ValueObject;
 
 public class MultipleAttribute extends ValueObject implements Attribute  {
 	
-	public static final String OUTPUT_MUTLIPLE_ATTRIBUTE = "attr-multi";
+	public static final String OUTPUT_ATTRIBUTE_WIDTH_HEIGTH = "width-height";
+	public static final String OUTPUT_ATTRIBUTE_WIDTH = "height";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MultipleAttribute.class);
 
@@ -51,7 +52,13 @@ public class MultipleAttribute extends ValueObject implements Attribute  {
 	
 	@Override
 	public String toTransformerOutput() {
-
-		return OUTPUT_MUTLIPLE_ATTRIBUTE + outputBracedBlock(width + OUTPUT_BLOCK_SEPARATOR + height);
+		
+		if ( ( height != null ) && !height.isEmpty() ) {			
+			return OUTPUT_ATTRIBUTE_WIDTH_HEIGTH + outputBracedBlock(width + OUTPUT_BLOCK_SEPARATOR + height);
+		}
+		else
+		{
+			return OUTPUT_ATTRIBUTE_WIDTH + outputBracedBlock( width );
+		}
 	} 
 }

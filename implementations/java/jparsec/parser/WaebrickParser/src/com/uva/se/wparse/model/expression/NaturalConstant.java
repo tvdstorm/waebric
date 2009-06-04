@@ -24,7 +24,7 @@ import com.uva.se.wparse.model.common.ValueObject;
 
 public final class NaturalConstant extends ValueObject implements Expression {
 	
-	public static final String OUTPUT_NATCON = "digits"; 
+	public static final String OUTPUT_NATCON = "num"; 
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(NaturalConstant.class);

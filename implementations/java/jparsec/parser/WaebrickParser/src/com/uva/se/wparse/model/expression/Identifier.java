@@ -29,7 +29,7 @@ public class Identifier extends ValueObject implements Expression {
 	private String identifier;
 
 	public Identifier(String identifierStart , String identifierEnd) {
-		this.identifier = identifierStart + identifierEnd;
+		this.identifier = (identifierStart + identifierEnd).trim();
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());
 		}
