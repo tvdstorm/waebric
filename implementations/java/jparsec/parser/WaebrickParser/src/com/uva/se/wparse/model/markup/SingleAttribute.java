@@ -34,11 +34,11 @@ public class SingleAttribute extends ValueObject implements Attribute  {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SingleAttribute.class);
 
-	private String symbol; //TODO: symbol vervangen door Enum
+	private Operator symbol; //TODO: symbol vervangen door Enum
 	private String identifier;
 	
 	public SingleAttribute(Token symbolToken, String identifier) {
-		this.symbol = symbolToken.toString();
+		this.symbol = getSymbol(symbolToken.toString());
 		this.identifier = identifier;
 		 if (logger.isDebugEnabled()) {
 				logger.debug("Creating " + this.getClass().getSimpleName()
@@ -46,6 +46,21 @@ public class SingleAttribute extends ValueObject implements Attribute  {
 			}
 	}
 	
+	private Operator getSymbol(String symbol) {
+		if(Operator.POUND.toString().equals(symbol)){
+			return Operator.POUND;
+		}else if(Operator.DOT.toString().equals(symbol)){
+			return Operator.DOT;
+		}if(Operator.DOLLAR.toString().equals(symbol)){
+			return Operator.DOLLAR;
+		}if(Operator.COLON.toString().equals(symbol)){
+			return Operator.COLON;
+		}
+
+		//default, return null
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return symbol + identifier;
@@ -55,7 +70,7 @@ public class SingleAttribute extends ValueObject implements Attribute  {
 	public String toTransformerOutput() {		
 		String Result = outputQuote( identifier );
 		
-		switch (Operator.valueOf(symbol)) {
+		switch (symbol) {
 		case POUND:
 			Result = OUTPUT_ATRIBUTE_ID + outputBracedBlock(Result);
 			break;
