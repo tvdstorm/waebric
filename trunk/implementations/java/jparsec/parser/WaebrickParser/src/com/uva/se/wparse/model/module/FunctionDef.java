@@ -95,7 +95,7 @@ public final class FunctionDef extends ValueObject implements Member {
 			ArgumentsElement = ArgumentTransformerOutput;
 		}
 
-		ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( OUTPUT_LIST_BEGIN + ArgumentsElement + OUTPUT_LIST_END );
+		ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( outputBracedList( ArgumentsElement, true ) );
 	
 		String StatementsElement = "";
 		for (Statement statement: statements) {
@@ -103,7 +103,7 @@ public final class FunctionDef extends ValueObject implements Member {
 				StatementsElement = outputAddToBlock(StatementsElement, ((ValueObject)statement).toTransformerOutput());
 			}
 		}
-		StatementsElement = outputBracedList(StatementsElement);
+		StatementsElement = outputBracedList(StatementsElement, true);
 		
 		return OUTPUT_FUNCTION + outputBracedBlock(NameElement + OUTPUT_BLOCK_SEPARATOR + ArgumentsElement + OUTPUT_BLOCK_SEPARATOR + StatementsElement );
 	}

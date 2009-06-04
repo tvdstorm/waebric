@@ -36,12 +36,10 @@ public abstract class ValueObject {
   public static final String OUTPUT_LITERAL_QUOTE_OPEN  	= "\"\\\"";
   public static final String OUTPUT_LITERAL_QUOTE_CLOSE  	= "\\\"\""; 
   
-  public static final String OUTPUT_BLOCK_EMPTY				= "";
   public static final String OUTPUT_BLOCK_BEGIN				= "(";
   public static final String OUTPUT_BLOCK_SEPARATOR			= ",";
   public static final String OUTPUT_BLOCK_END 				= ")";
   
-  public static final String OUTPUT_LIST_EMPTY				= "empty";  
   public static final String OUTPUT_LIST_BEGIN 				= "["; 
   public static final String OUTPUT_LIST_SEPARATOR 			= ",";
   public static final String OUTPUT_LIST_END 				= "]";
@@ -125,13 +123,22 @@ public abstract class ValueObject {
    * @return the unbraced list with the begin and end braces for a list
    */
   protected String outputBracedList(String unbracedList) {
-	if ((unbracedList != OUTPUT_LIST_EMPTY) && (!unbracedList.isEmpty())) {  
+	if (!unbracedList.isEmpty()) {  
 	  return OUTPUT_LIST_BEGIN + unbracedList + OUTPUT_LIST_END;
 	}
 	else
 	{
 	  return unbracedList;	
 	}
+  }
+  
+  protected String outputBracedList(String unbracedList, boolean alwaysBrace) {
+	  if (alwaysBrace) {
+		  return OUTPUT_LIST_BEGIN + unbracedList + OUTPUT_LIST_END;
+	  }
+	  else {
+		  return outputBracedList( unbracedList );
+	  }		  
   }
   
   /**
@@ -141,10 +148,10 @@ public abstract class ValueObject {
    * @return New block with both the original block and the new item(s)
    */
   protected String outputAddToBlock(String block, String newBlockItem) {
-	if (newBlockItem == OUTPUT_BLOCK_EMPTY) {
+	if ( newBlockItem.isEmpty() ) {
 	  return block;
 	}
-	if (block == OUTPUT_BLOCK_EMPTY) {
+	if ( block.isEmpty() ) {
 	  return newBlockItem;
 	}
 	return block + OUTPUT_BLOCK_SEPARATOR + newBlockItem;

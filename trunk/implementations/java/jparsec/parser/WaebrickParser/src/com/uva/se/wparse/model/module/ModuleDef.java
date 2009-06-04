@@ -61,16 +61,16 @@ public final class ModuleDef extends ValueObject implements WabrickParseTree {
 	
 	@Override
 	public String toTransformerOutput() {
-		String moduleId = OUTPUT_MODULE_ID + outputBracedBlock( outputBracedList ( outputQuote(name) ) );
+		String moduleId = OUTPUT_MODULE_ID + outputBracedBlock( outputBracedList ( name.toTransformerOutput() ) );
 		
 		String importList = "";
 		if (!imports.isEmpty()){			
 			for(QualifiedName importItem: imports) {
-				importList = outputAddToBlock(importList, OUTPUT_IMPORT + importItem.toTransformerOutput());
+				importList = outputAddToBlock(importList, OUTPUT_IMPORT + outputBracedBlock( OUTPUT_MODULE_ID + outputBracedBlock( outputBracedList( importItem.toTransformerOutput() ) ) ) );
 			}
 		}
 		
-		String moduleElements = outputBracedList ( outputAddToBlock ( importList, listToTransformerOutput(body) ) ) ;
+		String moduleElements = outputBracedList ( outputAddToBlock ( importList, listToTransformerOutput( body ) ), true ) ;
 				
 		return OUTPUT_MODULE + outputBracedBlock ( outputAddToBlock ( moduleId, moduleElements ) );
 	}
