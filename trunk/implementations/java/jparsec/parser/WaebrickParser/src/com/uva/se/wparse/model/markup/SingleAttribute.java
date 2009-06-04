@@ -34,7 +34,7 @@ public class SingleAttribute extends ValueObject implements Attribute  {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SingleAttribute.class);
 
-	private Operator symbol; //TODO: symbol vervangen door Enum
+	private Operator symbol;
 	private String identifier;
 	
 	public SingleAttribute(Token symbolToken, String identifier) {
