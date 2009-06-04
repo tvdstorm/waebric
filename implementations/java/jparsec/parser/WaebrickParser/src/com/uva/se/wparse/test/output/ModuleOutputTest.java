@@ -46,7 +46,7 @@ public class ModuleOutputTest extends TestCase {
 	}
 	
 	public void testModuleWithTwoMethodsOutput(){
-		String source = "module myModule def my-2-Def end def mydef-2() end";
+		String source = "module myModule def my-2-Def() end def mydef-2() end";
 		String expectedOutput = "module(module-id([\"myModule\"]),[def(\"my-2-Def\",empty,empty),def(\"mydef-2\",empty,empty)])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
@@ -88,19 +88,19 @@ public class ModuleOutputTest extends TestCase {
 	}	
 	
 	public void testModuleWithFunctionAndMarkupOutput(){
-		String source = "module brand def func1 header(\"Abonnee worden?\"); end";
+		String source = "module brand def func1() header(\"Abonnee worden?\"); end";
 		String expectedOutput = "module(module-id([\"brand\"]),[def(\"func1\",empty,[markup(call(tag(\"header\",[]),args([text(\"Abonnee worden?\")])))])])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}	
 	
 	public void testModulWithFunctionAndSingleMarkupOutput(){
-		String source = "module brand def func1 brandende-pen-500-test-pers; end";
+		String source = "module brand def func1() brandende-pen-500-test-pers; end";
 		String expectedOutput = "module(module-id([\"brand\"]),[def(\"func1\",empty,[markup-stat([header(text(\"brandende-pen-500-test-pers\"))])])])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));		
 	}
 	
 	public void testModulWithFunctionNameWithDashOutput(){
-		String source = "module brand def func1-name-500-func end"; 
+		String source = "module brand def func1-name-500-func() end"; 
 		String expectedOutput = "module(module-id([\"brand\"]),[def(\"func1-name-500-func\",empty,empty)])"; 
 		assertEquals(expectedOutput, getModuleParserOutput(source));
 	}	
