@@ -1,0 +1,5 @@
+module homepage.cwi.be
+
+site
+  test/hallo/index.html: home(a=b)
+end
