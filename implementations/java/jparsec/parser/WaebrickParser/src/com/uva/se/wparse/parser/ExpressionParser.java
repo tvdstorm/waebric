@@ -269,8 +269,7 @@ public class ExpressionParser {
 						  blockExpression(lazy),
 						  blockKeyValueExpression(lazy),
 						  expressionParser);
-		Parser<Expression> parser = new OperatorTable<Expression>().infixl(
-				binary(Operator.DOT), 10).build(expressionParser);
+		Parser<Expression> parser = new OperatorTable<Expression>().infixl(binary(Operator.DOT), 10).build(expressionParser);
 		ref.set(parser);
 		return parser;
 	}

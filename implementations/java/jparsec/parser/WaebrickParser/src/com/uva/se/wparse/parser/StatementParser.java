@@ -139,7 +139,10 @@ public final class StatementParser {
 
 	private static Parser<Statement> markupExpression(Parser<Markup> markupParser,
 		Parser<Expression> expressionParser) {
-		return curry(MarkupExpression.class).sequence(markupParser.many1(), expressionParser,
+		return curry(MarkupExpression.class).sequence(
+		markupParser,
+		Parsers.or(expressionParser, markupParser.many()).optional(),
+		expressionParser.optional(),
 		TerminalParser.term(Operator.SEMI_COLON.toString()));
 	}
 
@@ -181,9 +184,8 @@ public final class StatementParser {
 		    echo(expressionParser),
 		    cdata(expressionParser),
 		    yield(),
-		    markup(markupParser),
 		    markupExpression(markupParser, expressionParser),
-		    
+		    markup(markupParser),
 		    block(lazy));
 		ref.set(parser);
 		return parser;

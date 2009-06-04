@@ -60,7 +60,7 @@ public final class FunctionDef extends ValueObject implements Member {
 
 
 
-	public Argument getFormals() {
+	public Formals getFormals() {
 		return formals;
 	}
 

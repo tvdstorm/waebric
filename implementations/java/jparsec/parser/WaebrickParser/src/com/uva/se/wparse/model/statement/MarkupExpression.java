@@ -18,6 +18,7 @@
  */
 package com.uva.se.wparse.model.statement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -25,18 +26,30 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.ValueObject;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
+import com.uva.se.wparse.util.Strings;
 
-public class MarkupExpression extends MultipleMarkup implements Statement, Markup {
+public class MarkupExpression extends ValueObject implements Statement, Markup {
 	
 	public static final String OUTPUT_MARKUP_EXPRESSION = "markup-exp";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpression.class);
 
-	private Expression expr;
+	private Expression expr = null;
+	private List<Markup> markupList = new ArrayList<Markup>(); 
 
-	public MarkupExpression(List<Markup> markup, Expression expr){ 
-		super(markup);
-		this.expr = expr;
+	public MarkupExpression(Markup markup, Object tail, Expression expression){ 
+		this.markupList.add(markup);
+		if(tail instanceof List){
+			 List<Markup> tailList = ((List<Markup>)tail); 
+			markupList.addAll(tailList);
+		}else if(tail instanceof Expression){
+			this.expr = (Expression)tail;
+		}
+		
+		if(expression != null){
+			this.expr = expression;
+		}
+		
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -45,11 +58,12 @@ public class MarkupExpression extends MultipleMarkup implements Statement, Marku
 
 	@Override
 	public String toString() {
-		return super.toString() + " " + expr;
+		return Strings.join(" ", markupList) + " " + expr;
 	};
 	
 	@Override
 	public String toTransformerOutput() {
+		//TODO: miguel, de markup in markupList moet nog naar output
 		String expressionItem = "";
 		if (expr instanceof ValueObject) {
 			expressionItem = ((ValueObject)expr).toTransformerOutput();

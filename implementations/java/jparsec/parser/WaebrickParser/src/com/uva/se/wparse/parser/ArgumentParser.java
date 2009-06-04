@@ -26,7 +26,6 @@ import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Argument;
 import com.uva.se.wparse.model.markup.AssignmentArgument;
 import com.uva.se.wparse.model.markup.BlockArgument;
-import com.uva.se.wparse.model.markup.Formals;
 import com.uva.se.wparse.model.markup.SingleArgument;
 
 public class ArgumentParser {
@@ -54,12 +53,7 @@ public class ArgumentParser {
 		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()));
 	}
 	
-	public static Parser<Argument> formals() {
-		return curry(Formals.class).sequence(
-		TerminalParser.term(Operator.ROUND_BRACKET_OPEN.toString()),
-		ExpressionParser.IDENTIFIER.sepBy(TerminalParser.term(Operator.COMMA.toString())),
-		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()));
-	}
+
 	
 	public static Parser<Argument> arguments(Parser<Expression> expressionParser) {
 		Parser.Reference<Argument> ref = Parser.newReference();

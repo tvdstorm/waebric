@@ -364,6 +364,16 @@ public class StatementParserTest extends TestCase {
 		String source = "li if (mi.kids) menu(mi); else a(href=mi.link) mi.title;";
 		TerminalParser.parse(statemenParser, source);
 	}
+	
+	public void testMarkupExpression(){
+		String source = "a(href=mi.link) mi.title;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMultipleMarkupExpression(){
+		String source = "a(href=mi.link) markup2 mi.title;";
+		TerminalParser.parse(statemenParser, source);
+	}
 	  
 
 }

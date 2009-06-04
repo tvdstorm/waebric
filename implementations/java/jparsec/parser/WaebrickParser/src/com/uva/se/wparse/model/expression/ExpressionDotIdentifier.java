@@ -27,14 +27,17 @@ public final class ExpressionDotIdentifier extends ValueObject implements Expres
 	
 	public static final String OUTPUT_FIELD = "field";
 
-	private static org.apache.log4j.Logger logger = Logger
-			.getLogger(ExpressionDotIdentifier.class);
-	private Expression identifier;
-	private Expression expr;
+	private static org.apache.log4j.Logger logger = Logger.getLogger(ExpressionDotIdentifier.class);
+	
+	private Identifier identifier = null;
+	private Expression expression = null;
 
-	public ExpressionDotIdentifier(Expression identifier, Operator op, Expression expr) {
-		this.identifier = identifier;
-		this.expr = expr;
+	public ExpressionDotIdentifier(Expression expression, Operator op, Expression identifier) {
+		if(identifier instanceof Var){
+			this.identifier = new Identifier( ((Var)identifier).getIdentifier(), "");	
+		}
+		
+		this.expression = expression;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -43,7 +46,7 @@ public final class ExpressionDotIdentifier extends ValueObject implements Expres
 
 	@Override
 	public String toString() {
-		return expr + "." + identifier;
+		return expression + "." + identifier;
 	}
 	
 	@Override
@@ -54,8 +57,8 @@ public final class ExpressionDotIdentifier extends ValueObject implements Expres
 		}		
 		
 		String expressionItem = "";
-		if (expr instanceof ValueObject) {
-			expressionItem = ((ValueObject)expr).toTransformerOutput();
+		if (expression instanceof ValueObject) {
+			expressionItem = ((ValueObject)expression).toTransformerOutput();
 		}		
 		
 		return OUTPUT_FIELD + outputBracedBlock( identifierItem + OUTPUT_BLOCK_SEPARATOR + expressionItem );

@@ -30,7 +30,7 @@ import com.uva.se.wparse.util.Strings;
 
 
 
-public final class Formals extends ValueObject implements Argument {
+public final class Formals extends ValueObject {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Formals.class);
 	
