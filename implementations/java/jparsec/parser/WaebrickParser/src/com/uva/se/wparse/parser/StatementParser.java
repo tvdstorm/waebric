@@ -128,7 +128,7 @@ public final class StatementParser {
 	}
 
 	private static Parser<Statement> markup(Parser<Markup> markupParser) {
-		return curry(MultipleMarkup.class).sequence(markupParser.atLeast(2),
+		return curry(MultipleMarkup.class).sequence(markupParser.atLeast(2), 
 		TerminalParser.term(Operator.SEMI_COLON.toString()));
 	}
 

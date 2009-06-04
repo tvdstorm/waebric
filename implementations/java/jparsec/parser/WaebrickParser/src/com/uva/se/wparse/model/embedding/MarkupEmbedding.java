@@ -28,7 +28,10 @@ import com.uva.se.wparse.util.Strings;
 
 public class MarkupEmbedding extends ValueObject implements Embedding {
 	
-	public static final String OUTPUT_EMBEDDING = "embedding";
+	public static final String OUTPUT_EMBEDDING 		= "exp-embedding";
+	
+	public static final String OUTPUT_EMBEDDING_PRE 	= "pre";
+	public static final String OUTPUT_EMBEDDING_POST	= "post";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbedding.class);
 
@@ -55,18 +58,20 @@ public class MarkupEmbedding extends ValueObject implements Embedding {
 	
 	@Override
 	public String toTransformerOutput() {
-		String markupList = OUTPUT_LIST_EMPTY;
+		String markupList = "";
 		for (Markup markupItem: markup) {
 			if (markupItem instanceof ValueObject) {
-				markupList = outputAddToList(markupList, ((ValueObject)markupItem).toTransformerOutput());
+				markupList = outputAddToBlock(markupList, ((ValueObject)markupItem).toTransformerOutput());
 			}
 		}
 		
 		String followerItem = "";
 		if (follower instanceof ValueObject) {
 			followerItem = ((ValueObject)follower).toTransformerOutput();
-		}		
+		}
 		
-		return OUTPUT_EMBEDDING + outputBracedBlock( preText + OUTPUT_BLOCK_SEPARATOR + markupList + OUTPUT_BLOCK_SEPARATOR + followerItem + OUTPUT_BLOCK_SEPARATOR + postText );
+		return OUTPUT_EMBEDDING_PRE + outputBracedBlock( "\"\\\"\\\\\\\"<\"" + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING + outputBracedBlock( outputBracedList( markupList ) + OUTPUT_BLOCK_SEPARATOR + followerItem ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING_POST + "(\">\\\\\\\"\\\"\")" )    ;
+		
+		//return OUTPUT_EMBEDDING + outputBracedBlock( preText + OUTPUT_BLOCK_SEPARATOR + markupList + OUTPUT_BLOCK_SEPARATOR + followerItem + OUTPUT_BLOCK_SEPARATOR + postText );
 	}	
 }

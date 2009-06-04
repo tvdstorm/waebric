@@ -50,11 +50,10 @@ public final class BlockExpression extends ValueObject implements Expression {
   
   @Override 
   public String toTransformerOutput() {
-	  String ListBlock = OUTPUT_LIST_EMPTY;
-	  
+	  String ListBlock = "";	  
 	  for (Expression expression: expr) {
-		  ListBlock = outputAddToList(ListBlock, ((ValueObject)expression).toTransformerOutput());
-	  }  
+		  ListBlock = outputAddToBlock(ListBlock, ((ValueObject)expression).toTransformerOutput());
+	  } 
 	  
 	  return OUTPUT_LIST + outputBracedBlock( outputBracedList( ListBlock ) );	  
   }

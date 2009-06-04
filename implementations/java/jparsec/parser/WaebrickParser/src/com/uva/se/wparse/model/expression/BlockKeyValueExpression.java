@@ -51,9 +51,9 @@ public final class BlockKeyValueExpression extends ValueObject implements Expres
 	
 	@Override
 	public String toTransformerOutput() {
-		String keyValueBlock = OUTPUT_LIST_EMPTY;
+		String keyValueBlock = "";
 		for (KeyValuePair keyValuePairItem: keyValuePair) {
-			keyValueBlock = outputAddToList( keyValueBlock, keyValuePairItem.toTransformerOutput() );
+			keyValueBlock = outputAddToBlock( keyValueBlock, keyValuePairItem.toTransformerOutput() );
 		}
 		
 		return OUTPUT_KEY_VALUE_BLOCK + outputBracedBlock( outputBracedList( keyValueBlock ) );
