@@ -5,7 +5,7 @@ import com.uva.se.wparse.model.common.ValueObject;
 
 public class NotPredicate extends ValueObject implements Predicate {
 	
-	public static final String OUTPUT_PREDICATE_NEGATION = "neg";
+	public static final String OUTPUT_PREDICATE_NEGATION = "not";
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(NotPredicate.class);
 	

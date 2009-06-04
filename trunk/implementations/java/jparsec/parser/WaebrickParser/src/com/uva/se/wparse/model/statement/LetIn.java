@@ -53,17 +53,19 @@ public final class LetIn extends ValueObject implements Statement {
   	@Override
   	public String toTransformerOutput() {
   		String expressionItem = "";
-  		if (assignmentList instanceof ValueObject) {
-  			expressionItem = ((ValueObject)assignmentList).toTransformerOutput();
+  		for (Assignment assignment: assignmentList) {  		
+  			if (assignment instanceof ValueObject) {
+  				expressionItem = ((ValueObject)assignment).toTransformerOutput();
+  			}
   		}
   		
   		String statementListString = "";
   		for (Statement statement: statementList) {
   			if (statement instanceof ValueObject) {
-  				outputAddToList(statementListString, ((ValueObject)statement).toTransformerOutput());
+  				statementListString = outputAddToBlock(statementListString, ((ValueObject)statement).toTransformerOutput());
   			}
   		}
   		
-  		return OUTPUT_LETIN + outputBracedBlock( expressionItem + OUTPUT_BLOCK_SEPARATOR + outputBracedList( statementListString ) );	
+  		return OUTPUT_LETIN + outputBracedBlock( outputBracedList( expressionItem ) + OUTPUT_BLOCK_SEPARATOR + outputBracedList( statementListString ) );	
   	}
 }

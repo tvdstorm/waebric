@@ -38,10 +38,10 @@ public class AllMarkupOutputTest extends TestCase {
 	public static final String OUTPUTTEST_MARKUP_EXPRESSION_CALL_TAG = "module(module-id([\"test\"]),[def(\"main\",formals([]),[markup-exp([call(tag(\"b\",[]),args([]))],text(\"\\\"blaat\\\"\"))])])";
 
 	// markup embedding
-	public static final String INPUTTEST_MARKUP_EMBEDDING_TAG = "module test def main() b \"\\\"<i \"bold\">\\\"\"; end";
+	public static final String INPUTTEST_MARKUP_EMBEDDING_TAG = "module test def main() b \"<i \"bold\">\"; end";
 	public static final String OUTPUTTEST_MARKUP_EMBEDDING_TAG = "module(module-id([\"test\"]),[def(\"main\",formals([]),[markup-embedding([tag(\"b\",[])],pre(\"\\\"\\\\\\\"<\",exp-embedding([tag(\"i\",[])],text(\"\\\"bold\\\"\")),post(\">\\\\\\\"\\\"\")))])])";
 
-	public static final String INPUTTEST_MARKUP_EMBEDDING_CALL_TAG = "module test def main() b() \"\\\"<i \"bold\">\\\"\"; end";
+	public static final String INPUTTEST_MARKUP_EMBEDDING_CALL_TAG = "module test def main() b() \"<i \"bold\">\"; end";
 	public static final String OUTPUTTEST_MARKUP_EMBEDDING_CALL_TAG = "module(module-id([\"test\"]),[def(\"main\",formals([]),[markup-embedding([call(tag(\"b\",[]),args([]))],pre(\"\\\"\\\\\\\"<\",exp-embedding([tag(\"i\",[])],text(\"\\\"bold\\\"\")),post(\">\\\\\\\"\\\"\")))])])";
 
 	public String getModuleParserOutput(String WaebricSource){

@@ -26,12 +26,12 @@ import com.uva.se.wparse.model.expression.StringLiteral;
 
 public class Comment extends ValueObject implements Statement {
 	
-	public static final String OUTPUT_COMMENT = "Comment";
+	public static final String OUTPUT_COMMENT = "comment";
 
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(Comment.class);
 
-	private StringLiteral comment;
+	private StringLiteral comment; // TODO: Dit is geen StringLiteral (gewoon een string gebruiken)
 
 	public Comment(StringLiteral comment) {
 		this.comment = comment;
@@ -48,7 +48,7 @@ public class Comment extends ValueObject implements Statement {
 	
 	@Override
 	public String toTransformerOutput() {
-		return OUTPUT_COMMENT + outputBracedBlock( comment.toTransformerOutput() );
+		return OUTPUT_COMMENT + outputBracedBlock( outputQuote( comment.toString() ) );
 	}
 
 }

@@ -62,7 +62,7 @@ public final class Formals extends ValueObject {
 		  			Result = outputAddToBlock(Result, ((ValueObject)ident).toTransformerOutput());
 		  		}
 		  	}
-	  }	  
+	  }	 
 	  return Result;
   }  
 }
