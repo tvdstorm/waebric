@@ -27,7 +27,7 @@ import com.uva.se.wparse.util.Strings;
 
 public final class SiteDef extends ValueObject implements Member {
 	
-	public static final String OUTPUT_SITE	= "site";
+	public static final String OUTPUT_SITE		= "site";
 	public static final String OUTPUT_MAPPING	= "mapping";
 
 	private static org.apache.log4j.Logger logger = Logger
@@ -50,16 +50,14 @@ public final class SiteDef extends ValueObject implements Member {
 	@Override
 	public String toTransformerOutput() {
 		String MappingBlock = "";
-		String OutputBlock = "";
 		String Result = "";
 		
 		for (Mapping mapping: mappings) {
 			MappingBlock = OUTPUT_MAPPING + outputBracedBlock( mapping.toTransformerOutput() );
-			OutputBlock = OUTPUT_SITE + outputBracedBlock( outputBracedList( MappingBlock ) );
-			Result = outputAddToBlock( Result, OutputBlock );			
+			Result = outputAddToBlock( Result, MappingBlock );			
 		}
 		
-		return Result;
+		return OUTPUT_SITE + outputBracedBlock( outputBracedList( Result, true ) );
 	}
 
 }

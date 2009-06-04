@@ -18,6 +18,7 @@
  */
 package com.uva.se.wparse.model.module;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -46,6 +47,11 @@ public final class QualifiedName extends ValueObject {
 
 	@Override
 	public String toTransformerOutput() {
-		return outputBracedBlock ( outputQuote(Strings.join(".", names) ) );
+		List<String> quotedNames = new ArrayList<String>();
+		for (String name: names) {
+			quotedNames.add( outputQuote( name ) );
+		}
+		
+		return Strings.join(",", quotedNames );
 	}
 }

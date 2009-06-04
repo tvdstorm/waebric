@@ -13,11 +13,11 @@ public class AllEmbeddingOutputTest extends TestCase {
 
 	// expression embedding
 	public static final String INPUTTEST_EXPRESSION_EMBEDDING = "module test def main() echo \"<b \"bold\">\"; end";
-	public static final String OUTPUTTEST_EXPRESSION_EMBEDDING = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"\\\\\\\"<\",exp-embedding([tag(\"b\",[])],text(\"\\\"bold\\\"\")),post(\">\\\\\\\"\\\"\")))])])";
+	public static final String OUTPUTTEST_EXPRESSION_EMBEDDING = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"<\",exp-embedding([tag(\"b\",[])],text(\"\\\"bold\\\"\")),post(\">\\\"\")))])])";
 
 	// markup embedding
 	public static final String INPUTTEST_MARKUP_EMBEDDING = "module test def main() echo \"<b() i()>\"; end";
-	public static final String OUTPUTTEST_MARKUP_EMBEDDING = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"\\\\\\\"<\",markup-embedding([call(tag(\"b\",[]),args([]))],call(tag(\"i\",[]),args([]))),post(\">\\\\\\\"\\\"\")))])])";
+	public static final String OUTPUTTEST_MARKUP_EMBEDDING = "module(module-id([\"test\"]),[def(\"main\",formals([]),[echo-embedding(pre(\"\\\"<\",markup-embedding([call(tag(\"b\",[]),args([]))],call(tag(\"i\",[]),args([]))),post(\">\\\"\")))])])";
 	
 	public String getModuleParserOutput(String WaebricSource){
 		ModuleParser declarationParser = new ModuleParser(); 		

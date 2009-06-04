@@ -29,6 +29,8 @@ import com.uva.se.wparse.util.Strings;
 
 public class Mapping extends ValueObject {
 	
+	public static final String OUTPUT_MAPPING_PATH = "path";
+	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Mapping.class);
 
 	private List<Identifier> path = null;
@@ -58,9 +60,9 @@ public class Mapping extends ValueObject {
 		
 		String filename = file + "." + extention;
 		String pathname = Strings.join("/", path);
-		String fullfilename = filename;
+		String fullfilename = outputQuote( filename );
 		if (!pathname.isEmpty()) {
-			fullfilename = pathname + "/" + fullfilename;
+			fullfilename = outputQuote( pathname ) + "," + fullfilename;
 		}
 		
 		String markupOutput = OUTPUT_EMPTY_ELEMENT;
@@ -68,6 +70,6 @@ public class Mapping extends ValueObject {
 			markupOutput = markupOutput + ((ValueObject) markup).toTransformerOutput();
 		}
 	
-		return outputQuote(fullfilename) + OUTPUT_BLOCK_SEPARATOR + markupOutput;
+		return OUTPUT_MAPPING_PATH + outputBracedBlock( fullfilename ) + OUTPUT_BLOCK_SEPARATOR + markupOutput;
 	}
 }

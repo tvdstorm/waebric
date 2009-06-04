@@ -70,7 +70,7 @@ public class MarkupEmbedding extends ValueObject implements Embedding {
 			followerItem = ((ValueObject)follower).toTransformerOutput();
 		}
 		
-		return OUTPUT_EMBEDDING_PRE + outputBracedBlock( "\"\\\"\\\\\\\"<\"" + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING + outputBracedBlock( outputBracedList( markupList ) + OUTPUT_BLOCK_SEPARATOR + followerItem ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING_POST + "(\">\\\\\\\"\\\"\")" )    ;
+		return OUTPUT_EMBEDDING_PRE + outputBracedBlock( "\"\\\"<\"" + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING + outputBracedBlock( outputBracedList( markupList ) + OUTPUT_BLOCK_SEPARATOR + followerItem ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING_POST + "(\">\\\"\")" )    ;
 		
 		//return OUTPUT_EMBEDDING + outputBracedBlock( preText + OUTPUT_BLOCK_SEPARATOR + markupList + OUTPUT_BLOCK_SEPARATOR + followerItem + OUTPUT_BLOCK_SEPARATOR + postText );
 	}	
