@@ -22,11 +22,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.TransformerOutput;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
-public class MarkupEmbed extends ValueObject implements Embedding {
+public class MarkupEmbed extends WaebricParseTreeNode implements Embedding {
 	
 	public static final String OUTPUT_MARKUPEMBED = "markup-embed";
 	
@@ -56,17 +57,15 @@ public class MarkupEmbed extends ValueObject implements Embedding {
 
 		String markupList = "";
 		for (Markup markupItem: markup) {
-			if (markupItem instanceof ValueObject) {
-				markupList = outputAddToBlock(markupList, ((ValueObject)markupItem).toTransformerOutput());       
-			}
+			markupList = outputAddToBlock(markupList, markupItem.toTransformerOutput());       
 		}
 		
 		String followerItem = "";
-		if (follower instanceof ValueObject) {
-			followerItem = ((ValueObject)follower).toTransformerOutput();
+		if (follower instanceof TransformerOutput) {
+			followerItem = ((TransformerOutput)follower).toTransformerOutput();
 		}
 		
-		return OUTPUT_MARKUPEMBED + outputBracedBlock( outputQuote(id) + OUTPUT_LIST_SEPARATOR + outputBracedList(markupList) + OUTPUT_LIST_SEPARATOR + followerItem );
+		return OUTPUT_MARKUPEMBED + outputBracedBlock( outputQuote( id ) + OUTPUT_LIST_SEPARATOR + outputBracedList( markupList ) + OUTPUT_LIST_SEPARATOR + followerItem );
 	}	
 	
 }

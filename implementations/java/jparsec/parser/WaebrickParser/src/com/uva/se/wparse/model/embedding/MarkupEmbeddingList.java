@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.util.Strings;
 
-public class MarkupEmbeddingList extends ValueObject implements Embedding {
+public class MarkupEmbeddingList extends WaebricParseTreeNode implements Embedding {
 	
 	public static final String OUTPUT_MARKUP_EMBED_LIST = "";
 
@@ -38,9 +38,7 @@ public class MarkupEmbeddingList extends ValueObject implements Embedding {
 	public String toTransformerOutput() {
 		String embeddingList = "";
 		for (Embedding embedItem: embedding) {
-			if (embedItem instanceof ValueObject) {
-				embeddingList = outputAddToBlock( embeddingList, ((ValueObject)embedItem).toTransformerOutput() );
-			}
+			embeddingList = outputAddToBlock( embeddingList, embedItem.toTransformerOutput() );
 		}		
 		
 		return embeddingList ;

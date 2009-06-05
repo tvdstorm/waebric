@@ -22,10 +22,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.util.Strings;
 
-public final class SiteDef extends ValueObject implements Member {
+public final class SiteDef extends WaebricParseTreeNode implements Member {
 	
 	public static final String OUTPUT_SITE		= "site";
 	public static final String OUTPUT_MAPPING	= "mapping";

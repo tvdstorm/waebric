@@ -24,12 +24,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.util.Strings;
 
 
 
-public final class BlockExpression extends ValueObject implements Expression {
+public final class BlockExpression extends WaebricParseTreeNode implements Expression {
 	private static org.apache.log4j.Logger logger = Logger.getLogger(BlockExpression.class);
 
   public static final String OUTPUT_LIST = "list";	
@@ -52,7 +52,7 @@ public final class BlockExpression extends ValueObject implements Expression {
   public String toTransformerOutput() {
 	  String ListBlock = "";	  
 	  for (Expression expression: expr) {
-		  ListBlock = outputAddToBlock(ListBlock, ((ValueObject)expression).toTransformerOutput());
+		  ListBlock = outputAddToBlock(ListBlock, expression.toTransformerOutput());
 	  } 
 	  
 	  return OUTPUT_LIST + outputBracedBlock( outputBracedList( ListBlock ) );	  

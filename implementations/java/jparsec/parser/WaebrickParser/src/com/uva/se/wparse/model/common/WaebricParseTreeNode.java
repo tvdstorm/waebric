@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * 
  * @author Ben Yu
  */
-public abstract class ValueObject {
+public abstract class WaebricParseTreeNode implements TransformerOutput {
 	
   public static final String OUTPUT_EMPTY_ELEMENT			= "";  
   
@@ -84,7 +84,7 @@ public abstract class ValueObject {
    * @param valueObject the ValueObject having the contents to be quoted
    * @return the ValueObject's contents with quotes
    */
-  protected String outputQuote(ValueObject valueObject) {
+  protected String outputQuote(WaebricParseTreeNode valueObject) {
 	return outputQuote(valueObject.toString());	  
   }
   
@@ -103,19 +103,6 @@ public abstract class ValueObject {
 	}
 	return list + OUTPUT_LIST_SEPARATOR + newListItem;		  
   } */
-  
-  /**
-   * Transforms a List of ValueObjects into a list in text form
-   * @param listToTransform List of ValueObjects to be transformed
-   * @return list of contents of listToTransform in text form
-   */
-  protected String listToTransformerOutput(ArrayList<? extends ValueObject> listToTransform) {
-    String Result = "";    
-	for (ValueObject valueObject : listToTransform) {
-      Result = outputAddToBlock(Result, valueObject.toTransformerOutput());
-	}	  
-	return Result.toString();
-  }
   
   /**
    * puts list type braces around an unbraced list in text form  
@@ -162,10 +149,10 @@ public abstract class ValueObject {
    * @param blockToTransform List of ValueObjects to be transformed
    * @return block of contents of listToTransform in text form
    */
-  protected String blockToTransformerOutput(ArrayList<? extends ValueObject> blockToTransform) {
+  protected String blockToTransformerOutput(ArrayList<? extends TransformerOutput> blockToTransform) {
 	String Result = "";    
-	for (ValueObject valueObject : blockToTransform) {
-	  Result = outputAddToBlock(Result, valueObject.toTransformerOutput());
+	for (TransformerOutput transformerOutput : blockToTransform) {
+	  Result = outputAddToBlock(Result, transformerOutput.toTransformerOutput());
 	}	  
 	return Result.toString();
   }

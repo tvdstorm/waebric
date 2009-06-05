@@ -18,6 +18,8 @@
  */
 package com.uva.se.wparse.model.markup;
 
-public interface Attribute {
+import com.uva.se.wparse.model.common.TransformerOutput;
+
+public interface Attribute extends TransformerOutput{
 
 }

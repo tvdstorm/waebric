@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.util.Strings;
 
-public final class AssignmentFormals extends ValueObject implements	Assignment {
+public final class AssignmentFormals extends WaebricParseTreeNode implements	Assignment {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentFormals.class);
 	
@@ -54,11 +54,6 @@ public final class AssignmentFormals extends ValueObject implements	Assignment {
 	
 	@Override
 	public String toTransformerOutput() {
-		String StatementItem = "";
-		if (statement instanceof ValueObject) {
-			StatementItem = ((ValueObject)statement).toTransformerOutput();
-		}		
-		
-		return OUTPUT_ASSIGNMENT_FORMALS + outputBracedBlock( identifier + OUTPUT_BLOCK_SEPARATOR + outputBracedList( Strings.join( OUTPUT_LIST_SEPARATOR, formals ) ) + OUTPUT_BLOCK_SEPARATOR + StatementItem);
+		return OUTPUT_ASSIGNMENT_FORMALS + outputBracedBlock( identifier + OUTPUT_BLOCK_SEPARATOR + outputBracedList( Strings.join( OUTPUT_LIST_SEPARATOR, formals ) ) + OUTPUT_BLOCK_SEPARATOR + statement.toTransformerOutput() );
 	}
 }

@@ -20,9 +20,9 @@ package com.uva.se.wparse.model.expression;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 
-public class Identifier extends ValueObject implements Expression {
+public class Identifier extends WaebricParseTreeNode implements Expression {
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Identifier.class);
 

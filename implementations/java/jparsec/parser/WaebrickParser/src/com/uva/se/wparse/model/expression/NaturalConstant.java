@@ -20,9 +20,9 @@ package com.uva.se.wparse.model.expression;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 
-public final class NaturalConstant extends ValueObject implements Expression {
+public final class NaturalConstant extends WaebricParseTreeNode implements Expression {
 	
 	public static final String OUTPUT_NATCON = "num"; 
 

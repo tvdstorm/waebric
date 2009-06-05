@@ -20,9 +20,9 @@ package com.uva.se.wparse.model.expression;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 
-public class KeyValuePair extends ValueObject implements Expression {
+public class KeyValuePair extends WaebricParseTreeNode implements Expression {
 	public static final String OUTPUT_PAIR = "pair";
 	
 	private static org.apache.log4j.Logger logger = Logger
@@ -47,12 +47,7 @@ public class KeyValuePair extends ValueObject implements Expression {
 	
 	@Override
 	public String toTransformerOutput() {
-		String expressionItem = "";
-		if (value instanceof ValueObject) {
-			expressionItem = ((ValueObject)value).toTransformerOutput();
-		}
-		
-		return OUTPUT_PAIR + outputBracedBlock( outputQuote( key ) + OUTPUT_BLOCK_SEPARATOR + expressionItem );
+		return OUTPUT_PAIR + outputBracedBlock( outputQuote( key ) + OUTPUT_BLOCK_SEPARATOR + value.toTransformerOutput() );
 	}
 
 }

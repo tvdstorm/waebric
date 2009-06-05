@@ -20,10 +20,10 @@ package com.uva.se.wparse.model.markup;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 
-public class SingleArgument extends ValueObject implements Argument {
+public class SingleArgument extends WaebricParseTreeNode implements Argument {
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(SingleArgument.class);
 	private Expression expression;
@@ -45,12 +45,7 @@ public class SingleArgument extends ValueObject implements Argument {
 	
 	@Override
 	public String toTransformerOutput() {
-		String Result = "";
-		if (expression instanceof ValueObject) {
-			Result = ((ValueObject)expression).toTransformerOutput();
-		}		
-		
-		return Result;
+		return expression.toTransformerOutput();
 	} 	
 	
 }

@@ -22,16 +22,20 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.TransformerOutput;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
-public class MarkupEmbedding extends ValueObject implements Embedding {
+public class MarkupEmbedding extends WaebricParseTreeNode implements Embedding {
 	
-	public static final String OUTPUT_EMBEDDING 		= "exp-embedding";
+	public static final String OUTPUT_EMBEDDING 			= "exp-embedding";
 	
-	public static final String OUTPUT_EMBEDDING_PRE 	= "pre";
-	public static final String OUTPUT_EMBEDDING_POST	= "post";
+	public static final String OUTPUT_EMBEDDING_PRE 		= "pre";
+	public static final String OUTPUT_EMBEDDING_POST		= "post";
+	
+	public static final String OUTPUT_EMBEDDING_PRE_CODE 	= "\"\\\"<\"";
+	public static final String OUTPUT_EMBEDDING_POST_CODE	= "(\">\\\"\")";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupEmbedding.class);
 
@@ -59,19 +63,16 @@ public class MarkupEmbedding extends ValueObject implements Embedding {
 	@Override
 	public String toTransformerOutput() {
 		String markupList = "";
+
 		for (Markup markupItem: markup) {
-			if (markupItem instanceof ValueObject) {
-				markupList = outputAddToBlock(markupList, ((ValueObject)markupItem).toTransformerOutput());
-			}
+			markupList = outputAddToBlock(markupList, markupItem.toTransformerOutput());
 		}
 		
 		String followerItem = "";
-		if (follower instanceof ValueObject) {
-			followerItem = ((ValueObject)follower).toTransformerOutput();
+		if (follower instanceof TransformerOutput) {
+		followerItem = ((TransformerOutput)follower).toTransformerOutput();
 		}
 		
-		return OUTPUT_EMBEDDING_PRE + outputBracedBlock( "\"\\\"<\"" + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING + outputBracedBlock( outputBracedList( markupList ) + OUTPUT_BLOCK_SEPARATOR + followerItem ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING_POST + "(\">\\\"\")" )    ;
-		
-		//return OUTPUT_EMBEDDING + outputBracedBlock( preText + OUTPUT_BLOCK_SEPARATOR + markupList + OUTPUT_BLOCK_SEPARATOR + followerItem + OUTPUT_BLOCK_SEPARATOR + postText );
+		return OUTPUT_EMBEDDING_PRE + outputBracedBlock( OUTPUT_EMBEDDING_PRE_CODE + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING + outputBracedBlock( outputBracedList( markupList ) + OUTPUT_BLOCK_SEPARATOR + followerItem ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING_POST + OUTPUT_EMBEDDING_POST_CODE )    ;
 	}	
 }

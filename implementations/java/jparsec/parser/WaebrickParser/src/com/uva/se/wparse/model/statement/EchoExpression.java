@@ -20,10 +20,10 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 
-public class EchoExpression extends ValueObject implements Statement {
+public class EchoExpression extends WaebricParseTreeNode implements Statement {
 	
 	public static final String OUTPUT_ECHO = "echo";
 
@@ -46,12 +46,7 @@ public class EchoExpression extends ValueObject implements Statement {
 	
 	@Override
 	public String toTransformerOutput() {
-		String expressionItem = "";
-		if (expr instanceof ValueObject) {
-			expressionItem = ((ValueObject)expr).toTransformerOutput();
-		}
-		
-		return OUTPUT_ECHO + outputBracedBlock( expressionItem );
+		return OUTPUT_ECHO + outputBracedBlock( expr.toTransformerOutput() );
 	}
 	
 	

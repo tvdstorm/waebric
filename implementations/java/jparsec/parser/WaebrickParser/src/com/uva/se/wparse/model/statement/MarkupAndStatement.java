@@ -22,13 +22,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
 
 
-public class MarkupAndStatement extends ValueObject implements Statement, Markup {
+public class MarkupAndStatement extends WaebricParseTreeNode implements Statement, Markup {
 	
 	public static final String OUTPUT_MARKUPSTAT = "markup-stat";
 
@@ -55,16 +55,9 @@ public class MarkupAndStatement extends ValueObject implements Statement, Markup
 	public String toTransformerOutput() {
 	    String MarkupBlock = "";
 	    for (Markup markupItem: markup) {
-	    	if (markupItem instanceof ValueObject){
-	    		MarkupBlock = outputAddToBlock(MarkupBlock, ((ValueObject)markupItem).toTransformerOutput() );
-	    	}
+	    	MarkupBlock = outputAddToBlock(MarkupBlock, markupItem.toTransformerOutput() );
 	    }
 		
-		String statementItem = "";
-		if (statement instanceof ValueObject){
-			statementItem = ((ValueObject)statement).toTransformerOutput();
-		}	
-		
-		return OUTPUT_MARKUPSTAT + outputBracedBlock( outputBracedList ( MarkupBlock ) + OUTPUT_BLOCK_SEPARATOR + statementItem );
+		return OUTPUT_MARKUPSTAT + outputBracedBlock( outputBracedList ( MarkupBlock ) + OUTPUT_BLOCK_SEPARATOR + statement.toTransformerOutput() );
 	} 	
 }

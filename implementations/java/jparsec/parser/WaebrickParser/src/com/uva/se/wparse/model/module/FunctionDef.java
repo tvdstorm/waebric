@@ -22,11 +22,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.markup.Formals;
 import com.uva.se.wparse.model.statement.Statement;
 
-public final class FunctionDef extends ValueObject implements Member {
+public final class FunctionDef extends WaebricParseTreeNode implements Member {
 	
 	public static final String OUTPUT_FUNCTION	= "def";
 	public static final String OUTPUT_ARGUMENTS	= "argument";
@@ -89,19 +89,11 @@ public final class FunctionDef extends ValueObject implements Member {
 	@Override
 	public String toTransformerOutput() {
 		String NameElement = outputQuote( name );
-		String ArgumentsElement = "";
-		if (formals instanceof ValueObject ) {
-			String ArgumentTransformerOutput = ((ValueObject) formals).toTransformerOutput();
-			ArgumentsElement = ArgumentTransformerOutput;
-		}
-
-		ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( outputBracedList( ArgumentsElement, true ) );
+		String ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( outputBracedList( formals.toTransformerOutput(), true ) );
 	
 		String StatementsElement = "";
 		for (Statement statement: statements) {
-			if (statement instanceof ValueObject) {
-				StatementsElement = outputAddToBlock(StatementsElement, ((ValueObject)statement).toTransformerOutput());
-			}
+			StatementsElement = outputAddToBlock(StatementsElement, statement.toTransformerOutput());
 		}
 		StatementsElement = outputBracedList(StatementsElement, true);
 		

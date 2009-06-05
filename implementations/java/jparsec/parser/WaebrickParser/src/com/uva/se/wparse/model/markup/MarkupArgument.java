@@ -20,11 +20,11 @@ package com.uva.se.wparse.model.markup;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.util.Strings;
 
 
-public class MarkupArgument extends ValueObject implements Markup {
+public class MarkupArgument extends WaebricParseTreeNode implements Markup {
 	
 	public static final String OUTPUT_CALL		= "call";
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupArgument.class);
@@ -49,21 +49,8 @@ public class MarkupArgument extends ValueObject implements Markup {
 	
 	@Override
 	public String toTransformerOutput() {		
-		
-		String DesignatorBlock = "";
-		//for (Designator designatorItem: designator){
-			if (designator instanceof ValueObject) {
-				DesignatorBlock = DesignatorBlock + ((ValueObject)designator).toTransformerOutput();
-			}
-		//}
-		
-		String ArgumentBlock = "";
-		if (arguments instanceof ValueObject) {
-			ArgumentBlock = ((ValueObject)arguments).toTransformerOutput();
-		}
-		ArgumentBlock = OUTPUT_ARGUMENTS + outputBracedBlock( OUTPUT_LIST_BEGIN + ArgumentBlock + OUTPUT_LIST_END );
-		
-		return OUTPUT_CALL + outputBracedBlock( DesignatorBlock + OUTPUT_BLOCK_SEPARATOR + ArgumentBlock );		
+		String ArgumentBlock = OUTPUT_ARGUMENTS + outputBracedBlock( outputBracedList( arguments.toTransformerOutput(), true ) );		
+		return OUTPUT_CALL + outputBracedBlock( designator.toTransformerOutput() + OUTPUT_BLOCK_SEPARATOR + ArgumentBlock );		
 	}	
 	
 }

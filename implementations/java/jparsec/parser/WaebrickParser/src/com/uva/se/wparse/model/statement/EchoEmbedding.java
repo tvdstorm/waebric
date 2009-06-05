@@ -20,10 +20,10 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.embedding.Embedding;
 
-public class EchoEmbedding extends ValueObject implements Statement {
+public class EchoEmbedding extends WaebricParseTreeNode implements Statement {
 	
 	public static final String OUTPUT_ECHO = "echo-embedding";
 
@@ -46,12 +46,7 @@ public class EchoEmbedding extends ValueObject implements Statement {
 	
 	@Override
 	public String toTransformerOutput() {
-		String embeddingItem = "";
-		if (embedding instanceof ValueObject) {
-			embeddingItem = ((ValueObject)embedding).toTransformerOutput();
-		}
-		
-		return OUTPUT_ECHO + outputBracedBlock( embeddingItem );
+		return OUTPUT_ECHO + outputBracedBlock( embedding.toTransformerOutput() );
 	}
 	
 	

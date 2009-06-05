@@ -20,9 +20,9 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 
-public class Yield extends ValueObject implements Statement {
+public class Yield extends WaebricParseTreeNode implements Statement {
 	
 	public static final String OUTPUT_YIELD = "yield";
 	

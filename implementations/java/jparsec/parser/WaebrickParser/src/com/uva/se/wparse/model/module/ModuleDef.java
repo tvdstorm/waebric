@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 
-public final class ModuleDef extends ValueObject implements WabrickParseTree {
+public final class ModuleDef extends WaebricParseTreeNode implements WabrickParseTree {
 	
 	public static final String OUTPUT_MODULE		= "module";
 	public static final String OUTPUT_MODULE_ID		= "module-id";
@@ -70,7 +70,7 @@ public final class ModuleDef extends ValueObject implements WabrickParseTree {
 			}
 		}
 		
-		String moduleElements = outputBracedList ( outputAddToBlock ( importList, listToTransformerOutput( body ) ), true ) ;
+		String moduleElements = outputBracedList ( outputAddToBlock ( importList, blockToTransformerOutput( body ) ), true ) ;
 				
 		return OUTPUT_MODULE + outputBracedBlock ( outputAddToBlock ( moduleId, moduleElements ) );
 	}

@@ -23,10 +23,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.util.Strings;
 
-public final class QualifiedName extends ValueObject {
+public final class QualifiedName extends WaebricParseTreeNode {
 	
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(QualifiedName.class);

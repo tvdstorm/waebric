@@ -20,11 +20,11 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.expression.Identifier;
 
-public final class AssignmentExpression extends ValueObject implements Assignment {
+public final class AssignmentExpression extends WaebricParseTreeNode implements Assignment {
 	
 	public static final String OUTPUT_ASSIGNMENT = "var-bind";
 	
@@ -50,11 +50,6 @@ public final class AssignmentExpression extends ValueObject implements Assignmen
 	
 	@Override
 	public String toTransformerOutput() {
-		String rightItem = "";
-		if (right instanceof ValueObject) {
-			rightItem = ((ValueObject)right).toTransformerOutput();
-		}		
-		
-		return OUTPUT_ASSIGNMENT + outputBracedBlock( outputQuote( left ) + OUTPUT_BLOCK_SEPARATOR + rightItem );
+		return OUTPUT_ASSIGNMENT + outputBracedBlock( outputQuote( left ) + OUTPUT_BLOCK_SEPARATOR + right.toTransformerOutput() );
 	}
 }

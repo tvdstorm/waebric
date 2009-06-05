@@ -22,11 +22,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.util.Strings;
 
 
-public class SymbolConstant extends ValueObject implements Expression {
+public class SymbolConstant extends WaebricParseTreeNode implements Expression {
 	
 	public static final String OUTPUT_SYMBOL = "Constant";
 	

@@ -18,5 +18,6 @@
  */
 package com.uva.se.wparse.model.module;
 
+import com.uva.se.wparse.model.common.TransformerOutput;
 
-public interface Member {}
+public interface Member extends TransformerOutput {}

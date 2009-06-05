@@ -18,5 +18,7 @@
  */
 package com.uva.se.wparse.model.embedding;
 
+import com.uva.se.wparse.model.common.TransformerOutput;
 
-public interface Embedding {}
+
+public interface Embedding extends TransformerOutput {}
