@@ -39,8 +39,8 @@ public class MultipleMarkup extends ValueObject implements Statement, Markup {
 		
 		// Definition is "Markup+ Markup"
 		// Split off last Markup
-		this.markupList = markupList.get(0);
-		this.markup = this.markupList.remove( markupList.size() - 1 ); 
+		this.markupList = markupList.get( 0 );
+		this.markup = this.markupList.remove( this.markupList.size() - 1 ); 
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()

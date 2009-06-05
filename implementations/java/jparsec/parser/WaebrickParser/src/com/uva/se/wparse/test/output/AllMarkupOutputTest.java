@@ -29,6 +29,9 @@ public class AllMarkupOutputTest extends TestCase {
 
 	public static final String INPUTTEST_MARKUP_MARKUP_CALL_TAG = "module test def main() b() br(); end";
 	public static final String OUTPUTTEST_MARKUP_MARKUP_CALL_TAG = "module(module-id([\"test\"]),[def(\"main\",formals([]),[markup-markup([call(tag(\"b\",[]),args([]))],call(tag(\"br\",[]),args([])))])])";
+	
+	public static final String INPUTTEST_MARKUP_MARKUP_MULTIPLE = "module test def main() li ul() menu(); end";
+	public static final String OUTPUTTEST_MARKUP_MARKUP_MULTIPLE = "module(module-id([\"test\"]),[def(\"main\",formals([]),[markup-markup([tag(\"li\",[]),call(tag(\"ul\",[]),args([]))],call(tag(\"menu\",[]),args([])))])])";
 
 	// markup expression
 	public static final String INPUTTEST_MARKUP_EXPRESSION_TAG = "module test def main() b \"blaat\"; end";
@@ -84,6 +87,12 @@ public class AllMarkupOutputTest extends TestCase {
 	public void testMarkupMarkupCallTagOutput(){
 		String source = INPUTTEST_MARKUP_MARKUP_CALL_TAG;		
 		String expectedOutput = OUTPUTTEST_MARKUP_MARKUP_CALL_TAG;		
+		assertEquals(expectedOutput, getModuleParserOutput(source));
+	}
+	
+	public void testMarkupMarkupMultipleOutput(){
+		String source = INPUTTEST_MARKUP_MARKUP_MULTIPLE;		
+		String expectedOutput = OUTPUTTEST_MARKUP_MARKUP_MULTIPLE;		
 		assertEquals(expectedOutput, getModuleParserOutput(source));
 	}
 	
