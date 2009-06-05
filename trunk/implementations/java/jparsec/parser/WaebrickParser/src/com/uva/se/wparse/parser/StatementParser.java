@@ -63,7 +63,8 @@ public final class StatementParser {
 	private static Parser<Statement> echoEmbedding(Parser<Embedding> embeddingParser) {
 		return curry(EchoEmbedding.class).sequence(
 		TerminalParser.term(Keyword.ECHO.toString()),
-		TerminalParser.term(Operator.DOUBLE_QUOTE.toString()), embeddingParser,
+		TerminalParser.term(Operator.DOUBLE_QUOTE.toString()),
+		embeddingParser,
 		TerminalParser.term(Operator.DOUBLE_QUOTE.toString()),
 		TerminalParser.term(Operator.SEMI_COLON.toString()));
 	}
@@ -127,8 +128,9 @@ public final class StatementParser {
 		TerminalParser.term(Keyword.END.toString()));
 	}
 
-	private static Parser<Statement> markup(Parser<Markup> markupParser) {
-		return curry(MultipleMarkup.class).sequence(markupParser.atLeast(2), 
+	private static Parser<Statement> multipleMarkup(Parser<Markup> markupParser) {
+		return curry(MultipleMarkup.class).sequence(
+		markupParser.atLeast(2).many1(),
 		TerminalParser.term(Operator.SEMI_COLON.toString()));
 	}
 
@@ -140,8 +142,10 @@ public final class StatementParser {
 	private static Parser<Statement> markupExpression(Parser<Markup> markupParser,
 		Parser<Expression> expressionParser) {
 		return curry(MarkupExpression.class).sequence(
-		markupParser,
-		Parsers.or(expressionParser, markupParser.many()).optional(),
+		markupParser.many1(),
+		
+		//markupParser.between(expressionParser, markupParser).many(),
+		//Parsers.or(expressionParser, markupParser.many()),
 		expressionParser.optional(),
 		TerminalParser.term(Operator.SEMI_COLON.toString()));
 	}
@@ -178,6 +182,7 @@ public final class StatementParser {
 		    each(expressionParser, lazy),
 		    letIn(assignmentParser, lazy),
 		    comment(),
+		    multipleMarkup(markupParser),  
 		    singleMarkup(markupParser),
 		    markupEmbedding(markupParser,embeddingParser),
 		    echoEmbedding(embeddingParser),
@@ -185,7 +190,6 @@ public final class StatementParser {
 		    cdata(expressionParser),
 		    yield(),
 		    markupExpression(markupParser, expressionParser),
-		    markup(markupParser),
 		    block(lazy));
 		ref.set(parser);
 		return parser;

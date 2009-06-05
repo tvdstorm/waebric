@@ -38,7 +38,7 @@ public class EmbeddingParser {
 		ExpressionParser.EMBEDDED_TEXT.many(),
 		TerminalParser.term(Operator.SMALLER_THEN.toString()),
 		markupParser.many(),
-		Parsers.or(markupParser, expressionParser),
+		Parsers.or(markupParser, expressionParser).optional(),
 		TerminalParser.term(Operator.LARGER_THEN.toString()),
 		ExpressionParser.EMBEDDED_TEXT.many());
 	}

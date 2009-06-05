@@ -78,6 +78,12 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 	
+	public void testEchoEmbeddedding() {
+		String source = "echo \"<b output>\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	
 	public void testComment() {
 		String source = "comment \"comment line\";";
 		TerminalParser.parse(statemenParser, source);
@@ -371,9 +377,37 @@ public class StatementParserTest extends TestCase {
 	}
 	
 	public void testMultipleMarkupExpression(){
-		String source = "a(href=mi.link) markup2 mi.title;";
+		String source = "a(href=mi.link) b(href=mi.link) markup2 mi.title;";
 		TerminalParser.parse(statemenParser, source);
 	}
+	
+	public void testMultipleMarkupExpression2(){
+		String source = "design-pre design0 a(href=mi.link) design1 b(href=mi.link) mi.title;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	public void testMultipleMarkup(){
+		String source = "designator1.bla designator2#bla2 designator3$bla3 designator4$bla4;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMultipleMarkupFuncCall(){
+		String source = "li menu(item);";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMultipleMarkupBlock(){
+		String source = "td img(var = var2, var3 = var4);";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void test2Markup1Expression(){
+		String source = "design1#a design1.a \"stringie\"; ";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
 	  
+	
+	
+	
 
 }

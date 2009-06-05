@@ -38,7 +38,8 @@ public class MarkupParser {
 	
 	//this method is used for arguments that are quoted
 	private static Parser<Markup> markupArguments(Parser<Attribute> attributeParser, Parser<Argument> argumentParser) {
-		return curry(MarkupArgument.class).sequence(markupDesignator(attributeParser).many1() ,
+		return curry(MarkupArgument.class).sequence(
+		markupDesignator(attributeParser), //.many1() ,
 		ArgumentParser.blockArgument(argumentParser));
 	}
 	

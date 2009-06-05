@@ -18,8 +18,6 @@
  */
 package com.uva.se.wparse.model.markup;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.ValueObject;
@@ -31,10 +29,10 @@ public class MarkupArgument extends ValueObject implements Markup {
 	public static final String OUTPUT_CALL		= "call";
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupArgument.class);
 
-	private List<Designator> designator;
+	private Designator designator;
 	private Argument arguments;
 	
-	public MarkupArgument(List<Designator> designator, Argument arguments) {
+	public MarkupArgument(Designator designator, Argument arguments) {
 		this.designator = designator;
 		this.arguments = arguments;
 		 if (logger.isDebugEnabled()) {
@@ -53,11 +51,11 @@ public class MarkupArgument extends ValueObject implements Markup {
 	public String toTransformerOutput() {		
 		
 		String DesignatorBlock = "";
-		for (Designator designatorItem: designator){
-			if (designatorItem instanceof ValueObject) {
-				DesignatorBlock = DesignatorBlock + ((ValueObject)designatorItem).toTransformerOutput();
+		//for (Designator designatorItem: designator){
+			if (designator instanceof ValueObject) {
+				DesignatorBlock = DesignatorBlock + ((ValueObject)designator).toTransformerOutput();
 			}
-		}
+		//}
 		
 		String ArgumentBlock = "";
 		if (arguments instanceof ValueObject) {
