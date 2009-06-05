@@ -95,12 +95,6 @@ public class MarkupParserTest extends TestCase {
 		TerminalParser.parse(markupParser, source);
 	}
 	
-	
-	public void test2DesignatorAndArgumentBlock(){
-		String source = "td img(var = var2, var3 = var4)";
-		TerminalParser.parse(markupParser, source);
-	}
-	
 	public void testDesignatorAndArgumentBlock(){
 		String source = "img(var = var2, var3 = var4)";
 		TerminalParser.parse(markupParser, source);
@@ -138,6 +132,9 @@ public class MarkupParserTest extends TestCase {
 	}
 	
 
+
+
+	
 	
 	
 	

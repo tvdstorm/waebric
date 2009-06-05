@@ -37,10 +37,11 @@ public class MarkupExpression extends ValueObject implements Statement, Markup {
 	private Expression expr = null;
 	private List<Markup> markupList = new ArrayList<Markup>(); 
 
-	public MarkupExpression(Markup markup, Object tail, Expression expression){ 
-		this.markupList.add(markup);
+	@SuppressWarnings("unchecked")
+	public MarkupExpression(/*Markup markup,*/ Object tail, Expression expression){ 
+		//this.markupList.add(markup);
 		if(tail instanceof List){
-			 List<Markup> tailList = ((List<Markup>)tail); 
+			List<Markup> tailList = ((List<Markup>)tail); 
 			markupList.addAll(tailList);
 		}else if(tail instanceof Expression){
 			this.expr = (Expression)tail;

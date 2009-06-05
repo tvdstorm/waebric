@@ -31,17 +31,16 @@ public class MultipleMarkup extends ValueObject implements Statement, Markup {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MultipleMarkup.class);
 
-	private List<Markup> markupList; 
+	private List<Markup> markupList;
 	private Markup markup;
 	
-	public MultipleMarkup(List<Markup> markupList){ 
+	public MultipleMarkup(List<List<Markup>> markupList){ 
 		// TODO: Add Assert to check markupList.size() >= 2
 		
 		// Definition is "Markup+ Markup"
 		// Split off last Markup
-		this.markupList = markupList;		
-		this.markup = markupList.get( markupList.size() - 1 );
-		this.markupList.remove( markupList.size() - 1 );	
+		this.markupList = markupList.get(0);
+		this.markup = this.markupList.remove( markupList.size() - 1 ); 
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
