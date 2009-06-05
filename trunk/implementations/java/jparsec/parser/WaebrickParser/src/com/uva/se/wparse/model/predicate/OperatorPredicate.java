@@ -20,11 +20,11 @@ package com.uva.se.wparse.model.predicate;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.parser.Operator;
 
-public final class OperatorPredicate extends ValueObject implements Expression, Predicate {
+public final class OperatorPredicate extends WaebricParseTreeNode implements Expression, Predicate {
 	
 	public static final String OUTPUT_OPERATOR_PREDICATE 		= "pred-op";
 	
@@ -53,17 +53,6 @@ public final class OperatorPredicate extends ValueObject implements Expression, 
 	
 	@Override
 	public String toTransformerOutput() {
-
-		String leftItem = "";
-		if (left instanceof ValueObject) {
-			leftItem = ((ValueObject)left).toTransformerOutput();
-		}
-		
-		String rightItem = "";
-		if (right instanceof ValueObject) {
-			rightItem = ((ValueObject)right).toTransformerOutput();
-		}
-		
 		String outputType = "";
 		
 		switch (op) {
@@ -76,9 +65,8 @@ public final class OperatorPredicate extends ValueObject implements Expression, 
 			default:
 				outputType = OUTPUT_OPERATOR_PREDICATE;
 				break;	
-		}
+		}		
 		
-		
-		return outputType + outputBracedBlock(leftItem + OUTPUT_BLOCK_SEPARATOR + rightItem);
+		return outputType + outputBracedBlock(left.toTransformerOutput() + OUTPUT_BLOCK_SEPARATOR + right.toTransformerOutput());
 	}
 }

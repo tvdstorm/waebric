@@ -20,12 +20,12 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.markup.Markup;
 
 
 
-public class SingleMarkup extends ValueObject implements Statement, Markup {
+public class SingleMarkup extends WaebricParseTreeNode implements Statement, Markup {
 	
 	public static final String OUTPUT_MARKUP = "markup";
 	
@@ -48,11 +48,7 @@ public class SingleMarkup extends ValueObject implements Statement, Markup {
 	
 	@Override
 	public String toTransformerOutput() {
-        String Result = "";
-        if (markup instanceof ValueObject) {
-        	Result = ((ValueObject)markup).toTransformerOutput();
-        }		
-		return OUTPUT_MARKUP + outputBracedBlock( Result );
+		return OUTPUT_MARKUP + outputBracedBlock( markup.toTransformerOutput() );
 	} 
 	
 	

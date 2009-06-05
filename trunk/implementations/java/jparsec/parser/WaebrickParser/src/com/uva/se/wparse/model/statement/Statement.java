@@ -19,5 +19,6 @@
 
 package com.uva.se.wparse.model.statement;
 
+import com.uva.se.wparse.model.common.TransformerOutput;
 
-public interface Statement {}
+public interface Statement extends TransformerOutput {}

@@ -24,10 +24,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.util.Strings;
 
-public final class Block extends ValueObject implements Statement {
+public final class Block extends WaebricParseTreeNode implements Statement {
 	
 	public static final String OUTPUT_BLOCK = "block";
 
@@ -53,9 +53,7 @@ public final class Block extends ValueObject implements Statement {
 	public String toTransformerOutput() {
 		String statementBlock = "";
 		for (Statement statement: statements){
-			if (statement instanceof ValueObject){
-				statementBlock = outputAddToBlock(statementBlock, ((ValueObject)statement).toTransformerOutput());
-			}			
+				statementBlock = outputAddToBlock(statementBlock, statement.toTransformerOutput());
 		}		
 		return OUTPUT_BLOCK + outputBracedBlock( outputBracedList( statementBlock ) );
 	}

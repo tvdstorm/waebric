@@ -22,12 +22,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Identifier;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
-public class Mapping extends ValueObject {
+public class Mapping extends WaebricParseTreeNode {
 	
 	public static final String OUTPUT_MAPPING_PATH = "path";
 	
@@ -65,11 +65,6 @@ public class Mapping extends ValueObject {
 			fullfilename = OUTPUT_MAPPING_PATH + outputBracedBlock( outputQuote( pathname ) + "," + fullfilename );
 		}
 		
-		String markupOutput = OUTPUT_EMPTY_ELEMENT;
-		if (markup instanceof ValueObject) {
-			markupOutput = markupOutput + ((ValueObject) markup).toTransformerOutput();
-		}
-	
-		return  fullfilename + OUTPUT_BLOCK_SEPARATOR + markupOutput;
+		return  fullfilename + OUTPUT_BLOCK_SEPARATOR + markup.toTransformerOutput();
 	}
 }

@@ -21,10 +21,10 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.predicate.Predicate;
 
-public final class If extends ValueObject implements Statement {
+public final class If extends WaebricParseTreeNode implements Statement {
 	
 	public static final String OUTPUT_IF = "if";
 	public static final String OUTPUT_NO_ELSE = "appl(prod([],cf(sort(\"NoElseMayFollow\")),no-attrs),[])";
@@ -54,17 +54,7 @@ public final class If extends ValueObject implements Statement {
 	
 	@Override
 	public String toTransformerOutput() {
-		String conditionItem = "";
-		if (condition instanceof ValueObject) {
-			conditionItem = ((ValueObject)condition).toTransformerOutput();
-		}
-		
-		String thenItem = "";
-		if (then instanceof ValueObject) {
-			thenItem = ((ValueObject)then).toTransformerOutput();
-		}		
-		
-		return OUTPUT_IF + outputBracedBlock(conditionItem + OUTPUT_BLOCK_SEPARATOR + thenItem + OUTPUT_BLOCK_SEPARATOR + OUTPUT_NO_ELSE);
+		return OUTPUT_IF + outputBracedBlock(condition.toTransformerOutput() + OUTPUT_BLOCK_SEPARATOR + then.toTransformerOutput() + OUTPUT_BLOCK_SEPARATOR + OUTPUT_NO_ELSE);
 	}
 	
 }

@@ -22,10 +22,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 
 
-public class Designator extends ValueObject implements Markup{	
+public class Designator extends WaebricParseTreeNode implements Markup{	
 	
 	public static final String OUTPUT_TAG = "tag";
 	
@@ -53,9 +53,7 @@ public class Designator extends ValueObject implements Markup{
 		
 		String AttributeBlock = "";
 		for (Attribute attribute: attributes) {
-			if (attribute instanceof ValueObject){
-				AttributeBlock = AttributeBlock + ((ValueObject)attribute).toTransformerOutput();				
-			}			
+			AttributeBlock = AttributeBlock + attribute.toTransformerOutput();				
 		}
 		
 		String Result = outputQuote( identifier.trim() ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_LIST_BEGIN + AttributeBlock + OUTPUT_LIST_END;

@@ -22,11 +22,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.embedding.Embedding;
 import com.uva.se.wparse.model.markup.Markup;
 
-public class MarkupEmbedding extends ValueObject implements Statement, Markup {
+public class MarkupEmbedding extends WaebricParseTreeNode implements Statement, Markup {
 	
 	public static final String OUTPUT_MARKUP_EMBEDDING = "markup-embedding";
 	
@@ -53,18 +53,10 @@ public class MarkupEmbedding extends ValueObject implements Statement, Markup {
 	public String toTransformerOutput() {
 		String markupList = "";
 		for (Markup markupItem: markup) {
-			if (markupItem instanceof ValueObject) {
-				markupList = outputAddToBlock(markupList, ((ValueObject)markupItem).toTransformerOutput());
-			}
+			markupList = outputAddToBlock(markupList, markupItem.toTransformerOutput());
 		}
 		
-		
-		String embeddingItem = "";		
-		if (embedding instanceof ValueObject) {
-			embeddingItem = ((ValueObject)embedding).toTransformerOutput();
-		}		
-		
-		return OUTPUT_MARKUP_EMBEDDING + outputBracedBlock( outputAddToBlock( outputBracedList( markupList ), embeddingItem ) ); 
+		return OUTPUT_MARKUP_EMBEDDING + outputBracedBlock( outputAddToBlock( outputBracedList( markupList ), embedding.toTransformerOutput() ) ); 
 	}
 	
 	

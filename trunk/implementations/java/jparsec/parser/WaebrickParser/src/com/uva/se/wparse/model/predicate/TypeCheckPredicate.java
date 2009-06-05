@@ -2,12 +2,13 @@ package com.uva.se.wparse.model.predicate;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 
-public class TypeCheckPredicate extends ValueObject implements Predicate {
+public class TypeCheckPredicate extends WaebricParseTreeNode implements Predicate {
 	
-	public static final String OUTPUT_PREDICATE_TYPE_CHECK = "is-a";
+	public static final String OUTPUT_PREDICATE_TYPE_CHECK 		= "is-a";
+	public static final String OUTPUT_PREDICATE_TYPE_POSTFIX 	= "-type";
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(TypeCheckPredicate.class);
 	
@@ -29,12 +30,7 @@ public class TypeCheckPredicate extends ValueObject implements Predicate {
 	
 	@Override
 	public String toTransformerOutput() {
-		String expressionItem = "";
-		if (expression instanceof ValueObject) {
-			expressionItem = ((ValueObject)expression).toTransformerOutput();
-		}		
-		
-		return OUTPUT_PREDICATE_TYPE_CHECK + outputBracedBlock( expressionItem + OUTPUT_BLOCK_SEPARATOR + type + "-type" );
+		return OUTPUT_PREDICATE_TYPE_CHECK + outputBracedBlock( expression.toTransformerOutput() + OUTPUT_BLOCK_SEPARATOR + type + OUTPUT_PREDICATE_TYPE_POSTFIX );
 	}
 	
 	

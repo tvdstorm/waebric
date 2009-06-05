@@ -18,7 +18,8 @@
  */
 package com.uva.se.wparse.model.predicate;
 
+import com.uva.se.wparse.model.common.TransformerOutput;
 
-public interface Predicate {
+public interface Predicate extends TransformerOutput {
 
 }

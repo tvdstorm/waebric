@@ -2,10 +2,10 @@ package com.uva.se.wparse.model.predicate;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 
-public class ExpressionPredicate extends ValueObject implements Predicate {
+public class ExpressionPredicate extends WaebricParseTreeNode implements Predicate {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(ExpressionPredicate.class);
 	
@@ -25,11 +25,7 @@ public class ExpressionPredicate extends ValueObject implements Predicate {
 	
 	@Override
 	public String toTransformerOutput() {
-		String expressionItem = "";
-		if (expression instanceof ValueObject) {
-			expressionItem = ((ValueObject)expression).toTransformerOutput();
-		}
-		return expressionItem;
+		return expression.toTransformerOutput();
 	}
 
 }

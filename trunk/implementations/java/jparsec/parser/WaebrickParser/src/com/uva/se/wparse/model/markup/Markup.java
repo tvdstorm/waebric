@@ -18,6 +18,8 @@
  */
 package com.uva.se.wparse.model.markup;
 
-public interface Markup  {
+import com.uva.se.wparse.model.common.TransformerOutput;
+
+public interface Markup extends TransformerOutput  {
 
 }

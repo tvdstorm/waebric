@@ -20,11 +20,11 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.StringLiteral;
 
 
-public class Comment extends ValueObject implements Statement {
+public class Comment extends WaebricParseTreeNode implements Statement {
 	
 	public static final String OUTPUT_COMMENT = "comment";
 

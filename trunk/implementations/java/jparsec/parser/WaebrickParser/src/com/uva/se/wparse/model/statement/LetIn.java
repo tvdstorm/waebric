@@ -23,10 +23,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 
 
-public final class LetIn extends ValueObject implements Statement {
+public final class LetIn extends WaebricParseTreeNode implements Statement {
 	
 	public static final String OUTPUT_LETIN = "let";
 	
@@ -54,16 +54,12 @@ public final class LetIn extends ValueObject implements Statement {
   	public String toTransformerOutput() {
   		String expressionItem = "";
   		for (Assignment assignment: assignmentList) {  		
-  			if (assignment instanceof ValueObject) {
-  				expressionItem = ((ValueObject)assignment).toTransformerOutput();
-  			}
+			expressionItem = assignment.toTransformerOutput();
   		}
   		
   		String statementListString = "";
   		for (Statement statement: statementList) {
-  			if (statement instanceof ValueObject) {
-  				statementListString = outputAddToBlock(statementListString, ((ValueObject)statement).toTransformerOutput());
-  			}
+  			statementListString = outputAddToBlock(statementListString, statement.toTransformerOutput());
   		}
   		
   		return OUTPUT_LETIN + outputBracedBlock( outputBracedList( expressionItem ) + OUTPUT_BLOCK_SEPARATOR + outputBracedList( statementListString ) );	

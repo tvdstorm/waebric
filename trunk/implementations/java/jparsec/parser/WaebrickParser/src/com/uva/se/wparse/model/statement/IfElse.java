@@ -21,10 +21,10 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.predicate.Predicate;
 
-public final class IfElse extends ValueObject implements Statement {
+public final class IfElse extends WaebricParseTreeNode implements Statement {
 	
 	public static final String OUTPUT_IF_ELSE = "if-else";
 
@@ -56,22 +56,6 @@ public final class IfElse extends ValueObject implements Statement {
 	
 	@Override
 	public String toTransformerOutput() {
-		String conditionItem = "";
-		if (condition instanceof ValueObject) {
-			conditionItem = ((ValueObject)condition).toTransformerOutput();
-		}
-		
-		String thenItem = "";
-		if (thenStatement instanceof ValueObject) {
-			thenItem = ((ValueObject)thenStatement).toTransformerOutput();
-		}
-		
-		String elseItem = "";
-		if (elseStatement instanceof ValueObject) {
-			elseItem = ((ValueObject)elseStatement).toTransformerOutput();
-		}
-				
-		return OUTPUT_IF_ELSE + outputBracedBlock(conditionItem + OUTPUT_BLOCK_SEPARATOR + thenItem + OUTPUT_BLOCK_SEPARATOR + elseItem );
-		
+		return OUTPUT_IF_ELSE + outputBracedBlock(condition.toTransformerOutput() + OUTPUT_BLOCK_SEPARATOR + thenStatement.toTransformerOutput() + OUTPUT_BLOCK_SEPARATOR + elseStatement.toTransformerOutput() );		
 	}
 }

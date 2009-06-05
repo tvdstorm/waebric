@@ -24,12 +24,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.util.Strings;
 
 
 
-public final class BlockArgument extends ValueObject implements Argument {
+public final class BlockArgument extends WaebricParseTreeNode implements Argument {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(BlockArgument.class);
 	
@@ -57,9 +57,7 @@ public final class BlockArgument extends ValueObject implements Argument {
 	  
 	  if (args != null) {
 		  	for (Argument arg: args) {
-		  		if (arg instanceof ValueObject) {
-		  			Result = outputAddToBlock(Result, ((ValueObject)arg).toTransformerOutput());
-		  		}
+	  			Result = outputAddToBlock(Result, arg.toTransformerOutput());
 		  	}
 	  }	  
 	  return Result;

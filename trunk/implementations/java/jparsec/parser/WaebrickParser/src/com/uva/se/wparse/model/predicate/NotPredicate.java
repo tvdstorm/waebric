@@ -1,9 +1,9 @@
 package com.uva.se.wparse.model.predicate;
 
 import org.apache.log4j.Logger;
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 
-public class NotPredicate extends ValueObject implements Predicate {
+public class NotPredicate extends WaebricParseTreeNode implements Predicate {
 	
 	public static final String OUTPUT_PREDICATE_NEGATION = "not";
 
@@ -25,11 +25,6 @@ public class NotPredicate extends ValueObject implements Predicate {
 	
 	@Override
 	public String toTransformerOutput() {
-		String predicateItem = "";
-		if (predicate instanceof ValueObject) {
-			predicateItem = ((ValueObject)predicate).toTransformerOutput();
-		}		
-		
-		return OUTPUT_PREDICATE_NEGATION + outputBracedBlock(predicateItem);
+		return OUTPUT_PREDICATE_NEGATION + outputBracedBlock( predicate.toTransformerOutput() );
 	}	
 }

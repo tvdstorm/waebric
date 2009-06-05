@@ -21,10 +21,10 @@ package com.uva.se.wparse.model.markup;
 import org.apache.log4j.Logger;
 import org.codehaus.jparsec.Token;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.parser.Operator;
 
-public class SingleAttribute extends ValueObject implements Attribute  {
+public class SingleAttribute extends WaebricParseTreeNode implements Attribute  {
 	
 	public static final String OUTPUT_ATRIBUTE_ID 		= "id";
 	public static final String OUTPUT_ATRIBUTE_CLASS 	= "class";

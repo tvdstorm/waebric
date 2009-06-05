@@ -23,12 +23,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
-public class MarkupExpression extends ValueObject implements Statement, Markup {
+public class MarkupExpression extends WaebricParseTreeNode implements Statement, Markup {
 	
 	public static final String OUTPUT_MARKUP_EXPRESSION = "markup-exp";
 	
@@ -66,17 +66,10 @@ public class MarkupExpression extends ValueObject implements Statement, Markup {
 	public String toTransformerOutput() {
 		String markupBlock = "";
 		for (Markup markupItem: markupList) {
-			if (markupItem instanceof ValueObject) {
-				markupBlock = outputAddToBlock( markupBlock, ((ValueObject)markupItem).toTransformerOutput() );
-			}
+			markupBlock = outputAddToBlock( markupBlock, markupItem.toTransformerOutput() );
 		}		
 		
-		String expressionItem = "";
-		if (expr instanceof ValueObject) {
-			expressionItem = ((ValueObject)expr).toTransformerOutput();
-		}
-		
-		return OUTPUT_MARKUP_EXPRESSION + outputBracedBlock( outputAddToBlock( outputBracedList( markupBlock ), expressionItem ) ); 
+		return OUTPUT_MARKUP_EXPRESSION + outputBracedBlock( outputAddToBlock( outputBracedList( markupBlock ), expr.toTransformerOutput() ) ); 
 	}
 	
 	

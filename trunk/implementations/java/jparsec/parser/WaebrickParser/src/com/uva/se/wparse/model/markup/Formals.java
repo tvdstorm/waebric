@@ -24,13 +24,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Identifier;
 import com.uva.se.wparse.util.Strings;
 
 
 
-public final class Formals extends ValueObject {
+public final class Formals extends WaebricParseTreeNode {
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Formals.class);
 	
@@ -58,9 +58,7 @@ public final class Formals extends ValueObject {
 	  
 	  if (identifierList != null) {
 		  	for (Identifier ident: identifierList) {
-		  		if (ident instanceof ValueObject) {
-		  			Result = outputAddToBlock(Result, ((ValueObject)ident).toTransformerOutput());
-		  		}
+	  			Result = outputAddToBlock(Result, ident.toTransformerOutput());
 		  	}
 	  }	 
 	  return Result;

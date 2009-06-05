@@ -20,11 +20,11 @@ package com.uva.se.wparse.model.statement;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.ValueObject;
+import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.expression.Identifier;
 
-public final class Each extends ValueObject implements Statement {
+public final class Each extends WaebricParseTreeNode implements Statement {
 	
 	public static final String OUTPUT_EACH = "each";
 
@@ -55,16 +55,6 @@ public final class Each extends ValueObject implements Statement {
 	
 	@Override
 	public String toTransformerOutput() {
-		String ExpressionItem = "";
-		if (expr instanceof ValueObject) {
-			ExpressionItem = ((ValueObject)expr).toTransformerOutput();
-		}
-		
-		String StatementItem = "";
-		if (stmt instanceof ValueObject) {
-			StatementItem = ((ValueObject)stmt).toTransformerOutput();
-		}
-		
-		return OUTPUT_EACH + outputBracedBlock( outputQuote( identifier ) + OUTPUT_BLOCK_SEPARATOR + ExpressionItem + OUTPUT_BLOCK_SEPARATOR + StatementItem  );
+		return OUTPUT_EACH + outputBracedBlock( outputQuote( identifier ) + OUTPUT_BLOCK_SEPARATOR + expr.toTransformerOutput() + OUTPUT_BLOCK_SEPARATOR + stmt.toTransformerOutput() );
 	}
 }
