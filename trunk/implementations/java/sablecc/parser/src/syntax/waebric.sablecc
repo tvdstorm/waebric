@@ -63,6 +63,7 @@ Tokens
 	semi_colon = ';';
 	comma = ',';
 	dot = '.';
+	caret = '^';
 	number_sign = '#';
 	dollar_sign = '$';
 	at_sign = '@';
@@ -192,18 +193,15 @@ Productions
 		
 	expression_no_plus =
 			{idcon}					T.id_con 
-		|	{no_idcon}				P.expression_no_idcon
-		;
-
-	expression_no_idcon =  
-			{text}					T.text 
+		|	{text}					T.text 
 		|	{symbol_con}			T.symbol_con 
 		|	{nat_con}				T.nat_con 
-		|	{expression_idcon}		P.expression_no_idcon T.dot T.id_con 
+		|	{dot_idcon}				P.expression_no_plus T.caret T.id_con
 		|	{multiple_expressions}	T.l_bracket P.expressions? T.r_bracket 
 		|	{key_value_pairs}		T.l_brace P.key_value_pairs? T.r_brace
-		;		
-		
+		;
+
+	
 	expressions = 
 			{single}	P.expression 
 		|	{multiple}	P.expressions T.comma P.expression
@@ -255,8 +253,8 @@ Productions
 		
 	statement_markup_no_statement =
 			{markup_single}			P.markup T.semi_colon
-		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup T.semi_colon
-		|	{markup_expression}		P.markup+ P.expression_no_idcon T.semi_colon		
+		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup_no_short_markup T.semi_colon
+		|	{markup_expression}		P.markup+ P.expression T.semi_colon
 		|	{embedding}				P.markup+ P.embedding T.semi_colon
 		;
 		
