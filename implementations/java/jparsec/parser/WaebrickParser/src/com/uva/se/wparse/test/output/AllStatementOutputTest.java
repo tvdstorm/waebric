@@ -82,7 +82,7 @@ public class AllStatementOutputTest extends TestCase {
 	}
 
 	public void testStatementIfElseOutput(){
-		String source = INPUTTEST_STATEMENT_LET;		
+		String source = INPUTTEST_STATEMENT_IF_ELSE;		
 		String expectedOutput = OUTPUTTEST_STATEMENT_IF_ELSE;		
 		assertEquals(expectedOutput, getModuleParserOutput(source));
 	}
