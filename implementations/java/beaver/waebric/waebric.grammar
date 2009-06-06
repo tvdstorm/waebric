@@ -13,10 +13,7 @@
 
 %terminals DIRNAME, FILENAME;
 
-%terminals NATCON, STRCON, TEXTCHARS, SYMBOLCON;
-
-
-    
+%terminals NATCON, STRCON, SYMBOLCON;
 
 %terminals TODO_EMBEDDING, TODO_MARKUP, TODO_PREDICATE  ;
 
@@ -104,35 +101,53 @@ formallist = IDCON.i {: //#formal_a(#i):}
 
 
 /* SDF specificatie: languages/waebric/syntax/Expressions */
-var = IDCON
+var = IDCON.i {: //@var(#i) :}
 ;
 
 
 expression = var
-| SYMBOLCON.s				{: //@sym(#s) :}
-| NATCON
-| expression DOT IDCON
-| LBRACK expressions RBRACK
-| LBRACE keyvaluepairs RBRACE
+| symbolcon.s {: //@sym(s) :}
+| NATCON.n {: //@num(#n) :}  
+| expression.e DOT IDCON.i {: //@field(e,#i) :}
+| LBRACK expressions.e RBRACK {: //@list(e) :}
+| LBRACE keyvaluepairs.p RBRACE /* {: //@record(p) :} */
 ;
 
+symbolcon = SYMBOLCON.s  {: //#sym_text(#s) :}
+;
 
 expressions = expression
-| expressions COMMA expression
+| expressions.a COMMA expression.b {: //#expressionlist(a,b) :}
 ;
 
-keyvaluepair = IDCON COLON expression
+keyvaluepair = IDCON.i COLON expression.e /* {: //@pair(#i,e) :} */
 ;
 
 keyvaluepairs = keyvaluepair
-| keyvaluepairs COMMA keyvaluepair
+| keyvaluepairs.a COMMA keyvaluepair.b /* {: //#pairlist(a,b) :} */
 ;
 
 /* SDF specificatie: languages/waebric/syntax/Embedding */
 embedding = TODO_EMBEDDING {: //@todo_embedding() :}
 ;
+/* EMBEDDING IS NOG NIET GEIMPLEMENTEERD - NIET MEECOMPILEREN 
+texttail = POSTTEXT
+| MIDTEXT embed texttail
+;
 
+embedding = PRETEXT embed texttail
+| TODO_EMBEDDING {: //@todo_embedding() :}
+;
+
+embed = markup_opt expression
+;
+
+markup_opt = 
+| markup_seq
+;
+*/
 /* SDF specificatie: languages/waebric/syntax/Markup */
+
 arguments = LPAREN argumentlist_opt RPAREN
 ;
 
@@ -150,20 +165,21 @@ argument = IDCON EQ expression
 
 markup = designator arguments
 | designator
-| TODO_MARKUP {: //@todo_markup():}
+| TODO_MARKUP {: //@todo_markup() :}
 ;
+
 /*
 markup_seq = markup
 | markup_seq markup
 ;
 
 statement = markup_seq statement
-| markup SEMICOLON
-| markup_seq markup SEMICOLON
+| markup_seq SEMICOLON
 | markup_seq expression SEMICOLON
 | markup_seq embedding SEMICOLON
 ;
 */
+
 designator = IDCON attribute_opt
 ;
 
