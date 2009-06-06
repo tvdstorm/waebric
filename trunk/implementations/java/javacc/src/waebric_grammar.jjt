@@ -1,0 +1,391 @@
+options {
+  JDK_VERSION = "1.5";
+} 
+
+PARSER_BEGIN(WaebricParser) 
+
+public class WaebricParser {
+  public static void main(String args[]) {
+    System.out.println("Reading from standard input...");
+    System.out.print("Enter a Waebric FunctionDef :");
+    new WaebricParser(System.in);
+    try {
+      SimpleNode n = WaebricParser.Modules();
+      n.dump("");
+      System.out.println("Thank you.");
+    } catch (Exception e) {
+      System.out.println("Oops.");
+      System.out.println(e.getMessage());
+    }
+  }
+}
+PARSER_END(WaebricParser)
+
+/* LAYOUT */
+<*>
+SKIP : {
+	" "
+	| "\t"
+	| "\n"
+	| "\r"
+	| <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+	| <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
+}
+
+/* RESERVED KEYWORDS */
+<DEFAULT, IN_NO_MODULEID, IN_PATH>
+TOKEN : {
+	< MODULE : "module" >
+	|	< IMPORT : "import" >
+	|	< SITE : "site" > : IN_PATH
+	|	< END : "end" > : DEFAULT
+	|	< DEF : "def" > : IN_NO_MODULEID
+	|	< IF : "if" >
+	|	< ELSE : "else" >
+	|	< EACH : "each" >
+	|	< LET : "let" >
+	|	< IN : "in" >
+	|	< YIELD : "yield" >
+	|	< COMMENT : "comment" > : IN_STRCON
+	|	< ECHO : "echo" >
+	|	< CDATA : "cdata" >
+	|	< #LIST : "list" >
+	|	< #RECORD : "record" >
+	|	< #STRING : "string" >
+}
+
+/* SEPARATORS */
+<DEFAULT, IN_NO_MODULEID, IN_NO_IDCON>
+TOKEN : {
+	< LPAREN : "(" > 
+	|	< RPAREN : ")" > 
+	|	< LBRACKET : "[" >
+	|	< RBRACKET : "]" >
+	|	< LBRACE : "{" >
+	|	< RBRACE : "}" >
+	|	< SEMICOLON : ";" > : IN_NO_MODULEID
+	|	< COLON : ":" >
+	|	< COMMA : "," >
+	|	< DOT : "." >
+}
+
+/* OPERATORS */
+<IN_NO_MODULEID>
+TOKEN : {
+	< DOLLAR_SIGN: "$" >
+	|	< NUMBER_SIGN: "#" >
+	|	< ASSIGN : "=" >
+	|	< AT : "@" >
+	|	< QUESTIONMARK: "?" >
+	|	< EXCLAMATION: "!" >
+	|	< PERCENT : "%" >
+}
+
+/* START NORMAL TOKENS */
+<DEFAULT>
+TOKEN : {
+	< ModuleId :
+		(< IdCon > (< DOT >)?)+
+	>	
+}
+
+<IN_PATH>
+TOKEN : {
+	< #PathElement :
+		(~[" ","\t","\n","\r",".","/","\\"])+
+	>	
+}
+
+<IN_PATH>
+TOKEN : {
+	< FileName :
+		<PathElement> <DOT> <FileExt>
+	> : IN_NO_MODULEID
+} 
+
+<IN_PATH>
+TOKEN : {
+	< #FileExt :
+		(["a"-"z","A"-"Z","0"-"9"])+
+	>
+}
+
+<IN_PATH>
+TOKEN : {
+	< DirName :
+		<Directory>
+	>	
+}
+
+<IN_PATH>
+TOKEN : {
+	< #Directory :
+		(<PathElement> "/")+
+	>	
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+	< IdCon :
+		["A"-"Z","a"-"z"](["A"-"Z","a"-"z","-","0"-"9"])* 
+	> 
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+	< NatCon : (["0"-"9"])+ >
+}
+
+<IN_NO_MODULEID>
+TOKEN : {   
+ 	< SymbolCon : 
+ 		["'"] (<SymbolChar>)* 
+ 	>
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+	< Text : 
+		["\""] (<TextChar>)* ["\""] 
+	>
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+    < #TextChar : 
+    	<TextCharRef> 
+    	|	<EscQuote>
+    	|	<Amp>
+    	|	<TextEntityRef>
+    	|	~["\0"-"\37","&","\"","<","\200"-"\377"] | ["\n","\r","\t"] 
+    >
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+    < #TextCharRef : 
+    	"&#" (["0"-"9"])+ <SEMICOLON> | "&#x" (["0"-"9","a"-"f","A"-"F"])+ <SEMICOLON>
+    >
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+   	< #EscQuote : 
+   		["\\"]["\""]
+   	> 
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+    < #Amp : 
+    	["&"] 
+    >
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+   	< #TextEntityRef : 
+   		"&" ["a"-"z","A"-"Z","_",":"] (["a"-"z","A"-"Z","0"-"9",".","-","_",":"])* <SEMICOLON> 
+   	>
+} 
+
+<IN_STRCON>
+TOKEN : {
+	< StrCon :
+		"\"" (< StrChar >)* "\""
+	> : IN_NO_IDCON
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+	< #StrChar :
+		"\n"
+		|	"\t"
+		|	"\\"
+		|	"\\\\"
+		|	"\\" (["0"-"9"]){3}
+		|	~["\0"-"\37","\n","\t","\"","\\"]
+	>
+}
+<IN_NO_MODULEID>
+TOKEN : {
+	< Type :
+		<LIST>
+		|	<RECORD>
+		|	<STRING>
+	>
+}
+
+// Embedding
+<IN_NO_MODULEID>
+TOKEN : {
+	< PreText :
+		"\"" (<TextChar>)* "<"
+	>
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+	< PostText :
+		">" (<TextChar>)* "\""
+	>	
+}
+
+<IN_NO_MODULEID>
+TOKEN : {
+	< MidText :
+		">" (<TextChar>)* "<"
+	>	
+}
+
+<IN_NO_IDCON>
+TOKEN : {
+    < #SymbolChar : 
+    	~["\0"-"\37",")"," ","\t","\n","\r",";",",",">","\177"-"\377"] // Octale getallen
+    >
+}
+
+/* GENERIC */
+SimpleNode Modules():{}
+{
+  (Module())* ";" 
+  { return jjtThis; }
+}
+
+void Module() : {} {
+	< MODULE > < ModuleId > (ModuleElement())*
+}
+
+
+void ModuleElement() : {} {
+	Import()
+	|	Site()
+	|	FunctionDef()
+}
+
+// ModuleElement Import 
+// *********************************************
+void Import() : {} { 
+	< IMPORT > < ModuleId > 
+} 
+
+// ModuleElement Site
+// *********************************************
+void Site() : {} {
+	< SITE > Mappings() < END >
+}
+
+void Mappings() : {} {
+	(Mapping() (<SEMICOLON>)?)*
+}
+
+void Mapping() : {} {
+	Path() <COLON> Markup()
+}
+
+void Path() : {} {
+	<FileName>
+	|	<DirName> <FileName> 
+}
+
+// ModuleElement FunctionDef
+// *********************************************
+void FunctionDef(): {} {
+	<DEF> <IdCon> (Formals())? (Statement())* <END>
+}
+
+void Formals() : {} {
+	<LPAREN> (<IdCon> (<COMMA>)?)* <RPAREN>
+}
+
+void Statement() : {} {
+	LOOKAHEAD(8)(<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE> Statement()
+	|	<IF> <LPAREN> Predicate()<RPAREN> Statement()
+	|	<EACH> <LPAREN> Var() <COLON> Expression() (DotIdCon())? <RPAREN> Statement()
+	|	<LET> (Assignment())+ <IN> (Statement())* <END>
+	|	(<LBRACE> (Statement())* <RBRACE>)
+	|	<YIELD> <SEMICOLON>
+	|	<COMMENT> <StrCon> <SEMICOLON>
+	|	LOOKAHEAD(2)<ECHO> Expression() (DotIdCon())? <SEMICOLON>
+	|	LOOKAHEAD(2)<ECHO> Embedding() (DotIdCon())? <SEMICOLON>
+	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON>
+	|   (Markup())+ (<SEMICOLON> 
+		|	LOOKAHEAD(2)(Statement()) 
+		|	LOOKAHEAD(2)(Expression()(DotIdCon())? <SEMICOLON>) 
+		|	(Embedding() <SEMICOLON>))
+}
+
+void Predicate() : {} {
+	LOOKAHEAD(2) Expression() (DotIdCon())?
+	|	LOOKAHEAD(Expression() (DotIdCon())?)<DOT> <Type>
+}
+
+void Assignment() : {} {
+	LOOKAHEAD(2)<IdCon> Formals() <ASSIGN> Statement()
+	|	LOOKAHEAD(2)Var() <ASSIGN> Expression() <SEMICOLON>
+}
+
+void Embedding() : {} {
+	<PreText> Embed() TextTail()	
+}
+
+void Embed() : {} { 
+	(Markup())* Expression()(DotIdCon())?
+}
+
+void TextTail() : {} { 
+	<PostText>
+	|	<MidText> Embed() TextTail()
+}
+
+// Used by both the Site and FunctionDef ModuleElements
+// *********************************************
+void Markup() : {} { 
+	Designator() (Arguments())?
+}
+
+void Designator() : {} {
+	<IdCon> (Attribute())*	
+}
+
+void Attribute() : {} {
+	<NUMBER_SIGN> <IdCon>
+	|	<DOT> <IdCon>
+	|	<DOLLAR_SIGN> <IdCon>
+	|	<COLON> <IdCon>
+	| 	LOOKAHEAD(2) <AT> <NatCon> <PERCENT> <NatCon>
+	| 	<AT> <NatCon>
+}
+
+void Arguments() : {} {
+	<LPAREN> (Argument() (<COMMA>)?)* <RPAREN>
+}
+
+void Argument() : {} {
+	LOOKAHEAD(2)Var() <ASSIGN> Expression() (DotIdCon())?
+	|	Expression() (DotIdCon())?
+}
+
+void Var() : {} {
+	<IdCon>
+}
+
+void Expression() : {} {
+	// DotIdCon staat verspreid voor alle aanroepen van Expression
+	// Toevoegen hier werkt niet, overal achter expression werkt wel.
+	<SymbolCon> 
+	|	<Text>
+	|	<NatCon>
+	|	Var()
+	|	<LBRACKET> (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
+	|	<LBRACE> (KeyValuePair()  (<COMMA>)? )* <RBRACE>
+}
+
+void DotIdCon() : {} {
+	<DOT> <IdCon>
+}
+
+void KeyValuePair() : {} {
+	<IdCon> <COLON> Expression() (DotIdCon())?
+}
+
