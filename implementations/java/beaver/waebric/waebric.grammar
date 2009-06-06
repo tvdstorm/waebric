@@ -18,7 +18,7 @@
 
     
 
-%terminals TODO_EMBEDDING, TODO_MARKUP  ;
+%terminals TODO_EMBEDDING, TODO_MARKUP, TODO_PREDICATE  ;
 
 
 %goal module;
@@ -68,12 +68,23 @@ statement = EACH LPAREN var COLON expression RPAREN statement
 | LBRACE statements_opt.s RBRACE {: //@block([s]) :}
 ;
 
-statement = COMMENT strcon.s SEMICOLON {: //@comment(s) :}
+statement = matched_statement
+| open_statement
+;
+
+matched_statement = IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE matched_statement.b {: //@if_else(p,a,b) :}
+| COMMENT STRCON.s SEMICOLON {: //@comment(#s) :}
 | ECHO expression.e SEMICOLON {: //@echo(e) :}
-| ECHO embedding.e SEMICOLON {: //@embedding(e) :}
+| ECHO embedding.e SEMICOLON {: //@echo_embedding(e) :}
 | CDATA expression.e SEMICOLON {: //@cdata(e) :}
 | YIELD SEMICOLON {: //@yield() :}
 ;
+
+
+open_statement = IF LPAREN TODO_PREDICATE.p RPAREN statement.a {: //@if(p,a) :}
+| IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE open_statement.b {: //@if_else(p,a,b) :}
+;
+
 
 assignment = IDCON formals EQ statement
 ;
@@ -90,8 +101,7 @@ formallist = IDCON.i {: //#formal_a(#i):}
 | idcons.a COMMA IDCON.b {: //#formallist(a,#b):}
 ;
 
-strcon = STRCON.s  {: //#astrcon(#s):}
-;
+
 
 /* SDF specificatie: languages/waebric/syntax/Expressions */
 var = IDCON
@@ -99,15 +109,13 @@ var = IDCON
 
 
 expression = var
-| symbolcon.s				{: //@sym(s) :}
+| SYMBOLCON.s				{: //@sym(#s) :}
 | NATCON
 | expression DOT IDCON
 | LBRACK expressions RBRACK
 | LBRACE keyvaluepairs RBRACE
 ;
 
-symbolcon = SYMBOLCON.s  {: //#sym_text(#s) :}
-;
 
 expressions = expression
 | expressions COMMA expression
