@@ -45,7 +45,7 @@
 		<delete>
 			<fileset dir=".." includes="*.class,*.java,*.spec,*.*~" excludes="Test.java,Main.java,BagOfSyntaxErrors.java"/>
 			<fileset dir="../waebric/" includes="*.class,*.java,*.spec,*.*~" excludes="Test.java,Main.java,BagOfSyntaxErrors.java"/>
-			<fileset dir="../waebric/ast/" includes="*.class,*.java,*.spec,*.*~" excludes="Node.java,Cons.java,ZeroCons.java,OneCons.java,TwoCons.java,ListType.java,ConsListType.java,ListTypeCons.java"/>
+			<fileset dir="../waebric/ast/" includes="*.class,*.java,*.spec,*.*~" excludes="Node.java,Cons.java,ZeroCons.java,OneCons.java,TwoCons.java,ThreeCons.java,ListType.java,ConsListType.java,ListTypeCons.java"/>
 		</delete>
 	</target>
 

@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.zip.DeflaterOutputStream;
+import java.util.Hashtable;
 
 import beaver.Parser;
 import beaver.comp.io.SrcReader;
@@ -39,6 +40,8 @@ public class ASTGenerator
 		{
 			System.out.println("create AST");
 			FileWriter treeWalkerOut = new FileWriter(new File(dir+"/ast/", "TreeWalker.java"));
+			Hashtable createdFunctions = new Hashtable();
+
 			try
 			{
 				String treewalkCode="package waebric.ast;\n\n";
@@ -75,25 +78,30 @@ public class ASTGenerator
 							
 						}
 			
-						astInfo.printArguments();
+						
+						Object oFunctionCreated = (Object)createdFunctions.get(astInfo.className);
+					    if (oFunctionCreated == null) {
+							FileWriter out = new FileWriter(new File(dir+"/ast/", astInfo.className + ".java"));
+							try
+							{
+									String classCode = getClassCode(astInfo);
+									out.write(classCode);
+									out.write("\n");
+							}
+							finally
+							{
+								out.close();	
+							}
 		
-						FileWriter out = new FileWriter(new File(dir+"/ast/", astInfo.className + ".java"));
-						try
-						{
-								String classCode = getClassCode(astInfo);
-								out.write(classCode);
-								out.write("\n");
-						}
-						finally
-						{
-							out.close();	
-						}
-
+							treewalkCode += getTreeWalkCode(astInfo);	
+							createdFunctions.put(astInfo.className, true );
+					    }
+						
+						
+						astInfo.printArguments();
 						String newCode = "return new " + astInfo.newFuncion + ";";
 						rule.code = newCode;
 						System.out.println(newCode);
-							
-						treewalkCode += getTreeWalkCode(astInfo);	
 					
 				}
 				}
@@ -213,6 +221,12 @@ public class ASTGenerator
 			{
 				extendClass="ConsListType";	
 			}
+			if(astInfo.argument[0].astType.equals(ASTtype.CONS) &&
+			 	astInfo.argument[1].astType.equals(ASTtype.CONS) &&
+				astInfo.argument[2].astType.equals(ASTtype.CONS))
+			{
+				extendClass="ThreeCons";	
+			}
 		}
 		return extendClass;
 	}
@@ -221,7 +235,10 @@ public class ASTGenerator
 	{
 		int nrCons= astInfo.getNumberOfCons();
 		String superConstruction="super(left, right);";
-		
+		if(nrCons==3)
+		{
+			superConstruction="super(left, right, tirth);\n";
+		}	
 		if(nrCons==2)
 		{
 			if(astInfo.numberOfArguments==3)
@@ -489,7 +506,7 @@ public class ASTGenerator
 	{
 
 		String[] stringVariables = { "cons.valueLeft" , "cons.valueRight",  "cons.valueTirth" };
-		String[] consVariables = { "cons.l" , "cons.r" };
+		String[] consVariables = { "cons.l" , "cons.r", "cons.t" };
 		
 		String varname = "";
 
