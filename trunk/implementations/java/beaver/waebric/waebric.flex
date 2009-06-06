@@ -89,8 +89,8 @@ Natcon = 0 | [1-9][0-9]*
    between A and Z, a and z, zero and nine, or an underscore. */
 dec_int_id = [A-Za-z_.][A-Za-z_0-9.]*
 
-TextChar = ~[\0-\31\&\"\<\128-\255] \/ [\n\r\t] 
-SymbolChar = ~[\0-\31\)\ \t\n\r\;\,\>\127-\255] 
+TextChar = [^\0-\31\&\"\<\128-\255] \/ [\n\r\t] 
+SymbolChar = [^\0-\31\)\ \t\n\r\;\,\>\127-\255]
 
 
 TextCharRef = "&#" [0-9]+ ";" 
@@ -108,7 +108,7 @@ StringCharacter = [^\r\n\"\\]
 
 
 /* identifiers */
-Identifier = [:jletter:][:jletterdigit:]*
+Identifier = [A-Za-z][A-Za-z\-0-9]*
 
 SiteFilename = {PathElement} "." {FileExt}
 
@@ -131,18 +131,18 @@ SiteFilename = {PathElement} "." {FileExt}
 
 <YYINITIAL> {
   /* keywords */
-  "module"                         {  return nextToken(Terminals.MODULE); }
- "import"                         {  return nextToken(Terminals.IMPORT); }  
+  "module"                         { return nextToken(Terminals.MODULE); }
+  "import"                         { return nextToken(Terminals.IMPORT); }  
   "def"                            { return nextToken(Terminals.DEF); }
-  "end"                            {  return nextToken(Terminals.END); }
-  "site"                           {  yybegin(SITE);  return nextToken(Terminals.SITE); }
+  "end"                            { return nextToken(Terminals.END); }
+  "site"                           { yybegin(SITE);  return nextToken(Terminals.SITE); }
 //  "list"                           {  return nextToken(Terminals.LIST); }
 //  "record"                         {  return nextToken(Terminals.RECORD); }
 //  "string"                         {  return nextToken(Terminals.STRING); }
 //  "if"                             {  return nextToken(Terminals.IF); }
-   "comment"                        { string.setLength(0); yybegin(STRCON_INIT);  return nextToken(Terminals.COMMENT);  }
-   "echo"                           { return nextToken(Terminals.ECHO); }
- 	"cdata"                          {  return nextToken(Terminals.CDATA); }
+  "comment"                        { string.setLength(0); yybegin(STRCON_INIT);  return nextToken(Terminals.COMMENT);  }
+  "echo"                           { return nextToken(Terminals.ECHO); }
+  "cdata"                          { return nextToken(Terminals.CDATA); }
 //  "each"                           {  return nextToken(Terminals.EACH); }
 //  "let"                            {return nextToken(Terminals.LET); }
    "yield"                          { return nextToken(Terminals.YIELD); }
@@ -158,14 +158,14 @@ SiteFilename = {PathElement} "." {FileExt}
   
   "("                            { return nextToken(Terminals.LPAREN); }
   ")"                            { return nextToken(Terminals.RPAREN); }
-//  "{"                            { return nextToken(Terminals.LBRACE); }
-//  "}"                            { return nextToken(Terminals.RBRACE); }
-//  "["                            { return nextToken(Terminals.LBRACK); }
-//  "]"                            { return nextToken(Terminals.RBRACK); }
-  ";"                            {  return nextToken(Terminals.SEMICOLON); }
-//  ","                            { return nextToken(Terminals.COMMA); }
-  "."                            {return nextToken(Terminals.DOT); }
-  ":"                            {  return nextToken(Terminals.COLON); }
+  "{"                            { return nextToken(Terminals.LBRACE); }
+  "}"                            { return nextToken(Terminals.RBRACE); }
+  "["                            { return nextToken(Terminals.LBRACK); }
+  "]"                            { return nextToken(Terminals.RBRACK); }
+  ";"                            { return nextToken(Terminals.SEMICOLON); }
+  ","                            { return nextToken(Terminals.COMMA); }
+  "."                            { return nextToken(Terminals.DOT); }
+  ":"                            { return nextToken(Terminals.COLON); }
   "%"                            { return nextToken(Terminals.MOD); }
   "@"                            { return nextToken(Terminals.ADDCHAR); }    
   "$"                            { return nextToken(Terminals.DOLLAR); }    
@@ -177,7 +177,7 @@ SiteFilename = {PathElement} "." {FileExt}
 //  "||"                           { return nextToken(Terminals.OROR); }
   "="                            { return nextToken(Terminals.EQ); }
   
-   "'" [^\0-\31\)\ \t\n\r\;\,\>\127-\255]*         {  return nextToken(Terminals.SYMBOLCON, yytext() );}
+  "'" {SymbolChar}*              { return nextToken(Terminals.SYMBOLCON, yytext() );}
 
   /* string literal */
 //  \"                             { yybegin(STRING); string.setLength(0); }
@@ -190,18 +190,18 @@ SiteFilename = {PathElement} "." {FileExt}
   {WhiteSpace}                   { /* ignore */ }
 
   /* identifiers */
-  {Identifier}                   {  return nextToken(Terminals.IDCON, yytext()); }  
+  {Identifier}                   { return nextToken(Terminals.IDCON, yytext()); }  
   
   /* Natural numbers*/
-  {Natcon}					     {  return nextToken(Terminals.NATCON, yytext()); }  
+  {Natcon}                       { return nextToken(Terminals.NATCON, yytext()); }  
 
 }
 
 <SITE> {
-     {Directory} /"/"             {   return nextToken(Terminals.DIRNAME,yytext() ); }
-     "/"                          { return nextToken(Terminals.DIV); }
-     "end"  					  { yybegin(YYINITIAL); return nextToken(Terminals.END ); }
-     {SiteFilename}  	          { yybegin(YYINITIAL); return nextToken(Terminals.FILENAME,yytext() ); }
+  {Directory} /"/"               { return nextToken(Terminals.DIRNAME,yytext() ); }
+  "/"                            { return nextToken(Terminals.DIV); }
+  "end"                          { yybegin(YYINITIAL); return nextToken(Terminals.END ); }
+  {SiteFilename}                 { yybegin(YYINITIAL); return nextToken(Terminals.FILENAME,yytext() ); }
  
   /* comments */
   {Comment}                      { /* ignore */ }
@@ -212,7 +212,7 @@ SiteFilename = {PathElement} "." {FileExt}
 }
 
 <STRCON_INIT> {
-  "\""						{ yybegin(STRCON);  }
+  "\""                           { yybegin(STRCON);  }
    /* comments */
   {Comment}                      { /* ignore */ }
 
@@ -222,13 +222,13 @@ SiteFilename = {PathElement} "." {FileExt}
 
 <STRCON> {
 
-	"\""							{ yybegin(YYINITIAL); return nextToken(Terminals.STRCON, string.toString() ); }	
-	"\\t"                           { string.append( '\t' ); }
-    "\\n"                           { string.append( '\n' ); }
-	"\\\""                           { string.append( '\"' ); }
-    "\\\\"                           { string.append( '\\' ); }
-	"\\" [0-9][0-9][0-9]			{ String temp = yytext(); string.append( temp.substring(1) ); }
-	[^\0-\31\n\t\"\\]				{ string.append( yytext() ); }
+  "\""                           { yybegin(YYINITIAL); return nextToken(Terminals.STRCON, string.toString() ); }	
+  "\\t"                          { string.append( '\t' ); }
+  "\\n"                          { string.append( '\n' ); }
+  "\\\""                         { string.append( '\"' ); }
+  "\\\\"                         { string.append( '\\' ); }
+  "\\" [0-9][0-9][0-9]           { String temp = yytext(); string.append( temp.substring(1) ); }
+  [^\0-\31\n\t\"\\]              { string.append( yytext() ); }
 }
 
 
@@ -237,7 +237,7 @@ SiteFilename = {PathElement} "." {FileExt}
 <STRING> {
   \"                             { yybegin(YYINITIAL); System.out.print(string.toString()); return nextToken(Terminals.STRING_LITERAL, string.toString()); }
 
-  {TextChar}+             { string.append( yytext() ); }
+  {TextChar}+                    { string.append( yytext() ); }
 
   /* escape sequences */
   "\\b"                          { string.append( '\b' ); }
