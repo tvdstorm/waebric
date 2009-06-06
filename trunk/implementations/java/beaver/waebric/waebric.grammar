@@ -1,0 +1,211 @@
+%package "waebric";
+%import "waebric.ast.*";
+%class "WaebricParser";
+
+
+%terminals MODULE, IMPORT, DEF, END, SITE, LIST, RECORD, STRING, IF, ELSE, COMMENT, ECHO, CDATA, EACH, LET, IN, YIELD, IDCON;
+
+%terminals STRING_LITERAL;
+
+%terminals LPAREN, RPAREN, LBRACE, RBRACE, LBRACK, RBRACK;
+
+%terminals SEMICOLON, COMMA, DOT, COLON, MOD, ADDCHAR, DOLLAR, HASH, DIV, QUESTION, NOT, ANDAND, OROR, EQ, LT, GT;
+
+%terminals DIRNAME, FILENAME;
+
+%terminals NATCON, STRCON, TEXTCHARS, SYMBOLCON;
+
+
+    
+
+%terminals TODO_EMBEDDING, TODO_MARKUP  ;
+
+
+%goal module;
+
+/* SDF specificatie: languages/waebric/syntax/Modules */
+module = MODULE moduleid.i moduleelements_opt.e {: //@module(i,[e]) :}
+;
+
+moduleid = idcons.i  {: //@module_id(i) :}
+;
+
+idcons = IDCON.i {: //#idconsa(#i) :}
+| idcons.a DOT IDCON.b {: //#idconslist(a,#b) :}
+;
+
+moduleelements_opt =
+| moduleelements
+;
+
+moduleelements = moduleelement
+| moduleelements moduleelement 
+;
+
+moduleelement = functiondef
+| import
+| site
+;
+
+import = IMPORT moduleid.m {: //@import(m) :}
+;
+
+/* SDF specificatie: languages/waebric/syntax/Functions */
+functiondef = DEF IDCON.i formals.f statements_opt.s END {: //@def(#i,f,[s]) :}
+;
+
+/* SDF specificatie: languages/waebric/syntax/Statements */
+statements_opt = 
+| statements 
+;
+
+statements = statement
+| statements statement
+;
+
+statement = EACH LPAREN var COLON expression RPAREN statement
+| LET assignments IN statements_opt END statement
+| LBRACE statements_opt.s RBRACE {: //@block([s]) :}
+;
+
+statement = COMMENT strcon.s SEMICOLON {: //@comment(s) :}
+| ECHO expression.e SEMICOLON {: //@echo(e) :}
+| ECHO embedding.e SEMICOLON {: //@embedding(e) :}
+| CDATA expression.e SEMICOLON {: //@cdata(e) :}
+| YIELD SEMICOLON {: //@yield() :}
+;
+
+assignment = IDCON formals EQ statement
+;
+
+assignments = assignment
+| assignments assignment
+;
+
+formals = {://@empty() :}
+| LPAREN formallist.f RPAREN {://@formals(f) :}
+;
+
+formallist = IDCON.i {: //#formal_a(#i):}
+| idcons.a COMMA IDCON.b {: //#formallist(a,#b):}
+;
+
+strcon = STRCON.s  {: //#astrcon(#s):}
+;
+
+/* SDF specificatie: languages/waebric/syntax/Expressions */
+var = IDCON
+;
+
+
+expression = var
+| symbolcon.s				{: //@sym(s) :}
+| NATCON
+| expression DOT IDCON
+| LBRACK expressions RBRACK
+| LBRACE keyvaluepairs RBRACE
+;
+
+symbolcon = SYMBOLCON.s  {: //#sym_text(#s) :}
+;
+
+expressions = expression
+| expressions COMMA expression
+;
+
+keyvaluepair = IDCON COLON expression
+;
+
+keyvaluepairs = keyvaluepair
+| keyvaluepairs COMMA keyvaluepair
+;
+
+/* SDF specificatie: languages/waebric/syntax/Embedding */
+embedding = TODO_EMBEDDING {: //@todo_embedding() :}
+;
+
+/* SDF specificatie: languages/waebric/syntax/Markup */
+arguments = LPAREN argumentlist_opt RPAREN
+;
+
+argumentlist = argument
+| argumentlist COMMA argument
+;
+
+argumentlist_opt = 
+| argumentlist
+;
+
+argument = IDCON EQ expression
+| expression
+;
+
+markup = designator arguments
+| designator
+| TODO_MARKUP {: //@todo_markup():}
+;
+/*
+markup_seq = markup
+| markup_seq markup
+;
+
+statement = markup_seq statement
+| markup SEMICOLON
+| markup_seq markup SEMICOLON
+| markup_seq expression SEMICOLON
+| markup_seq embedding SEMICOLON
+;
+*/
+designator = IDCON attribute_opt
+;
+
+attribute = HASH IDCON
+| DOT IDCON
+| DOLLAR IDCON
+| COLON IDCON
+| ADDCHAR NATCON MOD NATCON
+| ADDCHAR NATCON
+;
+
+attribute_opt =
+| attribute
+;
+
+
+/* SDF specificatie: languages/waebric/syntax/Sites */
+site = SITE mappings_opt.m END {: //@site([m]) :}
+;
+
+mappings_opt = 
+| mappings
+;
+
+mappings = mapping
+| mappings SEMICOLON mapping 
+;
+
+mapping = path.p COLON markup.m {: //@mapping(p,m) :}
+;
+
+path = DIRNAME.d DIV FILENAME.f {: //@path(#d,#f) :}
+| FILENAME.f  {: //#filenamestring(#f) :}
+;
+
+/* SDF specificatie: languages/waebric/syntax/Predicates */
+
+/*DEZE WORDEN NOG NERGENS GEBRUIKT DUS NIET MEE COMPILEN
+type = LIST
+| RECORD
+| STRING
+;
+
+predicate = expression
+| expression DOT type QUESTION
+| NOT predicate
+| predicate ANDAND predicate
+| predicate OROR predicate
+;*/
+
+
+
+	

@@ -1,0 +1,22 @@
+module test.hello
+import something.paasei
+site
+	x/x/y/z/index.html:TODO_MARKUP
+end
+
+site
+	x/x/y/z/other.html:TODO_MARKUP
+end
+
+def main(html) 
+ comment "0karelAppel23///**/";
+ yield;
+ echo '....;
+end
+
+def sub(html) 
+ comment "0blaa*/";
+ yield;
+end
+
+
