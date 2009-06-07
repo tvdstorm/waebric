@@ -1,0 +1,1 @@
+module(module-id(["test", "hello"]), [import(module-id(["something", "paasei"])), def("main", formals(["html"]), [comment("0karelAppel23///**/"), yield, echo(sym("'...."))]), def("sub", formals(["html"]), [comment("0blaa*/"), yield])])

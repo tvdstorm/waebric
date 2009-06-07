@@ -1,0 +1,15 @@
+module test.hello
+import something.paasei
+
+
+def main(html) 
+ comment "0karelAppel23///**/";
+ yield;
+ echo '....;
+end
+
+def sub(html) 
+ comment "0blaa*/";
+ yield;
+end
+
