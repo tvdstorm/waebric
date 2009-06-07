@@ -10,14 +10,11 @@
 #
 # Tenslotte wordt de inhoud van test/output vergeleken met de inhoud van directory test/ref
 #
-cd test/input
-for testfiles in $(ls *.wae); do
-  testfile=${testfiles%.*}
-  echo "output:" $testfile
-  cd ../../
-  ./run.sh "test"
+for testfile in $(ls test/input/*.wae); do
+  outputfile=test/output/${testfile##test/input/}
+  outputfile=${outputfile%%.wae}.txt
+  sh run.sh $testfile $outputfile
 done;
 
-
-#diff test/output test/ref
+diff test/output test/ref
 exit 0
