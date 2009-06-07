@@ -38,6 +38,7 @@ public class ASTinfo
 			+ newFuncion.substring(1).toLowerCase(); 
 		
 		newFuncion = newFuncion.replaceAll("-","_");
+		newFuncion = newFuncion.replaceAll("Class","Class_"); //TODO: check for all java keywords
 	    
 		int positionLparen = newFuncion.indexOf('(');
 		ASTname = ASTname.substring(0,positionLparen);
