@@ -89,7 +89,12 @@ public final class FunctionDef extends WaebricParseTreeNode implements Member {
 	@Override
 	public String toTransformerOutput() {
 		String NameElement = outputQuote( name );
-		String ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( outputBracedList( formals.toTransformerOutput(), true ) );
+		String formalsOutput = "";
+		if(formals != null){
+			formalsOutput = formals.toTransformerOutput();
+		}
+		
+		String ArgumentsElement = OUTPUT_FORMALS + outputBracedBlock( outputBracedList( formalsOutput, true ) );
 	
 		String StatementsElement = "";
 		for (Statement statement: statements) {
