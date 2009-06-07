@@ -1,16 +1,4 @@
-module test.hello
-import something.paasei
-
-
+module x
 def main(html) 
- comment "0kar\nelAppel23///**/";
- yield;
- echo '....;
  echo "rrr<test>ggg";
 end
-
-def sub(html) 
- comment "0blaa*/";
- yield;
-end
-

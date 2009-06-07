@@ -13,8 +13,11 @@
 cd test/input
 for testfiles in $(ls *.wae); do
   testfile=${testfiles%.*}
-  sh ../../run.sh $testfile
+  echo "output:" $testfile
+  cd ../../
+  ./run.sh "test"
 done;
 
-diff ../output ../ref
+
+#diff test/output test/ref
 exit 0

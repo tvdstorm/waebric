@@ -557,6 +557,7 @@ public class ASTGenerator
 		treewalkCode +="\t\t\tresult=input.replaceAll(\"\\\\n\",\"\\\\\\\\n\");\n";
 		treewalkCode +="\t\t\tresult=result.replaceAll(\"\\\\r\",\"\\\\\\\\r\");\n";
 		treewalkCode +="\t\t\tresult=result.replaceAll(\"\\\\t\",\"\\\\\\\\t\");\n";
+		treewalkCode +="\t\t\tresult=result.replaceAll(\"\\\\\\\"\",\"\\\\\\\\\\\"\");\n";
 		treewalkCode +="\t\t}\n\t\treturn result;\n\t}\n\n";
 		return treewalkCode;
 	}
