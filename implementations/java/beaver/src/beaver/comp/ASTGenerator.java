@@ -46,6 +46,9 @@ public class ASTGenerator
 			{
 				String treewalkCode="package waebric.ast;\n\n";
 				treewalkCode+="public class TreeWalker\n{\n";
+				treewalkCode+=getAddSlashFunction();
+				
+				
 
 				for (int i = 0; i < grammar.rules.length; i++)
 				{
@@ -176,7 +179,14 @@ public class ASTGenerator
 	{
 		
 		String treewalkCode = "\t\t//leaf\n";
-		treewalkCode += "\t\tSystem.out.print(\"\\\"\" + "+getTreeWalkVariableName(currentStringArgumentNumber,currentConsArgumentNumber,ASTtype.STRING)+" + \"\\\"\");\n";	
+		treewalkCode += "\t\tSystem.out.print(\"\\\"\" + \n";
+		
+		String varName = getTreeWalkVariableName(currentStringArgumentNumber,
+			currentConsArgumentNumber,
+			ASTtype.STRING
+		);
+		treewalkCode += "\t\taddSlashes(" + varName + ")";
+		treewalkCode += "\n\t\t + \"\\\"\");\n";	
 		return treewalkCode;
 	}
 	
@@ -527,6 +537,16 @@ public class ASTGenerator
 
 		
 		return varname;	
+	}
+	
+	static public String getAddSlashFunction()
+	{
+		String treewalkCode ="public String addSlashes(String input)\n\t\t{\n";
+		treewalkCode +="\t\tString result=input.replaceAll(\"\\\\n\",\"\\\\\\\\n\");\n\n";
+		treewalkCode +="\t\tresult=result.replaceAll(\"\\\\r\",\"\\\\\\\\r\");\n";
+		treewalkCode +="\t\tresult=result.replaceAll(\"\\\\t\",\"\\\\\\\\t\");\n";
+		treewalkCode +="\t\treturn result;\n\t\t}\n";
+		return treewalkCode;
 	}
 
 }

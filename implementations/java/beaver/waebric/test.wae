@@ -3,7 +3,7 @@ import something.paasei
 
 
 def main(html) 
- comment "0karelAppel23///**/";
+ comment "0kar\nelAppel23///**/";
  yield;
  echo '....;
 end
