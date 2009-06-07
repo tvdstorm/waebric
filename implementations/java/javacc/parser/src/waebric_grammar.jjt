@@ -33,13 +33,13 @@ SKIP : {
 }
 
 /* RESERVED KEYWORDS */
-<DEFAULT, IN_NO_MODULEID, IN_PATH>
+<DEFAULT, IN_PATH>
 TOKEN : {
 	< MODULE : "module" >
 	|	< IMPORT : "import" >
 	|	< SITE : "site" > : IN_PATH
 	|	< END : "end" > : DEFAULT
-	|	< DEF : "def" > : IN_NO_MODULEID
+	|	< DEF : "def" > //: IN_NO_MODULEID
 	|	< IF : "if" >
 	|	< ELSE : "else" >
 	|	< EACH : "each" >
@@ -55,7 +55,7 @@ TOKEN : {
 }
 
 /* SEPARATORS */
-<DEFAULT, IN_NO_MODULEID, IN_NO_IDCON>
+<DEFAULT, IN_NO_IDCON>
 TOKEN : {
 	< LPAREN : "(" > 
 	|	< RPAREN : ")" > 
@@ -63,14 +63,14 @@ TOKEN : {
 	|	< RBRACKET : "]" >
 	|	< LBRACE : "{" >
 	|	< RBRACE : "}" >
-	|	< SEMICOLON : ";" > : IN_NO_MODULEID
+	|	< SEMICOLON : ";" > : DEFAULT
 	|	< COLON : ":" >
 	|	< COMMA : "," >
 	|	< DOT : "." >
 }
 
 /* OPERATORS */
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
 	< DOLLAR_SIGN: "$" >
 	|	< NUMBER_SIGN: "#" >
@@ -79,15 +79,16 @@ TOKEN : {
 	|	< QUESTIONMARK: "?" >
 	|	< EXCLAMATION: "!" >
 	|	< PERCENT : "%" >
+	|	< PLUS : "+" >
 }
 
 /* START NORMAL TOKENS */
-<DEFAULT>
-TOKEN : {
-	< ModuleId :
-		(< IdCon > (< DOT >)?)+
-	>	
-}
+//<DEFAULT>
+//TOKEN : {
+//	< ModuleId :
+//		(< IdCon > (< DOT >)?)+
+//	>	
+//}
 
 <IN_PATH>
 TOKEN : {
@@ -100,7 +101,7 @@ TOKEN : {
 TOKEN : {
 	< FileName :
 		<PathElement> <DOT> <FileExt>
-	> : IN_NO_MODULEID
+	> : DEFAULT
 } 
 
 <IN_PATH>
@@ -124,33 +125,33 @@ TOKEN : {
 	>	
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
 	< IdCon :
 		["A"-"Z","a"-"z"](["A"-"Z","a"-"z","-","0"-"9"])* 
 	> 
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
 	< NatCon : (["0"-"9"])+ >
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {   
  	< SymbolCon : 
  		["'"] (<SymbolChar>)* 
  	>
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
 	< Text : 
 		["\""] (<TextChar>)* ["\""] 
 	>
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
     < #TextChar : 
     	<TextCharRef> 
@@ -161,28 +162,28 @@ TOKEN : {
     >
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
     < #TextCharRef : 
     	"&#" (["0"-"9"])+ <SEMICOLON> | "&#x" (["0"-"9","a"-"f","A"-"F"])+ <SEMICOLON>
     >
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
    	< #EscQuote : 
    		["\\"]["\""]
    	> 
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
     < #Amp : 
     	["&"] 
     >
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
    	< #TextEntityRef : 
    		"&" ["a"-"z","A"-"Z","_",":"] (["a"-"z","A"-"Z","0"-"9",".","-","_",":"])* <SEMICOLON> 
@@ -196,7 +197,7 @@ TOKEN : {
 	> : IN_NO_IDCON
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
 	< #StrChar :
 		"\n"
@@ -207,7 +208,7 @@ TOKEN : {
 		|	~["\0"-"\37","\n","\t","\"","\\"]
 	>
 }
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
 	< Type :
 		<LIST>
@@ -217,21 +218,21 @@ TOKEN : {
 }
 
 // Embedding
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
 	< PreText :
 		"\"" (<TextChar>)* "<"
 	>
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
 	< PostText :
 		">" (<TextChar>)* "\""
 	>	
 }
 
-<IN_NO_MODULEID>
+<DEFAULT>
 TOKEN : {
 	< MidText :
 		">" (<TextChar>)* "<"
@@ -253,7 +254,11 @@ SimpleNode Modules():{}
 }
 
 void Module() : {} {
-	< MODULE > < ModuleId > (ModuleElement())*
+	< MODULE > ModuleId() (ModuleElement())*
+}
+
+void ModuleId() : {} {
+	(< IdCon > (< DOT >)?)+
 }
 
 
@@ -266,7 +271,7 @@ void ModuleElement() : {} {
 // ModuleElement Import 
 // *********************************************
 void Import() : {} { 
-	< IMPORT > < ModuleId > 
+	< IMPORT > ModuleId() 
 } 
 
 // ModuleElement Site
@@ -330,7 +335,7 @@ void Embedding() : {} {
 }
 
 void Embed() : {} { 
-	(Markup())* Expression()(DotIdCon())?
+	(Markup()) Expression()(DotIdCon())?
 }
 
 void TextTail() : {} { 
@@ -379,6 +384,7 @@ void Expression() : {} {
 	|	Var()
 	|	<LBRACKET> (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
 	|	<LBRACE> (KeyValuePair()  (<COMMA>)? )* <RBRACE>
+
 }
 
 void DotIdCon() : {} {
