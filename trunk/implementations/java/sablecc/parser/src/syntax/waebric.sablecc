@@ -34,7 +34,7 @@ States
 	
 Tokens
 	// Keywords
-	module = 'module';
+	module_keyword = 'module';
 	if = 'if';
 	else = 'else';
 	each = 'each';
@@ -110,181 +110,190 @@ Productions
 			P.module*
 		;
 	
-	module = 
-			T.module P.module_id P.module_element*
+	module {-> module? } = 
+			T.module_keyword P.module_id P.module_element*		{-> New module(module_id, [module_element]) }
 		;
 	
-	module_id  = 
-			{single}	T.id_con
-		|	{multiple}	P.module_id T.dot T.id_con
+	module_id = 
+			module_id_arguments					{-> New module_id ([module_id_arguments.id_con]) }
+		;
+
+	module_id_arguments {-> id_con* } =
+			{single}	T.id_con								{-> [id_con] }
+		|	{multiple}	P.module_id_arguments T.dot T.id_con	{-> [module_id_arguments.id_con, id_con] }
 		;
 
 	module_element = 
-			{function}	P.function
-		|	{import}	P.import
-		|	{site}		P.site
+			{function}	P.function		{-> function.module_element }		
+		|	{import}	P.import		{-> import.module_element }
+		|	{site}		P.site			{-> site.module_element }
 		;
 	
 	// Imports
-	import = 
-			T.import P.module_id
+	import {-> module_element } = 
+			T.import P.module_id		{-> New module_element.import(module_id) }
 		;
 
 	// Site
-	site = 
-			T.site P.mappings T.end
+	site {-> module_element } = 
+			T.site P.mappings T.end		{-> New module_element.site([mappings.mapping]) }			
 		;
 	
 	// Mappings
-	mappings = 
-			{single}	P.mapping
-		|	{multiple}	P.mappings T.semi_colon P.mapping
+	mappings {-> mapping* } = 
+			{single}	P.mapping							{-> [mapping] }
+		|	{multiple}	P.mappings T.semi_colon P.mapping	{-> [mappings.mapping, mapping] }
 		;
 		
 	mapping = 
-			T.filename T.colon P.markup
+			P.path T.colon P.markup		{-> New mapping(path, markup) }
+		;
+		
+	// Path
+	path =
+			T.filename
 		;
 
 	// Markup	
 	markup =
-			{designator_with_args}	P.markup_no_short_markup 
-		|	{designator}			P.designator
+			{designator_with_args}	P.markup_no_short_markup	{-> markup_no_short_markup.markup } 
+		|	{designator}			P.designator				{-> New markup.designator(designator) }
 		;
 		
-	markup_no_short_markup =
-			{designator_with_args}	P.designator P.arguments
+	markup_no_short_markup {-> markup } =
+			{designator_with_args}	P.designator P.arguments	{-> New markup.call(designator.designator, arguments.args) }
 		; 
 	
 	// Designator
 	designator = 
-			T.id_con P.attribute*
+			T.id_con P.attribute*		{-> New designator.tag(id_con, [attribute]) }
 		;
 	
 	// Attributes
-	attribute =
-			{number_sign}		T.number_sign T.id_con 
-		|	{dot}				T.dot T.id_con 
-		|	{dollar_sign}		T.dollar_sign T.id_con 
-		|	{colon}				T.colon T.id_con 
-		|	{at_width_height}	T.at_sign [w]:T.nat_con T.percent_sign [h]:T.nat_con 
-		|	{at_width}			T.at_sign [w]:T.nat_con
+	attribute {-> attribute } =
+			{number_sign}		T.number_sign T.id_con									{-> New attribute.id(id_con) } 
+		|	{dot}				T.dot T.id_con											{-> New attribute.class(id_con) } 
+		|	{dollar_sign}		T.dollar_sign T.id_con 									{-> New attribute.name(id_con) }
+		|	{colon}				T.colon T.id_con 										{-> New attribute.type(id_con) }
+		|	{at_width_height}	T.at_sign [w]:T.nat_con T.percent_sign [h]:T.nat_con 	{-> New attribute.width_height(w, h) }
+		|	{at_width}			T.at_sign [w]:T.nat_con									{-> New attribute.height(w) }
 		;
 	
 	// Arguments
-	arguments = 
-			T.l_paren P.argument_list? T.r_paren
+	arguments {-> args } = 
+			T.l_paren P.argument_list? T.r_paren	{-> New args([argument_list.argument]) }
 		;
 		
-	argument_list =
-			{single}	P.argument 
-		|	{multiple}	P.argument_list T.comma P.argument
+	argument_list {-> argument* } =
+			{single}	P.argument							{-> [argument] } 
+		|	{multiple}	P.argument_list T.comma P.argument	{-> [argument_list.argument, argument] }
 		;
 		
-	argument = 
-			{assign}	T.id_con T.assign P.expression 
-		|	{argument}	P.expression
+	argument {-> argument } =
+			{assign}	T.id_con T.assign P.expression		{-> New argument.attr(id_con, expression) } 
+		|	{argument}	P.expression						{-> New argument.expression(expression) }
 		;
 		  
 	// Expressions
 	expression =
-			{no_plus}				P.expression_no_plus
-		|	{plus_expression}		P.expression_no_plus T.plus P.expression
+			{no_plus}				P.expression_no_plus						{-> expression_no_plus.expression }
+		|	{plus_expression}		P.expression T.plus P.expression_no_plus	{-> New expression.cat(expression, expression_no_plus.expression) }
 		;
 		
-	expression_no_plus =
-			{idcon}					T.id_con 
-		|	{text}					T.text 
-		|	{symbol_con}			T.symbol_con 
-		|	{nat_con}				T.nat_con 
-		|	{dot_idcon}				P.expression_no_plus T.caret T.id_con
-		|	{multiple_expressions}	T.l_bracket P.expressions? T.r_bracket 
-		|	{key_value_pairs}		T.l_brace P.key_value_pairs? T.r_brace
+	expression_no_plus {-> expression } =
+			{idcon}					T.id_con									{-> New expression.var(id_con) } 
+		|	{text}					T.text							 			{-> New expression.text(text) }
+		|	{symbol_con}			T.symbol_con 								{-> New expression.sym(symbol_con) }
+		|	{nat_con}				T.nat_con					 				{-> New expression.num(nat_con) }
+		|	{dot_idcon}				P.expression_no_plus T.caret T.id_con		{-> New expression.field(expression_no_plus.expression, id_con) }
+		|	{multiple_expressions}	T.l_bracket P.expressions? T.r_bracket		{-> New expression.list([expressions.expression]) } 
+		|	{key_value_pairs}		T.l_brace P.key_value_pairs? T.r_brace		{-> New expression.record([key_value_pairs.pair]) }
 		;
 
 	
-	expressions = 
-			{single}	P.expression 
-		|	{multiple}	P.expressions T.comma P.expression
+	expressions {-> expression* } = 
+			{single}	P.expression						{-> [expression] } 
+		|	{multiple}	P.expressions T.comma P.expression	{-> [expressions.expression, expression] }
 		;
 	
 	// Key Value Pairs
-	key_value_pairs = 
-			{single}	P.key_value_pair 
-		|	{multiple}	P.key_value_pairs T.comma P.key_value_pair
+	key_value_pairs {-> pair* } = 
+			{single}	P.key_value_pair							{-> [key_value_pair.pair] }
+		|	{multiple}	P.key_value_pairs T.comma P.key_value_pair	{-> [key_value_pairs.pair, key_value_pair.pair] }
 		;
 		
-	key_value_pair = 
-			T.id_con T.colon P.expression
+	key_value_pair {-> pair } = 
+			T.id_con T.colon P.expression	{-> New pair(id_con, expression) }
 		;
 	 
 	// Function
-	function = 
-			T.def T.id_con P.formals? P.statement* T.end
+	function {-> module_element } = 
+			T.def T.id_con P.formals P.statement* T.end	{-> New module_element.def(id_con, formals, [statement]) }
 		;
 	
 	formals = 
-			T.l_paren P.formal? T.r_paren
+			T.l_paren P.formal? T.r_paren	{-> New formals([formal.id_con]) }
 		;
 		
-	formal =
-			{single}	T.id_con 
-		|	{multiple}	P.formal T.comma T.id_con
+	formal {-> id_con* } =
+			{single}	T.id_con					{-> [id_con] } 
+		|	{multiple}	P.formal T.comma T.id_con	{-> [formal.id_con, id_con] }
 		;
 		
 	// Statement
 	statement = 
-			{no_markup}				P.statement_no_markup
-		|	{markup_statement}		P.markup+ P.statement_no_markup
-		|	{markup_no_statement}	statement_markup_no_statement		
+			{no_markup}				P.statement_no_markup				{-> statement_no_markup.statement }
+		|	{markup_statement}		P.markup+ P.statement_no_markup		{-> New statement.markup_stat([markup], statement_no_markup.statement) }
+		|	{markup_no_statement}	P.statement_markup_no_statement		{-> statement_markup_no_statement.statement }		
 		;
 	
-	statement_no_markup =
-			{each}				T.each T.l_paren T.id_con T.colon P.expression T.r_paren P.statement
-		|	{if_then}			T.if T.l_paren P.predicate T.r_paren P.statement
-		|	{if_then_else}		T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement
-		|	{no_short_if}		statement_no_markup_no_short_if
+	statement_no_markup {-> statement } =
+			{each}				T.each T.l_paren T.id_con T.colon P.expression T.r_paren P.statement										{-> New statement.each(id_con, expression, statement) }
+		|	{if_then}			T.if T.l_paren P.predicate T.r_paren P.statement															{-> New statement.if(predicate, statement) }
+		|	{if_then_else}		T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement	{-> New statement.if_else(predicate, thenbranch.statement, elsebranch.statement) }	
+		|	{no_short_if}		statement_no_markup_no_short_if																				{-> statement_no_markup_no_short_if.statement }
 		;
 
-	statement_no_short_if =	 
-			{no_markup}				P.statement_no_markup_no_short_if
-		|	{markup_no_statement}	statement_markup_no_statement		
-		|	{if_then_else}			T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement_no_short_if
+	statement_no_short_if {-> statement } =	 
+			{no_markup}				P.statement_no_markup_no_short_if																						{-> statement_no_markup_no_short_if.statement } 
+		|	{markup_no_statement}	P.statement_markup_no_statement																							{-> statement_markup_no_statement.statement }
+		|	{if_then_else}			T.if T.l_paren P.predicate T.r_paren [thenbranch]:P.statement_no_short_if T.else [elsebranch]:P.statement_no_short_if	{-> New statement.if_else(predicate, thenbranch.statement, elsebranch.statement) }
 		;
 		
-	statement_markup_no_statement =
-			{markup_single}			P.markup T.semi_colon
-		|	{markup_multiple}		[multiple]:P.markup+ [single]:P.markup_no_short_markup T.semi_colon
-		|	{markup_expression}		P.markup+ P.expression T.semi_colon
-		|	{embedding}				P.markup+ P.embedding T.semi_colon
+	statement_markup_no_statement {-> statement } =
+			{markup_single}			P.markup T.semi_colon													{-> New statement.markup(markup) }
+		|	{markup_multiple}		[head]:P.markup+ [tail]:P.markup_no_short_markup T.semi_colon			{-> New statement.markup_markup([head.markup, tail.markup]) }
+		|	{markup_expression}		P.markup+ P.expression T.semi_colon										{-> New statement.markup_exp([markup], expression) }
+		|	{embedding}				P.markup+ P.embedding T.semi_colon										{-> New statement.markup_embedding([markup], embedding) }
 		;
 		
-	statement_no_markup_no_short_if =
-			{let}				T.let P.assignment+ T.in P.statement* T.end
-		|	{block}				T.l_brace P.statement* T.r_brace
-		|	{comment}			T.comment T.str_con T.semi_colon
-		|	{echo_expression}	T.echo P.expression T.semi_colon
-		|	{echo_embedding}	T.echo P.embedding T.semi_colon
-		|	{cdata}				T.cdata P.expression T.semi_colon
-		|	{yield}				T.yield T.semi_colon
+	statement_no_markup_no_short_if {-> statement } =
+			{let}				T.let P.assignment+ T.in P.statement* T.end		{-> New statement.let([assignment], [statement]) }
+		|	{block}				T.l_brace P.statement* T.r_brace				{-> New statement.block([statement]) }
+		|	{comment}			T.comment T.str_con T.semi_colon				{-> New statement.comment(str_con) }
+		|	{echo_expression}	T.echo P.expression T.semi_colon				{-> New statement.echo(expression) }
+		|	{echo_embedding}	T.echo P.embedding T.semi_colon					{-> New statement.echo_embedding(embedding) }
+		|	{cdata}				T.cdata P.expression T.semi_colon				{-> New statement.cdata(expression) }
+		|	{yield}				T.yield T.semi_colon							{-> New statement.yield() }
 		;
 				
 	// Assignment
 	assignment = 
-			{expression}	T.id_con T.assign P.expression T.semi_colon
-		|	{statement}		T.id_con P.formals T.assign P.statement
+			{expression}	T.id_con T.assign P.expression T.semi_colon		{-> New assignment.var_bind(id_con, expression) }
+		|	{statement}		T.id_con P.formals T.assign P.statement			{-> New assignment.func_bind(id_con, formals, statement) }
 		;
 	
 	// Predicate
 	predicate = 
-			{no_and_or}			predicate_no_and_or
-		|	{and_predicate}		P.predicate_no_and_or T.and P.predicate
-		|	{or_predicate}		P.predicate_no_and_or T.or P.expression
+			{no_and_or}			predicate_no_and_or							{-> predicate_no_and_or.predicate }
+		|	{and_predicate}		P.predicate T.and P.predicate_no_and_or		{-> New predicate.and(predicate, predicate_no_and_or.predicate) }
+		|	{or_predicate}		P.predicate T.or P.predicate_no_and_or		{-> New predicate.or(predicate, predicate_no_and_or.predicate) }
 		;
 
-	predicate_no_and_or =
-			{expression}		P.expression
-		|	{expression_type}	P.expression T.colon P.type T.question_mark
-		|	{not_predicate}		T.exclam_mark P.predicate_no_and_or
+	predicate_no_and_or {-> predicate } =
+			{expression}		P.expression									{-> New predicate.expression(expression) }
+		|	{expression_type}	P.expression T.colon P.type T.question_mark		{-> New predicate.is_a(expression, type) }
+		|	{not_predicate}		T.exclam_mark P.predicate_no_and_or				{-> New predicate.not(predicate_no_and_or.predicate) }
 		;
 		
 	// Type
@@ -296,16 +305,142 @@ Productions
 		
 	// Embedding
 	embedding = 
-			T.pre_text P.embed P.text_tail
+			T.pre_text P.embed P.text_tail		{-> New embedding.pre(pre_text, embed, text_tail) }
 		;
 	
-	// Text trail
+	// Text tail
 	text_tail =
-			{posttext}	T.post_text
-		|	{midtext}	T.mid_text P.embed P.text_tail
+			{posttext}	T.post_text						{-> New text_tail.post(post_text) }
+		|	{midtext}	T.mid_text P.embed P.text_tail	{-> New text_tail.mid(mid_text, embed, text_tail) }
 		;
 		
 	embed = 
-			{markup_markup}			[multiple]:P.markup* [single]:P.markup_no_short_markup
-		|	{markup_expression}		P.markup* P.expression
+			{markup_markup}			P.markup* P.markup_no_short_markup						{-> New embed.markup_embedding([markup, markup_no_short_markup.markup]) }
+		|	{markup_expression}		P.markup* P.expression									{-> New embed.exp_embedding([markup], expression) }
+		;
+		
+Abstract Syntax Tree
+
+	modules = 
+			module*
+		;
+
+	module =
+			[id]:module_id [element]:module_element*
+		;
+		
+	module_id =
+			[id]:id_con+
+		;
+		
+	module_element =
+			{def}		id_con formals? statement*
+		|	{import}	module_id
+		|	{site}		mapping+
+		;	
+	
+	mapping =
+			path markup
+		;
+		
+	path = 
+			filename
+		;
+		
+	markup =
+			{call}			designator args
+		|	{designator}	designator
+		;
+		
+	designator =
+			{tag}	id_con attribute*
+		;
+		
+	attribute =
+			{id}			id_con
+		|	{class}			id_con
+		|	{name}			id_con
+		|	{type}			id_con
+		|	{width_height}	[width]:nat_con [height]:nat_con
+		|	{height}		[height]:nat_con
+		;
+		
+	args =
+			argument*
+		;
+		
+	argument =
+			{attr}			id_con expression
+		|	{expression}	expression
+		;
+		
+	expression =
+			{cat}		[l]:expression [r]:expression
+		|	{var}		id_con
+		|	{text}		text
+		|	{sym}		symbol_con
+		|	{num}		nat_con
+		|	{field}		expression id_con
+		|	{list}		expression*
+		|	{record}	pair*
+		;		
+		
+	pair =
+			id_con expression
+		;				
+		
+	formals = 
+			id_con*
+		;
+				
+	// Statement
+	statement =
+			{markup_stat}		markup* statement
+		|	{each}				id_con expression statement
+		|	{if}				predicate statement
+		|	{if_else}			predicate [thenbranch]:statement [elsebranch]:statement	
+		|	{markup}			markup
+		|	{markup_markup}		markup*
+		|	{markup_exp}		markup* expression
+		|	{markup_embedding}	markup* embedding
+		|	{let}				assignment* statement*
+		|	{block}				statement*
+		|	{comment}			str_con
+		|	{echo}				expression
+		|	{echo_embedding}	embedding
+		|	{cdata}				expression
+		|	{yield}
+		;
+
+	assignment =			
+			{var_bind}		id_con expression
+		|	{func_bind}		id_con formals statement
+		;
+
+	predicate =		
+			{and}			[left]:predicate [right]:predicate
+		|	{or}			[left]:predicate [right]:predicate
+		|	{expression}	expression
+		|	{is_a}			expression type
+		|	{not}			predicate
+		;
+		
+	type =
+			{list}		list
+		|	{record}	record
+		|	{string}	string
+		;
+		
+	embedding =
+			{pre}	pre_text embed text_tail
+		;
+				
+	text_tail =
+			{post}	post_text
+		|	{mid}	mid_text embed text_tail
+		;
+		
+	embed = 
+			{markup_embedding}	markup*
+		|	{exp_embedding}		markup* expression
 		;
