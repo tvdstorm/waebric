@@ -25,9 +25,17 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
+import com.uva.se.wparse.model.expression.ExpressionDotIdentifier;
+import com.uva.se.wparse.model.expression.Identifier;
+import com.uva.se.wparse.model.expression.NaturalConstant;
+import com.uva.se.wparse.model.expression.SymbolConstant;
 import com.uva.se.wparse.model.expression.Var;
+import com.uva.se.wparse.model.markup.Attribute;
 import com.uva.se.wparse.model.markup.Designator;
 import com.uva.se.wparse.model.markup.Markup;
+import com.uva.se.wparse.model.markup.SingleAttribute;
+import com.uva.se.wparse.parser.Operator;
+import com.uva.se.wparse.util.ConversionUtil;
 import com.uva.se.wparse.util.Strings;
 
 /**
@@ -64,9 +72,11 @@ public class MarkupExpression extends WaebricParseTreeNode implements Statement,
 		 */
 		if(expression == null){
 			//get the last designator and make it a expression var
-			if(this.markupList.get(this.markupList.size()-1) instanceof Designator){
+			Markup lastMarkupItem = this.markupList.get(this.markupList.size()-1);
+			if(lastMarkupItem instanceof Designator){
 				Designator designator = (Designator) this.markupList.remove(this.markupList.size()-1);
-				this.expr = new Var(designator.toString(), "");
+				
+				this.expr = ConversionUtil.designatorToExpression( designator);
 			}
 		}else{
 			this.expr = expression;
@@ -78,6 +88,8 @@ public class MarkupExpression extends WaebricParseTreeNode implements Statement,
 		}
 	}
 
+
+	
 	@Override
 	public String toString() {
 		return Strings.join(" ", markupList) + " " + expr;
