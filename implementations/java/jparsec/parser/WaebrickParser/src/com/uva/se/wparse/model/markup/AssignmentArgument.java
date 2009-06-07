@@ -56,7 +56,7 @@ public class AssignmentArgument extends WaebricParseTreeNode implements Argument
 			expressionItem = outputBracedBlock( expressionItem );
 		}
 		
-		return OUTPUT_ATTRIBUTE + outputBracedBlock( outputQuote( identifier ) + OUTPUT_BLOCK_SEPARATOR + expressionItem );
+		return OUTPUT_ATTRIBUTE + outputBracedBlock( outputAddToBlock( outputQuote( identifier ), expressionItem ) );
 	}
 	
 	
