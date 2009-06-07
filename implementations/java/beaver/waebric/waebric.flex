@@ -89,8 +89,8 @@ Natcon = 0 | [1-9][0-9]*
    between A and Z, a and z, zero and nine, or an underscore. */
 dec_int_id = [A-Za-z_.][A-Za-z_0-9.]*
 
-TextChar = [^\0-\31\&\"\<\128-\255] \/ [\n\r\t] 
-SymbolChar = [^\0-\31\)\ \t\n\r\;\,\>\127-\255]
+TextChar = [^\x00-\x1F\&\"\<\x80-\xFF]
+SymbolChar = [^\x00-\x1F\)\ \t\n\r\;\,\>\x80-\xFF]
 
 
 TextCharRef = "&#" [0-9]+ ";" 
@@ -115,7 +115,7 @@ SiteFilename = {PathElement} "." {FileExt}
 
 
 
-%state SITE,STRING,STRCON,STRCON_INIT
+%state SITE,STRING,STRCON,STRCON_INIT, PRETEXT, POSTMIDTEXT
 
 %%
 /* ------------------------Lexical Rules Section---------------------- */
@@ -146,6 +146,9 @@ SiteFilename = {PathElement} "." {FileExt}
 //  "each"                           {  return nextToken(Terminals.EACH); }
 //  "let"                            {return nextToken(Terminals.LET); }
    "yield"                          { return nextToken(Terminals.YIELD); }
+
+   "\""                        { System.out.println("PRETEXT START" + yytext() ); string.setLength(0); yybegin(PRETEXT); }
+   ">"                        { System.out.println("POSTMIDTEXT START"+ yytext() ); string.setLength(0); yybegin(POSTMIDTEXT); }
 
   
   "TODO_MARKUP"						 {   return nextToken(Terminals.TODO_MARKUP); }
@@ -190,7 +193,7 @@ SiteFilename = {PathElement} "." {FileExt}
   {WhiteSpace}                   { /* ignore */ }
 
   /* identifiers */
-  {Identifier}                   { return nextToken(Terminals.IDCON, yytext()); }  
+  {Identifier}                   { System.out.println("IDCON" + yytext() ); return nextToken(Terminals.IDCON, yytext()); }  
   
   /* Natural numbers*/
   {Natcon}                       { return nextToken(Terminals.NATCON, yytext()); }  
@@ -228,33 +231,20 @@ SiteFilename = {PathElement} "." {FileExt}
   "\\\""                         { string.append( '\"' ); }
   "\\\\"                         { string.append( '\\' ); }
   "\\" [0-9][0-9][0-9]           { String temp = yytext(); string.append( temp.substring(1) ); }
-  [^\0-\31\n\t\"\\]              { string.append( yytext() ); }
+  [^\x00-\x1F\n\t\"\\]              { string.append( yytext() ); }
 }
 
 
-
-/*
-<STRING> {
-  \"                             { yybegin(YYINITIAL); System.out.print(string.toString()); return nextToken(Terminals.STRING_LITERAL, string.toString()); }
-
-  {TextChar}+                    { string.append( yytext() ); }
-
-  /* escape sequences */
-  "\\b"                          { string.append( '\b' ); }
-  "\\t"                          { string.append( '\t' ); }
-  "\\n"                          { string.append( '\n' ); }
-  "\\f"                          { string.append( '\f' ); }
-  "\\r"                          { string.append( '\r' ); }
-  "\\\""                         { string.append( '\"' ); }
-  "\\'"                          { string.append( '\'' ); }
-  "\\\\"                         { string.append( '\\' ); }
-
-  /* error cases */
-  \\.                            { throw new Scanner.Exception(yyline + 1, yycolumn + 1, "Illegal escape sequence \""+yytext()+"\""); }
-  {LineTerminator}               { throw new Scanner.Exception(yyline + 1, yycolumn + 1, "Unterminated string at end of line"); }
+<PRETEXT> {
+	{TextChar}	{ System.out.println("PRETEXT CHAR:" + yytext()); string.append( yytext() ); }
+	"<"                         { System.out.println("PRETEXT END:" + yytext()); yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
 }
-*/
 
+<POSTMIDTEXT> {
+	{TextChar} 					{ System.out.println("POSTMIDTEXT CHAR:" + yytext()); string.append( yytext() ); }
+	"\""                        { System.out.println("POSTTEXT CHAR:" + yytext()); yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
+	"<"                         { System.out.println("MIDTEXT CHAR:" + yytext()); yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
+}
 
 
 /* No token was found for the input so through an error.  Print out an

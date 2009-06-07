@@ -17,6 +17,8 @@
 
 %terminals TODO_EMBEDDING, TODO_MARKUP, TODO_PREDICATE  ;
 
+%terminals PRETEXT, MIDTEXT, POSTTEXT;
+
 
 %goal module;
 
@@ -61,7 +63,7 @@ statements = statement
 ;
 
 statement = EACH LPAREN var COLON expression RPAREN statement
-| LET assignments IN statements_opt END statement
+| LET assignments IN statements_opt END 
 | LBRACE statements_opt.s RBRACE {: //@block([s]) :}
 ;
 
@@ -72,7 +74,7 @@ statement = matched_statement
 matched_statement = IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE matched_statement.b {: //@if-else(p,a,b) :}
 | COMMENT STRCON.s SEMICOLON {: //@comment(#s) :}
 | ECHO expression.e SEMICOLON {: //@echo(e) :}
-| ECHO embedding.e SEMICOLON {: //@echo_embedding(e) :}
+| ECHO embedding.e SEMICOLON {: //@echo-embedding(e) :}
 | CDATA expression.e SEMICOLON {: //@cdata(e) :}
 | YIELD SEMICOLON {: //@yield() :}
 ;
@@ -128,24 +130,26 @@ keyvaluepairs = keyvaluepair
 ;
 
 /* SDF specificatie: languages/waebric/syntax/Embedding */
-embedding = TODO_EMBEDDING {: //@todo_embedding() :}
-;
-/* EMBEDDING IS NOG NIET GEIMPLEMENTEERD - NIET MEECOMPILEREN 
-texttail = POSTTEXT
-| MIDTEXT embed texttail
+
+
+texttail = POSTTEXT.p {: //@post(#p) :}
+| MIDTEXT.m embed.e texttail {: //@mid(#m,e) :}
 ;
 
-embedding = PRETEXT embed texttail
-| TODO_EMBEDDING {: //@todo_embedding() :}
+embedding = PRETEXT.p embed.e texttail  {: //@pre(#p,e) :}
 ;
 
-embed = markup_opt expression
+embed = markup_opt.m expression.e {: //@exp-embedding([m],e) :}
 ;
 
 markup_opt = 
 | markup_seq
 ;
-*/
+
+markup_seq = markup 
+| markup_seq markup
+;
+
 /* SDF specificatie: languages/waebric/syntax/Markup */
 
 arguments = LPAREN argumentlist_opt RPAREN
@@ -169,9 +173,7 @@ markup = designator arguments
 ;
 
 /*
-markup_seq = markup
-| markup_seq markup
-;
+
 
 statement = markup_seq statement
 | markup_seq SEMICOLON
@@ -180,20 +182,26 @@ statement = markup_seq statement
 ;
 */
 
-designator = IDCON attribute_opt
+designator = IDCON.i attribute_opt.a {: //@tag(#i,[a]) :}
 ;
 
-attribute = HASH IDCON
-| DOT IDCON
-| DOLLAR IDCON
-| COLON IDCON
-| ADDCHAR NATCON MOD NATCON
-| ADDCHAR NATCON
+attribute = HASH IDCON.i {: //#id(#i) :}
+| DOT IDCON.i {: //#class(#i) :}
+| DOLLAR IDCON.i {: //#name(#i) :}
+| COLON IDCON.i {: //#type(#i) :}
+| ADDCHAR NATCON.w MOD NATCON.h	{: //#with-height(#w,#h) :}
+| ADDCHAR NATCON.w {: //#height(#w) :}  
 ;
 
 attribute_opt =
-| attribute
+| attributes        
 ;
+
+attributes = attribute 
+| attributes attribute
+;
+
+
 
 
 /* SDF specificatie: languages/waebric/syntax/Sites */

@@ -74,8 +74,7 @@ public class ASTGenerator
 								if(rhs_item.symbol.type==null)
 								{
 									rhs_item.symbol.type = astInfo.getBeaverType(rhs_item.alias);
-									System.out.println("alias:" + rhs_item.alias + " type:" + rhs_item.symbol.type);
-				
+										
 								}
 							}
 							
@@ -101,7 +100,7 @@ public class ASTGenerator
 					    }
 						
 						
-						astInfo.printArguments();
+						//astInfo.printArguments();
 						String newCode = "return new " + astInfo.newFuncion + ";";
 						rule.code = newCode;
 						System.out.println(newCode);
@@ -204,6 +203,7 @@ public class ASTGenerator
 			{
 				extendClass="ListType";	
 			}
+
 		}
 		else if(nrCons==0)
 		{
@@ -221,6 +221,16 @@ public class ASTGenerator
 				astInfo.argument[1].astType.equals(ASTtype.CONS))
 			{
 				extendClass="ListTypeCons";	
+			}
+			else if(astInfo.argument[0].astType.equals(ASTtype.STRING) &&
+				astInfo.argument[1].astType.equals(ASTtype.CONS))
+			{
+				extendClass="OneCons";	
+			}
+			else if(astInfo.argument[0].astType.equals(ASTtype.STRING) &&
+				astInfo.argument[1].astType.equals(ASTtype.ARRAY))
+			{
+				extendClass="ListType";	
 			}
 		}
 		else if(astInfo.numberOfArguments==3)
@@ -541,11 +551,13 @@ public class ASTGenerator
 	
 	static public String getAddSlashFunction()
 	{
-		String treewalkCode ="public String addSlashes(String input)\n\t\t{\n";
-		treewalkCode +="\t\tString result=input.replaceAll(\"\\\\n\",\"\\\\\\\\n\");\n\n";
-		treewalkCode +="\t\tresult=result.replaceAll(\"\\\\r\",\"\\\\\\\\r\");\n";
-		treewalkCode +="\t\tresult=result.replaceAll(\"\\\\t\",\"\\\\\\\\t\");\n";
-		treewalkCode +="\t\treturn result;\n\t\t}\n";
+		String treewalkCode ="public String addSlashes(String input)\n\t{\n";
+		treewalkCode +="\t\tString result=\"\";\n";
+		treewalkCode +="\t\tif(input!=null)\n\t\t{\n";
+		treewalkCode +="\t\t\tresult=input.replaceAll(\"\\\\n\",\"\\\\\\\\n\");\n";
+		treewalkCode +="\t\t\tresult=result.replaceAll(\"\\\\r\",\"\\\\\\\\r\");\n";
+		treewalkCode +="\t\t\tresult=result.replaceAll(\"\\\\t\",\"\\\\\\\\t\");\n";
+		treewalkCode +="\t\t}\n\t\treturn result;\n\t}\n\n";
 		return treewalkCode;
 	}
 
