@@ -34,14 +34,13 @@ import com.uva.se.wparse.model.statement.Comment;
 import com.uva.se.wparse.model.statement.Each;
 import com.uva.se.wparse.model.statement.EchoEmbedding;
 import com.uva.se.wparse.model.statement.EchoExpression;
-import com.uva.se.wparse.model.statement.IfElse;
 import com.uva.se.wparse.model.statement.If;
+import com.uva.se.wparse.model.statement.IfElse;
 import com.uva.se.wparse.model.statement.LetIn;
 import com.uva.se.wparse.model.statement.MarkupAndStatement;
 import com.uva.se.wparse.model.statement.MarkupEmbedding;
 import com.uva.se.wparse.model.statement.MarkupExpression;
 import com.uva.se.wparse.model.statement.SingleMarkup;
-import com.uva.se.wparse.model.statement.MultipleMarkup;
 import com.uva.se.wparse.model.statement.Statement;
 import com.uva.se.wparse.model.statement.Yield;
 
@@ -128,11 +127,6 @@ public final class StatementParser {
 		TerminalParser.term(Keyword.END.toString()));
 	}
 
-	private static Parser<Statement> multipleMarkup(Parser<Markup> markupParser) {
-		return curry(MultipleMarkup.class).sequence(
-		markupParser.atLeast(2).many1(),
-		TerminalParser.term(Operator.SEMI_COLON.toString()));
-	}
 
 	private static Parser<Statement> singleMarkup(Parser<Markup> markupParser) {
 		return curry(SingleMarkup.class).sequence(markupParser,
@@ -142,14 +136,12 @@ public final class StatementParser {
 	private static Parser<Statement> markupExpression(Parser<Markup> markupParser,
 		Parser<Expression> expressionParser) {
 		return curry(MarkupExpression.class).sequence(
-		markupParser.many1(),
-		
-		//markupParser.between(expressionParser, markupParser).many(),
-		//Parsers.or(expressionParser, markupParser.many()),
+		markupParser.many1(),	 
 		expressionParser.optional(),
 		TerminalParser.term(Operator.SEMI_COLON.toString()));
 	}
-
+	
+	
 	private static Parser<Statement> markupEmbedding(Parser<Markup> markupParser,
 		Parser<Embedding> embedding) {
 		return curry(MarkupEmbedding.class).sequence(markupParser.many1(),
@@ -173,6 +165,7 @@ public final class StatementParser {
 		Parser<Predicate> predicateParser =
 		PredicateParser.predicates(expressionParser);
 
+		
 		@SuppressWarnings("unchecked")
 		Parser<Statement> parser =
 		Parsers.or(
@@ -182,14 +175,13 @@ public final class StatementParser {
 		    each(expressionParser, lazy),
 		    letIn(assignmentParser, lazy),
 		    comment(),
-		    multipleMarkup(markupParser),  
-		    singleMarkup(markupParser),
+		    singleMarkup(markupParser),		
+		    markupExpression(markupParser, expressionParser),
 		    markupEmbedding(markupParser,embeddingParser),
 		    echoEmbedding(embeddingParser),
 		    echo(expressionParser),
 		    cdata(expressionParser),
 		    yield(),
-		    markupExpression(markupParser, expressionParser),
 		    block(lazy));
 		ref.set(parser);
 		return parser;

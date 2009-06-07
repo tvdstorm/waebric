@@ -32,7 +32,7 @@ import com.uva.se.wparse.model.markup.MarkupArgument;
 public class MarkupParser {
 
 
-	private static Parser<Markup> markupDesignator(Parser<Attribute> attributeParser) {
+	public static Parser<Markup> markupDesignator(Parser<Attribute> attributeParser) {
 		return curry(Designator.class).sequence(ExpressionParser.IDENTIFIER.source(), attributeParser.many());
 	}
 	
