@@ -6,7 +6,7 @@ import beaver.comp.ASTargument;
 public class ASTinfo
 {
 	
-	public boolean bPureCons;
+	public boolean bStringArray;
 	public boolean bFoundCons;
 	public String className;
 	public String ASTname;
@@ -101,7 +101,7 @@ public class ASTinfo
 	 
 	 
 		stringBoolean = "\t\tthis.isString=false;\n"; //constructor
-		bPureCons=true;
+
 		for (int argumentIndex=0;argumentIndex<numberOfArguments;argumentIndex++)
 		{
 			if(argument[argumentIndex]==null)
@@ -117,18 +117,32 @@ public class ASTinfo
 			
 			argument[argumentIndex].astType=ASTtype.CONS; //default type
 					
-			if(argumentText[argumentIndex].indexOf("#")>=0 && numberOfArguments<=2)
+			if(argumentText[argumentIndex].indexOf("[")==-1 &&
+			   argumentText[argumentIndex].indexOf("#")>=0 && 
+			   argumentText[argumentIndex].indexOf("]")==-1 &&
+			   numberOfArguments<=2)
 			{
 				stringBoolean = "\t\tthis.isString=true;\n";
 			}	
 			
-			if( argumentText[argumentIndex].indexOf("#")>=0 )
+			if(argumentText[argumentIndex].indexOf("[")==-1 &&
+			   argumentText[argumentIndex].indexOf("#")>=0 &&
+			   argumentText[argumentIndex].indexOf("]")==-1 )
 			{
 				argument[argumentIndex].astType=ASTtype.STRING;
-				bPureCons=false;
+
 			}	
 			
-			if(argumentText[argumentIndex].indexOf("[")>=0 && argumentText[argumentIndex].indexOf("]")>=0)
+			if(argumentText[argumentIndex].indexOf("[")>=0 && 
+				argumentText[argumentIndex].indexOf("#")>=0 &&
+				argumentText[argumentIndex].indexOf("]")>=0)
+			{
+				bStringArray=true;
+			}
+			
+			if(argumentText[argumentIndex].indexOf("[")>=0 && 
+				argumentText[argumentIndex].indexOf("#")==-1 &&
+				argumentText[argumentIndex].indexOf("]")>=0)
 			{
 				argument[argumentIndex].astType=ASTtype.ARRAY; //default type
 			}

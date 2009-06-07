@@ -157,14 +157,14 @@ public class ASTGenerator
 	{
 		String sUsedVariable = getTreeWalkVariableName(currentStringArgumentNumber,currentConsArgumentNumber,ASTtype.CONS);
 		String treewalkCode = "\t\tif("+sUsedVariable+"!=null){\n";
-		if(astInfo.bPureCons)
+		if(astInfo.bStringArray)
 		{
-			treewalkCode += "\t\tif("+sUsedVariable+".isString)\n\t\t{\n\t\tSystem.out.print(\"[\");\n\t\t}\n";
+			treewalkCode += "\n\t\tSystem.out.print(\"[\");\n\t\t\n";
 		}
 		treewalkCode += "\t\t\t"+sUsedVariable+".accept(this);\n";
-		if(astInfo.bPureCons)
+		if(astInfo.bStringArray)
 		{
-			treewalkCode += "\t\tif("+sUsedVariable+".isString)\n\t\t{\n\t\tSystem.out.print(\"]\");\n\t\t}\n";
+			treewalkCode += "\n\t\tSystem.out.print(\"]\");\n\t\t\n";
 		}
 		treewalkCode += "\t\t}\n\t\telse{\n";
 		treewalkCode += "\t\t\tSystem.out.print(\"[]\");\n";
