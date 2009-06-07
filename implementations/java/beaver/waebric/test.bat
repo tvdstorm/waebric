@@ -13,4 +13,5 @@
 setlocal
 set list=.\test\input\*.wae
 for /f "delims=" %%i in ('dir /b "%list%"') do run %%~ni
+fc .\output\*.* .\ref\*.* > diff.out
 @ECHO ON
