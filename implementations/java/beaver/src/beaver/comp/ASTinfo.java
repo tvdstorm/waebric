@@ -37,7 +37,7 @@ public class ASTinfo
 		newFuncion= newFuncion.substring(0,1).toUpperCase()  		
 			+ newFuncion.substring(1).toLowerCase(); 
 		
-		
+		newFuncion = newFuncion.replaceAll("-","_");
 	    
 		int positionLparen = newFuncion.indexOf('(');
 		ASTname = ASTname.substring(0,positionLparen);

@@ -24,7 +24,7 @@
 module = MODULE moduleid.i moduleelements_opt.e {: //@module(i,[e]) :}
 ;
 
-moduleid = idcons.i  {: //@module_id([#i]) :}
+moduleid = idcons.i  {: //@module-id([#i]) :}
 ;
 
 idcons = IDCON.i {: //#idconsa(#i) :}
@@ -69,7 +69,7 @@ statement = matched_statement
 | open_statement
 ;
 
-matched_statement = IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE matched_statement.b {: //@if_else(p,a,b) :}
+matched_statement = IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE matched_statement.b {: //@if-else(p,a,b) :}
 | COMMENT STRCON.s SEMICOLON {: //@comment(#s) :}
 | ECHO expression.e SEMICOLON {: //@echo(e) :}
 | ECHO embedding.e SEMICOLON {: //@echo_embedding(e) :}
@@ -79,7 +79,7 @@ matched_statement = IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE m
 
 
 open_statement = IF LPAREN TODO_PREDICATE.p RPAREN statement.a {: //@if(p,a) :}
-| IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE open_statement.b {: //@if_else(p,a,b) :}
+| IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE open_statement.b {: //@if-else(p,a,b) :}
 ;
 
 

@@ -4,5 +4,5 @@
 :: en zet deze in output-bestand <filenaam>.txt
 
 @echo off
-java -cp .;..;..\bin waebric/Main .\test\input\%1.wae > .\test\output\%1.txt
+java -cp .;..;..\bin waebric/Main .\test\input\$1.wae > .\test\output\$1.txt
 @echo on
