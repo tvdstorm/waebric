@@ -52,6 +52,6 @@ public final class QualifiedName extends WaebricParseTreeNode {
 			quotedNames.add( outputQuote( name ) );
 		}
 		
-		return Strings.join(",", quotedNames );
+		return Strings.join( OUTPUT_BLOCK_SEPARATOR, quotedNames );
 	}
 }

@@ -25,16 +25,8 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
-import com.uva.se.wparse.model.expression.ExpressionDotIdentifier;
-import com.uva.se.wparse.model.expression.Identifier;
-import com.uva.se.wparse.model.expression.NaturalConstant;
-import com.uva.se.wparse.model.expression.SymbolConstant;
-import com.uva.se.wparse.model.expression.Var;
-import com.uva.se.wparse.model.markup.Attribute;
 import com.uva.se.wparse.model.markup.Designator;
 import com.uva.se.wparse.model.markup.Markup;
-import com.uva.se.wparse.model.markup.SingleAttribute;
-import com.uva.se.wparse.parser.Operator;
 import com.uva.se.wparse.util.ConversionUtil;
 import com.uva.se.wparse.util.Strings;
 

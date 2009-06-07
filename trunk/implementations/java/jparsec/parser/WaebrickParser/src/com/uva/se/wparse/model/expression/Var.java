@@ -48,6 +48,6 @@ public class Var extends WaebricParseTreeNode implements Expression {
 	
 	@Override
 	public String toTransformerOutput() {
-		return OUTPUT_VAR +  outputBracedBlock( outputQuote(identifier) );
+		return OUTPUT_VAR +  outputBracedBlock( outputQuote( identifier ) );
 	}
 }

@@ -55,7 +55,7 @@ public final class BlockArgument extends WaebricParseTreeNode implements Argumen
   public String toTransformerOutput() {
 	  String ArgumentBlock = "";
 	  for (Argument argument: args) {
-		  ArgumentBlock = outputAddToBlock(ArgumentBlock, argument.toTransformerOutput());
+		  ArgumentBlock = outputAddToBlock( ArgumentBlock, argument.toTransformerOutput() );
 	  }
 	  return ArgumentBlock;
   }  

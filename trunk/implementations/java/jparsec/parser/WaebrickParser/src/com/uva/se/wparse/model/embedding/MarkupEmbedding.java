@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.model.common.TransformerOutput;
 import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Designator;
@@ -83,19 +82,22 @@ public class MarkupEmbedding extends WaebricParseTreeNode implements Embedding {
 	
 	@Override
 	public String toTransformerOutput() {
+
+		
+		String followerItem = "";
+		if (expression != null){
+			followerItem = expression.toTransformerOutput();
+		}
+		else {
+			followerItem = markup.remove( markup.size() - 1 ).toTransformerOutput();
+		}
+		
 		String markupList = "";
 
 		for (Markup markupItem: markup) {
 			markupList = outputAddToBlock(markupList, markupItem.toTransformerOutput());
 		}
 		
-		String followerItem = "";
-		if(expression != null){
-			followerItem = expression.toTransformerOutput();
-		}
-//		if (follower instanceof TransformerOutput) {
-//		followerItem = ((TransformerOutput)follower).toTransformerOutput();
-//		}
 		
 		if ( expression != null ) {			
 			return OUTPUT_EMBEDDING_PRE + outputBracedBlock( OUTPUT_EMBEDDING_PRE_CODE + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EXP_EMBEDDING + outputBracedBlock( outputBracedList( markupList ) + OUTPUT_BLOCK_SEPARATOR + followerItem ) + OUTPUT_BLOCK_SEPARATOR + OUTPUT_EMBEDDING_POST + OUTPUT_EMBEDDING_POST_CODE )    ;
