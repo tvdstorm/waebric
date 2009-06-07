@@ -24,7 +24,7 @@
 module = MODULE moduleid.i moduleelements_opt.e {: //@module(i,[e]) :}
 ;
 
-moduleid = idcons.i  {: //@module_id(i) :}
+moduleid = idcons.i  {: //@module_id([#i]) :}
 ;
 
 idcons = IDCON.i {: //#idconsa(#i) :}
@@ -91,7 +91,7 @@ assignments = assignment
 ;
 
 formals = {://@empty() :}
-| LPAREN formallist.f RPAREN {://@formals(f) :}
+| LPAREN formallist.f RPAREN {://@formals([#f]) :}
 ;
 
 formallist = IDCON.i {: //#formal_a(#i):}
