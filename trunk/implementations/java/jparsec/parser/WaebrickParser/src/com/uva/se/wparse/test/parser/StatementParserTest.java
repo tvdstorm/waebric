@@ -405,7 +405,23 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 	
-	  
+	 
+	public void testMarkupExpression2(){
+		String source = "title title2; ";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupExpression3(){
+		String source = "title title2 title3; ";
+		TerminalParser.parse(statemenParser, source);
+	}
+	
+	public void testMarkupBlock2(){
+		String source = "{ css(\"blueprint.css\", \"screen,projection\"); title title; }  ";
+		TerminalParser.parse(statemenParser, source);
+	}
+	 
+	
 	
 	
 	

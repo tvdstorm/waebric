@@ -43,6 +43,14 @@ public class Designator extends WaebricParseTreeNode implements Markup{
 		}
 	}
 	
+	
+	
+	public List<Attribute> getAttributes() {
+		return attributes;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return identifier + " " + attributes;
