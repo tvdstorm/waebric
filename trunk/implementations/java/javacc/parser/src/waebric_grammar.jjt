@@ -1,22 +1,46 @@
 options {
   JDK_VERSION = "1.5";
+  NODE_SCOPE_HOOK = true;
 } 
 
 PARSER_BEGIN(WaebricParser) 
-
 public class WaebricParser {
+  public static int depth;
+  public static String ast;
+  
   public static void main(String args[]) {
     System.out.println("Reading from standard input...");
     System.out.print("Enter a Waebric FunctionDef :");
     new WaebricParser(System.in);
     try {
+      ast = "";
       SimpleNode n = WaebricParser.Modules();
-      n.dump("");
+      //n.dump("");
+      //System.out.println(pad() + n.toString());
+      System.out.println(ast);
       System.out.println("Thank you.");
     } catch (Exception e) {
       System.out.println("Oops.");
       System.out.println(e.getMessage());
     }
+  }
+  
+  public static void jjtreeOpenNodeScope(Node n) {
+  	ast += (pad() + "(" + n.toString()) + "[\"" + token.image + "\"]";
+  	depth++;
+  }
+  
+  public static void jjtreeCloseNodeScope(Node n) {
+  	depth--;
+  	ast += (pad() + ")");
+  }
+  
+  private static String pad() {
+  	StringBuffer sb = new StringBuffer();
+  	for(int i=0 ; i<depth ; i++) {
+  		sb.append("");
+  	}
+  	return sb.toString();
   }
 }
 PARSER_END(WaebricParser)
@@ -247,7 +271,7 @@ TOKEN : {
 }
 
 /* GENERIC */
-SimpleNode Modules():{}
+SimpleNode Modules() : {}
 {
   (Module())* ";" 
   { return jjtThis; }
