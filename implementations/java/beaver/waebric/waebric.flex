@@ -82,7 +82,7 @@ DocumentationComment = "/*" "*"+ [^/*] ~"*/"
 /* A literal integer is is a number beginning with a number between
    one and nine followed by zero or more numbers between zero and nine
    or just a zero.  */
-Natcon = 0 | [1-9][0-9]*
+Natcon = [0-9]+
 
 /* A identifier integer is a word beginning a letter between A and
    Z, a and z, or an underscore followed by zero or more letters
@@ -147,11 +147,11 @@ SiteFilename = {PathElement} "." {FileExt}
 //  "let"                            {return nextToken(Terminals.LET); }
    "yield"                          { return nextToken(Terminals.YIELD); }
 
-   "\""                        { System.out.println("PRETEXT START" + yytext() ); string.setLength(0); yybegin(PRETEXT); }
-   ">"                        { System.out.println("POSTMIDTEXT START"+ yytext() ); string.setLength(0); yybegin(POSTMIDTEXT); }
+   "\""                        { string.setLength(0); string.append( '\"' ); yybegin(PRETEXT); }
+   ">"                        { string.setLength(0);string.append( '>' ); yybegin(POSTMIDTEXT); }
 
-  
-  "TODO_MARKUP"						 {   return nextToken(Terminals.TODO_MARKUP); }
+
+
    
  
     
@@ -193,7 +193,7 @@ SiteFilename = {PathElement} "." {FileExt}
   {WhiteSpace}                   { /* ignore */ }
 
   /* identifiers */
-  {Identifier}                   { System.out.println("IDCON" + yytext() ); return nextToken(Terminals.IDCON, yytext()); }  
+  {Identifier}                   { return nextToken(Terminals.IDCON, yytext()); }  
   
   /* Natural numbers*/
   {Natcon}                       { return nextToken(Terminals.NATCON, yytext()); }  
@@ -236,14 +236,14 @@ SiteFilename = {PathElement} "." {FileExt}
 
 
 <PRETEXT> {
-	{TextChar}	{ System.out.println("PRETEXT CHAR:" + yytext()); string.append( yytext() ); }
-	"<"                         { System.out.println("PRETEXT END:" + yytext()); yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
+	{TextChar}	{  string.append( yytext() ); }
+	"<"                         {  yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
 }
 
 <POSTMIDTEXT> {
-	{TextChar} 					{ System.out.println("POSTMIDTEXT CHAR:" + yytext()); string.append( yytext() ); }
-	"\""                        { System.out.println("POSTTEXT CHAR:" + yytext()); yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
-	"<"                         { System.out.println("MIDTEXT CHAR:" + yytext()); yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
+	{TextChar} 					{ string.append( yytext() ); }
+	"\""                        {  yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
+	"<"                         {  yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
 }
 
 

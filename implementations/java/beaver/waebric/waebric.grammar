@@ -19,6 +19,7 @@
 
 %terminals PRETEXT, MIDTEXT, POSTTEXT;
 
+%terminals MARUPOPT_TODO;
 
 %goal module;
 
@@ -27,6 +28,10 @@ module = MODULE moduleid.i moduleelements_opt.e {: //@module(i,[e]) :}
 ;
 
 moduleid = idcons.i  {: //@module-id([#i]) :}
+;
+
+markup_opt = 
+| markup_seq 
 ;
 
 idcons = IDCON.i {: //#idconsa(#i) :}
@@ -62,7 +67,7 @@ statements = statement
 | statements statement
 ;
 
-statement = EACH LPAREN var COLON expression RPAREN statement
+statement = EACH LPAREN IDCON COLON expression RPAREN statement
 | LET assignments IN statements_opt END 
 | LBRACE statements_opt.s RBRACE {: //@block([s]) :}
 ;
@@ -103,11 +108,12 @@ formallist = IDCON.i {: //#formal_a(#i):}
 
 
 /* SDF specificatie: languages/waebric/syntax/Expressions */
-var = IDCON.i {: //@var(#i) :}
-;
 
-
-expression = var
+/*
+%left expression_cat
+Expressions.sdf:  Expression "+" Expression -> Expression {cons("cat"), left}
+*/
+expression = IDCON.i {: //@var(#i) :}
 | symbolcon.s {: //@sym(s) :}
 | NATCON.n {: //@num(#n) :}  
 | expression.e DOT IDCON.i {: //@field(e,#i) :}
@@ -118,7 +124,7 @@ expression = var
 symbolcon = SYMBOLCON.s  {: //#sym_text(#s) :}
 ;
 
-expressions = expression
+expressions = expression.x  
 | expressions.a COMMA expression.b {: //#expressionlist(a,b) :}
 ;
 
@@ -133,29 +139,28 @@ keyvaluepairs = keyvaluepair
 
 
 texttail = POSTTEXT.p {: //@post(#p) :}
-| MIDTEXT.m embed.e texttail {: //@mid(#m,e) :}
+| MIDTEXT.m embed.e texttail.t {: //@mid(#m,e,t) :}
 ;
 
-embedding = PRETEXT.p embed.e texttail  {: //@pre(#p,e) :}
+embedding = PRETEXT.p embed.e texttail.t  {: //@pre(#p,e,t) :}
 ;
 
 embed = markup_opt.m expression.e {: //@exp-embedding([m],e) :}
 ;
 
-markup_opt = 
-| markup_seq
+
+
+markup_seq = TODO_MARKUP   //levert op :[beaver] waebric.grammar: Warning: Resolved Shift-Reduce conflict by selecting (IDCON: SHIFT; goto 96) over (IDCON: REDUCE markup_opt = ) using precedence.
+| markup_seq TODO_MARKUP   //levert op :[beaver] waebric.grammar: Warning: Resolved Shift-Reduce conflict by selecting (IDCON: SHIFT; goto 96) over (IDCON: REDUCE markup_opt = ) using precedence.
 ;
 
-markup_seq = markup 
-| markup_seq markup
-;
 
 /* SDF specificatie: languages/waebric/syntax/Markup */
 
-arguments = LPAREN argumentlist_opt RPAREN
+arguments = LPAREN argumentlist_opt.a RPAREN {: //@args([a]) :}
 ;
 
-argumentlist = argument
+argumentlist = argument 
 | argumentlist COMMA argument
 ;
 
@@ -163,18 +168,17 @@ argumentlist_opt =
 | argumentlist
 ;
 
-argument = IDCON EQ expression
+argument = IDCON.i EQ expression.e {: //@attr(#i,e) :}
 | expression
 ;
 
-markup = designator arguments
+markup = designator.d arguments.a {: //@call(d,a) :}
 | designator
-| TODO_MARKUP {: //@todo_markup() :}
 ;
 
 /*
 
-
+%left statement
 statement = markup_seq statement
 | markup_seq SEMICOLON
 | markup_seq expression SEMICOLON
@@ -182,8 +186,7 @@ statement = markup_seq statement
 ;
 */
 
-designator = IDCON.i attribute_opt.a {: //@tag(#i,[a]) :}
-;
+
 
 attribute = HASH IDCON.i {: //#id(#i) :}
 | DOT IDCON.i {: //#class(#i) :}
@@ -231,6 +234,13 @@ type = LIST
 | STRING
 ;
 
+/* some predicates LEFTassociative %left
+%left predicate_and
+%left predicate_or
+Predicates.sdf:  {left:
+Predicates.sdf:   Predicate "&&" Predicate -> Predicate {cons("and"), left}
+Predicates.sdf:   Predicate "||" Predicate -> Predicate {cons("or"), left}
+
 predicate = expression
 | expression DOT type QUESTION
 | NOT predicate
@@ -239,5 +249,5 @@ predicate = expression
 ;*/
 
 
-
-	
+designator = IDCON.i attribute_opt.a {: //@tag(#i,[a]) :}
+;
