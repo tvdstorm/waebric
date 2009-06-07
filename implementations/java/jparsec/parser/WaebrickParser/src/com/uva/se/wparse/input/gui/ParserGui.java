@@ -149,6 +149,7 @@ public class ParserGui extends javax.swing.JFrame {
 					String output = outputTransformer.transform(parseTree);
 					txtParserOutput.setText(output);
 				} catch (Exception exception) {
+					exception.printStackTrace();
 					String error = Resources.ERROR_PARSER.getResource() + "\n" + exception.getMessage();
 					showErrorDialog(error);
 
