@@ -26,7 +26,7 @@
 	</target>
 
 	<target name="parser" depends="beavertask" description="generate parser">
-		<beaver file="waebric.grammar" compress="no" useSwitch="yes" createTreeWalker="yes"/>
+		<beaver file="waebric.grammar" compress="no" reportActions="yes" anonymousActions="no" useSwitch="yes" createTreeWalker="yes" />
 	</target>
 
 
