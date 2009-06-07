@@ -53,13 +53,10 @@ public final class BlockArgument extends WaebricParseTreeNode implements Argumen
   
   @Override
   public String toTransformerOutput() {
-	  String Result = "";
-	  
-	  if (args != null) {
-		  	for (Argument arg: args) {
-	  			Result = outputAddToBlock(Result, arg.toTransformerOutput());
-		  	}
-	  }	  
-	  return Result;
+	  String ArgumentBlock = "";
+	  for (Argument argument: args) {
+		  ArgumentBlock = outputAddToBlock(ArgumentBlock, argument.toTransformerOutput());
+	  }
+	  return ArgumentBlock;
   }  
 }

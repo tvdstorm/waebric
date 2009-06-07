@@ -41,7 +41,7 @@ public class MarkupExpression extends WaebricParseTreeNode implements Statement,
 	
 	public static final String OUTPUT_MARKUP_EXPRESSION = "markup-exp";
 	
-	public static final String OUTPUT_MARKUP_MULTIPLE 	= "markup-markup";
+	public static final String OUTPUT_MARKUP_MARKUP 	= "markup-markup";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpression.class);
 
@@ -77,14 +77,6 @@ public class MarkupExpression extends WaebricParseTreeNode implements Statement,
 					+ " with values : " + toString());
 		}
 	}
-	
-	private String getTypeOutput(){
-		if(expr != null){
-			return OUTPUT_MARKUP_EXPRESSION;
-		}
-			
-		return OUTPUT_MARKUP_MULTIPLE;
-	}
 
 	@Override
 	public String toString() {
@@ -93,21 +85,24 @@ public class MarkupExpression extends WaebricParseTreeNode implements Statement,
 	
 	@Override
 	public String toTransformerOutput() {
-		String markupBlock = "";
-		for (Markup markupItem: markupList) {
-			markupBlock = outputAddToBlock( markupBlock, markupItem.toTransformerOutput() );
-		}		
 		
-		//TODO: Miguel, de expr moet alleen in de putput komen als deze niet null is, dan is deze class een markup-exp
-		//anders is het een mark-markup en moeten alleen de items in de markuplist naar output.
-		if(expr != null){
-			return getTypeOutput() + outputBracedBlock( outputAddToBlock( outputBracedList( markupBlock ), expr.toTransformerOutput() ) );
-		}else{
-			return "markup-markup output placeholder"; //TODO: deze regel aanpassen naar goede outpur
+		String markupItem = "";
+		// if this is a markup markup, the last markupItem has to be isolated from the list
+		if ( expr == null ) {
+			markupItem = markupList.remove( ( markupList.size() - 1 ) ).toTransformerOutput();
+		}
+		
+		String markupBlock = "";
+		for (Markup markup: markupList) {
+			markupBlock = outputAddToBlock( markupBlock, markup.toTransformerOutput() );
+		}
+
+		if ( expr != null ) {			
+			return OUTPUT_MARKUP_EXPRESSION + outputBracedBlock( outputAddToBlock( outputBracedList( markupBlock ), expr.toTransformerOutput() ) );
+		}
+		else {		
+			return OUTPUT_MARKUP_MARKUP + outputBracedBlock( outputAddToBlock( outputBracedList( markupBlock ), markupItem ) ); 
 		}
 	}
-	
-	
-	
 	
 }

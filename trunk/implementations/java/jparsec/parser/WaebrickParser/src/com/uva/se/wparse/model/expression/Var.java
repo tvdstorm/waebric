@@ -23,26 +23,24 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 
 public class Var extends WaebricParseTreeNode implements Expression {
+	
+	public static final String OUTPUT_VAR = "var";
 
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Var.class);
 
 	private String identifier;
 
 	public Var(String identifierStart , String identifierEnd) {
-		this.identifier = identifierStart + identifierEnd;
+		this.identifier = identifierStart/* + identifierEnd*/;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName() + " with values : " + toString());
 		}
-	}
-	
-	
+	}	
 
 	public String getIdentifier() {
 		return identifier;
 	}
-
-
-
+	
 	@Override
 	public String toString() {
 		return identifier;
@@ -50,6 +48,6 @@ public class Var extends WaebricParseTreeNode implements Expression {
 	
 	@Override
 	public String toTransformerOutput() {
-		return "var(" + outputQuote(identifier) + ")";
+		return OUTPUT_VAR +  outputBracedBlock( outputQuote(identifier) );
 	}
 }
