@@ -421,6 +421,19 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 	 
+	public void testField(){
+		String source = "a(href=mi.link) mi.title;";
+		TerminalParser.parse(statemenParser, source);
+	}
+	 
+	
+	public void testEchoEmbedding(){
+		String source = "echo \"<b() i()>\";";
+		TerminalParser.parse(statemenParser, source);
+	}
+	 
+	
+	
 	
 	
 	

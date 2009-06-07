@@ -46,7 +46,18 @@ public class SingleAttribute extends WaebricParseTreeNode implements Attribute  
 			}
 	}
 	
-	private Operator getSymbol(String symbol) {
+	
+	public Operator getSymbol() {
+		return symbol;
+	}
+
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+
+	public Operator getSymbol(String symbol) {
 		if(Operator.POUND.toString().equals(symbol)){
 			return Operator.POUND;
 		}else if(Operator.DOT.toString().equals(symbol)){

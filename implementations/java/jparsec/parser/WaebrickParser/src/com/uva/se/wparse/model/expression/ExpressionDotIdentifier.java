@@ -35,6 +35,8 @@ public final class ExpressionDotIdentifier extends WaebricParseTreeNode implemen
 	public ExpressionDotIdentifier(Expression expression, Operator op, Expression identifier) {
 		if(identifier instanceof Var){
 			this.identifier = new Identifier( ((Var)identifier).getIdentifier(), "");	
+		}else if(identifier instanceof Identifier){
+			this.identifier = (Identifier)identifier;
 		}
 		
 		this.expression = expression;
