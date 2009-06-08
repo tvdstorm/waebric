@@ -19,8 +19,7 @@ Helpers
 	
 	
 	// Used for text
-//	basic_text_char = [[input_character + [[tab + cr] + lf]] - ['"' + '<']];
-	basic_text_char = [[input_character + [tab +[cr + lf]] - ['"' + '<']];
+	basic_text_char = [[input_character + [tab + [cr + lf]]] - ['"' + '<']];
 	text_char_ref = 
 		'&#' digit+ ';' |
 		'&#x' (digit | letter)+ ';';

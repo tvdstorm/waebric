@@ -88,7 +88,9 @@ public class TreeWalker extends DepthFirstAdapter {
 	{"\"", "\\\\\""}, 
 	{"\r", "\\\\r"}, 
 	{"\n", "\\\\n"}, 
-	{"\t", "\\\\t"}
+	{"\t", "\\\\t"},
+	{"  ", " "},
+	{"&amp;", "&"}
     };
     
     private StringBuilder astTree;
@@ -115,7 +117,7 @@ public class TreeWalker extends DepthFirstAdapter {
     
     @Override
     public void caseTNatCon(TNatCon node) {
-	processValueToken(node.getText());
+	astTree.append(node.getText());
     }
     
     @Override
@@ -221,11 +223,7 @@ public class TreeWalker extends DepthFirstAdapter {
 
     @Override
     public void caseAFormals(AFormals node) {
-	astTree.append("formals(");
-	
 	processChildren(node.getIdCon());
-	
-	astTree.append(")");
     }
     
     @Override
