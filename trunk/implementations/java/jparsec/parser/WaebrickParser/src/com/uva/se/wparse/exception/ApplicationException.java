@@ -1,20 +1,35 @@
 package com.uva.se.wparse.exception;
 
+/**
+ * This Exception indicates it is an exception which is thrown in this
+ * application.
+ */
 public abstract class ApplicationException extends Exception {
 
-	private static final long serialVersionUID = -3404976041156607572L;
+	/**
+	 * Use for serialization purposes in the Java framework.
+	 */
+	private static final long serialVersionUID = 4934099892011252008L;
 
 	/**
-	 * Create 
+	 * Create an ApplicationException, based on a message and an Exception which
+	 * is wrapped in this Exception.
+	 * 
+	 * @param message
+	 *            The message which is displayed in the frontend.
+	 * @param cause
+	 *            The exception which is rethrowed wrapped in this
+	 *            ApplicationException.
 	 */
 	public ApplicationException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
-	 * Create an Exception based on the  
+	 * Created an ApplicationException based on a message.
 	 * 
-	 * @param message is the message to display in the frontend. 
+	 * @param message
+	 *            The message to display in the frontend.
 	 */
 	public ApplicationException(String message) {
 		super(message);
