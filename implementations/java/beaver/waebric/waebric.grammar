@@ -21,6 +21,10 @@
 
 %terminals MARUPOPT_TODO;
 
+%terminals IDCONTAIL;
+
+%terminals IDCONDESIGNATOR;
+
 %goal module;
 
 /* SDF specificatie: languages/waebric/syntax/Modules */
@@ -30,9 +34,7 @@ module = MODULE moduleid.i moduleelements_opt.e {: //@module(i,[e]) :}
 moduleid = idcons.i  {: //@module-id([#i]) :}
 ;
 
-markup_opt = 
-| markup_seq 
-;
+
 
 idcons = IDCON.i {: //#idconsa(#i) :}
 | idcons.a DOT IDCON.b {: //#idconslist(a,#b) :}
@@ -121,6 +123,15 @@ expression = IDCON.i {: //@var(#i) :}
 | LBRACE keyvaluepairs.p RBRACE /* {: //@record(p) :} */
 ;
 
+embedexpression = IDCONTAIL.i {: //@var(#i) :}
+| symbolcon.s {: //@sym(s) :}
+| NATCON.n {: //@num(#n) :}  
+//| expression.e DOT IDCONTAIL.i {: //@field(e,#i) :}
+| LBRACK expressions.e RBRACK {: //@list(e) :}
+| LBRACE keyvaluepairs.p RBRACE /* {: //@record(p) :} */
+;
+
+
 symbolcon = SYMBOLCON.s  {: //#sym_text(#s) :}
 ;
 
@@ -145,14 +156,22 @@ texttail = POSTTEXT.p {: //@post(#p) :}
 embedding = PRETEXT.p embed.e texttail.t  {: //@pre(#p,e,t) :}
 ;
 
-embed = markup_opt.m expression.e {: //@exp-embedding([m],e) :}
+embed = embedmarkup_opt.m embedexpression.e {: //@exp-embedding(m,e) :}
+;
+
+embedmarkup_opt = 
+| start_markup.s markup_opt.o {: //@startmarkopt(s,[o]) :}
+;
+
+markup_opt= 
+|markup_seq
+;
+
+markup_seq = markup
+| markup_seq markup
 ;
 
 
-
-markup_seq = TODO_MARKUP   //levert op :[beaver] waebric.grammar: Warning: Resolved Shift-Reduce conflict by selecting (IDCON: SHIFT; goto 96) over (IDCON: REDUCE markup_opt = ) using precedence.
-| markup_seq TODO_MARKUP   //levert op :[beaver] waebric.grammar: Warning: Resolved Shift-Reduce conflict by selecting (IDCON: SHIFT; goto 96) over (IDCON: REDUCE markup_opt = ) using precedence.
-;
 
 
 /* SDF specificatie: languages/waebric/syntax/Markup */
@@ -161,7 +180,7 @@ arguments = LPAREN argumentlist_opt.a RPAREN {: //@args([a]) :}
 ;
 
 argumentlist = argument 
-| argumentlist COMMA argument
+| argument COMMA  argumentlist
 ;
 
 argumentlist_opt = 
@@ -172,8 +191,18 @@ argument = IDCON.i EQ expression.e {: //@attr(#i,e) :}
 | expression
 ;
 
+start_markup = start_designator.d arguments.a {: //@call(d,a) :}
+| start_designator
+;
+
 markup = designator.d arguments.a {: //@call(d,a) :}
 | designator
+;
+
+start_designator = IDCONDESIGNATOR.i attribute_opt.a {: //@tag(#i,[a]) :}
+;
+
+designator = IDCON.i attribute_opt.a {: //@tag(#i,[a]) :}
 ;
 
 /*
@@ -201,7 +230,7 @@ attribute_opt =
 ;
 
 attributes = attribute 
-| attributes attribute
+| attribute attributes 
 ;
 
 
@@ -249,5 +278,3 @@ predicate = expression
 ;*/
 
 
-designator = IDCON.i attribute_opt.a {: //@tag(#i,[a]) :}
-;
