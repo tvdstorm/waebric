@@ -16,6 +16,7 @@ public class ASTinfo
 	public String stringBoolean;
 	
 	private boolean m_KnoopPunt;
+	private boolean m_bMultiArray;
 	
 	public ASTinfo(String ruleCode)
 	{
@@ -24,13 +25,22 @@ public class ASTinfo
 		if(position>=0)
 		{
 			m_KnoopPunt=true;	
+			newFuncion= ruleCode.substring(position+3);
 		}
 		else
 		{
 			position=ruleCode.indexOf("//#");
-			m_KnoopPunt=false;	
+			newFuncion= ruleCode.substring(position+3);
 		}
-		newFuncion= ruleCode.substring(position+3);
+		
+		if(position==-1)
+		{
+			position=ruleCode.indexOf("//[]");
+			m_KnoopPunt=false;	
+			m_bMultiArray=true;
+			newFuncion= ruleCode.substring(position+4);
+		}
+		
 		//Make Classname compatible
 		
 		ASTname=newFuncion;
@@ -226,6 +236,11 @@ public class ASTinfo
 	public boolean isKnoopPunt()
 	{
 		return m_KnoopPunt;
+	}
+	
+	public boolean isMultiArray()
+	{
+		return m_bMultiArray;
 	}
 
 	public int getNumberOfCons()

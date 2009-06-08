@@ -160,7 +160,7 @@ embed = embedmarkup_opt.m embedexpression.e {: //@exp-embedding(m,e) :}
 ;
 
 embedmarkup_opt = 
-| start_markup.s markup_opt.o {: //@startmarkopt(s,[o]) :}
+| start_markup.s markup_opt.o {: //[]startmarkupopt(s,[o]) :}
 ;
 
 markup_opt= 
