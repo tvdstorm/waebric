@@ -3,8 +3,6 @@ package org.waebric.adapter;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import javax.smartcardio.ATR;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.sablecc.grammar.waebric.analysis.DepthFirstAdapter;
 import org.sablecc.grammar.waebric.node.AAndPredicate;
@@ -82,6 +80,9 @@ import org.sablecc.grammar.waebric.node.TString;
 import org.sablecc.grammar.waebric.node.TSymbolCon;
 import org.sablecc.grammar.waebric.node.TText;
 
+/**
+ * A TreeWalker to create a textual representation of the AST Tree using the Visitor pattern.
+ */
 public class TreeWalker extends DepthFirstAdapter {
     
     private static final int ORIGINAL_ITEM = 0;
@@ -90,20 +91,22 @@ public class TreeWalker extends DepthFirstAdapter {
     private static final String ELEMENT_DIVIDER = ", ";
     private static final String ELEMENT_PATH_SEPARATOR = "/";
     private static final String[][] ELEMENT_ESCAPE = {
-	{"\\\\\"", "\\\\\\\\\""}, 
-//	{"\\\\r", "\\\\\\\\r"}, 
-//	{"\\\\n", "\\\\\\\\n"}, 
-//	{"\\\\t", "\\\\\\\\t"}, 
-	{"\"", "\\\\\""}, 
-	{"\r", "\\\\r"}, 
-	{"\n", "\\\\n"}, 
-	{"\t", "\\\\t"},
-	{",", ", "},
-	{" [ ]+", " "},
+	{"\\\\\"", "\\\\\\\\\""},	/* Replace( \ with \\ ) */ 
+	{"\"", "\\\\\""}, 		/* Replace( " with \" ) */
+	{"\r", "\\\\r"}, 		/* Replace( cr with \r ) */ 
+	{"\n", "\\\\n"}, 		/* Replace( lf with \n ) */
+	{"\t", "\\\\t"},		/* Replace( tab with \t ) */
+	{",", ", "},			/* Replace( ',' with ', ' ) */
+	{" [ ]+", " "},			/* Replace( '  ' with ' ' ) */
     };
     
     private StringBuilder astTree;
 
+    /**
+     * Used for retrieving the AST Tree in text format after it has been created.
+     * 
+     * @return A String representation of the AST Tree.
+     */
     public String getAstTree() {
 	return this.astTree.toString();
     }
@@ -754,7 +757,7 @@ public class TreeWalker extends DepthFirstAdapter {
 	    
 	    if (filename.contains(ELEMENT_PATH_SEPARATOR)) {
 		astTree.append("path(");
-        	// Show the filename as decoupled elements
+        	// Show the filename and the directories as decoupled elements
 		String path = filename.substring(0, filename.lastIndexOf(ELEMENT_PATH_SEPARATOR));
 		String file = filename.substring(filename.lastIndexOf(ELEMENT_PATH_SEPARATOR) + 1);
 		astTree.append(String.format("\"%1$s\"" + ELEMENT_DIVIDER + "\"%2$s\"", path, file));	    
@@ -905,10 +908,15 @@ public class TreeWalker extends DepthFirstAdapter {
 	astTree.append("yield");
     }
 
+    /**
+     * Process a list of children and add their representation in the AST Tree.
+     *  
+     * @param children The children which will be added to the AST
+     */
     private void processChildren(LinkedList<? extends Node> children) {
 	astTree.append('[');
 	
-    	if (children != null) {	
+    	if (children != null) {
         	Iterator<? extends Node> iterator = children.iterator();
         	while (iterator.hasNext()) {
         	    Node node = iterator.next();
@@ -922,9 +930,16 @@ public class TreeWalker extends DepthFirstAdapter {
 	astTree.append(']');
     }
     
+    /**
+     * Adds a value token to the AST, performing multiple transformations on the supplied text to make sure the value
+     * is added in the correct syntax to the AST Tree.
+     *  
+     * @param text A text representation of the value to add to the AST Tree.
+     */
     private void processValueToken(String text) {
 	String s = text;
-	// Replace waebric specific text elements
+	
+	// Replace Waebric specific text elements
 	for (int replacementId = 0; replacementId < ELEMENT_ESCAPE.length; replacementId++) {
 	    s = s.replaceAll(ELEMENT_ESCAPE[replacementId][ORIGINAL_ITEM], ELEMENT_ESCAPE[replacementId][REPLACEMENT_ITEM]);
 	}
