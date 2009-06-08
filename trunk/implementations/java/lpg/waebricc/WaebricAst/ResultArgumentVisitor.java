@@ -1,0 +1,76 @@
+package waebricc.WaebricAst;
+
+public interface ResultArgumentVisitor
+{
+    Object visit(AstToken n, Object o);
+    Object visit(ModuleList n, Object o);
+    Object visit(Module n, Object o);
+    Object visit(ModuleIdList n, Object o);
+    Object visit(ModuleBlockList n, Object o);
+    Object visit(Site n, Object o);
+    Object visit(Import n, Object o);
+    Object visit(FunctionWithParameters n, Object o);
+    Object visit(FunctionWithoutParameters n, Object o);
+    Object visit(ParameterDeclList n, Object o);
+    Object visit(Name n, Object o);
+    Object visit(MappingList n, Object o);
+    Object visit(Mapping n, Object o);
+    Object visit(Markup n, Object o);
+    Object visit(MarkupList n, Object o);
+    Object visit(ArgumentList n, Object o);
+    Object visit(Argument n, Object o);
+    Object visit(ExpressionList n, Object o);
+    Object visit(ExpressionString n, Object o);
+    Object visit(ExpressionPlus n, Object o);
+    Object visit(ExpressionConstant n, Object o);
+    Object visit(ExpressionSymbol n, Object o);
+    Object visit(ExpressionCollection n, Object o);
+    Object visit(ExpressionPair n, Object o);
+    Object visit(KeyValuePairList n, Object o);
+    Object visit(KeyValuePair n, Object o);
+    Object visit(Embedding n, Object o);
+    Object visit(TextTailMidText n, Object o);
+    Object visit(TextTailPostText n, Object o);
+    Object visit(Embed n, Object o);
+    Object visit(StatementIf n, Object o);
+    Object visit(StatementIfElse n, Object o);
+    Object visit(StatementIfElseNoShortIf n, Object o);
+    Object visit(StatementEach n, Object o);
+    Object visit(StatementEachNoShortIf n, Object o);
+    Object visit(StatementLet n, Object o);
+    Object visit(StatementBlock n, Object o);
+    Object visit(StatementList n, Object o);
+    Object visit(StatementComment n, Object o);
+    Object visit(StatementEchoExpression n, Object o);
+    Object visit(StatementEchoEmbedding n, Object o);
+    Object visit(StatementCData n, Object o);
+    Object visit(StatementYield n, Object o);
+    Object visit(StatementMarkup n, Object o);
+    Object visit(StatementMarkupWithDesignator n, Object o);
+    Object visit(StatementMarkupWithExpression n, Object o);
+    Object visit(StatementMarkupWithEmbedding n, Object o);
+    Object visit(StatementMarkupStatement n, Object o);
+    Object visit(StatementMarkupStatementNoShortIf n, Object o);
+    Object visit(TypeList n, Object o);
+    Object visit(TypeRecord n, Object o);
+    Object visit(TypeString n, Object o);
+    Object visit(PredicateCheckType n, Object o);
+    Object visit(PredicateNegate n, Object o);
+    Object visit(PredicateAnd n, Object o);
+    Object visit(PredicateOr n, Object o);
+    Object visit(Var n, Object o);
+    Object visit(AssignmentList n, Object o);
+    Object visit(AssignmentExpression n, Object o);
+    Object visit(AssignmentStatement n, Object o);
+    Object visit(Designator n, Object o);
+    Object visit(AttributeList n, Object o);
+    Object visit(AttributeSharp n, Object o);
+    Object visit(AttributeDot n, Object o);
+    Object visit(AttributeDollar n, Object o);
+    Object visit(AttributeColon n, Object o);
+    Object visit(AttributeWidth n, Object o);
+    Object visit(AttributeWidthHeight n, Object o);
+
+    Object visit(Ast n, Object o);
+}
+
