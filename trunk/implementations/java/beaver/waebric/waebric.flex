@@ -169,9 +169,9 @@ SiteFilename = {PathElement} "." {FileExt}
   ","                            { return nextToken(Terminals.COMMA); }
   "."                            { return nextToken(Terminals.DOT); }
   ":"                            { return nextToken(Terminals.COLON); }
-  "%"                            { return nextToken(Terminals.MOD); }
-  "@"                            { return nextToken(Terminals.ADDCHAR); }    
-  "$"                            { return nextToken(Terminals.DOLLAR); }    
+//  "%"                            { return nextToken(Terminals.MOD); }
+//  "@"                            { return nextToken(Terminals.ADDCHAR); }    
+//  "$"                            { return nextToken(Terminals.DOLLAR); }    
   "#"                            { return nextToken(Terminals.HASH); }  
   "/"                            { return nextToken(Terminals.DIV); }
 //  "?"                            { return nextToken(Terminals.QUESTION); }
@@ -195,6 +195,12 @@ SiteFilename = {PathElement} "." {FileExt}
   /* identifiers */
   {Identifier}                   { return nextToken(Terminals.IDCON, yytext()); }  
   
+  /* identifiers */
+  "<"{Identifier}                 { String temp = yytext(); return nextToken(Terminals.IDCONDESIGNATOR, temp.substring(1) ); } 
+  
+  /* identifiers */
+  {Identifier}/">"                 { return nextToken(Terminals.IDCONTAIL, yytext()); } 
+    
   /* Natural numbers*/
   {Natcon}                       { return nextToken(Terminals.NATCON, yytext()); }  
 
@@ -231,20 +237,21 @@ SiteFilename = {PathElement} "." {FileExt}
   "\\\""                         { string.append( '\"' ); }
   "\\\\"                         { string.append( '\\' ); }
   "\\" [0-9][0-9][0-9]           { String temp = yytext(); string.append( temp.substring(1) ); }
-  [^\x00-\x1F\n\t\"\\]              { string.append( yytext() ); }
+  [^\x00-\x1F\n\t\"\\]           { string.append( yytext() ); }
 }
 
 
 <PRETEXT> {
-	{TextChar}	{  string.append( yytext() ); }
-	"<"                         {  yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
+	{TextChar}					{  string.append( yytext() ); }
+	{TextChar}/"<"              {  yybegin(YYINITIAL); string.append(  yytext() + '<' );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
 }
 
 <POSTMIDTEXT> {
 	{TextChar} 					{ string.append( yytext() ); }
-	"\""                        {  yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
-	"<"                         {  yybegin(YYINITIAL);  string.append( yytext() );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
+	"\""                        {  yybegin(YYINITIAL);  string.append( '\"' );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
+	{TextChar}/"<"             	{  yybegin(YYINITIAL);  string.append( yytext() + '<' );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
 }
+
 
 
 /* No token was found for the input so through an error.  Print out an
