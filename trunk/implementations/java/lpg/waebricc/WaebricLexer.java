@@ -2,9 +2,9 @@ package waebricc;
 
 import lpg.runtime.*;
 
-public class JavaLexer extends LpgLexStream implements WaebricParsersym, JavaLexersym, RuleAction
+public class WaebricLexer extends LpgLexStream implements WaebricParsersym, WaebricLexersym, RuleAction
 {
-    private static ParseTable prs = new JavaLexerprs();
+    private static ParseTable prs = new WaebricLexerprs();
     private PrsStream prsStream;
     private LexParser lexParser = new LexParser(this, prs, this);
 
@@ -16,22 +16,22 @@ public class JavaLexer extends LpgLexStream implements WaebricParsersym, JavaLex
     public int getLeftSpan() { return lexParser.getFirstToken(); }
     public int getRightSpan() { return lexParser.getLastToken(); }
 
-    public JavaLexer(String filename, int tab) throws java.io.IOException 
+    public WaebricLexer(String filename, int tab) throws java.io.IOException 
     {
         super(filename, tab);
     }
 
-    public JavaLexer(char[] input_chars, String filename, int tab)
+    public WaebricLexer(char[] input_chars, String filename, int tab)
     {
         super(input_chars, filename, tab);
     }
 
-    public JavaLexer(char[] input_chars, String filename)
+    public WaebricLexer(char[] input_chars, String filename)
     {
         this(input_chars, filename, 1);
     }
 
-    public JavaLexer() {}
+    public WaebricLexer() {}
 
     public String[] orderedExportedSymbols() { return WaebricParsersym.orderedTerminalSymbols; }
     public LexStream getLexStream() { return (LexStream) this; }
@@ -67,30 +67,30 @@ public class JavaLexer extends LpgLexStream implements WaebricParsersym, JavaLex
     // method getKind.  The template defines the Lexer class and the lexer() method.
     // A driver creates the action class, "Lexer", passing an Option object to the constructor.
     //
-    JavaKWLexer kwLexer;
+    WaebricKWLexer kwLexer;
     boolean printTokens;
     private final static int ECLIPSE_TAB_VALUE = 4;
 
     public int [] getKeywordKinds() { return kwLexer.getKeywordKinds(); }
 
-    public JavaLexer(String filename) throws java.io.IOException
+    public WaebricLexer(String filename) throws java.io.IOException
     {
         this(filename, ECLIPSE_TAB_VALUE);
-        this.kwLexer = new JavaKWLexer(getInputChars(), WaebricParsersym.TK_IDENTIFIER);
+        this.kwLexer = new WaebricKWLexer(getInputChars(), WaebricParsersym.TK_IDENTIFIER);
     }
 
-    public JavaLexer(Option option) throws java.io.IOException
+    public WaebricLexer(Option option) throws java.io.IOException
     {
         this(option.getFileName(), ECLIPSE_TAB_VALUE);
         this.printTokens = option.printTokens();
-        this.kwLexer = new JavaKWLexer(getInputChars(), WaebricParsersym.TK_IDENTIFIER);
+        this.kwLexer = new WaebricKWLexer(getInputChars(), WaebricParsersym.TK_IDENTIFIER);
     }
 
     public void initialize(char [] content, String filename)
     {
         super.initialize(content, filename);
         if (this.kwLexer == null)
-             this.kwLexer = new JavaKWLexer(getInputChars(), WaebricParsersym.TK_IDENTIFIER);
+             this.kwLexer = new WaebricKWLexer(getInputChars(), WaebricParsersym.TK_IDENTIFIER);
         else this.kwLexer.setInputChars(getInputChars());
     }
     
@@ -372,10 +372,7 @@ public class JavaLexer extends LpgLexStream implements WaebricParsersym, JavaLex
             // Rule 15:  Token ::= / * Inside Stars /
             //
             case 15: { 
-                if (getKind( // macro getLeftSpan is deprecated. Use function getLeftSpan
-               lexParser.getFirstToken(3)) == Char_Star)
-                     makeComment(WaebricParsersym.TK_DocComment);
-                else makeComment(WaebricParsersym.TK_MlComment);
+                makeComment(WaebricParsersym.TK_MlComment);
                 break;
             }
      
@@ -420,202 +417,130 @@ public class JavaLexer extends LpgLexStream implements WaebricParsersym, JavaLex
             }
      
             //
-            // Rule 21:  Token ::= -
+            // Rule 21:  Token ::= (
             //
             case 21: { 
-                makeToken(WaebricParsersym.TK_MINUS);
-                break;
-            }
-     
-            //
-            // Rule 22:  Token ::= *
-            //
-            case 22: { 
-                makeToken(WaebricParsersym.TK_MULTIPLY);
-                break;
-            }
-     
-            //
-            // Rule 23:  Token ::= (
-            //
-            case 23: { 
                 makeToken(WaebricParsersym.TK_LPAREN);
                 break;
             }
      
             //
-            // Rule 24:  Token ::= )
+            // Rule 22:  Token ::= )
             //
-            case 24: { 
+            case 22: { 
                 makeToken(WaebricParsersym.TK_RPAREN);
                 break;
             }
      
             //
-            // Rule 25:  Token ::= =
+            // Rule 23:  Token ::= =
             //
-            case 25: { 
+            case 23: { 
                 makeToken(WaebricParsersym.TK_EQUAL);
                 break;
             }
      
             //
-            // Rule 26:  Token ::= ,
+            // Rule 24:  Token ::= ,
             //
-            case 26: { 
+            case 24: { 
                 makeToken(WaebricParsersym.TK_COMMA);
                 break;
             }
      
             //
-            // Rule 27:  Token ::= :
+            // Rule 25:  Token ::= :
             //
-            case 27: { 
+            case 25: { 
                 makeToken(WaebricParsersym.TK_COLON);
                 break;
             }
      
             //
-            // Rule 28:  Token ::= ;
+            // Rule 26:  Token ::= ;
             //
-            case 28: { 
+            case 26: { 
                 makeToken(WaebricParsersym.TK_SEMICOLON);
                 break;
             }
      
             //
-            // Rule 29:  Token ::= ^
+            // Rule 27:  Token ::= #
             //
-            case 29: { 
-                makeToken(WaebricParsersym.TK_XOR);
-                break;
-            }
-     
-            //
-            // Rule 30:  Token ::= #
-            //
-            case 30: { 
+            case 27: { 
                 makeToken(WaebricParsersym.TK_SHARP);
                 break;
             }
      
             //
-            // Rule 31:  Token ::= /
+            // Rule 28:  Token ::= $
             //
-            case 31: { 
-                makeToken(WaebricParsersym.TK_SLASH);
+            case 28: { 
+                makeToken(WaebricParsersym.TK_DOLLAR);
                 break;
             }
      
             //
-            // Rule 32:  Token ::= ~
+            // Rule 29:  Token ::= & &
             //
-            case 32: { 
-                makeToken(WaebricParsersym.TK_TWIDDLE);
-                break;
-            }
-     
-            //
-            // Rule 33:  Token ::= |
-            //
-            case 33: { 
-                makeToken(WaebricParsersym.TK_OR);
-                break;
-            }
-     
-            //
-            // Rule 34:  Token ::= &
-            //
-            case 34: { 
-                makeToken(WaebricParsersym.TK_AND);
-                break;
-            }
-     
-            //
-            // Rule 35:  Token ::= & &
-            //
-            case 35: { 
+            case 29: { 
                 makeToken(WaebricParsersym.TK_AND_AND);
                 break;
             }
      
             //
-            // Rule 36:  Token ::= | |
+            // Rule 30:  Token ::= | |
             //
-            case 36: { 
+            case 30: { 
                 makeToken(WaebricParsersym.TK_OR_OR);
                 break;
             }
      
             //
-            // Rule 37:  Token ::= <
+            // Rule 31:  Token ::= .
             //
-            case 37: { 
-                makeToken(WaebricParsersym.TK_LESS);
-                break;
-            }
-     
-            //
-            // Rule 38:  Token ::= >
-            //
-            case 38: { 
-                makeToken(WaebricParsersym.TK_GREATER);
-                break;
-            }
-     
-            //
-            // Rule 39:  Token ::= .
-            //
-            case 39: { 
+            case 31: { 
                 makeToken(WaebricParsersym.TK_DOT);
                 break;
             }
      
             //
-            // Rule 40:  Token ::= !
+            // Rule 32:  Token ::= !
             //
-            case 40: { 
+            case 32: { 
                 makeToken(WaebricParsersym.TK_NOT);
                 break;
             }
      
             //
-            // Rule 41:  Token ::= [
+            // Rule 33:  Token ::= [
             //
-            case 41: { 
+            case 33: { 
                 makeToken(WaebricParsersym.TK_LBRACKET);
                 break;
             }
      
             //
-            // Rule 42:  Token ::= ]
+            // Rule 34:  Token ::= ]
             //
-            case 42: { 
+            case 34: { 
                 makeToken(WaebricParsersym.TK_RBRACKET);
                 break;
             }
      
             //
-            // Rule 43:  Token ::= {
+            // Rule 35:  Token ::= {
             //
-            case 43: { 
+            case 35: { 
                 makeToken(WaebricParsersym.TK_LBRACE);
                 break;
             }
      
             //
-            // Rule 44:  Token ::= }
+            // Rule 36:  Token ::= }
             //
-            case 44: { 
+            case 36: { 
                 makeToken(WaebricParsersym.TK_RBRACE);
-                break;
-            }
-     
-            //
-            // Rule 45:  Token ::= ?
-            //
-            case 45: { 
-                makeToken(WaebricParsersym.TK_QUESTION);
                 break;
             }
     

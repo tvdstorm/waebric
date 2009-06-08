@@ -1,6 +1,6 @@
 package waebricc;
 
-public interface JavaKWLexersym {
+public interface WaebricKWLexersym {
     public final static int
       Char_DollarSign = 20,
       Char__ = 21,
