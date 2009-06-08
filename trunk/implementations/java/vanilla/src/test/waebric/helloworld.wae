@@ -1,5 +1,8 @@
 module homepage
 
+import src.test.waebric.mod.sub
+import src.test.waebric.mod.sub
+
 site
 	index.html: home("Hello World!")
 end
