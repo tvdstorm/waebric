@@ -285,8 +285,17 @@ Productions
 	// Assignment
 	assignment = 
 			{expression}	T.id_con T.assign P.expression P.terminator		{-> New assignment.var_bind(id_con, expression) }
-		|	{statement}		T.id_con P.formals T.assign P.statement			{-> New assignment.func_bind(id_con, formals, statement) }
+		|	{statement}		T.id_con P.assignment_args T.assign P.statement	{-> New assignment.func_bind(id_con, assignment_args, statement) }
 		;
+		
+	assignment_args =
+			T.l_paren P.assignment_arg? T.r_paren	{-> New assignment_args([assignment_arg.id_con]) }
+		;
+		
+	assignment_arg {-> id_con* } =
+			{single}	T.id_con							{-> [id_con] } 
+		|	{multiple}	P.assignment_arg T.comma T.id_con	{-> [assignment_arg.id_con, id_con] }
+		;		
 	
 	// Predicate
 	predicate = 
@@ -397,6 +406,10 @@ Abstract Syntax Tree
 	formals = 
 			id_con*
 		;
+
+	assignment_args = 
+			id_con*
+		;
 				
 	// Statement
 	statement =
@@ -419,7 +432,7 @@ Abstract Syntax Tree
 
 	assignment =			
 			{var_bind}		id_con expression
-		|	{func_bind}		id_con formals statement
+		|	{func_bind}		id_con assignment_args statement
 		;
 
 	predicate =		

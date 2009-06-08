@@ -3,9 +3,13 @@ package org.waebric.adapter;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import javax.smartcardio.ATR;
+
+import org.apache.commons.lang.StringEscapeUtils;
 import org.sablecc.grammar.waebric.analysis.DepthFirstAdapter;
 import org.sablecc.grammar.waebric.node.AAndPredicate;
 import org.sablecc.grammar.waebric.node.AArgs;
+import org.sablecc.grammar.waebric.node.AAssignmentArgs;
 import org.sablecc.grammar.waebric.node.AAttrArgument;
 import org.sablecc.grammar.waebric.node.ABlockStatement;
 import org.sablecc.grammar.waebric.node.ACallMarkup;
@@ -84,19 +88,26 @@ public class TreeWalker extends DepthFirstAdapter {
     private static final int REPLACEMENT_ITEM = 1;
     
     private static final String ELEMENT_DIVIDER = ", ";
+    private static final String ELEMENT_PATH_SEPARATOR = "/";
     private static final String[][] ELEMENT_ESCAPE = {
+	{"\\\\\"", "\\\\\\\\\""}, 
+//	{"\\\\r", "\\\\\\\\r"}, 
+//	{"\\\\n", "\\\\\\\\n"}, 
+//	{"\\\\t", "\\\\\\\\t"}, 
 	{"\"", "\\\\\""}, 
 	{"\r", "\\\\r"}, 
 	{"\n", "\\\\n"}, 
 	{"\t", "\\\\t"},
-	{"[\' \']+", " "},
-	{"&amp;", "&"},
-	{"&quot;", "\""},
-	{"&oacute;", "ó"},
+	{",", ", "},
+	{" [ ]+", " "},
     };
     
     private StringBuilder astTree;
 
+    public String getAstTree() {
+	return this.astTree.toString();
+    }
+    
     @Override
     public void inStart(Start node) {
 	astTree = new StringBuilder();
@@ -114,7 +125,10 @@ public class TreeWalker extends DepthFirstAdapter {
     
     @Override
     public void caseTStrCon(TStrCon node) {
-	processValueToken(node.getText());
+	String s = node.getText();
+	// Remove surrounding quotes
+	s = s.substring(1, s.length() - 1);
+	processValueToken(s);
     }
     
     @Override
@@ -225,6 +239,13 @@ public class TreeWalker extends DepthFirstAdapter {
 
     @Override
     public void caseAFormals(AFormals node) {
+	astTree.append("formals(");	
+	processChildren(node.getIdCon());
+	astTree.append(")");
+    }
+
+    @Override
+    public void caseAAssignmentArgs(AAssignmentArgs node) {
 	processChildren(node.getIdCon());
     }
     
@@ -431,12 +452,8 @@ public class TreeWalker extends DepthFirstAdapter {
 
     @Override
     public void caseAExpressionPredicate(AExpressionPredicate node) {
-	astTree.append('[');
-	
 	if (node.getExpression() != null)
 	    node.getExpression().apply(this);
-
-	astTree.append(']');
     }
 
     @Override
@@ -463,8 +480,8 @@ public class TreeWalker extends DepthFirstAdapter {
 
 	astTree.append(ELEMENT_DIVIDER);
 
-	if (node.getFormals() != null)
-	    node.getFormals().apply(this);
+	if (node.getAssignmentArgs() != null)
+	    node.getAssignmentArgs().apply(this);
 
 	astTree.append(ELEMENT_DIVIDER);
 
@@ -730,24 +747,23 @@ public class TreeWalker extends DepthFirstAdapter {
 
     @Override
     public void caseAPath(APath node) {
-	astTree.append("path(");
-	
 	if (node.getFilename() != null) {
 	    String filename = node.getFilename().getText();
 	    // Remove filename separators
 	    filename = filename.substring(1, filename.length() - 1);
-	    // Show the filename as decoupled elements
-	    String[] elements = filename.split("/");
 	    
-	    for (int i = 0; i < elements.length; i++) {
-		astTree.append("\"" + elements[i] + "\"");
-		
-		if (i < elements.length - 1)
-		    astTree.append(ELEMENT_DIVIDER);
+	    if (filename.contains(ELEMENT_PATH_SEPARATOR)) {
+		astTree.append("path(");
+        	// Show the filename as decoupled elements
+		String path = filename.substring(0, filename.lastIndexOf(ELEMENT_PATH_SEPARATOR));
+		String file = filename.substring(filename.lastIndexOf(ELEMENT_PATH_SEPARATOR) + 1);
+		astTree.append(String.format("\"%1$s\"" + ELEMENT_DIVIDER + "\"%2$s\"", path, file));	    
+		astTree.append(")");
+	    }
+	    else {
+		astTree.append(String.format("\"%1$s\"", filename));
 	    }
 	}
-	
-	astTree.append(")");
     }
 
     @Override
@@ -908,9 +924,13 @@ public class TreeWalker extends DepthFirstAdapter {
     
     private void processValueToken(String text) {
 	String s = text;
+	// Replace waebric specific text elements
 	for (int replacementId = 0; replacementId < ELEMENT_ESCAPE.length; replacementId++) {
 	    s = s.replaceAll(ELEMENT_ESCAPE[replacementId][ORIGINAL_ITEM], ELEMENT_ESCAPE[replacementId][REPLACEMENT_ITEM]);
 	}
+	
+	// Replace HTML special characters
+	s = StringEscapeUtils.unescapeHtml(s);
 	    
 	astTree.append(String.format("\"%1$s\"", s));
     }
