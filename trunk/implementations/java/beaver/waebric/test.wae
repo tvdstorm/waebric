@@ -1,4 +1,4 @@
 module x
 def main(html) 
- echo "rrr<test>ggg";
+ echo "rrr<karel appel uitjes test>ggg";
 end

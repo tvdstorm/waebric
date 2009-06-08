@@ -58,7 +58,8 @@ public class ASTGenerator
 
 					
 					if (rule.code.indexOf("//@") >=0  ||
-						rule.code.indexOf("//#") >=0 
+						rule.code.indexOf("//#") >=0  || 
+						rule.code.indexOf("//[]") >=0 
 						)
 					{			
 						
@@ -120,7 +121,7 @@ public class ASTGenerator
 		}
 		
 
-	static public String getTreeWalkCodeArray(int currentStringArgumentNumber,int currentConsArgumentNumber)
+	static public String getTreeWalkCodeArray(int currentStringArgumentNumber,int currentConsArgumentNumber, ASTinfo astInfo)
 	{
 			String sUsedVariable = getTreeWalkVariableName(currentStringArgumentNumber,currentConsArgumentNumber,ASTtype.ARRAY);
 			String sUsedSizeVariable = sUsedVariable.replaceAll("\\.","_") + "_size";
@@ -133,7 +134,10 @@ public class ASTGenerator
 			treewalkCode +=	"\t\t}\n";
 			treewalkCode +=	"\t\tif("+sUsedSizeVariable+">0)\n";
 			treewalkCode +=	"\t\t{\n";
-			treewalkCode +=	"\t\tSystem.out.print(\"[\");\n";
+			if(!astInfo.isMultiArray())
+			{
+				treewalkCode +=	"\t\tSystem.out.print(\"[\");\n";
+			}
 			treewalkCode +=	"\t\tfor(int index=0;index<"+sUsedSizeVariable+";index++)\n";
 			treewalkCode +=	"\t\t{\n";
 			treewalkCode +=	"\t\tCons listitem = (Cons)"+sUsedVariable+".get(index);\n";
@@ -143,11 +147,17 @@ public class ASTGenerator
 			treewalkCode +=	"\t\tSystem.out.print(\", \");\n";
 			treewalkCode +=	"\t\t}\n";
 			treewalkCode +=	"\t\t}\n";
-			treewalkCode +=	"\t\tSystem.out.print(\"]\");\n";
+			if(!astInfo.isMultiArray())
+			{
+				treewalkCode +=	"\t\tSystem.out.print(\"]\");\n";
+			}
 			treewalkCode +=	"\t\t}\n";
 			treewalkCode +=	"\t\telse\n";
 			treewalkCode +=	"\t\t{\n";
-			treewalkCode +=	"\t\tSystem.out.print(\"[]\");\n";
+			if(!astInfo.isMultiArray())
+			{
+				treewalkCode +=	"\t\tSystem.out.print(\"[]\");\n";
+			}
 			treewalkCode +=	"\t\t}\n";
 
 
@@ -414,6 +424,11 @@ public class ASTGenerator
 		treewalkCode += "\tpublic void visit("+ astInfo.className +" cons)\n";
 		treewalkCode += "\t{\n";
 		
+		if(astInfo.isMultiArray())
+		{
+			treewalkCode += "\t\tSystem.out.print(\"[\");\n";
+		}
+		
 		int currentConsArgumentNumber=0;
 		int currentStringArgumentNumber=0;
 		
@@ -449,7 +464,7 @@ public class ASTGenerator
 			}
 			else if(astInfo.argument[0].astType.equals(ASTtype.ARRAY))
 			{
-				treewalkCode += getTreeWalkCodeArray( currentStringArgumentNumber, currentConsArgumentNumber ); //"cons.l","lArraySize"
+				treewalkCode += getTreeWalkCodeArray( currentStringArgumentNumber, currentConsArgumentNumber, astInfo ); //"cons.l","lArraySize"
 				currentConsArgumentNumber++;
 			}
 	    }
@@ -469,7 +484,7 @@ public class ASTGenerator
 			}
 			else if(astInfo.argument[0].astType.equals(ASTtype.ARRAY))
 			{
-				treewalkCode += getTreeWalkCodeArray( currentStringArgumentNumber, currentConsArgumentNumber ); //"cons.l","lArraySize"
+				treewalkCode += getTreeWalkCodeArray( currentStringArgumentNumber, currentConsArgumentNumber, astInfo ); //"cons.l","lArraySize"
 				currentConsArgumentNumber++;
 			}
 		
@@ -487,7 +502,7 @@ public class ASTGenerator
 			}
 			else if(astInfo.argument[1].astType.equals(ASTtype.ARRAY))
 			{
-				treewalkCode += getTreeWalkCodeArray( currentStringArgumentNumber, currentConsArgumentNumber ); // "cons.r","rArraySize"
+				treewalkCode += getTreeWalkCodeArray( currentStringArgumentNumber, currentConsArgumentNumber, astInfo ); // "cons.r","rArraySize"
 				currentConsArgumentNumber++;
 			}
 			
@@ -507,7 +522,7 @@ public class ASTGenerator
 				}
 				else if(astInfo.argument[2].astType.equals( ASTtype.ARRAY ) )
 				{
-					treewalkCode += getTreeWalkCodeArray(currentStringArgumentNumber, currentConsArgumentNumber ); // "cons.r","rArraySize"
+					treewalkCode += getTreeWalkCodeArray(currentStringArgumentNumber, currentConsArgumentNumber, astInfo ); // "cons.r","rArraySize"
 					currentConsArgumentNumber++;
 				}
 	    	}
@@ -516,6 +531,11 @@ public class ASTGenerator
 		if( astInfo.isKnoopPunt() && astInfo.numberOfArguments>0)
 		{
 			treewalkCode += "\t\tSystem.out.print(\")\");\n";
+		}
+		
+		if(astInfo.isMultiArray())
+		{
+			treewalkCode += "\t\tSystem.out.print(\"]\");\n";
 		}
 		
 		treewalkCode += "\t}\n";
