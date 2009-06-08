@@ -6,7 +6,7 @@ public class Main
 	public static void main(String[] args)
     {
         Option option;
-        JavaLexer Expr_lexer;
+        WaebricLexer Expr_lexer;
         WaebricParser Expr_parser;
 
         Ast ast;
@@ -14,7 +14,7 @@ public class Main
         try
         {
             option = new Option(args);
-            Expr_lexer = new JavaLexer(option); // Create the lexer
+            Expr_lexer = new WaebricLexer(option); // Create the lexer
             Expr_parser = new WaebricParser(Expr_lexer);	// Create the parser
             Expr_lexer.lexer(Expr_parser); // Lex the stream to produce the token stream
             if (option.dumpTokens())
