@@ -6,9 +6,7 @@
 %options import_terminals=WaebricLexer.g
 %options lalr=2
 %options parent_saved
--- %options first follow
 %options TRACE=FULL
--- %options VERBOSE
 
 %Terminals
    
@@ -62,44 +60,6 @@
 	PLUS      ::= '+'    
 %End
 
-%Ast
-    /.
-        public void visitChildren( AbstractResultVisitor v )
-        {
-            if(leftIToken == rightIToken)
-            {
-            	if(leftIToken instanceof IAstToken)
-            	{
-            		((IAstToken)leftIToken).accept( v );
-            	}
-            	else
-            	{
-            	    System.out.println("Crap: " + leftIToken.getClass().getName());
-            	}    	
-            }
-            else
-            {
-            	if(leftIToken instanceof IAstToken)
-            	{
-            		((IAstToken)leftIToken).accept( v );
-            	}
-            	else
-            	{
-            	    System.out.println("Crap: " + leftIToken.getClass().getName());
-            	}    	
-            	if(rightIToken instanceof IAstToken)
-            	{
-            		((IAstToken)rightIToken).accept( v );
-            	}
-            	else
-            	{
-            	    System.out.println("Crap: " + leftIToken.getClass().getName());
-            	}    	
-            }
-        }
-        
-    ./
-%End
 
 %Start
     Modules
@@ -209,7 +169,6 @@
     	| ExpressionConstant
     	| ExpressionSymbol
     	| ExpressionPlus
-   -- 	| ExpressionMember
     	
     ExpressionNoPlus ::=
     	  Var 
@@ -218,14 +177,11 @@
     	| ExpressionPair 
     	| ExpressionConstant
     	| ExpressionSymbol
-   -- 	| ExpressionMember
     
    	ExpressionString ::= 'StringLiteral'$String
     ExpressionPlus ::= ExpressionNoPlus '+' Expression
     ExpressionConstant ::= 'IntegerLiteral'$IntegerString
-    ExpressionSymbol ::= 'SymbolLiteral'$SymbolString
---  ExpressionMember ::= Expression '.' 'IDENTIFIER'$Member
-    
+    ExpressionSymbol ::= 'SymbolLiteral'$SymbolString    
     ExpressionCollection ::= '[' ExpressionOpt ']'
     ExpressionPair ::= '{' KeyValuePairOpt '}'
     

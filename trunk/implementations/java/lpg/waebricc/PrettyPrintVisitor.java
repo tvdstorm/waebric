@@ -1,5 +1,5 @@
 /*
- * Created on Aug 13, 2005
+ * Created on June 7 2009
  *
  */
 package waebricc;
@@ -13,7 +13,7 @@ import lpg.runtime.*;
 import waebricc.WaebricAst.*;
 
 /**
- * @author Gerry Fisher
+ * @author Frans Kreme, Long Nguyen
  *
  */
 public class PrettyPrintVisitor extends AbstractVisitor

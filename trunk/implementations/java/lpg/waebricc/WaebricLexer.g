@@ -1,18 +1,18 @@
 --
 -- The Waebricc Lexer
 --
-%Options fp=JavaLexer
+%Options fp=WaebricLexer
 %options single-productions
-%options package=javaparser
+%options package=waebricparser
 %options template=LexerTemplateD.g
-%options filter=JavaKWLexer.g
+%options filter=WaebricKWLexer.g
 %options lalr=10
 
 %Define
     --
     -- Definition of macro used in the included file LexerBasicMapB.g
     --
-    $kw_lexer_class /.$JavaKWLexer./
+    $kw_lexer_class /.$WaebricKWLexer./
 
 %End
 
@@ -24,7 +24,6 @@
 
     SlComment
     MlComment
-    DocComment
     SymbolLiteral
     CommentLiteral
 
@@ -38,15 +37,8 @@
     OR_OR
     AND_AND
     PLUS
-    MINUS
     NOT
-    XOR
-    AND
-    MULTIPLY
-    OR
-    TWIDDLE
-    GREATER
-    LESS
+
     LPAREN
     RPAREN
     LBRACE
@@ -55,10 +47,9 @@
     RBRACKET
     SEMICOLON
     SHARP
-    QUESTION
     COLON
-    SLASH
     COMMA
+    DOLLAR
     DOT
     EQUAL
     AT
@@ -112,8 +103,8 @@
     LessThan     ::= '<'
     GreaterThan  ::= '>'
     Plus         ::= '+'
-    Minus        ::= '-'
     Slash        ::= '/'
+    Minus        ::= '-'
     Star         ::= '*'
     LeftParen    ::= '('
     RightParen   ::= ')'
@@ -218,9 +209,7 @@
         ./
     Token ::= '/' '*' Inside Stars '/'
         /.$BeginAction
-                    if (getKind($getLeftSpan(3)) == Char_Star)
-                         makeComment($_DocComment);
-                    else makeComment($_MlComment);
+                    makeComment($_MlComment);
           $EndAction
         ./
     Token ::= SLC
@@ -248,17 +237,6 @@
                     makeToken($_PERCENT);
           $EndAction
         ./    
-    Token ::= '-'
-        /.$BeginAction
-                    makeToken($_MINUS);
-          $EndAction
-        ./
-
-    Token ::= '*'
-        /.$BeginAction
-                    makeToken($_MULTIPLY);
-          $EndAction
-        ./
 
     Token ::= '('
         /.$BeginAction
@@ -295,12 +273,6 @@
                     makeToken($_SEMICOLON);
           $EndAction
         ./
-
-    Token ::= '^'
-        /.$BeginAction
-                    makeToken($_XOR);
-          $EndAction
-        ./
         
     Token ::= '#'
         /.$BeginAction
@@ -308,33 +280,9 @@
           $EndAction
         ./
 
---    Token ::= '$'
---        /.$BeginAction
---                    makeToken($_DOLLAR);
---          $EndAction
---        ./            
-        
-    Token ::= '/'
+    Token ::= '$'
         /.$BeginAction
-                    makeToken($_SLASH);
-          $EndAction
-        ./        
-
-    Token ::= '~'
-        /.$BeginAction
-                    makeToken($_TWIDDLE);
-          $EndAction
-        ./
-
-    Token ::= '|'
-        /.$BeginAction
-                    makeToken($_OR);
-          $EndAction
-        ./
-
-    Token ::= '&'
-        /.$BeginAction
-                    makeToken($_AND);
+                    makeToken($_DOLLAR);
           $EndAction
         ./
 
@@ -347,18 +295,6 @@
     Token ::= '|' '|'
         /.$BeginAction
                     makeToken($_OR_OR);
-          $EndAction
-        ./
-
-    Token ::= '<'
-        /.$BeginAction
-                    makeToken($_LESS);
-          $EndAction
-        ./
-
-    Token ::= '>'
-        /.$BeginAction
-                    makeToken($_GREATER);
           $EndAction
         ./
 
@@ -398,12 +334,7 @@
                     makeToken($_RBRACE);
           $EndAction
         ./
-
-    Token ::= '?'
-        /.$BeginAction
-                    makeToken($_QUESTION);
-          $EndAction
-        ./
+        
 
     IntegerLiteral -> Integer
                     | Integer LetterLl
@@ -426,6 +357,8 @@
              
     CombiBody ::= '"' | '<'
     	| TextChar CombiBody
+    	
+    
     		
     Integer -> Digit
              | Integer Digit
@@ -442,7 +375,6 @@
     Letter -> LowerCaseLetter
     	| UpperCaseLetter
         | '_'
-        | '$'
         | '\u0080..\ufffe'
 
     LowerCaseLetter -> a | b | c | d | e | f | g | h | i | j | k | l | m |
