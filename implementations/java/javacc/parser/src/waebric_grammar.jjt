@@ -1,46 +1,51 @@
 options {
   JDK_VERSION = "1.5";
   NODE_SCOPE_HOOK = true;
+  MULTI = true;
+  VISITOR = true;
 } 
 
 PARSER_BEGIN(WaebricParser) 
-public class WaebricParser {
+  import java.io.*;
+  public class WaebricParser {
   public static int depth;
-  public static String ast;
-  
-  public static void main(String args[]) {
-    System.out.println("Reading from standard input...");
-    System.out.print("Enter a Waebric FunctionDef :");
-    new WaebricParser(System.in);
+  public static String ast = "";
+  public static void main(String[] args) {
+    Reader sr = new StringReader(args[0]);
+    WaebricParser p = new WaebricParser(sr);
     try {
-      ast = "";
-      SimpleNode n = WaebricParser.Modules();
-      //n.dump("");
-      //System.out.println(pad() + n.toString());
-      System.out.println(ast);
-      System.out.println("Thank you.");
-    } catch (Exception e) {
-      System.out.println("Oops.");
-      System.out.println(e.getMessage());
+      SimpleNode n = p.Modules();
+	  //n.dump("");
+	  System.out.println(ast);
+    } catch (ParseException pe) {
+      pe.printStackTrace();
     }
   }
   
   public static void jjtreeOpenNodeScope(Node n) {
-  	ast += (pad() + "(" + n.toString()) + "[\"" + token.image + "\"]";
-  	depth++;
+  	if (!n.toString().equals("Modules")){
+      if (n.toString().equals("ModuleId")){
+      	ast += "module-id(";
+      } else {
+      	ast += n.toString().toLowerCase() + "(";
+      }
+      depth++; 
+  	}
   }
   
   public static void jjtreeCloseNodeScope(Node n) {
-  	depth--;
-  	ast += (pad() + ")");
-  }
-  
-  private static String pad() {
-  	StringBuffer sb = new StringBuffer();
-  	for(int i=0 ; i<depth ; i++) {
-  		sb.append("");
+  	if (n.toString().equals("ModuleId")){
+      ModuleIdVisitor v = new ModuleIdVisitor();
+      n.jjtAccept(v, null);
+  	  ast += v.moduleIdStr;
   	}
-  	return sb.toString();
+  	
+  	if (!n.toString().equals("Modules")){
+  	  depth--;
+  	  if (!n.toString().equals("ModuleId")){
+  	  	ast += (")");
+  	  }
+  	}
   }
 }
 PARSER_END(WaebricParser)
@@ -63,7 +68,7 @@ TOKEN : {
 	|	< IMPORT : "import" >
 	|	< SITE : "site" > : IN_PATH
 	|	< END : "end" > : DEFAULT
-	|	< DEF : "def" > //: IN_NO_MODULEID
+	|	< DEF : "def" >
 	|	< IF : "if" >
 	|	< ELSE : "else" >
 	|	< EACH : "each" >
@@ -81,7 +86,7 @@ TOKEN : {
 /* SEPARATORS */
 <DEFAULT, IN_NO_IDCON>
 TOKEN : {
-	< LPAREN : "(" > 
+	< LPAREN : "(" >
 	|	< RPAREN : ")" > 
 	|	< LBRACKET : "[" >
 	|	< RBRACKET : "]" >
@@ -107,13 +112,6 @@ TOKEN : {
 }
 
 /* START NORMAL TOKENS */
-//<DEFAULT>
-//TOKEN : {
-//	< ModuleId :
-//		(< IdCon > (< DOT >)?)+
-//	>	
-//}
-
 <IN_PATH>
 TOKEN : {
 	< #PathElement :
@@ -125,7 +123,7 @@ TOKEN : {
 TOKEN : {
 	< FileName :
 		<PathElement> <DOT> <FileExt>
-	> : DEFAULT
+	> : DEFAULT 
 } 
 
 <IN_PATH>
@@ -273,20 +271,20 @@ TOKEN : {
 /* GENERIC */
 SimpleNode Modules() : {}
 {
-  (Module())* ";" 
+  (Module())* <EOF> 
   { return jjtThis; }
 }
 
-void Module() : {} {
+void Module() #module : {} {
 	< MODULE > ModuleId() (ModuleElement())*
 }
 
-void ModuleId() : {} {
-	(< IdCon > (< DOT >)?)+
+void ModuleId() : {jjtThis.image = "";} {
+	(< IdCon > {jjtThis.image += "\"" + token.image + "\"";} (< DOT > {jjtThis.image += ", ";})?)+ 
 }
 
 
-void ModuleElement() : {} {
+void ModuleElement() #void : {} {
 	Import()
 	|	Site()
 	|	FunctionDef()
@@ -300,26 +298,26 @@ void Import() : {} {
 
 // ModuleElement Site
 // *********************************************
-void Site() : {} {
+void Site() #site : {} {
 	< SITE > Mappings() < END >
 }
 
-void Mappings() : {} {
+void Mappings() #void : {} {
 	(Mapping() (<SEMICOLON>)?)*
 }
 
-void Mapping() : {} {
+void Mapping() #mapping : {} {
 	Path() <COLON> Markup()
 }
 
-void Path() : {} {
+void Path() #path : {} {
 	<FileName>
 	|	<DirName> <FileName> 
 }
 
 // ModuleElement FunctionDef
 // *********************************************
-void FunctionDef(): {} {
+void FunctionDef() : {} {
 	<DEF> <IdCon> (Formals())? (Statement())* <END>
 }
 
@@ -369,11 +367,11 @@ void TextTail() : {} {
 
 // Used by both the Site and FunctionDef ModuleElements
 // *********************************************
-void Markup() : {} { 
+void Markup() #call : {} { 
 	Designator() (Arguments())?
 }
 
-void Designator() : {} {
+void Designator() #tag : {} {
 	<IdCon> (Attribute())*	
 }
 
@@ -386,7 +384,7 @@ void Attribute() : {} {
 	| 	<AT> <NatCon>
 }
 
-void Arguments() : {} {
+void Arguments() #args : {} {
 	<LPAREN> (Argument() (<COMMA>)?)* <RPAREN>
 }
 
