@@ -1,8 +1,8 @@
 --
--- The Java KeyWord Lexer
+-- The Waebric KeyWord Lexer
 --
-%Options fp=JavaKWLexer
-%options package=javaparser
+%Options fp=WaebricKWLexer
+%options package=waebricparser
 %options template=KeyWordTemplateD.g
 
 %Include

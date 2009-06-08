@@ -1,6 +1,6 @@
 package waebricc;
 
-public class JavaKWLexerprs implements lpg.runtime.ParseTable, JavaKWLexersym {
+public class WaebricKWLexerprs implements lpg.runtime.ParseTable, WaebricKWLexersym {
     public final static int ERROR_SYMBOL = 0;
     public final int getErrorSymbol() { return ERROR_SYMBOL; }
 
@@ -59,7 +59,7 @@ public class JavaKWLexerprs implements lpg.runtime.ParseTable, JavaKWLexersym {
     public final boolean getBacktrack() { return BACKTRACK; }
 
     public final int getStartSymbol() { return lhs(0); }
-    public final boolean isValidForParser() { return JavaKWLexersym.isValidForParser; }
+    public final boolean isValidForParser() { return WaebricKWLexersym.isValidForParser; }
 
 
     public interface IsNullable {

@@ -2,7 +2,7 @@ package waebricc;
 
 import lpg.runtime.*;
 
-public class JavaKWLexer extends JavaKWLexerprs implements WaebricParsersym
+public class WaebricKWLexer extends WaebricKWLexerprs implements WaebricParsersym
 {
     private char[] inputChars;
     private final int keywordKind[] = new int[17 + 1];
@@ -81,7 +81,7 @@ public class JavaKWLexer extends JavaKWLexerprs implements WaebricParsersym
     }
 
 
-    public JavaKWLexer(char[] inputChars, int identifierKind)
+    public WaebricKWLexer(char[] inputChars, int identifierKind)
     {
         this.inputChars = inputChars;
         keywordKind[0] = identifierKind;
