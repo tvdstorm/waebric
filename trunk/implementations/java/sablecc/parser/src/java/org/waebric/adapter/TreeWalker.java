@@ -89,8 +89,10 @@ public class TreeWalker extends DepthFirstAdapter {
 	{"\r", "\\\\r"}, 
 	{"\n", "\\\\n"}, 
 	{"\t", "\\\\t"},
-	{"  ", " "},
-	{"&amp;", "&"}
+	{"[\' \']+", " "},
+	{"&amp;", "&"},
+	{"&quot;", "\""},
+	{"&oacute;", "ó"},
     };
     
     private StringBuilder astTree;
