@@ -78,7 +78,7 @@ statement = matched_statement
 | open_statement
 ;
 
-matched_statement = IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE matched_statement.b {: //@if-else(p,a,b) :}
+matched_statement = IF LPAREN predicate.p RPAREN matched_statement.a ELSE matched_statement.b {: //@if-else(p,a,b) :}
 | COMMENT STRCON.s SEMICOLON {: //@comment(#s) :}
 | ECHO expression.e SEMICOLON {: //@echo(e) :}
 | ECHO embedding.e SEMICOLON {: //@echo-embedding(e) :}
@@ -87,8 +87,8 @@ matched_statement = IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE m
 ;
 
 
-open_statement = IF LPAREN TODO_PREDICATE.p RPAREN statement.a {: //@if(p,a) :}
-| IF LPAREN TODO_PREDICATE.p RPAREN matched_statement.a ELSE open_statement.b {: //@if-else(p,a,b) :}
+open_statement = IF LPAREN predicate.p RPAREN statement.a {: //@if(p,a) :}
+| IF LPAREN predicate.p RPAREN matched_statement.a ELSE open_statement.b {: //@if-else(p,a,b) :}
 ;
 
 
@@ -115,7 +115,10 @@ formallist = IDCON.i {: //#formal_a(#i):}
 %left expression_cat
 Expressions.sdf:  Expression "+" Expression -> Expression {cons("cat"), left}
 */
-expression = IDCON.i {: //@var(#i) :}
+var = IDCON.i {: //@var(#i) :}
+;
+
+expression = var
 | symbolcon.s {: //@sym(s) :}
 | NATCON.n {: //@num(#n) :}  
 | expression.e DOT IDCON.i {: //@field(e,#i) :}
@@ -257,10 +260,9 @@ path = DIRNAME.d DIV FILENAME.f {: //@path(#d,#f) :}
 
 /* SDF specificatie: languages/waebric/syntax/Predicates */
 
-/*DEZE WORDEN NOG NERGENS GEBRUIKT DUS NIET MEE COMPILEN
-type = LIST
-| RECORD
-| STRING
+type = LIST {: //@list-type() :}
+| RECORD {: //@record-type() :} 
+| STRING {: //@string-type() :}
 ;
 
 /* some predicates LEFTassociative %left
@@ -269,12 +271,13 @@ type = LIST
 Predicates.sdf:  {left:
 Predicates.sdf:   Predicate "&&" Predicate -> Predicate {cons("and"), left}
 Predicates.sdf:   Predicate "||" Predicate -> Predicate {cons("or"), left}
+*/
 
 predicate = expression
-| expression DOT type QUESTION
-| NOT predicate
-| predicate ANDAND predicate
-| predicate OROR predicate
-;*/
+| expression.e DOT type.t QUESTION {: //@is-a(e,t) :}
+| NOT predicate.p {: //@not(p):}
+| predicate.p ANDAND predicate.q {: //@and(p,q) :}
+| predicate.p OROR predicate.q {: //@or(p,q) :}
+;
 
 

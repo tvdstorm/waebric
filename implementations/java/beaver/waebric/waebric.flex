@@ -136,16 +136,16 @@ SiteFilename = {PathElement} "." {FileExt}
   "def"                            { return nextToken(Terminals.DEF); }
   "end"                            { return nextToken(Terminals.END); }
   "site"                           { yybegin(SITE);  return nextToken(Terminals.SITE); }
-//  "list"                           {  return nextToken(Terminals.LIST); }
-//  "record"                         {  return nextToken(Terminals.RECORD); }
-//  "string"                         {  return nextToken(Terminals.STRING); }
-//  "if"                             {  return nextToken(Terminals.IF); }
+  "list"                           {  return nextToken(Terminals.LIST); }
+  "record"                         {  return nextToken(Terminals.RECORD); }
+  "string"                         {  return nextToken(Terminals.STRING); }
+  "if"                             {  return nextToken(Terminals.IF); }
   "comment"                        { string.setLength(0); yybegin(STRCON_INIT);  return nextToken(Terminals.COMMENT);  }
   "echo"                           { return nextToken(Terminals.ECHO); }
   "cdata"                          { return nextToken(Terminals.CDATA); }
-//  "each"                           {  return nextToken(Terminals.EACH); }
-//  "let"                            {return nextToken(Terminals.LET); }
-   "yield"                          { return nextToken(Terminals.YIELD); }
+  "each"                           {  return nextToken(Terminals.EACH); }
+  "let"                            {return nextToken(Terminals.LET); }
+  "yield"                          { return nextToken(Terminals.YIELD); }
 
    "\""                        { string.setLength(0); string.append( '\"' ); yybegin(PRETEXT); }
    ">"                        { string.setLength(0);string.append( '>' ); yybegin(POSTMIDTEXT); }
@@ -169,15 +169,15 @@ SiteFilename = {PathElement} "." {FileExt}
   ","                            { return nextToken(Terminals.COMMA); }
   "."                            { return nextToken(Terminals.DOT); }
   ":"                            { return nextToken(Terminals.COLON); }
-//  "%"                            { return nextToken(Terminals.MOD); }
-//  "@"                            { return nextToken(Terminals.ADDCHAR); }    
-//  "$"                            { return nextToken(Terminals.DOLLAR); }    
+  "%"                            { return nextToken(Terminals.MOD); }
+  "@"                            { return nextToken(Terminals.ADDCHAR); }    
+  "$"                            { return nextToken(Terminals.DOLLAR); }    
   "#"                            { return nextToken(Terminals.HASH); }  
   "/"                            { return nextToken(Terminals.DIV); }
-//  "?"                            { return nextToken(Terminals.QUESTION); }
-//  "!"                            { return nextToken(Terminals.NOT); }
-//  "&&"                           { return nextToken(Terminals.ANDAND); }
-//  "||"                           { return nextToken(Terminals.OROR); }
+  "?"                            { return nextToken(Terminals.QUESTION); }
+  "!"                            { return nextToken(Terminals.NOT); }
+  "&&"                           { return nextToken(Terminals.ANDAND); }
+  "||"                           { return nextToken(Terminals.OROR); }
   "="                            { return nextToken(Terminals.EQ); }
   
   "'" {SymbolChar}*              { return nextToken(Terminals.SYMBOLCON, yytext() );}
