@@ -1,0 +1,7 @@
+module src.test.waebric.mod.sub
+
+def test(msg)
+	html {
+		body p msg;
+	}
+end
