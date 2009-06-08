@@ -19,7 +19,8 @@ Helpers
 	
 	
 	// Used for text
-	basic_text_char = [[input_character + [[tab + cr] + lf]] - ['"' + '<']];
+//	basic_text_char = [[input_character + [[tab + cr] + lf]] - ['"' + '<']];
+	basic_text_char = [[input_character + [tab +[cr + lf]] - ['"' + '<']];
 	text_char_ref = 
 		'&#' digit+ ';' |
 		'&#x' (digit | letter)+ ';';
@@ -110,7 +111,7 @@ Productions
 			P.module*
 		;
 	
-	module {-> module? } = 
+	module = 
 			T.module_keyword P.module_id P.module_element*		{-> New module(module_id, [module_element]) }
 		;
 	
@@ -128,7 +129,12 @@ Productions
 		|	{import}	P.import		{-> import.module_element }
 		|	{site}		P.site			{-> site.module_element }
 		;
-	
+		
+	// Semicolon
+	terminator {-> } =
+			{semi_colon}	T.semi_colon	{-> }
+		;
+			
 	// Imports
 	import {-> module_element } = 
 			T.import P.module_id		{-> New module_element.import(module_id) }
@@ -142,7 +148,7 @@ Productions
 	// Mappings
 	mappings {-> mapping* } = 
 			{single}	P.mapping							{-> [mapping] }
-		|	{multiple}	P.mappings T.semi_colon P.mapping	{-> [mappings.mapping, mapping] }
+		|	{multiple}	P.mappings P.terminator P.mapping	{-> [mappings.mapping, mapping] }
 		;
 		
 	mapping = 
@@ -244,7 +250,7 @@ Productions
 	statement = 
 			{no_markup}				P.statement_no_markup				{-> statement_no_markup.statement }
 		|	{markup_statement}		P.markup+ P.statement_no_markup		{-> New statement.markup_stat([markup], statement_no_markup.statement) }
-		|	{markup_no_statement}	P.statement_markup_no_statement		{-> statement_markup_no_statement.statement }		
+		|	{markup_no_statement}	P.statement_markup_no_statement		{-> statement_markup_no_statement.statement }
 		;
 	
 	statement_no_markup {-> statement } =
@@ -261,25 +267,25 @@ Productions
 		;
 		
 	statement_markup_no_statement {-> statement } =
-			{markup_single}			P.markup T.semi_colon													{-> New statement.markup(markup) }
-		|	{markup_multiple}		[head]:P.markup+ [tail]:P.markup_no_short_markup T.semi_colon			{-> New statement.markup_markup([head.markup], tail.markup) }
-		|	{markup_expression}		P.markup+ P.expression T.semi_colon										{-> New statement.markup_exp([markup], expression) }
-		|	{embedding}				P.markup+ P.embedding T.semi_colon										{-> New statement.markup_embedding([markup], embedding) }
+			{markup_single}			P.markup P.terminator													{-> New statement.markup(markup) }
+		|	{markup_multiple}		[head]:P.markup+ [tail]:P.markup_no_short_markup P.terminator			{-> New statement.markup_markup([head.markup], tail.markup) }
+		|	{markup_expression}		P.markup+ P.expression P.terminator										{-> New statement.markup_exp([markup], expression) }
+		|	{embedding}				P.markup+ P.embedding P.terminator										{-> New statement.markup_embedding([markup], embedding) }
 		;
 		
 	statement_no_markup_no_short_if {-> statement } =
 			{let}				T.let P.assignment+ T.in P.statement* T.end		{-> New statement.let([assignment], [statement]) }
 		|	{block}				T.l_brace P.statement* T.r_brace				{-> New statement.block([statement]) }
-		|	{comment}			T.comment T.str_con T.semi_colon				{-> New statement.comment(str_con) }
-		|	{echo_expression}	T.echo P.expression T.semi_colon				{-> New statement.echo(expression) }
-		|	{echo_embedding}	T.echo P.embedding T.semi_colon					{-> New statement.echo_embedding(embedding) }
-		|	{cdata}				T.cdata P.expression T.semi_colon				{-> New statement.cdata(expression) }
-		|	{yield}				T.yield T.semi_colon							{-> New statement.yield() }
+		|	{comment}			T.comment T.str_con P.terminator				{-> New statement.comment(str_con) }
+		|	{echo_expression}	T.echo P.expression P.terminator				{-> New statement.echo(expression) }
+		|	{echo_embedding}	T.echo P.embedding P.terminator					{-> New statement.echo_embedding(embedding) }
+		|	{cdata}				T.cdata P.expression P.terminator				{-> New statement.cdata(expression) }
+		|	{yield}				T.yield P.terminator							{-> New statement.yield() }
 		;
-				
+						
 	// Assignment
 	assignment = 
-			{expression}	T.id_con T.assign P.expression T.semi_colon		{-> New assignment.var_bind(id_con, expression) }
+			{expression}	T.id_con T.assign P.expression P.terminator		{-> New assignment.var_bind(id_con, expression) }
 		|	{statement}		T.id_con P.formals T.assign P.statement			{-> New assignment.func_bind(id_con, formals, statement) }
 		;
 	
@@ -395,14 +401,14 @@ Abstract Syntax Tree
 				
 	// Statement
 	statement =
-			{markup_stat}		markup* statement
-		|	{each}				id_con expression statement
+			{each}				id_con expression statement
 		|	{if}				predicate statement
 		|	{if_else}			predicate [thenbranch]:statement [elsebranch]:statement	
 		|	{markup}			markup
 		|	{markup_markup}		[head]:markup* [tail]:markup
 		|	{markup_exp}		markup* expression
 		|	{markup_embedding}	markup* embedding
+		|	{markup_stat}		markup* statement		
 		|	{let}				assignment* statement*
 		|	{block}				statement*
 		|	{comment}			str_con

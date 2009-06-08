@@ -1,9 +1,7 @@
 package org.waebric.adapter;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.sablecc.grammar.waebric.analysis.DepthFirstAdapter;
 import org.sablecc.grammar.waebric.node.AAndPredicate;
@@ -45,7 +43,6 @@ import org.sablecc.grammar.waebric.node.AMarkupStatement;
 import org.sablecc.grammar.waebric.node.AMidTextTail;
 import org.sablecc.grammar.waebric.node.AModule;
 import org.sablecc.grammar.waebric.node.AModuleId;
-import org.sablecc.grammar.waebric.node.AModules;
 import org.sablecc.grammar.waebric.node.ANameAttribute;
 import org.sablecc.grammar.waebric.node.ANotPredicate;
 import org.sablecc.grammar.waebric.node.ANumExpression;
@@ -67,8 +64,6 @@ import org.sablecc.grammar.waebric.node.AVarExpression;
 import org.sablecc.grammar.waebric.node.AWidthHeightAttribute;
 import org.sablecc.grammar.waebric.node.AYieldStatement;
 import org.sablecc.grammar.waebric.node.Node;
-import org.sablecc.grammar.waebric.node.PModuleElement;
-import org.sablecc.grammar.waebric.node.PModuleId;
 import org.sablecc.grammar.waebric.node.Start;
 import org.sablecc.grammar.waebric.node.TFilename;
 import org.sablecc.grammar.waebric.node.TIdCon;
@@ -84,8 +79,17 @@ import org.sablecc.grammar.waebric.node.TSymbolCon;
 import org.sablecc.grammar.waebric.node.TText;
 
 public class TreeWalker extends DepthFirstAdapter {
-
+    
+    private static final int ORIGINAL_ITEM = 0;
+    private static final int REPLACEMENT_ITEM = 1;
+    
     private static final String ELEMENT_DIVIDER = ", ";
+    private static final String[][] ELEMENT_ESCAPE = {
+	{"\"", "\\\\\""}, 
+	{"\r", "\\\\r"}, 
+	{"\n", "\\\\n"}, 
+	{"\t", "\\\\t"}
+    };
     
     private StringBuilder astTree;
 
@@ -270,9 +274,11 @@ public class TreeWalker extends DepthFirstAdapter {
     @Override
     public void caseAArgs(AArgs node) {
 	astTree.append("args(");
-	processChildren(node.getArgument());
+	processChildren(node.getArgument());	
 	astTree.append(")");
     }
+
+    
 
     @Override
     public void caseAAttrArgument(AAttrArgument node) {
@@ -418,12 +424,9 @@ public class TreeWalker extends DepthFirstAdapter {
 
     @Override
     public void caseAExpressionArgument(AExpressionArgument node) {
-	astTree.append('[');
 	
 	if (node.getExpression() != null)
 	    node.getExpression().apply(this);
-	
-	astTree.append(']');
     }
 
     @Override
@@ -637,7 +640,7 @@ public class TreeWalker extends DepthFirstAdapter {
 
     @Override
     public void caseAMarkupStatement(AMarkupStatement node) {
-	astTree.append("markup-markup(");
+	astTree.append("markup(");
 
 	if (node.getMarkup() != null)
 	    node.getMarkup().apply(this);
@@ -904,7 +907,12 @@ public class TreeWalker extends DepthFirstAdapter {
     }
     
     private void processValueToken(String text) {
-	astTree.append(String.format("\"%1$s\"", text.replaceAll("\"", "\\\\\"")));
+	String s = text;
+	for (int replacementId = 0; replacementId < ELEMENT_ESCAPE.length; replacementId++) {
+	    s = s.replaceAll(ELEMENT_ESCAPE[replacementId][ORIGINAL_ITEM], ELEMENT_ESCAPE[replacementId][REPLACEMENT_ITEM]);
+	}
+	    
+	astTree.append(String.format("\"%1$s\"", s));
     }
     
 }
