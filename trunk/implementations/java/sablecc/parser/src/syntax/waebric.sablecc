@@ -228,7 +228,7 @@ Productions
 	 
 	// Function
 	function {-> module_element } = 
-			T.def T.id_con P.formals P.statement* T.end	{-> New module_element.def(id_con, formals, [statement]) }
+			T.def T.id_con P.formals? P.statement* T.end	{-> New module_element.def(id_con, formals, [statement]) }
 		;
 	
 	formals = 
@@ -262,7 +262,7 @@ Productions
 		
 	statement_markup_no_statement {-> statement } =
 			{markup_single}			P.markup T.semi_colon													{-> New statement.markup(markup) }
-		|	{markup_multiple}		[head]:P.markup+ [tail]:P.markup_no_short_markup T.semi_colon			{-> New statement.markup_markup([head.markup, tail.markup]) }
+		|	{markup_multiple}		[head]:P.markup+ [tail]:P.markup_no_short_markup T.semi_colon			{-> New statement.markup_markup([head.markup], tail.markup) }
 		|	{markup_expression}		P.markup+ P.expression T.semi_colon										{-> New statement.markup_exp([markup], expression) }
 		|	{embedding}				P.markup+ P.embedding T.semi_colon										{-> New statement.markup_embedding([markup], embedding) }
 		;
@@ -315,7 +315,7 @@ Productions
 		;
 		
 	embed = 
-			{markup_markup}			P.markup* P.markup_no_short_markup						{-> New embed.markup_embedding([markup, markup_no_short_markup.markup]) }
+			{markup_markup}			P.markup* P.markup_no_short_markup						{-> New embed.markup_embedding([markup], markup_no_short_markup.markup) }
 		|	{markup_expression}		P.markup* P.expression									{-> New embed.exp_embedding([markup], expression) }
 		;
 		
@@ -400,7 +400,7 @@ Abstract Syntax Tree
 		|	{if}				predicate statement
 		|	{if_else}			predicate [thenbranch]:statement [elsebranch]:statement	
 		|	{markup}			markup
-		|	{markup_markup}		markup*
+		|	{markup_markup}		[head]:markup* [tail]:markup
 		|	{markup_exp}		markup* expression
 		|	{markup_embedding}	markup* embedding
 		|	{let}				assignment* statement*
@@ -441,6 +441,6 @@ Abstract Syntax Tree
 		;
 		
 	embed = 
-			{markup_embedding}	markup*
+			{markup_embedding}	[head]:markup* [tail]:markup
 		|	{exp_embedding}		markup* expression
 		;

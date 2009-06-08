@@ -25,9 +25,6 @@ public class Main {
 		        Start start = p.parse ();
 		        System.out.println (start.toString());
 	
-	//	        Calculate calculator = new Calculate ();
-	//	        start.apply (calculator);
-		        
 		        TreeWalker walker = new TreeWalker();
 		        start.apply(walker);
 	
