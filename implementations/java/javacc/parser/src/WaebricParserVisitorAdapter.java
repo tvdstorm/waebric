@@ -16,6 +16,10 @@ public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 		return node.childrenAccept(this, data);
 	}
 	
+	public Object visit(ASTModuleElement node, Object data){
+		return node.childrenAccept(this, data);
+	}
+	
 	public Object visit(ASTImport node, Object data){
 		return node.childrenAccept(this, data);
 	}
