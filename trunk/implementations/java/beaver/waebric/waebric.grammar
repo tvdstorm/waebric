@@ -9,7 +9,7 @@
 
 %terminals LPAREN, RPAREN, LBRACE, RBRACE, LBRACK, RBRACK;
 
-%terminals SEMICOLON, COMMA, DOT, COLON, MOD, ADDCHAR, DOLLAR, HASH, DIV, QUESTION, NOT, ANDAND, OROR, EQ, LT, GT;
+%terminals SEMICOLON, COMMA, DOT, COLON, MOD, ADDCHAR, DIV, QUESTION, NOT, ANDAND, OROR, EQ, LT, GT;
 
 %terminals DIRNAME, FILENAME;
 
@@ -24,6 +24,10 @@
 %terminals IDCONTAIL;
 
 %terminals IDCONDESIGNATOR;
+
+%terminals HASHIDCON;
+
+%terminals ATTDOTIDCON, ATTDOLLARIDCON, ATTCOLONIDCON, ADDCHARNATCON;
 
 %goal module;
 
@@ -129,7 +133,7 @@ expression = var
 embedexpression = IDCONTAIL.i {: //@var(#i) :}
 | symbolcon.s {: //@sym(s) :}
 | NATCON.n {: //@num(#n) :}  
-//| expression.e DOT IDCONTAIL.i {: //@field(e,#i) :}
+| expression.e DOT IDCONTAIL.i {: //@field(e,#i) :}
 | LBRACK expressions.e RBRACK {: //@list(e) :}
 | LBRACE keyvaluepairs.p RBRACE /* {: //@record(p) :} */
 ;
@@ -159,12 +163,9 @@ texttail = POSTTEXT.p {: //@post(#p) :}
 embedding = PRETEXT.p embed.e texttail.t  {: //@pre(#p,e,t) :}
 ;
 
-embed = embedmarkup_opt.m embedexpression.e {: //@exp-embedding(m,e) :}
+embed = markup_opt.m embedexpression.e {: //@exp-embedding([m],e) :}
 ;
 
-embedmarkup_opt = 
-| start_markup.s markup_opt.o {: //[]startmarkupopt(s,[o]) :}
-;
 
 markup_opt= 
 |markup_seq
@@ -173,8 +174,6 @@ markup_opt=
 markup_seq = markup
 | markup_seq markup
 ;
-
-
 
 
 /* SDF specificatie: languages/waebric/syntax/Markup */
@@ -194,19 +193,14 @@ argument = IDCON.i EQ expression.e {: //@attr(#i,e) :}
 | expression
 ;
 
-start_markup = start_designator.d arguments.a {: //@call(d,a) :}
-| start_designator
-;
-
 markup = designator.d arguments.a {: //@call(d,a) :}
 | designator
 ;
 
-start_designator = IDCONDESIGNATOR.i attribute_opt.a {: //@tag(#i,[a]) :}
+designator = IDCONDESIGNATOR.i attribute_opt.a {: //@tag(#i,[a]) :}
 ;
 
-designator = IDCON.i attribute_opt.a {: //@tag(#i,[a]) :}
-;
+
 
 /*
 
@@ -220,12 +214,12 @@ statement = markup_seq statement
 
 
 
-attribute = HASH IDCON.i {: //#id(#i) :}
-| DOT IDCON.i {: //#class(#i) :}
-| DOLLAR IDCON.i {: //#name(#i) :}
-| COLON IDCON.i {: //#type(#i) :}
+attribute = HASHIDCON.i {: //#id(#i) :}
+| ATTDOTIDCON.i {: //#class(#i) :}
+| ATTDOLLARIDCON.i {: //#name(#i) :}
+| ATTCOLONIDCON.i {: //#type(#i) :}
 | ADDCHAR NATCON.w MOD NATCON.h	{: //#with-height(#w,#h) :}
-| ADDCHAR NATCON.w {: //#height(#w) :}  
+| ADDCHARNATCON.w {: //#height(#w) :}  
 ;
 
 attribute_opt =
