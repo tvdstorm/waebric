@@ -267,11 +267,17 @@ Predicates.sdf:   Predicate "&&" Predicate -> Predicate {cons("and"), left}
 Predicates.sdf:   Predicate "||" Predicate -> Predicate {cons("or"), left}
 */
 
-predicate = expression
+simplepredicate = expression
 | expression.e DOT type.t QUESTION {: //@is-a(e,t) :}
-| NOT predicate.p {: //@not(p):}
-| predicate.p ANDAND predicate.q {: //@and(p,q) :}
-| predicate.p OROR predicate.q {: //@or(p,q) :}
+| NOT simplepredicate.p {: //@not(p) :}
+;
+
+conjunction = predicate.p ANDAND simplepredicate.q {: //@and(p,q) :}
+;
+
+predicate = simplepredicate
+| conjunction
+| predicate.p OROR simplepredicate.q {: //@or(p,q) :}
 ;
 
 
