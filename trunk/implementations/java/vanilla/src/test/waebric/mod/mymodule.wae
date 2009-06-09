@@ -1,7 +1,4 @@
-module src.test.waebric.module.mymodule
+module src.test.waebric.mod.mymodule
 
-import sub
-
-site
-	index.html: test("success")
-end
+// Only import another module
+import src.test.waebric.mod.sub
