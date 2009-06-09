@@ -115,7 +115,7 @@ SiteFilename = {PathElement} "." {FileExt}
 
 
 
-%state SITE,STRING,STRCON,STRCON_INIT, PRETEXT, POSTMIDTEXT
+%state SITE,STRING,STRCON,STRCON_INIT, PRETEXT, POSTMIDTEXT, ATTRIBUTES
 
 %%
 /* ------------------------Lexical Rules Section---------------------- */
@@ -150,9 +150,6 @@ SiteFilename = {PathElement} "." {FileExt}
    "\""                        { string.setLength(0); string.append( '\"' ); yybegin(PRETEXT); }
    ">"                        { string.setLength(0);string.append( '>' ); yybegin(POSTMIDTEXT); }
 
-
-
-   
  
     
   /* separators and operators*/
@@ -171,8 +168,6 @@ SiteFilename = {PathElement} "." {FileExt}
   ":"                            { return nextToken(Terminals.COLON); }
   "%"                            { return nextToken(Terminals.MOD); }
   "@"                            { return nextToken(Terminals.ADDCHAR); }    
-  "$"                            { return nextToken(Terminals.DOLLAR); }    
-  "#"                            { return nextToken(Terminals.HASH); }  
   "/"                            { return nextToken(Terminals.DIV); }
   "?"                            { return nextToken(Terminals.QUESTION); }
   "!"                            { return nextToken(Terminals.NOT); }
@@ -182,9 +177,6 @@ SiteFilename = {PathElement} "." {FileExt}
   
   "'" {SymbolChar}*              { return nextToken(Terminals.SYMBOLCON, yytext() );}
 
-  /* string literal */
-//  \"                             { yybegin(STRING); string.setLength(0); }
-
 
   /* comments */
   {Comment}                      { /* ignore */ }
@@ -193,13 +185,13 @@ SiteFilename = {PathElement} "." {FileExt}
   {WhiteSpace}                   { /* ignore */ }
 
   /* identifiers */
-  {Identifier}                   { return nextToken(Terminals.IDCON, yytext()); }  
+  {Identifier}                   {  return nextToken(Terminals.IDCON, yytext()); }  
   
   /* identifiers */
-  "<"{Identifier}                 { String temp = yytext(); return nextToken(Terminals.IDCONDESIGNATOR, temp.substring(1) ); } 
+  "<"{Identifier}                 {  yybegin(ATTRIBUTES); String temp = yytext(); return nextToken(Terminals.IDCONDESIGNATOR, temp.substring(1) ); } 
   
   /* identifiers */
-  {Identifier}/">"                 { return nextToken(Terminals.IDCONTAIL, yytext()); } 
+  {Identifier}/">"                 {  return nextToken(Terminals.IDCONTAIL, yytext()); } 
     
   /* Natural numbers*/
   {Natcon}                       { return nextToken(Terminals.NATCON, yytext()); }  
@@ -250,6 +242,23 @@ SiteFilename = {PathElement} "." {FileExt}
 	{TextChar} 					{ string.append( yytext() ); }
 	"\""                        {  yybegin(YYINITIAL);  string.append( '\"' );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
 	{TextChar}/"<"             	{  yybegin(YYINITIAL);  string.append( yytext() + '<' );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
+}
+
+<ATTRIBUTES> {
+	  "#"{Identifier}                            {  String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
+	  "."{Identifier}                            {  String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
+	  "$"{Identifier}                            {  String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
+	  ":"{Identifier}                            {  String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
+	  "@"{Natcon}                	             {  String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
+	  {Identifier}/{WhiteSpace}{Identifier}		 {  return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+	  {Identifier}/{WhiteSpace}{Natcon}			 {  return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+	  {Identifier}/{WhiteSpace}*"["				 {  return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+	  {Identifier}/{WhiteSpace}*"{"			 	 {  return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+  	  {Identifier}/{WhiteSpace}*"'"				 {  return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 	  	  
+	  	  
+	  {Comment}                      { /* ignore */ }
+      {WhiteSpace}                   { /* ignore */ }
+  	  .										 	 {  yybegin(YYINITIAL); yypushback(1); }
 }
 
 
