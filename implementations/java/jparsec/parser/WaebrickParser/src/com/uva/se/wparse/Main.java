@@ -17,11 +17,13 @@
 package com.uva.se.wparse;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.exception.ParserException;
 import com.uva.se.wparse.input.gui.ParserGui;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 import com.uva.se.wparse.output.transformer.OutputTransformer;
@@ -136,30 +138,36 @@ public class Main {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Loading file: " + file.toString());
 		}
+
+		String source = "";
 		try {
-			// check if the file exists
 			if (file.exists()) {
-
 				// read the contents of the file to a string.
-				String source = FileUtil.readFile(file);
-
-				// start the parser
-				WeabrickParser weabrickParser = new ModuleParser();
-				WabrickParseTree parseTree = weabrickParser.parse(source);
-
-				// done with parsing, now convert the parsetree to correct
-				// output.
-				OutputTransformer outputTransformer = new OutputTransformer();
-				String output = outputTransformer.transform(parseTree);
-				System.out.println(output);
-				if (logger.isDebugEnabled()) {
-					logger.debug("Parser result: " + output);
-				}
+				source = FileUtil.readFile(file);
 			}
-		} catch (Exception e) {
+		} catch (IOException ioException) {
+			logger.error("ERROR: error while reading file \"" + fileName + "\"", ioException);
+			return;
+		}
+
+		try {
+
+			// start the parser
+			WeabrickParser weabrickParser = new ModuleParser();
+			WabrickParseTree parseTree = weabrickParser.parse(source);
+
+			// done with parsing, now convert the parsetree to correct
+			// output.
+			OutputTransformer outputTransformer = new OutputTransformer();
+			String output = outputTransformer.transform(parseTree);
+			System.out.println(output);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Parser result: " + output);
+			}
+		} catch (ParserException e) {
 			// exception occured, display error message and then exit.
 			logger.error("ERROR: error while processing file \"" + fileName
-					+ "\"", e);
+			+ "\"", e);
 		}
 	}
 

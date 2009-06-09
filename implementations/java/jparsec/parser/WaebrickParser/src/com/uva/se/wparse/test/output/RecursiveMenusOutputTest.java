@@ -1,5 +1,6 @@
 package com.uva.se.wparse.test.output;
 
+import com.uva.se.wparse.exception.ParserException;
 import com.uva.se.wparse.model.module.ModuleDef;
 import com.uva.se.wparse.output.transformer.OutputTransformer;
 import com.uva.se.wparse.parser.ModuleParser;
@@ -31,7 +32,12 @@ public class RecursiveMenusOutputTest extends TestCase {
 		
 	public String getModuleParserOutput(String WaebricSource){
 		ModuleParser declarationParser = new ModuleParser(); 		
-		ModuleDef moduleDef = declarationParser.parse(WaebricSource);
+		ModuleDef moduleDef = null;
+		try {
+			moduleDef = declarationParser.parse(WaebricSource);
+		} catch (ParserException e) {
+			//ignore this
+		}
 		OutputTransformer outputTransformer = new OutputTransformer();
 		return outputTransformer.transform(moduleDef);
 	}	

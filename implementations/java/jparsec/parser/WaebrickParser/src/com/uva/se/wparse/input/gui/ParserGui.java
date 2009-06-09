@@ -34,6 +34,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import org.apache.log4j.Logger;
+
+import com.uva.se.wparse.Main;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 import com.uva.se.wparse.output.transformer.OutputTransformer;
 import com.uva.se.wparse.parser.ModuleParser;
@@ -47,6 +50,7 @@ import com.uva.se.wparse.util.FileUtil;
  */
 public class ParserGui extends javax.swing.JFrame {
 
+	private static org.apache.log4j.Logger logger = Logger.getLogger(ParserGui.class);
 	/**
 	 * Use for serialization purposes in the Java framework.
 	 */
@@ -179,7 +183,7 @@ public class ParserGui extends javax.swing.JFrame {
 				try {
 					sourceData = FileUtil.readFile(sourceFile);
 				} catch (IOException exception) {
-					exception.printStackTrace();
+					logger.debug("Error reading file" , exception);
 					String error = Resources.ERROR_FILE.getResource() + "\n"
 							+ exception.getMessage();
 					showErrorDialog(error);
