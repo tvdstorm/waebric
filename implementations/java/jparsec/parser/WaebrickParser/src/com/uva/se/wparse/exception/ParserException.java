@@ -1,9 +1,8 @@
 package com.uva.se.wparse.exception;
 
 /**
- * 
- * @author Lammert
- *
+ * This ParserException indicates that there was an error in the parsing process
+ * of the parser application.
  */
 public class ParserException extends ApplicationException {
 
@@ -13,9 +12,13 @@ public class ParserException extends ApplicationException {
 	private static final long serialVersionUID = 4607072939419051604L;
 
 	/**
+	 * Creates an ParserException based on a message an Exception which was
+	 * thrown by the the underlying methods.
 	 * 
 	 * @param message
+	 *            The message to display in the frontend.
 	 * @param cause
+	 *            The exception which was thrown by the underlying methods.
 	 */
 	public ParserException(String message, Throwable cause) {
 		super(message, cause);
