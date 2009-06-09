@@ -17,6 +17,7 @@ public class ASTinfo
 	
 	private boolean m_KnoopPunt;
 	private boolean m_bMultiArray;
+	private boolean m_bNoQuotes;
 	
 	public ASTinfo(String ruleCode)
 	{
@@ -29,8 +30,14 @@ public class ASTinfo
 		}
 		else
 		{
+			position=ruleCode.indexOf("//$");
+			newFuncion= ruleCode.substring(position+3);
+		}
+		if(position==-1)
+		{
 			position=ruleCode.indexOf("//#");
 			newFuncion= ruleCode.substring(position+3);
+			m_bNoQuotes=true;
 		}
 		
 		if(position==-1)
@@ -95,13 +102,13 @@ public class ASTinfo
 
 		
 		bFoundCons=true;
-		if(numberOfArguments==1 && argumentText[0].indexOf("#")>=0)
+		if(numberOfArguments==1 && (argumentText[0].indexOf("$")>=0 || argumentText[0].indexOf("#")>=0 ))
 		{
 			bFoundCons=false;	
 		}
 		if(numberOfArguments==2 && 
-			argumentText[0].indexOf("#")>=0 &&
-			argumentText[1].indexOf("#")>=0 )
+			( argumentText[0].indexOf("$")>=0 || argumentText[0].indexOf("#")>=0 ) &&
+			( argumentText[1].indexOf("$")>=0 || argumentText[1].indexOf("#")>=0 ) )
 		{
 			bFoundCons=false;	
 		}
@@ -126,10 +133,17 @@ public class ASTinfo
 				return;	
 			}
 			
+			argument[argumentIndex].m_bUseQuotes=true;
+			if( argumentText[argumentIndex].indexOf("#")>=0)
+			{
+				argument[argumentIndex].m_bUseQuotes=false;
+			}
+			
 			argument[argumentIndex].astType=ASTtype.CONS; //default type
 					
 			if(argumentText[argumentIndex].indexOf("[")==-1 &&
-			   argumentText[argumentIndex].indexOf("#")>=0 && 
+			   		(argumentText[argumentIndex].indexOf("$")>=0 || 
+   		    		argumentText[argumentIndex].indexOf("#")>=0) && 
 			   argumentText[argumentIndex].indexOf("]")==-1 &&
 			   numberOfArguments<=2)
 			{
@@ -137,7 +151,8 @@ public class ASTinfo
 			}	
 			
 			if(argumentText[argumentIndex].indexOf("[")==-1 &&
-			   argumentText[argumentIndex].indexOf("#")>=0 &&
+			   		(argumentText[argumentIndex].indexOf("$")>=0 || 
+   		    		argumentText[argumentIndex].indexOf("#")>=0) && 
 			   argumentText[argumentIndex].indexOf("]")==-1 )
 			{
 				argument[argumentIndex].astType=ASTtype.STRING;
@@ -145,13 +160,15 @@ public class ASTinfo
 			}	
 			
 			if(argumentText[argumentIndex].indexOf("[")>=0 && 
-				argumentText[argumentIndex].indexOf("#")>=0 &&
+			   		(argumentText[argumentIndex].indexOf("$")>=0 || 
+   		    		argumentText[argumentIndex].indexOf("#")>=0) && 
 				argumentText[argumentIndex].indexOf("]")>=0)
 			{
 				bStringArray=true;
 			}
 			
 			if(argumentText[argumentIndex].indexOf("[")>=0 && 
+				argumentText[argumentIndex].indexOf("$")==-1 &&
 				argumentText[argumentIndex].indexOf("#")==-1 &&
 				argumentText[argumentIndex].indexOf("]")>=0)
 			{
@@ -162,11 +179,13 @@ public class ASTinfo
 		//extract alias
 		for (int argumentIndex=0;argumentIndex<numberOfArguments;argumentIndex++)
 		{
-			 argument[argumentIndex].alias = argumentText[argumentIndex].replaceAll("#","");
+			 argument[argumentIndex].alias = argumentText[argumentIndex].replaceAll("\\$","");
+			 argument[argumentIndex].alias = argument[argumentIndex].alias.replaceAll("#","");
              argument[argumentIndex].alias = argument[argumentIndex].alias.replaceAll("\\[","");
              argument[argumentIndex].alias = argument[argumentIndex].alias.replaceAll("\\]","");
 		}
 		className = newFuncion.substring(0,positionLparen);
+		newFuncion = newFuncion.replaceAll("\\$","");
 		newFuncion = newFuncion.replaceAll("#","");
 		newFuncion = newFuncion.replaceAll("\\[","");
 		newFuncion = newFuncion.replaceAll("\\]","");

@@ -11,6 +11,7 @@ public class ASTargument
 	public ASTtype astType;
 	public String alias;
 	public String rawSyntax;
+	public boolean m_bUseQuotes;
 	
 	public ASTargument()
 	{
@@ -58,6 +59,11 @@ public class ASTargument
 				break;
 		}	
 		return result;	
+	}
+	
+	public boolean bUseQuotes()
+	{
+		return m_bUseQuotes;
 	}
 
 }

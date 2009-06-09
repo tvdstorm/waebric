@@ -58,8 +58,9 @@ public class ASTGenerator
 
 					
 					if (rule.code.indexOf("//@") >=0  ||
-						rule.code.indexOf("//#") >=0  || 
-						rule.code.indexOf("//[]") >=0 
+						rule.code.indexOf("//$") >=0  || 
+						rule.code.indexOf("//[]") >=0 ||
+						rule.code.indexOf("//#") >=0 
 						)
 					{			
 						
@@ -184,18 +185,26 @@ public class ASTGenerator
 		return treewalkCode;							
 	}
 	
-	static public String getTreeWalkCodeString(int currentStringArgumentNumber,int currentConsArgumentNumber)
+	static public String getTreeWalkCodeString(int currentStringArgumentNumber,int currentConsArgumentNumber, ASTinfo astInfo)
 	{
 		
 		String treewalkCode = "\t\t//leaf\n";
-		treewalkCode += "\t\tSystem.out.print(\"\\\"\" + \n";
-		
+		int currentArgumentNr = currentStringArgumentNumber + currentConsArgumentNumber;
+		treewalkCode += "\t\tSystem.out.print(";
+		if(astInfo.argument[currentArgumentNr].bUseQuotes())
+		{
+			treewalkCode += "\"\\\"\" + ";
+		}
 		String varName = getTreeWalkVariableName(currentStringArgumentNumber,
 			currentConsArgumentNumber,
 			ASTtype.STRING
 		);
-		treewalkCode += "\t\taddSlashes(" + varName + ")";
-		treewalkCode += "\n\t\t + \"\\\"\");\n";	
+		treewalkCode += "\n\t\t addSlashes(" + varName + ")\n\t\t";
+		if(astInfo.argument[currentArgumentNr].bUseQuotes())
+		{
+			treewalkCode += "+ \"\\\"\"";
+		}
+		treewalkCode += ");\n";	
 		return treewalkCode;
 	}
 	
@@ -452,7 +461,7 @@ public class ASTGenerator
 	    {
  			if(astInfo.argument[0].astType.equals(ASTtype.STRING))
 			{
-				treewalkCode += getTreeWalkCodeString( currentStringArgumentNumber, currentConsArgumentNumber ); // "cons.valueLeft"
+				treewalkCode += getTreeWalkCodeString( currentStringArgumentNumber, currentConsArgumentNumber, astInfo  ); // "cons.valueLeft"
 				currentStringArgumentNumber++;
 				treewalkCode += "\t\t//leaf\n";
 				
@@ -479,7 +488,7 @@ public class ASTGenerator
 			else if(astInfo.argument[0].astType.equals(ASTtype.STRING))
 			{
 	
-				treewalkCode += getTreeWalkCodeString( currentStringArgumentNumber, currentConsArgumentNumber ); // "cons.valueLeft"
+				treewalkCode += getTreeWalkCodeString( currentStringArgumentNumber, currentConsArgumentNumber, astInfo  ); // "cons.valueLeft"
 				currentStringArgumentNumber++;
 			}
 			else if(astInfo.argument[0].astType.equals(ASTtype.ARRAY))
@@ -497,7 +506,7 @@ public class ASTGenerator
 			}
 			else if(astInfo.argument[1].astType.equals(ASTtype.STRING))
 			{
-				treewalkCode += getTreeWalkCodeString( currentStringArgumentNumber, currentConsArgumentNumber ); // "cons.valueRight"
+				treewalkCode += getTreeWalkCodeString( currentStringArgumentNumber, currentConsArgumentNumber, astInfo  ); // "cons.valueRight"
 				currentStringArgumentNumber++;
 			}
 			else if(astInfo.argument[1].astType.equals(ASTtype.ARRAY))
@@ -517,7 +526,7 @@ public class ASTGenerator
 				}
 				else if(astInfo.argument[2].astType.equals(ASTtype.STRING))
 				{
-					treewalkCode += getTreeWalkCodeString( currentStringArgumentNumber, currentConsArgumentNumber ); // "cons.valueRight"
+					treewalkCode += getTreeWalkCodeString( currentStringArgumentNumber, currentConsArgumentNumber, astInfo  ); // "cons.valueRight"
 					currentStringArgumentNumber++;
 				}
 				else if(astInfo.argument[2].astType.equals( ASTtype.ARRAY ) )
