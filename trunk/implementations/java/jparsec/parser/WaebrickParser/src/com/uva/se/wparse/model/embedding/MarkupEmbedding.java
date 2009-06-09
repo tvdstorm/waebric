@@ -44,7 +44,6 @@ public class MarkupEmbedding extends WaebricParseTreeNode implements Embedding {
 
 	private String preText = null;
 	private List<Markup> markup = null;
-	//private Object follower;
 	private String postText = null;
 	
 	private Expression expression = null;
@@ -53,7 +52,6 @@ public class MarkupEmbedding extends WaebricParseTreeNode implements Embedding {
 	public MarkupEmbedding( List<String> preText, List<Markup> markup, Object follower, List<String> postText){ 
 		this.preText = Strings.join("", preText);
 		this.markup = markup;
-		//this.follower = follower;
 		if(follower instanceof Markup){
 			this.markup.add( (Markup) follower);
 		}else if(follower instanceof Expression){

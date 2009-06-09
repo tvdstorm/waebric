@@ -26,6 +26,7 @@ import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.misc.Mapper;
 
+import com.uva.se.wparse.exception.ParserException;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.markup.Formals;
 import com.uva.se.wparse.model.markup.Markup;
@@ -103,8 +104,16 @@ public final class ModuleParser implements WeabrickParser {
 						siteDef(mappingParser)).many());
 	}
 
-	public ModuleDef parse(String source) {
-		return TerminalParser.parse(ModuleParser.module(), source);
+	public ModuleDef parse(String source)throws ParserException {
+		ModuleDef module = null;
+		
+		try {
+			module = TerminalParser.parse(ModuleParser.module(), source);
+		} catch (Exception e) {
+			throw new ParserException("parser error", e);
+		}
+		
+		return module;
 	}
 
 }

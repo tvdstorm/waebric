@@ -75,7 +75,6 @@ public class ErrorMessagePanel extends JPanel {
 	 *            the error message which is shown in this function.
 	 */
 	public void setText(String text) {
-		// TODO Rename this function.
 		this.message = text;
 	}
 }
