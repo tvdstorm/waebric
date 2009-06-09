@@ -1,6 +1,7 @@
 public class SendNodeVisitor {
   private enum Productions {
-	MODULES, MODULE, MODULEID, MODULEELEMENT, IMPORT, SITE, FUNCTIONDEF, NOVALUE;
+	MODULES, MODULE, MODULEID, MODULEELEMENT, IMPORT, 
+	SITE, MAPPING, PATH, FUNCTIONDEF, NOVALUE;
     public static Productions toProd(String str) {
 	  try {
 	    return valueOf(str);
@@ -38,11 +39,11 @@ public class SendNodeVisitor {
 	case MODULEID:
 		ModuleIdVisitor v = new ModuleIdVisitor();
 	  	n.jjtAccept(v, null);
-	  	astData = "module-id(" + v.moduleIdStr + "";
+	  	astData = "module-id([" + v.moduleIdStr + "";
 	  	if (n.jjtGetParent().toString().equals("module")) {
-	  		astSuffix = ", [";
+	  		astSuffix = "]), [";
 	  	} else {
-	  		astSuffix = "";
+	  		astSuffix = "])";
 	  	}
 	  	break;
 	  	
@@ -56,6 +57,24 @@ public class SendNodeVisitor {
 		astData = "import(";
 		astSuffix = ")";
 		break;
+
+	case SITE:
+		astData = "site([";
+		astSuffix = "])";
+		break;
+		
+	case MAPPING:
+		astData = "mapping(";
+		astSuffix = ")";
+		break;
+	
+	case PATH:
+		PathVisitor v2 = new PathVisitor();
+	  	n.jjtAccept(v2, null);
+		astData = "path(" + v2.moduleIdStr;
+		astSuffix = ")";
+		break;
+
 	}
   }
 }
