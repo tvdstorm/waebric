@@ -1,7 +1,0 @@
-module src.test.waebric.module.mymodule
-
-import sub
-
-site
-	index.html: test("success")
-end
