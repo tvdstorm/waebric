@@ -1,6 +1,6 @@
+
 options {
   JDK_VERSION = "1.5";
-  NODE_SCOPE_HOOK = true;
   MULTI = true;
   VISITOR = true;
 } 
@@ -8,44 +8,34 @@ options {
 PARSER_BEGIN(WaebricParser) 
   import java.io.*;
   public class WaebricParser {
-  public static int depth;
-  public static String ast = "";
   public static void main(String[] args) {
     Reader sr = new StringReader(args[0]);
-    WaebricParser p = new WaebricParser(sr);
+    new WaebricParser(sr);
     try {
-      SimpleNode n = p.Modules();
-	  //n.dump("");
+      SimpleNode n = Modules();
+	  String ast = processNode( n, 0);
 	  System.out.println(ast);
+	  //n.dump("");
     } catch (ParseException pe) {
       pe.printStackTrace();
     }
   }
   
-  public static void jjtreeOpenNodeScope(Node n) {
-  	if (!n.toString().equals("Modules")){
-      if (n.toString().equals("ModuleId")){
-      	ast += "module-id(";
-      } else {
-      	ast += n.toString().toLowerCase() + "(";
-      }
-      depth++; 
-  	}
-  }
-  
-  public static void jjtreeCloseNodeScope(Node n) {
-  	if (n.toString().equals("ModuleId")){
-      ModuleIdVisitor v = new ModuleIdVisitor();
-      n.jjtAccept(v, null);
-  	  ast += v.moduleIdStr;
+  private static String processNode(Node n, int childIndex) {	
+  	// Do work on this node, add everything to ast except for the suffix
+  	SendNodeVisitor snv = new SendNodeVisitor(n, childIndex);
+  	String ast = snv.getASTData();
+  	String astSuffix = snv.getASTSuffix();
+  	
+  	// Get next Node
+  	for ( int currentChild = 0; currentChild < n.jjtGetNumChildren(); currentChild++ ) {
+  	  ast += processNode(n.jjtGetChild(currentChild), currentChild);
   	}
   	
-  	if (!n.toString().equals("Modules")){
-  	  depth--;
-  	  if (!n.toString().equals("ModuleId")){
-  	  	ast += (")");
-  	  }
-  	}
+  	// Add suffix to ast
+  	ast += astSuffix;
+  	
+  	return ast;	
   }
 }
 PARSER_END(WaebricParser)
@@ -275,7 +265,7 @@ SimpleNode Modules() : {}
   { return jjtThis; }
 }
 
-void Module() #module : {} {
+private void Module() #module : {} {
 	< MODULE > ModuleId() (ModuleElement())*
 }
 
@@ -283,8 +273,7 @@ void ModuleId() : {jjtThis.image = "";} {
 	(< IdCon > {jjtThis.image += "\"" + token.image + "\"";} (< DOT > {jjtThis.image += ", ";})?)+ 
 }
 
-
-void ModuleElement() #void : {} {
+void ModuleElement() : {} {
 	Import()
 	|	Site()
 	|	FunctionDef()
@@ -416,4 +405,3 @@ void DotIdCon() : {} {
 void KeyValuePair() : {} {
 	<IdCon> <COLON> Expression() (DotIdCon())?
 }
-
