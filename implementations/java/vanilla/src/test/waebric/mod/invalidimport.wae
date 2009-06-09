@@ -1,0 +1,3 @@
+module src.test.waebric.mod.invalidimport
+
+import idontexist
