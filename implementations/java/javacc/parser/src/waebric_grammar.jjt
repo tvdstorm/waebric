@@ -10,9 +10,9 @@ PARSER_BEGIN(WaebricParser)
   public class WaebricParser {
   public static void main(String[] args) {
     Reader sr = new StringReader(args[0]);
-    new WaebricParser(sr);
+    WaebricParser p = new WaebricParser(sr);
     try {
-      SimpleNode n = Modules();
+      SimpleNode n = p.Modules();
 	  String ast = processNode( n, 0);
 	  System.out.println(ast);
 	  //n.dump("");
@@ -299,9 +299,10 @@ void Mapping() #mapping : {} {
 	Path() <COLON> Markup()
 }
 
-void Path() #path : {} {
-	<FileName>
-	|	<DirName> <FileName> 
+void Path() : {} {
+	<FileName> {jjtThis.image += "\"" + token.image + "\"";}
+	|	<DirName> {jjtThis.image += "\"" + token.image.substring(0, token.image.length()-1)
+		 + "\", ";}<FileName> {jjtThis.image += "\"" + token.image + "\"";}
 }
 
 // ModuleElement FunctionDef
@@ -325,9 +326,10 @@ void Statement() : {} {
 	|	LOOKAHEAD(2)<ECHO> Expression() (DotIdCon())? <SEMICOLON>
 	|	LOOKAHEAD(2)<ECHO> Embedding() (DotIdCon())? <SEMICOLON>
 	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON>
-	|   (Markup())+ (<SEMICOLON> 
-		|	LOOKAHEAD(2)(Statement()) 
-		|	LOOKAHEAD(2)(Expression()(DotIdCon())? <SEMICOLON>) 
+	|   Markup() 
+		(LOOKAHEAD(2)(Markup())*<SEMICOLON> 
+		|	LOOKAHEAD(3)(Expression()(DotIdCon())? <SEMICOLON>) 
+		|	(Statement()) 
 		|	(Embedding() <SEMICOLON>))
 }
 

@@ -32,7 +32,7 @@ public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 		return node.childrenAccept(this, data);
 	}
 	
-	public Object visit(ASTpath node, Object data){
+	public Object visit(ASTPath node, Object data){
 		return node.childrenAccept(this, data);
 	}
 	
