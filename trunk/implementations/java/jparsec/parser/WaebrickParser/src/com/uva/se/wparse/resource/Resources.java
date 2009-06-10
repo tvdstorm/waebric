@@ -18,6 +18,10 @@
  */
 package com.uva.se.wparse.resource;
 
+/**
+ * An enumaration with all the resources which you can use 
+ * in the code. 
+ */
 public enum Resources {
 	
 	GUI_BUTTON_LOAD("gui.button.load"),
@@ -30,8 +34,14 @@ public enum Resources {
 	ERROR_DIALOG_TITLE("error.dialog.title"),
 	;
 
+	/**
+	 * The current message.
+	 */
 	private String key = null;
 
+	/**
+	 * The loader of the resource.
+	 */
 	private ResourceLoader resourceLoader = ResourceLoader.getInstance();
 
 	/**
