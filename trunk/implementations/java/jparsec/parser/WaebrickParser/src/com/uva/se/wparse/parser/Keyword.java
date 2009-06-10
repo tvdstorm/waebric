@@ -19,7 +19,10 @@
 package com.uva.se.wparse.parser;
 
 
-
+/**
+ * An enumaration with all the keywords which are allowed in the 
+ * Weabric language.
+ */
 public enum Keyword {
 	MODULE 	("module"),
 	IMPORT 	("import"),
@@ -41,18 +44,28 @@ public enum Keyword {
     
   ;
   
-  private final String name;
-  
-  private Keyword(final String name) {
-    this.name = name;
-  }
-  
-  @Override public String toString() {
-    return name;
-  }
-  
-  
-  public static String[] toArray() {
+	/**
+	 * 
+	 */
+	private final String name;
+
+	private Keyword(final String name) {
+		this.name = name;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public String toString() {
+		return name;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static String[] toArray() {
 		try {
 			Keyword[] operatorArray = values();
 			String[] operators = new String[operatorArray.length];

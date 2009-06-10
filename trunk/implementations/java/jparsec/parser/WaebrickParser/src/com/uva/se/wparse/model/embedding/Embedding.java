@@ -20,5 +20,8 @@ package com.uva.se.wparse.model.embedding;
 
 import com.uva.se.wparse.model.common.TransformerOutput;
 
-
+/**
+ * A marker interface to indicate that the class implements 
+ * embedded Weabric elements. 
+ */
 public interface Embedding extends TransformerOutput {}

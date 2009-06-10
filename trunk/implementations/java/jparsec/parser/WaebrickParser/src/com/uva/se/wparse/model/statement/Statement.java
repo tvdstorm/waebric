@@ -21,4 +21,7 @@ package com.uva.se.wparse.model.statement;
 
 import com.uva.se.wparse.model.common.TransformerOutput;
 
+/**
+ * A marker interface for all the Weabric statements. 
+ */
 public interface Statement extends TransformerOutput {}

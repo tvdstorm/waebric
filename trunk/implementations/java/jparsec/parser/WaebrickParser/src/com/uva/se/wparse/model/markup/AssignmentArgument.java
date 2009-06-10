@@ -24,16 +24,37 @@ import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 import com.uva.se.wparse.model.expression.Identifier;
 
-public class AssignmentArgument extends WaebricParseTreeNode implements Argument {
+/**
+ * The weabric parse tree node of the weabric 'AssignmentArgument' construction.
+ * It is an implementation of an Argument.
+ */
+public class AssignmentArgument extends WaebricParseTreeNode implements
+		Argument {
 
-	private static org.apache.log4j.Logger logger = Logger.getLogger(AssignmentArgument.class);
-	
-	public static final String OUTPUT_ASSIGNMENT = "var-bind";
-	
+	/**
+	 * This variable exposes the logging functionality.
+	 */
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(AssignmentArgument.class);
+
+	/**
+	 * The identifier part of the AssignmentArgument.
+	 */
 	private Identifier identifier;
+
+	/**
+	 * The expression part of the AssignmentArgument.
+	 */
 	private Expression expression;
-	
-	
+
+	/**
+	 * Constructs a Weabric 'AssignmentArgument' parse tree node.
+	 * 
+	 * @param identifier
+	 *            The identifier part of the AssignmentArgument.
+	 * @param expression
+	 *            The expression part of the AssignmentArgument.
+	 */
 	public AssignmentArgument(Identifier identifier, Expression expression) {
 		this.identifier = identifier;
 		this.expression = expression;
@@ -43,22 +64,29 @@ public class AssignmentArgument extends WaebricParseTreeNode implements Argument
 		}
 	}
 
-
+	/**
+	 * Presents this object as a string representation.
+	 */
 	@Override
 	public String toString() {
 		return identifier + " = " + expression;
 	}
-	
+
+	/**
+	 * Transforms the content of this object to the expected output code. If
+	 * necessary this function constructs also the output of the children. (It
+	 * calls the same function <i>toTransformerOutput</i> of the children)
+	 */
 	@Override
 	public String toTransformerOutput() {
 		String expressionItem = expression.toTransformerOutput();
-		if (expression instanceof Identifier){
-			expressionItem = outputBracedBlock( expressionItem );
+		if (expression instanceof Identifier) {
+			expressionItem = outputBracedBlock(expressionItem);
 		}
-		
-		return OUTPUT_ATTRIBUTE + outputBracedBlock( outputAddToBlock( outputQuote( identifier ), expressionItem ) );
+
+		return OUTPUT_ATTRIBUTE
+				+ outputBracedBlock(outputAddToBlock(outputQuote(identifier),
+						expressionItem));
 	}
-	
-	
-	
+
 }

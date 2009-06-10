@@ -20,6 +20,8 @@ package com.uva.se.wparse.model.markup;
 
 import com.uva.se.wparse.model.common.TransformerOutput;
 
-public interface Attribute extends TransformerOutput{
-
-}
+/**
+ * This marker interface indicates that the class which implements this 
+ * interface is an Attribute. 
+ */
+public interface Attribute extends TransformerOutput{ }

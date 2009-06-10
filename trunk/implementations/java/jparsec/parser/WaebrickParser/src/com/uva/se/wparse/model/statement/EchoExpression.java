@@ -23,14 +23,34 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Expression;
 
+/**
+ * The weabric parse tree node of the weabric 'echo expression' construction. It
+ * is an implementation of a statement.
+ */
 public class EchoExpression extends WaebricParseTreeNode implements Statement {
-	
-	public static final String OUTPUT_ECHO = "echo";
 
-	private static org.apache.log4j.Logger logger = Logger.getLogger(EchoExpression.class);
-	
+	/**
+	 * OUTPUT_ECHO is used to indicate this option in the output process.
+	 */
+	private static final String OUTPUT_ECHO = "echo";
+
+	/**
+	 * This variable exposes the logging functionality.
+	 */
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(EchoExpression.class);
+
+	/**
+	 * The expression which is used in the echo statement.
+	 */
 	private Expression expr;
 
+	/**
+	 * Constructs a Weabric 'eacho expression' parse tree node.
+	 * 
+	 * @param expr
+	 *            The expression which is used in the echo statement.
+	 */
 	public EchoExpression(Expression expr) {
 		this.expr = expr;
 		if (logger.isDebugEnabled()) {
@@ -39,15 +59,21 @@ public class EchoExpression extends WaebricParseTreeNode implements Statement {
 		}
 	}
 
+	/**
+	 * Presents this object as a string representation.
+	 */
 	@Override
 	public String toString() {
 		return "echo " + expr.toString();
 	}
-	
+
+	/**
+	 * Transforms the content of this object to the expected output code. If
+	 * necessary this function constructs also the output of the children. (It
+	 * calls the same function <i>toTransformerOutput</i> of the children)
+	 */
 	@Override
 	public String toTransformerOutput() {
-		return OUTPUT_ECHO + outputBracedBlock( expr.toTransformerOutput() );
+		return OUTPUT_ECHO + outputBracedBlock(expr.toTransformerOutput());
 	}
-	
-	
 }

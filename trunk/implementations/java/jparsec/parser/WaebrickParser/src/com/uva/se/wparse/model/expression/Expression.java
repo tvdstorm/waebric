@@ -20,4 +20,8 @@ package com.uva.se.wparse.model.expression;
 
 import com.uva.se.wparse.model.predicate.Predicate;
 
+/**
+ * A marker interface interface which indicates that the 
+ * class which implement this interface is an Expression.
+ */
 public interface Expression extends Predicate{}

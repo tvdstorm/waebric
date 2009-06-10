@@ -20,6 +20,8 @@ package com.uva.se.wparse.model.markup;
 
 import com.uva.se.wparse.model.common.TransformerOutput;
 
-public interface Markup extends TransformerOutput  {
-
-}
+/**
+ * A marker interface to indicates that the class which is implement 
+ * this interface is markup. 
+ */
+public interface Markup extends TransformerOutput  { }

@@ -39,6 +39,9 @@ import com.uva.se.wparse.model.module.QualifiedName;
 import com.uva.se.wparse.model.module.SiteDef;
 import com.uva.se.wparse.model.statement.Statement;
 
+/**
+ * 
+ */
 public final class ModuleParser implements WeabrickParser {
 
 	private static Parser<ModuleBody> body(Parser<Member> member) {
@@ -50,23 +53,24 @@ public final class ModuleParser implements WeabrickParser {
 				}));
 	}
 
-	
 	private static Parser<Formals> formals() {
 		return curry(Formals.class).sequence(
-		TerminalParser.term(Operator.ROUND_BRACKET_OPEN.toString()),
-		ExpressionParser.IDENTIFIER.sepBy(TerminalParser.term(Operator.COMMA.toString())),
-		TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()));
+				TerminalParser.term(Operator.ROUND_BRACKET_OPEN.toString()),
+				ExpressionParser.IDENTIFIER.sepBy(TerminalParser
+						.term(Operator.COMMA.toString())),
+				TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()));
 	}
-	
-	private static Mapper<Formals> curry(Class<? extends Formals> clazz, Object... curryArgs) {
+
+	private static Mapper<Formals> curry(Class<? extends Formals> clazz,
+			Object... curryArgs) {
 		return Mapper.curry(clazz, curryArgs);
 	}
-	
-	private static Parser<Member> methodDef(Parser<Statement> statementParser, Parser<Expression> expressionParser) {
+
+	private static Parser<Member> methodDef(Parser<Statement> statementParser,
+			Parser<Expression> expressionParser) {
 		return Mapper.<Member> curry(FunctionDef.class).sequence(
 				TerminalParser.term(Keyword.DEF.toString()),
-				ExpressionParser.IDENTIFIER.source(),
-				formals().optional(),
+				ExpressionParser.IDENTIFIER.source(), formals().optional(),
 				statementParser.many(),
 				TerminalParser.term(Keyword.END.toString()));
 	}
@@ -92,9 +96,11 @@ public final class ModuleParser implements WeabrickParser {
 
 	private static Parser<ModuleDef> module() {
 		Parser.Reference<Member> memberRef = Parser.newReference();
-		Parser<Expression> expr = ExpressionParser.expression(body(memberRef.lazy()));
+		Parser<Expression> expr = ExpressionParser.expression(body(memberRef
+				.lazy()));
 		Parser<Markup> markupParser = MarkupParser.markup(expr);
-		Parser<Statement> statementParser = StatementParser.statement(expr, markupParser);
+		Parser<Statement> statementParser = StatementParser.statement(expr,
+				markupParser);
 		Parser<Mapping> mappingParser = MappingParser.mapping(markupParser);
 
 		return Mapper.curry(ModuleDef.class).sequence(

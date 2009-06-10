@@ -20,4 +20,8 @@ package com.uva.se.wparse.model.module;
 
 import com.uva.se.wparse.model.common.TransformerOutput;
 
+/**
+ * This member interface indicates that it is an Member. In Weabric it can be 
+ * a FunctionDef or a ModuleDef.
+ */
 public interface Member extends TransformerOutput {}

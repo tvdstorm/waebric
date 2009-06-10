@@ -20,6 +20,7 @@ package com.uva.se.wparse.model.predicate;
 
 import com.uva.se.wparse.model.common.TransformerOutput;
 
-public interface Predicate extends TransformerOutput {
-
-}
+/**
+ * A marker interface for all the predicates. 
+ */
+public interface Predicate extends TransformerOutput { }
