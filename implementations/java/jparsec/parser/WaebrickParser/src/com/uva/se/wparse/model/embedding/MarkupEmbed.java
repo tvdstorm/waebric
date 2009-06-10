@@ -1,5 +1,5 @@
 /*
- * File			: MarkupAndStatementStatement.java
+ * File			: MarkupEmbed.java
  * Project		: WaebrickParser
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
@@ -16,56 +16,64 @@
  * 
  * 
  */
-package com.uva.se.wparse.model.statement;
+package com.uva.se.wparse.model.embedding;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.uva.se.wparse.model.common.TransformerOutput;
 import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
 /**
- * The weabric parse tree node of the weabric 'markup and statement'
- * construction. It is an implementation of a statement.
+ * The weabric parse tree node of the weabric 'MarkupEmbed' construction. It is
+ * an implementation of embedding weabric parts.
  */
-public class MarkupAndStatement extends WaebricParseTreeNode implements
-		Statement, Markup {
+public class MarkupEmbed extends WaebricParseTreeNode implements Embedding {
 
 	/**
-	 * OUTPUT_MARKUPSTAT is used to indicate this construction in the output
+	 * OUTPUT_MARKUPEMBED is used to indicate this construction in the output
 	 * process.
 	 */
-	public static final String OUTPUT_MARKUPSTAT = "markup-stat";
+	private static final String OUTPUT_MARKUPEMBED = "markup-embed";
 
 	/**
 	 * This variable exposes the logging functionality.
 	 */
 	private static org.apache.log4j.Logger logger = Logger
-			.getLogger(MarkupAndStatement.class);
+			.getLogger(MarkupEmbed.class);
 
 	/**
-	 * The list with all the markup.
+	 * The id part of the embedded markup.
+	 */
+	private String id;
+
+	/**
+	 * The markup part of the embedded markup.
 	 */
 	private List<Markup> markup;
 
 	/**
-	 * The statement which belongs to the markup.
+	 * The follower part of the embedded markup.
 	 */
-	private Statement statement;
+	private Object follower;
 
 	/**
 	 * Constructs a Weabric 'Each' parse tree node.
 	 * 
+	 * @param id
+	 *            The id part of the embedded markup.
 	 * @param markup
-	 *            The list with all the markup.
-	 * @param statement
-	 *            The statement which belongs to the markup.
+	 *            The markup part of the embedded markup.
+	 * @param follower
+	 *            The follower part of the embedded markup.
 	 */
-	public MarkupAndStatement(List<Markup> markup, Statement statement) {
+	public MarkupEmbed(String id, List<Markup> markup, Object follower) {
+		this.id = id;
 		this.markup = markup;
-		this.statement = statement;
+		this.follower = follower;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating " + this.getClass().getSimpleName()
 					+ " with values : " + toString());
@@ -77,7 +85,8 @@ public class MarkupAndStatement extends WaebricParseTreeNode implements
 	 */
 	@Override
 	public String toString() {
-		return Strings.join(" ", markup) + " " + statement;
+		return "<" + id + " " + Strings.join(" ", markup) + " " + follower;
+
 	}
 
 	/**
@@ -87,15 +96,21 @@ public class MarkupAndStatement extends WaebricParseTreeNode implements
 	 */
 	@Override
 	public String toTransformerOutput() {
-		String MarkupBlock = "";
+
+		String markupList = "";
 		for (Markup markupItem : markup) {
-			MarkupBlock = outputAddToBlock(MarkupBlock, markupItem
+			markupList = outputAddToBlock(markupList, markupItem
 					.toTransformerOutput());
 		}
 
-		return OUTPUT_MARKUPSTAT
-				+ outputBracedBlock(outputBracedList(MarkupBlock)
-						+ OUTPUT_BLOCK_SEPARATOR
-						+ statement.toTransformerOutput());
+		String followerItem = "";
+		if (follower instanceof TransformerOutput) {
+			followerItem = ((TransformerOutput) follower).toTransformerOutput();
+		}
+
+		return OUTPUT_MARKUPEMBED
+				+ outputBracedBlock(outputQuote(id) + OUTPUT_LIST_SEPARATOR
+						+ outputBracedList(markupList) + OUTPUT_LIST_SEPARATOR
+						+ followerItem);
 	}
 }

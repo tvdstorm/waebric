@@ -20,6 +20,8 @@ package com.uva.se.wparse.model.markup;
 
 import com.uva.se.wparse.model.expression.Expression;
 
-public interface Argument extends Expression {
-
-}
+/**
+ * This marker interface indicates that the class which implements this 
+ * interface is an Expression.
+ */
+public interface Argument extends Expression { }

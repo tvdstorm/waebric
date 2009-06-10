@@ -20,6 +20,8 @@ package com.uva.se.wparse.model.statement;
 
 import com.uva.se.wparse.model.expression.Expression;
 
-public interface Assignment extends Expression {
-
-}
+/**
+ * A marker interface which indicates the class is a definition of 
+ * an Weabric Assignment.
+ */
+public interface Assignment extends Expression { }

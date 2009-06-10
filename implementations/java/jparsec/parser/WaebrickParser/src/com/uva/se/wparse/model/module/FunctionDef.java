@@ -26,13 +26,16 @@ import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.markup.Formals;
 import com.uva.se.wparse.model.statement.Statement;
 
+/**
+ * 
+ */
 public final class FunctionDef extends WaebricParseTreeNode implements Member {
 	
-	public static final String OUTPUT_FUNCTION	= "def";
-	public static final String OUTPUT_ARGUMENTS	= "argument";
-	public static final String OUTPUT_FORMALS   = "formals";
 	
-
+	
+	/**
+	 * This variable exposes the logging functionality.
+	 */
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(FunctionDef.class);
 
@@ -71,6 +74,10 @@ public final class FunctionDef extends WaebricParseTreeNode implements Member {
 
 
 
+	/**
+	 * Represents the definition of a function as Weabric code.
+	 * 
+	 */
 	@Override
 	public String toString() {
 		String result = "def " + name + "(";
@@ -86,6 +93,24 @@ public final class FunctionDef extends WaebricParseTreeNode implements Member {
 		return result;
 	}
 	
+	/**
+	 * 
+	 */
+	private static final String OUTPUT_FUNCTION	= "def";
+	
+	/**
+	 * 
+	 */
+	//private static final String OUTPUT_ARGUMENTS	= "argument";
+	
+	/**
+	 * 
+	 */
+	private static final String OUTPUT_FORMALS   = "formals";
+	
+	/**
+	 * Transforms the content of this object to the expected output code.
+	 */
 	@Override
 	public String toTransformerOutput() {
 		String NameElement = outputQuote( name );

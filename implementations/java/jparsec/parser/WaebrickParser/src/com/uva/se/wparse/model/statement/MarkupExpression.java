@@ -31,24 +31,41 @@ import com.uva.se.wparse.util.ConversionUtil;
 import com.uva.se.wparse.util.Strings;
 
 /**
+ * The weabric parse tree node of the weabric 'MarkupExpression' construction. It is an
+ * implementation of a statement.
+ * 
  * If expression is not null then the output is a "markup-exp"
  * otherwise the output is a "markup-markup"
- * 
- * @author maarten
- *
  */
 public class MarkupExpression extends WaebricParseTreeNode implements Statement, Markup {
 	
-	public static final String OUTPUT_MARKUP_EXPRESSION = "markup-exp";
+	/**
+	 * OUTPUT_MARKUP_EXPRESSION is used to indicate this construction in the output process.
+	 */
+	private static final String OUTPUT_MARKUP_EXPRESSION = "markup-exp";
 	
+	/**
+	 * OUTPUT_MARKUP_MARKUP is used to indicate this construction in the output process.
+	 */
 	public static final String OUTPUT_MARKUP_MARKUP 	= "markup-markup";
 	
 	private static org.apache.log4j.Logger logger = Logger.getLogger(MarkupExpression.class);
 
+	/**
+	 * The expression of the MarkupExpression construction.
+	 */
 	private Expression expr = null;
+	
+	/**
+	 * The list with all the markup of the MarkupExpression construction.
+	 */
 	private List<Markup> markupList = new ArrayList<Markup>(); 
 
-
+	/**
+	 * Constructs a Weabric 'MarkupExpression' parse tree node.
+	 * @param markup The list with all the markup of the MarkupExpression construction.
+	 * @param expression The expression of the MarkupExpression construction.
+	 */
 	public MarkupExpression(List<Markup> markup, Expression expression){ 
 		this.markupList.addAll(markup);
 		
@@ -81,12 +98,19 @@ public class MarkupExpression extends WaebricParseTreeNode implements Statement,
 	}
 
 
-	
+	/**
+	 * Presents this object as a string representation.
+	 */
 	@Override
 	public String toString() {
 		return Strings.join(" ", markupList) + " " + expr;
 	};
 	
+	/**
+	 * Transforms the content of this object to the expected output code. 
+	 * If necessary this function constructs also the output of the children. 
+	 * (It calls the same function <i>toTransformerOutput</i> of the children)
+	 */
 	@Override
 	public String toTransformerOutput() {
 		

@@ -23,16 +23,37 @@ import org.apache.log4j.Logger;
 import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.StringLiteral;
 
-
+/**
+ * The comments which are used in the Weabric code. With comments you can
+ * describe the Weabric code.
+ */
 public class Comment extends WaebricParseTreeNode implements Statement {
-	
-	public static final String OUTPUT_COMMENT = "comment";
 
+	/**
+	 * A definition of comments which is used while generating the output of the
+	 * parsing process.
+	 */
+	private static final String OUTPUT_COMMENT = "comment";
+
+	/**
+	 * This variable exposes the logging functionality.
+	 */
 	private static org.apache.log4j.Logger logger = Logger
 			.getLogger(Comment.class);
 
-	private StringLiteral comment; // TODO: Dit is geen StringLiteral (gewoon een string gebruiken)
+	/**
+	 * The comments itself.
+	 */
+	private StringLiteral comment; // TODO: Dit is geen StringLiteral (gewoon
 
+	// een string gebruiken)
+
+	/**
+	 * Constructs a Weabric comment node of the parse tree.
+	 * 
+	 * @param comment
+	 *            The comments itself.
+	 */
 	public Comment(StringLiteral comment) {
 		this.comment = comment;
 		if (logger.isDebugEnabled()) {
@@ -41,14 +62,23 @@ public class Comment extends WaebricParseTreeNode implements Statement {
 		}
 	}
 
+	/**
+	 * Presents this object as a string representation.
+	 */
 	@Override
 	public String toString() {
 		return "comment " + comment;
 	}
-	
+
+	/**
+	 * Transforms the content of this object to the expected output code. If
+	 * necessary this function constructs also the output of the children. (It
+	 * calls the same function <i>toTransformerOutput</i> of the children)
+	 */
 	@Override
 	public String toTransformerOutput() {
-		return OUTPUT_COMMENT + outputBracedBlock( outputQuote( comment.toString() ) );
+		return OUTPUT_COMMENT
+				+ outputBracedBlock(outputQuote(comment.toString()));
 	}
 
 }

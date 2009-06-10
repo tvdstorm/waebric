@@ -27,15 +27,38 @@ import com.uva.se.wparse.model.expression.Identifier;
 import com.uva.se.wparse.model.markup.Markup;
 import com.uva.se.wparse.util.Strings;
 
+/**
+ * A Weabric mapping consists of a
+ * - Set of identifiers;
+ * - File;
+ * - Extension;
+ * - Markup;
+ */
 public class Mapping extends WaebricParseTreeNode {
 	
-	public static final String OUTPUT_MAPPING_PATH = "path";
-	
+	/**
+	 * This variable exposes the logging functionality.
+	 */
 	private static org.apache.log4j.Logger logger = Logger.getLogger(Mapping.class);
 
+	/**
+	 * 
+	 */
 	private List<Identifier> path = null;
+	
+	/**
+	 * 
+	 */
 	private Identifier file = null;
+	
+	/**
+	 * 
+	 */
 	private String extention = "";
+	
+	/**
+	 * 
+	 */
 	private Markup markup = null;
 	
 	
@@ -54,6 +77,9 @@ public class Mapping extends WaebricParseTreeNode {
 	public String toString() {
 		return Strings.join("/", path) + "/" + file + "." + extention + ":" + markup;
 	}
+	
+	
+	private static final String OUTPUT_MAPPING_PATH = "path";
 	
 	@Override
 	public String toTransformerOutput() {

@@ -25,43 +25,82 @@ import org.apache.log4j.Logger;
 
 import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 
-
+/**
+ * The weabric parse tree node of the weabric 'let in' construction. It is an
+ * implementation of a statement.
+ */
 public final class LetIn extends WaebricParseTreeNode implements Statement {
-	
-	public static final String OUTPUT_LETIN = "let";
-	
-	private static org.apache.log4j.Logger logger = Logger.getLogger(LetIn.class);
 
+	/**
+	 * OUTPUT_LETIN is used to indicate this construction in the output process.
+	 */
+	public static final String OUTPUT_LETIN = "let";
+
+	/**
+	 * This variable exposes the logging functionality.
+	 */
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(LetIn.class);
+
+	/**
+	 * The list of assignments of the let in statement.
+	 */
 	private List<Assignment> assignmentList;
+
+	/**
+	 * The list of statements of the let in statement.
+	 */
 	private List<Statement> statementList;
-  
-  public LetIn( List<Assignment> assignmentList, List<Statement> statementList) {
-    this.assignmentList = assignmentList;
-    this.statementList = statementList;
-    if (logger.isDebugEnabled()) {
-		logger.debug("Creating " + this.getClass().getSimpleName()
-				+ " with values : " + toString());
+
+	/**
+	 * Constructs a Weabric 'Each' parse tree node.
+	 * 
+	 * @param assignmentList
+	 *            The list of assignments.
+	 * @param statementList
+	 *            The list of statements.
+	 */
+	public LetIn(List<Assignment> assignmentList, List<Statement> statementList) {
+		this.assignmentList = assignmentList;
+		this.statementList = statementList;
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
-  }
-  
-  @Override public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("let ").append(assignmentList).append(" in ").append(statementList).append("end");
-    return builder.toString();
-  }
-  
-  	@Override
-  	public String toTransformerOutput() {
-  		String expressionItem = "";
-  		for (Assignment assignment: assignmentList) {  		
+
+	/**
+	 * Presents this object as a string representation.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("let ").append(assignmentList).append(" in ").append(
+				statementList).append("end");
+		return builder.toString();
+	}
+
+	/**
+	 * Transforms the content of this object to the expected output code. If
+	 * necessary this function constructs also the output of the children. (It
+	 * calls the same function <i>toTransformerOutput</i> of the children)
+	 */
+	@Override
+	public String toTransformerOutput() {
+		String expressionItem = "";
+		for (Assignment assignment : assignmentList) {
 			expressionItem = assignment.toTransformerOutput();
-  		}
-  		
-  		String statementListString = "";
-  		for (Statement statement: statementList) {
-  			statementListString = outputAddToBlock(statementListString, statement.toTransformerOutput());
-  		}
-  		
-  		return OUTPUT_LETIN + outputBracedBlock( outputBracedList( expressionItem ) + OUTPUT_BLOCK_SEPARATOR + outputBracedList( statementListString ) );	
-  	}
+		}
+
+		String statementListString = "";
+		for (Statement statement : statementList) {
+			statementListString = outputAddToBlock(statementListString,
+					statement.toTransformerOutput());
+		}
+
+		return OUTPUT_LETIN
+				+ outputBracedBlock(outputBracedList(expressionItem)
+						+ OUTPUT_BLOCK_SEPARATOR
+						+ outputBracedList(statementListString));
+	}
 }
