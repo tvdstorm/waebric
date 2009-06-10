@@ -32,6 +32,14 @@ import com.uva.se.wparse.parser.MarkupParser;
 import com.uva.se.wparse.parser.StatementParser;
 import com.uva.se.wparse.parser.TerminalParser;
 
+/**
+ * This is a test class and it checks if a given Waebric input the parser can
+ * parse the Waebric code.
+ * 
+ * The functions aren't documented. There are two reasons for not documenting
+ * this tests: - There are some time limits; - The tests are working always in
+ * the same manner, so the default pattern is documented above.
+ */
 public class StatementParserTest extends TestCase {
 
 	Parser<Markup> markupParser = null;
@@ -57,7 +65,7 @@ public class StatementParserTest extends TestCase {
 		String source = "echo \"Hello World!\" ;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testEchoEmbedSymbolStatement() {
 		String source = "echo \"<em 'SYMBOL >\" ;";
 		TerminalParser.parse(statemenParser, source);
@@ -67,38 +75,36 @@ public class StatementParserTest extends TestCase {
 		String source = "echo \"<em \"Martin Pieters\">\" ;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testEchoEmailAddress() {
 		String source = "echo \" test@test.nl\";";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testEchoEmbeddedMarkupWithExpression() {
 		String source = "echo \"pre text <a (href=\"mailto:mail1@domain1.nl\") \"mail2@domain2.nl\"> post text\";";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testEchoEmbeddedding() {
 		String source = "echo \"<b output>\";";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	
+
 	public void testComment() {
 		String source = "comment \"comment line\";";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testCdataString() {
 		String source = "cdata \"cdata line\";";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testCdataKeyValueBlock() {
 		String source = "cdata {key1:value1, key2:value2};";
 		TerminalParser.parse(statemenParser, source);
 	}
-
 
 	public void testMarkupWithEmbedding() {
 		String source = "idcon#idcon2 \"<em 'SYMBOL >\" ;";
@@ -114,7 +120,7 @@ public class StatementParserTest extends TestCase {
 		String source = "{ echo \"no nesting here\"; } ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testBlockMultipleStatement() {
 		String source = "{ echo \"no nesting here\";  echo \"still no nesting here\"; } ";
 		TerminalParser.parse(statemenParser, source);
@@ -140,7 +146,7 @@ public class StatementParserTest extends TestCase {
 				+ "in echo \"test\"; end";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testLetInAssignmentStatement() {
 		String source = "let var1 = expr2; in yield; end";
 		TerminalParser.parse(statemenParser, source);
@@ -159,10 +165,10 @@ public class StatementParserTest extends TestCase {
 
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testLetInComplexAssignment() {
-		String source = "let td(img, alt, pdf) = td(width=200) { img@160%160(src=img,alt=alt); " +
-						"br; a(href=pdf,target=\"_blank\") yield; } in echo \"in complex let statement\"; end";
+		String source = "let td(img, alt, pdf) = td(width=200) { img@160%160(src=img,alt=alt); "
+				+ "br; a(href=pdf,target=\"_blank\") yield; } in echo \"in complex let statement\"; end";
 
 		TerminalParser.parse(statemenParser, source);
 	}
@@ -173,7 +179,6 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 
-	
 	public void testMarkupAndEchoMailtoEmailAddress() {
 		String source = "designator#test echo \" mailto:test@test.nl\";";
 		TerminalParser.parse(statemenParser, source);
@@ -199,7 +204,6 @@ public class StatementParserTest extends TestCase {
 		TerminalParser.parse(statemenParser, source);
 	}
 
-
 	public void testMarkupWithText() {
 		String source = "li \"test text end \";";
 		TerminalParser.parse(statemenParser, source);
@@ -209,102 +213,96 @@ public class StatementParserTest extends TestCase {
 		String source = "header(\"Abonnee worden?\");";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testMarkupMethodCallInsideBlock() {
 		String source = "{header(\"Abonnee worden?\");}";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testIfPredicateNoElse() {
 		String source = "if ( myList.list? ) echo \"myList is a list\" ;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testIfPredicateElse() {
 		String source = "if ( myList.list? ) echo \"myList is a list\"; else echo \"myList is NOT a list\" ;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testIfPredicateElseWithMarkup() {
 		String source = "if ( myList.list? ) markup1; else markup2 ;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testIfPredicateElseWithMarkupList() {
 		String source = "if (mi.kids) menu(mi); else a(href=mi.link) mi.title;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	
-	
+
 	public void testEach() {
 		String source = "each (  var : varExpression ) echo \"do x for each item\";";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testYield() {
 		String source = "yield;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMarkupMethod(){
+
+	public void testMarkupMethod() {
 		String source = "header (\"Literaire Prijs de Brandende Pen 2007\");";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	
-	public void testMarkupWithUrl(){
+
+	public void testMarkupWithUrl() {
 		String source = "td a(href=\"http://www.nrcboeken.nl/nieuws/jan-aelberts-wint-brandende-pen\") img(height=30, src=\"images/logos/nrcboeken_logo.gif\");";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMarkupWithUrlArgument(){
+
+	public void testMarkupWithUrlArgument() {
 		String source = "td a(href=\"http://www.nrcboeken.nl/nieuws/janaelbertswintbrandendepen\");";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMarkupList(){
+
+	public void testMarkupList() {
 		String source = "td a(href=\"test1\") img(height=\"30\");";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMarkupWithMultipleArguments(){
+
+	public void testMarkupWithMultipleArguments() {
 		String source = "img(height=30, src=\"images/logos/nrcboeken_logo.gif\");";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	
-	public void testEchoDoubleSlashes(){
+
+	public void testEchoDoubleSlashes() {
 		String source = "echo \" //  \";";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
 
-	public void testEchoStringWithLineComment(){
+	public void testEchoStringWithLineComment() {
 		String source = "echo \"test commentline\";  // this is comment ";
 		try {
 			TerminalParser.parse(statemenParser, source);
 		} catch (Exception e) {
-			//failure of parsing the string was required to pass the test.
+			// failure of parsing the string was required to pass the test.
 			assertNull(null);
 			return;
 		}
-		
+
 		assertNotNull(null);
 	}
-	
-	
-	public void testEchoStringWithBlockComment(){
+
+	public void testEchoStringWithBlockComment() {
 		String source = "echo \"test commentline\";  /* this is comment line1 \n comment line2 */ ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testSingleMarkup(){
+
+	public void testSingleMarkup() {
 		String source = "markuptest;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testSingleMarkupWithDash(){
+
+	public void testSingleMarkupWithDash() {
 		String source = "markuptest-with-dash;";
 		TerminalParser.parse(statemenParser, source);
 	}
@@ -313,130 +311,121 @@ public class StatementParserTest extends TestCase {
 		String source = "div.span-getal.colborder { uitreiking09;}";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testMarkupBlockWithNumber() {
 		String source = "div.span-getal.part5-555.colborder { uitreiking09;}";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testMarkupEmptyBlock() {
 		String source = "markup-prefix { }";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testMarkupLetInBlock() {
-		String source = "markup-prefix { let td(img, alt, pdf) = td(width=200) { img@160%160(src=img,alt=alt); " +
-		"br; a(href=pdf,target=\"_blank\") yield; } in echo \"in complex let statement\"; end  }";
+		String source = "markup-prefix { let td(img, alt, pdf) = td(width=200) { img@160%160(src=img,alt=alt); "
+				+ "br; a(href=pdf,target=\"_blank\") yield; } in echo \"in complex let statement\"; end  }";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testMarkupLetInBlockWithOtherStatements() {
-		String source = "markup-prefix { let td(img, alt, pdf) = td(width=200) { img@160%160(src=img,alt=alt); " +
-		"br; a(href=pdf,target=\"_blank\") yield; } in echo \"test\"; end comment \"test\"; }";
+		String source = "markup-prefix { let td(img, alt, pdf) = td(width=200) { img@160%160(src=img,alt=alt); "
+				+ "br; a(href=pdf,target=\"_blank\") yield; } in echo \"test\"; end comment \"test\"; }";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testMarkupSimpleLetInBlockWithOtherStatements() {
-		String source = "markup-prefix { let test = \"test2\"; " +
-		"in echo \"test\"; end }";
+		String source = "markup-prefix { let test = \"test2\"; "
+				+ "in echo \"test\"; end }";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
+
 	public void testMarkupBlockNestingWithOtherStatements() {
 		String source = "markup-prefix { nested-markup { echo \"nested echo\"; } echo \"in complex let statement\"; yield; }";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	
-	public void testMarkupUrl(){
+
+	public void testMarkupUrl() {
 		String source = "li a(href=\"http://www.crosswinds.net/~rugdichter/\") \"RuGdichters\"; ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testEchoJavaScript(){
-		String source = "echo \" var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\"); " +
-						"document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/ga.js' " +
-						"type='text/javascript'%3E%3C/script%3E\"));  \"; ";
+
+	public void testEchoJavaScript() {
+		String source = "echo \" var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\"); "
+				+ "document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/ga.js' "
+				+ "type='text/javascript'%3E%3C/script%3E\"));  \"; ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testEchoNestedString(){
+
+	public void testEchoNestedString() {
 		String source = "echo \" begin \" middle \"  end \" ;";
-		//source = source.replace("\"", "\\\"");
+		// source = source.replace("\"", "\\\"");
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMarkupStatementIfElse(){
+
+	public void testMarkupStatementIfElse() {
 		String source = "li if (mi.kids) menu(mi); else a(href=mi.link) mi.title;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMarkupExpression(){
+
+	public void testMarkupExpression() {
 		String source = "a(href=mi.link) mi.title;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMultipleMarkupExpression(){
+
+	public void testMultipleMarkupExpression() {
 		String source = "a(href=mi.link) b(href=mi.link) markup2 mi.title;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMultipleMarkupExpression2(){
+
+	public void testMultipleMarkupExpression2() {
 		String source = "design-pre design0 a(href=mi.link) design1 b(href=mi.link) mi.title;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	public void testMultipleMarkup(){
+
+	public void testMultipleMarkup() {
 		String source = "designator1.bla designator2#bla2 designator3$bla3 designator4$bla4;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMultipleMarkupFuncCall(){
+
+	public void testMultipleMarkupFuncCall() {
 		String source = "li menu(item);";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMultipleMarkupBlock(){
+
+	public void testMultipleMarkupBlock() {
 		String source = "td img(var = var2, var3 = var4);";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void test2Markup1Expression(){
+
+	public void test2Markup1Expression() {
 		String source = "design1#a design1.a \"stringie\"; ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	 
-	public void testMarkupExpression2(){
+
+	public void testMarkupExpression2() {
 		String source = "title title2; ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMarkupExpression3(){
+
+	public void testMarkupExpression3() {
 		String source = "title title2 title3; ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	
-	public void testMarkupBlock2(){
+
+	public void testMarkupBlock2() {
 		String source = "{ css(\"blueprint.css\", \"screen,projection\"); title title; }  ";
 		TerminalParser.parse(statemenParser, source);
 	}
-	 
-	public void testField(){
+
+	public void testField() {
 		String source = "a(href=mi.link) mi.title;";
 		TerminalParser.parse(statemenParser, source);
 	}
-	 
-	
-	public void testEchoEmbedding(){
+
+	public void testEchoEmbedding() {
 		String source = "echo \"<b() i()>\";";
 		TerminalParser.parse(statemenParser, source);
 	}
-	 
-	
-	
-	
-	
-	
-	
 
 }

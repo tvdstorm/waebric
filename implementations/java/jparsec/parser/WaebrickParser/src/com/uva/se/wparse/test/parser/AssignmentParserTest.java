@@ -34,8 +34,15 @@ import com.uva.se.wparse.parser.MarkupParser;
 import com.uva.se.wparse.parser.StatementParser;
 import com.uva.se.wparse.parser.TerminalParser;
 
+/**
+ * This is a test class and it checks if a given Waebric input the parser can
+ * parse the Waebric code.
+ * 
+ * The functions aren't documented. There are two reasons for not documenting
+ * this tests: - There are some time limits; - The tests are working always in
+ * the same manner, so the default pattern is documented above.
+ */
 public class AssignmentParserTest extends TestCase {
-	
 
 	Parser<Markup> markupParser = null;
 	Parser<Expression> expParser = null;
@@ -49,35 +56,29 @@ public class AssignmentParserTest extends TestCase {
 		markupParser = MarkupParser.markup(expParser);
 		argumentParser = ArgumentParser.arguments(expParser);
 		statemenParser = StatementParser.statement(expParser, markupParser);
-		
-		//AssignmentParser assParser = new AssignmentParser();
-		assignmentParser = AssignmentParser.assignment(statemenParser, expParser);
+
+		// AssignmentParser assParser = new AssignmentParser();
+		assignmentParser = AssignmentParser.assignment(statemenParser,
+				expParser);
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
-	
 
-	
-	public void testAssignmentNormal(){
+	public void testAssignmentNormal() {
 		String source = "var = testvalue;";
 		TerminalParser.parse(assignmentParser, source);
 	}
-	
-	public void testAssignmentFormals(){
+
+	public void testAssignmentFormals() {
 		String source = "idCon ( var1, var2, var3) = echo \"dummy statement\";";
 		TerminalParser.parse(assignmentParser, source);
 	}
-	
-	public void testAssignmentWithRul(){
+
+	public void testAssignmentWithRul() {
 		String source = "link = \"http://www.vpro.nl/programma/deavonden/afleveringen/34639264/items/35915764/media/35915897/\";";
 		TerminalParser.parse(assignmentParser, source);
 	}
-	
-	
-	
-
-
 
 }

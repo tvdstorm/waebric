@@ -30,14 +30,22 @@ import com.uva.se.wparse.parser.MappingParser;
 import com.uva.se.wparse.parser.MarkupParser;
 import com.uva.se.wparse.parser.TerminalParser;
 
+/**
+ * This is a test class and it checks if a given Waebric input the parser can
+ * parse the Waebric code.
+ * 
+ * The functions aren't documented. There are two reasons for not documenting
+ * this tests: - There are some time limits; - The tests are working always in
+ * the same manner, so the default pattern is documented above.
+ */
 public class MappingParserTest extends TestCase {
-	
+
 	Parser<Markup> markupParser = null;
 	Parser<Expression> expParser = null;
 	Parser<Mapping> mappingParser = null;
 
 	protected void setUp() throws Exception {
-		expParser =  ExpressionParser.expression(null);
+		expParser = ExpressionParser.expression(null);
 		markupParser = MarkupParser.markup(expParser);
 		mappingParser = MappingParser.mapping(markupParser);
 	}
@@ -45,40 +53,35 @@ public class MappingParserTest extends TestCase {
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
-	
-	
-	
-	public void testMapping(){
+
+	public void testMapping() {
 		String source = "wpath1/xpath2/yfile.ext : idCon#desgn";
 		TerminalParser.parse(mappingParser, source);
 	}
-	
-	public void testMappingWithEmptyArgs(){
+
+	public void testMappingWithEmptyArgs() {
 		String source = "wpath1/xpath2/yfile.ext : idCon#desgn()";
 		TerminalParser.parse(mappingParser, source);
 	}
-	
-	public void testMappingStartsWithSite(){
+
+	public void testMappingStartsWithSite() {
 		String source = "site/xpath2/yfile.ext : idCon#desgn()";
 		TerminalParser.parse(mappingParser, source);
 	}
-	
-	public void testMappingStartsWithSiteHtml(){
+
+	public void testMappingStartsWithSiteHtml() {
 		String source = "site/brandendepen.html: brandende-pen()";
 		TerminalParser.parse(mappingParser, source);
 	}
-	
-	public void testSiteMapping(){
-		String source = "site/abonnementen.html: abonnementen()"; 
+
+	public void testSiteMapping() {
+		String source = "site/abonnementen.html: abonnementen()";
 		TerminalParser.parse(mappingParser, source);
 	}
-	
-	public void testDebug(){
+
+	public void testDebug() {
 		String source = "wpath1/xpath2/yfile.ext : bla";
 		TerminalParser.parse(mappingParser, source);
 	}
-	
-	
-
 
 }
