@@ -19,7 +19,10 @@
 package com.uva.se.wparse.parser;
 
 
-
+/**
+ * An enumaration with all the operators which are used in the Waebric 
+ * language. 
+ */
 public enum Operator {
   AND					("&&"),
   OR					("||"),
@@ -55,12 +58,22 @@ public enum Operator {
     
   ;
   
+  /**
+   * A name of an option of the enumeration.
+   */
   private final String name;
   
+  /**
+   * Constructs an operator. 
+   * @param name The name of the option.
+   */
   private Operator(final String name) {
     this.name = name;
   }
   
+  /**
+   * Returns the name of the option.
+   */
   @Override public String toString() {
     return name;
   }

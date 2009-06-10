@@ -62,8 +62,8 @@ public final class ModuleParser implements WeabrickParser {
 	}
 	
 	/**
-	 * Create a Parser of the Module. (Highest level parser). 
-	 * @return A parser of the module. 
+	 * Create a Parser of ModuleDef . 
+	 * @return A parser of ModeleDef (This is a class of our ParseTree model). 
 	 */
 	private static Parser<ModuleDef> module() {
 		
@@ -83,6 +83,11 @@ public final class ModuleParser implements WeabrickParser {
 						siteDef(mappingParser)).many());
 	}
 	
+	/**
+	 * Create a Parser of the ModuleBody based on a Parser of Member. 
+	 * @param member A Parser of Member (This is a class of our ParseTree model).  
+	 * @return A Parser of ModuleBody (This is a class of our ParseTree model). 
+	 */
 	private static Parser<ModuleBody> body(Parser<Member> member) {
 		return Mapper.curry(ModuleBody.class).sequence(
 				member.many().map(new Map<List<Member>, List<Member>>() {
@@ -92,6 +97,10 @@ public final class ModuleParser implements WeabrickParser {
 				}));
 	}
 
+	/**
+	 * Create a Parser of Formals. 
+	 * @return A Parser of Formals (This is a class of our ParseTree model). 
+	 */
 	private static Parser<Formals> formals() {
 		return curry(Formals.class).sequence(
 				TerminalParser.term(Operator.ROUND_BRACKET_OPEN.toString()),
@@ -100,11 +109,23 @@ public final class ModuleParser implements WeabrickParser {
 				TerminalParser.term(Operator.ROUND_BRACKET_CLOSE.toString()));
 	}
 
+	/**
+	 * Create a mapping between the classes of the model and parser process. 
+	 * @param clazz The class of the model. 
+	 * @param curryArgs The part of the parser process. 
+	 * @return A mapper.
+	 */
 	private static Mapper<Formals> curry(Class<? extends Formals> clazz,
 			Object... curryArgs) {
 		return Mapper.curry(clazz, curryArgs);
 	}
 
+	/**
+	 * Create a Parser of the Member based on a Parser of Statement and Expression. 
+	 * @param statementParser A Parser of Statement (This is a class of our ParseTree model). 
+	 * @param expressionParser A Parser of Expression (This is a class of our ParseTree model). 
+	 * @return A Parser of Member (This is a class of our ParseTree model). 
+	 */
 	private static Parser<Member> methodDef(Parser<Statement> statementParser,
 			Parser<Expression> expressionParser) {
 		return Mapper.<Member> curry(FunctionDef.class).sequence(
@@ -114,6 +135,11 @@ public final class ModuleParser implements WeabrickParser {
 				TerminalParser.term(Keyword.END.toString()));
 	}
 
+	/**
+	 * Create a Parser of the Member based on a Parser of Mapping.
+	 * @param mappingParser A Parser of Mapping (This is a class of our ParseTree model). 
+	 * @return A Parser of Member (This is a class of our ParseTree model). 
+	 */
 	private static Parser<Member> siteDef(Parser<Mapping> mappingParser) {
 		return Mapper.<Member> curry(SiteDef.class).sequence(
 				TerminalParser.term(Keyword.SITE.toString()),
@@ -122,19 +148,23 @@ public final class ModuleParser implements WeabrickParser {
 				TerminalParser.term(Keyword.END.toString()));
 	}
 
+	/**
+	 * The parser which detects a QualifiedName. 
+	 */
 	private static final Parser<QualifiedName> QUALIFIED_NAME = Mapper.curry(
 			QualifiedName.class).sequence(
 			Terminals.Identifier.PARSER.sepBy1(TerminalParser.term(Operator.DOT
 					.toString())));
 
+	/**
+	 * The parser which detects the Module.
+	 */
 	private static final Parser<QualifiedName> MODULE = Parsers.sequence(
 			TerminalParser.term(Keyword.MODULE.toString()), QUALIFIED_NAME);
 
+	/**
+	 * The parser which detects the import section. 
+	 */
 	private static final Parser<QualifiedName> importParser = Parsers.sequence(
 			TerminalParser.term(Keyword.IMPORT.toString()), QUALIFIED_NAME);
-
-	
-
-	
-
 }

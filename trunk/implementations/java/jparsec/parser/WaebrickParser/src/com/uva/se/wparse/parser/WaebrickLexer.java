@@ -27,8 +27,14 @@ import org.codehaus.jparsec.Scanners;
 import org.codehaus.jparsec.pattern.CharPredicate;
 import org.codehaus.jparsec.pattern.Patterns;
 
+/**
+ * The lexer of the Weabric language, searching for the identifiers.
+ */
 public class WaebrickLexer {
 
+	/**
+	 * Indicates how an identifier should start. 
+	 */
 	private static final CharPredicate IDENTIFIER_START = new CharPredicate() {
 		public boolean isChar(char c) {
 			Pattern p = Pattern.compile("[a-zA-Z]");
@@ -37,6 +43,9 @@ public class WaebrickLexer {
 		}
 	};
 
+	/**
+	 * Indicates what's part of an identifier.
+	 */
 	private static final CharPredicate IDENTIFIER_PART = new CharPredicate() {
 		public boolean isChar(char c) {
 			Pattern p = Pattern.compile("[a-zA-Z0-9]");
@@ -45,14 +54,19 @@ public class WaebrickLexer {
 		}
 	};
 
+	/**
+	 * Identifies all the identifiers of the Weabric language.
+	 */
 	private static Parser<String> IDENTIFIER = Scanners.pattern(
 			Patterns.isChar(IDENTIFIER_START).next(
 					Patterns.isChar(IDENTIFIER_PART).many()), "identifier").source();
 
+	/**
+	 * Returns an identifier.
+	 * @return The identifier.
+	 */
 	public static Parser<String> getIdentifier() {
 		return IDENTIFIER;
 	}
 	
-	
-
 }
