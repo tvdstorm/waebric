@@ -21,12 +21,16 @@ package com.uva.se.wparse.parser;
 import com.uva.se.wparse.exception.ParserException;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 
+/**
+ * This interface indicates the main Parser of the Waebric language.
+ * It converts the sourcecode to a Weabric Parse Tree. 
+ */
 public interface WeabrickParser {
 
 	/**
-	 * Main ...
-	 * @param sourceCode
-	 * @return
+	 * Converts the sourcecode to a Weabric Parse Tree. 
+	 * @param sourceCode The Waebric sourcecode. 
+	 * @return The Waebric parse tree.
 	 */
 	public WabrickParseTree parse(String sourceCode) throws ParserException;
 }
