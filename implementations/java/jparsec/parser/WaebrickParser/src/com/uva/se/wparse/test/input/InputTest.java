@@ -26,6 +26,15 @@ import junit.framework.TestCase;
 import com.uva.se.wparse.Main;
 import com.uva.se.wparse.input.gui.ParserGui;
 
+/**
+ * Test the input part of the frontend: the console and the interactive mode. 
+ * 
+ * The functions aren't documented. There are two reasons for not documenting 
+ * this tests: 
+ * - There are some time limits;
+ * - The tests are working always in the same manner, so the default pattern is 
+ *   documented above. 
+ */
 public class InputTest extends TestCase {
 
 	protected void setUp() throws Exception {
@@ -46,7 +55,6 @@ public class InputTest extends TestCase {
 	}
 	
 	public void testInteractiveMode(){
-		//Main.main(new String[]{"-i" });
 		ParserGui gui = new ParserGui();
 		assertNotNull(gui);
 	}

@@ -25,8 +25,6 @@ import java.io.IOException;
 
 /**
  * A utility class with methods which can be used in the case of file access.
- * 
- * State: refactored, not reviewed.  
  */
 public class FileUtil {
 

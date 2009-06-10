@@ -45,16 +45,20 @@ public enum Keyword {
   ;
   
 	/**
-	 * 
+	 * The name of the enumarion. 
 	 */
 	private final String name;
 
+	/**
+	 * Set the name of an enumarion.
+	 * @param name The name.
+	 */
 	private Keyword(final String name) {
 		this.name = name;
 	}
 
 	/**
-	 * 
+	 * Return the setted name.
 	 */
 	@Override
 	public String toString() {
@@ -62,8 +66,8 @@ public enum Keyword {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Return an array with all the properties which are stored in the enumarion.
+	 * @return An array with strings with all the keywords.
 	 */
 	public static String[] toArray() {
 		try {
