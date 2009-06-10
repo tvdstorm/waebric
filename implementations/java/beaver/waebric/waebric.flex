@@ -185,13 +185,13 @@ SiteFilename = {PathElement} "." {FileExt}
   {WhiteSpace}                   { /* ignore */ }
 
   /* identifiers */
-  {Identifier}                   {  return nextToken(Terminals.IDCON, yytext()); }  
+  {Identifier}                   { return nextToken(Terminals.IDCON, yytext()); }  
   
   /* identifiers */
-  "<"{Identifier}                 {  yybegin(ATTRIBUTES); String temp = yytext(); return nextToken(Terminals.IDCONDESIGNATOR, temp.substring(1) ); } 
+  "<"{Identifier}                { yybegin(ATTRIBUTES); String temp = yytext(); return nextToken(Terminals.IDCONDESIGNATOR, temp.substring(1) ); } 
   
   /* identifiers */
-  {Identifier}/">"                 {  return nextToken(Terminals.IDCONTAIL, yytext()); } 
+  {Identifier}/">"               { return nextToken(Terminals.IDCONTAIL, yytext()); } 
     
   /* Natural numbers*/
   {Natcon}                       { return nextToken(Terminals.NATCON, yytext()); }  
@@ -199,10 +199,14 @@ SiteFilename = {PathElement} "." {FileExt}
 }
 
 <SITE> {
-  {Directory} /"/"               { return nextToken(Terminals.DIRNAME,yytext() ); }
+  {Directory} /"/"               { return nextToken(Terminals.DIRNAME, yytext()); }
   "/"                            { return nextToken(Terminals.DIV); }
-  "end"                          { yybegin(YYINITIAL); return nextToken(Terminals.END ); }
-  {SiteFilename}                 { yybegin(YYINITIAL); return nextToken(Terminals.FILENAME,yytext() ); }
+  ":"                            { return nextToken(Terminals.COLON); }
+  "("                            { return nextToken(Terminals.LPAREN); }
+  ")"                            { return nextToken(Terminals.RPAREN); }
+  "end"                          { yybegin(YYINITIAL); return nextToken(Terminals.END); }
+  {SiteFilename}                 { return nextToken(Terminals.FILENAME, yytext()); }
+  {Identifier}                   { yybegin(ATTRIBUTES); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); }
  
   /* comments */
   {Comment}                      { /* ignore */ }
@@ -234,32 +238,32 @@ SiteFilename = {PathElement} "." {FileExt}
 
 
 <PRETEXT> {
-	{TextChar}			    {  string.append( yytext() ); }
-      "\""                        {  yybegin(YYINITIAL); string.append(  yytext() );  return nextToken(Terminals.TEXT,  string.toString() ); }
-	{TextChar}/"<"              {  yybegin(YYINITIAL); string.append(  yytext() + '<' );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
+	{TextChar}			   { string.append( yytext() ); }
+      "\""                       { yybegin(YYINITIAL); string.append(  yytext() );  return nextToken(Terminals.TEXT,  string.toString() ); }
+	{TextChar}/"<"             { yybegin(YYINITIAL); string.append(  yytext() + '<' );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
 }
 
 <POSTMIDTEXT> {
-	{TextChar} 					{ string.append( yytext() ); }
-	"\""                        {  yybegin(YYINITIAL);  string.append( '\"' );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
-	{TextChar}/"<"             	{  yybegin(YYINITIAL);  string.append( yytext() + '<' );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
+	{TextChar} 			   { string.append( yytext() ); }
+	"\""                       { yybegin(YYINITIAL);  string.append( '\"' );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
+	{TextChar}/"<"             { yybegin(YYINITIAL);  string.append( yytext() + '<' );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
 }
 
 <ATTRIBUTES> {
-	  "#"{Identifier}                            {  String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
-	  "."{Identifier}                            {  String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
-	  "$"{Identifier}                            {  String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
-	  ":"{Identifier}                            {  String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
-	  "@"{Natcon}                	             {  String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
-	  {Identifier}/{WhiteSpace}{Identifier}		 {  return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
-	  {Identifier}/{WhiteSpace}{Natcon}			 {  return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
-	  {Identifier}/{WhiteSpace}*"["				 {  return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
-	  {Identifier}/{WhiteSpace}*"{"			 	 {  return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
-  	  {Identifier}/{WhiteSpace}*"'"				 {  return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 	  	  
+	  "#"{Identifier}                         { String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
+	  "."{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
+	  "$"{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
+	  ":"{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
+	  "@"{Natcon}                	            { String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
+	  {Identifier}/{WhiteSpace}{Identifier}	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+	  {Identifier}/{WhiteSpace}{Natcon}		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+	  {Identifier}/{WhiteSpace}*"["		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+	  {Identifier}/{WhiteSpace}*"{"		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+  	  {Identifier}/{WhiteSpace}*"'"  		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 	  	  
 	  	  
-	  {Comment}                      { /* ignore */ }
-      {WhiteSpace}                   { /* ignore */ }
-  	  .										 	 {  yybegin(YYINITIAL); yypushback(1); }
+	  {Comment}                      		{ /* ignore */ }
+        {WhiteSpace}                   		{ /* ignore */ }
+  	  .							{ yybegin(YYINITIAL); yypushback(1); }
 }
 
 
