@@ -17,7 +17,7 @@
 
 %terminals TODO_EMBEDDING, TODO_MARKUP, TODO_PREDICATE  ;
 
-%terminals PRETEXT, MIDTEXT, POSTTEXT;
+%terminals PRETEXT, MIDTEXT, POSTTEXT, TEXT;
 
 %terminals MARUPOPT_TODO;
 
@@ -124,7 +124,8 @@ var = IDCON.i {: //@var($i) :}
 
 expression = var
 | symbolcon.s {: //@sym(s) :}
-| NATCON.n {: //@num(#n) :}  
+| NATCON.n {: //@num(#n) :}
+| TEXT.t {: //@text($t) :}  
 | expression.e DOT IDCON.i {: //@field(e,$i) :}
 | LBRACK expressions.e RBRACK {: //@list(e) :}
 | LBRACE keyvaluepairs.p RBRACE /* {: //@record(p) :} */

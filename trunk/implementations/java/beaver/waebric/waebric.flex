@@ -234,7 +234,8 @@ SiteFilename = {PathElement} "." {FileExt}
 
 
 <PRETEXT> {
-	{TextChar}					{  string.append( yytext() ); }
+	{TextChar}			    {  string.append( yytext() ); }
+      "\""                        {  yybegin(YYINITIAL); string.append(  yytext() );  return nextToken(Terminals.TEXT,  string.toString() ); }
 	{TextChar}/"<"              {  yybegin(YYINITIAL); string.append(  yytext() + '<' );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
 }
 
