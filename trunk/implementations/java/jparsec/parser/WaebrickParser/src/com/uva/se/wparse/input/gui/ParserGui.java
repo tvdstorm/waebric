@@ -36,7 +36,6 @@ import javax.swing.WindowConstants;
 
 import org.apache.log4j.Logger;
 
-import com.uva.se.wparse.Main;
 import com.uva.se.wparse.model.common.WabrickParseTree;
 import com.uva.se.wparse.output.transformer.OutputTransformer;
 import com.uva.se.wparse.parser.ModuleParser;

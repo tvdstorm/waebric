@@ -21,18 +21,18 @@ package com.uva.se.wparse.util;
 import java.util.Arrays;
 
 /**
- * Several String Manipulation functionality which can separate objects by 
- * different delimiter. 
- * 
- * State: refactored, not reviewed.  
+ * Several String Manipulation functionality which can separate objects by
+ * different delimiter.
  */
 public final class Strings {
 
 	/**
-	 * Prepends {@code delimiter} before each object of {@code objects}.
+	 * Prepends delimiter before each object of code objects
 	 * 
-	 * @param delimiter The delimiter to prepend for each object. 
-	 * @param objects The objects where this function prepends the delimiter. 
+	 * @param delimiter
+	 *            The delimiter to prepend for each object.
+	 * @param objects
+	 *            The objects where this function prepends the delimiter.
 	 * @return
 	 */
 	public static String prependEach(String delimiter, Iterable<?> objects) {
@@ -43,18 +43,21 @@ public final class Strings {
 		}
 		return builder.toString();
 	}
-	
+
 	/**
-	 * Joins {@code objects} with {@code delimiter} as the delimiter.
+	 * Joins objects with delimiter as the delimiter.
 	 * 
-	 * @param builder The builder which creates the string
-	 * @param delimiter The delimiter which is added after the objects 
-	 * @param objects The objects which are divided by the delimiter
+	 * @param builder
+	 *            The builder which creates the string
+	 * @param delimiter
+	 *            The delimiter which is added after the objects
+	 * @param objects
+	 *            The objects which are divided by the delimiter
 	 * @return A StringBuilder with all the objects divided by the delimiter
 	 */
 	public static StringBuilder join(StringBuilder builder, String delimiter,
 			Iterable<?> objects) {
-		
+
 		int itemIndex = 0;
 		for (Object object : objects) {
 			if (itemIndex++ > 0)
@@ -65,10 +68,12 @@ public final class Strings {
 	}
 
 	/**
-	 * Joins {@code objects} with {@code delimiter} as the delimiter.
+	 * Joins objects with delimiter as the delimiter.
 	 * 
-	 * @param delimiter The delimiter which is added after the objects 
-	 * @param objects The objects which are divided by the delimiter
+	 * @param delimiter
+	 *            The delimiter which is added after the objects
+	 * @param objects
+	 *            The objects which are divided by the delimiter
 	 * @return A string with all the objects divided by the delimiter
 	 */
 	public static String join(String delimiter, Iterable<?> objects) {
@@ -76,10 +81,12 @@ public final class Strings {
 	}
 
 	/**
-	 * Joins {@code objects} with {@code delimiter} as the delimiter.
+	 * Joins objects with delimiter as the delimiter.
 	 * 
-	 * @param delimiter The delimiter which is added after the objects 
-	 * @param objects The objects which are divided by the delimiter
+	 * @param delimiter
+	 *            The delimiter which is added after the objects
+	 * @param objects
+	 *            The objects which are divided by the delimiter
 	 * @return A string with all the objects divided by the delimiter
 	 */
 	public static String join(String delimiter, Object... objects) {
@@ -87,11 +94,14 @@ public final class Strings {
 	}
 
 	/**
-	 * Joins {@code objects} with {@code delimiter} as the delimiter.
+	 * Joins objects with delimiter as the delimiter.
 	 * 
-	 * @param builder The builder which creates the string
-	 * @param delimiter The delimiter which is added after the objects 
-	 * @param objects  The objects which are divided by the delimiter
+	 * @param builder
+	 *            The builder which creates the string
+	 * @param delimiter
+	 *            The delimiter which is added after the objects
+	 * @param objects
+	 *            The objects which are divided by the delimiter
 	 * @return A StringBuilder with all the objects divided by the delimiter
 	 */
 	public static StringBuilder join(StringBuilder builder, String delimiter,
