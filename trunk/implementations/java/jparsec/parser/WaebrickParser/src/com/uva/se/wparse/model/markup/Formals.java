@@ -28,39 +28,63 @@ import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.model.expression.Identifier;
 import com.uva.se.wparse.util.Strings;
 
-
-
+/**
+ * The weabric parse tree node of the weabric 'Formals' construction. It is an
+ * implementation of an expression.
+ */
 public final class Formals extends WaebricParseTreeNode {
-	
-	private static org.apache.log4j.Logger logger = Logger.getLogger(Formals.class);
-	
+
+	/**
+	 * This variable exposes the logging functionality.
+	 */
+	private static org.apache.log4j.Logger logger = Logger
+			.getLogger(Formals.class);
+
+	/**
+	 * An identifier list with all the identifiers.
+	 */
 	private List<Identifier> identifierList = null;
 
-  public Formals(List<Identifier> identifierList) {
-    this.identifierList = Collections.unmodifiableList(identifierList);
-    if (logger.isDebugEnabled()) {
-		logger.debug("Creating " + this.getClass().getSimpleName()
-				+ " with values : " + toString());
+	/**
+	 * Constructs a Weabric 'Each' parse tree node.
+	 * 
+	 * @param identifierList
+	 *            An identifier list with all the identifiers.
+	 */
+	public Formals(List<Identifier> identifierList) {
+		this.identifierList = Collections.unmodifiableList(identifierList);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating " + this.getClass().getSimpleName()
+					+ " with values : " + toString());
+		}
 	}
-  }
-  
-  @Override public String toString() {
-	  if(identifierList != null){
-		  return "(" + Strings.join(" ", identifierList) + ")";
-	  }else{
-		  return "()";
-	  }
-  }
-  
-  @Override
-  public String toTransformerOutput() {
-	  String Result = "";
-	  
-	  if (identifierList != null) {
-		  	for (Identifier ident: identifierList) {
-	  			Result = outputAddToBlock(Result, ident.toTransformerOutput());
-		  	}
-	  }	 
-	  return Result;
-  }  
+
+	/**
+	 * Presents this object as a string representation.
+	 */
+	@Override
+	public String toString() {
+		if (identifierList != null) {
+			return "(" + Strings.join(" ", identifierList) + ")";
+		} else {
+			return "()";
+		}
+	}
+
+	/**
+	 * Transforms the content of this object to the expected output code. If
+	 * necessary this function constructs also the output of the children. (It
+	 * calls the same function <i>toTransformerOutput</i> of the children)
+	 */
+	@Override
+	public String toTransformerOutput() {
+		String Result = "";
+
+		if (identifierList != null) {
+			for (Identifier ident : identifierList) {
+				Result = outputAddToBlock(Result, ident.toTransformerOutput());
+			}
+		}
+		return Result;
+	}
 }
