@@ -26,8 +26,8 @@ import com.uva.se.wparse.model.common.WaebricParseTreeNode;
 import com.uva.se.wparse.util.Strings;
 
 /**
- * The definition of the site is stored in this part of the model. A SiteDefinition
- * consists of a set of mappings. 
+ * The definition of the site is stored in this part of the model. A
+ * SiteDefinition consists of a set of mappings.
  */
 public final class SiteDef extends WaebricParseTreeNode implements Member {
 
@@ -43,9 +43,10 @@ public final class SiteDef extends WaebricParseTreeNode implements Member {
 	private List<Mapping> mappings;
 
 	/**
-	 * Constructs a definition of the site. 
+	 * Constructs a definition of the site.
 	 * 
-	 * @param mappings The set of mappings of the root of the site. 
+	 * @param mappings
+	 *            The set of mappings of the root of the site.
 	 * 
 	 */
 	public SiteDef(List<Mapping> mappings) {
