@@ -1,6 +1,6 @@
 /*
- * File			: MarkupEmbeddingStatement.java
- * Project		: WaebrickParser
+ * File			: MarkupEmbedding.java
+ * Project		: WaebrickParser2
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
  * Author		: M. Wullink, L. Vinke, M. v.d. Laar
