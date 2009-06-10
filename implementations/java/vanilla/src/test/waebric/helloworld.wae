@@ -1,4 +1,4 @@
-module homepage
+module src.test.waebric.helloworld
 
 import src.test.waebric.mod.sub
 import src.test.waebric.mod.sub
