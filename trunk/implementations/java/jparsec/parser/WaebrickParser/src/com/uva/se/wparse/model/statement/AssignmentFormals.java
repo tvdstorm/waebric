@@ -1,6 +1,6 @@
 /*
- * File			: AssignmentWithFormals.java
- * Project		: WaebrickParser
+ * File			: AssignmentFormals.java
+ * Project		: WaebrickParser2
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
  * Author		: M. Wullink, L. Vinke, M. v.d. Laar

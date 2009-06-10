@@ -1,11 +1,11 @@
 /*
  * File			: Resources.java
- * Project		: WaebrickParser
+ * Project		: WaebrickParser2
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
  * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
- * Description	: Enum which contains elements for all the items items of the messages properties file.
+ * Description	:
  * 
  * 
  * Change history

@@ -1,6 +1,6 @@
 /*
  * File			: FileUtil.java
- * Project		: WaebrickParser
+ * Project		: WaebrickParser2
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
  * Author		: M. Wullink, L. Vinke, M. v.d. Laar

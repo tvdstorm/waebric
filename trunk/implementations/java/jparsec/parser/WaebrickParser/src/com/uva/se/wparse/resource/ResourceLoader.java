@@ -1,14 +1,11 @@
 /*
  * File			: ResourceLoader.java
- * Project		: WaebrickParser
+ * Project		: WaebrickParser2
  * 				: Waebrick Parser, practicum opdracht Software Construction
  * 
  * Author		: M. Wullink, L. Vinke, M. v.d. Laar
  * 
- * Description	: Responsible for loading the messages properties file for
- * 				  internatiolization.
- * 				   
- * 				  Uses Singleton pattern
+ * Description	:
  * 
  * 
  * Change history
