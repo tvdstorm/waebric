@@ -9,26 +9,26 @@
 			<classpath refid="java" />
 		</javac>
 	</target>
-	
+
 
 
 	<target name="jar" depends="compile">
-		
+
 		<copy todir="../bin">
-		   <fileset dir="." includes="**/*.properties"/>
+			<fileset dir="." includes="**/*.properties" />
 		</copy>
 
-		
+
 		<jar destfile="../bin/WaebrickParser-1.0.jar">
-			<fileset dir="../bin" >
-				<exclude name="WaebrickParser-1.0.jar"/>
+			<fileset dir="../bin">
+				<exclude name="WaebrickParser-1.0.jar" />
 			</fileset>
 			<fileset dir="../libs" />
-			
+
 			<fileset dir="" />
 			<manifest>
 				<attribute name="Main-Class" value="com.uva.se.wparse.Main" />
-				<attribute name="Class-Path" value="TableLayout-bin-jdk1.5-2007-04-21.jar asm-tree-3.1.jar jparsec-2.0.jar asm-3.1.jar	asm-util-3.1.jar junit-4.6.jar asm-analysis-3.1.jar asm-xml-3.1.jar log4j-1.2.15.jar asm-commons-3.1.jar cglib-2.2.jar"/>
+				<attribute name="Class-Path" value="TableLayout-bin-jdk1.5-2007-04-21.jar asm-tree-3.1.jar jparsec-2.0.jar asm-3.1.jar	asm-util-3.1.jar junit-4.6.jar asm-analysis-3.1.jar asm-xml-3.1.jar log4j-1.2.15.jar asm-commons-3.1.jar cglib-2.2.jar" />
 			</manifest>
 		</jar>
 	</target>
