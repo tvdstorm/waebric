@@ -5,5 +5,5 @@ site
 end
 
 def func()
-	undef(); // Call to undefined function
+	undef(); // Call to undefined function	
 end
