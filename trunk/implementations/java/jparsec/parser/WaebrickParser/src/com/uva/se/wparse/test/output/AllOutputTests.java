@@ -21,6 +21,15 @@ package com.uva.se.wparse.test.output;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+/**
+ * This test class calls output tests. 
+ * 
+ * The functions aren't documented. There are two reasons for not documenting 
+ * this tests: 
+ * - There are some time limits;
+ * - The tests are working always in the same manner, so the default pattern is 
+ *   documented above.  
+ */
 public class AllOutputTests {
 
 	public static Test suite() {

@@ -28,9 +28,15 @@ import com.uva.se.wparse.parser.ExpressionParser;
 import com.uva.se.wparse.parser.PredicateParser;
 import com.uva.se.wparse.parser.TerminalParser;
 
+/**
+ * This is a test class and it checks if a given Waebric input the parser can
+ * parse the Waebric code.
+ * 
+ * The functions aren't documented. There are two reasons for not documenting
+ * this tests: - There are some time limits; - The tests are working always in
+ * the same manner, so the default pattern is documented above.
+ */
 public class PredicateParserTest extends TestCase {
-	
-
 
 	Parser<Expression> expressionParser = null;
 	Parser<Predicate> predicateParser = null;
@@ -44,88 +50,83 @@ public class PredicateParserTest extends TestCase {
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
-	
 
-	
-	public void testListTypeCheck(){
+	public void testListTypeCheck() {
 		String source = "myList.list?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testRecordTypeCheck(){
+
+	public void testRecordTypeCheck() {
 		String source = "myRecord.record?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testStringTypeCheck(){
+
+	public void testStringTypeCheck() {
 		String source = "myString.string?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testUnknownypeCheck(){
+
+	public void testUnknownypeCheck() {
 		String source = "myString.badtype?";
 		try {
 			TerminalParser.parse(predicateParser, source);
 		} catch (Exception e) {
-			//failure of parsing the string was required to pass the test.
+			// failure of parsing the string was required to pass the test.
 			assertNull(null);
 			return;
 		}
-		
+
 		assertNotNull(null);
 	}
-	
-	public void testNotPredicate(){
+
+	public void testNotPredicate() {
 		String source = "!myString.string?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testPredicateAndOperatorExpression(){
+
+	public void testPredicateAndOperatorExpression() {
 		String source = "myString.string? && myList.list?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testPredicateAndOperatorMultipleExpression(){
+
+	public void testPredicateAndOperatorMultipleExpression() {
 		String source = "myString.string? && myList.list? && mylist2.list?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testNotLeftPredicateAndOperatorExpression(){
+
+	public void testNotLeftPredicateAndOperatorExpression() {
 		String source = "!myString.string? && myList.list?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testNotRightPredicateAndOperatorExpression(){
+
+	public void testNotRightPredicateAndOperatorExpression() {
 		String source = "myString.string? && !myList.list?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testNotPredicateAndOperatorExpression(){
+
+	public void testNotPredicateAndOperatorExpression() {
 		String source = "!myString.string? && !myList.list?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testPredicateOrOperatorExpression(){
+
+	public void testPredicateOrOperatorExpression() {
 		String source = "myString.string? || myList.list?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testNotLeftPredicateOrOperatorExpression(){
+
+	public void testNotLeftPredicateOrOperatorExpression() {
 		String source = "!myString.string? || myList.list?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testNotRightPredicateOrOperatorExpression(){
+
+	public void testNotRightPredicateOrOperatorExpression() {
 		String source = "myString.string? || !myList.list?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-	public void testNotPredicateOrOperatorExpression(){
+
+	public void testNotPredicateOrOperatorExpression() {
 		String source = "!myString.string? || !myList.list?";
 		TerminalParser.parse(predicateParser, source);
 	}
-	
-
-
 
 }

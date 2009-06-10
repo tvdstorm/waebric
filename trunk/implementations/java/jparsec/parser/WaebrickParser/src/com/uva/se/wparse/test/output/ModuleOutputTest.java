@@ -25,6 +25,17 @@ import com.uva.se.wparse.output.transformer.OutputTransformer;
 
 import junit.framework.TestCase;
 
+/**
+ * This is a test class and it checks if a given Waebric input the correct output 
+ * is generated. This is tested based on the online tool which generates output 
+ * based on Weabric. 
+ * 
+ * The functions aren't documented. There are two reasons for not documenting 
+ * this tests: 
+ * - There are some time limits;
+ * - The tests are working always in the same manner, so the default pattern is 
+ *   documented above.  
+ */
 public class ModuleOutputTest extends TestCase {
 	
 	public String getModuleParserOutput(String WaebricSource){

@@ -28,9 +28,16 @@ import com.uva.se.wparse.parser.ArgumentParser;
 import com.uva.se.wparse.parser.ExpressionParser;
 import com.uva.se.wparse.parser.TerminalParser;
 
+/**
+ * This is a test class and it checks if a given Waebric input the parser can
+ * parse the Waebric code.
+ * 
+ * The functions aren't documented. There are two reasons for not documenting
+ * this tests: - There are some time limits; - The tests are working always in
+ * the same manner, so the default pattern is documented above.
+ */
 public class ArgumentParserTest extends TestCase {
 	
-
 	Parser<Expression> expParser = null;
 	Parser<Argument> argumentParser = null;
 

@@ -31,10 +31,9 @@ import com.uva.se.wparse.test.parser.MarkupParserTest;
 import com.uva.se.wparse.test.parser.ModuleParserTest;
 import com.uva.se.wparse.test.parser.PredicateParserTest;
 import com.uva.se.wparse.test.parser.StatementParserTest;
+
 /**
- * 
- * Test suite that runs all the separate unit test classes in this package
- *
+ * Test suite that runs all the separate unit test classes in the parser package
  */
 public class AllParserTests {
 
