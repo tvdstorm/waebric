@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>WaebrickParser</name>
+	<name>WaebrickParser2</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -33,6 +33,5 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>com.cenqua.clover.core.clovernature</nature>
 	</natures>
 </projectDescription>
