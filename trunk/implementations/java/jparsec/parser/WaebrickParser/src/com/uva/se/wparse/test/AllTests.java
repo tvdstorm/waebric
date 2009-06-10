@@ -25,6 +25,16 @@ import com.uva.se.wparse.test.input.InputTest;
 import com.uva.se.wparse.test.output.AllOutputTests;
 import com.uva.se.wparse.test.output.AllParserTests;
 
+/**
+ * This is a test class and it calls all test which are 
+ * made in this project. 
+ * 
+ * The functions aren't documented. There are two reasons for not documenting 
+ * this tests: 
+ * - There are some time limits;
+ * - The tests are working always in the same manner, so the default pattern is 
+ *   documented above.  
+ */
 public class AllTests {
 
 	public static Test suite() {

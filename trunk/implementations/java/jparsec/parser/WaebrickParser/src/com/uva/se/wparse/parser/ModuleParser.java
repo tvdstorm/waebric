@@ -40,10 +40,49 @@ import com.uva.se.wparse.model.module.SiteDef;
 import com.uva.se.wparse.model.statement.Statement;
 
 /**
- * 
+ * The highest level Parser. The parsing process is like a tree of several 
+ * Parsers. All the other parsers all called via the top of the tree, which is 
+ * this class. 
  */
 public final class ModuleParser implements WeabrickParser {
 
+	/**
+	 * Parse the sourcecode and call all the underlying parsers. 
+	 */
+	public ModuleDef parse(String source)throws ParserException {
+		ModuleDef module = null;
+		
+		try {
+			module = TerminalParser.parse(ModuleParser.module(), source);
+		} catch (Exception e) {
+			throw new ParserException("parser error", e);
+		}
+		
+		return module;
+	}
+	
+	/**
+	 * Create a Parser of the Module. (Highest level parser). 
+	 * @return A parser of the module. 
+	 */
+	private static Parser<ModuleDef> module() {
+		
+		// Create other parsers. 
+		Parser.Reference<Member> memberRef = Parser.newReference();
+		Parser<Expression> expr = ExpressionParser.expression(body(memberRef
+				.lazy()));
+		Parser<Markup> markupParser = MarkupParser.markup(expr);
+		Parser<Statement> statementParser = StatementParser.statement(expr,
+				markupParser);
+		Parser<Mapping> mappingParser = MappingParser.mapping(markupParser);
+
+		return Mapper.curry(ModuleDef.class).sequence(
+				MODULE,
+				importParser.many(),
+				Parsers.or(methodDef(statementParser, expr),
+						siteDef(mappingParser)).many());
+	}
+	
 	private static Parser<ModuleBody> body(Parser<Member> member) {
 		return Mapper.curry(ModuleBody.class).sequence(
 				member.many().map(new Map<List<Member>, List<Member>>() {
@@ -94,32 +133,8 @@ public final class ModuleParser implements WeabrickParser {
 	private static final Parser<QualifiedName> importParser = Parsers.sequence(
 			TerminalParser.term(Keyword.IMPORT.toString()), QUALIFIED_NAME);
 
-	private static Parser<ModuleDef> module() {
-		Parser.Reference<Member> memberRef = Parser.newReference();
-		Parser<Expression> expr = ExpressionParser.expression(body(memberRef
-				.lazy()));
-		Parser<Markup> markupParser = MarkupParser.markup(expr);
-		Parser<Statement> statementParser = StatementParser.statement(expr,
-				markupParser);
-		Parser<Mapping> mappingParser = MappingParser.mapping(markupParser);
+	
 
-		return Mapper.curry(ModuleDef.class).sequence(
-				MODULE,
-				importParser.many(),
-				Parsers.or(methodDef(statementParser, expr),
-						siteDef(mappingParser)).many());
-	}
-
-	public ModuleDef parse(String source)throws ParserException {
-		ModuleDef module = null;
-		
-		try {
-			module = TerminalParser.parse(ModuleParser.module(), source);
-		} catch (Exception e) {
-			throw new ParserException("parser error", e);
-		}
-		
-		return module;
-	}
+	
 
 }

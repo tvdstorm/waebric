@@ -25,6 +25,11 @@ import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.Scanners;
 import org.codehaus.jparsec.Terminals;
 
+/**
+ * 
+ * @author Lammert
+ *
+ */
 public final class TerminalParser {
 
 	// keep a global reference to the original input source
@@ -41,11 +46,7 @@ public final class TerminalParser {
 	Parsers.or(Terminals.IntegerLiteral.TOKENIZER, TERMS.tokenizer());
 
 	private static Parser<Void> IGNORED = Parsers.or(
-	/*
-	 * TODO: removed the java line comment scanner, because of conflict with
-	 * http:// in string literal
-	 */
-	// Scanners.JAVA_LINE_COMMENT,
+	
 	Scanners.JAVA_BLOCK_COMMENT, Scanners.WHITESPACES).skipMany();
 
 	public static <T> T parse(Parser<T> parser, String source) {
