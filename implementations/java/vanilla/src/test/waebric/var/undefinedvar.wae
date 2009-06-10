@@ -1,0 +1,11 @@
+module src.test.waebric.var.undefinedvar
+
+def test()
+	p arg; // Arg variable is not defined
+
+	let arg=1337 in
+		p arg;
+	end
+	
+	p arg; // Arg variable is destroyed
+end
