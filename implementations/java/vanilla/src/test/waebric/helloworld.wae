@@ -3,17 +3,9 @@ module src.test.waebric.helloworld
 import src.test.waebric.mod.sub
 import src.test.waebric.mod.sub
 
-site
-	index.html: home("Hello World!")
-end
-
 def main
-	p;
-end
-
-def home(msg)
 	html { 
-		head title msg;
-		body p msg;
+		head title "HAI";
+		body p "WORLD";
 	}
 end
