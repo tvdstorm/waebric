@@ -42,6 +42,7 @@ import waebric.WaebricParser.Terminals;
   scanner actions.
 */
 %{
+	boolean bSITE=false;
 	StringBuffer string = new StringBuffer(128);
 	private Symbol nextToken(short id)
 	{
@@ -52,7 +53,11 @@ import waebric.WaebricParser.Terminals;
 	{
 		return new Symbol(id, yyline + 1, yycolumn + 1, yylength(), value);
 	}
-
+	
+	private void Debug(String text)
+	{
+		System.out.println(text);//commentariseer deze regel uit in productie
+	}
 %}
 
 
@@ -115,7 +120,7 @@ SiteFilename = {PathElement} "." {FileExt}
 
 
 
-%state SITE,STRING,STRCON,STRCON_INIT, PRETEXT, POSTMIDTEXT, ATTRIBUTES
+%state SITE,STRING,STRCON,STRCON_INIT, PRETEXT, POSTMIDTEXT, ATTRIBUTES,DIRFILE, ARGUMENTS
 
 %%
 /* ------------------------Lexical Rules Section---------------------- */
@@ -134,12 +139,12 @@ SiteFilename = {PathElement} "." {FileExt}
   "module"                         { return nextToken(Terminals.MODULE); }
   "import"                         { return nextToken(Terminals.IMPORT); }  
   "def"                            { return nextToken(Terminals.DEF); }
-  "end"                            { return nextToken(Terminals.END); }
-  "site"                           { yybegin(SITE);  return nextToken(Terminals.SITE); }
+  "end"                            { if(bSITE){ bSITE=false; } return nextToken(Terminals.END); }
+  "site"                           { yybegin(DIRFILE); bSITE=true; return nextToken(Terminals.SITE); }
   "list"                           {  return nextToken(Terminals.LIST); }
   "record"                         {  return nextToken(Terminals.RECORD); }
   "string"                         {  return nextToken(Terminals.STRING); }
-  "if"                             {  return nextToken(Terminals.IF); }
+  "if"                             {   return nextToken(Terminals.IF); }
   "comment"                        { string.setLength(0); yybegin(STRCON_INIT);  return nextToken(Terminals.COMMENT);  }
   "echo"                           { return nextToken(Terminals.ECHO); }
   "cdata"                          { return nextToken(Terminals.CDATA); }
@@ -162,7 +167,7 @@ SiteFilename = {PathElement} "." {FileExt}
   "}"                            { return nextToken(Terminals.RBRACE); }
   "["                            { return nextToken(Terminals.LBRACK); }
   "]"                            { return nextToken(Terminals.RBRACK); }
-  ";"                            { return nextToken(Terminals.SEMICOLON); }
+  ";"                            { if(bSITE){ yybegin(DIRFILE); } return nextToken(Terminals.SEMICOLON); }
   ","                            { return nextToken(Terminals.COMMA); }
   "."                            { return nextToken(Terminals.DOT); }
   ":"                            { return nextToken(Terminals.COLON); }
@@ -185,7 +190,7 @@ SiteFilename = {PathElement} "." {FileExt}
   {WhiteSpace}                   { /* ignore */ }
 
   /* identifiers */
-  {Identifier}                   { return nextToken(Terminals.IDCON, yytext()); }  
+  {Identifier}                   {Debug("IDCON" + yytext() );  return nextToken(Terminals.IDCON, yytext()); }  
   
   /* identifiers */
   "<"{Identifier}                { yybegin(ATTRIBUTES); String temp = yytext(); return nextToken(Terminals.IDCONDESIGNATOR, temp.substring(1) ); } 
@@ -198,21 +203,20 @@ SiteFilename = {PathElement} "." {FileExt}
 
 }
 
-<SITE> {
-  {Directory} /"/"               { return nextToken(Terminals.DIRNAME, yytext()); }
-  "/"                            { return nextToken(Terminals.DIV); }
-  ":"                            { return nextToken(Terminals.COLON); }
-  "("                            { return nextToken(Terminals.LPAREN); }
-  ")"                            { return nextToken(Terminals.RPAREN); }
-  "end"                          { yybegin(YYINITIAL); return nextToken(Terminals.END); }
-  {SiteFilename}                 { return nextToken(Terminals.FILENAME, yytext()); }
-  {Identifier}                   { yybegin(ATTRIBUTES); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); }
+<DIRFILE> {
+  {Directory} /"/"               { Debug("DIRNAME " + yytext() ); return nextToken(Terminals.DIRNAME, yytext()); }
+  "/"                            { Debug("DIV"); return nextToken(Terminals.DIV); }
+  {SiteFilename}                 { Debug("FILENAME " + yytext() ); return nextToken(Terminals.FILENAME, yytext()); }
+  ":"                            { Debug("COLON "); return nextToken(Terminals.COLON); }
+  {Identifier}     	 			 { Debug("IDCONDESIGNATOR " + yytext() );  yybegin(ATTRIBUTES); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
  
   /* comments */
   {Comment}                      { /* ignore */ }
 
   /* whitespace */
   {WhiteSpace}                   { /* ignore */ }
+  
+  .							{  Debug("PushBackDirfile:" + yytext() ); yybegin(YYINITIAL); yypushback(1); }
     
 }
 
@@ -259,14 +263,14 @@ SiteFilename = {PathElement} "." {FileExt}
 	  {Identifier}/{WhiteSpace}{Natcon}		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Identifier}/{WhiteSpace}*"["		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Identifier}/{WhiteSpace}*"{"		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
-  	  {Identifier}/{WhiteSpace}*"'"  		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 	  	  
-	  	  
+  	  {Identifier}/{WhiteSpace}*"'"  	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 	  	  
+	  {Identifier}/{WhiteSpace}*"("	 	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Comment}                      		{ /* ignore */ }
-        {WhiteSpace}                   		{ /* ignore */ }
+      {WhiteSpace}                   		{ /* ignore */ }
   	  .							{ yybegin(YYINITIAL); yypushback(1); }
 }
 
-
+ 
 
 /* No token was found for the input so through an error.  Print out an
    Illegal character message with the illegal character that was found. */
