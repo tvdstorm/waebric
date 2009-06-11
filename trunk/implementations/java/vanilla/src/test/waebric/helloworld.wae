@@ -8,7 +8,7 @@ site
 end
 
 def main
-	home("Hello World!");
+	p;
 end
 
 def home(msg)
