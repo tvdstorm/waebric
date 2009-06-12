@@ -1,13 +1,16 @@
 public class ModuleIdVisitor extends WaebricParserVisitorAdapter {
-  public String moduleIdStr = "";
-  private String testx= "";
-  public Object visit(ASTModuleId ModuleId, Object data) {
-	moduleIdStr += ModuleId.image;
-    // Do something before subtrees are visited
-	Object obj =  super.visit(ModuleId, data);
-    // Do something after subtrees are visited
-	testx += moduleIdStr;
-	moduleIdStr = testx;
-    return obj;
-  }
+	private String ast = "";
+	
+	public Object visit(ASTModuleId node, Object data){	
+		ast += "module-id([";
+		
+		ast += node.image;
+	  	
+	  	ast += "])";
+		return data;
+	}
+	
+	public String getAST(){
+		return ast;
+	}
 }

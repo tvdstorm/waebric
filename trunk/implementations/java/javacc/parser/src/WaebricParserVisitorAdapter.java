@@ -1,5 +1,5 @@
 public class WaebricParserVisitorAdapter implements WaebricParserVisitor
-{
+{	
 	public Object visit(SimpleNode node, Object data){
 		return node.childrenAccept(this, data);
 	}
@@ -8,7 +8,7 @@ public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 		return node.childrenAccept(this, data);
 	}
 	
-	public Object visit(ASTmodule node, Object data){
+	public Object visit(ASTModule node, Object data){
 		return node.childrenAccept(this, data);
 	}
 	
@@ -24,11 +24,15 @@ public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 		return node.childrenAccept(this, data);
 	}
 	
-	public Object visit(ASTsite node, Object data){
+	public Object visit(ASTSite node, Object data){
 		return node.childrenAccept(this, data);
 	}
 	
-	public Object visit(ASTmapping node, Object data){
+	public Object visit(ASTMappings node, Object data){
+		return node.childrenAccept(this, data);
+	}
+	
+	public Object visit(ASTMapping node, Object data){
 		return node.childrenAccept(this, data);
 	}
 	
@@ -68,11 +72,11 @@ public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 		return node.childrenAccept(this, data);
 	}
 	
-	public Object visit(ASTcall node, Object data){
+	public Object visit(ASTMarkup node, Object data){
 		return node.childrenAccept(this, data);
 	}
 	
-	public Object visit(ASTtag node, Object data){
+	public Object visit(ASTDesignator node, Object data){
 		return node.childrenAccept(this, data);
 	}
 	
@@ -80,7 +84,7 @@ public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 		return node.childrenAccept(this, data);
 	}
 	
-	public Object visit(ASTargs node, Object data){
+	public Object visit(ASTArguments node, Object data){
 		return node.childrenAccept(this, data);
 	}
 	

@@ -1,7 +1,7 @@
-public class PathVisitor extends WaebricParserVisitorAdapter {
+public class AttributeVisitor extends WaebricParserVisitorAdapter {
 	private String ast = "";
 	
-	public Object visit(ASTPath node, Object data){		
+	public Object visit(ASTAttribute node, Object data){
 		ast += "";
 		
 		ast += node.image;

@@ -15,27 +15,17 @@ PARSER_BEGIN(WaebricParser)
       SimpleNode n = p.Modules();
 	  String ast = processNode( n, 0);
 	  System.out.println(ast);
-	  //n.dump("");
+	  n.dump("");
     } catch (ParseException pe) {
       pe.printStackTrace();
     }
   }
   
   private static String processNode(Node n, int childIndex) {	
-  	// Do work on this node, add everything to ast except for the suffix
-  	SendNodeVisitor snv = new SendNodeVisitor(n, childIndex);
-  	String ast = snv.getASTData();
-  	String astSuffix = snv.getASTSuffix();
-  	
-  	// Get next Node
-  	for ( int currentChild = 0; currentChild < n.jjtGetNumChildren(); currentChild++ ) {
-  	  ast += processNode(n.jjtGetChild(currentChild), currentChild);
-  	}
-  	
-  	// Add suffix to ast
-  	ast += astSuffix;
-  	
-  	return ast;	
+  	// Build the AST
+  	ModulesVisitor moduleVisitor = new ModulesVisitor();
+	n.jjtAccept(moduleVisitor, null);
+	return moduleVisitor.getAST();
   }
 }
 PARSER_END(WaebricParser)
@@ -265,12 +255,12 @@ SimpleNode Modules() : {}
   { return jjtThis; }
 }
 
-private void Module() #module : {} {
+private void Module(): {} {
 	< MODULE > ModuleId() (ModuleElement())*
 }
 
-void ModuleId() : {jjtThis.image = "";} {
-	(< IdCon > {jjtThis.image += "\"" + token.image + "\"";} (< DOT > {jjtThis.image += ", ";})?)+ 
+void ModuleId() : {} {
+	(< IdCon >{jjtThis.image += "\"" + token.image + "\"";} (< DOT >{jjtThis.image += ", ";})?)+ 
 }
 
 void ModuleElement() : {} {
@@ -287,32 +277,32 @@ void Import() : {} {
 
 // ModuleElement Site
 // *********************************************
-void Site() #site : {} {
+void Site() : {} {
 	< SITE > Mappings() < END >
 }
 
-void Mappings() #void : {} {
+void Mappings() : {} {
 	(Mapping() (<SEMICOLON>)?)*
 }
 
-void Mapping() #mapping : {} {
+void Mapping() : {} {
 	Path() <COLON> Markup()
 }
 
 void Path() : {} {
-	<FileName> {jjtThis.image += "\"" + token.image + "\"";}
-	|	<DirName> {jjtThis.image += "\"" + token.image.substring(0, token.image.length()-1)
-		 + "\", ";}<FileName> {jjtThis.image += "\"" + token.image + "\"";}
+	<FileName>{jjtThis.image += "\"" + token.image + "\"";}
+	|	<DirName>{jjtThis.image += "path(\"" + token.image.substring(0, token.image.length()-1) + "\"";}
+		<FileName>{jjtThis.image += ", \")" + token.image + "\"";}
 }
 
 // ModuleElement FunctionDef
 // *********************************************
 void FunctionDef() : {} {
-	<DEF> <IdCon> (Formals())? (Statement())* <END>
+	<DEF> <IdCon>{jjtThis.image = "\"" + token.image + "\"";} (Formals())? (Statement())* <END>
 }
 
 void Formals() : {} {
-	<LPAREN> (<IdCon> (<COMMA>)?)* <RPAREN>
+	<LPAREN> (<IdCon>{jjtThis.image += "\"" + token.image + "\"";} (<COMMA>{jjtThis.image += ", ";})?)* <RPAREN>
 }
 
 void Statement() : {} {
@@ -320,7 +310,7 @@ void Statement() : {} {
 	|	<IF> <LPAREN> Predicate()<RPAREN> Statement()
 	|	<EACH> <LPAREN> Var() <COLON> Expression() (DotIdCon())? <RPAREN> Statement()
 	|	<LET> (Assignment())+ <IN> (Statement())* <END>
-	|	(<LBRACE> (Statement())* <RBRACE>)
+	|	(<LBRACE>{jjtThis.image = "block(";} (Statement())* <RBRACE>)
 	|	<YIELD> <SEMICOLON>
 	|	<COMMENT> <StrCon> <SEMICOLON>
 	|	LOOKAHEAD(2)<ECHO> Expression() (DotIdCon())? <SEMICOLON>
@@ -329,7 +319,7 @@ void Statement() : {} {
 	|   Markup() 
 		(LOOKAHEAD(2)(Markup())*<SEMICOLON> 
 		|	LOOKAHEAD(3)(Expression()(DotIdCon())? <SEMICOLON>) 
-		|	(Statement()) 
+		|	{jjtThis.image = "markup-stat(";}(Statement()) 
 		|	(Embedding() <SEMICOLON>))
 }
 
@@ -358,45 +348,46 @@ void TextTail() : {} {
 
 // Used by both the Site and FunctionDef ModuleElements
 // *********************************************
-void Markup() #call : {} { 
+void Markup() : {} { 
 	Designator() (Arguments())?
 }
 
-void Designator() #tag : {} {
-	<IdCon> (Attribute())*	
+void Designator() : {} {
+	<IdCon>{jjtThis.image = "\"" + token.image + "\"";} (Attribute())*	
 }
 
 void Attribute() : {} {
-	<NUMBER_SIGN> <IdCon>
-	|	<DOT> <IdCon>
-	|	<DOLLAR_SIGN> <IdCon>
-	|	<COLON> <IdCon>
-	| 	LOOKAHEAD(2) <AT> <NatCon> <PERCENT> <NatCon>
-	| 	<AT> <NatCon>
+	<NUMBER_SIGN> <IdCon>{jjtThis.image = "id(\"" + token.image + "\")";}
+	|	<DOT> <IdCon>{jjtThis.image = "class(\"" + token.image + "\")";}
+	|	<DOLLAR_SIGN> <IdCon>{jjtThis.image = "name(\"" + token.image + "\")";}
+	|	<COLON> <IdCon>{jjtThis.image = "type(\"" + token.image + "\")";}
+	| 	LOOKAHEAD(3) <AT> <NatCon>{jjtThis.image = "width-height(" + token.image;} 
+		<PERCENT> <NatCon>{jjtThis.image += ", " + token.image + ")";}
+	| 	<AT> <NatCon>{jjtThis.image += "height(" + token.image + ")";}
 }
 
-void Arguments() #args : {} {
+void Arguments() : {} {
 	<LPAREN> (Argument() (<COMMA>)?)* <RPAREN>
 }
 
 void Argument() : {} {
-	LOOKAHEAD(2)Var() <ASSIGN> Expression() (DotIdCon())?
+	LOOKAHEAD(2)<IdCon>{jjtThis.image = "\"" + token.image + "\"";} <ASSIGN> Expression() (DotIdCon())?
 	|	Expression() (DotIdCon())?
 }
 
 void Var() : {} {
-	<IdCon>
+	<IdCon> {jjtThis.image = token.image;}
 }
 
 void Expression() : {} {
 	// DotIdCon staat verspreid voor alle aanroepen van Expression
 	// Toevoegen hier werkt niet, overal achter expression werkt wel.
-	<SymbolCon> 
-	|	<Text>
-	|	<NatCon>
+	<SymbolCon>{jjtThis.image += "sym(\"" + token.image + "\")";}
+	|	<Text>{jjtThis.image += "text(\\\"" + token.image + "\\\")";}
+	|	<NatCon>{jjtThis.image += "num(" + token.image + ")";}
 	|	Var()
-	|	<LBRACKET> (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
-	|	<LBRACE> (KeyValuePair()  (<COMMA>)? )* <RBRACE>
+	|	<LBRACKET>{jjtThis.image = "list([";} (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
+	|	<LBRACE>{jjtThis.image = "record([";}(KeyValuePair()  (<COMMA>)? )* <RBRACE>
 
 }
 
@@ -405,5 +396,5 @@ void DotIdCon() : {} {
 }
 
 void KeyValuePair() : {} {
-	<IdCon> <COLON> Expression() (DotIdCon())?
+	<IdCon>{jjtThis.image = "\"" + token.image + "\"";} <COLON> Expression() (DotIdCon())?
 }
