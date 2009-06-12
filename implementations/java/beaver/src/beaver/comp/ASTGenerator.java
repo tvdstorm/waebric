@@ -537,6 +537,15 @@ public class ASTGenerator
 	    	}
 	    }
 	    
+	    
+	    //dirty hack for Waebric-grammar production "if"
+	    if(astInfo.ASTname.equals("if"))
+	    {
+	    	treewalkCode += "System.out.print(\", appl(prod([], cf(sort(\\\"NoElseMayFollow\\\")), no-attrs), [])\");";
+	    }
+	    
+	    
+	    
 		if( astInfo.isKnoopPunt() && astInfo.numberOfArguments>0)
 		{
 			treewalkCode += "\t\tSystem.out.print(\")\");\n";
