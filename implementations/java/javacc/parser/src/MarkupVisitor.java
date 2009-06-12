@@ -30,6 +30,7 @@ public class MarkupVisitor extends WaebricParserVisitorAdapter {
 		if ((node.jjtGetNumChildren() == 2) && (node.parent.toString().equals("Mapping"))){
 			ast += ")";
 		}
+		
 	  	ast += "";
 		return data;
 	}

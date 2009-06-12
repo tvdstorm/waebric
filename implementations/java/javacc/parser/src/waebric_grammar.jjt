@@ -3,6 +3,7 @@ options {
   JDK_VERSION = "1.5";
   MULTI = true;
   VISITOR = true;
+  //DEBUG_LOOKAHEAD=true;
 } 
 
 PARSER_BEGIN(WaebricParser) 
@@ -292,13 +293,13 @@ void Mapping() : {} {
 void Path() : {} {
 	<FileName>{jjtThis.image += "\"" + token.image + "\"";}
 	|	<DirName>{jjtThis.image += "path(\"" + token.image.substring(0, token.image.length()-1) + "\"";}
-		<FileName>{jjtThis.image += ", \")" + token.image + "\"";}
+		<FileName>{jjtThis.image += ", \"" + token.image + "\")";}
 }
 
 // ModuleElement FunctionDef
 // *********************************************
 void FunctionDef() : {} {
-	<DEF> <IdCon>{jjtThis.image = "\"" + token.image + "\"";} (Formals())? (Statement())* <END>
+	<DEF> <IdCon>{jjtThis.image = "\"" + token.image + "\"";} (Formals())? (Statement())+ <END>
 }
 
 void Formals() : {} {
@@ -310,17 +311,17 @@ void Statement() : {} {
 	|	<IF> <LPAREN> Predicate()<RPAREN> Statement()
 	|	<EACH> <LPAREN> Var() <COLON> Expression() (DotIdCon())? <RPAREN> Statement()
 	|	<LET> (Assignment())+ <IN> (Statement())* <END>
-	|	(<LBRACE>{jjtThis.image = "block(";} (Statement())* <RBRACE>)
-	|	<YIELD> <SEMICOLON>
+	|	<LBRACE>{jjtThis.image = "block([";} (Statement())* <RBRACE>
+	|	<YIELD> <SEMICOLON> {jjtThis.image = "yield";}
 	|	<COMMENT> <StrCon> <SEMICOLON>
 	|	LOOKAHEAD(2)<ECHO> Expression() (DotIdCon())? <SEMICOLON>
 	|	LOOKAHEAD(2)<ECHO> Embedding() (DotIdCon())? <SEMICOLON>
 	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON>
-	|   Markup() 
-		(LOOKAHEAD(2)(Markup())*<SEMICOLON> 
-		|	LOOKAHEAD(3)(Expression()(DotIdCon())? <SEMICOLON>) 
-		|	{jjtThis.image = "markup-stat(";}(Statement()) 
-		|	(Embedding() <SEMICOLON>))
+	| 	LOOKAHEAD(2) Markup() <SEMICOLON> {jjtThis.image = "markup([";}
+	|	LOOKAHEAD(3)(LOOKAHEAD(2)Markup())+ Markup() <SEMICOLON> {jjtThis.image = "markup-markup([";}
+	|	LOOKAHEAD(4)(LOOKAHEAD(2)Markup())+ Expression() <SEMICOLON>{jjtThis.image = "markup-exp([";}
+	|	LOOKAHEAD(2)(LOOKAHEAD(2)Markup())+ Statement() {jjtThis.image = "markup-stat([";}
+	|	LOOKAHEAD(2)(LOOKAHEAD(2)Markup())+ Embedding() <SEMICOLON> {jjtThis.image = "markup-embedding([";}
 }
 
 void Predicate() : {} {

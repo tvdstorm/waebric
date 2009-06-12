@@ -13,16 +13,27 @@ public class StatementVisitor extends WaebricParserVisitorAdapter {
   				ast += ", ";
   			}		
 		if (node.jjtGetChild(currentChild).toString().equals("Markup")){
-  			ast += "[";
+  			ast += "";
 			MarkupVisitor markupVisitor = new MarkupVisitor();
   			node.jjtGetChild(currentChild).jjtAccept(markupVisitor, null);
-  			ast += markupVisitor.getAST() + "]";
+  			
+  			if (node.jjtGetChild(currentChild+1).toString() != "Markup") {
+  	  			ast += markupVisitor.getAST() + "]";	
+  			} else {
+  				ast += markupVisitor.getAST();
+  			}
   		}
 		if (node.jjtGetChild(currentChild).toString().equals("Statement")){
   			ast += "";
 			StatementVisitor statementVisitor = new StatementVisitor();
   			node.jjtGetChild(currentChild).jjtAccept(statementVisitor, null);
-  			ast += statementVisitor.getAST() + "]";
+  			ast += statementVisitor.getAST() + "";
+  		}
+		if (node.jjtGetChild(currentChild).toString().equals("Expression")){
+  			ast += "";
+			ExpressionVisitor expressionVisitor = new ExpressionVisitor();
+  			node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
+  			ast += expressionVisitor.getAST() + "";
   		}
     }
 	  	ast += ")";
