@@ -4,8 +4,9 @@ import src.test.waebric.mod.sub
 import src.test.waebric.mod.sub
 
 def main
-	html { 
+	p { 
 		head title "HAI";
 		body p "WORLD";
 	}
+	b "LOL";
 end
