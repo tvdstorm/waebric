@@ -1,6 +1,4 @@
-public class MappingVisitor extends WaebricParserVisitorAdapter {
-	private String ast = "mapping(";
-	
+public class MappingVisitor extends WaebricParserVisitorAdapter {	
 	public Object visit(ASTMapping node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
@@ -25,9 +23,5 @@ public class MappingVisitor extends WaebricParserVisitorAdapter {
 	  	
 	  	ast += ")";
 		return data;
-	}
-	
-	public String getAST(){
-		return ast;
 	}
 }

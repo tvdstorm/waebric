@@ -1,6 +1,4 @@
 public class MarkupVisitor extends WaebricParserVisitorAdapter {
-	private String ast = "";
-	
 	public Object visit(ASTMarkup node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
@@ -33,9 +31,5 @@ public class MarkupVisitor extends WaebricParserVisitorAdapter {
 		
 	  	ast += "";
 		return data;
-	}
-	
-	public String getAST(){
-		return ast;
 	}
 }

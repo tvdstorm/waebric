@@ -1,6 +1,4 @@
-public class PathVisitor extends WaebricParserVisitorAdapter {
-	private String ast = "";
-	
+public class PathVisitor extends WaebricParserVisitorAdapter {	
 	public Object visit(ASTPath node, Object data){		
 		ast += "";
 		
@@ -8,9 +6,5 @@ public class PathVisitor extends WaebricParserVisitorAdapter {
 	  	
 	  	ast += "";
 		return data;
-	}
-	
-	public String getAST(){
-		return ast;
 	}
 }

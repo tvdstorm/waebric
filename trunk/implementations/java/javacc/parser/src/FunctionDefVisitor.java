@@ -1,6 +1,4 @@
 public class FunctionDefVisitor extends WaebricParserVisitorAdapter {
-	private String ast = "";
-	
 	public Object visit(ASTFunctionDef node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
@@ -37,9 +35,5 @@ public class FunctionDefVisitor extends WaebricParserVisitorAdapter {
 	  	
 	  	ast += "])";
 		return data;
-	}
-	
-	public String getAST(){
-		return ast;
 	}
 }

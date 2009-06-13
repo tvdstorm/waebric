@@ -1,6 +1,4 @@
 public class ExpressionVisitor extends WaebricParserVisitorAdapter {
-	private String ast = "";
-	
 	public Object visit(ASTExpression node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
@@ -36,9 +34,5 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 	  	}
 	  	ast += "";
 		return data;
-	}
-	
-	public String getAST(){
-		return ast;
 	}
 }
