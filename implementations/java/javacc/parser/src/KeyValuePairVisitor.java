@@ -1,6 +1,4 @@
 public class KeyValuePairVisitor extends WaebricParserVisitorAdapter {
-	private String ast = "";
-	
 	public Object visit(ASTKeyValuePair node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
@@ -25,9 +23,5 @@ public class KeyValuePairVisitor extends WaebricParserVisitorAdapter {
 	  	}
 	  	ast += ")";
 		return data;
-	}
-	
-	public String getAST(){
-		return ast;
 	}
 }

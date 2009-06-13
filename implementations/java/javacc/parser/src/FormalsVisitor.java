@@ -1,6 +1,4 @@
 public class FormalsVisitor extends WaebricParserVisitorAdapter {
-	private String ast = "";
-	
 	public Object visit(ASTFormals node, Object data){
 		ast += "formals([";
 		
@@ -8,9 +6,5 @@ public class FormalsVisitor extends WaebricParserVisitorAdapter {
 
 	  	ast += "])";
 		return data;
-	}
-	
-	public String getAST(){
-		return ast;
 	}
 }

@@ -1,5 +1,11 @@
 public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 {	
+	protected String ast = "";
+	
+	public String getAST(){
+		return ast;
+	}
+	
 	public Object visit(SimpleNode node, Object data){
 		return node.childrenAccept(this, data);
 	}

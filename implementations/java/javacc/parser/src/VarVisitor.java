@@ -1,6 +1,4 @@
-public class VarVisitor extends WaebricParserVisitorAdapter {
-	private String ast = "";
-	
+public class VarVisitor extends WaebricParserVisitorAdapter {	
 	public Object visit(ASTVar node, Object data){	
 		ast += "var(\"";
 		
@@ -8,9 +6,5 @@ public class VarVisitor extends WaebricParserVisitorAdapter {
 	  	
 	  	ast += "\")";
 		return data;
-	}
-	
-	public String getAST(){
-		return ast;
 	}
 }

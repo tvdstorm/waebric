@@ -1,6 +1,4 @@
 public class ArgumentVisitor extends WaebricParserVisitorAdapter {
-	private String ast = "";
-	
 	public Object visit(ASTArgument node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
@@ -32,9 +30,5 @@ public class ArgumentVisitor extends WaebricParserVisitorAdapter {
 	  	
 	  	ast += "";
 		return data;
-	}
-	
-	public String getAST(){
-		return ast;
 	}
 }
