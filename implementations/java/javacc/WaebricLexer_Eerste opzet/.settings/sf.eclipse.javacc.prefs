@@ -1,9 +1,0 @@
-#Sun Apr 12 16:14:33 CEST 2009
-CLEAR_CONSOLE=false
-JJ_NATURE=true
-JTB_OPTIONS=-p\=WaeberLexer
-RUNTIME_JAR=-intern-
-RUNTIME_JTBJAR=-intern-
-SHOW_CONSOLE=true
-SUPPRESS_WARNINGS=true
-eclipse.preferences.version=1
