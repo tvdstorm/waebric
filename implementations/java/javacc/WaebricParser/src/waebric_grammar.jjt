@@ -1,0 +1,407 @@
+
+options {
+  JDK_VERSION = "1.5";
+  MULTI = true;
+  VISITOR = true;
+} 
+
+PARSER_BEGIN(WaebricParser) 
+  import java.io.*;
+  public class WaebricParser {
+  public static void main(String[] args) {
+    Reader sr = new StringReader(args[0]);
+    WaebricParser p = new WaebricParser(sr);
+    try {
+      SimpleNode n = p.Modules();
+	  String ast = processNode( n, 0);
+	  System.out.println(ast);
+	  //n.dump("");
+    } catch (ParseException pe) {
+      pe.printStackTrace();
+    }
+  }
+  
+  private static String processNode(Node n, int childIndex) {	
+  	// Build the AST
+  	ModulesVisitor moduleVisitor = new ModulesVisitor();
+	n.jjtAccept(moduleVisitor, null);
+	return moduleVisitor.getAST();
+  }
+}
+PARSER_END(WaebricParser)
+
+/* LAYOUT */
+<*>
+SKIP : {
+	" "
+	| "\t"
+	| "\n"
+	| "\r"
+	| <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+	| <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
+}
+
+/* RESERVED KEYWORDS */
+<DEFAULT, IN_PATH>
+TOKEN : {
+	< MODULE : "module" >
+	|	< IMPORT : "import" >
+	|	< SITE : "site" > : IN_PATH
+	|	< END : "end" > : DEFAULT
+	|	< DEF : "def" >
+	|	< IF : "if" >
+	|	< ELSE : "else" >
+	|	< EACH : "each" >
+	|	< LET : "let" >
+	|	< IN : "in" >
+	|	< YIELD : "yield" >
+	|	< COMMENT : "comment" > : IN_STRCON
+	|	< ECHO : "echo" >
+	|	< CDATA : "cdata" >
+	|	< #LIST : "list" >
+	|	< #RECORD : "record" >
+	|	< #STRING : "string" >
+}
+
+/* SEPARATORS */
+<DEFAULT, IN_NO_IDCON>
+TOKEN : {
+	< LPAREN : "(" >
+	|	< RPAREN : ")" > 
+	|	< LBRACKET : "[" >
+	|	< RBRACKET : "]" >
+	|	< LBRACE : "{" >
+	|	< RBRACE : "}" >
+	|	< SEMICOLON : ";" > : DEFAULT
+	|	< COLON : ":" >
+	|	< COMMA : "," >
+	|	< DOT : "." >
+}
+
+/* OPERATORS */
+<DEFAULT>
+TOKEN : {
+	< DOLLAR_SIGN: "$" >
+	|	< NUMBER_SIGN: "#" >
+	|	< ASSIGN : "=" >
+	|	< AT : "@" >
+	|	< QUESTIONMARK: "?" >
+	|	< EXCLAMATION: "!" >
+	|	< PERCENT : "%" >
+	|	< PLUS : "+" >
+}
+
+/* START NORMAL TOKENS */
+<IN_PATH>
+TOKEN : {
+	< #PathElement :
+		(~[" ","\t","\n","\r",".","/","\\"])+
+	>	
+}
+
+<IN_PATH>
+TOKEN : {
+	< FileName :
+		<PathElement> <DOT> <FileExt>
+	> : DEFAULT 
+} 
+
+<IN_PATH>
+TOKEN : {
+	< #FileExt :
+		(["a"-"z","A"-"Z","0"-"9"])+
+	>
+}
+
+<IN_PATH>
+TOKEN : {
+	< DirName :
+		<Directory>
+	>	
+}
+
+<IN_PATH>
+TOKEN : {
+	< #Directory :
+		(<PathElement> "/")+
+	>	
+}
+
+<DEFAULT>
+TOKEN : {
+	< IdCon :
+		["A"-"Z","a"-"z"](["A"-"Z","a"-"z","-","0"-"9"])* 
+	> 
+}
+
+<DEFAULT>
+TOKEN : {
+	< NatCon : (["0"-"9"])+ >
+}
+
+<DEFAULT>
+TOKEN : {   
+ 	< SymbolCon : 
+ 		["'"] (<SymbolChar>)* 
+ 	>
+}
+
+<DEFAULT>
+TOKEN : {
+	< Text : 
+		["\""] (<TextChar>)* ["\""] 
+	>
+}
+
+<DEFAULT>
+TOKEN : {
+    < #TextChar : 
+    	<TextCharRef> 
+    	|	<EscQuote>
+    	|	<Amp>
+    	|	<TextEntityRef>
+    	|	~["\0"-"\37","&","\"","<","\200"-"\377"] | ["\n","\r","\t"] 
+    >
+}
+
+<DEFAULT>
+TOKEN : {
+    < #TextCharRef : 
+    	"&#" (["0"-"9"])+ <SEMICOLON> | "&#x" (["0"-"9","a"-"f","A"-"F"])+ <SEMICOLON>
+    >
+}
+
+<DEFAULT>
+TOKEN : {
+   	< #EscQuote : 
+   		["\\"]["\""]
+   	> 
+}
+
+<DEFAULT>
+TOKEN : {
+    < #Amp : 
+    	["&"] 
+    >
+}
+
+<DEFAULT>
+TOKEN : {
+   	< #TextEntityRef : 
+   		"&" ["a"-"z","A"-"Z","_",":"] (["a"-"z","A"-"Z","0"-"9",".","-","_",":"])* <SEMICOLON> 
+   	>
+} 
+
+<IN_STRCON>
+TOKEN : {
+	< StrCon :
+		"\"" (< StrChar >)* "\""
+	> : IN_NO_IDCON
+}
+
+<DEFAULT>
+TOKEN : {
+	< #StrChar :
+		"\n"
+		|	"\t"
+		|	"\\"
+		|	"\\\\"
+		|	"\\" (["0"-"9"]){3}
+		|	~["\0"-"\37","\n","\t","\"","\\"]
+	>
+}
+<DEFAULT>
+TOKEN : {
+	< Type :
+		<LIST>
+		|	<RECORD>
+		|	<STRING>
+	>
+}
+
+// Embedding
+<DEFAULT>
+TOKEN : {
+	< PreText :
+		"\"" (<TextChar>)* "<"
+	>
+}
+
+<DEFAULT>
+TOKEN : {
+	< PostText :
+		">" (<TextChar>)* "\""
+	>	
+}
+
+<DEFAULT>
+TOKEN : {
+	< MidText :
+		">" (<TextChar>)* "<"
+	>	
+}
+
+<IN_NO_IDCON>
+TOKEN : {
+    < #SymbolChar : 
+    	~["\0"-"\37",")"," ","\t","\n","\r",";",",",">","\177"-"\377"] // Octale getallen
+    >
+}
+
+/* GENERIC */
+SimpleNode Modules() : {}
+{
+  (Module())* <EOF> 
+  { return jjtThis; }
+}
+
+private void Module(): {} {
+	< MODULE > ModuleId() (ModuleElement())*
+}
+
+void ModuleId() : {} {
+	(< IdCon >{jjtThis.image += "\"" + token.image + "\"";} (< DOT >{jjtThis.image += ", ";})?)+ 
+}
+
+void ModuleElement() : {} {
+	Import()
+	|	Site()
+	|	FunctionDef()
+}
+
+// ModuleElement Import 
+// *********************************************
+void Import() : {} { 
+	< IMPORT > ModuleId() 
+} 
+
+// ModuleElement Site
+// *********************************************
+void Site() : {} {
+	< SITE > Mappings() < END >
+}
+
+void Mappings() : {} {
+	(Mapping() (<SEMICOLON>)?)*
+}
+
+void Mapping() : {} {
+	Path() <COLON> Markup()
+}
+
+void Path() : {} {
+	<FileName>{jjtThis.image += "\"" + token.image + "\"";}
+	|	<DirName>{jjtThis.image += "path(\"" + token.image.substring(0, token.image.length()-1) + "\"";}
+		<FileName>{jjtThis.image += ", \"" + token.image + "\")";}
+}
+
+// ModuleElement FunctionDef
+// *********************************************
+void FunctionDef() : {} {
+	<DEF> <IdCon>{jjtThis.image = "\"" + token.image + "\"";} (Formals())? (Statement())+ <END>
+}
+
+void Formals() : {} {
+	<LPAREN> (<IdCon>{jjtThis.image += "\"" + token.image + "\"";} (<COMMA>{jjtThis.image += ", ";})?)* <RPAREN>
+}
+
+void Statement() : {} {
+	LOOKAHEAD(8)(<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE> Statement()
+	|	<IF> <LPAREN> Predicate()<RPAREN> Statement()
+	|	<EACH> <LPAREN> Var() <COLON> Expression() (DotIdCon())? <RPAREN> Statement()
+	|	<LET> (Assignment())+ <IN> (Statement())* <END>
+	|	LOOKAHEAD(4)<LBRACE>{jjtThis.image = "block([";} (Statement())* <RBRACE>
+	|	<YIELD> <SEMICOLON> {jjtThis.image = "yield";}
+	|	<COMMENT> <StrCon> <SEMICOLON>
+	|	LOOKAHEAD(2)<ECHO> Expression() (DotIdCon())? <SEMICOLON>
+	|	LOOKAHEAD(2)<ECHO> Embedding() (DotIdCon())? <SEMICOLON>
+	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON>
+	| 	LOOKAHEAD(Markup() <SEMICOLON>) Markup() <SEMICOLON> {jjtThis.image = "markup([";}
+	|	LOOKAHEAD((Markup())+ Expression() <SEMICOLON>)(
+				LOOKAHEAD(3)Markup() Expression() <SEMICOLON>
+				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Expression() <SEMICOLON>
+			)	{jjtThis.image = "markup-exp([";}
+	|	LOOKAHEAD((Markup())+ Statement())(
+				LOOKAHEAD(2)Markup() Statement()
+				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Statement()
+			)	{jjtThis.image = "markup-stat([";}	
+	|	LOOKAHEAD((Markup())+ Embedding() <SEMICOLON>) (Markup())+ (Embedding() <SEMICOLON>){jjtThis.image = "markup-embedding([";}
+	|	LOOKAHEAD((Markup())+ <SEMICOLON>) (Markup())+  <SEMICOLON>{jjtThis.image = "markup-markup([";}
+}
+
+void Predicate() : {} {
+	LOOKAHEAD(2) Expression() (DotIdCon())?
+	|	LOOKAHEAD(Expression() (DotIdCon())?)<DOT> <Type>
+}
+
+void Assignment() : {} {
+	LOOKAHEAD(2)<IdCon> Formals() <ASSIGN> Statement()
+	|	LOOKAHEAD(2)Var() <ASSIGN> Expression() <SEMICOLON>
+}
+
+void Embedding() : {} {
+	<PreText> Embed() TextTail()	
+}
+
+void Embed() : {} { 
+	(Markup()) Expression()(DotIdCon())?
+}
+
+void TextTail() : {} { 
+	<PostText>
+	|	<MidText> Embed() TextTail()
+}
+
+// Used by both the Site and FunctionDef ModuleElements
+// *********************************************
+void Markup() : {} { 
+	LOOKAHEAD(2) Designator() Arguments()
+	|	Designator()
+}
+
+void Designator() : {} {
+	<IdCon>{jjtThis.image = "\"" + token.image + "\"";} (Attribute())*	
+}
+
+void Attribute() : {} {
+	<NUMBER_SIGN> <IdCon>{jjtThis.image = "id(\"" + token.image + "\")";}
+	|	<DOT> <IdCon>{jjtThis.image = "class(\"" + token.image + "\")";}
+	|	<DOLLAR_SIGN> <IdCon>{jjtThis.image = "name(\"" + token.image + "\")";}
+	|	<COLON> <IdCon>{jjtThis.image = "type(\"" + token.image + "\")";}
+	| 	LOOKAHEAD(3) <AT> <NatCon>{jjtThis.image = "width-height(" + token.image;} 
+		<PERCENT> <NatCon>{jjtThis.image += ", " + token.image + ")";}
+	| 	<AT> <NatCon>{jjtThis.image += "height(" + token.image + ")";}
+}
+
+void Arguments() : {} {
+	<LPAREN> (Argument() (<COMMA>)?)* <RPAREN>
+}
+
+void Argument() : {} {
+	LOOKAHEAD(2)<IdCon>{jjtThis.image = "\"" + token.image + "\"";} <ASSIGN> Expression() (DotIdCon())?
+	|	Expression() (DotIdCon())?
+}
+
+void Var() : {} {
+	<IdCon> {jjtThis.image = token.image;}
+}
+
+void Expression() : {} {
+	// DotIdCon staat verspreid voor alle aanroepen van Expression
+	// Toevoegen hier werkt niet, overal achter expression werkt wel.
+	<SymbolCon>{jjtThis.image += "sym(\"" + token.image + "\")";}
+	|	<Text>{jjtThis.image += "text(\"\\" + token.image.substring(0, token.image.length()-1) + "\\\"\"";}
+	|	<NatCon>{jjtThis.image += "num(" + token.image + ")";}
+	|	Var()
+	|	<LBRACKET>{jjtThis.image = "list([";} (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
+	|	<LBRACE>{jjtThis.image = "record([";}(KeyValuePair()  (<COMMA>)? )* <RBRACE>
+
+}
+
+void DotIdCon() : {} {
+	<DOT> <IdCon>
+}
+
+void KeyValuePair() : {} {
+	<IdCon>{jjtThis.image = "\"" + token.image + "\"";} <COLON> Expression() (DotIdCon())?
+}
