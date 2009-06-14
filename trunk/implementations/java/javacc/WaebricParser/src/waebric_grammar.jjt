@@ -36,7 +36,7 @@ public class WaebricParser {
       		SimpleNode n = p.Modules();
 	  		String ast = processNode( n, 0);
 	  		System.out.println(ast);
-	  		//n.dump("");
+	  		n.dump("");
     	} catch (ParseException pe) {
       		pe.printStackTrace();
     	}
@@ -333,23 +333,23 @@ void Statement() : {} {
 	|	<IF> <LPAREN> Predicate()<RPAREN> Statement()
 	|	<EACH> <LPAREN> Var() <COLON> Expression() (DotIdCon())? <RPAREN> Statement()
 	|	<LET> (Assignment())+ <IN> (Statement())* <END>
-	|	LOOKAHEAD(4)<LBRACE>{jjtThis.image = "block([";} (Statement())* <RBRACE>
-	|	<YIELD> <SEMICOLON> {jjtThis.image = "yield";}
+	|	LOOKAHEAD(4)<LBRACE>{jjtThis.image = "block:";} (Statement())* <RBRACE>
+	|	<YIELD> <SEMICOLON> {jjtThis.image = "yield:";}
 	|	<COMMENT> <StrCon> <SEMICOLON>
 	|	LOOKAHEAD(2)<ECHO> Expression() (DotIdCon())? <SEMICOLON>
 	|	LOOKAHEAD(2)<ECHO> Embedding() (DotIdCon())? <SEMICOLON>
 	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON>
-	| 	LOOKAHEAD(Markup() <SEMICOLON>) Markup() <SEMICOLON> {jjtThis.image = "markup([";}
+	| 	LOOKAHEAD(Markup() <SEMICOLON>) Markup() <SEMICOLON> {jjtThis.image = "markup:";}
 	|	LOOKAHEAD((Markup())+ Expression() <SEMICOLON>)(
 				LOOKAHEAD(3)Markup() Expression() <SEMICOLON>
 				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Expression() <SEMICOLON>
-			)	{jjtThis.image = "markup-exp([";}
+			)	{jjtThis.image = "markup-exp:";}
 	|	LOOKAHEAD((Markup())+ Statement())(
 				LOOKAHEAD(2)Markup() Statement()
 				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Statement()
-			)	{jjtThis.image = "markup-stat([";}	
-	|	LOOKAHEAD((Markup())+ Embedding() <SEMICOLON>) (Markup())+ (Embedding() <SEMICOLON>){jjtThis.image = "markup-embedding([";}
-	|	LOOKAHEAD((Markup())+ <SEMICOLON>) (Markup())+  <SEMICOLON>{jjtThis.image = "markup-markup([";}
+			)	{jjtThis.image = "markup-stat:";}	
+	|	LOOKAHEAD((Markup())+ Embedding() <SEMICOLON>) (Markup())+ (Embedding() <SEMICOLON>){jjtThis.image = "markup-embedding:";}
+	|	LOOKAHEAD((Markup())+ <SEMICOLON>) (Markup())+  <SEMICOLON>{jjtThis.image = "markup-markup:";}
 }
 
 void Predicate() : {} {
@@ -387,13 +387,13 @@ void Designator() : {} {
 }
 
 void Attribute() : {} {
-	<NUMBER_SIGN> <IdCon>{jjtThis.image = "id(\"" + token.image + "\")";}
-	|	<DOT> <IdCon>{jjtThis.image = "class(\"" + token.image + "\")";}
-	|	<DOLLAR_SIGN> <IdCon>{jjtThis.image = "name(\"" + token.image + "\")";}
-	|	<COLON> <IdCon>{jjtThis.image = "type(\"" + token.image + "\")";}
-	| 	LOOKAHEAD(3) <AT> <NatCon>{jjtThis.image = "width-height(" + token.image;} 
-		<PERCENT> <NatCon>{jjtThis.image += ", " + token.image + ")";}
-	| 	<AT> <NatCon>{jjtThis.image += "height(" + token.image + ")";}
+	<NUMBER_SIGN> <IdCon>{jjtThis.image = "id:" + token.image;}
+	|	<DOT> <IdCon>{jjtThis.image = "class:" + token.image;}
+	|	<DOLLAR_SIGN> <IdCon>{jjtThis.image = "name:" + token.image;}
+	|	<COLON> <IdCon>{jjtThis.image = "type:" + token.image;}
+	| 	LOOKAHEAD(3) <AT> <NatCon>{jjtThis.image = "width-height:" + token.image;} 
+		<PERCENT> <NatCon>{jjtThis.image += ", " + token.image;}
+	| 	<AT> <NatCon>{jjtThis.image += "height:" + token.image;}
 }
 
 void Arguments() : {} {
@@ -412,12 +412,12 @@ void Var() : {} {
 void Expression() : {} {
 	// DotIdCon staat verspreid voor alle aanroepen van Expression
 	// Toevoegen hier werkt niet, overal achter expression werkt wel.
-	<SymbolCon>{jjtThis.image += "sym(\"" + token.image + "\")";}
-	|	<Text>{jjtThis.image += "text(\"\\" + token.image.substring(0, token.image.length()-1) + "\\\"\"";}
-	|	<NatCon>{jjtThis.image += "num(" + token.image + ")";}
+	<SymbolCon>{jjtThis.image += "sym:" + token.image;}
+	|	<Text>{jjtThis.image += "text:" + token.image.substring(1,token.image.length() -1);}
+	|	<NatCon>{jjtThis.image += "num:" + token.image;}
 	|	Var()
-	|	<LBRACKET>{jjtThis.image = "list([";} (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
-	|	<LBRACE>{jjtThis.image = "record([";}(KeyValuePair()  (<COMMA>)? )* <RBRACE>
+	|	<LBRACKET>{jjtThis.image = "list:";} (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
+	|	<LBRACE>{jjtThis.image = "record:";}(KeyValuePair()  (<COMMA>)? )* <RBRACE>
 
 }
 

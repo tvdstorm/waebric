@@ -12,7 +12,7 @@ public class MappingVisitor extends WaebricParserVisitorAdapter {
 	  		if (node.jjtGetChild(currentChild).toString().equals("Path")){
 	  			PathVisitor pathVisitor = new PathVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(pathVisitor, null);
-	  			ast += pathVisitor.getAST();
+	  			ast += "mapping(" + pathVisitor.getAST();
 	  		} else
 	  		if (node.jjtGetChild(currentChild).toString().equals("Markup")){
 	  			MarkupVisitor markupVisitor = new MarkupVisitor();
