@@ -22,10 +22,17 @@ public class StatementVisitor extends WaebricParserVisitorAdapter {
 			dataFromStatement[0].equals("markup-embedding") ||
 			dataFromStatement[0].equals("markup-markup")){
 			
-			// Ze mogen niet verschijnen als ze niet de eerste node zijn en tag ligt er onder???
-			//if(getOwnIndex(node) == 0){
-				ast += dataFromStatement[0] + "([";
-			//}
+			// May not appear is statement parent has earlier Markup neighbor node
+			if(getOwnIndex(node) == 0){
+				if(node.jjtGetParent().toString().equals("Statement")){
+					if(!doesPreviousExists(node.jjtGetParent(), "Markup")){
+						ast += dataFromStatement[0] + "([";
+					}
+				}
+				else{
+					ast += dataFromStatement[0] + "([";
+				}
+			}
 		}
 		else if(dataFromStatement[0].equals("yield")){
 			ast += dataFromStatement[0];
@@ -98,4 +105,22 @@ public class StatementVisitor extends WaebricParserVisitorAdapter {
 		}
 		return returnInt;
 	}
+
+	private boolean doesChildExists(Node node, String childName) {
+		  for(int i = 0; i < node.jjtGetNumChildren(); i++) {
+			  if(node.jjtGetChild(i).toString().equals(childName)) {
+				  return true;
+			  }
+		  }
+		  return false;
+	  }
+	
+	private boolean doesPreviousExists(Node node, String childName) {
+		  for(int i = 0; i < getOwnIndex(node) -1 ; i++) {
+			  if(node.jjtGetChild(i).toString().equals(childName)) {
+				  return true;
+			  }
+		  }
+		  return false;
+	  }
 }
