@@ -40,7 +40,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
       		SimpleNode n = p.Modules();
 	  		String ast = processNode( n, 0);
 	  		System.out.println(ast);
-	  		//n.dump("");
+	  		n.dump("");
     	} catch (ParseException pe) {
       		pe.printStackTrace();
     	}
@@ -602,13 +602,13 @@ void Statement() : {/*@bgen(jjtree) Statement */
 	|	<IF> <LPAREN> Predicate()<RPAREN> Statement()
 	|	<EACH> <LPAREN> Var() <COLON> Expression() (DotIdCon())? <RPAREN> Statement()
 	|	<LET> (Assignment())+ <IN> (Statement())* <END>
-	|	LOOKAHEAD(4)<LBRACE>{jjtn000.image = "block([";} (Statement())* <RBRACE>
+	|	LOOKAHEAD(4)<LBRACE>{jjtn000.image = "block:";} (Statement())* <RBRACE>
 	|	<YIELD> <SEMICOLON>/*@bgen(jjtree)*/
                                     {
                                       jjtree.closeNodeScope(jjtn000, true);
                                       jjtc000 = false;
                                     }
-/*@egen*/ {jjtn000.image = "yield";}
+/*@egen*/ {jjtn000.image = "yield:";}
 	|	<COMMENT> <StrCon> <SEMICOLON>
 	|	LOOKAHEAD(2)<ECHO> Expression() (DotIdCon())? <SEMICOLON>
 	|	LOOKAHEAD(2)<ECHO> Embedding() (DotIdCon())? <SEMICOLON>
@@ -618,7 +618,7 @@ void Statement() : {/*@bgen(jjtree) Statement */
                                                                        jjtree.closeNodeScope(jjtn000, true);
                                                                        jjtc000 = false;
                                                                      }
-/*@egen*/ {jjtn000.image = "markup([";}
+/*@egen*/ {jjtn000.image = "markup:";}
 	|	LOOKAHEAD((Markup())+ Expression() <SEMICOLON>)(
 				LOOKAHEAD(3)Markup() Expression() <SEMICOLON>
 				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Expression() <SEMICOLON>
@@ -627,7 +627,7 @@ void Statement() : {/*@bgen(jjtree) Statement */
                                   jjtree.closeNodeScope(jjtn000, true);
                                   jjtc000 = false;
                                 }
-/*@egen*/	{jjtn000.image = "markup-exp([";}
+/*@egen*/	{jjtn000.image = "markup-exp:";}
 	|	LOOKAHEAD((Markup())+ Statement())(
 				LOOKAHEAD(2)Markup() Statement()
 				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Statement()
@@ -636,19 +636,19 @@ void Statement() : {/*@bgen(jjtree) Statement */
                                   jjtree.closeNodeScope(jjtn000, true);
                                   jjtc000 = false;
                                 }
-/*@egen*/	{jjtn000.image = "markup-stat([";}	
+/*@egen*/	{jjtn000.image = "markup-stat:";}	
 	|	LOOKAHEAD((Markup())+ Embedding() <SEMICOLON>) (Markup())+ (Embedding() <SEMICOLON>)/*@bgen(jjtree)*/
                                                                                                     {
                                                                                                       jjtree.closeNodeScope(jjtn000, true);
                                                                                                       jjtc000 = false;
                                                                                                     }
-/*@egen*/{jjtn000.image = "markup-embedding([";}
+/*@egen*/{jjtn000.image = "markup-embedding:";}
 	|	LOOKAHEAD((Markup())+ <SEMICOLON>) (Markup())+  <SEMICOLON>/*@bgen(jjtree)*/
                                                                            {
                                                                              jjtree.closeNodeScope(jjtn000, true);
                                                                              jjtc000 = false;
                                                                            }
-/*@egen*/{jjtn000.image = "markup-markup([";}/*@bgen(jjtree)*/
+/*@egen*/{jjtn000.image = "markup-markup:";}/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -899,38 +899,38 @@ void Attribute() : {/*@bgen(jjtree) Attribute */
                                jjtree.closeNodeScope(jjtn000, true);
                                jjtc000 = false;
                              }
-/*@egen*/{jjtn000.image = "id(\"" + token.image + "\")";}
+/*@egen*/{jjtn000.image = "id:" + token.image;}
 	|	<DOT> <IdCon>/*@bgen(jjtree)*/
                              {
                                jjtree.closeNodeScope(jjtn000, true);
                                jjtc000 = false;
                              }
-/*@egen*/{jjtn000.image = "class(\"" + token.image + "\")";}
+/*@egen*/{jjtn000.image = "class:" + token.image;}
 	|	<DOLLAR_SIGN> <IdCon>/*@bgen(jjtree)*/
                                      {
                                        jjtree.closeNodeScope(jjtn000, true);
                                        jjtc000 = false;
                                      }
-/*@egen*/{jjtn000.image = "name(\"" + token.image + "\")";}
+/*@egen*/{jjtn000.image = "name:" + token.image;}
 	|	<COLON> <IdCon>/*@bgen(jjtree)*/
                                {
                                  jjtree.closeNodeScope(jjtn000, true);
                                  jjtc000 = false;
                                }
-/*@egen*/{jjtn000.image = "type(\"" + token.image + "\")";}
-	| 	LOOKAHEAD(3) <AT> <NatCon>{jjtn000.image = "width-height(" + token.image;} 
+/*@egen*/{jjtn000.image = "type:" + token.image;}
+	| 	LOOKAHEAD(3) <AT> <NatCon>{jjtn000.image = "width-height:" + token.image;} 
 		<PERCENT> <NatCon>/*@bgen(jjtree)*/
                                   {
                                     jjtree.closeNodeScope(jjtn000, true);
                                     jjtc000 = false;
                                   }
-/*@egen*/{jjtn000.image += ", " + token.image + ")";}
+/*@egen*/{jjtn000.image += ", " + token.image;}
 	| 	<AT> <NatCon>/*@bgen(jjtree)*/
                              {
                                jjtree.closeNodeScope(jjtn000, true);
                                jjtc000 = false;
                              }
-/*@egen*/{jjtn000.image += "height(" + token.image + ")";}/*@bgen(jjtree)*/
+/*@egen*/{jjtn000.image += "height:" + token.image;}/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
@@ -1035,22 +1035,22 @@ void Expression() : {/*@bgen(jjtree) Expression */
                      jjtree.closeNodeScope(jjtn000, true);
                      jjtc000 = false;
                    }
-/*@egen*/{jjtn000.image += "sym(\"" + token.image + "\")";}
+/*@egen*/{jjtn000.image += "sym:" + token.image;}
 	|	<Text>/*@bgen(jjtree)*/
                       {
                         jjtree.closeNodeScope(jjtn000, true);
                         jjtc000 = false;
                       }
-/*@egen*/{jjtn000.image += "text(\"\\" + token.image.substring(0, token.image.length()-1) + "\\\"\"";}
+/*@egen*/{jjtn000.image += "text:" + token.image.substring(1,token.image.length() -1);}
 	|	<NatCon>/*@bgen(jjtree)*/
                         {
                           jjtree.closeNodeScope(jjtn000, true);
                           jjtc000 = false;
                         }
-/*@egen*/{jjtn000.image += "num(" + token.image + ")";}
+/*@egen*/{jjtn000.image += "num:" + token.image;}
 	|	Var()
-	|	<LBRACKET>{jjtn000.image = "list([";} (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
-	|	<LBRACE>{jjtn000.image = "record([";}(KeyValuePair()  (<COMMA>)? )* <RBRACE>/*@bgen(jjtree)*/
+	|	<LBRACKET>{jjtn000.image = "list:";} (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
+	|	<LBRACE>{jjtn000.image = "record:";}(KeyValuePair()  (<COMMA>)? )* <RBRACE>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

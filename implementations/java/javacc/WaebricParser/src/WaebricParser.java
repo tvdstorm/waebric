@@ -29,7 +29,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
                 SimpleNode n = p.Modules();
                         String ast = processNode( n, 0);
                         System.out.println(ast);
-                        //n.dump("");
+                        n.dump("");
         } catch (ParseException pe) {
                 pe.printStackTrace();
         }
@@ -560,7 +560,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
           jj_la1[23] = jj_gen;
           if (jj_2_6(4)) {
             jj_consume_token(LBRACE);
-                                     jjtn000.image = "block([";
+                                     jjtn000.image = "block:";
             label_9:
             while (true) {
               switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -589,7 +589,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
               jj_consume_token(SEMICOLON);
                                       jjtree.closeNodeScope(jjtn000, true);
                                       jjtc000 = false;
-                                     jjtn000.image = "yield";
+                                     jjtn000.image = "yield:";
               break;
             case COMMENT:
               jj_consume_token(COMMENT);
@@ -644,7 +644,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
                     jj_consume_token(SEMICOLON);
                                                                        jjtree.closeNodeScope(jjtn000, true);
                                                                        jjtc000 = false;
-                                                                      jjtn000.image = "markup([";
+                                                                      jjtn000.image = "markup:";
                   } else if (jj_2_10(2147483647)) {
                     if (jj_2_2(3)) {
                       Markup();
@@ -674,7 +674,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
                     }
                                   jjtree.closeNodeScope(jjtn000, true);
                                   jjtc000 = false;
-                           jjtn000.image = "markup-exp([";
+                           jjtn000.image = "markup-exp:";
                   } else if (jj_2_11(2147483647)) {
                     if (jj_2_4(2)) {
                       Markup();
@@ -702,7 +702,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
                     }
                                   jjtree.closeNodeScope(jjtn000, true);
                                   jjtc000 = false;
-                           jjtn000.image = "markup-stat([";
+                           jjtn000.image = "markup-stat:";
                   } else if (jj_2_12(2147483647)) {
                     label_12:
                     while (true) {
@@ -720,7 +720,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
                     jj_consume_token(SEMICOLON);
                                                                                                       jjtree.closeNodeScope(jjtn000, true);
                                                                                                       jjtc000 = false;
-                                                                                                     jjtn000.image = "markup-embedding([";
+                                                                                                     jjtn000.image = "markup-embedding:";
                   } else if (jj_2_13(2147483647)) {
                     label_13:
                     while (true) {
@@ -737,7 +737,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
                     jj_consume_token(SEMICOLON);
                                                                              jjtree.closeNodeScope(jjtn000, true);
                                                                              jjtc000 = false;
-                                                                            jjtn000.image = "markup-markup([";
+                                                                            jjtn000.image = "markup-markup:";
                   } else {
                     jj_consume_token(-1);
                     throw new ParseException();
@@ -1062,40 +1062,40 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
         jj_consume_token(IdCon);
                                jjtree.closeNodeScope(jjtn000, true);
                                jjtc000 = false;
-                              jjtn000.image = "id(\"" + token.image + "\")";
+                              jjtn000.image = "id:" + token.image;
         break;
       case DOT:
         jj_consume_token(DOT);
         jj_consume_token(IdCon);
                                jjtree.closeNodeScope(jjtn000, true);
                                jjtc000 = false;
-                              jjtn000.image = "class(\"" + token.image + "\")";
+                              jjtn000.image = "class:" + token.image;
         break;
       case DOLLAR_SIGN:
         jj_consume_token(DOLLAR_SIGN);
         jj_consume_token(IdCon);
                                        jjtree.closeNodeScope(jjtn000, true);
                                        jjtc000 = false;
-                                      jjtn000.image = "name(\"" + token.image + "\")";
+                                      jjtn000.image = "name:" + token.image;
         break;
       case COLON:
         jj_consume_token(COLON);
         jj_consume_token(IdCon);
                                  jjtree.closeNodeScope(jjtn000, true);
                                  jjtc000 = false;
-                                jjtn000.image = "type(\"" + token.image + "\")";
+                                jjtn000.image = "type:" + token.image;
         break;
       default:
         jj_la1[31] = jj_gen;
         if (jj_2_19(3)) {
           jj_consume_token(AT);
           jj_consume_token(NatCon);
-                                           jjtn000.image = "width-height(" + token.image;
+                                           jjtn000.image = "width-height:" + token.image;
           jj_consume_token(PERCENT);
           jj_consume_token(NatCon);
                                     jjtree.closeNodeScope(jjtn000, true);
                                     jjtc000 = false;
-                                   jjtn000.image += ", " + token.image + ")";
+                                   jjtn000.image += ", " + token.image;
         } else {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case AT:
@@ -1103,7 +1103,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
             jj_consume_token(NatCon);
                                jjtree.closeNodeScope(jjtn000, true);
                                jjtc000 = false;
-                              jjtn000.image += "height(" + token.image + ")";
+                              jjtn000.image += "height:" + token.image;
             break;
           default:
             jj_la1[32] = jj_gen;
@@ -1265,26 +1265,26 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
         jj_consume_token(SymbolCon);
                      jjtree.closeNodeScope(jjtn000, true);
                      jjtc000 = false;
-                    jjtn000.image += "sym(\"" + token.image + "\")";
+                    jjtn000.image += "sym:" + token.image;
         break;
       case Text:
         jj_consume_token(Text);
                         jjtree.closeNodeScope(jjtn000, true);
                         jjtc000 = false;
-                       jjtn000.image += "text(\"\\" + token.image.substring(0, token.image.length()-1) + "\\\"\"";
+                       jjtn000.image += "text:" + token.image.substring(1,token.image.length() -1);
         break;
       case NatCon:
         jj_consume_token(NatCon);
                           jjtree.closeNodeScope(jjtn000, true);
                           jjtc000 = false;
-                         jjtn000.image += "num(" + token.image + ")";
+                         jjtn000.image += "num:" + token.image;
         break;
       case IdCon:
         Var();
         break;
       case LBRACKET:
         jj_consume_token(LBRACKET);
-                           jjtn000.image = "list([";
+                           jjtn000.image = "list:";
         label_16:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -1322,7 +1322,7 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
         break;
       case LBRACE:
         jj_consume_token(LBRACE);
-                         jjtn000.image = "record([";
+                         jjtn000.image = "record:";
         label_17:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {

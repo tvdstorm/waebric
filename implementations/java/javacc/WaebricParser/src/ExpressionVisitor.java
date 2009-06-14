@@ -4,7 +4,29 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 		
 		ast += "";
 		
-		ast += node.image;
+		// Make a choice between kinds of statements
+		String[] dataFromStatement = node.image.split(":");
+		
+		if(	dataFromStatement[0].equals("sym")) {
+				ast += dataFromStatement[0] + "(\"" + dataFromStatement[1] + "\")";
+		}
+		
+		else if(dataFromStatement[0].equals("text")){
+			ast += dataFromStatement[0] + "(\"\\\"" + dataFromStatement[1] + "\\\"\")";
+		}
+		
+		else if(dataFromStatement[0].equals("num")){
+			ast += dataFromStatement[0] + "(" + dataFromStatement[1] + ")";
+		}
+		
+		else if(dataFromStatement[0].equals("list") ||
+					dataFromStatement[0].equals("record")){
+			ast += dataFromStatement[0] + "([" + dataFromStatement[1];
+		}
+		else {
+			ast += node.image;
+		}
+		// end choice
 		
 	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
   			// if list
@@ -34,5 +56,10 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 	  	}
 	  	ast += "";
 		return data;
+	}
+	
+	private String addBackslash(String text)
+	{
+		return text.replaceAll("\"", "\\\"");
 	}
 }
