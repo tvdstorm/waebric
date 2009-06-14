@@ -1,34 +1,57 @@
-
 options {
-  JDK_VERSION = "1.5";
-  MULTI = true;
-  VISITOR = true;
+ 	JDK_VERSION = "1.5";
+  	MULTI = true;
+  	VISITOR = true;
 } 
 
 PARSER_BEGIN(WaebricParser) 
-  import java.io.*;
-  public class WaebricParser {
-  public static void main(String[] args) {
-    Reader sr = new StringReader(args[0]);
-    WaebricParser p = new WaebricParser(sr);
-    try {
-      SimpleNode n = p.Modules();
-	  String ast = processNode( n, 0);
-	  System.out.println(ast);
-	  //n.dump("");
-    } catch (ParseException pe) {
-      pe.printStackTrace();
-    }
-  }
+
+/* Imports */
+import java.io.*;
+
+public class WaebricParser {
+ 	public static void main(String[] args) {
+    	
+    	/* first check arguments*/
+    	if(args.length == 0){
+    		System.out.println("No arguments found: Please run -> WaebricParser filename.wae");
+    		System.exit(0);
+    	}
+    	
+    	/* Reader set to null te avoid init problems*/
+    	Reader sr = null;
+    	
+    	/* Load data from file */
+    	try {
+    		sr = new FileReader(new File(args[0]));
+   		}catch(FileNotFoundException filenotfound) {
+    		System.out.println("File not found:");
+    		filenotfound.printStackTrace();
+    		System.exit(0); 
+    	}
+    	
+    	WaebricParser p = new WaebricParser(sr);
+    
+    	try {
+      		SimpleNode n = p.Modules();
+	  		String ast = processNode( n, 0);
+	  		System.out.println(ast);
+	  		//n.dump("");
+    	} catch (ParseException pe) {
+      		pe.printStackTrace();
+    	}
+  	}
   
-  private static String processNode(Node n, int childIndex) {	
-  	// Build the AST
-  	ModulesVisitor moduleVisitor = new ModulesVisitor();
-	n.jjtAccept(moduleVisitor, null);
-	return moduleVisitor.getAST();
-  }
+  	private static String processNode(Node n, int childIndex) {	
+  		/* Build the AST */
+  		ModulesVisitor moduleVisitor = new ModulesVisitor();
+		n.jjtAccept(moduleVisitor, null);
+		return moduleVisitor.getAST();
+  	}
 }
+
 PARSER_END(WaebricParser)
+
 
 /* LAYOUT */
 <*>
