@@ -167,12 +167,16 @@ texttail = POSTTEXT.p {: //@post($p) :}
 embedding = PRETEXT.p embed.e texttail.t  {: //@pre($p,e,t) :}
 ;
 
-embed = markup_opt.m embedexpression.e {: //@exp-embedding(m,e) :}
+embed = markup_opt.m embedexpression.e {: //@exp-embedding([m],e) :}
 ;
 
 
 markup_opt= 
-|markup_seq
+|embed_markup_seq
+;
+
+embed_markup_seq = markup
+| embed_markup_seq markup
 ;
 
 markup_seq = markup
