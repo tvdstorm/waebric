@@ -1,0 +1,5 @@
+module test
+
+def abonnement 
+ p a(href="abonnementen.html") em "Abonnement op ons tijdschrift?";
+end

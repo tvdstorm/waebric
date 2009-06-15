@@ -335,8 +335,7 @@ void Statement() : {} {
 	| 	LOOKAHEAD(Markup() <SEMICOLON>) Markup() <SEMICOLON> {jjtThis.image = "markup:";}
 	|	LOOKAHEAD((Markup())+ <SEMICOLON>) (Markup())+  <SEMICOLON>{jjtThis.image = "markup-markup:";}
 	|	LOOKAHEAD((Markup())+ Expression() <SEMICOLON>)(
-				LOOKAHEAD(3)Markup() Expression() <SEMICOLON>
-				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Expression() <SEMICOLON>
+				(LOOKAHEAD(2)Markup())+ Expression() <SEMICOLON>
 			)	{jjtThis.image = "markup-exp:";}
 	|	LOOKAHEAD((Markup())+ Statement())(
 				LOOKAHEAD(2)Markup() Statement()
