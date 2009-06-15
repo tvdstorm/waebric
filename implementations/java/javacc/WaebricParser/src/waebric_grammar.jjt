@@ -37,7 +37,7 @@ public class WaebricParser {
       		SimpleNode n = p.Modules();
 	  		String ast = processNode( n, 0);
 	  		System.out.println(ast);
-	  		n.dump("");
+	  		//n.dump("");
     	} catch (ParseException pe) {
       		pe.printStackTrace();
     	}

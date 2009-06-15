@@ -1,9 +1,28 @@
 public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 {	
-	protected String ast = "";
+	static final String EMPTRY_STRING = "";
 	
+	protected String ast = EMPTRY_STRING;
+	
+	/**
+	 * 
+	 * @return retrieves the constructed ast from the node
+	 */
 	public String getAST(){
 		return ast;
+	}
+	
+	/**
+	 * @param stringArray: the string array you want to retrieve the string from
+	 * @param index: index of the element you want the string from
+	 * @return data from array when within bounds, otherwise an empty string
+	 */
+	protected String safeGetStr(String[] stringArray, int index){
+		if (stringArray.length >= index){
+			return stringArray[index];
+		} else {
+			return EMPTRY_STRING;
+		}	
 	}
 	
 	public Object visit(SimpleNode node, Object data){
