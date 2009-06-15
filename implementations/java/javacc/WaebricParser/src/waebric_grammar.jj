@@ -679,8 +679,12 @@ void Statement() : {/*@bgen(jjtree) Statement */
                                                                   jjtc000 = false;
                                                                 }
 /*@egen*/ {jjtn000.image = "let:";}
-
 	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON>/*@bgen(jjtree)*/
+                                                               {
+                                                                 jjtree.closeNodeScope(jjtn000, true);
+                                                                 jjtc000 = false;
+                                                               }
+/*@egen*/ {jjtn000.image = "cdata:";}/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

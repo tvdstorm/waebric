@@ -37,7 +37,7 @@ public class WaebricParser {
       		SimpleNode n = p.Modules();
 	  		String ast = processNode( n, 0);
 	  		System.out.println(ast);
-	  		//n.dump("");
+	  		n.dump("");
     	} catch (ParseException pe) {
       		pe.printStackTrace();
     	}
@@ -350,8 +350,7 @@ void Statement() : {} {
 	|	LOOKAHEAD(2)<ECHO> Expression() (DotIdCon())? <SEMICOLON> {jjtThis.image = "echo:";}
 	|	LOOKAHEAD(2)<ECHO> Embedding() (DotIdCon())? <SEMICOLON> {jjtThis.image = "echo:";}
 	|	<LET> (Assignment())+ <IN> (Statement())* <END> {jjtThis.image = "let:";}
-
-	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON>
+	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON> {jjtThis.image = "cdata:";}
 
 }
 

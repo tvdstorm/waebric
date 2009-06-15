@@ -754,6 +754,9 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
                   ;
                 }
                 jj_consume_token(SEMICOLON);
+                                                                 jjtree.closeNodeScope(jjtn000, true);
+                                                                 jjtc000 = false;
+                                                                jjtn000.image = "cdata:";
                 break;
               default:
                 jj_la1[25] = jj_gen;
@@ -1599,6 +1602,26 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     return false;
   }
 
+  static private boolean jj_3_17() {
+    if (jj_scan_token(IdCon)) return true;
+    if (jj_scan_token(ASSIGN)) return true;
+    if (jj_3R_20()) return true;
+    if (jj_scan_token(SEMICOLON)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_52() {
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3_18()) { jj_scanpos = xsp; break; }
+    }
+    if (jj_3R_20()) return true;
+    xsp = jj_scanpos;
+    if (jj_3R_71()) jj_scanpos = xsp;
+    return false;
+  }
+
   static private boolean jj_3R_62() {
     Token xsp;
     if (jj_3R_76()) return true;
@@ -1645,6 +1668,11 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     return false;
   }
 
+  static private boolean jj_3R_25() {
+    if (jj_3R_19()) return true;
+    return false;
+  }
+
   static private boolean jj_3R_79() {
     Token xsp;
     xsp = jj_scanpos;
@@ -1652,19 +1680,6 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     jj_scanpos = xsp;
     if (jj_3_17()) return true;
     }
-    return false;
-  }
-
-  static private boolean jj_3R_25() {
-    if (jj_3R_19()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_16() {
-    if (jj_scan_token(IdCon)) return true;
-    if (jj_3R_31()) return true;
-    if (jj_scan_token(ASSIGN)) return true;
-    if (jj_3R_21()) return true;
     return false;
   }
 
@@ -1677,6 +1692,14 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     }
     if (jj_3R_26()) return true;
     if (jj_scan_token(SEMICOLON)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_16() {
+    if (jj_scan_token(IdCon)) return true;
+    if (jj_3R_31()) return true;
+    if (jj_scan_token(ASSIGN)) return true;
+    if (jj_3R_21()) return true;
     return false;
   }
 
@@ -1719,16 +1742,6 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     return false;
   }
 
-  static private boolean jj_3R_28() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_14()) {
-    jj_scanpos = xsp;
-    if (jj_3R_54()) return true;
-    }
-    return false;
-  }
-
   static private boolean jj_3_8() {
     Token xsp;
     if (jj_3R_24()) return true;
@@ -1750,11 +1763,13 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     return false;
   }
 
-  static private boolean jj_3_14() {
-    if (jj_3R_20()) return true;
+  static private boolean jj_3R_28() {
     Token xsp;
     xsp = jj_scanpos;
-    if (jj_3R_29()) jj_scanpos = xsp;
+    if (jj_3_14()) {
+    jj_scanpos = xsp;
+    if (jj_3R_54()) return true;
+    }
     return false;
   }
 
@@ -1765,6 +1780,14 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     xsp = jj_scanpos;
     if (jj_3R_66()) jj_scanpos = xsp;
     if (jj_scan_token(SEMICOLON)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_14() {
+    if (jj_3R_20()) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_29()) jj_scanpos = xsp;
     return false;
   }
 
@@ -2157,6 +2180,11 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     return false;
   }
 
+  static private boolean jj_3R_27() {
+    if (jj_3R_21()) return true;
+    return false;
+  }
+
   static private boolean jj_3_19() {
     if (jj_scan_token(AT)) return true;
     if (jj_scan_token(NatCon)) return true;
@@ -2168,11 +2196,6 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
   static private boolean jj_3R_83() {
     if (jj_scan_token(COLON)) return true;
     if (jj_scan_token(IdCon)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_27() {
-    if (jj_3R_21()) return true;
     return false;
   }
 
@@ -2193,12 +2216,6 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     return false;
   }
 
-  static private boolean jj_3R_81() {
-    if (jj_scan_token(DOT)) return true;
-    if (jj_scan_token(IdCon)) return true;
-    return false;
-  }
-
   static private boolean jj_3R_64() {
     if (jj_3R_19()) return true;
     return false;
@@ -2206,6 +2223,12 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
 
   static private boolean jj_3R_65() {
     if (jj_3R_55()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_81() {
+    if (jj_scan_token(DOT)) return true;
+    if (jj_scan_token(IdCon)) return true;
     return false;
   }
 
@@ -2262,6 +2285,11 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     return false;
   }
 
+  static private boolean jj_3R_69() {
+    if (jj_3R_21()) return true;
+    return false;
+  }
+
   static private boolean jj_3R_32() {
     if (jj_scan_token(IdCon)) return true;
     Token xsp;
@@ -2272,8 +2300,9 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     return false;
   }
 
-  static private boolean jj_3R_69() {
-    if (jj_3R_21()) return true;
+  static private boolean jj_3_3() {
+    if (jj_3R_19()) return true;
+    if (jj_3R_19()) return true;
     return false;
   }
 
@@ -2286,12 +2315,6 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
 
   static private boolean jj_3R_29() {
     if (jj_3R_55()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_3() {
-    if (jj_3R_19()) return true;
-    if (jj_3R_19()) return true;
     return false;
   }
 
@@ -2327,6 +2350,12 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     return false;
   }
 
+  static private boolean jj_3R_77() {
+    if (jj_3R_19()) return true;
+    if (jj_3R_19()) return true;
+    return false;
+  }
+
   static private boolean jj_3R_53() {
     Token xsp;
     xsp = jj_scanpos;
@@ -2334,12 +2363,6 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
     jj_scanpos = xsp;
     if (jj_3R_72()) return true;
     }
-    return false;
-  }
-
-  static private boolean jj_3R_77() {
-    if (jj_3R_19()) return true;
-    if (jj_3R_19()) return true;
     return false;
   }
 
@@ -2356,26 +2379,6 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
 
   static private boolean jj_3_18() {
     if (jj_3R_19()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_17() {
-    if (jj_scan_token(IdCon)) return true;
-    if (jj_scan_token(ASSIGN)) return true;
-    if (jj_3R_20()) return true;
-    if (jj_scan_token(SEMICOLON)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_52() {
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3_18()) { jj_scanpos = xsp; break; }
-    }
-    if (jj_3R_20()) return true;
-    xsp = jj_scanpos;
-    if (jj_3R_71()) jj_scanpos = xsp;
     return false;
   }
 
