@@ -9,9 +9,7 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 		}
 		
 		else if(dataFromJjt[0].equals("text")){
-			if (dataFromJjt.length > 1){
-				ast += dataFromJjt[0] + "(\"\\\"" + safeGetStr(dataFromJjt, 1) + "\\\"\")";
-			}
+			ast += dataFromJjt[0] + "(\"\\\"" + safeGetStr(dataFromJjt, 1) + "\\\"\")";
 		}
 		
 		else if(dataFromJjt[0].equals("num")){
