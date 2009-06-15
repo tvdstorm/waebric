@@ -1,126 +1,246 @@
 public class StatementVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTStatement node, Object data){
-		int numChildren = node.jjtGetNumChildren();
-		
-		boolean isBlock = false;
-		
-		ast += "";
 		
 		// Make a choice between kinds of statements
 		String[] dataFromStatement = node.image.split(":");
-	
-		if(dataFromStatement[0].equals("block")){
-			ast += dataFromStatement[0] + "([";
-			isBlock=true;
-		}
-		else if(dataFromStatement[0].equals("markup")){
-			ast += dataFromStatement[0] + "([";
-		}
 		
-		else if(dataFromStatement[0].equals("markup-exp") ||
-			dataFromStatement[0].equals("markup-stat") ||
-			dataFromStatement[0].equals("markup-embedding") ||
-			dataFromStatement[0].equals("markup-markup")){
-			
-			// May not appear is statement parent has earlier Markup neighbor node
-			if(getOwnIndex(node) == 0){
-				if(node.jjtGetParent().toString().equals("Statement")){
-					if(!doesPreviousExists(node.jjtGetParent(), "Markup")){
-						ast += dataFromStatement[0] + "([";
-					}
-				}
-				else{
-					ast += dataFromStatement[0] + "([";
-				}
-			}
-		}
-		else if(dataFromStatement[0].equals("yield")){
+		if(	dataFromStatement[0].equals("yield")){
 			ast += dataFromStatement[0];
 		}
-		else {
-			ast += node.image;
+		
+		else if(dataFromStatement[0].equals("comment")){
+			ast += dataFromStatement[0] + "(" + dataFromStatement[1] + ")";
 		}
-		// end choice
 		
-	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
-  			
-	  		// if list
-	  		if (currentChild > 0){
-  				ast += ", ";
-  			}		
+		else if(dataFromStatement[0].equals("markup")){
+			ast += dataFromStatement[0] + "(";
+  			MarkupVisitor markupVisitor = new MarkupVisitor();
+  			node.jjtGetChild(0).jjtAccept(markupVisitor, null);
+  			ast += markupVisitor.getAST();
+			ast += ")";
+		}
 		
-	  		if (node.jjtGetChild(currentChild).toString().equals("Markup")){
-	  			
-	  			ast += "";
-	  			MarkupVisitor markupVisitor = new MarkupVisitor();
-	  			node.jjtGetChild(currentChild).jjtAccept(markupVisitor, null);
-  			
-	  			if (currentChild + 1 < numChildren){
-	  				if (node.jjtGetChild(currentChild+1).toString() != "Markup") {
-	  					ast += markupVisitor.getAST() + "]";	
-	  				} else {
-  					ast += markupVisitor.getAST();
-	  				}
-	  			} else
-	  			{
-	  				ast += markupVisitor.getAST();
-	  			}
-	  		}
-	  		
-	  		if (node.jjtGetChild(currentChild).toString().equals("Statement")){
-	  			ast += "";
-	  			StatementVisitor statementVisitor = new StatementVisitor();
-	  			node.jjtGetChild(currentChild).jjtAccept(statementVisitor, null);
-	  			ast += statementVisitor.getAST() + "";
-	  		}
+		else if(dataFromStatement[0].equals("markup-exp")){
+			ast += dataFromStatement[0] + "([";
+			processChildrenMarkup(node);
+			ast += ")";
+		}
 		
-	  		if (node.jjtGetChild(currentChild).toString().equals("Expression")){
-	  			ast += "";
-	  			ExpressionVisitor expressionVisitor = new ExpressionVisitor();
-	  			node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
-	  			ast += expressionVisitor.getAST() + "";
-	  		}
-	  	}
-	  	if(isBlock)
-	  	{
-	  		ast += "]";
-	  	}
-	  	else
-	  	{
-	  		ast += ")";
-	  	}
-	  	
+		else if(dataFromStatement[0].equals("markup-stat")){
+			ast += dataFromStatement[0] + "([";
+			processChildrenMarkup(node);
+			ast += ")";
+		}
+		
+		else if(dataFromStatement[0].equals("markup-markup")){
+			ast += dataFromStatement[0] + "([";
+			processChildrenMarkup(node);
+			ast += ")";
+		}
+		
+		else if(dataFromStatement[0].equals("markup-embedding")){
+			ast += dataFromStatement[0] + "([";
+			processChildrenMarkup(node);
+			ast += ")";
+		}
+		
+		else if(dataFromStatement[0].equals("block")){
+			ast += dataFromStatement[0] + "([";
+			processChildrenBlock(node);
+			ast += "])";
+		}
+		
+		else if(dataFromStatement[0].equals("if-else") || dataFromStatement[0].equals("if")) {
+			ast += dataFromStatement[0] + "(";
+			processChildrenIfElse(node);
+			ast += ")";
+		}
+		
+		else if(dataFromStatement[0].equals("each")) {
+			ast += dataFromStatement[0] + "(";
+			processChildrenEach(node);
+			ast += ")";
+		}
+		
+		else if(dataFromStatement[0].equals("echo")) {
+			ast += dataFromStatement[0] + "(";
+			processChildrenEcho(node);
+			ast += ")";
+		}
+		
+		else if(dataFromStatement[0].equals("let")) {
+			ast += dataFromStatement[0] + "(";
+			processChildrenLet(node);
+			ast += ")";
+		}
+		
 		return data;
 	}
 	
-	private int getOwnIndex(Node n)
-	{
-		int returnInt = 999;
+	private void processChildrenMarkup(ASTStatement node){
+		int numberOfChildren = node.jjtGetNumChildren();
 		
-		for(int i=0; i < n.jjtGetParent().jjtGetNumChildren() ;i++)
-		{
-			if(n.jjtGetParent().jjtGetChild(i).equals(n)){
-				returnInt = i;
+		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) {
+			if(node.jjtGetChild(currentChild).toString().equals("Markup")){
+		  		MarkupVisitor markupVisitor = new MarkupVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(markupVisitor, null);
+		  		
+		  		if((currentChild == numberOfChildren-1)&(currentChild != 0)) {
+		  			ast += "], " + markupVisitor.getAST();
+		  		} 
+		  		else{
+		  			
+		  			if (currentChild > 0){
+		  				ast += ", ";
+		  			}
+		  			
+		  			ast += markupVisitor.getAST();
+		  		}
+			}
+			
+			// Last 
+			else if(node.jjtGetChild(currentChild).toString().equals("Statement")){
+				StatementVisitor statementVisitor = new StatementVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(statementVisitor, null);
+		  		ast += "], " + statementVisitor.getAST();
+			}
+			else if(node.jjtGetChild(currentChild).toString().equals("Embedding")){
+				EmbeddingVisitor embeddingVisitor = new EmbeddingVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(embeddingVisitor, null);
+		  		ast += "], " + embeddingVisitor.getAST();
+			}
+			else if(node.jjtGetChild(currentChild).toString().equals("Expression")){
+				ExpressionVisitor expressionVisitor = new ExpressionVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
+		  		ast += "], " +  expressionVisitor.getAST();
 			}
 		}
-		return returnInt;
 	}
-
-	private boolean doesChildExists(Node node, String childName) {
-		  for(int i = 0; i < node.jjtGetNumChildren(); i++) {
-			  if(node.jjtGetChild(i).toString().equals(childName)) {
-				  return true;
-			  }
-		  }
-		  return false;
-	  }
 	
-	private boolean doesPreviousExists(Node node, String childName) {
-		  for(int i = 0; i < getOwnIndex(node) -1 ; i++) {
-			  if(node.jjtGetChild(i).toString().equals(childName)) {
-				  return true;
-			  }
-		  }
-		  return false;
-	  }
+	private void processChildrenBlock(ASTStatement node){
+		int numberOfChildren = node.jjtGetNumChildren();
+		
+		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) { 
+			
+			if (currentChild > 0){
+				ast += ", ";
+			}
+			
+			if(node.jjtGetChild(currentChild).toString().equals("Statement")){
+				StatementVisitor statementVisitor = new StatementVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(statementVisitor, null);
+		  		ast += statementVisitor.getAST();
+			}
+		}
+	}
+	
+	private void processChildrenIfElse(ASTStatement node){
+		int numberOfChildren = node.jjtGetNumChildren();
+		
+		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) { 
+			
+			if (currentChild > 0){
+				ast += ", ";
+			}
+			
+			if(node.jjtGetChild(currentChild).toString().equals("Statement")){
+				StatementVisitor statementVisitor = new StatementVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(statementVisitor, null);
+		  		ast += statementVisitor.getAST();
+			}
+			
+			else if(node.jjtGetChild(currentChild).toString().equals("Predicate")){
+				PredicateVisitor predicateVisitor = new PredicateVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(predicateVisitor, null);
+		  		ast += predicateVisitor.getAST();
+			}
+		}
+	}
+	
+	private void processChildrenEach(ASTStatement node){
+		int numberOfChildren = node.jjtGetNumChildren();
+		
+		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) { 
+			
+			if (currentChild > 0){
+				ast += ", ";
+			}
+			
+			if(node.jjtGetChild(currentChild).toString().equals("Statement")){
+				StatementVisitor statementVisitor = new StatementVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(statementVisitor, null);
+		  		ast += statementVisitor.getAST();
+			}
+			
+			else if(node.jjtGetChild(currentChild).toString().equals("Expression")){
+				ExpressionVisitor expressionVisitor = new ExpressionVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
+		  		ast += expressionVisitor.getAST();
+			}
+			
+			else if (node.jjtGetChild(currentChild).toString().equals("DotIdCon")){
+				DotIdConVisitor dotIdConVisitor = new DotIdConVisitor();
+  				node.jjtGetChild(currentChild).jjtAccept(dotIdConVisitor, null);
+  				ast += dotIdConVisitor.getAST();
+  			}
+			
+			else if (node.jjtGetChild(currentChild).toString().equals("Var")){
+				VarVisitor varVisitor = new VarVisitor();
+				node.jjtGetChild(0).jjtAccept(varVisitor, null);
+				ast += varVisitor.getAST();
+			}
+		}
+	}
+	
+	private void processChildrenEcho(ASTStatement node){
+		int numberOfChildren = node.jjtGetNumChildren();
+		
+		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) { 
+			
+			if (currentChild > 0){
+				ast += ", ";
+			}
+			
+			if(node.jjtGetChild(currentChild).toString().equals("Expression")){
+				ExpressionVisitor expressionVisitor = new ExpressionVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
+		  		ast += expressionVisitor.getAST();
+			}
+			
+			else if (node.jjtGetChild(currentChild).toString().equals("DotIdCon")){
+				DotIdConVisitor dotIdConVisitor = new DotIdConVisitor();
+  				node.jjtGetChild(currentChild).jjtAccept(dotIdConVisitor, null);
+  				ast += dotIdConVisitor.getAST();
+  			}
+			
+			else if(node.jjtGetChild(currentChild).toString().equals("Embedding")){
+				EmbeddingVisitor embeddingVisitor = new EmbeddingVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(embeddingVisitor, null);
+		  		ast += embeddingVisitor.getAST();
+			}
+		}
+	}
+	
+	private void processChildrenLet(ASTStatement node){
+		int numberOfChildren = node.jjtGetNumChildren();
+		
+		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) { 
+			
+			if (currentChild > 0){
+				ast += ", ";
+			}
+			
+			if(node.jjtGetChild(currentChild).toString().equals("Statement")){
+				StatementVisitor statementVisitor = new StatementVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(statementVisitor, null);
+		  		ast += statementVisitor.getAST();
+			}
+			
+			else if(node.jjtGetChild(currentChild).toString().equals("Assignment")){
+				AssignmentVisitor assignmentVisitor = new AssignmentVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(assignmentVisitor, null);
+		  		ast += assignmentVisitor.getAST();
+			}
+		}
+	}
 }

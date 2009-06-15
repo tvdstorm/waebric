@@ -1,8 +1,7 @@
 public class AttributeVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTAttribute node, Object data){
-		ast += "";
 		
-		// Make a choice between kinds of statements
+		// Make a choice between kinds
 		String[] dataFromStatement = node.image.split(":");
 		
 		if(	dataFromStatement[0].equals("id") ||
@@ -15,10 +14,6 @@ public class AttributeVisitor extends WaebricParserVisitorAdapter {
 		else if(dataFromStatement[0].equals("width-height") ||
 				dataFromStatement[0].equals("height")){
 			ast += dataFromStatement[0] + "(" + dataFromStatement[1] + ")";
-		}
-		
-		else {
-			ast += node.image;
 		}
 
 		return data;
