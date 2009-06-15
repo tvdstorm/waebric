@@ -5,6 +5,8 @@ import src.test.waebric.mod.sub
 
 def main
 	p { 
+		comment "COMMENT WORKS";
+		cdata "CDATA WORKS";
 		head title "HAI";
 		body p "WORLD";
 	}
