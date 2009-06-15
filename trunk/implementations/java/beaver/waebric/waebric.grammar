@@ -61,21 +61,23 @@ import = IMPORT moduleid.m {: //@import(m) :}
 ;
 
 /* SDF specificatie: languages/waebric/syntax/Functions */
-functiondef = DEF IDCON.i formals.f statements_opt.s END {: //@def($i,f,[s]) :}
+functiondef = DEF IDCON.i formals.f statements_opt.s END {: //@def($i,f,s) :}
 ;
 
 /* SDF specificatie: languages/waebric/syntax/Statements */
-statements_opt = 
-| statements 
+statements_opt = {: //[]empty_statementlist() :}
+| statements.s {://[]statementlist(s):}
 ;
 
 statements = statement
-| statements statement
+| statements.s statement.t {: //$statements(s,t):} 
+| markupstatement
+| statements markupstatement
 ;
 
 statement = EACH LPAREN IDCON COLON expression RPAREN statement
 | LET assignments IN statements_opt END 
-| LBRACE statements_opt.s RBRACE {: //@block([s]) :}
+| LBRACE statements_opt.s RBRACE {: //@block(s) :}
 ;
 
 statement = matched_statement
@@ -89,7 +91,6 @@ matched_statement = IF LPAREN predicate.p RPAREN matched_statement.a ELSE matche
 | CDATA expression.e SEMICOLON {: //@cdata(e) :}
 | YIELD SEMICOLON {: //@yield() :}
 ;
-
 
 open_statement = IF LPAREN predicate.p RPAREN statement.a {: //@if(p,a) :}
 | IF LPAREN predicate.p RPAREN matched_statement.a ELSE open_statement.b {: //@if-else(p,a,b) :}
@@ -125,7 +126,7 @@ var = IDCON.i {: //@var($i) :}
 expression = var
 | symbolcon.s {: //@sym(s) :}
 | NATCON.n {: //@num(#n) :}
-| TEXT.t {: //@text($t) :}  
+| textexpression.t {: //@text(t) :}  
 | expression.e DOT IDCON.i {: //@field(e,$i) :}
 | LBRACK expressions.e RBRACK {: //@list(e) :}
 | LBRACE keyvaluepairs.p RBRACE /* {: //@record(p) :} */
@@ -139,6 +140,8 @@ embedexpression = IDCONTAIL.i {: //@var($i) :}
 | LBRACE keyvaluepairs.p RBRACE /* {: //@record(p) :} */
 ;
 
+textexpression = TEXT.t {: //$text_expression($t) :}
+;
 
 symbolcon = SYMBOLCON.s  {: //$sym_text($s) :}
 ;
@@ -164,7 +167,7 @@ texttail = POSTTEXT.p {: //@post($p) :}
 embedding = PRETEXT.p embed.e texttail.t  {: //@pre($p,e,t) :}
 ;
 
-embed = markup_opt.m embedexpression.e {: //@exp-embedding([m],e) :}
+embed = markup_opt.m embedexpression.e {: //@exp-embedding(m,e) :}
 ;
 
 
@@ -173,21 +176,20 @@ markup_opt=
 ;
 
 markup_seq = markup
-| markup_seq markup
+| markup_seq.m markup.n {: //[]markup_seq(m,n) :}
 ;
-
 
 /* SDF specificatie: languages/waebric/syntax/Markup */
 
-arguments = LPAREN argumentlist_opt.a RPAREN {: //@args([a]) :}
+arguments = LPAREN argumentlist_opt.a RPAREN {: //@args(a) :}
 ;
 
-argumentlist = argument 
-| argument COMMA  argumentlist
+argumentlist = argument.a
+| argument.a COMMA argumentlist.b
 ;
 
-argumentlist_opt = 
-| argumentlist
+argumentlist_opt = {: //[]emptyarglist() :}
+| argumentlist.a {: //[]arglist(a) :}
 ;
 
 argument = IDCON.i EQ expression.e {: //@attr($i,e) :}
@@ -195,16 +197,18 @@ argument = IDCON.i EQ expression.e {: //@attr($i,e) :}
 ;
 
 markup = designator.d arguments.a {: //@call(d,a) :}
-| designator
+| designator.d
 ;
 
 designator = IDCONDESIGNATOR.i attribute_opt.a {: //@tag($i,[a]) :}
 ;
 
-
+markupstatement = markup_seq.m statement.s {: //@markup-stat(m,s) :}
+| markup.m SEMICOLON {: //@markup(m) :}
+;
 
 /*
-
+ 
 %left statement
 statement = markup_seq statement
 | markup_seq SEMICOLON
