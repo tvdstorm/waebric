@@ -1,9 +1,9 @@
 public class ModulesVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTModules node, Object data){
 		int numChildren = node.jjtGetNumChildren();
-		
+
 	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
-	  		if (node.jjtGetChild(currentChild).toString().equals("Module")){
+	  		if (node.jjtGetChild(currentChild).toString().equals(PRODUCTION_MODULE)){
 	  			ModuleVisitor moduleVisitor = new ModuleVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(moduleVisitor, null);
 	  			ast += moduleVisitor.getAST();

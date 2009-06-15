@@ -1,6 +1,7 @@
 public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 {	
 	static final String EMPTRY_STRING = "";
+	static final String PRODUCTION_MODULE = "Module";
 	
 	protected String ast = EMPTRY_STRING;
 	
@@ -18,7 +19,7 @@ public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 	 * @return data from array when within bounds, otherwise an empty string
 	 */
 	protected String safeGetStr(String[] stringArray, int index){
-		if (stringArray.length >= index){
+		if (stringArray.length > index){
 			return stringArray[index];
 		} else {
 			return EMPTRY_STRING;
