@@ -1,10 +1,7 @@
 public class PathVisitor extends WaebricParserVisitorAdapter {	
 	public Object visit(ASTPath node, Object data){		
-		ast += "";
-		
+		// eind node bevat logica in de jjt
 		ast += node.image;
-	  	
-	  	ast += "";
 		return data;
 	}
 }

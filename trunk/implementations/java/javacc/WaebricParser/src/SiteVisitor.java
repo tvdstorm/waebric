@@ -2,7 +2,7 @@ public class SiteVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTSite node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
-		ast += "site([";
+		ast += "site(";
 		
 	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
 	  		if (node.jjtGetChild(currentChild).toString().equals("Mappings")){
@@ -12,7 +12,7 @@ public class SiteVisitor extends WaebricParserVisitorAdapter {
 	  		}
 	    }
 	  	
-	  	ast += "])";
+	  	ast += ")";
 		return data;
 	}
 }

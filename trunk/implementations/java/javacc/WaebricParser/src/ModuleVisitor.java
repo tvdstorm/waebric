@@ -9,8 +9,8 @@ public class ModuleVisitor extends WaebricParserVisitorAdapter {
 	  			ModuleIdVisitor moduleidVisitor = new ModuleIdVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(moduleidVisitor, null);
 	  			ast += moduleidVisitor.getAST() + ", [";
-	  		} else
-	  		if (node.jjtGetChild(currentChild).toString().equals("ModuleElement")){
+	  		} 
+	  		else if (node.jjtGetChild(currentChild).toString().equals("ModuleElement")){
 	  			ModuleElementVisitor importVisitor = new ModuleElementVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(importVisitor, null);
 	  			

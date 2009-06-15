@@ -15,6 +15,7 @@ public class WaebricParser {
     	/* first check arguments*/
     	if(args.length == 0){
     		System.out.println("No arguments found: Please run -> WaebricParser filename.wae");
+    		System.out.println("Working directory: " + System.getProperty("user.dir"));
     		System.exit(0);
     	}
     	
@@ -329,17 +330,10 @@ void Formals() : {} {
 }
 
 void Statement() : {} {
-	LOOKAHEAD(8)(<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE> Statement()
-	|	<IF> <LPAREN> Predicate()<RPAREN> Statement()
-	|	<EACH> <LPAREN> Var() <COLON> Expression() (DotIdCon())? <RPAREN> Statement()
-	|	<LET> (Assignment())+ <IN> (Statement())* <END>
-	|	LOOKAHEAD(4)<LBRACE>{jjtThis.image = "block:";} (Statement())* <RBRACE>
-	|	<YIELD> <SEMICOLON> {jjtThis.image = "yield:";}
-	|	<COMMENT> <StrCon> <SEMICOLON>
-	|	LOOKAHEAD(2)<ECHO> Expression() (DotIdCon())? <SEMICOLON>
-	|	LOOKAHEAD(2)<ECHO> Embedding() (DotIdCon())? <SEMICOLON>
-	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON>
+	<YIELD> <SEMICOLON> {jjtThis.image = "yield:";}
+	|	<COMMENT> <StrCon> {jjtThis.image = "comment:" + token.image;} <SEMICOLON> 
 	| 	LOOKAHEAD(Markup() <SEMICOLON>) Markup() <SEMICOLON> {jjtThis.image = "markup:";}
+	|	LOOKAHEAD((Markup())+ <SEMICOLON>) (Markup())+  <SEMICOLON>{jjtThis.image = "markup-markup:";}
 	|	LOOKAHEAD((Markup())+ Expression() <SEMICOLON>)(
 				LOOKAHEAD(3)Markup() Expression() <SEMICOLON>
 				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Expression() <SEMICOLON>
@@ -349,7 +343,16 @@ void Statement() : {} {
 				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Statement()
 			)	{jjtThis.image = "markup-stat:";}	
 	|	LOOKAHEAD((Markup())+ Embedding() <SEMICOLON>) (Markup())+ (Embedding() <SEMICOLON>){jjtThis.image = "markup-embedding:";}
-	|	LOOKAHEAD((Markup())+ <SEMICOLON>) (Markup())+  <SEMICOLON>{jjtThis.image = "markup-markup:";}
+	|	LOOKAHEAD(4)<LBRACE>{jjtThis.image = "block:";} (Statement())* <RBRACE>
+	|	LOOKAHEAD((<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE>) (<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE> Statement() {jjtThis.image = "if-else:";}
+	|	<IF> <LPAREN> Predicate()<RPAREN> Statement() {jjtThis.image = "if:";}
+	|	<EACH> <LPAREN> Var() <COLON> Expression() (DotIdCon())? <RPAREN> Statement() {jjtThis.image = "each:";}
+	|	LOOKAHEAD(2)<ECHO> Expression() (DotIdCon())? <SEMICOLON> {jjtThis.image = "echo:";}
+	|	LOOKAHEAD(2)<ECHO> Embedding() (DotIdCon())? <SEMICOLON> {jjtThis.image = "echo:";}
+	|	<LET> (Assignment())+ <IN> (Statement())* <END> {jjtThis.image = "let:";}
+
+	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON>
+
 }
 
 void Predicate() : {} {
@@ -358,16 +361,16 @@ void Predicate() : {} {
 }
 
 void Assignment() : {} {
-	LOOKAHEAD(2)<IdCon> Formals() <ASSIGN> Statement()
-	|	LOOKAHEAD(2)Var() <ASSIGN> Expression() <SEMICOLON>
+	LOOKAHEAD(2)<IdCon> {jjtThis.image = "func-bind:" + token.image;} Formals() <ASSIGN> Statement()
+	|	LOOKAHEAD(2)<IdCon> {jjtThis.image = "var-bind:" + token.image;} <ASSIGN> Expression() <SEMICOLON>
 }
 
 void Embedding() : {} {
-	<PreText> Embed() TextTail()	
+	<PreText> {jjtThis.image = token.image;} Embed() TextTail()
 }
 
 void Embed() : {} { 
-	(Markup()) Expression()(DotIdCon())?
+	(LOOKAHEAD(3) Markup())* Expression()(DotIdCon())?
 }
 
 void TextTail() : {} { 
@@ -378,8 +381,7 @@ void TextTail() : {} {
 // Used by both the Site and FunctionDef ModuleElements
 // *********************************************
 void Markup() : {} { 
-	LOOKAHEAD(2) Designator() Arguments()
-	|	Designator()
+	Designator() (Arguments())?
 }
 
 void Designator() : {} {
@@ -411,18 +413,18 @@ void Var() : {} {
 
 void Expression() : {} {
 	// DotIdCon staat verspreid voor alle aanroepen van Expression
-	// Toevoegen hier werkt niet, overal achter expression werkt wel.
-	<SymbolCon>{jjtThis.image += "sym:" + token.image;}
-	|	<Text>{jjtThis.image += "text:" + token.image.substring(1,token.image.length() -1);}
-	|	<NatCon>{jjtThis.image += "num:" + token.image;}
-	|	Var()
+	// Toevoegen hier werkt niet, overal achter expression werkt wel.	
+	<SymbolCon>{jjtThis.image = "sym:" + token.image;}
+	|	<Text>{jjtThis.image = "text:" + token.image.substring(1,token.image.length() -1);}
+	|	<NatCon>{jjtThis.image = "num:" + token.image;}
+	|	Var(){jjtThis.image = "var:";}
 	|	<LBRACKET>{jjtThis.image = "list:";} (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
 	|	<LBRACE>{jjtThis.image = "record:";}(KeyValuePair()  (<COMMA>)? )* <RBRACE>
 
 }
 
 void DotIdCon() : {} {
-	<DOT> <IdCon>
+	<DOT> <IdCon> {jjtThis.image = token.image;}
 }
 
 void KeyValuePair() : {} {

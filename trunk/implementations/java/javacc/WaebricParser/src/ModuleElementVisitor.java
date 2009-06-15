@@ -13,13 +13,13 @@ public class ModuleElementVisitor extends WaebricParserVisitorAdapter {
 	  			ImportVisitor importVisitor = new ImportVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(importVisitor, null);
 	  			ast += importVisitor.getAST();
-	  		} else
-	  		if (node.jjtGetChild(currentChild).toString().equals("Site")){
+	  		} 
+	  		else if (node.jjtGetChild(currentChild).toString().equals("Site")){
 	  			SiteVisitor siteVisitor = new SiteVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(siteVisitor, null);			
 	  			ast += siteVisitor.getAST();
-	  		} else
-	  		if (node.jjtGetChild(currentChild).toString().equals("FunctionDef")){
+	  		} 
+	  		else if (node.jjtGetChild(currentChild).toString().equals("FunctionDef")){
 	  			FunctionDefVisitor functionDefVisitor = new FunctionDefVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(functionDefVisitor, null);			
 	  			ast += functionDefVisitor.getAST();

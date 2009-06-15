@@ -9,12 +9,14 @@ public class ArgumentVisitor extends WaebricParserVisitorAdapter {
 	  		if (currentChild > 0){
   				ast += ", ";
   			}
-	  		if (node.jjtGetChild(currentChild).toString().equals("Var")){
-	  			VarVisitor varVisitor = new VarVisitor();
-	  			node.jjtGetChild(currentChild).jjtAccept(varVisitor, null);
-	  			ast += varVisitor.getAST();
-	  		}
-	  		if (node.jjtGetChild(currentChild).toString().equals("Expression")){
+			
+	  		if (node.jjtGetChild(currentChild).toString().equals("DotIdCon")){
+				DotIdConVisitor dotIdConVisitor = new DotIdConVisitor();
+  				node.jjtGetChild(currentChild).jjtAccept(dotIdConVisitor, null);
+  				ast += dotIdConVisitor.getAST();
+  			}
+	  		
+	  		else if (node.jjtGetChild(currentChild).toString().equals("Expression")){
 	  			String nodeImage = node.image;
 	  			if (!nodeImage.equals("")){
 	  				ast += "attr(" + node.image +  ", ";
