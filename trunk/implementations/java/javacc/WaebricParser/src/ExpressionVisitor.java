@@ -5,15 +5,17 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 		String[] dataFromJjt = node.image.split(":");
 		
 		if(	dataFromJjt[0].equals("sym")) {
-				ast += dataFromJjt[0] + "(\"" + dataFromJjt[1] + "\")";
+			ast += dataFromJjt[0] + "(\"" + safeGetStr(dataFromJjt, 1) + "\")";
 		}
 		
 		else if(dataFromJjt[0].equals("text")){
-			ast += dataFromJjt[0] + "(\"\\\"" + dataFromJjt[1] + "\\\"\")";
+			if (dataFromJjt.length > 1){
+				ast += dataFromJjt[0] + "(\"\\\"" + safeGetStr(dataFromJjt, 1) + "\\\"\")";
+			}
 		}
 		
 		else if(dataFromJjt[0].equals("num")){
-			ast += dataFromJjt[0] + "(" + dataFromJjt[1] + ")";
+			ast += dataFromJjt[0] + "(" + safeGetStr(dataFromJjt, 1) + ")";
 		}
 		
 		else if(dataFromJjt[0].equals("list") || dataFromJjt[0].equals("record")) {
