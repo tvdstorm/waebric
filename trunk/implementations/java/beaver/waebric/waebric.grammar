@@ -5,21 +5,16 @@
 
 %terminals MODULE, IMPORT, DEF, END, SITE, LIST, RECORD, STRING, IF, ELSE, COMMENT, ECHO, CDATA, EACH, LET, IN, YIELD, IDCON;
 
-%terminals STRING_LITERAL;
-
 %terminals LPAREN, RPAREN, LBRACE, RBRACE, LBRACK, RBRACK;
 
-%terminals SEMICOLON, COMMA, DOT, COLON, MOD, ADDCHAR, DIV, QUESTION, NOT, ANDAND, OROR, EQ, LT, GT;
+%terminals SEMICOLON, COMMA, DOT, COLON, MOD, ADDCHAR, DIV, QUESTION, NOT, ANDAND, OROR, EQ ;
 
 %terminals DIRNAME, FILENAME;
 
 %terminals NATCON, STRCON, SYMBOLCON;
 
-%terminals TODO_EMBEDDING, TODO_MARKUP, TODO_PREDICATE  ;
 
 %terminals PRETEXT, MIDTEXT, POSTTEXT, TEXT;
-
-%terminals MARUPOPT_TODO;
 
 %terminals IDCONTAIL;
 
@@ -128,16 +123,16 @@ expression = var
 | NATCON.n {: //@num(#n) :}
 | textexpression.t {: //@text(t) :}  
 | expression.e DOT IDCON.i {: //@field(e,$i) :}
-| LBRACK expressions.e RBRACK {: //@list(e) :}
-| LBRACE keyvaluepairs.p RBRACE /* {: //@record(p) :} */
+| LBRACK expressions.e RBRACK {: //@list([e]) :}
+| LBRACE keyvaluepairs.party RBRACE  {: //@record([party]) :}
 ;
 
 embedexpression = IDCONTAIL.i {: //@var($i) :}
 | symbolcon.s {: //@sym(s) :}
 | NATCON.n {: //@num(#n) :}  
 | expression.e DOT IDCONTAIL.i {: //@field(e,$i) :}
-| LBRACK expressions.e RBRACK {: //@list(e) :}
-| LBRACE keyvaluepairs.p RBRACE /* {: //@record(p) :} */
+| LBRACK expressions.e RBRACK {: //@list([e]) :}
+| LBRACE keyvaluepairs.p RBRACE  {: //@record([p]) :} 
 ;
 
 textexpression = TEXT.t {: //$text_expression($t) :}
@@ -146,15 +141,15 @@ textexpression = TEXT.t {: //$text_expression($t) :}
 symbolcon = SYMBOLCON.s  {: //$sym_text($s) :}
 ;
 
-expressions = expression.x  
-| expressions.a COMMA expression.b {: //$expressionlist(a,b) :}
+expressions = expression
+| expression COMMA expressions 
 ;
 
-keyvaluepair = IDCON.i COLON expression.e /* {: //@pair($i,e) :} */
+keyvaluepair = IDCONDESIGNATOR.i COLON expression.e  {: //@pair($i,e) :} 
 ;
 
 keyvaluepairs = keyvaluepair
-| keyvaluepairs.a COMMA keyvaluepair.b /* {: //$pairlist(a,b) :} */
+| keyvaluepairs COMMA keyvaluepair
 ;
 
 /* SDF specificatie: languages/waebric/syntax/Embedding */
@@ -251,7 +246,7 @@ mappings_opt =
 ;
 
 mappings = mapping
-| mappings SEMICOLON mapping 
+| mappings SEMICOLON mapping
 ;
 
 mapping = path.p COLON markup.m {: //@mapping(p,m) :}

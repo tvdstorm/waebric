@@ -75,8 +75,12 @@ public class ASTGenerator
 							{
 								if(rhs_item.symbol.type==null)
 								{
+									rhs_item.symbol.type = astInfo.getBeaverType(rhs_item.alias);									
+								}
+								else if(rhs_item.symbol.type.equals("+beaver.Symbol"))
+								{
+									//beaver detected an Array, overrule this with our own type
 									rhs_item.symbol.type = astInfo.getBeaverType(rhs_item.alias);
-										
 								}
 							}
 							
