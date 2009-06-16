@@ -19,7 +19,7 @@ ModuleElement ::=
 
 Embed ::=
 	{ExpEmbedding} MarkupList:ml Expression:e |
-	{MarkupEmbedding} MarkupList:ml Designator:d
+	{MarkupEmbedding} MarkupList:ml Markup:m
 
 
 Texttail ::=
@@ -74,7 +74,8 @@ Expression ::=
 	{Symb} "String":id |
 	{Num} "String":id | 
 	{Text} "String":id |
-	{Record} Keyvaluepair*
+	{Record} Keyvaluepair* |
+	{Field} Expression String
 
 MarkupList ::= 
 	Markup*
@@ -106,4 +107,4 @@ Args ::= Argument*
 
 Argument ::=
 	Expression:e | 
-	{Attri} "String":id Expression:expr
+	{Attri} "String":id Expression:expr	

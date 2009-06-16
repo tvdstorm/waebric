@@ -255,6 +255,14 @@ public class PrintAST extends VisitorAdaptor {
 	    }
 	}
 	
+	public void visit(Field f) {		
+		cout("field"+OPEN);
+		print(f.expression);
+		cout(SEP);
+		cout(f.string);
+		cout(CLOSE);
+	}
+	
 	public void visit(Formal f) {
 		// abstract super class
 	}
@@ -420,7 +428,7 @@ public class PrintAST extends VisitorAdaptor {
 		cout("markup-embedding"+OPEN);
 		printArray(m.ml);
 		cout(SEP);
-		print(m.d);
+		print(m.m);
 		cout(CLOSE);
 	}
 
