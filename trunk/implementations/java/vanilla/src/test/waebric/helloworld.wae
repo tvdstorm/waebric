@@ -4,15 +4,19 @@ import src.test.waebric.mod.sub
 import src.test.waebric.mod.sub
 
 def main
-	p { 
+	html { 
 		comment "COMMENT WORKS";
 		cdata "CDATA WORKS";
 		head title "HAI";
 		body p "WORLD";
 	}
-	myyield() echo "LOL3U";
+	myyield() myyield2() "LOL3U";
 end
 
 def myyield()
-	b "LOL2U";
+	yield;
+end
+
+def myyield2()
+	b yield;
 end
