@@ -1,22 +1,13 @@
 module src.test.waebric.helloworld
 
-import src.test.waebric.mod.sub
-import src.test.waebric.mod.sub
-
-def main
-	html { 
-		comment "COMMENT WORKS";
-		cdata "CDATA WORKS";
-		head title "HAI";
-		body p "WORLD";
-	}
-	myyield() myyield2() "LOL3U";
+def main 
+ html call1() echo "NOWAI";
 end
 
-def myyield()
-	yield;
+def call1
+ call2() yield;
 end
 
-def myyield2()
-	b yield;
+def call2
+ yield;
 end
