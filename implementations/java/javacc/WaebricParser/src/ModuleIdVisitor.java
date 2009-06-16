@@ -1,10 +1,10 @@
 public class ModuleIdVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTModuleId node, Object data){	
-		ast += "module-id([";
+		addToAST( "module-id([" );
 		
-		ast += node.image;
+		addToAST( node.image );
 	  	
-	  	ast += "])";
+	  	addToAST( "])" );
 		return data;
 	}
 }

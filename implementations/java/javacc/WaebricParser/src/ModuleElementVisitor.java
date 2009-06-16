@@ -2,31 +2,31 @@ public class ModuleElementVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTModuleElement node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
-		ast += "";
+		addToAST( "" );
 		
 	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
   			// if list
 	  		if (currentChild > 0){
-  				ast += ", ";
+  				addToAST( ", " );
   			}
 	  		if (node.jjtGetChild(currentChild).toString().equals("Import")){
 	  			ImportVisitor importVisitor = new ImportVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(importVisitor, null);
-	  			ast += importVisitor.getAST();
+	  			addToAST( importVisitor.getAST() );
 	  		} 
 	  		else if (node.jjtGetChild(currentChild).toString().equals("Site")){
 	  			SiteVisitor siteVisitor = new SiteVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(siteVisitor, null);			
-	  			ast += siteVisitor.getAST();
+	  			addToAST( siteVisitor.getAST() );
 	  		} 
 	  		else if (node.jjtGetChild(currentChild).toString().equals("FunctionDef")){
 	  			FunctionDefVisitor functionDefVisitor = new FunctionDefVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(functionDefVisitor, null);			
-	  			ast += functionDefVisitor.getAST();
+	  			addToAST( functionDefVisitor.getAST() );
 	  		}
 	    }
 	  	
-	  	ast += "";
+	  	addToAST( "" );
 		return data;
 	}
 }

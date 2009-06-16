@@ -3,10 +3,10 @@ public class ModulesVisitor extends WaebricParserVisitorAdapter {
 		int numChildren = node.jjtGetNumChildren();
 
 	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
-	  		if (node.jjtGetChild(currentChild).toString().equals(PRODUCTION_MODULE)){
+	  		if (node.jjtGetChild(currentChild).toString().equals("Module")){
 	  			ModuleVisitor moduleVisitor = new ModuleVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(moduleVisitor, null);
-	  			ast += moduleVisitor.getAST();
+	  			addToAST( moduleVisitor.getAST() );
 	  		}
 	    }
 		return data;

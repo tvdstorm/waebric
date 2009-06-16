@@ -6,23 +6,22 @@ options {
 
 PARSER_BEGIN(WaebricParser) 
 
-/* Imports */
 import java.io.*;
 
 public class WaebricParser {
  	public static void main(String[] args) {
     	
-    	/* first check arguments*/
+    	// Check if user has used arguments
     	if(args.length == 0){
     		System.out.println("No arguments found: Please run -> WaebricParser filename.wae");
-    		System.out.println("Working directory: " + System.getProperty("user.dir"));
+    		System.out.println("Current working directory: " + System.getProperty("user.dir"));
     		System.exit(0);
     	}
     	
-    	/* Reader set to null te avoid init problems*/
+    	// Reader set to null te avoid init problems
     	Reader sr = null;
     	
-    	/* Load data from file */
+    	// Load waebric data from file
     	try {
     		sr = new FileReader(new File(args[0]));
    		}catch(FileNotFoundException filenotfound) {
@@ -34,9 +33,16 @@ public class WaebricParser {
     	WaebricParser p = new WaebricParser(sr);
     
     	try {
+    		// Begin parsing with the first Module node
       		SimpleNode n = p.Modules();
+      		
+      		// Save AST tree into String
 	  		String ast = processNode( n, 0);
+	  		
+	  		System.out.println("AST:");
 	  		System.out.println(ast);
+	  		System.out.println("");
+	  		System.out.println("Abstract syntaxt tree dump:");
 	  		n.dump("");
     	} catch (ParseException pe) {
       		pe.printStackTrace();
@@ -53,22 +59,25 @@ public class WaebricParser {
 
 PARSER_END(WaebricParser)
 
+/*
+Lexer
+*/
 
-/* LAYOUT */
+// Comments, spaces and newlines are skipped by the parser
 <*>
 SKIP : {
-	" "
-	| "\t"
-	| "\n"
-	| "\r"
-	| <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
-	| <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
+		" "
+	| 	"\t"
+	| 	"\n"
+	| 	"\r"
+	| 	<"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+	| 	<"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
 }
 
-/* RESERVED KEYWORDS */
+// Reserved keywords
 <DEFAULT, IN_PATH>
 TOKEN : {
-	< MODULE : "module" >
+		< MODULE : "module" >
 	|	< IMPORT : "import" >
 	|	< SITE : "site" > : IN_PATH
 	|	< END : "end" > : DEFAULT
@@ -87,10 +96,10 @@ TOKEN : {
 	|	< #STRING : "string" >
 }
 
-/* SEPARATORS */
+// Separators
 <DEFAULT, IN_NO_IDCON>
 TOKEN : {
-	< LPAREN : "(" >
+		< LPAREN : "(" >
 	|	< RPAREN : ")" > 
 	|	< LBRACKET : "[" >
 	|	< RBRACKET : "]" >
@@ -102,10 +111,10 @@ TOKEN : {
 	|	< DOT : "." >
 }
 
-/* OPERATORS */
+// Operators
 <DEFAULT>
 TOKEN : {
-	< DOLLAR_SIGN: "$" >
+		< DOLLAR_SIGN: "$" >
 	|	< NUMBER_SIGN: "#" >
 	|	< ASSIGN : "=" >
 	|	< AT : "@" >
@@ -115,7 +124,7 @@ TOKEN : {
 	|	< PLUS : "+" >
 }
 
-/* START NORMAL TOKENS */
+// Start 'other' tokens
 <IN_PATH>
 TOKEN : {
 	< #PathElement :
@@ -237,13 +246,13 @@ TOKEN : {
 <DEFAULT>
 TOKEN : {
 	< Type :
-		<LIST>
+			<LIST>
 		|	<RECORD>
 		|	<STRING>
 	>
 }
 
-// Embedding
+// Tokens tht are used by Embeding Productions
 <DEFAULT>
 TOKEN : {
 	< PreText :
@@ -272,7 +281,11 @@ TOKEN : {
     >
 }
 
-/* GENERIC */
+/*
+Parser productions
+*/
+
+// Modules is the main node wich we start with
 SimpleNode Modules() : {}
 {
   (Module())* <EOF> 
@@ -288,7 +301,7 @@ void ModuleId() : {} {
 }
 
 void ModuleElement() : {} {
-	Import()
+		Import()
 	|	Site()
 	|	FunctionDef()
 }
@@ -330,18 +343,24 @@ void Formals() : {} {
 }
 
 void Statement() : {} {
-	<YIELD> <SEMICOLON> {jjtThis.image = "yield:";}
+		<YIELD> <SEMICOLON> {jjtThis.image = "yield:";}
 	|	<COMMENT> <StrCon> {jjtThis.image = "comment:" + token.image;} <SEMICOLON> 
+	
+	// Markup statements
 	| 	LOOKAHEAD(Markup() <SEMICOLON>) Markup() <SEMICOLON> {jjtThis.image = "markup:";}
 	|	LOOKAHEAD((Markup())+ <SEMICOLON>) (Markup())+  <SEMICOLON>{jjtThis.image = "markup-markup:";}
+	
 	|	LOOKAHEAD((Markup())+ Expression() <SEMICOLON>)(
 				(LOOKAHEAD(2)Markup())+ Expression() <SEMICOLON>
 			)	{jjtThis.image = "markup-exp:";}
+	
 	|	LOOKAHEAD((Markup())+ Statement())(
 				LOOKAHEAD(2)Markup() Statement()
 				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Statement()
 			)	{jjtThis.image = "markup-stat:";}	
+	
 	|	LOOKAHEAD((Markup())+ Embedding() <SEMICOLON>) (Markup())+ (Embedding() <SEMICOLON>){jjtThis.image = "markup-embedding:";}
+	
 	|	LOOKAHEAD(4)<LBRACE>{jjtThis.image = "block:";} (Statement())* <RBRACE>
 	|	LOOKAHEAD((<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE>) (<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE> Statement() {jjtThis.image = "if-else:";}
 	|	<IF> <LPAREN> Predicate()<RPAREN> Statement() {jjtThis.image = "if:";}
@@ -350,16 +369,15 @@ void Statement() : {} {
 	|	LOOKAHEAD(2)<ECHO> Embedding() (DotIdCon())? <SEMICOLON> {jjtThis.image = "echo:";}
 	|	<LET> (Assignment())+ <IN> (Statement())* <END> {jjtThis.image = "let:";}
 	|	<CDATA> Expression() (DotIdCon())? <SEMICOLON> {jjtThis.image = "cdata:";}
-
 }
 
 void Predicate() : {} {
-	LOOKAHEAD(2) Expression() (DotIdCon())?
+		LOOKAHEAD(2) Expression() (DotIdCon())?
 	|	LOOKAHEAD(Expression() (DotIdCon())?)<DOT> <Type>
 }
 
 void Assignment() : {} {
-	LOOKAHEAD(2)<IdCon> {jjtThis.image = "func-bind:" + token.image;} Formals() <ASSIGN> Statement()
+		LOOKAHEAD(2)<IdCon> {jjtThis.image = "func-bind:" + token.image;} Formals() <ASSIGN> Statement()
 	|	LOOKAHEAD(2)<IdCon> {jjtThis.image = "var-bind:" + token.image;} <ASSIGN> Expression() <SEMICOLON>
 }
 
@@ -387,7 +405,7 @@ void Designator() : {} {
 }
 
 void Attribute() : {} {
-	<NUMBER_SIGN> <IdCon>{jjtThis.image = "id:" + token.image;}
+		<NUMBER_SIGN> <IdCon>{jjtThis.image = "id:" + token.image;}
 	|	<DOT> <IdCon>{jjtThis.image = "class:" + token.image;}
 	|	<DOLLAR_SIGN> <IdCon>{jjtThis.image = "name:" + token.image;}
 	|	<COLON> <IdCon>{jjtThis.image = "type:" + token.image;}
@@ -401,7 +419,7 @@ void Arguments() : {} {
 }
 
 void Argument() : {} {
-	LOOKAHEAD(2)<IdCon>{jjtThis.image = "\"" + token.image + "\"";} <ASSIGN> Expression() (DotIdCon())?
+		LOOKAHEAD(2)<IdCon>{jjtThis.image = "\"" + token.image + "\"";} <ASSIGN> Expression() (DotIdCon())?
 	|	Expression() (DotIdCon())?
 }
 
@@ -409,10 +427,14 @@ void Var() : {} {
 	<IdCon> {jjtThis.image = token.image;}
 }
 
-void Expression() : {} {
-	// DotIdCon staat verspreid voor alle aanroepen van Expression
-	// Toevoegen hier werkt niet, overal achter expression werkt wel.	
-	<SymbolCon>{jjtThis.image = "sym:" + token.image;}
+/*
+	Note:
+	Expression + Idcon is not working because of left recursion
+	DotIdCon is now placed behind every line wich is using Expression 
+	This do work, but may have to be written on a different manner in the future
+*/
+void Expression() : {} {	
+		<SymbolCon>{jjtThis.image = "sym:" + token.image;}
 	|	<Text>{jjtThis.image = "text:" + token.image.substring(1,token.image.length() -1);}
 	|	<NatCon>{jjtThis.image = "num:" + token.image;}
 	|	Var(){jjtThis.image = "var:";}

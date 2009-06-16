@@ -1,16 +1,28 @@
 public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 {	
 	static final String EMPTRY_STRING = "";
-	static final String PRODUCTION_MODULE = "Module";
 	
-	protected String ast = EMPTRY_STRING;
+	private String ast = EMPTRY_STRING;
 	
 	/**
-	 * 
 	 * @return retrieves the constructed ast from the node
 	 */
 	public String getAST(){
 		return ast;
+	}
+	
+	/**
+	 * @param newAst: the new ast
+	 */
+	public void setAST(String newAst){
+		ast = newAst;
+	}
+	
+	/**
+	 * @param stringToAdd: the String you want to add to the ast
+	 */
+	public void addToAST(String stringToAdd){
+		ast += stringToAdd;
 	}
 	
 	/**

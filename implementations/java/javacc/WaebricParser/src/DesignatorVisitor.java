@@ -2,21 +2,21 @@ public class DesignatorVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTDesignator node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
-		ast += "tag(" + node.image + ", [";
+		addToAST( "tag(" + node.image + ", [" );
 		
 	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
   			// if list
 	  		if (currentChild > 0){
-  				ast += ", ";
+  				addToAST( ", " );
   			}
 	  		if (node.jjtGetChild(currentChild).toString().equals("Attribute")){
 	  			AttributeVisitor attributeVisitor = new AttributeVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(attributeVisitor, null);
-	  			ast += attributeVisitor.getAST();
+	  			addToAST( attributeVisitor.getAST() );
 	  		}
 	    }
 	  	
-	  	ast += "])";
+	  	addToAST( "])" );
 		return data;
 	}
 }
