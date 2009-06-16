@@ -1,7 +1,7 @@
 module src.test.waebric.helloworld
 
 def main 
- html call1() echo "NOWAI";
+ html call1() echo "LOL";
 end
 
 def call1
