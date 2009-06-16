@@ -113,7 +113,7 @@ Comment 			= {TraditionalComment} | {EndOfLineComment}
 
 /* Expressions */
 SymbolCon			= "'" {SymbolChar}*
-SymbolChar			= [^\000-\031\)\ \t\n\r\;\,\>]
+SymbolChar			= [^\000-\031\)\ \t\n\r\;\,\>] /* 127-255 weggelaten. werkt niet met jflex */
 
 /* IdentifierCon */
 IdCon				= [A-Za-z][A-Za-z\-0-9]*
@@ -196,14 +196,12 @@ DirectorySeparator  = "/" [^\ \t\n\r\.\/\\]
 	"&&"            { return symbol("And", sym.AND); }
 	"||"            { return symbol("Or", sym.OR); }		
 	":"             { return symbol("Colon", sym.COLON); }			
-	"+"             { return symbol("Plus", sym.PLUS); }	
+	/*"+"             { return symbol("Plus", sym.PLUS); }*/	
 }
 
 /*
 	Gedeelde state voor YYINITIAL en SITE. Dit om de markup tussen SITE en END te ondersteunen.
-	TODO is dit volledig? markup is [designator] of [designator arguments] designator is [IDCON attribute*] etc etc
-	volgens mij kan dit nooit gaan werken in de lexer...
-	
+	TODO is dit volledig?	
 */
 <YYINITIAL, SITE> {	
 	"end"			{ yybegin(YYINITIAL); return symbol("End", sym.END); }
