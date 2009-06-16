@@ -2,21 +2,21 @@ public class ArgumentsVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTArguments node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
-		ast += "args([";
+		addToAST( "args([" );
 		node.value = "";
 	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
   			// if list
 	  		if (currentChild > 0){
-  				ast += ", ";
+  				addToAST( ", " );
   			}
 	  		if (node.jjtGetChild(currentChild).toString().equals("Argument")){
 	  			ArgumentVisitor argumentVisitor = new ArgumentVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(argumentVisitor, null);
-	  			ast += argumentVisitor.getAST();
+	  			addToAST( argumentVisitor.getAST() );
 	  		}
 	    }
 	  	
-	  	ast += "])";
+	  	addToAST( "])" );
 		return data;
 	}
 }

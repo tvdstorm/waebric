@@ -7,19 +7,19 @@ public class EmbedVisitor extends WaebricParserVisitorAdapter {
 			if (node.jjtGetChild(currentChild).toString().equals("Expression")){
   				ExpressionVisitor expressionVisitor = new ExpressionVisitor();
   				node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
-  				ast += expressionVisitor.getAST();
+  				addToAST( expressionVisitor.getAST());
   			}
 			
 			else if (node.jjtGetChild(currentChild).toString().equals("Markup")){
 				MarkupVisitor markupVisitor = new MarkupVisitor();
   				node.jjtGetChild(currentChild).jjtAccept(markupVisitor, null);
-  				ast += "[" + markupVisitor.getAST() + "], ";
+  				addToAST( "[" + markupVisitor.getAST() + "], " );
   			}
 			
 			else if (node.jjtGetChild(currentChild).toString().equals("DotIdCon")){
 				DotIdConVisitor dotIdConVisitor = new DotIdConVisitor();
   				node.jjtGetChild(currentChild).jjtAccept(dotIdConVisitor, null);
-  				ast += ", " + dotIdConVisitor.getAST();
+  				addToAST( ", " + dotIdConVisitor.getAST());
   			}
 		}
 		

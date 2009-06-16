@@ -4,30 +4,30 @@ public class MarkupVisitor extends WaebricParserVisitorAdapter {
 		
 	  	// Markup is a call if parent is mapping and markup has arguments		
 		if ((node.jjtGetNumChildren() >= 2)) {//&& (node.parent.toString().equals("Mapping"))){
-			ast += "call(";
+			addToAST( "call(" );
 		}
 		
 	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
   			// if list
 	  		if (currentChild > 0){
-  				ast += ", ";
+  				addToAST( ", " );
   			}
 	  		
 	  		if (node.jjtGetChild(currentChild).toString().equals("Designator")){
 	  			DesignatorVisitor designatorVisitor = new DesignatorVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(designatorVisitor, null);
-	  			ast += designatorVisitor.getAST();
+	  			addToAST( designatorVisitor.getAST() );
 	  		} 
 	  		else if (node.jjtGetChild(currentChild).toString().equals("Arguments")){
 	  			ArgumentsVisitor argumentsVisitor = new ArgumentsVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(argumentsVisitor, null);
-	  			ast += argumentsVisitor.getAST();
+	  			addToAST( argumentsVisitor.getAST() );
 	  		}
 	    }
 	  	
 	  	// Markup is a call if parent is mapping and markup has arguments
 		if ((node.jjtGetNumChildren() >= 2)) {//&& (node.parent.toString().equals("Mapping"))){
-			ast += ")";
+			addToAST( ")" );
 		}
 		
 		return data;

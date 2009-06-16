@@ -1,10 +1,10 @@
 public class FormalsVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTFormals node, Object data){
-		ast += "formals([";
+		addToAST( "formals([" );
 		
-		ast += node.image;
+		addToAST( node.image );
 
-	  	ast += "])";
+	  	addToAST( "])" );
 		return data;
 	}
 }

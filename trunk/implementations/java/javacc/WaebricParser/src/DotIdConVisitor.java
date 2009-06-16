@@ -1,6 +1,6 @@
 public class DotIdConVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTDotIdCon node, Object data){	
-		ast += "\"" + node.image + "\"";
+		addToAST( "\"" + node.image + "\"" );
 		return data;
 	}
 }

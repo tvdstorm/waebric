@@ -1,10 +1,10 @@
 public class VarVisitor extends WaebricParserVisitorAdapter {	
 	public Object visit(ASTVar node, Object data){	
-		ast += "var(\"";
+		addToAST( "var(\"" );
 		
-		ast += node.image;		
+		addToAST( node.image );		
 	  	
-	  	ast += "\")";
+	  	addToAST( "\")" );
 		return data;
 	}
 }

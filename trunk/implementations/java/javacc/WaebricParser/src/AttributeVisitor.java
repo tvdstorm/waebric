@@ -8,12 +8,12 @@ public class AttributeVisitor extends WaebricParserVisitorAdapter {
 			dataFromStatement[0].equals("class") ||
 			dataFromStatement[0].equals("name") ||
 			dataFromStatement[0].equals("type")) {
-				ast += dataFromStatement[0] + "(\"" + dataFromStatement[1] + "\")";
+				addToAST( dataFromStatement[0] + "(\"" + dataFromStatement[1] + "\")" );
 		}
 		
 		else if(dataFromStatement[0].equals("width-height") ||
 				dataFromStatement[0].equals("height")){
-			ast += dataFromStatement[0] + "(" + dataFromStatement[1] + ")";
+			addToAST( dataFromStatement[0] + "(" + dataFromStatement[1] + ")" );
 		}
 
 		return data;
