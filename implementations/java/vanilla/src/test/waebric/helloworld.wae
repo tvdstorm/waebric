@@ -1,13 +1,19 @@
 module src.test.waebric.helloworld
 
 def main 
- html call1() echo "LOL";
+ html call1() call3() echo "LOL";
 end
 
 def call1
  call2() yield;
+ call3() yield;
 end
 
 def call2
+ yield;
+end
+
+def call3
+ echo "CALL3";
  yield;
 end
