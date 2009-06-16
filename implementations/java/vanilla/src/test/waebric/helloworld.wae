@@ -10,5 +10,9 @@ def main
 		head title "HAI";
 		body p "WORLD";
 	}
-	b "LOL";
+	myyield() echo "LOL3U";
+end
+
+def myyield()
+	b "LOL2U";
 end
