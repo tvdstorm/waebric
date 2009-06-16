@@ -3,18 +3,18 @@ public class AssignmentVisitor extends WaebricParserVisitorAdapter {
 		addToAST( "[" );
 		
 		// Make a choice between kinds of statements
-		String[] dataFromStatement = node.image.split(":");
+		String[] dataFromJJT = node.image.split(":");
 		
-		if(	dataFromStatement[0].equals("func-bind")){
-			addToAST( dataFromStatement[0] + "([" + dataFromStatement[1] );
+		if(	dataFromJJT[0].equals("func-bind")){
+			addToAST( dataFromJJT[0] + "([" + safeGetStr(dataFromJJT, 1) );
 			StatementVisitor statementVisitor = new StatementVisitor();
 	  		node.jjtGetChild(0).jjtAccept(statementVisitor, null);
 	  		addToAST( statementVisitor.getAST() );
 			addToAST( "])" );
 		}
 		
-		else if(dataFromStatement[0].equals("var-bind")){
-			addToAST( dataFromStatement[0] + "(\"" + dataFromStatement[1] + "\"" );
+		else if(dataFromJJT[0].equals("var-bind")){
+			addToAST( dataFromJJT[0] + "(\"" + safeGetStr(dataFromJJT, 1) + "\"" );
 			processChildren(node);
 			addToAST( ")" );
 		}

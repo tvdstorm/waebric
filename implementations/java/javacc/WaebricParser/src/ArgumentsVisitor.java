@@ -4,7 +4,8 @@ public class ArgumentsVisitor extends WaebricParserVisitorAdapter {
 		
 		addToAST( "args([" );
 		node.value = "";
-	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
+	  	
+		for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
   			// if list
 	  		if (currentChild > 0){
   				addToAST( ", " );
