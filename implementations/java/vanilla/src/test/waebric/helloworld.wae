@@ -1,13 +1,11 @@
 module src.test.waebric.helloworld
 
-def main 
- call1() echo "LOL";
-end
+import src.test.waebric.mod.sub
+import src.test.waebric.mod.sub
 
-def call1
- call2() yield;
-end
-
-def call2
- yield;
+def main
+	html { 
+		head title "HAI";
+		body p "WORLD";
+	}
 end
