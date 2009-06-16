@@ -92,10 +92,6 @@ DocumentationComment = "/*" "*"+ [^/*] ~"*/"
    or just a zero.  */
 Natcon = [0-9]+
 
-/* A identifier integer is a word beginning a letter between A and
-   Z, a and z, or an underscore followed by zero or more letters
-   between A and Z, a and z, zero and nine, or an underscore. */
-dec_int_id = [A-Za-z_.][A-Za-z_0-9.]*
 
 TextChar = [^\x00-\x1F\&\"\<\x80-\xFF]
 SymbolChar = [^\x00-\x1F\)\ \t\n\r\;\,\>\x80-\xFF]
@@ -108,11 +104,6 @@ FileExt = [a-zA-Z0-9]+
 PathElement = [^\ \t\n\r\.\/\\]+
 Directory = {PathElement} ("/" {PathElement})* 
 
-
-LetterDigit = [:jletterdigit:]
-
-/* string literals */
-StringCharacter = [^\r\n\"\\]
 
 
 /* identifiers */

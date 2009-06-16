@@ -204,19 +204,10 @@ designator = IDCONDESIGNATOR.i attribute_opt.a {: //@tag($i,[a]) :}
 
 markupstatement = markup_seq.m statement.s {: //@markup-stat(m,s) :}
 | markup.m SEMICOLON {: //@markup(m) :}
+| markup_seq.s markup.m SEMICOLON {: //@markup-markup(s,m) :}
+| markup_seq.s expression.e SEMICOLON {: //@markup-exp(s,e) :}
+| markup_seq.s embedding.e SEMICOLON {: //@markup-embedding(s,e) :}
 ;
-
-/*
- 
-%left statement
-statement = markup_seq statement
-| markup_seq SEMICOLON
-| markup_seq expression SEMICOLON
-| markup_seq embedding SEMICOLON
-;
-*/
-
-
 
 attribute = HASHIDCON.i {: //$id($i) :}
 | ATTDOTIDCON.i {: //$class($i) :}
