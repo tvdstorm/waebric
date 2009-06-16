@@ -114,7 +114,7 @@
       <arg value="demos/lava/test.wae" />
     </java>
   </target>
-  <target name="runonly" depends="copy_src">
+  <target name="runonly" depends="">
     <java jar="${dist}/Waebric.jar" fork="true">
       <arg value="demos/lava/verhalen.wae" />
     </java>
