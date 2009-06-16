@@ -2,79 +2,79 @@ public class StatementVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTStatement node, Object data){
 		
 		// Make a choice between kinds of statements
-		String[] dataFromStatement = node.image.split(":");
+		String[] dataFromJJT = node.image.split(":");
 		
-		if(	dataFromStatement[0].equals("yield")){
-			addToAST( dataFromStatement[0] );
+		if(	dataFromJJT[0].equals("yield")){
+			addToAST( dataFromJJT[0] );
 		}
 		
-		else if(dataFromStatement[0].equals("comment")){
-			addToAST( dataFromStatement[0] + "(" + dataFromStatement[1] + ")" );
+		else if(dataFromJJT[0].equals("comment")){
+			addToAST( dataFromJJT[0] + "(" + safeGetStr(dataFromJJT, 1) + ")" );
 		}
 		
-		else if(dataFromStatement[0].equals("markup")){
-			addToAST( dataFromStatement[0] + "(" );
+		else if(dataFromJJT[0].equals("markup")){
+			addToAST( dataFromJJT[0] + "(" );
   			MarkupVisitor markupVisitor = new MarkupVisitor();
   			node.jjtGetChild(0).jjtAccept(markupVisitor, null);
   			addToAST( markupVisitor.getAST() );
 			addToAST( ")" );
 		}
 		
-		else if(dataFromStatement[0].equals("markup-exp")){
-			addToAST( dataFromStatement[0] + "([" );
+		else if(dataFromJJT[0].equals("markup-exp")){
+			addToAST( dataFromJJT[0] + "([" );
 			processChildrenMarkup(node);
 			addToAST( ")" );
 		}
 		
-		else if(dataFromStatement[0].equals("markup-stat")){
-			addToAST( dataFromStatement[0] + "([" );
+		else if(dataFromJJT[0].equals("markup-stat")){
+			addToAST( dataFromJJT[0] + "([" );
 			processChildrenMarkup(node);
 			addToAST( ")" );
 		}
 		
-		else if(dataFromStatement[0].equals("markup-markup")){
-			addToAST( dataFromStatement[0] + "([" );
+		else if(dataFromJJT[0].equals("markup-markup")){
+			addToAST( dataFromJJT[0] + "([" );
 			processChildrenMarkup(node);
 			addToAST( ")" );
 		}
 		
-		else if(dataFromStatement[0].equals("markup-embedding")){
-			addToAST( dataFromStatement[0] + "([" );
+		else if(dataFromJJT[0].equals("markup-embedding")){
+			addToAST( dataFromJJT[0] + "([" );
 			processChildrenMarkup(node);
 			addToAST( ")" );
 		}
 		
-		else if(dataFromStatement[0].equals("block")){
-			addToAST( dataFromStatement[0] + "([" );
+		else if(dataFromJJT[0].equals("block")){
+			addToAST( dataFromJJT[0] + "([" );
 			processChildrenBlock(node);
 			addToAST( "])" );
 		}
 		
-		else if(dataFromStatement[0].equals("if-else") || dataFromStatement[0].equals("if")) {
-			addToAST( dataFromStatement[0] + "(" );
+		else if(dataFromJJT[0].equals("if-else") || dataFromJJT[0].equals("if")) {
+			addToAST( dataFromJJT[0] + "(" );
 			processChildrenIfElse(node);
 			addToAST( ")" );
 		}
 		
-		else if(dataFromStatement[0].equals("each")) {
-			addToAST( dataFromStatement[0] + "(" );
+		else if(dataFromJJT[0].equals("each")) {
+			addToAST( dataFromJJT[0] + "(" );
 			processChildrenEach(node);
 			addToAST( ")" );
 		}
 		
-		else if(dataFromStatement[0].equals("echo")) {
-			addToAST( dataFromStatement[0] + "(" );
+		else if(dataFromJJT[0].equals("echo")) {
+			addToAST( dataFromJJT[0] + "(" );
 			processChildrenEcho(node);
 			addToAST( ")" );
 		}
 		
-		else if(dataFromStatement[0].equals("let")) {
-			addToAST( dataFromStatement[0] + "(" );
+		else if(dataFromJJT[0].equals("let")) {
+			addToAST( dataFromJJT[0] + "(" );
 			processChildrenLet(node);
 			addToAST( ")" );
 		}
-		else if(dataFromStatement[0].equals("cdata")) {
-			addToAST( dataFromStatement[0] + "(" );
+		else if(dataFromJJT[0].equals("cdata")) {
+			addToAST( dataFromJJT[0] + "(" );
 			processChildrenCdata(node);
 			addToAST( ")" );
 		}
