@@ -59,7 +59,7 @@ import waebric.WaebricParser.Terminals;
 	
 	private void Debug(String text)
 	{
-		System.out.println(text);//commentariseer deze regel uit in productie
+		//System.out.println(text);//commentariseer deze regel uit in productie
 	}
 %}
 
@@ -261,14 +261,14 @@ SiteFilename = {PathElement} "." {FileExt}
 
 <PRETEXT> {
 	{TextChar}			   { string.append( yytext() ); }
-      "\""                       { yybegin(YYINITIAL); string.append(  yytext() );  return nextToken(Terminals.TEXT,  string.toString() ); }
-	{TextChar}/"<"             { yybegin(YYINITIAL); string.append(  yytext() + '<' );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
+      "\""                       { Debug("TEXT " + string + yytext() ); yybegin(YYINITIAL); string.append(  yytext() );  return nextToken(Terminals.TEXT,  string.toString() ); }
+	{TextChar}/"<"             { Debug("PRETEXT " + string+ yytext() ); yybegin(YYINITIAL); string.append(  yytext() + '<' );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
 }
 
 <POSTMIDTEXT> {
 	{TextChar} 			   { string.append( yytext() ); }
-	"\""                       { yybegin(YYINITIAL);  string.append( '\"' );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
-	{TextChar}/"<"             { yybegin(YYINITIAL);  string.append( yytext() + '<' );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
+	"\""                       { Debug("POSTTEXT " + string + yytext() );  yybegin(YYINITIAL);  string.append( '\"' );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
+	{TextChar}/"<"             { Debug("MIDTEXT " + string + yytext());  yybegin(YYINITIAL);  string.append( yytext() + '<' );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
 }
 
 <ATTRIBUTES> {

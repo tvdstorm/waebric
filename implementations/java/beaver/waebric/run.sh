@@ -6,5 +6,4 @@
 # en zet deze in output-bestand <filenaam>.txt
 
 java -classpath ../lib/beaver.jar:.:.. waebric/Main $1 > $2
-cat $2
 echo

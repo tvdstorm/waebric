@@ -1,5 +1,5 @@
 module abon
-site
-  fff/abonnementen.html: abonnementen ();
-  fff/abonnementen.html: abonnementen1()
+
+def abonnementen 
+echo {key:"value"};
 end
