@@ -6,7 +6,7 @@ public class AssignmentVisitor extends WaebricParserVisitorAdapter {
 		String[] dataFromJJT = node.image.split(":");
 		
 		if(	dataFromJJT[0].equals("func-bind")){
-			addToAST( dataFromJJT[0] + "(" + safeGetStr(dataFromJJT, 1) );
+			addToAST( dataFromJJT[0] + "(" + "\"" + safeGetStr(dataFromJJT, 1) + "\"" );
 			processChildren(node);
 			addToAST( ")" );
 		}
