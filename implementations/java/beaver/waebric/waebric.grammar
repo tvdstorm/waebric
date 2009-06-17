@@ -174,7 +174,7 @@ embed_markup_seq = markup
 | embed_markup_seq markup
 ;
 
-markup_seq = markup
+markup_seq = markup.m {: //$markuplist(m) :}
 | markup_seq.m markup.n {: //[]markup_seq(m,n) :}
 ;
 
@@ -196,20 +196,17 @@ argument = IDCON.i EQ expression.e {: //@attr($i,e) :}
 ;
 
 markup = designator.d arguments.a {: //@call(d,a) :}
-| designator.d
+| designator.d 
 ;
 
 designator = IDCONDESIGNATOR.i attribute_opt.a {: //@tag($i,[a]) :}
 ;
 
-markup_seqlist = markup_seq.s {: //[]markup_seqlist(s) :}
-;
-
 markupstatement = markup_seq.m statement.s {: //@markup-stat(m,s) :}
 | markup.m SEMICOLON {: //@markup(m) :}
 | markup_seq.s markup.m SEMICOLON {: //@markup-markup(s,m) :}
-| markup_seqlist.s expression.e SEMICOLON {: //@markup-exp(s,e) :}
-| markup_seqlist.s embedding.e SEMICOLON {: //@markup-embedding(s,e) :}
+| markup_seq.s expression.e SEMICOLON {: //@markup-exp(s,e) :}
+| markup_seq.s embedding.e SEMICOLON {: //@markup-embedding(s,e) :}
 ;
 
 attribute = HASHIDCON.i {: //$id($i) :}
