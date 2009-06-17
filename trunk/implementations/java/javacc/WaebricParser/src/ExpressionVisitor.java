@@ -13,6 +13,9 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 			 * The reconstruct method is used to combine the original text again.
 			 */
 			String text = reconstructText(dataFromJjt);
+			if(node.image.substring(node.image.length()-1, node.image.length()).equals(":")){
+				text += ":";
+			}
 			addToAST( dataFromJjt[0] + "(\"\\\"" + text + "\\\"\")" );
 		}
 		

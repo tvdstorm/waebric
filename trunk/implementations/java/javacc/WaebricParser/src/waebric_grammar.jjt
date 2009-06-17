@@ -44,8 +44,8 @@ public class WaebricParser {
 /*
  			Code to produce a tree dump of the original jjTree. can be really useful for debugging
  			so we decided to leave it in.	  		
-	  		System.out.println("");	  		System.out.println("Abstract syntax tree dump:");*/	  		n.dump("");
-
+	  		System.out.println("");	  		System.out.println("Abstract syntax tree dump:");	  		n.dump("");
+*/
     	} catch (ParseException pe) {
       		pe.printStackTrace();
     	}
@@ -391,8 +391,8 @@ void Embed() : {} {
 }
 
 void TextTail() : {} { 
-	<PostText>
-	|	<MidText> Embed() TextTail()
+	<PostText> {jjtThis.image = "post:" + token.image;}
+	|	<MidText> {jjtThis.image = "mid:" + token.image;} Embed() TextTail()
 }
 
 // Used by both the Site and FunctionDef ModuleElements
