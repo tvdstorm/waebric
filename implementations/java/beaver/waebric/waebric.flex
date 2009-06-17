@@ -59,7 +59,7 @@ import waebric.WaebricParser.Terminals;
 	
 	private void Debug(String text)
 	{
-		//System.out.println(text);//commentariseer deze regel uit in productie
+		System.out.println(text);//commentariseer deze regel uit in productie
 	}
 %}
 
@@ -93,12 +93,12 @@ DocumentationComment = "/*" "*"+ [^/*] ~"*/"
 Natcon = [0-9]+
 
 
-TextChar = [^\x00-\x1F\&\"\<\x80-\xFF]
+TextChar = [^\x00-\x1F\&\"\<\x80-\xFF] | [\n\r\t] | TextCharRefA | TextCharRefB | TextEntityRef | [&]
 SymbolChar = [^\x00-\x1F\)\ \t\n\r\;\,\>\x80-\xFF]
 
 
-TextCharRef = "&#" [0-9]+ ";" 
-TextCharRef = "&#x" [0-9a-fA-F]+ ";"
+TextCharRefA = "&#" [0-9]+ ";" 
+TextCharRefB = "&#x" [0-9a-fA-F]+ ";"
 TextEntityRef  = "&" [a-zA-Z\_\:] [a-zA-Z0-9\.\-\_\:]* ";" 
 FileExt = [a-zA-Z0-9]+
 PathElement = [^\ \t\n\r\.\/\\]+
@@ -191,7 +191,7 @@ SiteFilename = {PathElement} "." {FileExt}
                                     }
                                     if ( nestingLevel == 0 && bDEF && !bFunctionId) {
                                       yybegin(ATTRIBUTES);
-                                      Debug("IDCONDESIGNATOR " + yytext() );
+                                      Debug("MAIN IDCONDESIGNATOR " + yytext() );
                                       return nextToken(Terminals.IDCONDESIGNATOR, yytext());
                                       }
                                     else {
@@ -217,7 +217,7 @@ SiteFilename = {PathElement} "." {FileExt}
   "/"                            { Debug("DIV"); return nextToken(Terminals.DIV); }
   {SiteFilename}                 { Debug("FILENAME " + yytext() ); return nextToken(Terminals.FILENAME, yytext()); }
   ":"                            { Debug("COLON "); return nextToken(Terminals.COLON); }
-  {Identifier}     	 	   { Debug("IDCONDESIGNATOR " + yytext() );  yybegin(ATTRIBUTES); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+  {Identifier}     	 	   { Debug("DIRFILE IDCONDESIGNATOR " + yytext() );  yybegin(ATTRIBUTES); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
  
   /* comments */
   {Comment}                      { /* ignore */ }
