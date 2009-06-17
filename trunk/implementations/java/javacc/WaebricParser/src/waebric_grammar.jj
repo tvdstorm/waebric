@@ -41,20 +41,21 @@ public class WaebricParser/*@bgen(jjtree)*/implements WaebricParserTreeConstants
       		SimpleNode n = p.Modules();
       		
       		// Save AST tree into String
-	  		String ast = processNode( n, 0);
-	  		
+	  		String ast = buildAST( n, 0);
 	  		System.out.println("AST:");
 	  		System.out.println(ast);
-	  		System.out.println("");
-	  		System.out.println("Abstract syntaxt tree dump:");
-	  		n.dump("");
+
+/*
+ 			Code to produce a tree dump of the original jjTree. can be really useful for debugging
+ 			so we decided to leave it in.	  		
+	  		System.out.println("");	  		System.out.println("Abstract syntax tree dump:");*/	  		n.dump("");
+
     	} catch (ParseException pe) {
       		pe.printStackTrace();
     	}
   	}
-  
-  	private static String processNode(Node n, int childIndex) {	
-  		/* Build the AST */
+ 
+  	private static String buildAST(Node n, int childIndex) {	
   		ModulesVisitor moduleVisitor = new ModulesVisitor();
 		n.jjtAccept(moduleVisitor, null);
 		return moduleVisitor.getAST();
@@ -65,6 +66,12 @@ PARSER_END(WaebricParser)
 
 /*
 Lexer
+
+The lexer uses 2 additional states on top of the DEFAULT state:
+IN_PATH: ensures FileName can only be recognized within a Path() production.
+	Would otherwise be unable to recognize tokens such as <IdCon>
+IN_STRCON: ensures only StrChar tokens are recognized.
+	Would otherwise be unable to recognize StrChar tokens because of IdCon
 */
 
 // Comments, spaces and newlines are skipped by the parser
@@ -101,7 +108,7 @@ TOKEN : {
 }
 
 // Separators
-<DEFAULT, IN_NO_IDCON>
+<DEFAULT, IN_STRCON>
 TOKEN : {
 		< LPAREN : "(" >
 	|	< RPAREN : ")" > 
@@ -173,7 +180,9 @@ TOKEN : {
 
 <DEFAULT>
 TOKEN : {
-	< NatCon : (["0"-"9"])+ >
+	< NatCon : 
+		(["0"-"9"])+ 
+	>
 }
 
 <DEFAULT>
@@ -193,7 +202,7 @@ TOKEN : {
 <DEFAULT>
 TOKEN : {
     < #TextChar : 
-    	<TextCharRef> 
+    		<TextCharRef> 
     	|	<EscQuote>
     	|	<Amp>
     	|	<TextEntityRef>
@@ -233,13 +242,13 @@ TOKEN : {
 TOKEN : {
 	< StrCon :
 		"\"" (< StrChar >)* "\""
-	> : IN_NO_IDCON
+	>
 }
 
 <DEFAULT>
 TOKEN : {
 	< #StrChar :
-		"\n"
+			"\n"
 		|	"\t"
 		|	"\\"
 		|	"\\\\"
@@ -256,7 +265,6 @@ TOKEN : {
 	>
 }
 
-// Tokens tht are used by Embeding Productions
 <DEFAULT>
 TOKEN : {
 	< PreText :
@@ -278,7 +286,7 @@ TOKEN : {
 	>	
 }
 
-<IN_NO_IDCON>
+<DEFAULT>
 TOKEN : {
     < #SymbolChar : 
     	~["\0"-"\37",")"," ","\t","\n","\r",";",",",">","\177"-"\377"] // Octale getallen
@@ -289,7 +297,7 @@ TOKEN : {
 Parser productions
 */
 
-// Modules is the main node wich we start with
+// Modules is the main node which we start with
 SimpleNode Modules() : {/*@bgen(jjtree) Modules */
   ASTModules jjtn000 = new ASTModules(JJTMODULES);
   boolean jjtc000 = true;
@@ -381,7 +389,7 @@ void ModuleElement() : {/*@bgen(jjtree) ModuleElement */
                 try {
 /*@egen*/
 		Import()
-	|	Site()
+	|	Site()	
 	|	FunctionDef()/*@bgen(jjtree)*/
                 } catch (Throwable jjte000) {
                   if (jjtc000) {
@@ -541,14 +549,14 @@ void Path() : {/*@bgen(jjtree) Path */
                     jjtree.closeNodeScope(jjtn000, true);
                     jjtc000 = false;
                   }
-/*@egen*/{jjtn000.image += "\"" + token.image + "\"";}
-	|	<DirName>{jjtn000.image += "path(\"" + token.image.substring(0, token.image.length()-1) + "\"";}
+/*@egen*/{jjtn000.image += "path-file:" + token.image;}
+	|	<DirName>{jjtn000.image += "path-dirfile:" + token.image.substring(0, token.image.length()-1) + ":";}
 		<FileName>/*@bgen(jjtree)*/
                           {
                             jjtree.closeNodeScope(jjtn000, true);
                             jjtc000 = false;
                           }
-/*@egen*/{jjtn000.image += ", \"" + token.image + "\")";}/*@bgen(jjtree)*/
+/*@egen*/{jjtn000.image += token.image;}/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
@@ -566,7 +574,7 @@ void FunctionDef() : {/*@bgen(jjtree) FunctionDef */
 /*@egen*/} {/*@bgen(jjtree) FunctionDef */
         try {
 /*@egen*/
-	<DEF> <IdCon>{jjtn000.image = "\"" + token.image + "\"";} (Formals())? (Statement())+ <END>/*@bgen(jjtree)*/
+	<DEF> <IdCon>{jjtn000.image = token.image;} (Formals())? (Statement())+ <END>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -596,7 +604,7 @@ void Formals() : {/*@bgen(jjtree) Formals */
 /*@egen*/} {/*@bgen(jjtree) Formals */
         try {
 /*@egen*/
-	<LPAREN> (<IdCon>{jjtn000.image += "\"" + token.image + "\"";} (<COMMA>{jjtn000.image += ", ";})?)* <RPAREN>/*@bgen(jjtree)*/
+	<LPAREN> (<IdCon>{jjtn000.image += token.image;} (<COMMA>{jjtn000.image += token.image;})?)* <RPAREN>/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
@@ -619,8 +627,6 @@ void Statement() : {/*@bgen(jjtree) Statement */
                                     }
 /*@egen*/ {jjtn000.image = "yield:";}
 	|	<COMMENT> <StrCon> {jjtn000.image = "comment:" + token.image;} <SEMICOLON> 
-	
-	// Markup statements
 	| 	LOOKAHEAD(Markup() <SEMICOLON>) Markup() <SEMICOLON>/*@bgen(jjtree)*/
                                                                      {
                                                                        jjtree.closeNodeScope(jjtn000, true);
@@ -633,7 +639,6 @@ void Statement() : {/*@bgen(jjtree) Statement */
                                                                              jjtc000 = false;
                                                                            }
 /*@egen*/{jjtn000.image = "markup-markup:";}
-	
 	|	LOOKAHEAD((Markup())+ Expression() <SEMICOLON>)(
 				(LOOKAHEAD(2)Markup())+ Expression() <SEMICOLON>
 			)/*@bgen(jjtree)*/
@@ -642,25 +647,26 @@ void Statement() : {/*@bgen(jjtree) Statement */
                                   jjtc000 = false;
                                 }
 /*@egen*/	{jjtn000.image = "markup-exp:";}
-	
 	|	LOOKAHEAD((Markup())+ Statement())(
-				LOOKAHEAD(2)Markup() Statement()
-				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Statement()
+				(LOOKAHEAD(2)Markup())+ Statement()
 			)/*@bgen(jjtree)*/
                                 {
                                   jjtree.closeNodeScope(jjtn000, true);
                                   jjtc000 = false;
                                 }
 /*@egen*/	{jjtn000.image = "markup-stat:";}	
-	
 	|	LOOKAHEAD((Markup())+ Embedding() <SEMICOLON>) (Markup())+ (Embedding() <SEMICOLON>)/*@bgen(jjtree)*/
                                                                                                     {
                                                                                                       jjtree.closeNodeScope(jjtn000, true);
                                                                                                       jjtc000 = false;
                                                                                                     }
 /*@egen*/{jjtn000.image = "markup-embedding:";}
-	
-	|	LOOKAHEAD(4)<LBRACE>{jjtn000.image = "block:";} (Statement())* <RBRACE>
+	|	LOOKAHEAD(4)<LBRACE> (Statement())* <RBRACE>/*@bgen(jjtree)*/
+                                                            {
+                                                              jjtree.closeNodeScope(jjtn000, true);
+                                                              jjtc000 = false;
+                                                            }
+/*@egen*/{jjtn000.image = "block:";}
 	|	LOOKAHEAD((<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE>) (<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE> Statement()/*@bgen(jjtree)*/
                                                                                                                                                        {
                                                                                                                                                          jjtree.closeNodeScope(jjtn000, true);
@@ -763,8 +769,8 @@ void Assignment() : {/*@bgen(jjtree) Assignment */
 /*@egen*/} {/*@bgen(jjtree) Assignment */
                 try {
 /*@egen*/
-		LOOKAHEAD(2)<IdCon> {jjtn000.image = "func-bind:" + token.image;} Formals() <ASSIGN> Statement()
-	|	LOOKAHEAD(2)<IdCon> {jjtn000.image = "var-bind:" + token.image;} <ASSIGN> Expression() <SEMICOLON>/*@bgen(jjtree)*/
+		LOOKAHEAD(2)<IdCon> {jjtn000.image = "func-bind:" + "\"" + token.image + "\"" ;} Formals() <ASSIGN> Statement()
+	|	LOOKAHEAD(2)<IdCon> {jjtn000.image = "var-bind:" + "\"" + token.image + "\"" ;} <ASSIGN> Expression() <SEMICOLON>/*@bgen(jjtree)*/
                 } catch (Throwable jjte000) {
                   if (jjtc000) {
                     jjtree.clearNodeScope(jjtn000);
@@ -917,7 +923,7 @@ void Designator() : {/*@bgen(jjtree) Designator */
 /*@egen*/} {/*@bgen(jjtree) Designator */
         try {
 /*@egen*/
-	<IdCon>{jjtn000.image = "\"" + token.image + "\"";} (Attribute())*/*@bgen(jjtree)*/
+	<IdCon>{jjtn000.image = token.image;} (Attribute())*/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -1029,7 +1035,7 @@ void Argument() : {/*@bgen(jjtree) Argument */
 /*@egen*/} {/*@bgen(jjtree) Argument */
                 try {
 /*@egen*/
-		LOOKAHEAD(2)<IdCon>{jjtn000.image = "\"" + token.image + "\"";} <ASSIGN> Expression() (DotIdCon())?
+		LOOKAHEAD(2)<IdCon>{jjtn000.image = token.image;} <ASSIGN> Expression() (DotIdCon())?
 	|	Expression() (DotIdCon())?/*@bgen(jjtree)*/
                 } catch (Throwable jjte000) {
                   if (jjtc000) {
@@ -1076,9 +1082,12 @@ void Var() : {/*@bgen(jjtree) Var */
 
 /*
 	Note:
-	Expression + Idcon is not working because of left recursion
-	DotIdCon is now placed behind every line wich is using Expression 
-	This do work, but may have to be written on a different manner in the future
+	The Expression: Expression() <DOT> <IdCon> has been transformed using the methods
+	described in the paper: "Removing Left Recursion from Context-Free Grammars" by Robert C. Moore.
+	The result of this transformation was not without problems in JavaCC. This is why the production 
+	DotIdCon() was brought into life. It is placed behind each and every call to Expression() in the following way:
+	Expression() (DotIdCon())?.  It would be better to keep this inside expression, but attempts in doing so 
+	have been unsuccesful thusfar.
 */
 void Expression() : {/*@bgen(jjtree) Expression */
   ASTExpression jjtn000 = new ASTExpression(JJTEXPRESSION);
@@ -1133,7 +1142,6 @@ void Expression() : {/*@bgen(jjtree) Expression */
                   }
                 }
 /*@egen*/
-
 }
 
 void DotIdCon() : {/*@bgen(jjtree) DotIdCon */
@@ -1164,7 +1172,7 @@ void KeyValuePair() : {/*@bgen(jjtree) KeyValuePair */
 /*@egen*/} {/*@bgen(jjtree) KeyValuePair */
         try {
 /*@egen*/
-	<IdCon>{jjtn000.image = "\"" + token.image + "\"";} <COLON> Expression() (DotIdCon())?/*@bgen(jjtree)*/
+	<IdCon>{jjtn000.image = token.image;} <COLON> Expression() (DotIdCon())?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

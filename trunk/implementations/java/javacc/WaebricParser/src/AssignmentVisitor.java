@@ -6,11 +6,9 @@ public class AssignmentVisitor extends WaebricParserVisitorAdapter {
 		String[] dataFromJJT = node.image.split(":");
 		
 		if(	dataFromJJT[0].equals("func-bind")){
-			addToAST( dataFromJJT[0] + "([" + safeGetStr(dataFromJJT, 1) );
-			StatementVisitor statementVisitor = new StatementVisitor();
-	  		node.jjtGetChild(0).jjtAccept(statementVisitor, null);
-	  		addToAST( statementVisitor.getAST() );
-			addToAST( "])" );
+			addToAST( dataFromJJT[0] + "(" + safeGetStr(dataFromJJT, 1) );
+			processChildren(node);
+			addToAST( ")" );
 		}
 		
 		else if(dataFromJJT[0].equals("var-bind")){
@@ -38,6 +36,12 @@ public class AssignmentVisitor extends WaebricParserVisitorAdapter {
 				ExpressionVisitor expressionVisitor = new ExpressionVisitor();
 				node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
 				addToAST( ", " + expressionVisitor.getAST() );
+			}
+			
+			if(node.jjtGetChild(currentChild).toString().equals("Statement")){
+				StatementVisitor statementVisitor = new StatementVisitor();
+		  		node.jjtGetChild(currentChild).jjtAccept(statementVisitor, null);
+		  		addToAST( ", " + statementVisitor.getAST() );
 			}
 			
 		}
