@@ -9,7 +9,11 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 		}
 		
 		else if(dataFromJjt[0].equals("text")){
-			addToAST( dataFromJjt[0] + "(\"\\\"" + safeGetStr(dataFromJjt, 1) + "\\\"\")" );
+			/* If the string contains a colon it has been split by the split method above.
+			 * The reconstruct method is used to combine the original text again.
+			 */
+			String text = reconstructText(dataFromJjt);
+			addToAST( dataFromJjt[0] + "(\"\\\"" + text + "\\\"\")" );
 		}
 		
 		else if(dataFromJjt[0].equals("num")){
@@ -53,5 +57,22 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 	  			addToAST( keyValuePairVisitor.getAST() );
 		  	}
 		}
+	}
+	
+	/**
+	 * Work-around method to ensure text that includes Colon elements gets included correctly.
+	 * @param textElements: String array with elements that have been split by the colon
+	 * @return reconstructed text which includes the colons.
+	 */
+	private String reconstructText(String[] textElements){
+		String outputText = "";
+		for (int textElementIndex = 1; textElementIndex < textElements.length; textElementIndex++){
+			if (textElementIndex > 1){
+				outputText += ":";
+			}
+			
+			outputText += safeGetStr(textElements, textElementIndex);
+		}
+		return outputText;
 	}
 }
