@@ -4,7 +4,7 @@ public class KeyValuePairVisitor extends WaebricParserVisitorAdapter {
 		
 		addToAST( "pair(" );
 		
-		addToAST( node.image + ", " );
+		addToAST( "\"" + node.image + "\"" + ", " );
 		
 	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
   			// if list

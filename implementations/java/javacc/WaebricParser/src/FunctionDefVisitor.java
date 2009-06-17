@@ -2,7 +2,7 @@ public class FunctionDefVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTFunctionDef node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
-		addToAST( "def(" + node.image + ", " );
+		addToAST( "def(" + "\"" + node.image + "\"" + ", " );
 	  	
 	  	// Run formal
 	  	if (node.jjtGetChild(0).toString().equals("Formals")){

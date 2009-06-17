@@ -17,7 +17,7 @@ public class ArgumentVisitor extends WaebricParserVisitorAdapter {
 	  		else if (node.jjtGetChild(currentChild).toString().equals("Expression")){
 	  			String nodeImage = node.image;
 	  			if (!nodeImage.equals("")){
-	  				addToAST("attr(" + node.image +  ", ");
+	  				addToAST("attr(" +  "\"" + node.image +  "\"" + ", ");
 	  			}
 	  			ExpressionVisitor expressionVisitor = new ExpressionVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);

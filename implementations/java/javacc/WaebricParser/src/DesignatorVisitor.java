@@ -2,7 +2,7 @@ public class DesignatorVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTDesignator node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 		
-		addToAST( "tag(" + node.image + ", [" );
+		addToAST( "tag(" + "\"" + node.image + "\"" + ", [" );
 		
 	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
   			// if list

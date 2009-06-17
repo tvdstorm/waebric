@@ -37,20 +37,17 @@ public class WaebricParser {
       		SimpleNode n = p.Modules();
       		
       		// Save AST tree into String
-	  		String ast = processNode( n, 0);
-	  		
+	  		String ast = buildAST( n, 0);
 	  		System.out.println("AST:");
 	  		System.out.println(ast);
-	  		System.out.println("");
-	  		System.out.println("Abstract syntaxt tree dump:");
-	  		n.dump("");
+	  		
+//	  		System.out.println("");//	  		System.out.println("Abstract syntax tree dump:");//	  		n.dump("");
     	} catch (ParseException pe) {
       		pe.printStackTrace();
     	}
   	}
-  
-  	private static String processNode(Node n, int childIndex) {	
-  		/* Build the AST */
+ 
+  	private static String buildAST(Node n, int childIndex) {	
   		ModulesVisitor moduleVisitor = new ModulesVisitor();
 		n.jjtAccept(moduleVisitor, null);
 		return moduleVisitor.getAST();
@@ -61,6 +58,12 @@ PARSER_END(WaebricParser)
 
 /*
 Lexer
+
+The lexer uses 2 additional states on top of the DEFAULT state:
+IN_PATH: ensures FileName can only be recognized within a Path() production.
+	Would otherwise be unable to recognize tokens such as <IdCon>
+IN_STRCON: ensures only StrChar tokens are recognized.
+	Would otherwise be unable to recognize StrChar tokens because of IdCon
 */
 
 // Comments, spaces and newlines are skipped by the parser
@@ -97,7 +100,7 @@ TOKEN : {
 }
 
 // Separators
-<DEFAULT, IN_NO_IDCON>
+<DEFAULT, IN_STRCON>
 TOKEN : {
 		< LPAREN : "(" >
 	|	< RPAREN : ")" > 
@@ -169,7 +172,9 @@ TOKEN : {
 
 <DEFAULT>
 TOKEN : {
-	< NatCon : (["0"-"9"])+ >
+	< NatCon : 
+		(["0"-"9"])+ 
+	>
 }
 
 <DEFAULT>
@@ -189,7 +194,7 @@ TOKEN : {
 <DEFAULT>
 TOKEN : {
     < #TextChar : 
-    	<TextCharRef> 
+    		<TextCharRef> 
     	|	<EscQuote>
     	|	<Amp>
     	|	<TextEntityRef>
@@ -229,13 +234,13 @@ TOKEN : {
 TOKEN : {
 	< StrCon :
 		"\"" (< StrChar >)* "\""
-	> : IN_NO_IDCON
+	>
 }
 
 <DEFAULT>
 TOKEN : {
 	< #StrChar :
-		"\n"
+			"\n"
 		|	"\t"
 		|	"\\"
 		|	"\\\\"
@@ -252,7 +257,6 @@ TOKEN : {
 	>
 }
 
-// Tokens tht are used by Embeding Productions
 <DEFAULT>
 TOKEN : {
 	< PreText :
@@ -274,7 +278,7 @@ TOKEN : {
 	>	
 }
 
-<IN_NO_IDCON>
+<DEFAULT>
 TOKEN : {
     < #SymbolChar : 
     	~["\0"-"\37",")"," ","\t","\n","\r",";",",",">","\177"-"\377"] // Octale getallen
@@ -285,7 +289,7 @@ TOKEN : {
 Parser productions
 */
 
-// Modules is the main node wich we start with
+// Modules is the main node which we start with
 SimpleNode Modules() : {}
 {
   (Module())* <EOF> 
@@ -302,7 +306,7 @@ void ModuleId() : {} {
 
 void ModuleElement() : {} {
 		Import()
-	|	Site()
+	|	Site()	
 	|	FunctionDef()
 }
 
@@ -335,7 +339,7 @@ void Path() : {} {
 // ModuleElement FunctionDef
 // *********************************************
 void FunctionDef() : {} {
-	<DEF> <IdCon>{jjtThis.image = "\"" + token.image + "\"";} (Formals())? (Statement())+ <END>
+	<DEF> <IdCon>{jjtThis.image = token.image;} (Formals())? (Statement())+ <END>
 }
 
 void Formals() : {} {
@@ -355,13 +359,12 @@ void Statement() : {} {
 			)	{jjtThis.image = "markup-exp:";}
 	
 	|	LOOKAHEAD((Markup())+ Statement())(
-				LOOKAHEAD(2)Markup() Statement()
-				|	(LOOKAHEAD((Markup()Markup())) Markup()Markup())+ Statement()
+				(LOOKAHEAD(2)Markup())+ Statement()
 			)	{jjtThis.image = "markup-stat:";}	
 	
 	|	LOOKAHEAD((Markup())+ Embedding() <SEMICOLON>) (Markup())+ (Embedding() <SEMICOLON>){jjtThis.image = "markup-embedding:";}
 	
-	|	LOOKAHEAD(4)<LBRACE>{jjtThis.image = "block:";} (Statement())* <RBRACE>
+	|	LOOKAHEAD(4)<LBRACE> (Statement())* <RBRACE>{jjtThis.image = "block:";}
 	|	LOOKAHEAD((<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE>) (<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE> Statement() {jjtThis.image = "if-else:";}
 	|	<IF> <LPAREN> Predicate()<RPAREN> Statement() {jjtThis.image = "if:";}
 	|	<EACH> <LPAREN> Var() <COLON> Expression() (DotIdCon())? <RPAREN> Statement() {jjtThis.image = "each:";}
@@ -401,7 +404,7 @@ void Markup() : {} {
 }
 
 void Designator() : {} {
-	<IdCon>{jjtThis.image = "\"" + token.image + "\"";} (Attribute())*	
+	<IdCon>{jjtThis.image = token.image;} (Attribute())*	
 }
 
 void Attribute() : {} {
@@ -419,7 +422,7 @@ void Arguments() : {} {
 }
 
 void Argument() : {} {
-		LOOKAHEAD(2)<IdCon>{jjtThis.image = "\"" + token.image + "\"";} <ASSIGN> Expression() (DotIdCon())?
+		LOOKAHEAD(2)<IdCon>{jjtThis.image = token.image;} <ASSIGN> Expression() (DotIdCon())?
 	|	Expression() (DotIdCon())?
 }
 
@@ -429,9 +432,12 @@ void Var() : {} {
 
 /*
 	Note:
-	Expression + Idcon is not working because of left recursion
-	DotIdCon is now placed behind every line wich is using Expression 
-	This do work, but may have to be written on a different manner in the future
+	The Expression: Expression() <DOT> <IdCon> has been transformed using the methods
+	described in the paper: "Removing Left Recursion from Context-Free Grammars" by Robert C. Moore.
+	The result of this transformation was not without problems in JavaCC. This is why the production 
+	DotIdCon() was brought into life. It is placed behind each and every call to Expression() in the following way:
+	Expression() (DotIdCon())?.  It would be better to keep this inside expression, but attempts in doing so 
+	have been unsuccesful thusfar.
 */
 void Expression() : {} {	
 		<SymbolCon>{jjtThis.image = "sym:" + token.image;}
@@ -440,7 +446,6 @@ void Expression() : {} {
 	|	Var(){jjtThis.image = "var:";}
 	|	<LBRACKET>{jjtThis.image = "list:";} (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>
 	|	<LBRACE>{jjtThis.image = "record:";}(KeyValuePair()  (<COMMA>)? )* <RBRACE>
-
 }
 
 void DotIdCon() : {} {
@@ -448,5 +453,5 @@ void DotIdCon() : {} {
 }
 
 void KeyValuePair() : {} {
-	<IdCon>{jjtThis.image = "\"" + token.image + "\"";} <COLON> Expression() (DotIdCon())?
+	<IdCon>{jjtThis.image = token.image;} <COLON> Expression() (DotIdCon())?
 }
