@@ -2,6 +2,13 @@ public class EmbedVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTEmbed node, Object data){
 		int numberOfChildren = node.jjtGetNumChildren();
 		
+		// Check if it is a "exp-embedding" or "markupembedding"
+		if(node.jjtGetChild(numberOfChildren - 1).toString().equals("Expression")) {
+			addToAST( "exp-embedding(" );
+		}else {
+			addToAST( "markup-embedding" );
+		}
+		
 		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) {
 			
 			if (node.jjtGetChild(currentChild).toString().equals("Expression")){

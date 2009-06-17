@@ -44,8 +44,8 @@ public class WaebricParser {
 /*
  			Code to produce a tree dump of the original jjTree. can be really useful for debugging
  			so we decided to leave it in.	  		
-	  		System.out.println("");	  		System.out.println("Abstract syntax tree dump:");	  		n.dump("");
-*/
+	  		System.out.println("");	  		System.out.println("Abstract syntax tree dump:");*/	  		n.dump("");
+
     	} catch (ParseException pe) {
       		pe.printStackTrace();
     	}
@@ -387,7 +387,7 @@ void Embedding() : {} {
 }
 
 void Embed() : {} { 
-	(LOOKAHEAD(3) Markup())* Expression()(DotIdCon())?
+	(LOOKAHEAD(3) Markup())* (Expression()(DotIdCon())?)?
 }
 
 void TextTail() : {} { 

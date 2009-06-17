@@ -769,8 +769,8 @@ void Assignment() : {/*@bgen(jjtree) Assignment */
 /*@egen*/} {/*@bgen(jjtree) Assignment */
                 try {
 /*@egen*/
-		LOOKAHEAD(2)<IdCon> {jjtn000.image = "func-bind:" + "\"" + token.image + "\"" ;} Formals() <ASSIGN> Statement()
-	|	LOOKAHEAD(2)<IdCon> {jjtn000.image = "var-bind:" + "\"" + token.image + "\"" ;} <ASSIGN> Expression() <SEMICOLON>/*@bgen(jjtree)*/
+		LOOKAHEAD(2)<IdCon> {jjtn000.image = "func-bind:" + token.image;} Formals() <ASSIGN> Statement()
+	|	LOOKAHEAD(2)<IdCon> {jjtn000.image = "var-bind:" + token.image;} <ASSIGN> Expression() <SEMICOLON>/*@bgen(jjtree)*/
                 } catch (Throwable jjte000) {
                   if (jjtc000) {
                     jjtree.clearNodeScope(jjtn000);
@@ -830,7 +830,7 @@ void Embed() : {/*@bgen(jjtree) Embed */
 /*@egen*/} {/*@bgen(jjtree) Embed */
         try {
 /*@egen*/ 
-	(LOOKAHEAD(3) Markup())* Expression()(DotIdCon())?/*@bgen(jjtree)*/
+	(LOOKAHEAD(3) Markup())* (Expression()(DotIdCon())?)?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
