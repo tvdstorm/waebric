@@ -7,5 +7,9 @@ site
 end
 
 def kopij
-echo {key:"value",key2:"other"};
+  layout single-column {
+    header bold("Kopij insturen");
+
+  p "Stuur";
+  }
 end

@@ -1,0 +1,13 @@
+module test
+
+def test
+//  if (p.list?)
+//    echo 1;
+//  if (!p.record?)
+//    echo 2;
+//  if (p.string? && q.record?)
+//    echo 3;
+  if (p.list? || q.list?)
+    echo 4;
+end
+

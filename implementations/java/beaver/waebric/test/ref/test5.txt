@@ -1,0 +1,1 @@
+module(module-id(["test"]), [def("main", empty, [if(or(or(and(or(not(is-a(var("a"), list-type)), is-a(var("b"), record-type)), is-a(var("c"), string-type)), is-a(var("d"), list-type)), not(is-a(var("e"), record-type))), echo(num(1)), appl(prod([], cf(sort("NoElseMayFollow")), no-attrs), []))])])

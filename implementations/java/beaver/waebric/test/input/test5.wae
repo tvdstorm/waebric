@@ -1,0 +1,6 @@
+module test
+
+ def main 
+  if (!a.list? || b.record? && c.string? || d.list? || !e.record?)
+    echo 1;
+end

@@ -1,0 +1,5 @@
+module test
+
+def test
+  echo "1234";
+end

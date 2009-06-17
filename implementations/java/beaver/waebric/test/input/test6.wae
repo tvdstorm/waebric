@@ -1,0 +1,17 @@
+module kopij
+
+import utils
+
+site
+site/kopij.html: kopij()
+end
+
+def kopij
+layout single-column {
+header("Kopij insturen");
+
+p "Stuur";
+
+}
+end
+

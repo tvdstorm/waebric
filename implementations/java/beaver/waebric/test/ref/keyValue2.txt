@@ -1,0 +1,1 @@
+module(module-id(["kopij"]), [import(module-id(["utils"])), site([mapping(path("site", "kopij.html"), call(tag("kopij", []), args([])))]), def("kopij", empty, [echo(record([pair("key", text("\"value\"")), pair("key2", text("\"other\""))]))])])
