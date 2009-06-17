@@ -67,7 +67,7 @@ statements_opt = {: //[]empty_statementlist() :}
 statements = statement
 | statements.s statement.t {: //$statements(s,t):} 
 | markupstatement
-| statements markupstatement
+| statements.s markupstatement.t {: //$statements(s,t):}
 ;
 
 statement = EACH LPAREN IDCON COLON expression RPAREN statement
