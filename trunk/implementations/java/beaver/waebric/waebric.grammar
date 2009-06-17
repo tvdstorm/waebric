@@ -167,15 +167,11 @@ embed = markup_opt.m embedexpression.e {: //@exp-embedding([m],e) :}
 
 
 markup_opt= 
-|embed_markup_seq
+|markup_seq
 ;
 
-embed_markup_seq = markup
-| embed_markup_seq markup
-;
-
-markup_seq = markup.m {: //$markuplist(m) :}
-| markup_seq.m markup.n {: //[]markup_seq(m,n) :}
+markup_seq = markup.m 
+| markup_seq.m markup.n
 ;
 
 /* SDF specificatie: languages/waebric/syntax/Markup */
@@ -202,11 +198,11 @@ markup = designator.d arguments.a {: //@call(d,a) :}
 designator = IDCONDESIGNATOR.i attribute_opt.a {: //@tag($i,[a]) :}
 ;
 
-markupstatement = markup_seq.m statement.s {: //@markup-stat(m,s) :}
+markupstatement = markup_seq.m statement.s {: //@markup-stat([m],s) :}
 | markup.m SEMICOLON {: //@markup(m) :}
-| markup_seq.s markup.m SEMICOLON {: //@markup-markup(s,m) :}
-| markup_seq.s expression.e SEMICOLON {: //@markup-exp(s,e) :}
-| markup_seq.s embedding.e SEMICOLON {: //@markup-embedding(s,e) :}
+| markup_seq.s markup.m SEMICOLON {: //@markup-markup([s],m) :}
+| markup_seq.s expression.e SEMICOLON {: //@markup-exp([s],e) :}
+| markup_seq.s embedding.e SEMICOLON {: //@markup-embedding([s],e) :}
 ;
 
 attribute = HASHIDCON.i {: //$id($i) :}

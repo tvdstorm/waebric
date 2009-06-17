@@ -1,0 +1,13 @@
+module abon
+
+site
+  site/abonnementen.html: abonnementen();
+  site/abonnementen.html: abonnementen2()
+end
+/*
+def abonnementen1
+  layout single-column {
+   header("Abonnee worden?");
+  }
+end
+*/

@@ -1,0 +1,1 @@
+module(module-id(["kopij"]), [import(module-id(["utils"])), site([mapping(path("site", "kopij.html"), call(tag("kopij", []), args([])))]), def("kopij", empty, [markup-stat([tag("layout", []), tag("single-column", [])], block([markup-markup([tag("header", [])], call(tag("bold", []), args([text("\"Kopij insturen\"")]))), markup-exp([tag("p", [])], text("\"Stuur\""))]))])])

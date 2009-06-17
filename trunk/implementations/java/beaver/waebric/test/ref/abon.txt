@@ -1,0 +1,1 @@
+module(module-id(["abon"]), [site([mapping(path("site", "abonnementen.html"), call(tag("abonnementen", []), args([]))), mapping(path("site", "abonnementen.html"), call(tag("abonnementen2", []), args([])))])])

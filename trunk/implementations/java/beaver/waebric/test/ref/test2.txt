@@ -1,0 +1,1 @@
+module(module-id(["x"]), [def("main", formals(["html"]), [echo-embedding(pre("\"rrr<", exp-embedding([tag("karel", []), tag("appel", []), tag("uitjes", [])], var("test")), post(">ggg\"")))])])
