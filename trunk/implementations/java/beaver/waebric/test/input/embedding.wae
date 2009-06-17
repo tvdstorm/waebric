@@ -1,0 +1,11 @@
+module abon
+
+def abonnementen
+layout single-column {
+
+li "preli
+<a(href="mailto:info@s.nl")
+"info@s.nl">; eindli";
+
+}
+end
