@@ -8,7 +8,9 @@ public class FunctionDefVisitor extends WaebricParserVisitorAdapter {
 	  	if (node.jjtGetChild(0).toString().equals("Formals")){
 	  		FormalsVisitor formalsVisitor = new FormalsVisitor();
   			node.jjtGetChild(0).jjtAccept(formalsVisitor, null);
+  			addToAST( "formals(" );
   			addToAST( formalsVisitor.getAST() + ", " );
+  			addToAST( ")" );
 	  	}else{
 	  		addToAST( "empty, " );
 	  		

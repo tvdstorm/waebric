@@ -124,11 +124,9 @@ public interface WaebricParserConstants {
   /** Lexical state. */
   int IN_STRCON = 0;
   /** Lexical state. */
-  int IN_NO_IDCON = 1;
+  int IN_PATH = 1;
   /** Lexical state. */
-  int IN_PATH = 2;
-  /** Lexical state. */
-  int DEFAULT = 3;
+  int DEFAULT = 2;
 
   /** Literal token values. */
   String[] tokenImage = {
