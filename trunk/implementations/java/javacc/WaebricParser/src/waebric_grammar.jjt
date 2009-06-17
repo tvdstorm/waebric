@@ -40,8 +40,12 @@ public class WaebricParser {
 	  		String ast = buildAST( n, 0);
 	  		System.out.println("AST:");
 	  		System.out.println(ast);
-	  		
-//	  		System.out.println("");//	  		System.out.println("Abstract syntax tree dump:");//	  		n.dump("");
+
+/*
+ 			Code to produce a tree dump of the original jjTree. can be really useful for debugging
+ 			so we decided to leave it in.	  		
+	  		System.out.println("");	  		System.out.println("Abstract syntax tree dump:");	  		n.dump("");
+*/
     	} catch (ParseException pe) {
       		pe.printStackTrace();
     	}
@@ -331,9 +335,9 @@ void Mapping() : {} {
 }
 
 void Path() : {} {
-	<FileName>{jjtThis.image += "\"" + token.image + "\"";}
-	|	<DirName>{jjtThis.image += "path(\"" + token.image.substring(0, token.image.length()-1) + "\"";}
-		<FileName>{jjtThis.image += ", \"" + token.image + "\")";}
+	<FileName>{jjtThis.image += "path-file:" + token.image;}
+	|	<DirName>{jjtThis.image += "path-dirfile:" + token.image.substring(0, token.image.length()-1) + ":";}
+		<FileName>{jjtThis.image += token.image;}
 }
 
 // ModuleElement FunctionDef
@@ -343,27 +347,21 @@ void FunctionDef() : {} {
 }
 
 void Formals() : {} {
-	<LPAREN> (<IdCon>{jjtThis.image += "\"" + token.image + "\"";} (<COMMA>{jjtThis.image += ", ";})?)* <RPAREN>
+	<LPAREN> (<IdCon>{jjtThis.image += token.image;} (<COMMA>{jjtThis.image += token.image;})?)* <RPAREN>
 }
 
 void Statement() : {} {
 		<YIELD> <SEMICOLON> {jjtThis.image = "yield:";}
 	|	<COMMENT> <StrCon> {jjtThis.image = "comment:" + token.image;} <SEMICOLON> 
-	
-	// Markup statements
 	| 	LOOKAHEAD(Markup() <SEMICOLON>) Markup() <SEMICOLON> {jjtThis.image = "markup:";}
 	|	LOOKAHEAD((Markup())+ <SEMICOLON>) (Markup())+  <SEMICOLON>{jjtThis.image = "markup-markup:";}
-	
 	|	LOOKAHEAD((Markup())+ Expression() <SEMICOLON>)(
 				(LOOKAHEAD(2)Markup())+ Expression() <SEMICOLON>
 			)	{jjtThis.image = "markup-exp:";}
-	
 	|	LOOKAHEAD((Markup())+ Statement())(
 				(LOOKAHEAD(2)Markup())+ Statement()
 			)	{jjtThis.image = "markup-stat:";}	
-	
 	|	LOOKAHEAD((Markup())+ Embedding() <SEMICOLON>) (Markup())+ (Embedding() <SEMICOLON>){jjtThis.image = "markup-embedding:";}
-	
 	|	LOOKAHEAD(4)<LBRACE> (Statement())* <RBRACE>{jjtThis.image = "block:";}
 	|	LOOKAHEAD((<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE>) (<IF> <LPAREN> Predicate() <RPAREN> Statement()) <ELSE> Statement() {jjtThis.image = "if-else:";}
 	|	<IF> <LPAREN> Predicate()<RPAREN> Statement() {jjtThis.image = "if:";}
