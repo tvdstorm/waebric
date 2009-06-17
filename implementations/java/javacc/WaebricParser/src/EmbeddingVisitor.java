@@ -2,7 +2,7 @@ public class EmbeddingVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTEmbedding node, Object data){
 		int numberOfChildren = node.jjtGetNumChildren();
 		
-		addToAST( "pre(" + node.image + "), " );
+		addToAST( "pre(\"\\" + node.image + "\", " );
 		
 		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) {
 			if (node.jjtGetChild(currentChild).toString().equals("Embed")){

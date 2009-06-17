@@ -1,5 +1,8 @@
 public class TextTailVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTTextTail node, Object data){
+		String[] dataFromJjt = node.image.split(":");
+		addToAST( "), " + dataFromJjt[0] + "(\"" + dataFromJjt[1].substring(0,dataFromJjt[1].length() -1) + "\\\"\")" );
+		
 		int numberOfChildren = node.jjtGetNumChildren();
 		
 		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) {
