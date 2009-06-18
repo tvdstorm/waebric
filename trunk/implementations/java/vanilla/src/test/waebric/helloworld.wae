@@ -3,6 +3,10 @@ module src.test.waebric.helloworld
 import src.test.waebric.mod.sub
 import src.test.waebric.mod.sub
 
+site
+	wot/het/werkt/index.html: test("LOOOL")
+end
+
 def main
 	html { 
 		head title "HAI";
