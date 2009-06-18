@@ -145,7 +145,11 @@ expressions = expression
 | expression COMMA expressions 
 ;
 
+colonidcon = ATTCOLONIDCON.i {: //@var($i):}
+;
+
 keyvaluepair = IDCONDESIGNATOR.i COLON expression.e  {: //@pair($i,e) :} 
+| IDCONDESIGNATOR.i colonidcon.j  {: //@pair($i,j) :}  
 ;
 
 keyvaluepairs = keyvaluepair
