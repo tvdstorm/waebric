@@ -60,7 +60,7 @@ import waebric.WaebricParser.Terminals;
 	
 	private void Debug(String text)
 	{
-		System.out.println(text);//commentariseer deze regel uit in productie
+		//System.out.println(text);//commentariseer deze regel uit in productie
 	}
 %}
 
@@ -153,6 +153,7 @@ SiteFilename = {PathElement} "." {FileExt}
   "record"                         { Debug("RECORD");  return nextToken(Terminals.RECORD); }
   "string"                         { Debug("STRING");  return nextToken(Terminals.STRING); }
   "if"                             { Debug("IF");   return nextToken(Terminals.IF); }
+  "in"                             { Debug("IN");   return nextToken(Terminals.IN); }
   "comment"                        { Debug("COMMENT"); string.setLength(0); yybegin(STRCON_INIT);  return nextToken(Terminals.COMMENT);  }
   "echo"                           { Debug("ECHO"); return nextToken(Terminals.ECHO); }
   "cdata"                          { Debug("CDATA"); return nextToken(Terminals.CDATA); }
@@ -198,7 +199,11 @@ SiteFilename = {PathElement} "." {FileExt}
   {WhiteSpace}                   { /* ignore */ }
 
   /* identifiers */
-  {Identifier}                   {  if ( bDEF && bFunctionId ) {
+  {Identifier}                   {  if(bLET) {
+  	                                  Debug("IDCON " + yytext() );
+                                      return nextToken(Terminals.IDCON, yytext());
+  									}
+  									if ( bDEF && bFunctionId ) {
                                       Debug("IDCON " + yytext() );
                                       bFunctionId = false;
                                       return nextToken(Terminals.IDCON, yytext());

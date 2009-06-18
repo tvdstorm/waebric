@@ -71,7 +71,7 @@ statements = statement
 ;
 
 statement = EACH LPAREN IDCON COLON expression RPAREN statement
-| LET assignments IN statements_opt END 
+| LET assignments.a IN statements_opt.s END {: //@let([a],s) :}
 | LBRACE statements_opt.s RBRACE {: //@block(s) :}
 ;
 
