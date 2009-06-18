@@ -1,0 +1,1 @@
+module(module-id(["lettest"]), [def("lettest", empty, [let([func-bind("aap", ["i", "j"], comment("noot"))], [block([echo(var("mies"))])])])])
