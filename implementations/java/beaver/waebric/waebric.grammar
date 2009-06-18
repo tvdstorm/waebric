@@ -92,7 +92,7 @@ open_statement = IF LPAREN predicate.p RPAREN statement.a {: //@if(p,a) :}
 ;
 
 assignment = IDCON.i EQ expression.e SEMICOLON {: //@var-bind($i,e) :}
-| IDCON.i formals.f EQ statement.s {: //@func-bind($i,f,s) :}
+| IDCON.i assignmentformals.f EQ statement.s {: //@func-bind($i,f,s) :}
 ;
 
 assignments = assignment
@@ -107,7 +107,9 @@ formallist = IDCON.i {: //$formal_a($i):}
 | idcons.a COMMA IDCON.b {: //$formallist(a,$b):}
 ;
 
-
+assignmentformals = LPAREN RPAREN {: //[]emptyformallist() :}
+| LPAREN formallist.f RPAREN {: //[]assignmentformals(f) :}
+;
 
 /* SDF specificatie: languages/waebric/syntax/Expressions */
 
