@@ -1,0 +1,10 @@
+module lettest
+
+def lettest
+  let
+    aap=noot;
+  in {
+    echo mies;
+  }
+  end
+end
