@@ -25,10 +25,18 @@ def layout(title)
 end
 
 def the-menu
-  menu({title: "Menu", kids: [{title: "Home", link: "/"}, 
-           {title: "Misc", kids: 
-		[{title: "Contact", link: "contact.html"}, 
-                   {title: "Links", link: "links.html"}]}]});
+  menu({
+  			title: "Menu",
+  			kids: [
+  					{title: "Home", link: "/"}, 
+           			{title: "Misc", kids: 
+           			    [
+           					{title: "Contact", link: "contact.html"}, 
+                   			{title: "Links", link: "links.html"}
+                   		]
+                   	}
+                  ]
+       });
 end
 
 def menu(menu)
