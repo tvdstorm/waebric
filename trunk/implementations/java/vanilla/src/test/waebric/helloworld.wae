@@ -1,10 +1,10 @@
-module src.test.waebric.helloworld
+module helloworld
 
 import src.test.waebric.mod.sub
 import src.test.waebric.mod.sub
 
 site
-	wot/het/werkt/index.html: test("LOOOL")
+	generated/website/lol.html: test("LOL, HET WERKT!")
 end
 
 def main
