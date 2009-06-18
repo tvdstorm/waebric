@@ -5,7 +5,11 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 		String[] dataFromJjt = node.image.split(":");
 		
 		if(	dataFromJjt[0].equals("sym")) {
-			addToAST( dataFromJjt[0] + "(\"" + safeGetStr(dataFromJjt, 1) + "\")" );
+			String text = reconstructText(dataFromJjt);
+			if(node.image.substring(node.image.length()-1, node.image.length()).equals(":")){
+				text += ":";
+			}
+			addToAST( dataFromJjt[0] + "(\"" + text + "\")" );
 		}
 		
 		else if(dataFromJjt[0].equals("text")){
