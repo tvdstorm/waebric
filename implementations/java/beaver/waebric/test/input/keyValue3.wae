@@ -1,0 +1,11 @@
+module kopij
+
+import utils
+
+site
+  site/kopij.html: kopij()
+end
+
+def kopij
+echo {key:value,key2:other};
+end
