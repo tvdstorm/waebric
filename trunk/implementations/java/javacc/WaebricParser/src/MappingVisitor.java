@@ -1,20 +1,21 @@
 public class MappingVisitor extends WaebricParserVisitorAdapter {	
+	private static final int FIRST_CHILD = 0;
+	
 	public Object visit(ASTMapping node, Object data){
-		int numChildren = node.jjtGetNumChildren();
-
 		addToAST( "mapping(" );
 		
-	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
-  			// if list
-	  		if (currentChild > 0){
+		int numChildren = node.jjtGetNumChildren();
+	  	for ( int currentChild = FIRST_CHILD; currentChild < numChildren; currentChild++ ) {
+	  		if ( currentChild > FIRST_CHILD ){
   				addToAST( ", " );
   			}
-	  		if (node.jjtGetChild(currentChild).toString().equals("Path")){
+	  		
+	  		if ( node.jjtGetChild(currentChild).toString().equals(NODE_PATH) ){
 	  			PathVisitor pathVisitor = new PathVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(pathVisitor, null);
 	  			addToAST( pathVisitor.getAST() ); 
 	  		} 
-	  		else if (node.jjtGetChild(currentChild).toString().equals("Markup")){
+	  		else if ( node.jjtGetChild(currentChild).toString().equals(NODE_MARKUP) ){
 	  			MarkupVisitor markupVisitor = new MarkupVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(markupVisitor, null);
 	  			addToAST( markupVisitor.getAST() );
