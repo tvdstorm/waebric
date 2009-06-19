@@ -8,7 +8,7 @@ public class TextTailVisitor extends WaebricParserVisitorAdapter {
 			// if the last character is a "\"", remove it.
 			imageData = imageData.substring(0, imageData.length() -1);
 		}
-		String[] dataFromJjt = imageData.split(":");
+		String[] dataFromJjt = imageData.split(SPLIT_SEPARATOR);
 		
 		if (dataFromJjt[LABEL_ELEMENT].equals("post")){
 			// Reconstruction required to counter the effects of splitting when the data contains a colon.

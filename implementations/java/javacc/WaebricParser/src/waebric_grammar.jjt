@@ -290,7 +290,7 @@ TOKEN : {
 }
 
 /*
-Parser productions
+ Syntactic Specifications
 */
 
 // Modules is the main node which we start with
@@ -305,7 +305,7 @@ private void Module(): {} {
 }
 
 void ModuleId() : {} {
-	(< IdCon >{jjtThis.image += "\"" + token.image + "\"";} (< DOT >{jjtThis.image += ", ";})?)+ 
+	(< IdCon >{jjtThis.image += token.image;} (< DOT >{jjtThis.image += ":";})?)+ 
 }
 
 void ModuleElement() : {} {
@@ -336,7 +336,7 @@ void Mapping() : {} {
 
 void Path() : {} {
 	<FileName>{jjtThis.image += "path-file:" + token.image;}
-	|	<DirName>{jjtThis.image += "path-dirfile:" + token.image.substring(0, token.image.length()-1) + ":";}
+	|	<DirName>{jjtThis.image += "path-dirfile:" + token.image + ":";}
 		<FileName>{jjtThis.image += token.image;}
 }
 
