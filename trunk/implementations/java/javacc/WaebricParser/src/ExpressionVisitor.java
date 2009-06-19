@@ -1,34 +1,40 @@
 public class ExpressionVisitor extends WaebricParserVisitorAdapter {
+	private static final int LABEL_ELEMENT = 0;
+	private static final int FIRST_DATA_ELEMENT = 1;
+	
 	public Object visit(ASTExpression node, Object data){
 		
-		// Make a choice between kinds of expressions
-		String[] dataFromJjt = node.image.split(":");
+		// Split the LABEL_ELEMENT from the data (array element 1-x)
+		String[] dataFromJjt = node.image.split(SPLIT_SEPARATOR);
 		
-		if(	dataFromJjt[0].equals("sym")) {
-			String text = reconstructText(dataFromJjt);
-			if(node.image.substring(node.image.length()-1, node.image.length()).equals(":")){
-				text += ":";
+		if(	dataFromJjt[LABEL_ELEMENT].equals("sym")) {
+			// Because the sym data can contain elements equal to the SPLIT_SEPARATOR, we need
+			// to reconstruct it.
+			String text = reconstructText(dataFromJjt, FIRST_DATA_ELEMENT, SPLIT_SEPARATOR);
+			if(lastCharacter(node.image).equals(SPLIT_SEPARATOR)){
+				text += SPLIT_SEPARATOR;
 			}
-			addToAST( dataFromJjt[0] + "(\"" + text + "\")" );
+			
+			addToAST( dataFromJjt[LABEL_ELEMENT] + "(\"" + text + "\")" );
 		}
 		
-		else if(dataFromJjt[0].equals("text")){
-			/* If the string contains a colon it has been split by the split method above.
-			 * The reconstruct method is used to combine the original text again.
-			 */
-			String text = reconstructText(dataFromJjt);
-			if(node.image.substring(node.image.length()-1, node.image.length()).equals(":")){
-				text += ":";
+		else if(dataFromJjt[LABEL_ELEMENT].equals("text")){
+			// Because the text data can contain elements equal to the SPLIT_SEPARATOR, we need
+			// to reconstruct it.
+			String text = reconstructText(dataFromJjt, FIRST_DATA_ELEMENT, SPLIT_SEPARATOR);
+			if(lastCharacter(node.image).equals(SPLIT_SEPARATOR)){
+				text += SPLIT_SEPARATOR;
 			}
-			addToAST( dataFromJjt[0] + "(\"\\\"" + text + "\\\"\")" );
+			
+			addToAST( dataFromJjt[LABEL_ELEMENT] + "(\"\\\"" + text + "\\\"\")" );
 		}
 		
-		else if(dataFromJjt[0].equals("num")){
-			addToAST( dataFromJjt[0] + "(" + safeGetStr(dataFromJjt, 1) + ")" );
+		else if(dataFromJjt[LABEL_ELEMENT].equals("num")){
+			addToAST( dataFromJjt[LABEL_ELEMENT] + "(" + safeGetStr(dataFromJjt, FIRST_DATA_ELEMENT) + ")" );
 		}
 		
-		else if(dataFromJjt[0].equals("list") || dataFromJjt[0].equals("record")) {
-			addToAST( dataFromJjt[0] + "([" );
+		else if(dataFromJjt[LABEL_ELEMENT].equals("list") || dataFromJjt[LABEL_ELEMENT].equals("record")) {
+			addToAST( dataFromJjt[LABEL_ELEMENT] + "([" );
 			processChildren(node);
 			addToAST( "])" );
 		}
@@ -42,10 +48,18 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 		return data;
 	}
 	
+	/**
+	 * This method controls which visitors can be used for scanning the children of Expression()
+	 * @param node: holds the Expression node and all its children.
+	 */
 	private void processChildren(ASTExpression node) {
 		int numberOfChildren = node.jjtGetNumChildren();
 		
 		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) {
+  			if (currentChild > 0){
+  				addToAST( ", " );
+  			}
+			
 			if (node.jjtGetChild(currentChild).toString().equals("Expression")){
   				ExpressionVisitor expressionVisitor = new ExpressionVisitor();
   				node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
@@ -64,22 +78,5 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 	  			addToAST( keyValuePairVisitor.getAST() );
 		  	}
 		}
-	}
-	
-	/**
-	 * Work-around method to ensure text that includes Colon elements gets included correctly.
-	 * @param textElements: String array with elements that have been split by the colon
-	 * @return reconstructed text which includes the colons.
-	 */
-	private String reconstructText(String[] textElements){
-		String outputText = "";
-		for (int textElementIndex = 1; textElementIndex < textElements.length; textElementIndex++){
-			if (textElementIndex > 1){
-				outputText += ":";
-			}
-			
-			outputText += safeGetStr(textElements, textElementIndex);
-		}
-		return outputText;
 	}
 }
