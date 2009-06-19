@@ -347,7 +347,7 @@ void FunctionDef() : {} {
 }
 
 void Formals() : {} {
-	<LPAREN> (<IdCon>{jjtThis.image += token.image;} (<COMMA>{jjtThis.image += token.image;})?)* <RPAREN>
+	<LPAREN> (<IdCon>{jjtThis.image += token.image;} (<COMMA>{jjtThis.image += ":";})?)* <RPAREN>
 }
 
 void Statement() : {} {

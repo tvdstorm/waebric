@@ -1,23 +1,25 @@
 public class FormalsVisitor extends WaebricParserVisitorAdapter {
+	private static final int FIRST_CHILD = 0;
+	
 	public Object visit(ASTFormals node, Object data){
 		
 		addToAST( "[" );
 		
-		String[] imageElements = node.image.split(",");
+		String[] imageElements = node.image.split(SPLIT_SEPARATOR);
 		int imageElementCount = imageElements.length;
+		String formalsSet = EMPTY_STRING;
 		
-		String formalsSet = "";
-		for (int imageElementIndex = 0; imageElementIndex < imageElementCount; imageElementIndex++){
-			if (imageElementIndex > 0) {
+		for ( int imageElementIndex = FIRST_CHILD; imageElementIndex < imageElementCount; imageElementIndex++ ){
+			if ( imageElementIndex > FIRST_CHILD ) {
 				formalsSet += ", ";
 			}
 			
-			formalsSet += "\"" + imageElements[imageElementIndex] + "\"";
+			formalsSet += addQuotes( imageElements[imageElementIndex] );
 		}
 		
 		addToAST( formalsSet );
-
 	  	addToAST( "]" );
+	  	
 		return data;
 	}
 }
