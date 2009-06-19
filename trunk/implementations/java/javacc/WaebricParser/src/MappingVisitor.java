@@ -6,7 +6,7 @@ public class MappingVisitor extends WaebricParserVisitorAdapter {
 		
 		int numChildren = node.jjtGetNumChildren();
 	  	for ( int currentChild = FIRST_CHILD; currentChild < numChildren; currentChild++ ) {
-	  		if ( currentChild > FIRST_CHILD ){
+	  		if ( FIRST_CHILD < currentChild ){
   				addToAST( ", " );
   			}
 	  		
