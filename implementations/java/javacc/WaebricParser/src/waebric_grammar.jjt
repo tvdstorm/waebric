@@ -335,7 +335,7 @@ void Mapping() : {} {
 }
 
 void Path() : {} {
-	<FileName>{jjtThis.image += "path-file:" + token.image;}
+		<FileName>{jjtThis.image += "path-file:" + token.image;}
 	|	<DirName>{jjtThis.image += "path-dirfile:" + token.image + ":";}
 		<FileName>{jjtThis.image += token.image;}
 }
@@ -391,7 +391,7 @@ void Embed() : {} {
 }
 
 void TextTail() : {} { 
-	<PostText> {jjtThis.image = "post:" + token.image;}
+		<PostText> {jjtThis.image = "post:" + token.image;}
 	|	<MidText> {jjtThis.image = "mid:" + token.image;} Embed() TextTail()
 }
 
@@ -439,7 +439,7 @@ void Var() : {} {
 */
 void Expression() : {} {	
 		<SymbolCon>{jjtThis.image = "sym:" + token.image;}
-	|	<Text>{jjtThis.image = "text:" + token.image.substring(1,token.image.length() -1);}
+	|	<Text>{jjtThis.image = "text:" + token.image;}
 	|	<NatCon>{jjtThis.image = "num:" + token.image;}
 	|	Var(){jjtThis.image = "var:";}
 	|	<LBRACKET>{jjtThis.image = "list:";} (Expression() (DotIdCon())? (<COMMA>)? )* <RBRACKET>

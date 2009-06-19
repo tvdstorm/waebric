@@ -21,9 +21,10 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 		else if(dataFromJjt[LABEL_ELEMENT].equals("text")){
 			// Because the text data can contain elements equal to the SPLIT_SEPARATOR, we need
 			// to reconstruct it.
-			String text = reconstructText(dataFromJjt, FIRST_DATA_ELEMENT, SPLIT_SEPARATOR);
-			if(lastCharacter(node.image).equals(SPLIT_SEPARATOR)){
-				text += SPLIT_SEPARATOR;
+			String text = reconstructText(dataFromJjt, FIRST_DATA_ELEMENT, SPLIT_SEPARATOR);		
+			if(lastCharacter(text).equals("\"")){
+				// if the last character is a "\"", remove both the first and last character.
+				text = text.substring(1, text.length() -1);
 			}
 			
 			addToAST( dataFromJjt[LABEL_ELEMENT] + "(\"\\\"" + text + "\\\"\")" );
