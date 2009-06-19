@@ -1,9 +1,20 @@
+/**
+ * class StatementVisitor
+ * 
+ * This class is the largest and most used class 
+ * This class contains a list of methods which are containing a lot of repeated code
+ * It is possible to use just one process method, but we decided to separate the concerns.
+ * If there is a problem it is much easier to check if the problem occurs within the method or
+ * within a level deeper. 
+*/
+
 public class StatementVisitor extends WaebricParserVisitorAdapter {
 	public Object visit(ASTStatement node, Object data){
 		
 		// Make a choice between kinds of statements
 		String[] dataFromJJT = node.image.split(":");
 		
+		// Every type needs a different approach
 		if(	dataFromJJT[0].equals("yield")){
 			addToAST( dataFromJJT[0] );
 		}
@@ -81,47 +92,81 @@ public class StatementVisitor extends WaebricParserVisitorAdapter {
 		
 		return data;
 	}
-	
+
+	/**
+	 * This method is used when a node type is "Markup"
+	 * @param node: the node to process
+	 */
 	private void processChildrenMarkup(ASTStatement node){
 		int numberOfChildren = node.jjtGetNumChildren();
 		
+		// Loop trough the childnodes
 		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) {
 			if(node.jjtGetChild(currentChild).toString().equals("Markup")){
 		  		MarkupVisitor markupVisitor = new MarkupVisitor();
 		  		node.jjtGetChild(currentChild).jjtAccept(markupVisitor, null);
 		  		
-		  		if((currentChild == numberOfChildren-1)&(currentChild != 0)) {
+		  		// If this is the last node, the previous node must be closed with a "]"
+				if((currentChild == numberOfChildren-1)&(currentChild != 0)) {
 		  			addToAST( "], " + markupVisitor.getAST() );
 		  		} 
 		  		else{
-		  			
+		  			// Every not first node mest use a comma to serperate itselfs rom previous nodes
 		  			if (currentChild > 0){
 		  				addToAST( ", " );
 		  			}
-		  			
 		  			addToAST( markupVisitor.getAST() );
 		  		}
 			}
 			
-			// Last 
 			else if(node.jjtGetChild(currentChild).toString().equals("Statement")){
 				StatementVisitor statementVisitor = new StatementVisitor();
 		  		node.jjtGetChild(currentChild).jjtAccept(statementVisitor, null);
-		  		addToAST( "], " + statementVisitor.getAST() );
+		  		if((currentChild == numberOfChildren-1)&(currentChild != 0)) {
+		  			addToAST( "], " + statementVisitor.getAST() );
+		  		}
+		  		else{
+		  			if (currentChild > 0){
+		  				addToAST( ", " );
+		  			}
+		  			addToAST( statementVisitor.getAST() );
+		  		}
 			}
+			
 			else if(node.jjtGetChild(currentChild).toString().equals("Embedding")){
 				EmbeddingVisitor embeddingVisitor = new EmbeddingVisitor();
 		  		node.jjtGetChild(currentChild).jjtAccept(embeddingVisitor, null);
-		  		addToAST( "], " + embeddingVisitor.getAST() );
+		  		if((currentChild == numberOfChildren-1)&(currentChild != 0)) {
+		  			addToAST( "], " + embeddingVisitor.getAST() );
+		  		}
+		  		else{
+		  			if (currentChild > 0){
+		  				addToAST( ", " );
+		  			}
+		  			addToAST( embeddingVisitor.getAST() );
+		  		}
 			}
+			
 			else if(node.jjtGetChild(currentChild).toString().equals("Expression")){
 				ExpressionVisitor expressionVisitor = new ExpressionVisitor();
 		  		node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
-		  		addToAST( "], " +  expressionVisitor.getAST() );
+		  		if((currentChild == numberOfChildren-1)&(currentChild != 0)) {
+		  			addToAST( "], " +  expressionVisitor.getAST() );
+		  		}
+		  		else{
+		  			if (currentChild > 0){
+		  				addToAST( ", " );
+		  			}
+		  			addToAST( expressionVisitor.getAST() );
+		  		}
 			}
 		}
 	}
 	
+	/**
+	* This method is used when a node type is "Block"
+	* @param node: the node to process
+	*/
 	private void processChildrenBlock(ASTStatement node){
 		int numberOfChildren = node.jjtGetNumChildren();
 		
@@ -138,7 +183,11 @@ public class StatementVisitor extends WaebricParserVisitorAdapter {
 			}
 		}
 	}
-	
+
+	/**
+	* This method is used when a node type is if or if-else "Block"
+	* @param node: the node to process
+	*/
 	private void processChildrenIfElse(ASTStatement node){
 		int numberOfChildren = node.jjtGetNumChildren();
 		
@@ -161,7 +210,11 @@ public class StatementVisitor extends WaebricParserVisitorAdapter {
 			}
 		}
 	}
-	
+
+	/**
+	* This method is used when a node type is "Each"
+	* @param node: the node to process
+	*/
 	private void processChildrenEach(ASTStatement node){
 		int numberOfChildren = node.jjtGetNumChildren();
 		
@@ -196,7 +249,11 @@ public class StatementVisitor extends WaebricParserVisitorAdapter {
 			}
 		}
 	}
-	
+
+	/**
+	* This method is used when a node type is "Echo"
+	* @param node: the node to process
+	*/
 	private void processChildrenEcho(ASTStatement node){
 		int numberOfChildren = node.jjtGetNumChildren();
 		
@@ -225,7 +282,11 @@ public class StatementVisitor extends WaebricParserVisitorAdapter {
 			}
 		}
 	}
-	
+
+	/**
+	* This method is used when a node type is "Let"
+	* @param node: the node to process
+	*/
 	private void processChildrenLet(ASTStatement node){
 		int numberOfChildren = node.jjtGetNumChildren();
 		
@@ -250,7 +311,11 @@ public class StatementVisitor extends WaebricParserVisitorAdapter {
 			}
 		}
 	}
-	
+
+	/**
+	* This method is used when a node type is Cdata
+	* @param node: the node to process
+	*/
 	private void processChildrenCdata(ASTStatement node){
 		int numberOfChildren = node.jjtGetNumChildren();
 		
