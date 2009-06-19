@@ -1,13 +1,22 @@
 public class ExpressionVisitor extends WaebricParserVisitorAdapter {
+	private static final int FIRST_CHILD = 0;
 	private static final int LABEL_ELEMENT = 0;
 	private static final int FIRST_DATA_ELEMENT = 1;
+	
+	private static final String CHOICE_SYM = "sym";
+	private static final String CHOICE_TEXT = "text";
+	private static final String CHOICE_NUM = "num";
+	private static final String CHOICE_LIST = "list";
+	private static final String CHOICE_RECORD = "record";
+	private static final String CHOICE_VAR = "var";
+
 	
 	public Object visit(ASTExpression node, Object data){
 		
 		// Split the LABEL_ELEMENT from the data (array element 1-x)
 		String[] dataFromJjt = node.image.split(SPLIT_SEPARATOR);
 		
-		if(	dataFromJjt[LABEL_ELEMENT].equals("sym")) {
+		if(	dataFromJjt[LABEL_ELEMENT].equals(CHOICE_SYM)) {
 			// Because the sym data can contain elements equal to the SPLIT_SEPARATOR, we need
 			// to reconstruct it.
 			String text = reconstructText(dataFromJjt, FIRST_DATA_ELEMENT, SPLIT_SEPARATOR);
@@ -15,10 +24,10 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 				text += SPLIT_SEPARATOR;
 			}
 			
-			addToAST( dataFromJjt[LABEL_ELEMENT] + "(\"" + text + "\")" );
+			addToAST( dataFromJjt[LABEL_ELEMENT]  + "(" + addQuotes(text) + ")" );
 		}
 		
-		else if(dataFromJjt[LABEL_ELEMENT].equals("text")){
+		else if(dataFromJjt[LABEL_ELEMENT].equals(CHOICE_TEXT)){
 			// Because the text data can contain elements equal to the SPLIT_SEPARATOR, we need
 			// to reconstruct it.
 			String text = reconstructText(dataFromJjt, FIRST_DATA_ELEMENT, SPLIT_SEPARATOR);		
@@ -27,22 +36,22 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 				text = text.substring(1, text.length() -1);
 			}
 			
-			addToAST( dataFromJjt[LABEL_ELEMENT] + "(\"\\\"" + text + "\\\"\")" );
+			addToAST( dataFromJjt[LABEL_ELEMENT] + "(" + addEscQuotes(text) + ")" );
 		}
 		
-		else if(dataFromJjt[LABEL_ELEMENT].equals("num")){
+		else if(dataFromJjt[LABEL_ELEMENT].equals(CHOICE_NUM)){
 			addToAST( dataFromJjt[LABEL_ELEMENT] + "(" + safeGetStr(dataFromJjt, FIRST_DATA_ELEMENT) + ")" );
 		}
 		
-		else if(dataFromJjt[LABEL_ELEMENT].equals("list") || dataFromJjt[LABEL_ELEMENT].equals("record")) {
+		else if(dataFromJjt[LABEL_ELEMENT].equals(CHOICE_LIST) || dataFromJjt[LABEL_ELEMENT].equals(CHOICE_RECORD)) {
 			addToAST( dataFromJjt[LABEL_ELEMENT] + "([" );
 			processChildren(node);
 			addToAST( "])" );
 		}
 
-		else if(dataFromJjt[0].equals("var")){
+		else if(dataFromJjt[LABEL_ELEMENT].equals(CHOICE_VAR)){
 			VarVisitor varVisitor = new VarVisitor();
-  			node.jjtGetChild(0).jjtAccept(varVisitor, null);
+  			node.jjtGetChild(FIRST_CHILD).jjtAccept(varVisitor, null);
   			addToAST( varVisitor.getAST() );
 		}
 		
@@ -56,24 +65,24 @@ public class ExpressionVisitor extends WaebricParserVisitorAdapter {
 	private void processChildren(ASTExpression node) {
 		int numberOfChildren = node.jjtGetNumChildren();
 		
-		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) {
-  			if (currentChild > 0){
+		for ( int currentChild = FIRST_CHILD; currentChild < numberOfChildren; currentChild++ ) {
+  			if (currentChild > FIRST_CHILD){
   				addToAST( ", " );
   			}
 			
-			if (node.jjtGetChild(currentChild).toString().equals("Expression")){
+			if (node.jjtGetChild(currentChild).toString().equals(NODE_EXPRESSION)){
   				ExpressionVisitor expressionVisitor = new ExpressionVisitor();
   				node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
   				addToAST( expressionVisitor.getAST() );
   			}
 			
-			else if (node.jjtGetChild(currentChild).toString().equals("DotIdCon")){
+			else if (node.jjtGetChild(currentChild).toString().equals(NODE_DOTIDCON)){
 				DotIdConVisitor dotIdConVisitor = new DotIdConVisitor();
   				node.jjtGetChild(currentChild).jjtAccept(dotIdConVisitor, null);
   				addToAST( dotIdConVisitor.getAST() );
   			}
 
-			else if (node.jjtGetChild(currentChild).toString().equals("KeyValuePair")){
+			else if (node.jjtGetChild(currentChild).toString().equals(NODE_KEYVALUEPAIR)){
 	  			KeyValuePairVisitor keyValuePairVisitor = new KeyValuePairVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(keyValuePairVisitor, null);
 	  			addToAST( keyValuePairVisitor.getAST() );

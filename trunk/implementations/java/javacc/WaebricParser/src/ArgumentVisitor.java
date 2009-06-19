@@ -1,28 +1,32 @@
 public class ArgumentVisitor extends WaebricParserVisitorAdapter {
+	private static final int FIRST_CHILD = 0;
+	
 	public Object visit(ASTArgument node, Object data){
 		int numChildren = node.jjtGetNumChildren();
 
-	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
+	  	for ( int currentChild = FIRST_CHILD; currentChild < numChildren; currentChild++ ) {
   			// if list
-	  		if (currentChild > 0){
+	  		if (currentChild > FIRST_CHILD){
   				addToAST(", ");
   			}
 			
-	  		if (node.jjtGetChild(currentChild).toString().equals("DotIdCon")){
+	  		if (node.jjtGetChild(currentChild).toString().equals(NODE_DOTIDCON)){
 				DotIdConVisitor dotIdConVisitor = new DotIdConVisitor();
   				node.jjtGetChild(currentChild).jjtAccept(dotIdConVisitor, null);
   				addToAST(dotIdConVisitor.getAST());
   			}
 	  		
-	  		else if (node.jjtGetChild(currentChild).toString().equals("Expression")){
+	  		else if (node.jjtGetChild(currentChild).toString().equals(NODE_EXPRESSION)){
 	  			String nodeImage = node.image;
 	  			if (!nodeImage.equals("")){
-	  				addToAST("attr(" +  "\"" + node.image +  "\"" + ", ");
+	  				addToAST("attr(" +  addQuotes(node.image) + ", ");
 	  			}
+	  			
 	  			ExpressionVisitor expressionVisitor = new ExpressionVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
 	  			addToAST(expressionVisitor.getAST());
-	  			if (!nodeImage.equals("")){
+	  			
+	  			if (!nodeImage.equals(EMPTY_STRING)){
 	  				addToAST(")");
 	  			}
 	  		}
