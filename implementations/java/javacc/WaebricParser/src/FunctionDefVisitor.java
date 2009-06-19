@@ -1,32 +1,31 @@
 public class FunctionDefVisitor extends WaebricParserVisitorAdapter {
+	private static final int FIRST_CHILD = 0;
+	
 	public Object visit(ASTFunctionDef node, Object data){
-		int numChildren = node.jjtGetNumChildren();
-		
-		addToAST( "def(" + "\"" + node.image + "\"" + ", " );
+		addToAST( "def(" + addQuotes(node.image) + ", " );
 	  	
-	  	// Run formal
-	  	if (node.jjtGetChild(0).toString().equals("Formals")){
+	  	if (node.jjtGetChild(0).toString().equals(NODE_FORMALS)){
 	  		FormalsVisitor formalsVisitor = new FormalsVisitor();
   			node.jjtGetChild(0).jjtAccept(formalsVisitor, null);
   			addToAST( "formals(" );
   			addToAST( formalsVisitor.getAST() + ", " );
   			addToAST( ")" );
-	  	}else{
+	  	} else {
 	  		addToAST( "empty, " );
-	  		
 	  	}
 	  	
 	  	// Iterate through statements
-	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
-	  		if (currentChild > 1){
+		int numChildren = node.jjtGetNumChildren();
+	  	for ( int currentChild = FIRST_CHILD; currentChild < numChildren; currentChild++ ) {
+	  		if (1 < currentChild){
   				addToAST( ", " );
   			} 
-	  		else if ((node.jjtGetChild(0).toString().equals("Statement"))&
-	  			(currentChild > 0)){
+	  		else if ( ( node.jjtGetChild(FIRST_CHILD).toString().equals(NODE_STATEMENT) ) &
+	  			(FIRST_CHILD < currentChild) ){
   				addToAST( ", " );
   			}
 	  		
-	  		if (node.jjtGetChild(currentChild).toString().equals("Statement")){
+	  		if ( node.jjtGetChild(currentChild).toString().equals(NODE_STATEMENT) ){
 	  			StatementVisitor statementVisitor = new StatementVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(statementVisitor, null);
 	  			addToAST( "[" );

@@ -2,7 +2,6 @@ public class FormalsVisitor extends WaebricParserVisitorAdapter {
 	private static final int FIRST_CHILD = 0;
 	
 	public Object visit(ASTFormals node, Object data){
-		
 		addToAST( "[" );
 		
 		String[] imageElements = node.image.split(SPLIT_SEPARATOR);
@@ -10,7 +9,7 @@ public class FormalsVisitor extends WaebricParserVisitorAdapter {
 		String formalsSet = EMPTY_STRING;
 		
 		for ( int imageElementIndex = FIRST_CHILD; imageElementIndex < imageElementCount; imageElementIndex++ ){
-			if ( imageElementIndex > FIRST_CHILD ) {
+			if ( FIRST_CHILD < imageElementIndex ) {
 				formalsSet += ", ";
 			}
 			
