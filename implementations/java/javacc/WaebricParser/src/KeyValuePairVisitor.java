@@ -23,7 +23,9 @@ public class KeyValuePairVisitor extends WaebricParserVisitorAdapter {
 	  		// close record
 	  		addToAST( "])" );
 	  	}
+	  	
 	  	addToAST( ")" );
-		return data;
+		
+	  	return data;
 	}
 }
