@@ -1,23 +1,25 @@
 public class KeyValuePairVisitor extends WaebricParserVisitorAdapter {
+	private static final int FIRST_CHILD = 0;
+	
 	public Object visit(ASTKeyValuePair node, Object data){
-		int numChildren = node.jjtGetNumChildren();
-		
 		addToAST( "pair(" );
+		addToAST( addQuotes( node.image ) + ", " );
 		
-		addToAST( "\"" + node.image + "\"" + ", " );
-		
-	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
+		int numChildren = node.jjtGetNumChildren();
+	  	for ( int currentChild = FIRST_CHILD; currentChild < numChildren; currentChild++ ) {
   			// if list
-	  		if (currentChild > 0){
+	  		if ( currentChild > FIRST_CHILD ){
   				addToAST( ", " );
   			}
-	  		if (node.jjtGetChild(currentChild).toString().equals("Expression")){
+	  		
+	  		if ( node.jjtGetChild(currentChild).toString().equals(NODE_EXPRESSION) ){
 	  			ExpressionVisitor expressionVisitor = new ExpressionVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(expressionVisitor, null);
 	  			addToAST( expressionVisitor.getAST() );
 	  		}
 	    }
-	  	if (node.parent.toString().equals("Expression")){
+	  	
+	  	if ( node.parent.toString().equals(NODE_EXPRESSION) ){
 	  		// close record
 	  		addToAST( "])" );
 	  	}
