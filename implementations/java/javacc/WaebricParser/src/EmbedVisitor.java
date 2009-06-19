@@ -10,6 +10,9 @@ public class EmbedVisitor extends WaebricParserVisitorAdapter {
 		}
 		
 		for ( int currentChild = 0; currentChild < numberOfChildren; currentChild++ ) {
+  			if (currentChild > 0){
+  				addToAST( ", " );
+  			}
 			
 			if (node.jjtGetChild(currentChild).toString().equals("Expression")){
   				ExpressionVisitor expressionVisitor = new ExpressionVisitor();
