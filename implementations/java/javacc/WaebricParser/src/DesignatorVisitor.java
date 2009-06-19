@@ -1,15 +1,16 @@
 public class DesignatorVisitor extends WaebricParserVisitorAdapter {
+	private static final int FIRST_CHILD = 0;
+	
 	public Object visit(ASTDesignator node, Object data){
+		addToAST( "tag(" + addQuotes( node.image ) + ", [" );
+		
 		int numChildren = node.jjtGetNumChildren();
-		
-		addToAST( "tag(" + "\"" + node.image + "\"" + ", [" );
-		
-	  	for ( int currentChild = 0; currentChild < numChildren; currentChild++ ) {
+	  	for ( int currentChild = FIRST_CHILD; currentChild < numChildren; currentChild++ ) {
   			// if list
-	  		if (currentChild > 0){
+	  		if (FIRST_CHILD <currentChild){
   				addToAST( ", " );
   			}
-	  		if (node.jjtGetChild(currentChild).toString().equals("Attribute")){
+	  		if (node.jjtGetChild(currentChild).toString().equals(NODE_ATTRIBUTE)){
 	  			AttributeVisitor attributeVisitor = new AttributeVisitor();
 	  			node.jjtGetChild(currentChild).jjtAccept(attributeVisitor, null);
 	  			addToAST( attributeVisitor.getAST() );
