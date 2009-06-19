@@ -3,6 +3,35 @@ public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 	static final String EMPTY_STRING = "";
 	static final String SPLIT_SEPARATOR = ":";
 	
+	static final String NODE_SIMPLENODE = "SimpleNode";
+	static final String NODE_MODULES = "Modules";
+    static final String NODE_MODULE = "Module";
+    static final String NODE_MODULEID = "ModuleId";
+    static final String NODE_MODULEELEMENT = "ModuleElement";
+    static final String NODE_IMPORT = "Import";
+    static final String NODE_SITE = "Site";
+    static final String NODE_MAPPINGS = "Mappings";
+    static final String NODE_MAPPING = "Mapping";
+    static final String NODE_PATH = "Path";
+    static final String NODE_FUNCTIONDEF = "FunctionDef";
+    static final String NODE_FORMALS = "Formals";
+    static final String NODE_STATEMENT = "Statement";
+    static final String NODE_PREDICATE = "Predicate";
+    static final String NODE_ASSIGNMENT = "Assignment"; 
+    static final String NODE_EMBEDDING = "Embedding";
+    static final String NODE_EMBED = "Embed";
+    static final String NODE_TEXTTAIL = "TextTail";
+    static final String NODE_MARKUP = "Markup";
+    static final String NODE_DESIGNATOR = "Designator";
+    static final String NODE_ATTRIBUTE = "Attribute";
+    static final String NODE_ARGUMENTS = "Arguments";
+    static final String NODE_ARGUMENT = "Argument";
+    static final String NODE_VAR = "Var";
+    static final String NODE_EXPRESSION = "Expression";
+    static final String NODE_DOTIDCON = "DotIdCon";
+    static final String NODE_KEYVALUEPAIR = "KeyValuePair";
+
+	
 	private String ast = EMPTY_STRING;
 	
 	/**
@@ -72,12 +101,21 @@ public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 	}
 	
 	/**
-	 * Adds quoted to both sides of the string
+	 * Adds quotes to both sides of the string
 	 * @param stringToQuote: String that needs quotes
 	 * @return "\"" + stringToQuote + "\""
 	 */
 	protected String addQuotes(String stringToQuote){
 		return "\"" + stringToQuote + "\"";
+	}
+	
+	/**
+	 * Adds escaped quotes to both sides of the string
+	 * @param stringToQuote: String that needs escaped quotes
+	 * @return "\"\\\"" + stringToQuote + "\\\"\""
+	 */
+	protected String addEscQuotes(String stringToQuote){
+		return "\"\\\"" + stringToQuote + "\\\"\"";
 	}
 	
 	/* 
@@ -189,10 +227,6 @@ public class WaebricParserVisitorAdapter implements WaebricParserVisitor
 	}
 	
 	public Object visit(ASTKeyValuePair node, Object data){
-		return node.childrenAccept(this, data);
-	}
-	
-	public Object visit(ASTMoreMarkup node, Object data){
 		return node.childrenAccept(this, data);
 	}
 }
