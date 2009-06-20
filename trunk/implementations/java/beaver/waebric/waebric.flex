@@ -44,7 +44,13 @@ import waebric.WaebricParser.Terminals;
 %{
 	boolean bDEF = false;
 	boolean bSITE = false;
-      boolean bLET = false;
+
+      int bLETFALSE=0;
+	int bLETBEFOREIN=1;
+	int bLETAFTERIN=2;
+      int bLET = bLETFALSE;
+    int formalTestCount=0;
+    
       boolean bFunctionId = false;
       int nestingLevel = 0;
 	StringBuffer string = new StringBuffer(128);
@@ -134,17 +140,16 @@ SiteFilename = {PathElement} "." {FileExt}
   "module"                         { Debug("MODULE"); return nextToken(Terminals.MODULE); }
   "import"                         { Debug("IMPORT"); return nextToken(Terminals.IMPORT); }  
   "def"                            { Debug("DEF"); bDEF=true; bFunctionId=true; return nextToken(Terminals.DEF); }
-  "end"                            { if(bSITE && !bLET) {
+  "end"                            { if(bSITE && bLET==bLETFALSE) {
                                        Debug("END SITE");
                                        bSITE=false;
-                                     }
-                                     if(bDEF && !bLET) {
+                                     }else if(bDEF && bLET==bLETFALSE) {
                                        Debug("END DEF"); 
                                        bDEF=false;
                                      }
-                                     if(bLET) {
+                                     else if(bLET>=bLETFALSE) {
                                        Debug("END LET");
-                                       bLET=false;
+                                       bLET=bLETFALSE;
                                      }
                                      return nextToken(Terminals.END);
                                    }
@@ -153,12 +158,12 @@ SiteFilename = {PathElement} "." {FileExt}
   "record"                         { Debug("RECORD");  return nextToken(Terminals.RECORD); }
   "string"                         { Debug("STRING");  return nextToken(Terminals.STRING); }
   "if"                             { Debug("IF");   return nextToken(Terminals.IF); }
-  "in"                             { Debug("IN");   return nextToken(Terminals.IN); }
+  "in"                             { Debug("IN"); bLET=bLETAFTERIN;  return nextToken(Terminals.IN); }
   "comment"                        { Debug("COMMENT"); string.setLength(0); yybegin(STRCON_INIT);  return nextToken(Terminals.COMMENT);  }
   "echo"                           { Debug("ECHO"); return nextToken(Terminals.ECHO); }
   "cdata"                          { Debug("CDATA"); return nextToken(Terminals.CDATA); }
   "each"                           { Debug("EACH"); return nextToken(Terminals.EACH); }
-  "let"                            { Debug("LET"); bLET=true; return nextToken(Terminals.LET); }
+  "let"                            { Debug("LET"); bLET=bLETBEFOREIN; return nextToken(Terminals.LET); }
   "yield"                          { Debug("YIELD"); return nextToken(Terminals.YIELD); }
 
    "\""                        { string.setLength(0); string.append( '\"' ); yybegin(PRETEXT); }
@@ -170,8 +175,8 @@ SiteFilename = {PathElement} "." {FileExt}
 //  "&#x"                          { return nextToken(Terminals.TEXTCHARREF); }
 //  "&#"                           { return nextToken(Terminals.TEXTCHARREF); }  
   
-  "("                            { Debug("LPAREN"); nestingLevel++; return nextToken(Terminals.LPAREN); }
-  ")"                            { Debug("RPAREN"); nestingLevel--; return nextToken(Terminals.RPAREN); }
+  "("                            { Debug("LPAREN"); if(bLET==bLETBEFOREIN){ formalTestCount++;} nestingLevel++; return nextToken(Terminals.LPAREN); }
+  ")"                            { Debug("RPAREN"); if(bLET==bLETBEFOREIN){ formalTestCount++;} nestingLevel--; return nextToken(Terminals.RPAREN); }
   "{"                            { Debug("LBRACE"); return nextToken(Terminals.LBRACE); }
   "}"                            { Debug("RBRACE"); return nextToken(Terminals.RBRACE); }
   "["                            { Debug("LBRACK"); return nextToken(Terminals.LBRACK); }
@@ -187,7 +192,7 @@ SiteFilename = {PathElement} "." {FileExt}
   "!"                            { Debug("NOT"); return nextToken(Terminals.NOT); }
   "&&"                           { Debug("ANDAND"); return nextToken(Terminals.ANDAND); }
   "||"                           { Debug("OROR"); return nextToken(Terminals.OROR); }
-  "="                            { Debug("EQ"); return nextToken(Terminals.EQ); }
+  "="                            { Debug("EQ"); if(bLET==bLETBEFOREIN){ formalTestCount++;} return nextToken(Terminals.EQ); }
   
   "'" {SymbolChar}*              { Debug("SYMBOLCON " + yytext()); return nextToken(Terminals.SYMBOLCON, yytext() );}
 
@@ -199,16 +204,21 @@ SiteFilename = {PathElement} "." {FileExt}
   {WhiteSpace}                   { /* ignore */ }
 
   /* identifiers */
-  {Identifier}                   {  if(bLET) {
+  {Identifier}                   { if(bLET==bLETBEFOREIN && formalTestCount>=3)
+  									{
+  					  	              Debug("IDCONDESIGNATOR (bLET)" + yytext() );
+                                      return nextToken(Terminals.IDCONDESIGNATOR, yytext());					
+  									}
+  									else if(bLET>bLETFALSE) {
   	                                  Debug("IDCON " + yytext() );
                                       return nextToken(Terminals.IDCON, yytext());
   									}
-  									if ( bDEF && bFunctionId ) {
+  									else if ( bDEF && bFunctionId ) {
                                       Debug("IDCON " + yytext() );
                                       bFunctionId = false;
                                       return nextToken(Terminals.IDCON, yytext());
                                     }
-                                    if ( nestingLevel == 0 && bDEF && !bFunctionId ) {
+                                    else if ( nestingLevel == 0 && bDEF && !bFunctionId ) {
                                       yybegin(ATTRIBUTES);
                                       Debug("MAIN IDCONDESIGNATOR " + yytext() );
                                       return nextToken(Terminals.IDCONDESIGNATOR, yytext());
