@@ -184,15 +184,15 @@ markup_seq = markup.m
 
 /* SDF specificatie: languages/waebric/syntax/Markup */
 
-arguments = LPAREN argumentlist_opt.a RPAREN {: //@args(a) :}
+arguments = LPAREN argumentlist_opt.a RPAREN {: //@args([a]) :}
 ;
 
 argumentlist = argument.a
-| argument.a COMMA argumentlist.b
+|  argumentlist.b COMMA argument.a
 ;
 
-argumentlist_opt = {: //[]emptyarglist() :}
-| argumentlist.a {: //[]arglist(a) :}
+argumentlist_opt =  
+| argumentlist.a
 ;
 
 argument = IDCON.i EQ expression.e {: //@attr($i,e) :}
