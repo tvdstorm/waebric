@@ -66,7 +66,7 @@ import waebric.WaebricParser.Terminals;
 	
 	private void Debug(String text)
 	{
-		//System.out.println(text);//commentariseer deze regel uit in productie
+		System.out.println(text);//commentariseer deze regel uit in productie
 	}
 %}
 
@@ -204,7 +204,7 @@ SiteFilename = {PathElement} "." {FileExt}
   {WhiteSpace}                   { /* ignore */ }
 
   /* identifiers */
-  {Identifier}                   { if(bLET==bLETBEFOREIN && formalTestCount>=3)
+  {Identifier}                   { if(bLET==bLETBEFOREIN && formalTestCount==3)
   									{
   					  	              Debug("IDCONDESIGNATOR (bLET)" + yytext() );
                                       return nextToken(Terminals.IDCONDESIGNATOR, yytext());					
