@@ -1,10 +1,9 @@
-module lettest
+module abon
+def abonnementen 
+     let 
+       td(img, alt) = td img(width="160",height="160", alt=alt,src=img);
+     in
+		td {}
+     end
 
-def lettest
-  let
-    aap(i,j)=noot;
-  in {
-    echo mies;
-  }
-  end
 end

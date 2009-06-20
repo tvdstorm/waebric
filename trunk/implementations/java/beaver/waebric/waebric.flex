@@ -48,6 +48,8 @@ import waebric.WaebricParser.Terminals;
       int bLETFALSE=0;
 	int bLETBEFOREIN=1;
 	int bLETAFTERIN=2;
+	int bLETAFTERINDESIGNATOR=3;
+	
       int bLET = bLETFALSE;
     int formalTestCount=0;
     
@@ -66,7 +68,7 @@ import waebric.WaebricParser.Terminals;
 	
 	private void Debug(String text)
 	{
-		System.out.println(text);//commentariseer deze regel uit in productie
+		//System.out.println(text);//commentariseer deze regel uit in productie
 	}
 %}
 
@@ -158,7 +160,9 @@ SiteFilename = {PathElement} "." {FileExt}
   "record"                         { Debug("RECORD");  return nextToken(Terminals.RECORD); }
   "string"                         { Debug("STRING");  return nextToken(Terminals.STRING); }
   "if"                             { Debug("IF");   return nextToken(Terminals.IF); }
-  "in"                             { Debug("IN"); bLET=bLETAFTERIN;  return nextToken(Terminals.IN); }
+  "in"				               { Debug("IN"); bLET=bLETAFTERIN;  return nextToken(Terminals.IN); }
+  "in"/{WhiteSpace}*{Identifier}                { Debug("IN (FOLLOWING DESIGNATOR)"); bLET=bLETAFTERINDESIGNATOR;  return nextToken(Terminals.IN); }
+  
   "comment"                        { Debug("COMMENT"); string.setLength(0); yybegin(STRCON_INIT);  return nextToken(Terminals.COMMENT);  }
   "echo"                           { Debug("ECHO"); return nextToken(Terminals.ECHO); }
   "cdata"                          { Debug("CDATA"); return nextToken(Terminals.CDATA); }
@@ -204,7 +208,13 @@ SiteFilename = {PathElement} "." {FileExt}
   {WhiteSpace}                   { /* ignore */ }
 
   /* identifiers */
-  {Identifier}                   { if(bLET==bLETBEFOREIN && formalTestCount==3)
+  {Identifier}                   {if( bLET==bLETAFTERINDESIGNATOR  )
+  									{
+  										bLET=bLETAFTERIN;
+  					  	              Debug("IDCONDESIGNATOR (bLET)" + yytext() );
+                                      return nextToken(Terminals.IDCONDESIGNATOR, yytext());					
+  									}
+  									else if( bLET==bLETBEFOREIN && formalTestCount==3)
   									{
   					  	              Debug("IDCONDESIGNATOR (bLET)" + yytext() );
                                       return nextToken(Terminals.IDCONDESIGNATOR, yytext());					
