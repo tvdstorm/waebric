@@ -210,7 +210,7 @@ SiteFilename = {PathElement} "." {FileExt}
   /* identifiers */
   {Identifier}                   {if( bLET==bLETAFTERINDESIGNATOR  )
   									{
-  										bLET=bLETAFTERIN;
+  									//	bLET=bLETAFTERIN;
   					  	              Debug("IDCONDESIGNATOR (bLET)" + yytext() );
                                       return nextToken(Terminals.IDCONDESIGNATOR, yytext());					
   									}
