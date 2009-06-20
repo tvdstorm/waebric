@@ -226,7 +226,7 @@ attribute_opt =
 ;
 
 attributes = attribute 
-| attribute attributes 
+| attributes attribute 
 ;
 
 

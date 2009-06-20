@@ -68,7 +68,7 @@ import waebric.WaebricParser.Terminals;
 	
 	private void Debug(String text)
 	{
-		//System.out.println(text);//commentariseer deze regel uit in productie
+		System.out.println(text);//commentariseer deze regel uit in productie
 	}
 %}
 
@@ -102,7 +102,7 @@ DocumentationComment = "/*" "*"+ [^/*] ~"*/"
 Natcon = [0-9]+
 
 
-TextChar = [^\x00-\x1F\&\"\<\x80-\xFF] | [\n\r\t] | TextCharRefA | TextCharRefB | TextEntityRef | [&]
+TextChar = [^\x00-\x1F\&\"\<\x80-\xFF] | [\n\r\t] | {TextCharRefA} | {TextCharRefB} | {TextEntityRef} | [&]
 SymbolChar = [^\x00-\x1F\)\ \t\n\r\;\,\>\x80-\xFF]
 
 
