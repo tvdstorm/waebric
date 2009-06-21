@@ -68,7 +68,7 @@ import waebric.WaebricParser.Terminals;
 	
 	private void Debug(String text)
 	{
-		System.out.println(text);//commentariseer deze regel uit in productie
+	//	System.out.println(text);//commentariseer deze regel uit in productie
 	}
 %}
 
@@ -306,11 +306,11 @@ SiteFilename = {PathElement} "." {FileExt}
 }
 
 <ATTRIBUTES> {
-	  "#"{Identifier}                         { String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
-	  "."{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
-	  "$"{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
-	  ":"{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
-	  "@"{Natcon}                	            { String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
+	  "#"{WhiteSpace}*{Identifier}                         { String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
+	  "."{WhiteSpace}*{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
+	  "$"{WhiteSpace}*{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
+	  ":"{WhiteSpace}*{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
+	  "@"{WhiteSpace}*{Natcon}                	            { String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
 	  {Identifier}/{WhiteSpace}{Identifier}	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Identifier}/{WhiteSpace}{Natcon}		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Identifier}/{WhiteSpace}*"["		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
@@ -319,7 +319,7 @@ SiteFilename = {PathElement} "." {FileExt}
 	  {Identifier}/{WhiteSpace}*"("	 	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Comment}                      		{ /* ignore */ }
       {WhiteSpace}                   		{ /* ignore */ }
-  	  .							{ yybegin(AFTERATTRIBUTES); yypushback(1); bFunctionId=false;}
+  	  .							{ yybegin(YYINITIAL); yypushback(1); bFunctionId=false;}
 }
 
 <AFTERATTRIBUTES> {

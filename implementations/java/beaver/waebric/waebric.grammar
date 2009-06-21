@@ -105,7 +105,7 @@ formals = {://@empty() :}
 ;
 
 formallist = IDCON.i {: //$formal_a($i):}
-| idcons.a COMMA IDCON.b {: //$formallist(a,$b):}
+| formallist.a COMMA IDCON.b {: //$formallist(a,$b):}
 ;
 
 assignmentformals = LPAREN RPAREN {: //[]emptyformallist() :}
