@@ -68,7 +68,7 @@ import waebric.WaebricParser.Terminals;
 	
 	private void Debug(String text)
 	{
-	//	System.out.println(text);//commentariseer deze regel uit in productie
+		//System.out.println(text);//commentariseer deze regel uit in productie
 	}
 %}
 
@@ -319,15 +319,16 @@ SiteFilename = {PathElement} "." {FileExt}
 	  {Identifier}/{WhiteSpace}*"("	 	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Comment}                      		{ /* ignore */ }
       {WhiteSpace}                   		{ /* ignore */ }
-  	  .							{ yybegin(YYINITIAL); yypushback(1); bFunctionId=false;}
+  	  .							{ yybegin(AFTERATTRIBUTES); yypushback(1); bFunctionId=false;}
 }
 
 <AFTERATTRIBUTES> {
 	  {Identifier}				{ Debug("AFTERATTRIBUTES IDCON: " + yytext() );  return nextToken(Terminals.IDCON, yytext() ); } 
 	   /* identifiers */
-  		
+  	{Identifier}/{WhiteSpace}+{Identifier}               { return nextToken(Terminals.IDCONDESIGNATOR, yytext()); } 	
   	{Identifier}/">"               { return nextToken(Terminals.IDCONTAIL, yytext()); } 
-  
+  	 {Identifier}/{WhiteSpace}*"."               { return nextToken(Terminals.IDCONDESIGNATOR, yytext()); } 
+  	  	  
 	  {Comment}                      		{ /* ignore */ }
       {WhiteSpace}                   		{ /* ignore */ }
   	  .							{ yybegin(YYINITIAL); yypushback(1); bFunctionId=false;}
