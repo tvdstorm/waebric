@@ -123,7 +123,7 @@ SiteFilename = {PathElement} "." {FileExt}
 
 
 
-%state SITE,STRING,STRCON,STRCON_INIT, PRETEXT, POSTMIDTEXT, ATTRIBUTES,DIRFILE, ARGUMENTS
+%state SITE,STRING,STRCON,STRCON_INIT, PRETEXT, POSTMIDTEXT, ATTRIBUTES, AFTERATTRIBUTES, DIRFILE, ARGUMENTS
 
 %%
 /* ------------------------Lexical Rules Section---------------------- */
@@ -319,10 +319,19 @@ SiteFilename = {PathElement} "." {FileExt}
 	  {Identifier}/{WhiteSpace}*"("	 	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Comment}                      		{ /* ignore */ }
       {WhiteSpace}                   		{ /* ignore */ }
-  	  .							{ yybegin(YYINITIAL); yypushback(1); bFunctionId=false;}
+  	  .							{ yybegin(AFTERATTRIBUTES); yypushback(1); bFunctionId=false;}
 }
 
- 
+<AFTERATTRIBUTES> {
+	  {Identifier}				{ Debug("AFTERATTRIBUTES IDCON: " + yytext() );  return nextToken(Terminals.IDCON, yytext() ); } 
+	   /* identifiers */
+  		
+  	{Identifier}/">"               { return nextToken(Terminals.IDCONTAIL, yytext()); } 
+  
+	  {Comment}                      		{ /* ignore */ }
+      {WhiteSpace}                   		{ /* ignore */ }
+  	  .							{ yybegin(YYINITIAL); yypushback(1); bFunctionId=false;}
+}
 
 /* No token was found for the input so through an error.  Print out an
    Illegal character message with the illegal character that was found. */
