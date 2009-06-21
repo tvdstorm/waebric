@@ -291,12 +291,14 @@ SiteFilename = {PathElement} "." {FileExt}
 
 <PRETEXT> {
 	{TextChar}			   { string.append( yytext() ); }
+ 	 "\\\""                          { string.append( '\"' ); }
       "\""                       { Debug("TEXT " + string + yytext() ); yybegin(YYINITIAL); string.append(  yytext() );  return nextToken(Terminals.TEXT,  string.toString() ); }
 	{TextChar}/"<"             { Debug("PRETEXT " + string+ yytext() ); yybegin(YYINITIAL); string.append(  yytext() + '<' );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
 }
 
 <POSTMIDTEXT> {
 	{TextChar} 			   { string.append( yytext() ); }
+    "\\\""                          { string.append( '\"' ); }
 	"\""                       { Debug("POSTTEXT " + string + yytext() );  yybegin(YYINITIAL);  string.append( '\"' );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
 	{TextChar}/"<"             { Debug("MIDTEXT " + string + yytext());  yybegin(YYINITIAL);  string.append( yytext() + '<' );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
 }
