@@ -211,11 +211,13 @@ SiteFilename = {PathElement} "." {FileExt}
   {Identifier}                   {if( bLET==bLETAFTERINDESIGNATOR  )
   									{
   									//	bLET=bLETAFTERIN;
+  					  	              yybegin(ATTRIBUTES);
   					  	              Debug("IDCONDESIGNATOR (bLET)" + yytext() );
                                       return nextToken(Terminals.IDCONDESIGNATOR, yytext());					
   									}
   									else if( bLET==bLETBEFOREIN && formalTestCount==3)
   									{
+  					  	              yybegin(ATTRIBUTES);
   					  	              Debug("IDCONDESIGNATOR (bLET)" + yytext() );
                                       return nextToken(Terminals.IDCONDESIGNATOR, yytext());					
   									}
