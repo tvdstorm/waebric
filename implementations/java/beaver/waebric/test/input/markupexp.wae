@@ -1,0 +1,5 @@
+module utils
+
+def header
+  vlam-h1 text;
+end
