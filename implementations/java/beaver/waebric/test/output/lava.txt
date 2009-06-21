@@ -1,1 +1,0 @@
-module(module-id(["lava"]), [import(module-id(["home"])), import(module-id(["brand"])), import(module-id(["over"])), import(module-id(["verhalen"])), import(module-id(["kopij"])), import(module-id(["abon"])), def("main", empty, [markup(tag("home", []))])])
