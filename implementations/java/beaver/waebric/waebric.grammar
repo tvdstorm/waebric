@@ -151,7 +151,7 @@ symbolcon = SYMBOLCON.s  {: //$sym_text($s) :}
 ;
 
 expressions = expression
-| expression COMMA expressions 
+| expressions COMMA expression
 ;
 
 colonidcon = ATTCOLONIDCON.i {: //@var($i):}
@@ -218,13 +218,14 @@ markupstatement = markup_seq.m statement.s {: //@markup-stat([m],s) :}
 | markup_seq.s embedding.e SEMICOLON {: //@markup-embedding([s],e) :}
 ;
 
-attribute = HASHIDCON.i {: //$id($i) :}
-| ATTDOTIDCON.i {: //$class($i) :}
-| ATTDOLLARIDCON.i {: //$name($i) :}
-| ATTCOLONIDCON.i {: //$type($i) :}
-| ADDCHAR NATCON.w MOD NATCON.h	{: //#with-height(#w,#h) :}
-| ADDCHARNATCON.w {: //#height(#w) :}  
+attribute = HASHIDCON.i {: //@id($i) :}
+| ATTDOTIDCON.i	{: //@class($i) :}
+| ATTDOLLARIDCON.i {: //@name($i) :}
+| ATTCOLONIDCON.i {: //@type($i) :}
+| ADDCHAR NATCON.w MOD NATCON.h	{: //@with-height(#w,#h) :}
+| ADDCHARNATCON.w {: //@height(#w) :}  
 ;
+
 
 attribute_opt =
 | attributes        
