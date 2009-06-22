@@ -68,7 +68,7 @@ import waebric.WaebricParser.Terminals;
 	
 	private void Debug(String text)
 	{
-		//System.out.println(text);//commentariseer deze regel uit in productie
+		System.out.println(text);//commentariseer deze regel uit in productie
 	}
 %}
 
@@ -309,8 +309,8 @@ SiteFilename = {PathElement} "." {FileExt}
 }
 
 <ATTRIBUTES> {
-	  "#"{WhiteSpace}*{Identifier}            { String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
-	  "."{WhiteSpace}*{Identifier}            { String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
+	  "#"{WhiteSpace}*{Identifier}            { Debug("HASHIDCON" + yytext()); String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); 
+	  "."{WhiteSpace}*{Identifier}            { Debug("ATTDOTIDCON" + yytext()); String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
 	  "$"{WhiteSpace}*{Identifier}            { String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
 	  ":"{WhiteSpace}*{Identifier}            { String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
 	  "@"{WhiteSpace}*{Natcon}                { String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
@@ -322,20 +322,7 @@ SiteFilename = {PathElement} "." {FileExt}
 	  {Identifier}/{WhiteSpace}*"("	 	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Comment}                      		{ /* ignore */ }
         {WhiteSpace}                   		{ /* ignore */ }
-        "end"                                   { if(bSITE && bLET==bLETFALSE) {
-                                                    Debug("END SITE");
-                                                    bSITE=false;
-                                                  }else if(bDEF && bLET==bLETFALSE) {
-                                                    Debug("END DEF"); 
-                                                    bDEF=false;
-                                                  }
-                                                  else if(bLET>=bLETFALSE) {
-                                                    Debug("END LET");
-                                                    bLET=bLETFALSE;
-                                                  }
-                                                  yybegin(YYINITIAL);
-                                                  return nextToken(Terminals.END);
-                                                }
+
   	  .							{ Debug("*** BEGIN AFTERATTRIBUTES *** "); yybegin(AFTERATTRIBUTES); yypushback(1); bFunctionId=false;}
 }
 
