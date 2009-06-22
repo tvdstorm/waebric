@@ -1,10 +1,9 @@
 module test
 
-def main
-	func();
-	// Func is not defined inside func thus results in tag
-	let func() = func(test="success"); in
-		func();
-	end
-	func();
+def main 
+  let func() = echo "call1"; in
+    let func() = func(); in
+      func();
+    end
+  end
 end
