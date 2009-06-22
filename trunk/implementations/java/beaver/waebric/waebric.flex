@@ -68,7 +68,7 @@ import waebric.WaebricParser.Terminals;
 	
 	private void Debug(String text)
 	{
-		System.out.println(text);//commentariseer deze regel uit in productie
+		//System.out.println(text);//commentariseer deze regel uit in productie
 	}
 %}
 
@@ -309,21 +309,22 @@ SiteFilename = {PathElement} "." {FileExt}
 }
 
 <ATTRIBUTES> {
-	  "#"{WhiteSpace}*{Identifier}            { Debug("HASHIDCON" + yytext()); String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); 
-	  "."{WhiteSpace}*{Identifier}            { Debug("ATTDOTIDCON" + yytext()); String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
-	  "$"{WhiteSpace}*{Identifier}            { String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
-	  ":"{WhiteSpace}*{Identifier}            { String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
-	  "@"{WhiteSpace}*{Natcon}                { String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
-	  {Identifier}/{WhiteSpace}{Identifier}	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
-	  {Identifier}/{WhiteSpace}{Natcon}		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
-	  {Identifier}/{WhiteSpace}*"["		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
-	  {Identifier}/{WhiteSpace}*"{"		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
-  	  {Identifier}/{WhiteSpace}*"'"		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 	  	  
-	  {Identifier}/{WhiteSpace}*"("	 	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+	  "#"{WhiteSpace}*{Identifier}            { Debug("HASHIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
+	  "."{WhiteSpace}*{Identifier}            { Debug("ATTDOTIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
+	  "$"{WhiteSpace}*{Identifier}            { Debug("IDCONDESIGNATOR " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
+	  ":"{WhiteSpace}*{Identifier}            {  Debug("IDCONDESIGNATOR " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
+	  "@"{WhiteSpace}*{Natcon}                {  Debug("IDCONDESIGNATOR " + yytext()); String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
+	  {Identifier}/{WhiteSpace}{Identifier}	{  Debug("IDCONDESIGNATOR " + yytext()); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+	  {Identifier}/{WhiteSpace}{Natcon}		{  Debug("IDCONDESIGNATOR " + yytext()); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+	  {Identifier}/{WhiteSpace}*"["		{ Debug("IDCONDESIGNATOR " + yytext()); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+	  {Identifier}/{WhiteSpace}*"{"		{ Debug("IDCONDESIGNATOR " + yytext()); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+  	  {Identifier}/{WhiteSpace}*"'"		{ Debug("IDCONDESIGNATOR " + yytext()); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 	  	  
+	  {Identifier}/{WhiteSpace}*"("	 	{ Debug("IDCONDESIGNATOR " + yytext());return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
+  	  {Identifier}/{WhiteSpace}*"."	 	{ Debug("IDCONDESIGNATOR " + yytext()); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Comment}                      		{ /* ignore */ }
-        {WhiteSpace}                   		{ /* ignore */ }
+      {WhiteSpace}                   		{ /* ignore */ }
 
-  	  .							{ Debug("*** BEGIN AFTERATTRIBUTES *** "); yybegin(AFTERATTRIBUTES); yypushback(1); bFunctionId=false;}
+  	  .							{ Debug("*** BEGIN AFTERATTRIBUTES *** " + yytext()); yybegin(AFTERATTRIBUTES); yypushback(1); bFunctionId=false;}
 }
 
 <AFTERATTRIBUTES> {
@@ -331,7 +332,7 @@ SiteFilename = {PathElement} "." {FileExt}
 	   /* identifiers */
   	{Identifier}/{WhiteSpace}+{Identifier}               { return nextToken(Terminals.IDCONDESIGNATOR, yytext()); } 	
   	{Identifier}/">"               { return nextToken(Terminals.IDCONTAIL, yytext()); } 
-  	 {Identifier}/{WhiteSpace}*"."               { return nextToken(Terminals.IDCONDESIGNATOR, yytext()); } 
+  	 {Identifier}/{WhiteSpace}*"."               {  Debug("AFTERATTRIBUTES IDCONDESIGNATOR: " + yytext() );  return nextToken(Terminals.IDCONDESIGNATOR, yytext()); } 
   	  	  
 	  {Comment}                      		{ /* ignore */ }
       {WhiteSpace}                   		{ /* ignore */ }
