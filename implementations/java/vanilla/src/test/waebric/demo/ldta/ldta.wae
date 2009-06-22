@@ -4,46 +4,6 @@ site
  index.html: main
 end
 
-def main 
-html(xmlns='http://www.w3.org/1999/xhtml) {
-    head {
-     title "LDTA";
-     meta(http-equiv="content-type", content="text/html; charset=utf-8");
-     meta(name="keywords", content="Programming Debugging Language Descriptions Parsing Parsers Term Rewriting Attribute Grammars Functional Programming Debugging Model Driven Engineering Formal Methods Meta Programming");
-     meta(name="description", content="The International Workshop on Language Descriptions Tools and Applications");
-     meta(name="language", content="NL");
-     css("./style.css", "screen");
-     comment "Design by Free CSS Templates\nhttp://www.freecsstemplates.org\nReleased for free under a Creative Commons Attribution 2.5 License\n\nName       : Compressed \nDescription: A three-column, fixed-width template fit for 1024x768 screen resolutions.\nVersion    : 1.0\nReleased   : 20080524";
-    }
-
-    body {
-      div#logo h1.logo "Workshop on Language Descriptions Tools and Applications";
-      div#page {
-        div.sidebar#sidebar1 {
-         br; 
-         previous;
-        }
-
-      div#content div.bgtop div.bgbtm div.post callForPapers();
-      
-
-    div.sidebar#sidebar2 {
-      br;
-      relatedLinks;
-    }
-	
-   
-    
-   }
-    div(style="clear: both;") {
-      br;
-      div#footer p.legal "\&copy;2007 All Rights Reserved. Design by <a(href="http://www.freecsstemplates.org/") "Free CSS Templates">";
-    }
-  }
-    
-  }
-end
-
 def css(url, media)
   link(rel="stylesheet", href=url, type="text/css", media=media);
 end
@@ -53,7 +13,7 @@ def workshop(year,location)
 end
 
 def sciencedirect(issn, volume, issue, year) 
-  a(href="http://www.sciencedirect.com/science/publication?issn=" + issn + "\&amp;volume=" + volume + "\&amp;issue=" + issue) year;
+  a(href="http://www.sciencedirect.com/science/publication?issn=" + issn + "&amp;volume=" + volume + "&amp;issue=" + issue) year;
 end
 
 def entcs(volume, issue, year)
@@ -61,7 +21,7 @@ def entcs(volume, issue, year)
 end
 
 def sp 
-  echo "\&nbsp;";
+  echo "&nbsp;";
 end
 
 def previous
@@ -213,7 +173,7 @@ h2 "Program Committee";
 
 ul {
  li a(href="mailto:Jurgen.Vinju@cwi.nl,torbjorn@comlab.ox.ac.uk") "Jurgen Vinju, CWI, Amsterdam (co-chair)";
- li a(href="mailto:Jurgen.Vinju@cwi.nl,torbjorn@comlab.ox.ac.uk") "Torbj\&ouml;rn Ekman, Oxford, UK (co-chair)"; 
+ li a(href="mailto:Jurgen.Vinju@cwi.nl,torbjorn@comlab.ox.ac.uk") "Torbj&ouml;rn Ekman, Oxford, UK (co-chair)"; 
  li "Erik Meijer, Microsoft, Redmond, USA";
  li "Walid Taha, Rice University, Houston USA"; 
  li "Bob Fuhrer, IBM TJ Watson, USA ";
@@ -228,11 +188,11 @@ ul {
  li "Thomas Dean, Fondazione Bruno Kessler - IRST, Italy"; 
  li "Martin Bravenboer, Univ. of Oregon, USA ";
  li "Pierre-Etienne Moreau, INRIA-LORIA, France";
- li "Gabi Taentzer, Philipps-Universit\&auml;t Marburg, Germany";
+ li "Gabi Taentzer, Philipps-Universit&auml;t Marburg, Germany";
  li "Joao Saraiva,  Universidade do Minho, Braga, Portugal";
  li "Tijs van der Storm, CWI, The Netherlands";
  li "Stephen Edwards, Columbia University, USA ";
- li "Peter Thiemann, Universit\&auml;t Freiburg, Germany"; 
+ li "Peter Thiemann, Universit&auml;t Freiburg, Germany"; 
 }
 
 h2 "Important Dates";
@@ -265,4 +225,45 @@ end
 
 def subtitle(title)
   p.meta small title;
+end
+
+def main 
+html(xmlns='http://www.w3.org/1999/xhtml) {
+ 
+    head {
+     title "LDTA";
+     meta(http-equiv="content-type", content="text/html; charset=utf-8");
+     meta(name="keywords", content="Programming Debugging Language Descriptions Parsing Parsers Term Rewriting Attribute Grammars Functional Programming Debugging Model Driven Engineering Formal Methods Meta Programming");
+     meta(name="description", content="The International Workshop on Language Descriptions Tools and Applications");
+     meta(name="language", content="NL");
+     css("./style.css", "screen");
+     comment "Design by Free CSS Templates\nhttp://www.freecsstemplates.org\nReleased for free under a Creative Commons Attribution 2.5 License\n\nName       : Compressed \nDescription: A three-column, fixed-width template fit for 1024x768 screen resolutions.\nVersion    : 1.0\nReleased   : 20080524";
+    }
+
+    body {
+      div#logo h1.logo "Workshop on Language Descriptions Tools and Applications";
+      div#page {
+        div.sidebar#sidebar1 {
+         br; 
+         previous;
+        }
+
+      div#content div.bgtop div.bgbtm div.post callForPapers();
+      
+
+    div.sidebar#sidebar2 {
+      br;
+      relatedLinks;
+    }
+	
+   
+    
+   }
+    div(style="clear: both;") {
+      br;
+      div#footer p.legal "&copy;2007 All Rights Reserved. Design by <a(href="http://www.freecsstemplates.org/") "Free CSS Templates">";
+    }
+  }
+    
+  }
 end
