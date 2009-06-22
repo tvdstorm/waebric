@@ -295,6 +295,7 @@ SiteFilename = {PathElement} "." {FileExt}
 	{TextChar}			   { string.append( yytext() ); }
  	 "\\\""                          { string.append( '\"' ); }
       "\""                       { Debug("TEXT " + string + yytext() ); yybegin(YYINITIAL); string.append(  yytext() );  return nextToken(Terminals.TEXT,  string.toString() ); }
+      "<"                        { Debug("PRETEXT " + string+ yytext() ); yybegin(YYINITIAL); string.append(  yytext() + '<' );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
 	{TextChar}/"<"             { Debug("PRETEXT " + string+ yytext() ); yybegin(YYINITIAL); string.append(  yytext() + '<' );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
 }
 
@@ -302,6 +303,7 @@ SiteFilename = {PathElement} "." {FileExt}
 	{TextChar} 			   { string.append( yytext() ); }
     "\\\""                          { string.append( '\"' ); }
 	"\""                       { Debug("POSTTEXT " + string + yytext() );  yybegin(YYINITIAL);  string.append( '\"' );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
+	"<"                        { Debug("MIDTEXT " + string + yytext());  yybegin(YYINITIAL);  string.append( yytext() + '<' );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
 	{TextChar}/"<"             { Debug("MIDTEXT " + string + yytext());  yybegin(YYINITIAL);  string.append( yytext() + '<' );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
 }
 
