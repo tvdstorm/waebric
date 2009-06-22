@@ -1,0 +1,9 @@
+module test
+
+def main
+	func();
+	let func() = echo "success"; in
+		func();
+	end
+	func();
+end

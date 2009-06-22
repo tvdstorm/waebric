@@ -1,0 +1,9 @@
+module test
+
+def main
+	echo var;
+	let var = "success"; in
+		echo var;
+	end
+	echo var;
+end

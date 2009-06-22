@@ -1,0 +1,10 @@
+module test
+
+def main
+	func();
+	// Func is not defined inside func thus results in tag
+	let func() = func(test="success"); in
+		func();
+	end
+	func();
+end
