@@ -57,9 +57,12 @@ public class ASTinfo
 		newFuncion = newFuncion.replaceAll("-","_");
 		newFuncion = newFuncion.replaceAll("Class","Class_"); //TODO: check for all java keywords
 	    
-		int positionLparen = newFuncion.indexOf('(');
-		ASTname = ASTname.substring(0,positionLparen);
-							
+		
+		
+		int positionLparenAST = ASTname.indexOf('(');
+		ASTname = ASTname.substring(0,positionLparenAST);
+		
+		int positionLparen = newFuncion.indexOf('(');					
 		int positionRparen = newFuncion.indexOf(')');
 		String argumentList = newFuncion.substring(
 			positionLparen+1,
