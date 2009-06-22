@@ -1,9 +1,9 @@
 module test
 
 def main 
-  let func() = echo var; in
-    let var = "LOL"; func() = func(); in
-      func();
+  let var = "success"; func() = echo var; in
+    let var = "fail"; func() = func(); 
+      in func();
     end
   end
 end
