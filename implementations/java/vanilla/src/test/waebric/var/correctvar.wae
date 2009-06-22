@@ -2,7 +2,7 @@ module src.test.waebric.var.correctvar
 
 def test(arg1)
 	p arg1;
-	let arg2="woot" in
+	let arg2="woot"; in
 		p arg2;
 	end
 end
