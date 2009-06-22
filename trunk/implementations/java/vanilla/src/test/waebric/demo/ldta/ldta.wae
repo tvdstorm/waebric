@@ -13,7 +13,7 @@ def workshop(year,location)
 end
 
 def sciencedirect(issn, volume, issue, year) 
-  a(href="http://www.sciencedirect.com/science/publication?issn=" + issn + "&amp;volume=" + volume + "&amp;issue=" + issue) year;
+  a(href="http://www.sciencedirect.com/science/publication?issn=" + issn + "\&amp;volume=" + volume + "\&amp;issue=" + issue) year;
 end
 
 def entcs(volume, issue, year)
@@ -21,7 +21,7 @@ def entcs(volume, issue, year)
 end
 
 def sp 
-  echo "&nbsp;";
+  echo "\&nbsp;";
 end
 
 def previous
