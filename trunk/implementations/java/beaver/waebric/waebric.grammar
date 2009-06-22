@@ -7,7 +7,7 @@
 
 %terminals LPAREN, RPAREN, LBRACE, RBRACE, LBRACK, RBRACK;
 
-%terminals SEMICOLON, COMMA, DOT, COLON, MOD, ADDCHAR, DIV, QUESTION, NOT, ANDAND, OROR, EQ ;
+%terminals SEMICOLON, COMMA, DOT, COLON, MOD, ADDCHAR, DIV, QUESTION, NOT, ANDAND, OROR, EQ, PLUS ;
 
 %terminals DIRNAME, FILENAME;
 
@@ -121,11 +121,10 @@ Expressions.sdf:  Expression "+" Expression -> Expression {cons("cat"), left}
 var = IDCON.i {: //@var($i) :}
 ;
 
-expression = var
+simpleexpression = var
 | symbolcon.s {: //@sym(s) :}
 | NATCON.n {: //@num(#n) :}
 | textexpression.t {: //@text(t) :}  
-| expression.e DOT IDCON.i {: //@field(e,$i) :}
 | LBRACK expressions.e RBRACK {: //@list([e]) :}
 | LBRACE keyvaluepairs.party RBRACE  {: //@record([party]) :}
 ;
@@ -134,9 +133,15 @@ embedexpression = IDCONTAIL.i {: //@var($i) :}
 | symbolcon.s {: //@sym(s) :}
 | NATCON.n {: //@num(#n) :}  
 | textexpression.t {: //@text(t) :}  
-| expression.e DOT IDCONTAIL.i {: //@field(e,$i) :}
 | LBRACK expressions.e RBRACK {: //@list([e]) :}
 | LBRACE keyvaluepairs.p RBRACE  {: //@record([p]) :} 
+| embedexpression.e DOT IDCONTAIL.i {: //@field(e,$i) :}
+| embedexpression.e PLUS simpleexpression.f {: //@cat(e,f) :}
+;
+
+expression = simpleexpression
+| expression.e DOT IDCON.i {: //@field(e,$i) :}
+| expression.e PLUS simpleexpression.f {: //@cat(e,f) :}
 ;
 
 textexpression = TEXT.t {: //$text_expression($t) :}
