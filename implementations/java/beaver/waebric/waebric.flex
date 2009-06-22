@@ -192,6 +192,7 @@ SiteFilename = {PathElement} "." {FileExt}
   "%"                            { Debug("MOD"); return nextToken(Terminals.MOD); }
   "@"                            { Debug("ADDCHAR"); return nextToken(Terminals.ADDCHAR); }    
   "/"                            { Debug("DIV"); return nextToken(Terminals.DIV); }
+  "+"                            { Debug("PLUS"); return nextToken(Terminals.PLUS); }
   "?"                            { Debug("QUESTION"); return nextToken(Terminals.QUESTION); }
   "!"                            { Debug("NOT"); return nextToken(Terminals.NOT); }
   "&&"                           { Debug("ANDAND"); return nextToken(Terminals.ANDAND); }
@@ -308,20 +309,34 @@ SiteFilename = {PathElement} "." {FileExt}
 }
 
 <ATTRIBUTES> {
-	  "#"{WhiteSpace}*{Identifier}                         { String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
-	  "."{WhiteSpace}*{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
-	  "$"{WhiteSpace}*{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
-	  ":"{WhiteSpace}*{Identifier}                         { String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
-	  "@"{WhiteSpace}*{Natcon}                	            { String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
+	  "#"{WhiteSpace}*{Identifier}            { String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
+	  "."{WhiteSpace}*{Identifier}            { String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
+	  "$"{WhiteSpace}*{Identifier}            { String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
+	  ":"{WhiteSpace}*{Identifier}            { String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
+	  "@"{WhiteSpace}*{Natcon}                { String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
 	  {Identifier}/{WhiteSpace}{Identifier}	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Identifier}/{WhiteSpace}{Natcon}		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Identifier}/{WhiteSpace}*"["		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Identifier}/{WhiteSpace}*"{"		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
-  	  {Identifier}/{WhiteSpace}*"'"  	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 	  	  
+  	  {Identifier}/{WhiteSpace}*"'"		{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 	  	  
 	  {Identifier}/{WhiteSpace}*"("	 	{ return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Comment}                      		{ /* ignore */ }
-      {WhiteSpace}                   		{ /* ignore */ }
-  	  .							{ yybegin(AFTERATTRIBUTES); yypushback(1); bFunctionId=false;}
+        {WhiteSpace}                   		{ /* ignore */ }
+        "end"                                   { if(bSITE && bLET==bLETFALSE) {
+                                                    Debug("END SITE");
+                                                    bSITE=false;
+                                                  }else if(bDEF && bLET==bLETFALSE) {
+                                                    Debug("END DEF"); 
+                                                    bDEF=false;
+                                                  }
+                                                  else if(bLET>=bLETFALSE) {
+                                                    Debug("END LET");
+                                                    bLET=bLETFALSE;
+                                                  }
+                                                  yybegin(YYINITIAL);
+                                                  return nextToken(Terminals.END);
+                                                }
+  	  .							{ Debug("*** BEGIN AFTERATTRIBUTES *** "); yybegin(AFTERATTRIBUTES); yypushback(1); bFunctionId=false;}
 }
 
 <AFTERATTRIBUTES> {
