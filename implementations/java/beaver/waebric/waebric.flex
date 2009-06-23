@@ -245,12 +245,17 @@ SiteFilename = {PathElement} "." {FileExt}
   
   /* identifiers */
   "<"{Identifier}                { yybegin(ATTRIBUTES); String temp = yytext(); return nextToken(Terminals.IDCONDESIGNATOR, temp.substring(1) ); } 
+
+  {Identifier}{WhiteSpace}*"#"   { yypushback(1); Debug("IDCONDESIGNATOR " + yytext()); yybegin(ATTRIBUTES); return nextToken(Terminals.IDCONDESIGNATOR, yytext()) ; }
+  {Identifier}{WhiteSpace}*"$"   { yypushback(1); Debug("IDCONDESIGNATOR " + yytext()); yybegin(ATTRIBUTES); return nextToken(Terminals.IDCONDESIGNATOR, yytext()) ; }
+  {Identifier}{WhiteSpace}*":"   { yypushback(1); Debug("IDCONDESIGNATOR " + yytext()); yybegin(ATTRIBUTES); return nextToken(Terminals.IDCONDESIGNATOR, yytext()) ; }
+  {Identifier}{WhiteSpace}*"@"   { yypushback(1); Debug("IDCONDESIGNATOR " + yytext()); yybegin(ATTRIBUTES); return nextToken(Terminals.IDCONDESIGNATOR, yytext()) ; }
   
   /* identifiers */
   {Identifier}/">"               { return nextToken(Terminals.IDCONTAIL, yytext()); } 
     
   /* Natural numbers*/
-  {Natcon}                       { return nextToken(Terminals.NATCON, yytext()); }  
+  {Natcon}                       { Debug("NATCON " + yytext() ); return nextToken(Terminals.NATCON, yytext()); }  
 
 }
 
@@ -314,6 +319,7 @@ SiteFilename = {PathElement} "." {FileExt}
 	  "$"{WhiteSpace}*{Identifier}            { Debug("IDCONDESIGNATOR " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
 	  ":"{WhiteSpace}*{Identifier}            {  Debug("IDCONDESIGNATOR " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
 	  "@"{WhiteSpace}*{Natcon}                {  Debug("IDCONDESIGNATOR " + yytext()); String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
+	  "%"{WhiteSpace}*{Natcon}                {  Debug("IDCONDESIGNATOR " + yytext()); String temp = yytext(); return nextToken(Terminals.NATCON, temp.substring(1) ); }
 	  {Identifier}/{WhiteSpace}{Identifier}	{  Debug("IDCONDESIGNATOR " + yytext()); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Identifier}/{WhiteSpace}{Natcon}		{  Debug("IDCONDESIGNATOR " + yytext()); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
 	  {Identifier}/{WhiteSpace}*"["		{ Debug("IDCONDESIGNATOR " + yytext()); return nextToken(Terminals.IDCONDESIGNATOR, yytext() ); } 
@@ -324,7 +330,6 @@ SiteFilename = {PathElement} "." {FileExt}
 	  {Comment}                      		{ /* ignore */ }
       {WhiteSpace}                   		{ /* ignore */ }      
       "end"							{ yybegin(YYINITIAL); yypushback(3); bFunctionId=false;}
-
   	  .							{ Debug("*** BEGIN AFTERATTRIBUTES *** " + yytext()); yybegin(AFTERATTRIBUTES); yypushback(1); bFunctionId=false;}
 }
 
