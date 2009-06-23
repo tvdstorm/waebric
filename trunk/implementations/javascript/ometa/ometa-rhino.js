@@ -69,20 +69,21 @@ getSource = function(){
 	        + 'alert("\n");'
 	        + 'alert("\n");'
 	        + 'alert("\n");'
-	        + 'alert("----------------------------------------------------------------------------------------------------");'
+	        + 'alert("--------------------------------------------------------------------------------------------------------");'
 	        + 'alert(tree);'
-	        + 'alert("----------------------------------------------------------------------------------------------------");'
+	        + 'alert("--------------------------------------------------------------------------------------------------------");'
 	        + 'alert("\n");'
 	        + 'alert("\n");'
 	        + 'alert("\n");'
 			+ getInterpreter() + ';'
-			// + 'html_output = WaebricInterpreter.match(tree, "interp");'
-			//+ 'alert(html_output);'
+			+ 'html_output = WaebricInterpreter.match(tree, "interp");'
+			+ 'alert(html_output);'
 
 	return source;
 }
 
 compile = function() {
+	alert(getProgram());
     return eval(translateCode(getSource()))
 }
 

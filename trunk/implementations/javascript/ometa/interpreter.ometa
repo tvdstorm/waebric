@@ -1,5 +1,6 @@
 ometa WaebricInterpreter {
   interp = ['module-id' anything:x]  -> '<id>'.concat(x).concat('</id>')
-         | ['module' interp:x]      -> '<module>'.concat(x).concat('</module>')
+         | ['def' anything:x]  -> '<functiondef/>'
+         | ['module' interp:x interp:y]  -> '<module>'.concat(x).concat(y).concat('</module>')
          | ['modules' [interp*:b]]  -> '<modules>'.concat(b.join('')).concat('</modules>')
 }
