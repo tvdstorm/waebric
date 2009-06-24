@@ -1,6 +1,6 @@
 module verhalen
 
-import src.test.waebric.demo.lava.utils
+import utils
 
 site
   site/verhalen.html: verhalen()
