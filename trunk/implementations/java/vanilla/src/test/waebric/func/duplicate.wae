@@ -1,4 +1,4 @@
-module src.test.waebric.func.duplicate
+module duplicate
 
 def func() end // Accepted function definition
 def func() end // Duplicate (same name, args)

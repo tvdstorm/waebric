@@ -1,5 +1,7 @@
 module src.test.waebric.var.undefinedvar
 
+def main(arg) end
+
 def test()
 	p arg; // Arg variable is not defined
 

@@ -1,4 +1,4 @@
-module src.test.waebric.func.aritymm
+module aritymm
 
 site
 	index.html: func("WON'T WORK") // Given 1 argument instead of expected 0

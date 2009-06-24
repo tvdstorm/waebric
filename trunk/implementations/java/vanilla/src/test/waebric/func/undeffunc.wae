@@ -1,9 +1,13 @@
-module src.test.waebric.func.undeffunc
+module undeffunc
 
 site
 	index.html: undef() // Call to undefined function
 end
 
 def func()
-	undef(); // Call to undefined function	
+	undef(); // Call to undefined function
+	let undef() = echo "success"; in
+		undef(); // Succesfull call, no exception thrown
+	end
+	undef(); // Call to undefined function
 end
