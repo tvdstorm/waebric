@@ -1,0 +1,3 @@
+module dependantmod2
+
+import src.test.waebric.mod.dependantmod3

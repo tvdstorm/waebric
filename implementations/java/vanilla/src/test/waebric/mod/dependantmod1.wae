@@ -1,0 +1,7 @@
+module dependantmod1
+
+import src.test.waebric.mod.dependantmod2
+
+def main()
+	test();
+end
