@@ -1,8 +1,9 @@
 module src.test.waebric.var.correctvar
 
-def test(arg1)
-	p arg1;
-	let arg2="woot"; in
-		p arg2;
+def test(arg)
+	p arg;
+	let var=["woot"]; in
+		p var;
+		each (e:var) p e; 
 	end
 end
