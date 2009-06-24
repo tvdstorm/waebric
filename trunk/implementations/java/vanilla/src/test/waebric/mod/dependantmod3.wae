@@ -1,0 +1,5 @@
+module dependantmod3
+
+def test()
+	echo "success";
+end
