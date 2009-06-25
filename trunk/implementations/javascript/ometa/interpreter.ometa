@@ -1,6 +1,16 @@
+var module;
+
 ometa WaebricInterpreter {
-  interp = ['module-id' anything:x]  -> '<id>'.concat(x).concat('</id>')
-         | ['def' anything:x]  -> '<functiondef/>'
-         | ['module' interp:x interp:y]  -> '<module>'.concat(x).concat(y).concat('</module>')
-         | ['modules' [interp*:b]]  -> '<modules>'.concat(b.join('')).concat('</modules>')
+  interp =
+
+  		 	[	'module-id' anything:id
+  			]	-> id
+
+  		 |  [	'import' interp:m
+  			]	-> (imp = m)
+
+         | 	[	'module' interp:moduleId [interp*:moduleElement]
+         	]	-> (module = new Module(moduleId,moduleElement))
+
 }
+

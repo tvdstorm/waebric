@@ -1,8 +1,6 @@
 
 ometa WaebricParser <: Parser {
 
-  Modules         	= Module*:program end
-  					-> ['modules', program],
   Module          	= "module" spaces ModuleId:moduleId spaces ModuleElement*:moduleElement spaces
                     -> ['module', moduleId, moduleElement],
   ModuleId        	= listOf(#IdCon, "."):moduleId
@@ -64,7 +62,6 @@ ometa WaebricParser <: Parser {
     	           	| "let" Assignment+:ass "in" Statement*:stmt "end" -> ['let', ass, stmt]
 	             	| "{" spaces Statement*:stmts spaces "}" -> ['block', stmts]
                   	| "comment" spaces StrCon:comm spaces ";" -> ['comment', comm]
-                  	| "echo" spaces '\"test\"'
                   	| "echo" spaces Expression:expr spaces ";" -> ['echo', expr]
                   	| "echo" spaces Embedding:emb spaces ";" -> ['echo-embedding', emb]
                   	| "cdata" spaces Expression:expr spaces ";" -> ['cdata', expr]
@@ -79,7 +76,7 @@ ometa WaebricParser <: Parser {
 
   NoElseMayFollow 	= ~"else",
 
-  Predicate       	= "!" spaces Predicate:pred1 spaces -> ['not',pred1]
+  Predicate       	= "!" spaces Predicate:pred spaces -> ['not',pred]
                   	| Predicate:pred1 spaces "&&" spaces Predicate:pred2 spaces -> ['and', pred1, pred2]
                   	| Predicate:pred1 spaces "||" spaces Predicate:pred2 spaces -> ['or', pred1, pred2]
                   	| Expression:expr "." Type:type "?" -> ['is-a', expr, type]
