@@ -53,7 +53,7 @@ function:		'def' IDCON formals statement* 'end';
 formals:		'(' IDCON ( ',' IDCON )* ')';
 
 // Statement
-statement:		'if' statement ('else' statement)? | 
+statement:		'if' '(' predicate ')' statement ('else' statement)? | 
 			'each' '(' IDCON ':' expression ')' statement | 
 			'{' statement* '}' | 
 			'yield;' |
@@ -61,6 +61,9 @@ statement:		'if' statement ('else' statement)? |
 			markup+ statement ';' | 
 			markup+ markup ';' | 
 			markup+ expression ';' ;
+			
+// Predicate
+predicate:		expression;	
 
 /*------------------------------------------------------------------
  * LEXER RULES

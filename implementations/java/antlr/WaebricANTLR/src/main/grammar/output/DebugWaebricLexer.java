@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g 2009-06-26 14:07:10
+// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g 2009-06-26 14:09:17
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -457,8 +457,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = IDCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:68:6: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:68:10: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:71:6: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:71:10: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -469,7 +469,7 @@ public class DebugWaebricLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:68:32: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:71:32: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             loop1:
             do {
                 int alt1=2;
@@ -518,10 +518,10 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = NATCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:69:7: ( ( '0' .. '9' )+ )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:69:11: ( '0' .. '9' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:72:7: ( ( '0' .. '9' )+ )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:72:11: ( '0' .. '9' )+
             {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:69:11: ( '0' .. '9' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:72:11: ( '0' .. '9' )+
             int cnt2=0;
             loop2:
             do {
@@ -535,7 +535,7 @@ public class DebugWaebricLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:69:11: '0' .. '9'
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:72:11: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -567,10 +567,10 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = WHITESPACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:74:11: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:74:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:77:11: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:77:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:74:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:77:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             int cnt3=0;
             loop3:
             do {
