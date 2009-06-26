@@ -1,0 +1,6 @@
+module test
+	def lol(arg1,arg2) {
+		yield;
+	}
+	end
+end
