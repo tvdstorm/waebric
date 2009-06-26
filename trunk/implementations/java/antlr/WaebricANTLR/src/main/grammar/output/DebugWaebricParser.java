@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g 2009-06-26 14:07:10
+// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g 2009-06-26 14:09:17
 
 import org.antlr.runtime.*;
 
@@ -44,18 +44,18 @@ public class DebugWaebricParser extends DebugParser {
     // delegators
 
     public static final String[] ruleNames = new String[] {
-        "invalidRule", "moduleImport", "synpred12_DebugWaebric", "synpred24_DebugWaebric", 
-        "synpred13_DebugWaebric", "moduleIdentifier", "module", "synpred26_DebugWaebric", 
-        "synpred6_DebugWaebric", "synpred23_DebugWaebric", "moduleElement", 
-        "statement", "synpred7_DebugWaebric", "formals", "synpred25_DebugWaebric", 
-        "attribute", "synpred10_DebugWaebric", "function", "expression", 
-        "synpred4_DebugWaebric", "synpred17_DebugWaebric", "arguments", 
-        "synpred8_DebugWaebric", "synpred19_DebugWaebric", "synpred21_DebugWaebric", 
-        "synpred1_DebugWaebric", "synpred16_DebugWaebric", "synpred15_DebugWaebric", 
-        "argument", "synpred9_DebugWaebric", "synpred22_DebugWaebric", "synpred3_DebugWaebric", 
-        "designator", "synpred18_DebugWaebric", "synpred11_DebugWaebric", 
-        "markup", "synpred20_DebugWaebric", "synpred14_DebugWaebric", "synpred2_DebugWaebric", 
-        "synpred5_DebugWaebric"
+        "invalidRule", "synpred3_DebugWaebric", "statement", "synpred8_DebugWaebric", 
+        "synpred4_DebugWaebric", "function", "argument", "synpred5_DebugWaebric", 
+        "synpred12_DebugWaebric", "synpred7_DebugWaebric", "synpred9_DebugWaebric", 
+        "synpred26_DebugWaebric", "synpred18_DebugWaebric", "synpred15_DebugWaebric", 
+        "synpred24_DebugWaebric", "expression", "synpred17_DebugWaebric", 
+        "synpred21_DebugWaebric", "moduleImport", "synpred16_DebugWaebric", 
+        "predicate", "moduleIdentifier", "synpred10_DebugWaebric", "arguments", 
+        "module", "synpred1_DebugWaebric", "synpred22_DebugWaebric", "synpred19_DebugWaebric", 
+        "synpred11_DebugWaebric", "synpred23_DebugWaebric", "markup", "synpred20_DebugWaebric", 
+        "synpred14_DebugWaebric", "synpred13_DebugWaebric", "attribute", 
+        "synpred6_DebugWaebric", "synpred2_DebugWaebric", "moduleElement", 
+        "synpred25_DebugWaebric", "formals", "designator"
     };
      
         public int ruleLevel = 0;
@@ -1055,7 +1055,7 @@ public class DebugWaebricParser extends DebugParser {
 
 
     // $ANTLR start "statement"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:1: statement : ( 'if' statement ( 'else' statement )? | 'each' '(' IDCON ':' expression ')' statement | '{' ( statement )* '}' | 'yield;' | markup ';' | ( markup )+ statement ';' | ( markup )+ markup ';' | ( markup )+ expression ';' );
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:1: statement : ( 'if' '(' predicate ')' statement ( 'else' statement )? | 'each' '(' IDCON ':' expression ')' statement | '{' ( statement )* '}' | 'yield;' | markup ';' | ( markup )+ statement ';' | ( markup )+ markup ';' | ( markup )+ expression ';' );
     public final void statement() throws RecognitionException {
         try { dbg.enterRule(getGrammarFileName(), "statement");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -1063,7 +1063,7 @@ public class DebugWaebricParser extends DebugParser {
         dbg.location(56, 1);
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:10: ( 'if' statement ( 'else' statement )? | 'each' '(' IDCON ':' expression ')' statement | '{' ( statement )* '}' | 'yield;' | markup ';' | ( markup )+ statement ';' | ( markup )+ markup ';' | ( markup )+ expression ';' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:10: ( 'if' '(' predicate ')' statement ( 'else' statement )? | 'each' '(' IDCON ':' expression ')' statement | '{' ( statement )* '}' | 'yield;' | markup ';' | ( markup )+ statement ';' | ( markup )+ markup ';' | ( markup )+ expression ';' )
             int alt14=8;
             try { dbg.enterDecision(14);
 
@@ -1081,18 +1081,28 @@ public class DebugWaebricParser extends DebugParser {
                 case 1 :
                     dbg.enterAlt(1);
 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:13: 'if' statement ( 'else' statement )?
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:13: 'if' '(' predicate ')' statement ( 'else' statement )?
                     {
                     dbg.location(56,13);
                     match(input,21,FOLLOW_21_in_statement249); if (state.failed) return ;
                     dbg.location(56,18);
-                    pushFollow(FOLLOW_statement_in_statement251);
+                    match(input,17,FOLLOW_17_in_statement251); if (state.failed) return ;
+                    dbg.location(56,22);
+                    pushFollow(FOLLOW_predicate_in_statement253);
+                    predicate();
+
+                    state._fsp--;
+                    if (state.failed) return ;
+                    dbg.location(56,32);
+                    match(input,19,FOLLOW_19_in_statement255); if (state.failed) return ;
+                    dbg.location(56,36);
+                    pushFollow(FOLLOW_statement_in_statement257);
                     statement();
 
                     state._fsp--;
                     if (state.failed) return ;
-                    dbg.location(56,28);
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:28: ( 'else' statement )?
+                    dbg.location(56,46);
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:46: ( 'else' statement )?
                     int alt9=2;
                     try { dbg.enterSubRule(9);
                     try { dbg.enterDecision(9);
@@ -1112,12 +1122,12 @@ public class DebugWaebricParser extends DebugParser {
                         case 1 :
                             dbg.enterAlt(1);
 
-                            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:29: 'else' statement
+                            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:47: 'else' statement
                             {
-                            dbg.location(56,29);
-                            match(input,22,FOLLOW_22_in_statement254); if (state.failed) return ;
-                            dbg.location(56,36);
-                            pushFollow(FOLLOW_statement_in_statement256);
+                            dbg.location(56,47);
+                            match(input,22,FOLLOW_22_in_statement260); if (state.failed) return ;
+                            dbg.location(56,54);
+                            pushFollow(FOLLOW_statement_in_statement262);
                             statement();
 
                             state._fsp--;
@@ -1138,23 +1148,23 @@ public class DebugWaebricParser extends DebugParser {
                     // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:57:4: 'each' '(' IDCON ':' expression ')' statement
                     {
                     dbg.location(57,4);
-                    match(input,23,FOLLOW_23_in_statement266); if (state.failed) return ;
+                    match(input,23,FOLLOW_23_in_statement272); if (state.failed) return ;
                     dbg.location(57,11);
-                    match(input,17,FOLLOW_17_in_statement268); if (state.failed) return ;
+                    match(input,17,FOLLOW_17_in_statement274); if (state.failed) return ;
                     dbg.location(57,15);
-                    match(input,IDCON,FOLLOW_IDCON_in_statement270); if (state.failed) return ;
+                    match(input,IDCON,FOLLOW_IDCON_in_statement276); if (state.failed) return ;
                     dbg.location(57,21);
-                    match(input,14,FOLLOW_14_in_statement272); if (state.failed) return ;
+                    match(input,14,FOLLOW_14_in_statement278); if (state.failed) return ;
                     dbg.location(57,25);
-                    pushFollow(FOLLOW_expression_in_statement274);
+                    pushFollow(FOLLOW_expression_in_statement280);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
                     dbg.location(57,36);
-                    match(input,19,FOLLOW_19_in_statement276); if (state.failed) return ;
+                    match(input,19,FOLLOW_19_in_statement282); if (state.failed) return ;
                     dbg.location(57,40);
-                    pushFollow(FOLLOW_statement_in_statement278);
+                    pushFollow(FOLLOW_statement_in_statement284);
                     statement();
 
                     state._fsp--;
@@ -1168,7 +1178,7 @@ public class DebugWaebricParser extends DebugParser {
                     // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:58:4: '{' ( statement )* '}'
                     {
                     dbg.location(58,4);
-                    match(input,24,FOLLOW_24_in_statement286); if (state.failed) return ;
+                    match(input,24,FOLLOW_24_in_statement292); if (state.failed) return ;
                     dbg.location(58,8);
                     // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:58:8: ( statement )*
                     try { dbg.enterSubRule(10);
@@ -1194,7 +1204,7 @@ public class DebugWaebricParser extends DebugParser {
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:0:0: statement
                     	    {
                     	    dbg.location(58,8);
-                    	    pushFollow(FOLLOW_statement_in_statement288);
+                    	    pushFollow(FOLLOW_statement_in_statement294);
                     	    statement();
 
                     	    state._fsp--;
@@ -1210,7 +1220,7 @@ public class DebugWaebricParser extends DebugParser {
                     } finally {dbg.exitSubRule(10);}
 
                     dbg.location(58,19);
-                    match(input,25,FOLLOW_25_in_statement291); if (state.failed) return ;
+                    match(input,25,FOLLOW_25_in_statement297); if (state.failed) return ;
 
                     }
                     break;
@@ -1220,7 +1230,7 @@ public class DebugWaebricParser extends DebugParser {
                     // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:59:4: 'yield;'
                     {
                     dbg.location(59,4);
-                    match(input,26,FOLLOW_26_in_statement299); if (state.failed) return ;
+                    match(input,26,FOLLOW_26_in_statement305); if (state.failed) return ;
 
                     }
                     break;
@@ -1230,13 +1240,13 @@ public class DebugWaebricParser extends DebugParser {
                     // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:60:4: markup ';'
                     {
                     dbg.location(60,4);
-                    pushFollow(FOLLOW_markup_in_statement306);
+                    pushFollow(FOLLOW_markup_in_statement312);
                     markup();
 
                     state._fsp--;
                     if (state.failed) return ;
                     dbg.location(60,11);
-                    match(input,11,FOLLOW_11_in_statement308); if (state.failed) return ;
+                    match(input,11,FOLLOW_11_in_statement314); if (state.failed) return ;
 
                     }
                     break;
@@ -1277,7 +1287,7 @@ public class DebugWaebricParser extends DebugParser {
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:0:0: markup
                     	    {
                     	    dbg.location(61,4);
-                    	    pushFollow(FOLLOW_markup_in_statement316);
+                    	    pushFollow(FOLLOW_markup_in_statement322);
                     	    markup();
 
                     	    state._fsp--;
@@ -1300,13 +1310,13 @@ public class DebugWaebricParser extends DebugParser {
                     } finally {dbg.exitSubRule(11);}
 
                     dbg.location(61,12);
-                    pushFollow(FOLLOW_statement_in_statement319);
+                    pushFollow(FOLLOW_statement_in_statement325);
                     statement();
 
                     state._fsp--;
                     if (state.failed) return ;
                     dbg.location(61,22);
-                    match(input,11,FOLLOW_11_in_statement321); if (state.failed) return ;
+                    match(input,11,FOLLOW_11_in_statement327); if (state.failed) return ;
 
                     }
                     break;
@@ -1342,7 +1352,7 @@ public class DebugWaebricParser extends DebugParser {
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:0:0: markup
                     	    {
                     	    dbg.location(62,4);
-                    	    pushFollow(FOLLOW_markup_in_statement329);
+                    	    pushFollow(FOLLOW_markup_in_statement335);
                     	    markup();
 
                     	    state._fsp--;
@@ -1365,13 +1375,13 @@ public class DebugWaebricParser extends DebugParser {
                     } finally {dbg.exitSubRule(12);}
 
                     dbg.location(62,12);
-                    pushFollow(FOLLOW_markup_in_statement332);
+                    pushFollow(FOLLOW_markup_in_statement338);
                     markup();
 
                     state._fsp--;
                     if (state.failed) return ;
                     dbg.location(62,19);
-                    match(input,11,FOLLOW_11_in_statement334); if (state.failed) return ;
+                    match(input,11,FOLLOW_11_in_statement340); if (state.failed) return ;
 
                     }
                     break;
@@ -1412,7 +1422,7 @@ public class DebugWaebricParser extends DebugParser {
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:0:0: markup
                     	    {
                     	    dbg.location(63,4);
-                    	    pushFollow(FOLLOW_markup_in_statement342);
+                    	    pushFollow(FOLLOW_markup_in_statement348);
                     	    markup();
 
                     	    state._fsp--;
@@ -1435,13 +1445,13 @@ public class DebugWaebricParser extends DebugParser {
                     } finally {dbg.exitSubRule(13);}
 
                     dbg.location(63,12);
-                    pushFollow(FOLLOW_expression_in_statement345);
+                    pushFollow(FOLLOW_expression_in_statement351);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
                     dbg.location(63,23);
-                    match(input,11,FOLLOW_11_in_statement347); if (state.failed) return ;
+                    match(input,11,FOLLOW_11_in_statement353); if (state.failed) return ;
 
                     }
                     break;
@@ -1467,17 +1477,61 @@ public class DebugWaebricParser extends DebugParser {
     }
     // $ANTLR end "statement"
 
+
+    // $ANTLR start "predicate"
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:66:1: predicate : expression ;
+    public final void predicate() throws RecognitionException {
+        try { dbg.enterRule(getGrammarFileName(), "predicate");
+        if ( getRuleLevel()==0 ) {dbg.commence();}
+        incRuleLevel();
+        dbg.location(66, 1);
+
+        try {
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:66:10: ( expression )
+            dbg.enterAlt(1);
+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:66:13: expression
+            {
+            dbg.location(66,13);
+            pushFollow(FOLLOW_expression_in_predicate366);
+            expression();
+
+            state._fsp--;
+            if (state.failed) return ;
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        dbg.location(66, 23);
+
+        }
+        finally {
+            dbg.exitRule(getGrammarFileName(), "predicate");
+            decRuleLevel();
+            if ( getRuleLevel()==0 ) {dbg.terminate();}
+        }
+
+        return ;
+    }
+    // $ANTLR end "predicate"
+
     // $ANTLR start synpred15_DebugWaebric
     public final void synpred15_DebugWaebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:29: ( 'else' statement )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:47: ( 'else' statement )
         dbg.enterAlt(1);
 
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:29: 'else' statement
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:56:47: 'else' statement
         {
-        dbg.location(56,29);
-        match(input,22,FOLLOW_22_in_synpred15_DebugWaebric254); if (state.failed) return ;
-        dbg.location(56,36);
-        pushFollow(FOLLOW_statement_in_synpred15_DebugWaebric256);
+        dbg.location(56,47);
+        match(input,22,FOLLOW_22_in_synpred15_DebugWaebric260); if (state.failed) return ;
+        dbg.location(56,54);
+        pushFollow(FOLLOW_statement_in_synpred15_DebugWaebric262);
         statement();
 
         state._fsp--;
@@ -1495,7 +1549,7 @@ public class DebugWaebricParser extends DebugParser {
         // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:61:4: markup
         {
         dbg.location(61,4);
-        pushFollow(FOLLOW_markup_in_synpred22_DebugWaebric316);
+        pushFollow(FOLLOW_markup_in_synpred22_DebugWaebric322);
         markup();
 
         state._fsp--;
@@ -1544,7 +1598,7 @@ public class DebugWaebricParser extends DebugParser {
         	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:0:0: markup
         	    {
         	    dbg.location(61,4);
-        	    pushFollow(FOLLOW_markup_in_synpred23_DebugWaebric316);
+        	    pushFollow(FOLLOW_markup_in_synpred23_DebugWaebric322);
         	    markup();
 
         	    state._fsp--;
@@ -1567,13 +1621,13 @@ public class DebugWaebricParser extends DebugParser {
         } finally {dbg.exitSubRule(17);}
 
         dbg.location(61,12);
-        pushFollow(FOLLOW_statement_in_synpred23_DebugWaebric319);
+        pushFollow(FOLLOW_statement_in_synpred23_DebugWaebric325);
         statement();
 
         state._fsp--;
         if (state.failed) return ;
         dbg.location(61,22);
-        match(input,11,FOLLOW_11_in_synpred23_DebugWaebric321); if (state.failed) return ;
+        match(input,11,FOLLOW_11_in_synpred23_DebugWaebric327); if (state.failed) return ;
 
         }
     }
@@ -1613,7 +1667,7 @@ public class DebugWaebricParser extends DebugParser {
         	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:0:0: markup
         	    {
         	    dbg.location(62,4);
-        	    pushFollow(FOLLOW_markup_in_synpred25_DebugWaebric329);
+        	    pushFollow(FOLLOW_markup_in_synpred25_DebugWaebric335);
         	    markup();
 
         	    state._fsp--;
@@ -1636,13 +1690,13 @@ public class DebugWaebricParser extends DebugParser {
         } finally {dbg.exitSubRule(18);}
 
         dbg.location(62,12);
-        pushFollow(FOLLOW_markup_in_synpred25_DebugWaebric332);
+        pushFollow(FOLLOW_markup_in_synpred25_DebugWaebric338);
         markup();
 
         state._fsp--;
         if (state.failed) return ;
         dbg.location(62,19);
-        match(input,11,FOLLOW_11_in_synpred25_DebugWaebric334); if (state.failed) return ;
+        match(input,11,FOLLOW_11_in_synpred25_DebugWaebric340); if (state.failed) return ;
 
         }
     }
@@ -1774,7 +1828,7 @@ public class DebugWaebricParser extends DebugParser {
             this.transition = DFA14_transition;
         }
         public String getDescription() {
-            return "56:1: statement : ( 'if' statement ( 'else' statement )? | 'each' '(' IDCON ':' expression ')' statement | '{' ( statement )* '}' | 'yield;' | markup ';' | ( markup )+ statement ';' | ( markup )+ markup ';' | ( markup )+ expression ';' );";
+            return "56:1: statement : ( 'if' '(' predicate ')' statement ( 'else' statement )? | 'each' '(' IDCON ':' expression ')' statement | '{' ( statement )* '}' | 'yield;' | markup ';' | ( markup )+ statement ';' | ( markup )+ markup ';' | ( markup )+ expression ';' );";
         }
         public void error(NoViableAltException nvae) {
             dbg.recognitionException(nvae);
@@ -1992,40 +2046,44 @@ public class DebugWaebricParser extends DebugParser {
     public static final BitSet FOLLOW_18_in_formals233 = new BitSet(new long[]{0x0000000000000010L});
     public static final BitSet FOLLOW_IDCON_in_formals235 = new BitSet(new long[]{0x00000000000C0000L});
     public static final BitSet FOLLOW_19_in_formals240 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_21_in_statement249 = new BitSet(new long[]{0x0000000005A00010L});
-    public static final BitSet FOLLOW_statement_in_statement251 = new BitSet(new long[]{0x0000000000400002L});
-    public static final BitSet FOLLOW_22_in_statement254 = new BitSet(new long[]{0x0000000005A00010L});
-    public static final BitSet FOLLOW_statement_in_statement256 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_23_in_statement266 = new BitSet(new long[]{0x0000000000020000L});
-    public static final BitSet FOLLOW_17_in_statement268 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_IDCON_in_statement270 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_14_in_statement272 = new BitSet(new long[]{0x0000000000000030L});
-    public static final BitSet FOLLOW_expression_in_statement274 = new BitSet(new long[]{0x0000000000080000L});
-    public static final BitSet FOLLOW_19_in_statement276 = new BitSet(new long[]{0x0000000005A00010L});
-    public static final BitSet FOLLOW_statement_in_statement278 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_24_in_statement286 = new BitSet(new long[]{0x0000000007A00010L});
-    public static final BitSet FOLLOW_statement_in_statement288 = new BitSet(new long[]{0x0000000007A00010L});
-    public static final BitSet FOLLOW_25_in_statement291 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_statement299 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_statement306 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_statement308 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_statement316 = new BitSet(new long[]{0x0000000005A00010L});
-    public static final BitSet FOLLOW_statement_in_statement319 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_statement321 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_statement329 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_markup_in_statement332 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_statement334 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_statement342 = new BitSet(new long[]{0x0000000000000030L});
-    public static final BitSet FOLLOW_expression_in_statement345 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_statement347 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_22_in_synpred15_DebugWaebric254 = new BitSet(new long[]{0x0000000005A00010L});
-    public static final BitSet FOLLOW_statement_in_synpred15_DebugWaebric256 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_synpred22_DebugWaebric316 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_synpred23_DebugWaebric316 = new BitSet(new long[]{0x0000000005A00010L});
-    public static final BitSet FOLLOW_statement_in_synpred23_DebugWaebric319 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_synpred23_DebugWaebric321 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_synpred25_DebugWaebric329 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_markup_in_synpred25_DebugWaebric332 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_synpred25_DebugWaebric334 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_21_in_statement249 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_17_in_statement251 = new BitSet(new long[]{0x0000000000000030L});
+    public static final BitSet FOLLOW_predicate_in_statement253 = new BitSet(new long[]{0x0000000000080000L});
+    public static final BitSet FOLLOW_19_in_statement255 = new BitSet(new long[]{0x0000000005A00010L});
+    public static final BitSet FOLLOW_statement_in_statement257 = new BitSet(new long[]{0x0000000000400002L});
+    public static final BitSet FOLLOW_22_in_statement260 = new BitSet(new long[]{0x0000000005A00010L});
+    public static final BitSet FOLLOW_statement_in_statement262 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_23_in_statement272 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_17_in_statement274 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_IDCON_in_statement276 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_14_in_statement278 = new BitSet(new long[]{0x0000000000000030L});
+    public static final BitSet FOLLOW_expression_in_statement280 = new BitSet(new long[]{0x0000000000080000L});
+    public static final BitSet FOLLOW_19_in_statement282 = new BitSet(new long[]{0x0000000005A00010L});
+    public static final BitSet FOLLOW_statement_in_statement284 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_24_in_statement292 = new BitSet(new long[]{0x0000000007A00010L});
+    public static final BitSet FOLLOW_statement_in_statement294 = new BitSet(new long[]{0x0000000007A00010L});
+    public static final BitSet FOLLOW_25_in_statement297 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_statement305 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_statement312 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_statement314 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_statement322 = new BitSet(new long[]{0x0000000005A00010L});
+    public static final BitSet FOLLOW_statement_in_statement325 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_statement327 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_statement335 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_markup_in_statement338 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_statement340 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_statement348 = new BitSet(new long[]{0x0000000000000030L});
+    public static final BitSet FOLLOW_expression_in_statement351 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_statement353 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_predicate366 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_22_in_synpred15_DebugWaebric260 = new BitSet(new long[]{0x0000000005A00010L});
+    public static final BitSet FOLLOW_statement_in_synpred15_DebugWaebric262 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_synpred22_DebugWaebric322 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_synpred23_DebugWaebric322 = new BitSet(new long[]{0x0000000005A00010L});
+    public static final BitSet FOLLOW_statement_in_synpred23_DebugWaebric325 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_synpred23_DebugWaebric327 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_synpred25_DebugWaebric335 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_markup_in_synpred25_DebugWaebric338 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_synpred25_DebugWaebric340 = new BitSet(new long[]{0x0000000000000002L});
 
 }
