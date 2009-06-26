@@ -61,14 +61,37 @@ assignment:		IDCON '=' expression ';' | // Variable binding
 // Predicate
 predicate:		expression | expression '.' TYPE | '!' predicate ; 
 			//( predicate '||' predicate ) | ( predicate '&&' predicate );
+			
+// Embedding
+embedding:		pretext embed texttail;	
+embed:			markup* expression |
+			markup* markup;
+texttail:		posttext | midtext embed texttail;
+pretext:		'"' TEXTCHAR* '<';
+posttext:		'>' TEXTCHAR* '"';
+midtext:		'>' TEXTCHAR* '<';
 
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/
 TYPE:			'string' | 'list' | 'record';
 
-IDCON:			('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
+// Text
+TEXT:			'"' TEXTCHAR* '"';
+TEXTCHAR:		'\"' | // Quote
+			'\\' | // Slash
+			'\&' ~('#' | '0'..'9' | 'a'..'z' | 'A'..'Z' | '_' | ':') | // Amp
+			'&#' ('0'..'9')+ ';' | // Text character reference
+			'&#x' ('0'..'9' | 'a'..'f' | 'A'..'F')+ ';' | // Text character reference
+			'&' ('a'..'z' | 'A'..'Z' | '_' | ':') ('a'..'z' | 'A'..'Z' | '0'..'9' | '.' | '-' | '_' | ':')* ';' ; // Text entity reference
+
+// String
+
+
+// Basic
 NATCON:			'0'..'9'+;
+IDCON:			('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
+SYMBOLCON:		'\'' IDCON; // TODO: Symbol character	
 
 //FILEEXT:		('a'..'z' | 'A'..'Z' | '0'..'9') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
 //PATHELEMENT:		~(' '|'\t'|'\n'|'\r'|'.'|'/'|'\\')+;
