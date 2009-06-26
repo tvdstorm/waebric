@@ -86,12 +86,18 @@ TEXTCHAR:		'\"' | // Quote
 			'&' ('a'..'z' | 'A'..'Z' | '_' | ':') ('a'..'z' | 'A'..'Z' | '0'..'9' | '.' | '-' | '_' | ':')* ';' ; // Text entity reference
 
 // String
+STRCON:			'"' STRCHAR '"';
+STRCHAR:		'\\n' | '\\t' | '\\\\"' | '\\\\\\\\' |
+			'\\' 'a' ('0'..'9') 'b' ('0'..'9') 'c' ('0'..'9');// | // Decimal
+			//~('\n' | '\t' | '"' | '\\'); // TODO: !0..31	
 
+// Symbol
+SYMBOLCON:		'\'' SYMBOLCHAR*;
+SYMBOLCHAR:		~( ' ' | '\t' | '\n' | '\r' | ';' | ',' | '>' | '}' | ')'); // TODO: !0..31
 
 // Basic
 NATCON:			'0'..'9'+;
 IDCON:			('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
-SYMBOLCON:		'\'' IDCON; // TODO: Symbol character	
 
 //FILEEXT:		('a'..'z' | 'A'..'Z' | '0'..'9') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
 //PATHELEMENT:		~(' '|'\t'|'\n'|'\r'|'.'|'/'|'\\')+;
