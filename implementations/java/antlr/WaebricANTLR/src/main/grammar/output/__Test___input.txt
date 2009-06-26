@@ -1,6 +1,5 @@
 module test
-	def lol(arg1,arg2) {
-		yield;
-	}
+	def lol(arg1,arg2) 
+		if yield; else call.test;
 	end
 end
