@@ -1,54 +1,79 @@
 grammar Waebric;
 
-@header {
-	import org.antlr.runtime.*:
-}
-
-@members {
-	public static void main(String[] args) throws Exception {
-	        ANTLRInputStream input = new ANTLRInputStream(System.in);
-	        WaebricLexer lexer = new WaebricLexer(input);
-	        CommonTokenStream tokens = new CommonTokenStream(lexer);
-	        WaebricParser parser = new WaebricParser(tokens);
-	        parser.modules();
-    	}
+options {
+	backtrack=true;
 }
 
 /*------------------------------------------------------------------
  * PARSER RULES
  *------------------------------------------------------------------*/
-Module:		'module' ModuleId ModuleElement*;
-ModuleId:	( IDCON '.' )+;
-ModuleElement:	Import | FunctionDef | Site;
 
-Import:		'import' ModuleId;
+// Module
+module:	 		'module' moduleIdentifier moduleElement* 'end';
+moduleIdentifier:	IDCON ( '.' IDCON )*;
+moduleElement:		moduleImport | function;
+moduleImport:		'import' moduleIdentifier ';';
 
-Site:	 	'site' /*( Mapping ';' )**/ 'end';
-//Mapping:	Path ':' Markup;
-//Path:		DirName '/' FileName | FileName;
-//DirName:	Directory;
-//Directory:	( PATHELEMENT '/')+;
-//FileName:	PATHELEMENT '.' FILEEXT;
+/**
+// Site
+site:		'site' mapping 'end';
+mapping	:	path ':' markup;
+path:		filename | dirname '/' filename;
+dirname:	directory;
+directory:	PATHELEMENT ( '/' PATHELEMENT )*;
+filename:	PATHELEMENT '.' FILEEXT; // Waarom recognized hij html as idcon ipv fileext !___!, waarom leest hij file.html als token file.
+**/
 
-Markup:		Designator Arguments | Designator;
-Designator:	IDCON Attribute*;
-Attribute:	'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON
-		| '@' NATCON | '@' NATCON '%' NATCON;
-Arguments:	'(' ( Argument ',' )* ')';
-Argument:	Expression;
+// Markup
+markup:			designator arguments?;
+designator:		IDCON attribute*;
+attribute:		'#' IDCON | 
+			'.' IDCON | 
+			'$' IDCON | 
+			':' IDCON | 
+			'@' NATCON | 
+			'@' NATCON '%' NATCON;
+arguments:		('(' argument? ( ',' argument  )* ')');
+argument:		expression;
 
-Expression:	IDCON | NATCON;	// TODO: Priorities etc
+// Expression
+expression:		IDCON | NATCON;	// TODO: Priorities etc
 
-FunctionDef:	'def' IDCON Formals Statement* 'end';
-Formals:	'(' ( IDCON ',' )* ')' | ;
+// Function
+function:		'def' IDCON formals statement* 'end';
+formals:		'(' IDCON? ( ',' IDCON )* ')' | ;
 
-Statement:	'if' | 'if' 'else' | 'each' | 'let' | '{' '}' | 'comment' | 'echo' | 'cdata' | 'yield';
+// Statement
+statement:		'if' '(' predicate ')' statement ('else' statement)? | 
+			'each' '(' IDCON ':' expression ')' statement | 
+			'let' assignment+ 'in' statement* 'end' |
+			'{' statement* '}' |
+			//'comment' STRCON ';' |
+			'echo' expression ';' |
+			//'echo' embedding ';' |
+			'cdata' expression ';' | 
+			'yield;' |
+			markup ';' |
+			markup+ statement ';' |
+			markup+ markup ';' |
+			markup+ expression ';' ;
+assignment:		IDCON '=' expression ';' | // Variable binding
+			IDCON formals statement; // Function binding
+			
+// Predicate
+predicate:		expression | expression '.' TYPE | '!' predicate ; 
+			//( predicate '||' predicate ) | ( predicate '&&' predicate );
 
+// 
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/
-IDCON:		('a'..'z'|'A'..'Z')+;
-NATCON:		'0'..'9'+;
+TYPE:			'string' | 'list' | 'record';
 
-//PATHELEMENT:	!(' '|'\t'|'\n'|'\r'|'.'|'/'|'\\')+;
-//FILEEXT:	('a'..'z'|'A'..'Z'|'0'..'9')+;
+IDCON:			('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
+NATCON:			'0'..'9'+;
+
+//FILEEXT:		('a'..'z' | 'A'..'Z' | '0'..'9') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
+//PATHELEMENT:		~(' '|'\t'|'\n'|'\r'|'.'|'/'|'\\')+;
+
+WHITESPACE: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; };
