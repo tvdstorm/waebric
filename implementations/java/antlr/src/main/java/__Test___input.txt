@@ -1,0 +1,7 @@
+module test
+	def lol
+		let bla=lol; in
+		if (!bla.list) yield; else call.test;
+		end
+	end
+end
