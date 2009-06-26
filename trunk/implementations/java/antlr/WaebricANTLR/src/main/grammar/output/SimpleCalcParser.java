@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/SimpleCalc.g 2009-06-26 09:03:54
+// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/SimpleCalc.g 2009-06-26 09:17:42
 
 import org.antlr.runtime.*;
 import java.util.Stack;
