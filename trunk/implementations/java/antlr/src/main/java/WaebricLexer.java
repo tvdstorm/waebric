@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-06-26 15:19:14
+// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-06-26 15:25:12
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -29,6 +29,7 @@ public class WaebricLexer extends Lexer {
     public static final int T__16=16;
     public static final int T__33=33;
     public static final int T__15=15;
+    public static final int T__34=34;
     public static final int T__18=18;
     public static final int T__17=17;
     public static final int T__12=12;
@@ -159,10 +160,11 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__13;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:8:7: ( '#' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:8:9: '#'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:8:7: ( 'site' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:8:9: 'site'
             {
-            match('#'); 
+            match("site"); 
+
 
             }
 
@@ -179,10 +181,11 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__14;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:9:7: ( '$' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:9:9: '$'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:9:7: ( 'def' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:9:9: 'def'
             {
-            match('$'); 
+            match("def"); 
+
 
             }
 
@@ -199,10 +202,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__15;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:10:7: ( ':' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:10:9: ':'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:10:7: ( '(' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:10:9: '('
             {
-            match(':'); 
+            match('('); 
 
             }
 
@@ -219,10 +222,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__16;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:11:7: ( '@' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:11:9: '@'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:11:7: ( ',' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:11:9: ','
             {
-            match('@'); 
+            match(','); 
 
             }
 
@@ -239,10 +242,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__17;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:12:7: ( '%' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:12:9: '%'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:12:7: ( ')' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:12:9: ')'
             {
-            match('%'); 
+            match(')'); 
 
             }
 
@@ -259,10 +262,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__18;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:13:7: ( '(' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:13:9: '('
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:13:7: ( '#' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:13:9: '#'
             {
-            match('('); 
+            match('#'); 
 
             }
 
@@ -279,10 +282,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__19;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:14:7: ( ',' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:14:9: ','
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:14:7: ( '$' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:14:9: '$'
             {
-            match(','); 
+            match('$'); 
 
             }
 
@@ -299,10 +302,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__20;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:15:7: ( ')' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:15:9: ')'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:15:7: ( ':' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:15:9: ':'
             {
-            match(')'); 
+            match(':'); 
 
             }
 
@@ -319,11 +322,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__21;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:16:7: ( 'def' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:16:9: 'def'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:16:7: ( '@' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:16:9: '@'
             {
-            match("def"); 
-
+            match('@'); 
 
             }
 
@@ -340,11 +342,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__22;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:17:7: ( 'if' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:17:9: 'if'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:17:7: ( '%' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:17:9: '%'
             {
-            match("if"); 
-
+            match('%'); 
 
             }
 
@@ -361,10 +362,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__23;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:18:7: ( 'else' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:18:9: 'else'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:18:7: ( 'if' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:18:9: 'if'
             {
-            match("else"); 
+            match("if"); 
 
 
             }
@@ -382,10 +383,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__24;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:19:7: ( 'each' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:19:9: 'each'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:19:7: ( 'else' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:19:9: 'else'
             {
-            match("each"); 
+            match("else"); 
 
 
             }
@@ -403,10 +404,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__25;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:20:7: ( 'let' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:20:9: 'let'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:20:7: ( 'each' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:20:9: 'each'
             {
-            match("let"); 
+            match("each"); 
 
 
             }
@@ -424,10 +425,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__26;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:21:7: ( 'in' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:21:9: 'in'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:21:7: ( 'let' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:21:9: 'let'
             {
-            match("in"); 
+            match("let"); 
 
 
             }
@@ -445,10 +446,11 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__27;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:22:7: ( '{' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:22:9: '{'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:22:7: ( 'in' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:22:9: 'in'
             {
-            match('{'); 
+            match("in"); 
+
 
             }
 
@@ -465,10 +467,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__28;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:23:7: ( '}' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:23:9: '}'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:23:7: ( '{' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:23:9: '{'
             {
-            match('}'); 
+            match('{'); 
 
             }
 
@@ -485,11 +487,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__29;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:24:7: ( 'echo' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:24:9: 'echo'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:24:7: ( '}' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:24:9: '}'
             {
-            match("echo"); 
-
+            match('}'); 
 
             }
 
@@ -506,10 +507,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__30;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:25:7: ( 'cdata' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:25:9: 'cdata'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:25:7: ( 'echo' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:25:9: 'echo'
             {
-            match("cdata"); 
+            match("echo"); 
 
 
             }
@@ -527,10 +528,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__31;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:26:7: ( 'yield;' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:26:9: 'yield;'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:26:7: ( 'cdata' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:26:9: 'cdata'
             {
-            match("yield;"); 
+            match("cdata"); 
 
 
             }
@@ -548,10 +549,11 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__32;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:27:7: ( '=' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:27:9: '='
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:27:7: ( 'yield;' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:27:9: 'yield;'
             {
-            match('='); 
+            match("yield;"); 
+
 
             }
 
@@ -568,10 +570,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = T__33;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:28:7: ( '!' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:28:9: '!'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:28:7: ( '=' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:28:9: '='
             {
-            match('!'); 
+            match('='); 
 
             }
 
@@ -583,12 +585,32 @@ public class WaebricLexer extends Lexer {
     }
     // $ANTLR end "T__33"
 
+    // $ANTLR start "T__34"
+    public final void mT__34() throws RecognitionException {
+        try {
+            int _type = T__34;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:29:7: ( '!' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:29:9: '!'
+            {
+            match('!'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__34"
+
     // $ANTLR start "TYPE"
     public final void mTYPE() throws RecognitionException {
         try {
             int _type = TYPE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:5: ( 'string' | 'list' | 'record' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:68:5: ( 'string' | 'list' | 'record' )
             int alt1=3;
             switch ( input.LA(1) ) {
             case 's':
@@ -615,7 +637,7 @@ public class WaebricLexer extends Lexer {
 
             switch (alt1) {
                 case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:9: 'string'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:68:9: 'string'
                     {
                     match("string"); 
 
@@ -623,7 +645,7 @@ public class WaebricLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:20: 'list'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:68:20: 'list'
                     {
                     match("list"); 
 
@@ -631,7 +653,7 @@ public class WaebricLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:29: 'record'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:68:29: 'record'
                     {
                     match("record"); 
 
@@ -653,8 +675,8 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = IDCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:73:6: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:73:10: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:70:6: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:70:10: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -665,7 +687,7 @@ public class WaebricLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:73:32: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:70:32: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             loop2:
             do {
                 int alt2=2;
@@ -714,10 +736,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = NATCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:74:7: ( ( '0' .. '9' )+ )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:74:11: ( '0' .. '9' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:7: ( ( '0' .. '9' )+ )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:11: ( '0' .. '9' )+
             {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:74:11: ( '0' .. '9' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:11: ( '0' .. '9' )+
             int cnt3=0;
             loop3:
             do {
@@ -731,7 +753,7 @@ public class WaebricLexer extends Lexer {
 
                 switch (alt3) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:74:11: '0' .. '9'
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:11: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -763,10 +785,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = WHITESPACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:11: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:11: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             int cnt4=0;
             loop4:
             do {
@@ -817,8 +839,8 @@ public class WaebricLexer extends Lexer {
     // $ANTLR end "WHITESPACE"
 
     public void mTokens() throws RecognitionException {
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:8: ( T__8 | T__9 | T__10 | T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | TYPE | IDCON | NATCON | WHITESPACE )
-        int alt5=30;
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:8: ( T__8 | T__9 | T__10 | T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | TYPE | IDCON | NATCON | WHITESPACE )
+        int alt5=31;
         alt5 = dfa5.predict(input);
         switch (alt5) {
             case 1 :
@@ -1004,28 +1026,35 @@ public class WaebricLexer extends Lexer {
                 }
                 break;
             case 27 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:164: TYPE
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:164: T__34
+                {
+                mT__34(); 
+
+                }
+                break;
+            case 28 :
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:170: TYPE
                 {
                 mTYPE(); 
 
                 }
                 break;
-            case 28 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:169: IDCON
+            case 29 :
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:175: IDCON
                 {
                 mIDCON(); 
 
                 }
                 break;
-            case 29 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:175: NATCON
+            case 30 :
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:181: NATCON
                 {
                 mNATCON(); 
 
                 }
                 break;
-            case 30 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:182: WHITESPACE
+            case 31 :
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:188: WHITESPACE
                 {
                 mWHITESPACE(); 
 
@@ -1039,45 +1068,50 @@ public class WaebricLexer extends Lexer {
 
     protected DFA5 dfa5 = new DFA5(this);
     static final String DFA5_eotS =
-        "\1\uffff\2\30\1\uffff\1\30\11\uffff\2\30\2\uffff\2\30\2\uffff\2"+
-        "\30\3\uffff\6\30\1\60\1\61\10\30\1\72\4\30\2\uffff\1\77\1\100\6"+
-        "\30\1\uffff\1\107\1\110\1\111\1\30\2\uffff\1\113\5\30\3\uffff\1"+
-        "\30\1\uffff\1\122\3\30\1\126\1\127\2\uffff\2\113\2\uffff";
+        "\1\uffff\2\30\1\uffff\1\30\1\uffff\2\30\10\uffff\1\30\2\uffff\2"+
+        "\30\2\uffff\1\30\3\uffff\6\30\1\61\1\62\11\30\1\74\4\30\2\uffff"+
+        "\2\30\1\103\1\104\5\30\1\uffff\1\112\1\113\1\114\1\30\1\116\1\30"+
+        "\2\uffff\1\120\4\30\3\uffff\1\30\1\uffff\1\30\1\uffff\1\127\2\30"+
+        "\1\132\1\133\1\120\2\uffff\1\120\2\uffff";
     static final String DFA5_eofS =
-        "\130\uffff";
+        "\134\uffff";
     static final String DFA5_minS =
-        "\1\11\1\157\1\141\1\uffff\1\146\11\uffff\2\145\2\uffff\1\144\1\151"+
-        "\2\uffff\1\164\1\145\3\uffff\2\144\1\163\1\143\1\150\1\160\2\60"+
-        "\1\146\1\164\1\163\1\141\1\145\1\162\1\143\1\165\1\60\1\145\1\150"+
-        "\2\157\2\uffff\2\60\2\164\1\154\1\151\1\157\1\154\1\uffff\3\60\1"+
-        "\162\2\uffff\1\60\1\141\1\144\1\156\1\162\1\145\3\uffff\1\164\1"+
-        "\uffff\1\60\1\73\1\147\1\144\2\60\2\uffff\2\60\2\uffff";
+        "\1\11\1\157\1\141\1\uffff\1\146\1\uffff\1\151\1\145\10\uffff\1\145"+
+        "\2\uffff\1\144\1\151\2\uffff\1\145\3\uffff\2\144\1\163\1\143\1\150"+
+        "\1\160\2\60\1\164\1\162\1\146\1\164\1\163\1\141\1\145\1\143\1\165"+
+        "\1\60\1\145\1\150\2\157\2\uffff\1\145\1\151\2\60\2\164\1\154\1\157"+
+        "\1\154\1\uffff\3\60\1\162\1\60\1\156\2\uffff\1\60\1\141\1\144\1"+
+        "\162\1\145\3\uffff\1\164\1\uffff\1\147\1\uffff\1\60\1\73\1\144\3"+
+        "\60\2\uffff\1\60\2\uffff";
     static final String DFA5_maxS =
-        "\1\175\1\157\1\156\1\uffff\1\156\11\uffff\1\145\1\151\2\uffff\1"+
-        "\144\1\151\2\uffff\1\164\1\145\3\uffff\2\144\1\163\1\143\1\150\1"+
-        "\160\2\172\1\146\1\164\1\163\1\141\1\145\1\162\1\143\1\165\1\172"+
-        "\1\145\1\150\2\157\2\uffff\2\172\2\164\1\154\1\151\1\157\1\154\1"+
-        "\uffff\3\172\1\162\2\uffff\1\172\1\141\1\144\1\156\1\162\1\145\3"+
-        "\uffff\1\164\1\uffff\1\172\1\73\1\147\1\144\2\172\2\uffff\2\172"+
-        "\2\uffff";
+        "\1\175\1\157\1\156\1\uffff\1\156\1\uffff\1\164\1\145\10\uffff\1"+
+        "\151\2\uffff\1\144\1\151\2\uffff\1\145\3\uffff\2\144\1\163\1\143"+
+        "\1\150\1\160\2\172\1\164\1\162\1\146\1\164\1\163\1\141\1\145\1\143"+
+        "\1\165\1\172\1\145\1\150\2\157\2\uffff\1\145\1\151\2\172\2\164\1"+
+        "\154\1\157\1\154\1\uffff\3\172\1\162\1\172\1\156\2\uffff\1\172\1"+
+        "\141\1\144\1\162\1\145\3\uffff\1\164\1\uffff\1\147\1\uffff\1\172"+
+        "\1\73\1\144\3\172\2\uffff\1\172\2\uffff";
     static final String DFA5_acceptS =
-        "\3\uffff\1\3\1\uffff\1\5\1\6\1\7\1\10\1\11\1\12\1\13\1\14\1\15\2"+
-        "\uffff\1\24\1\25\2\uffff\1\31\1\32\2\uffff\1\34\1\35\1\36\25\uffff"+
-        "\1\17\1\23\10\uffff\1\2\4\uffff\1\16\1\22\6\uffff\1\20\1\21\1\26"+
-        "\1\uffff\1\33\6\uffff\1\27\1\30\2\uffff\1\1\1\4";
+        "\3\uffff\1\3\1\uffff\1\5\2\uffff\1\10\1\11\1\12\1\13\1\14\1\15\1"+
+        "\16\1\17\1\uffff\1\25\1\26\2\uffff\1\32\1\33\1\uffff\1\35\1\36\1"+
+        "\37\26\uffff\1\20\1\24\11\uffff\1\2\6\uffff\1\7\1\23\5\uffff\1\21"+
+        "\1\22\1\27\1\uffff\1\6\1\uffff\1\34\6\uffff\1\30\1\31\1\uffff\1"+
+        "\1\1\4";
     static final String DFA5_specialS =
-        "\130\uffff}>";
+        "\134\uffff}>";
     static final String[] DFA5_transitionS = {
-            "\2\32\1\uffff\2\32\22\uffff\1\32\1\25\1\uffff\1\6\1\7\1\12\2"+
-            "\uffff\1\13\1\15\2\uffff\1\14\1\uffff\1\3\1\uffff\12\31\1\10"+
-            "\1\5\1\uffff\1\24\2\uffff\1\11\32\30\6\uffff\2\30\1\22\1\16"+
-            "\1\2\3\30\1\4\2\30\1\17\1\1\4\30\1\27\1\26\5\30\1\23\1\30\1"+
-            "\20\1\uffff\1\21",
+            "\2\32\1\uffff\2\32\22\uffff\1\32\1\26\1\uffff\1\13\1\14\1\17"+
+            "\2\uffff\1\10\1\12\2\uffff\1\11\1\uffff\1\3\1\uffff\12\31\1"+
+            "\15\1\5\1\uffff\1\25\2\uffff\1\16\32\30\6\uffff\2\30\1\23\1"+
+            "\7\1\2\3\30\1\4\2\30\1\20\1\1\4\30\1\27\1\6\5\30\1\24\1\30\1"+
+            "\21\1\uffff\1\22",
             "\1\33",
             "\1\36\1\uffff\1\37\10\uffff\1\35\1\uffff\1\34",
             "",
             "\1\41\6\uffff\1\40\1\42",
             "",
+            "\1\43\12\uffff\1\44",
+            "\1\45",
             "",
             "",
             "",
@@ -1086,28 +1120,25 @@ public class WaebricLexer extends Lexer {
             "",
             "",
             "",
-            "\1\43",
-            "\1\44\3\uffff\1\45",
-            "",
-            "",
-            "\1\46",
-            "\1\47",
+            "\1\46\3\uffff\1\47",
             "",
             "",
             "\1\50",
             "\1\51",
             "",
             "",
-            "",
             "\1\52",
+            "",
+            "",
+            "",
             "\1\53",
             "\1\54",
             "\1\55",
             "\1\56",
             "\1\57",
+            "\1\60",
             "\12\30\7\uffff\32\30\6\uffff\32\30",
             "\12\30\7\uffff\32\30\6\uffff\32\30",
-            "\1\62",
             "\1\63",
             "\1\64",
             "\1\65",
@@ -1115,48 +1146,53 @@ public class WaebricLexer extends Lexer {
             "\1\67",
             "\1\70",
             "\1\71",
-            "\12\30\7\uffff\32\30\6\uffff\32\30",
+            "\1\72",
             "\1\73",
-            "\1\74",
+            "\12\30\7\uffff\32\30\6\uffff\32\30",
             "\1\75",
             "\1\76",
+            "\1\77",
+            "\1\100",
             "",
             "",
-            "\12\30\7\uffff\32\30\6\uffff\32\30",
-            "\12\30\7\uffff\32\30\6\uffff\32\30",
             "\1\101",
             "\1\102",
-            "\1\103",
-            "\1\104",
+            "\12\30\7\uffff\32\30\6\uffff\32\30",
+            "\12\30\7\uffff\32\30\6\uffff\32\30",
             "\1\105",
             "\1\106",
+            "\1\107",
+            "\1\110",
+            "\1\111",
             "",
             "\12\30\7\uffff\32\30\6\uffff\32\30",
             "\12\30\7\uffff\32\30\6\uffff\32\30",
             "\12\30\7\uffff\32\30\6\uffff\32\30",
-            "\1\112",
-            "",
-            "",
-            "\12\30\7\uffff\32\30\6\uffff\32\30",
-            "\1\114",
             "\1\115",
-            "\1\116",
+            "\12\30\7\uffff\32\30\6\uffff\32\30",
             "\1\117",
-            "\1\120",
             "",
-            "",
-            "",
-            "\1\121",
             "",
             "\12\30\7\uffff\32\30\6\uffff\32\30",
+            "\1\121",
+            "\1\122",
             "\1\123",
             "\1\124",
+            "",
+            "",
+            "",
             "\1\125",
+            "",
+            "\1\126",
+            "",
+            "\12\30\7\uffff\32\30\6\uffff\32\30",
+            "\1\130",
+            "\1\131",
+            "\12\30\7\uffff\32\30\6\uffff\32\30",
             "\12\30\7\uffff\32\30\6\uffff\32\30",
             "\12\30\7\uffff\32\30\6\uffff\32\30",
             "",
             "",
-            "\12\30\7\uffff\32\30\6\uffff\32\30",
             "\12\30\7\uffff\32\30\6\uffff\32\30",
             "",
             ""
@@ -1192,7 +1228,7 @@ public class WaebricLexer extends Lexer {
             this.transition = DFA5_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__8 | T__9 | T__10 | T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | TYPE | IDCON | NATCON | WHITESPACE );";
+            return "1:1: Tokens : ( T__8 | T__9 | T__10 | T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | TYPE | IDCON | NATCON | WHITESPACE );";
         }
     }
  

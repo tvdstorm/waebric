@@ -9,19 +9,21 @@ options {
  *------------------------------------------------------------------*/
 
 // Module
-module:	 		'module' moduleIdentifier moduleElement* 'end';
-moduleIdentifier:	IDCON ( '.' IDCON )*;
-moduleElement:		moduleImport | function;
-moduleImport:		'import' moduleIdentifier ';';
+module:	 		'module' moduleId moduleElement* 'end';
+moduleId:		IDCON ( '.' IDCON )*;
+moduleElement:		imprt | site | function;
+
+imprt:			'import' moduleId ';';
+site:			'site' /* mapping */ 'end';
+function:		'def' IDCON formals statement* 'end';
+formals:		'(' IDCON? ( ',' IDCON )* ')' | ;
 
 /**
-// Site
-site:		'site' mapping 'end';
 mapping	:	path ':' markup;
 path:		filename | dirname '/' filename;
 dirname:	directory;
 directory:	PATHELEMENT ( '/' PATHELEMENT )*;
-filename:	PATHELEMENT '.' FILEEXT; // Waarom recognized hij html as idcon ipv fileext !___!, waarom leest hij file.html als token file.
+filename:	PATHELEMENT '.' FILEEXT;
 **/
 
 // Markup
@@ -38,10 +40,6 @@ argument:		expression;
 
 // Expression
 expression:		IDCON | NATCON;	// TODO: Priorities etc
-
-// Function
-function:		'def' IDCON formals statement* 'end';
-formals:		'(' IDCON? ( ',' IDCON )* ')' | ;
 
 // Statement
 statement:		'if' '(' predicate ')' statement ('else' statement)? | 
@@ -64,7 +62,6 @@ assignment:		IDCON '=' expression ';' | // Variable binding
 predicate:		expression | expression '.' TYPE | '!' predicate ; 
 			//( predicate '||' predicate ) | ( predicate '&&' predicate );
 
-// 
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/
