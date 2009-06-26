@@ -1,0 +1,5 @@
+module test
+	def lol
+		if (identifier) yield; else call.test;
+	end
+end
