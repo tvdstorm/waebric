@@ -1,11 +1,11 @@
-// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g 2009-06-26 15:10:13
+// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-06-26 15:19:14
 
 import org.antlr.runtime.*;
 import java.util.Stack;
 import java.util.List;
 import java.util.ArrayList;
 
-public class DebugWaebricLexer extends Lexer {
+public class WaebricLexer extends Lexer {
     public static final int T__29=29;
     public static final int T__28=28;
     public static final int T__27=27;
@@ -41,23 +41,23 @@ public class DebugWaebricLexer extends Lexer {
     // delegates
     // delegators
 
-    public DebugWaebricLexer() {;} 
-    public DebugWaebricLexer(CharStream input) {
+    public WaebricLexer() {;} 
+    public WaebricLexer(CharStream input) {
         this(input, new RecognizerSharedState());
     }
-    public DebugWaebricLexer(CharStream input, RecognizerSharedState state) {
+    public WaebricLexer(CharStream input, RecognizerSharedState state) {
         super(input,state);
 
     }
-    public String getGrammarFileName() { return "/ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g"; }
+    public String getGrammarFileName() { return "/ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g"; }
 
     // $ANTLR start "T__8"
     public final void mT__8() throws RecognitionException {
         try {
             int _type = T__8;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:3:6: ( 'module' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:3:8: 'module'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:3:6: ( 'module' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:3:8: 'module'
             {
             match("module"); 
 
@@ -77,8 +77,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__9;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:4:6: ( 'end' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:4:8: 'end'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:4:6: ( 'end' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:4:8: 'end'
             {
             match("end"); 
 
@@ -98,8 +98,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__10;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:5:7: ( '.' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:5:9: '.'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:5:7: ( '.' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:5:9: '.'
             {
             match('.'); 
 
@@ -118,8 +118,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__11;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:6:7: ( 'import' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:6:9: 'import'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:6:7: ( 'import' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:6:9: 'import'
             {
             match("import"); 
 
@@ -139,8 +139,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__12;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:7:7: ( ';' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:7:9: ';'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:7:7: ( ';' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:7:9: ';'
             {
             match(';'); 
 
@@ -159,8 +159,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__13;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:8:7: ( '#' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:8:9: '#'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:8:7: ( '#' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:8:9: '#'
             {
             match('#'); 
 
@@ -179,8 +179,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__14;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:9:7: ( '$' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:9:9: '$'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:9:7: ( '$' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:9:9: '$'
             {
             match('$'); 
 
@@ -199,8 +199,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__15;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:10:7: ( ':' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:10:9: ':'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:10:7: ( ':' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:10:9: ':'
             {
             match(':'); 
 
@@ -219,8 +219,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__16;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:11:7: ( '@' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:11:9: '@'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:11:7: ( '@' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:11:9: '@'
             {
             match('@'); 
 
@@ -239,8 +239,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__17;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:12:7: ( '%' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:12:9: '%'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:12:7: ( '%' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:12:9: '%'
             {
             match('%'); 
 
@@ -259,8 +259,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__18;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:13:7: ( '(' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:13:9: '('
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:13:7: ( '(' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:13:9: '('
             {
             match('('); 
 
@@ -279,8 +279,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__19;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:14:7: ( ',' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:14:9: ','
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:14:7: ( ',' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:14:9: ','
             {
             match(','); 
 
@@ -299,8 +299,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__20;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:15:7: ( ')' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:15:9: ')'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:15:7: ( ')' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:15:9: ')'
             {
             match(')'); 
 
@@ -319,8 +319,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__21;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:16:7: ( 'def' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:16:9: 'def'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:16:7: ( 'def' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:16:9: 'def'
             {
             match("def"); 
 
@@ -340,8 +340,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__22;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:17:7: ( 'if' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:17:9: 'if'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:17:7: ( 'if' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:17:9: 'if'
             {
             match("if"); 
 
@@ -361,8 +361,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__23;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:18:7: ( 'else' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:18:9: 'else'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:18:7: ( 'else' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:18:9: 'else'
             {
             match("else"); 
 
@@ -382,8 +382,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__24;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:19:7: ( 'each' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:19:9: 'each'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:19:7: ( 'each' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:19:9: 'each'
             {
             match("each"); 
 
@@ -403,8 +403,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__25;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:20:7: ( 'let' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:20:9: 'let'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:20:7: ( 'let' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:20:9: 'let'
             {
             match("let"); 
 
@@ -424,8 +424,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__26;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:21:7: ( 'in' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:21:9: 'in'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:21:7: ( 'in' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:21:9: 'in'
             {
             match("in"); 
 
@@ -445,8 +445,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__27;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:22:7: ( '{' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:22:9: '{'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:22:7: ( '{' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:22:9: '{'
             {
             match('{'); 
 
@@ -465,8 +465,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__28;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:23:7: ( '}' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:23:9: '}'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:23:7: ( '}' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:23:9: '}'
             {
             match('}'); 
 
@@ -485,8 +485,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__29;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:24:7: ( 'echo' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:24:9: 'echo'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:24:7: ( 'echo' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:24:9: 'echo'
             {
             match("echo"); 
 
@@ -506,8 +506,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__30;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:25:7: ( 'cdata' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:25:9: 'cdata'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:25:7: ( 'cdata' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:25:9: 'cdata'
             {
             match("cdata"); 
 
@@ -527,8 +527,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__31;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:26:7: ( 'yield;' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:26:9: 'yield;'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:26:7: ( 'yield;' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:26:9: 'yield;'
             {
             match("yield;"); 
 
@@ -548,8 +548,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__32;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:27:7: ( '=' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:27:9: '='
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:27:7: ( '=' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:27:9: '='
             {
             match('='); 
 
@@ -568,8 +568,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = T__33;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:28:7: ( '!' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:28:9: '!'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:28:7: ( '!' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:28:9: '!'
             {
             match('!'); 
 
@@ -588,7 +588,7 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = TYPE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:84:5: ( 'string' | 'list' | 'record' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:5: ( 'string' | 'list' | 'record' )
             int alt1=3;
             switch ( input.LA(1) ) {
             case 's':
@@ -615,7 +615,7 @@ public class DebugWaebricLexer extends Lexer {
 
             switch (alt1) {
                 case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:84:9: 'string'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:9: 'string'
                     {
                     match("string"); 
 
@@ -623,7 +623,7 @@ public class DebugWaebricLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:84:20: 'list'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:20: 'list'
                     {
                     match("list"); 
 
@@ -631,7 +631,7 @@ public class DebugWaebricLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:84:29: 'record'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:29: 'record'
                     {
                     match("record"); 
 
@@ -653,8 +653,8 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = IDCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:86:6: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:86:10: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:73:6: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:73:10: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -665,7 +665,7 @@ public class DebugWaebricLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:86:32: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:73:32: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             loop2:
             do {
                 int alt2=2;
@@ -678,7 +678,7 @@ public class DebugWaebricLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
             	    {
             	    if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
             	        input.consume();
@@ -714,10 +714,10 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = NATCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:87:7: ( ( '0' .. '9' )+ )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:87:11: ( '0' .. '9' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:74:7: ( ( '0' .. '9' )+ )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:74:11: ( '0' .. '9' )+
             {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:87:11: ( '0' .. '9' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:74:11: ( '0' .. '9' )+
             int cnt3=0;
             loop3:
             do {
@@ -731,7 +731,7 @@ public class DebugWaebricLexer extends Lexer {
 
                 switch (alt3) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:87:11: '0' .. '9'
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:74:11: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -763,10 +763,10 @@ public class DebugWaebricLexer extends Lexer {
         try {
             int _type = WHITESPACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:92:11: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:92:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:11: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:92:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             int cnt4=0;
             loop4:
             do {
@@ -780,7 +780,7 @@ public class DebugWaebricLexer extends Lexer {
 
                 switch (alt4) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
             	    {
             	    if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||(input.LA(1)>='\f' && input.LA(1)<='\r')||input.LA(1)==' ' ) {
             	        input.consume();
@@ -817,215 +817,215 @@ public class DebugWaebricLexer extends Lexer {
     // $ANTLR end "WHITESPACE"
 
     public void mTokens() throws RecognitionException {
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:8: ( T__8 | T__9 | T__10 | T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | TYPE | IDCON | NATCON | WHITESPACE )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:8: ( T__8 | T__9 | T__10 | T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | TYPE | IDCON | NATCON | WHITESPACE )
         int alt5=30;
         alt5 = dfa5.predict(input);
         switch (alt5) {
             case 1 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:10: T__8
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:10: T__8
                 {
                 mT__8(); 
 
                 }
                 break;
             case 2 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:15: T__9
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:15: T__9
                 {
                 mT__9(); 
 
                 }
                 break;
             case 3 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:20: T__10
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:20: T__10
                 {
                 mT__10(); 
 
                 }
                 break;
             case 4 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:26: T__11
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:26: T__11
                 {
                 mT__11(); 
 
                 }
                 break;
             case 5 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:32: T__12
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:32: T__12
                 {
                 mT__12(); 
 
                 }
                 break;
             case 6 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:38: T__13
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:38: T__13
                 {
                 mT__13(); 
 
                 }
                 break;
             case 7 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:44: T__14
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:44: T__14
                 {
                 mT__14(); 
 
                 }
                 break;
             case 8 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:50: T__15
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:50: T__15
                 {
                 mT__15(); 
 
                 }
                 break;
             case 9 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:56: T__16
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:56: T__16
                 {
                 mT__16(); 
 
                 }
                 break;
             case 10 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:62: T__17
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:62: T__17
                 {
                 mT__17(); 
 
                 }
                 break;
             case 11 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:68: T__18
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:68: T__18
                 {
                 mT__18(); 
 
                 }
                 break;
             case 12 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:74: T__19
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:74: T__19
                 {
                 mT__19(); 
 
                 }
                 break;
             case 13 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:80: T__20
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:80: T__20
                 {
                 mT__20(); 
 
                 }
                 break;
             case 14 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:86: T__21
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:86: T__21
                 {
                 mT__21(); 
 
                 }
                 break;
             case 15 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:92: T__22
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:92: T__22
                 {
                 mT__22(); 
 
                 }
                 break;
             case 16 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:98: T__23
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:98: T__23
                 {
                 mT__23(); 
 
                 }
                 break;
             case 17 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:104: T__24
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:104: T__24
                 {
                 mT__24(); 
 
                 }
                 break;
             case 18 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:110: T__25
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:110: T__25
                 {
                 mT__25(); 
 
                 }
                 break;
             case 19 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:116: T__26
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:116: T__26
                 {
                 mT__26(); 
 
                 }
                 break;
             case 20 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:122: T__27
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:122: T__27
                 {
                 mT__27(); 
 
                 }
                 break;
             case 21 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:128: T__28
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:128: T__28
                 {
                 mT__28(); 
 
                 }
                 break;
             case 22 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:134: T__29
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:134: T__29
                 {
                 mT__29(); 
 
                 }
                 break;
             case 23 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:140: T__30
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:140: T__30
                 {
                 mT__30(); 
 
                 }
                 break;
             case 24 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:146: T__31
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:146: T__31
                 {
                 mT__31(); 
 
                 }
                 break;
             case 25 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:152: T__32
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:152: T__32
                 {
                 mT__32(); 
 
                 }
                 break;
             case 26 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:158: T__33
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:158: T__33
                 {
                 mT__33(); 
 
                 }
                 break;
             case 27 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:164: TYPE
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:164: TYPE
                 {
                 mTYPE(); 
 
                 }
                 break;
             case 28 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:169: IDCON
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:169: IDCON
                 {
                 mIDCON(); 
 
                 }
                 break;
             case 29 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:175: NATCON
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:175: NATCON
                 {
                 mNATCON(); 
 
                 }
                 break;
             case 30 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/DebugWaebric.g:1:182: WHITESPACE
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:182: WHITESPACE
                 {
                 mWHITESPACE(); 
 
