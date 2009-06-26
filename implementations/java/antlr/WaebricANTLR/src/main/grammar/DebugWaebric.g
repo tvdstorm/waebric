@@ -38,11 +38,15 @@ filename:	PATHELEMENT '.' FILEEXT; // Waarom recognized hij html as idcon ipv fi
 **/
 
 // Markup
-markup:			(designator arguments) => designator;
+markup:			designator arguments?;
 designator:		IDCON attribute*;
-attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON
-			| '@' NATCON | '@' NATCON '%' NATCON;
-arguments:		'(' argument ( ',' argument  )* ')';
+attribute:		'#' IDCON | 
+			'.' IDCON | 
+			'$' IDCON | 
+			':' IDCON | 
+			'@' NATCON | 
+			'@' NATCON '%' NATCON;
+arguments:		('(' argument? ( ',' argument  )* ')');
 argument:		expression;
 
 // Expression
@@ -50,7 +54,7 @@ expression:		IDCON | NATCON;	// TODO: Priorities etc
 
 // Function
 function:		'def' IDCON formals statement* 'end';
-formals:		'(' IDCON ( ',' IDCON )* ')';
+formals:		'(' IDCON? ( ',' IDCON )* ')' | ;
 
 // Statement
 statement:		'if' '(' predicate ')' statement ('else' statement)? | 
