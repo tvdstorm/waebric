@@ -38,10 +38,14 @@ filename:	PATHELEMENT '.' FILEEXT; // Waarom recognized hij html as idcon ipv fi
 **/
 
 // Markup
-markup:			(designator arguments) => designator;
+markup:			designator;
 designator:		IDCON attribute*;
-attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON
-			| '@' NATCON | '@' NATCON '%' NATCON;
+attribute:		'#' IDCON | 
+			'.' IDCON | 
+			'$' IDCON | 
+			':' IDCON | 
+			'@' NATCON | 
+			'@' NATCON '%' NATCON;
 arguments:		'(' argument ( ',' argument  )* ')';
 argument:		expression;
 
@@ -50,25 +54,32 @@ expression:		IDCON | NATCON;	// TODO: Priorities etc
 
 // Function
 function:		'def' IDCON formals statement* 'end';
-formals:		'(' IDCON ( ',' IDCON )* ')';
+formals:		'(' IDCON ( ',' IDCON )* ')'; // TODO: Empty formals
 
 // Statement
-statement:		'if' statement ('else' statement)? | 
+statement:		'if' statement | 
+			'if' statement 'else' statement | 
 			'each' '(' IDCON ':' expression ')' statement | 
 			'{' statement* '}' | 
-			'yield;' |
-			markup ';' | 
+			'yield;' ; 
 			markup+ statement ';' | 
+			markup ';'  | 
 			markup+ markup ';' | 
 			markup+ expression ';' ;
+			markup+ embedding ';' ;
+			
+// Predicate
+predicate:		expression;
+
 
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/
+//TYPE:			'string' | 'list' | 'record';
+WHITESPACE: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; };
+
 IDCON:			('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
 NATCON:			'0'..'9'+;
 
 //FILEEXT:		('a'..'z' | 'A'..'Z' | '0'..'9') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
 //PATHELEMENT:		~(' '|'\t'|'\n'|'\r'|'.'|'/'|'\\')+;
-
-WHITESPACE: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; };
