@@ -32,6 +32,8 @@
 
 	<target name="compile" description="compile all classes">
 		<javac srcdir="." destdir=".." includes="**/*.java" source="1.3" debug="${debug.info}">
+
+
 			<classpath>
 				<pathelement path=".."/>
 				<pathelement location="../lib/beaver-rt.jar"/>
@@ -45,7 +47,7 @@
 		<delete>
 			<fileset dir=".." includes="*.class,*.java,*.spec,*.*~" excludes="Test.java,Main.java,BagOfSyntaxErrors.java"/>
 			<fileset dir="../waebric/" includes="*.class,*.java,*.spec,*.*~" excludes="Test.java,Main.java,BagOfSyntaxErrors.java"/>
-			<fileset dir="../waebric/ast/" includes="*.class,*.java,*.spec,*.*~" excludes="Node.java,Cons.java,ZeroCons.java,OneCons.java,TwoCons.java,ThreeCons.java,ListType.java,ConsListType.java,ListTypeCons.java"/>
+			<fileset dir="../waebric/ast/" includes="*.class,*.java,*.spec,*.*~" excludes="Node.java,Cons.java,ZeroCons.java,OneCons.java,TwoCons.java,ThreeCons.java,ListType.java,TwoListTypes.java,ConsListType.java,ListTypeCons.java"/>
 		</delete>
 	</target>
 

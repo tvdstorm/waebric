@@ -255,6 +255,11 @@ public class ASTGenerator
 			{
 				extendClass="ListType";	
 			}
+			else if(astInfo.argument[0].astType.equals(ASTtype.ARRAY) &&
+				astInfo.argument[1].astType.equals(ASTtype.ARRAY))
+			{
+				extendClass="TwoListTypes";	
+			}
 		}
 		else if(astInfo.numberOfArguments==3)
 		{
