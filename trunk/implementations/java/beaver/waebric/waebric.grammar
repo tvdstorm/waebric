@@ -16,9 +16,7 @@
 
 %terminals PRETEXT, MIDTEXT, POSTTEXT, TEXT;
 
-%terminals IDCONTAIL;
-
-%terminals IDCONDESIGNATOR;
+%terminals IDCON;
 
 %terminals HASHIDCON;
 
@@ -56,44 +54,13 @@ import = IMPORT moduleid.m {: //@import(m) :}
 ;
 
 /* SDF specificatie: languages/waebric/syntax/Functions */
-functiondef = DEF IDCON.i formals.f statements_opt.s END {: //@def($i,f,s) :}
+functiondef = DEF IDCON.i formals.f statements_opt.s END {: //@def($i,f,[s]) :}
 ;
 
 /* SDF specificatie: languages/waebric/syntax/Statements */
-statements_opt = {: //[]empty_statementlist() :}
-| statements.s {://[]statementlist(s):}
-;
-
-statements = statement
-| statements.s statement.t {: //$statements(s,t):} 
-| markupstatement
-| statements.s markupstatement.t {: //$statements(s,t):}
-;
-
-statement = EACH LPAREN IDCON COLON expression RPAREN statement
-| LET assignments.a IN statements_opt.s END {: //@let([a],s) :}
-| LBRACE statements_opt.s RBRACE {: //@block(s) :}
-;
-
-statement = matched_statement
-| open_statement
-;
-
-matched_statement = IF LPAREN predicate.p RPAREN matched_statement.a ELSE matched_statement.b {: //@if-else(p,a,b) :}
-| COMMENT STRCON.s SEMICOLON {: //@comment($s) :}
-| ECHO expression.e SEMICOLON {: //@echo(e) :}
-| ECHO embedding.e SEMICOLON {: //@echo-embedding(e) :}
-| CDATA expression.e SEMICOLON {: //@cdata(e) :}
-| YIELD SEMICOLON {: //@yield() :}
-;
-
-open_statement = IF LPAREN predicate.p RPAREN statement.a {: //@if(p,a) :}
-| IF LPAREN predicate.p RPAREN matched_statement.a ELSE open_statement.b {: //@if-else(p,a,b) :}
-;
 
 assignment = IDCON.i EQ expression.e SEMICOLON {: //@var-bind($i,e) :}
 | IDCON.i assignmentformals.f EQ statement.s {: //@func-bind($i,f,s) :}
-| IDCON.i assignmentformals.f EQ markupstatement.s {: //@func-bind($i,f,s) :}
 ;
 
 assignments = assignment
@@ -114,34 +81,15 @@ assignmentformals = LPAREN RPAREN {: //[]emptyformallist() :}
 
 /* SDF specificatie: languages/waebric/syntax/Expressions */
 
-/*
-%left expression_cat
-Expressions.sdf:  Expression "+" Expression -> Expression {cons("cat"), left}
-*/
 var = IDCON.i {: //@var($i) :}
 ;
 
-simpleexpression = var
+expression = var
 | symbolcon.s {: //@sym(s) :}
 | NATCON.n {: //@num(#n) :}
 | textexpression.t {: //@text(t) :}  
 | LBRACK expressions.e RBRACK {: //@list([e]) :}
 | LBRACE keyvaluepairs.party RBRACE  {: //@record([party]) :}
-;
-
-embedexpression = IDCONTAIL.i {: //@var($i) :}
-| symbolcon.s {: //@sym(s) :}
-| NATCON.n {: //@num(#n) :}  
-| textexpression.t {: //@text(t) :}  
-| LBRACK expressions.e RBRACK {: //@list([e]) :}
-| LBRACE keyvaluepairs.p RBRACE  {: //@record([p]) :} 
-| embedexpression.e DOT IDCONTAIL.i {: //@field(e,$i) :}
-| embedexpression.e PLUS simpleexpression.f {: //@cat(e,f) :}
-;
-
-expression = simpleexpression
-| expression.e DOT IDCON.i {: //@field(e,$i) :}
-| expression.e PLUS simpleexpression.f {: //@cat(e,f) :}
 ;
 
 textexpression = TEXT.t {: //$text_expression($t) :}
@@ -157,8 +105,8 @@ expressions = expression
 colonidcon = ATTCOLONIDCON.i {: //@var($i):}
 ;
 
-keyvaluepair = IDCONDESIGNATOR.i COLON expression.e  {: //@pair($i,e) :} 
-| IDCONDESIGNATOR.i colonidcon.j  {: //@pair($i,j) :}  
+keyvaluepair = IDCON.i COLON expression.e  {: //@pair($i,e) :} 
+| IDCON.i colonidcon.j  {: //@pair($i,j) :}  
 ;
 
 keyvaluepairs = keyvaluepair
@@ -168,20 +116,19 @@ keyvaluepairs = keyvaluepair
 /* SDF specificatie: languages/waebric/syntax/Embedding */
 
 
-texttail = POSTTEXT.p {: //@post($p) :}
-| MIDTEXT.m embed.e texttail.t {: //@mid($m,e,t) :}
+texttail = MIDTEXT.m embed.e texttail.t {: //@mid($m,e,t) :}
+| POSTTEXT.p {: //@post($p) :}
+
 ;
 
 embedding = PRETEXT.p embed.e texttail.t  {: //@pre($p,e,t) :}
 ;
 
-embed = markup_opt.m embedexpression.e {: //@exp-embedding([m],e) :}
+embed = markup_seq.m expression.e {: //@exp-embedding([m],e) :}
+| expression.e 
 ;
 
 
-markup_opt= 
-|markup_seq
-;
 
 markup_seq = markup.m 
 | markup_seq.m markup.n
@@ -204,19 +151,102 @@ argument = IDCON.i EQ expression.e {: //@attr($i,e) :}
 | expression
 ;
 
-markup = designator.d arguments.a {: //@call(d,a) :}
+markupWithArguments =  designator.d arguments.a {: //@call(d,a) :}
+;
+
+markup = markupWithArguments 
 | designator.d 
 ;
 
-designator = IDCONDESIGNATOR.i attribute_opt.a {: //@tag($i,[a]) :}
+designator = IDCON.i attribute_opt.a {: //@tag($i,[a]) :}
 ;
 
-markupstatement = markup_seq.m statement.s {: //@markup-stat([m],s) :}
-| markup.m SEMICOLON {: //@markup(m) :}
-| markup_seq.s markup.m SEMICOLON {: //@markup-markup([s],m) :}
+StatementWithoutSubstatement = StatementBlock
+| StatementCData
+| StatementYield
+| StatementComment
+| StatementMarkup
+| StatementEchoExpression
+| StatementEchoEmbedding
+| StatementLet
+;
+
+StatementWithoutSubAndMarkup = StatementBlock
+| StatementCData
+| StatementYield
+| StatementComment
+| StatementEchoExpression
+| StatementEchoEmbedding
+| StatementLet
+;
+
+statement = StatementWithoutSubstatement
+| StatementIf
+| StatementIfElse
+| StatementEach
+| StatementMarkupStatement
+;
+
+StatementNoShortIf = StatementWithoutSubstatement
+| StatementEachNoShortIf
+| StatementMarkupStatementNoShortIf
+;
+
+StatementWithoutMarkup = StatementWithoutSubAndMarkup
+| StatementIf
+| StatementIfElse
+| StatementEach
+;
+
+StatementWithoutMarkupNoShortIf = StatementWithoutSubAndMarkup
+| StatementEachNoShortIf
+;
+
+
+
+StatementIf = IF LPAREN predicate.p RPAREN statement.a  {: //@if(p,a) :};
+
+StatementIfElse = IF LPAREN predicate.p RPAREN StatementNoShortIf.a ELSE statement.b {: //@if-else(p,a,b) :};
+
+StatementEach = EACH LPAREN var COLON expression RPAREN statement ;
+
+StatementEachNoShortIf = EACH LPAREN var COLON expression RPAREN StatementNoShortIf ;
+
+StatementLet = LET assignments.a IN statements_opt.s END {: //@let([a],[s]) :};
+
+StatementBlock = LBRACE statements_opt.s RBRACE {: //@block([s]) :};
+ 
+statements_opt = 
+| statements
+;
+
+statements = statements statement
+| statement
+;
+
+
+
+
+
+StatementComment = COMMENT STRCON.s SEMICOLON	{: //@comment($s) :};
+StatementEchoExpression = ECHO expression.e SEMICOLON	{: //@echo(e) :};
+StatementEchoEmbedding = ECHO embedding.e SEMICOLON	{: //@echo-embedding(e) :};
+StatementCData = CDATA expression.e SEMICOLON	{: //@cdata(e) :};
+StatementYield = YIELD SEMICOLON	{: //@yield() :};
+    
+StatementMarkup = markup.m SEMICOLON {: //@markup(m) :}
+| markup_seq.s markupWithArguments.m SEMICOLON {: //@markup-markup([s],m) :}
 | markup_seq.s expression.e SEMICOLON {: //@markup-exp([s],e) :}
 | markup_seq.s embedding.e SEMICOLON {: //@markup-embedding([s],e) :}
 ;
+
+StatementMarkupStatement = markup_seq.m StatementWithoutMarkup.s {: //@markup-stat([m],s) :}
+;
+
+StatementMarkupStatementNoShortIf = markup_seq.m StatementWithoutMarkupNoShortIf.s{: //@markup-stat([m],s) :}
+;
+
+
 
 attribute = HASHIDCON.i {: //@id($i) :}
 | ATTDOTIDCON.i	{: //@class($i) :}
@@ -264,13 +294,6 @@ type = LIST {: //@list-type() :}
 | STRING {: //@string-type() :}
 ;
 
-/* some predicates LEFTassociative %left
-%left predicate_and
-%left predicate_or
-Predicates.sdf:  {left:
-Predicates.sdf:   Predicate "&&" Predicate -> Predicate {cons("and"), left}
-Predicates.sdf:   Predicate "||" Predicate -> Predicate {cons("or"), left}
-*/
 
 simplepredicate = expression
 | expression.e DOT type.t QUESTION {: //@is-a(e,t) :}
