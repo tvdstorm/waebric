@@ -252,7 +252,7 @@ attribute = HASHIDCON.i {: //@id($i) :}
 | ATTDOTIDCON.i	{: //@class($i) :}
 | ATTDOLLARIDCON.i {: //@name($i) :}
 | ATTCOLONIDCON.i {: //@type($i) :}
-| ADDCHAR NATCON.w MOD NATCON.h	{: //@with-height(#w,#h) :}
+| ADDCHAR NATCON.w MOD NATCON.h	{: //@width-height(#w,#h) :}
 | ADDCHARNATCON.w {: //@height(#w) :}  
 ;
 
