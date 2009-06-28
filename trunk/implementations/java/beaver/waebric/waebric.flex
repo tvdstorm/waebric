@@ -172,7 +172,7 @@ SiteFilename = {PathElement} "." {FileExt}
   "%"                            { Debug("MOD"); return nextToken(Terminals.MOD); }
   "@"                            { Debug("ADDCHAR"); return nextToken(Terminals.ADDCHAR); }    
   "/"                            { Debug("DIV"); return nextToken(Terminals.DIV); }
-//  "+"                            { Debug("PLUS"); return nextToken(Terminals.PLUS); }
+  "+"                            { Debug("PLUS"); return nextToken(Terminals.PLUS); }
   "?"                            { Debug("QUESTION"); return nextToken(Terminals.QUESTION); }
   "!"                            { Debug("NOT"); return nextToken(Terminals.NOT); }
   "&&"                           { Debug("ANDAND"); return nextToken(Terminals.ANDAND); }
@@ -180,6 +180,13 @@ SiteFilename = {PathElement} "." {FileExt}
   "="                            { Debug("EQ");return nextToken(Terminals.EQ); }
   
   "'" {SymbolChar}*              { Debug("SYMBOLCON " + yytext()); return nextToken(Terminals.SYMBOLCON, yytext() );}
+
+  "#"{WhiteSpace}*{Identifier}   { Debug("HASHIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
+  "."{WhiteSpace}*{Identifier}   { Debug("ATTDOTIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
+  "$"{WhiteSpace}*{Identifier}   { Debug("ATTDOLLARIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
+  ":"{WhiteSpace}*{Identifier}   { Debug("ATTCOLONIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
+  "@"{WhiteSpace}*{Natcon}       { Debug("ADDCHARNATCON " + yytext()); String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
+  "%"{WhiteSpace}*{Natcon}       { Debug("NATCON " + yytext()); String temp = yytext(); return nextToken(Terminals.NATCON, temp.substring(1) ); }
 
 
   /* comments */
@@ -200,6 +207,7 @@ SiteFilename = {PathElement} "." {FileExt}
 }
 
 <DIRFILE> {
+  "end"                          { Debug("PushBackDirfile:" + yytext() ); yybegin(YYINITIAL); yypushback(3); }
   {Directory} /"/"               { Debug("DIRNAME " + yytext() ); return nextToken(Terminals.DIRNAME, yytext()); }
   "/"                            { Debug("DIV"); return nextToken(Terminals.DIV); }
   {SiteFilename}                 { Debug("FILENAME " + yytext() ); return nextToken(Terminals.FILENAME, yytext()); }

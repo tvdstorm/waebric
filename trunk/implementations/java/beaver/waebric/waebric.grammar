@@ -84,9 +84,13 @@ assignmentformals = LPAREN RPAREN {: //[]emptyformallist() :}
 var = IDCON.i {: //@var($i) :}
 ;
 
-expression = var
-| symbolcon.s {: //@sym(s) :}
+expression = simpleexpression
 | expression.e DOT IDCON.i {: //@field(e,$i) :}
+| expression.e PLUS simpleexpression.f {: //@cat(e,f) :}
+;
+
+simpleexpression = var
+| symbolcon.s {: //@sym(s) :}
 | NATCON.n {: //@num(#n) :}
 | textexpression.t {: //@text(t) :}  
 | LBRACK expressions.e RBRACK {: //@list([e]) :}
@@ -209,9 +213,9 @@ StatementIf = IF LPAREN predicate.p RPAREN statement.a  {: //@if(p,a) :};
 
 StatementIfElse = IF LPAREN predicate.p RPAREN StatementNoShortIf.a ELSE statement.b {: //@if-else(p,a,b) :};
 
-StatementEach = EACH LPAREN IDCON.i COLON expression.e RPAREN statement.s  {: //@each($i,e,s) :};
+StatementEach = EACH LPAREN var COLON expression RPAREN statement ;
 
-StatementEachNoShortIf = EACH LPAREN IDCON.i COLON expression.e RPAREN StatementNoShortIf.s {: //@each($i,e,s) :};
+StatementEachNoShortIf = EACH LPAREN var COLON expression RPAREN StatementNoShortIf ;
 
 StatementLet = LET assignments.a IN statements_opt.s END {: //@let([a],[s]) :};
 
