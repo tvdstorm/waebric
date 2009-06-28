@@ -139,6 +139,7 @@ SiteFilename = {PathElement} "." {FileExt}
   "record"                         { Debug("RECORD");  return nextToken(Terminals.RECORD); }
   "string"                         { Debug("STRING");  return nextToken(Terminals.STRING); }
   "if"                             { Debug("IF");   return nextToken(Terminals.IF); }
+  "else"                           { Debug("ELSE");   return nextToken(Terminals.ELSE); }
   "in"				               { Debug("IN");  return nextToken(Terminals.IN); }
 
   
@@ -191,7 +192,7 @@ SiteFilename = {PathElement} "." {FileExt}
 
 
   /* identifiers */
-  {Identifier}              { return nextToken(Terminals.IDCON, yytext()); } 
+  {Identifier}              { Debug("IDCON " + yytext() ); return nextToken(Terminals.IDCON, yytext()); } 
     
   /* Natural numbers*/
   {Natcon}                       { Debug("NATCON " + yytext() ); return nextToken(Terminals.NATCON, yytext()); }  
