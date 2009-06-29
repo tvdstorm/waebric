@@ -2,6 +2,53 @@ grammar Waebric;
 
 options {
 	backtrack=true;
+	language=Java;
+	output=AST;
+}
+
+tokens {
+	// Symbols
+	COMMA = ',';
+	PERIOD = '.';
+	PLUS = '+';
+	MINUS = '-';
+	EQUALS = '=';
+	COLON = ':';
+	SEMICOLON = ';';
+	LPAREN = '(';
+	RPARENT = ')';
+	LCBRACKET = '{';
+	RCBRACKET = '}';
+	LBRACKET = '[';
+	RBRACKET = ']';
+	AT = '@';
+	DOLLAR = '$';
+	POUND = '#';
+	PERCENT = '%';
+	AMP = '&';
+	LESS_THAN = '<';
+	GREATER_THAN = '>';
+	
+	// Keywords
+	MODULE = 'module';
+	IMPORT = 'import';
+	SITE = 'site';
+	DEF = 'def';
+	END = 'end';
+	
+	IF = 'if';
+	ELSE = 'else';
+	EACH = 'each';
+	LET = 'let';
+	IN = 'in';
+	COMMENT = 'comment';
+	ECHO = 'echo';
+	CDATA = 'cdata';
+	YIELD = 'yield';
+	
+	LIST = 'list';
+	RECORD = 'record';
+	STRING = 'string';
 }
 
 /*------------------------------------------------------------------
@@ -9,7 +56,7 @@ options {
  *------------------------------------------------------------------*/
 
 // Module
-module:	 		'module' moduleId moduleElement* 'end';
+module:	 		'module' moduleId moduleElement* 'end' EOF;
 moduleId:		IDCON ( '.' IDCON )*;
 moduleElement:		imprt | site | function;
 
@@ -39,14 +86,14 @@ arguments:		('(' argument? ( ',' argument  )* ')');
 argument:		expression;
 
 // Expression
-expression:		IDCON | NATCON;	// TODO: Priorities etc
+expression:		IDCON | NATCON | TEXT;	// TODO: Priorities etc
 
 // Statement
 statement:		'if' '(' predicate ')' statement ('else' statement)? | 
 			'each' '(' IDCON ':' expression ')' statement | 
 			'let' assignment+ 'in' statement* 'end' |
 			'{' statement* '}' |
-			//'comment' STRCON ';' |
+			'comment' STRCON ';' |
 			'echo' expression ';' |
 			//'echo' embedding ';' |
 			'cdata' expression ';' | 
@@ -59,8 +106,9 @@ assignment:		IDCON '=' expression ';' | // Variable binding
 			IDCON formals statement; // Function binding
 			
 // Predicate
-predicate:		expression | expression '.' TYPE | '!' predicate ; 
+predicate:		expression | expression '.' type | '!' predicate ; 
 			//( predicate '||' predicate ) | ( predicate '&&' predicate );
+type:			LIST | RECORD | STRING;	
 			
 // Embedding
 embedding:		pretext embed texttail;	
@@ -74,8 +122,6 @@ midtext:		'>' TEXTCHAR* '<';
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/
-TYPE:			'string' | 'list' | 'record';
-
 // Text
 TEXT:			'"' TEXTCHAR* '"';
 TEXTCHAR:		'\"' | // Quote
@@ -102,4 +148,5 @@ IDCON:			('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
 //FILEEXT:		('a'..'z' | 'A'..'Z' | '0'..'9') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
 //PATHELEMENT:		~(' '|'\t'|'\n'|'\r'|'.'|'/'|'\\')+;
 
-WHITESPACE: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; };
+COMMENTS:		'//' .* '\n' | '/*' .* '*/';
+LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; };
