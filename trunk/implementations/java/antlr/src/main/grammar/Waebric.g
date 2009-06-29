@@ -105,9 +105,12 @@ fragment LETTER:	'a'..'z' | 'A'..'Z';
 fragment DIGIT:		'0'..'9';
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+;
 
-// Basic
-NATCON:			DIGIT+;
-IDCON:			LETTER (LETTER | DIGIT | '-')*;
+// File
+PATH:			( DIRNAME '/' )? FILENAME;
+fragment PATHELEMENT:	~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' )+;
+fragment DIRNAME:	PATHELEMENT ( '/' PATHELEMENT )*;			
+fragment FILENAME:	PATHELEMENT '.' FILEEXT;		
+fragment FILEEXT:	( LETTER | DIGIT )+;
  
 // Text
 TEXT:			'"' TEXTCHAR* '"';
@@ -126,6 +129,10 @@ fragment DECIMAL:	'\\' 'a' ('0'..'9') 'b' ('0'..'9') 'c' ('0'..'9');
 // Symbol
 SYMBOLCON:		'\'' SYMBOLCHAR*;
 fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')');
+
+// Basic
+NATCON:			DIGIT+;
+IDCON:			LETTER ( LETTER | DIGIT | '-' )*;
 
 // Layout
 COMMENTS:		'//' .* '\n' | '/*' .* '*/' { $channel = HIDDEN; };
