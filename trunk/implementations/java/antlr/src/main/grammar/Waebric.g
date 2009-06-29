@@ -120,8 +120,8 @@ fragment ENTREF:	'&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' |
 // String
 STRCON:			'\"' STRCHAR* '\"' ;
 fragment STRCHAR:	~( '\u0000'..'\u001F' | '"' | '\\' ) | ESCLAYOUT | DECIMAL ;
-fragment ESCLAYOUT:	'\\n' | '\\t' | '\\\\"' | '\\\\\\\\' ;
-fragment DECIMAL:	'\\' 'a' ('0'..'9') 'b' ('0'..'9') 'c' ('0'..'9') ;		
+fragment ESCLAYOUT:	'\\\\n' | '\\\\t' | '\\\\"' | '\\\\\\\\' ;
+fragment DECIMAL:	'\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT ;		
 
 // Symbol
 SYMBOLCON:		'\'' SYMBOLCHAR* ;
