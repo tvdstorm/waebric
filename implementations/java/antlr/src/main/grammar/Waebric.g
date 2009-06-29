@@ -86,14 +86,14 @@ arguments:		('(' argument? ( ',' argument  )* ')');
 argument:		expression;
 
 // Expression
-expression:		IDCON | NATCON | TEXT;	// TODO: Priorities etc
+expression:		IDCON | NATCON | SYMBOLCON;	// TODO: Priorities etc
 
 // Statement
 statement:		'if' '(' predicate ')' statement ('else' statement)? | 
 			'each' '(' IDCON ':' expression ')' statement | 
 			'let' assignment+ 'in' statement* 'end' |
 			'{' statement* '}' |
-			'comment' STRCON ';' |
+			//'comment' STRCON ';' |
 			'echo' expression ';' |
 			//'echo' embedding ';' |
 			'cdata' expression ';' | 
@@ -122,9 +122,16 @@ midtext:		'>' TEXTCHAR* '<';
 /*------------------------------------------------------------------
  * LEXER RULES
  *------------------------------------------------------------------*/
+fragment LETTER:	'a'..'z' | 'A'..'Z';
+fragment NUMBER:	'0'..'9';
+fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | NUMBER )+;
+
+NATCON:			NUMBER+;
+IDCON:			LETTER (LETTER | NUMBER)*;
+ 
 // Text
 TEXT:			'"' TEXTCHAR* '"';
-TEXTCHAR:		'\"' | // Quote
+fragment TEXTCHAR:	'\"' | // Quote
 			'\\' | // Slash
 			'\&' ~('#' | '0'..'9' | 'a'..'z' | 'A'..'Z' | '_' | ':') | // Amp
 			'&#' ('0'..'9')+ ';' | // Text character reference
@@ -132,21 +139,14 @@ TEXTCHAR:		'\"' | // Quote
 			'&' ('a'..'z' | 'A'..'Z' | '_' | ':') ('a'..'z' | 'A'..'Z' | '0'..'9' | '.' | '-' | '_' | ':')* ';' ; // Text entity reference
 
 // String
-STRCON:			'"' STRCHAR '"';
-STRCHAR:		'\\n' | '\\t' | '\\\\"' | '\\\\\\\\' |
-			'\\' 'a' ('0'..'9') 'b' ('0'..'9') 'c' ('0'..'9');// | // Decimal
-			//~('\n' | '\t' | '"' | '\\'); // TODO: !0..31	
+STRCON:			'\"' STRCHAR '\"';
+fragment STRCHAR:	'\\n' | '\\t' | '\\\\"' | '\\\\\\\\' |
+			'\\' 'a' ('0'..'9') 'b' ('0'..'9') 'c' ('0'..'9') | // Decimal
+			~('\n' | '\t' | '"' | '\\'); // TODO: !0..31	
 
 // Symbol
 SYMBOLCON:		'\'' SYMBOLCHAR*;
-SYMBOLCHAR:		~( ' ' | '\t' | '\n' | '\r' | ';' | ',' | '>' | '}' | ')'); // TODO: !0..31
+fragment SYMBOLCHAR:	~( ' ' | '\t' | '\n' | '\r' | ';' | ',' | '>' | '}' | ')'); // TODO: !0..31
 
-// Basic
-NATCON:			'0'..'9'+;
-IDCON:			('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
-
-//FILEEXT:		('a'..'z' | 'A'..'Z' | '0'..'9') ('a'..'z' | 'A'..'Z' | '0'..'9')*;
-//PATHELEMENT:		~(' '|'\t'|'\n'|'\r'|'.'|'/'|'\\')+;
-
-COMMENTS:		'//' .* '\n' | '/*' .* '*/';
+COMMENTS:		'//' .* '\n' | '/*' .* '*/' { $channel = HIDDEN; };
 LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; };
