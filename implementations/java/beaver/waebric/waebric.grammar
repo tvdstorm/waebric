@@ -18,44 +18,34 @@
 
 %terminals IDCON;
 
-%terminals HASHIDCON;
+%terminals HASH, DOLLAR;
 
-%terminals ATTDOTIDCON, ATTDOLLARIDCON, ATTCOLONIDCON, ADDCHARNATCON;
+
 
 %goal module;
 
 /* SDF specificatie: languages/waebric/syntax/Modules */
-module = MODULE moduleid.i moduleelements_opt.e {: //@module(i,[e]) :}
-;
 
-moduleid = idcons.i  {: //@module-id([$i]) :}
-;
+module = MODULE moduleid.i moduleelement.e* {: //@module(i,[e]) :};
 
+moduleid = idcons.i  {: //@module-id([$i]) :};
 
 
 idcons = IDCON.i {: //$idconsa($i) :}
 | idcons.a DOT IDCON.b {: //$idconslist(a,$b) :}
 ;
 
-moduleelements_opt =
-| moduleelements
-;
-
-moduleelements = moduleelement
-| moduleelements moduleelement 
-;
 
 moduleelement = functiondef
 | import
 | site
 ;
 
-import = IMPORT moduleid.m {: //@import(m) :}
-;
+import = IMPORT moduleid.m {: //@import(m) :};
 
 /* SDF specificatie: languages/waebric/syntax/Functions */
-functiondef = DEF IDCON.i formals.f statements_opt.s END {: //@def($i,f,[s]) :}
-;
+functiondef = DEF IDCON.i formals.f statement.s* END {: //@def($i,f,[s]) :};
+
 
 /* SDF specificatie: languages/waebric/syntax/Statements */
 
@@ -63,16 +53,13 @@ assignment = IDCON.i EQ expression.e SEMICOLON {: //@var-bind($i,e) :}
 | IDCON.i assignmentformals.f EQ statement.s {: //@func-bind($i,f,s) :}
 ;
 
-assignments = assignment
-| assignments assignment
-;
 
 formals = {://@empty() :}
 | LPAREN formallist.f RPAREN {://@formals([$f]) :}
 ;
 
 formallist = IDCON.i {: //$formal_a($i):}
-| formallist.a COMMA IDCON.b {: //$formallist(a,$b):}
+|  IDCON.a COMMA formallist.b {: //$formallist($a,b):}
 ;
 
 assignmentformals = LPAREN RPAREN {: //[]emptyformallist() :}
@@ -81,8 +68,7 @@ assignmentformals = LPAREN RPAREN {: //[]emptyformallist() :}
 
 /* SDF specificatie: languages/waebric/syntax/Expressions */
 
-var = IDCON.i {: //@var($i) :}
-;
+var = IDCON.i {: //@var($i) :};
 
 expression = simpleexpression
 | expression.e DOT IDCON.i {: //@field(e,$i) :}
@@ -97,74 +83,58 @@ simpleexpression = var
 | LBRACE keyvaluepairs.party RBRACE  {: //@record([party]) :}
 ;
 
-textexpression = TEXT.t {: //$text_expression($t) :}
-;
+textexpression = TEXT.t {: //$text_expression($t) :};
 
-symbolcon = SYMBOLCON.s  {: //$sym_text($s) :}
-;
+symbolcon = SYMBOLCON.s  {: //$sym_text($s) :};
 
 expressions = expression
 | expressions COMMA expression
 ;
 
-colonidcon = ATTCOLONIDCON.i {: //@var($i):}
-;
-
-keyvaluepair = IDCON.i COLON expression.e  {: //@pair($i,e) :} 
-| IDCON.i colonidcon.j  {: //@pair($i,j) :}  
-;
 
 keyvaluepairs = keyvaluepair
 | keyvaluepairs COMMA keyvaluepair
 ;
+
+keyvaluepair = IDCON.i COLON expression.e  {: //@pair($i,e) :};
 
 /* SDF specificatie: languages/waebric/syntax/Embedding */
 
 
 texttail = MIDTEXT.m embed.e texttail.t {: //@mid($m,e,t) :}
 | POSTTEXT.p {: //@post($p) :}
-
 ;
 
-embedding = PRETEXT.p embed.e texttail.t  {: //@pre($p,e,t) :}
-;
+embedding = PRETEXT.p embed.e texttail.t  {: //@pre($p,e,t) :};
 
-embed = markup_seq.m expression.e {: //@exp-embedding([m],e) :}
+embed = markup.m+ expression.e {: //@exp-embedding([m],e) :}
 | expression.e 
 ;
 
 
 
-markup_seq = markup.m 
-| markup_seq.m markup.n
-;
 
 /* SDF specificatie: languages/waebric/syntax/Markup */
 
-arguments = LPAREN argumentlist_opt.a RPAREN {: //@args([a]) :}
+arguments = LPAREN argumentlist.a* RPAREN {: //@args([a]) :};
+
+argumentlist = argument
+| argument COMMA argumentlist
 ;
 
-argumentlist = argument.a
-|  argumentlist.b COMMA argument.a
-;
 
-argumentlist_opt =  
-| argumentlist.a
-;
 
 argument = IDCON.i EQ expression.e {: //@attr($i,e) :}
 | expression
 ;
 
-markupWithArguments =  designator.d arguments.a {: //@call(d,a) :}
-;
+markupWithArguments = designator.d arguments.a {: //@call(d,a) :} ;
 
 markup = markupWithArguments 
 | designator.d 
 ;
 
-designator = IDCON.i attribute_opt.a {: //@tag($i,[a]) :}
-;
+designator = IDCON.i attribute.a* {: //@tag($i,[a]) :} ;
 
 StatementWithoutSubstatement = StatementBlock
 | StatementCData
@@ -217,19 +187,10 @@ StatementEach = EACH LPAREN var COLON expression RPAREN statement ;
 
 StatementEachNoShortIf = EACH LPAREN var COLON expression RPAREN StatementNoShortIf ;
 
-StatementLet = LET assignments.a IN statements_opt.s END {: //@let([a],[s]) :};
+StatementLet = LET assignment.a+ IN statement.s* END {: //@let([a],[s]) :};
 
-StatementBlock = LBRACE statements_opt.s RBRACE {: //@block([s]) :};
+StatementBlock = LBRACE statement.s* RBRACE {: //@block([s]) :};
  
-statements_opt = 
-| statements
-;
-
-statements = statements statement
-| statement
-;
-
-
 
 
 
@@ -240,53 +201,35 @@ StatementCData = CDATA expression.e SEMICOLON	{: //@cdata(e) :};
 StatementYield = YIELD SEMICOLON	{: //@yield() :};
     
 StatementMarkup = markup.m SEMICOLON {: //@markup(m) :}
-| markup_seq.s markupWithArguments.m SEMICOLON {: //@markup-markup([s],m) :}
-| markup_seq.s expression.e SEMICOLON {: //@markup-exp([s],e) :}
-| markup_seq.s embedding.e SEMICOLON {: //@markup-embedding([s],e) :}
+| markup.s+ markupWithArguments.m SEMICOLON {: //@markup-markup([s],m) :}
+| markup.s+ expression.e SEMICOLON {: //@markup-exp([s],e) :}
+| markup.s+ embedding.e SEMICOLON {: //@markup-embedding([s],e) :}
 ;
 
-StatementMarkupStatement = markup_seq.m StatementWithoutMarkup.s {: //@markup-stat([m],s) :}
-;
+StatementMarkupStatement = markup.m+ StatementWithoutMarkup.s {: //@markup-stat([m],s) :};
 
-StatementMarkupStatementNoShortIf = markup_seq.m StatementWithoutMarkupNoShortIf.s{: //@markup-stat([m],s) :}
-;
+StatementMarkupStatementNoShortIf = markup.m+ StatementWithoutMarkupNoShortIf.s{: //@markup-stat([m],s) :};
 
 
 
-attribute = HASHIDCON.i {: //@id($i) :}
-| ATTDOTIDCON.i	{: //@class($i) :}
-| ATTDOLLARIDCON.i {: //@name($i) :}
-| ATTCOLONIDCON.i {: //@type($i) :}
+attribute = HASH IDCON.i {: //@id($i) :}
+//| DOT IDCON.i	{: //@class($i) :}
+| DOLLAR IDCON.i {: //@name($i) :}
+| COLON IDCON.i {: //@type($i) :}
 | ADDCHAR NATCON.w MOD NATCON.h	{: //@width-height(#w,#h) :}
-| ADDCHARNATCON.w {: //@height(#w) :}  
+| ADDCHAR NATCON.w {: //@height(#w) :}  
 ;
-
-
-attribute_opt =
-| attributes        
-;
-
-attributes = attribute 
-| attributes attribute 
-;
-
-
 
 
 /* SDF specificatie: languages/waebric/syntax/Sites */
-site = SITE mappings_opt.m END {: //@site([m]) :}
-;
+site = SITE mappings.m* END {: //@site([m]) :};
 
-mappings_opt = 
-| mappings
-;
 
 mappings = mapping
-| mappings SEMICOLON mapping
+| mapping SEMICOLON mappings
 ;
 
-mapping = path.p COLON markup.m {: //@mapping(p,m) :}
-;
+mapping = path.p COLON markup.m {: //@mapping(p,m) :};
 
 path = DIRNAME.d DIV FILENAME.f {: //@path($d,$f) :}
 | FILENAME.f  {: //$filenamestring($f) :}
@@ -305,8 +248,7 @@ simplepredicate = expression
 | NOT simplepredicate.p {: //@not(p) :}
 ;
 
-conjunction = predicate.p ANDAND simplepredicate.q {: //@and(p,q) :}
-;
+conjunction = predicate.p ANDAND simplepredicate.q {: //@and(p,q) :};
 
 predicate = simplepredicate
 | conjunction
