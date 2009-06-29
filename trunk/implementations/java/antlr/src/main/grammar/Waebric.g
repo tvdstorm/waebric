@@ -29,9 +29,7 @@ tokens {
 	STRING = 'string' ;
 }
 
-/******************************
- *	PARSER RULES
- *****************************/
+// Parser rules
 module:	 		'module' moduleId moduleElement* 'end' EOF ;
 moduleId:		IDCON ( '.' IDCON )* ;
 moduleElement:		imprt | site | function ;
@@ -39,7 +37,7 @@ imprt:			'import' moduleId ';' ;
 
 site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
-mapping	:		PATH ':' markup ;
+mapping	:		/* PATH ':' */ markup ;
 
 markup:			designator arguments? ;
 designator:		IDCON attribute* ;
@@ -48,7 +46,7 @@ attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON |
 arguments:		('(' argument? ( ',' argument  )* ')') ;
 argument:		expression ;
 
-expression:		IDCON | NATCON | SYMBOLCON /*  |TEXT |  field | cat | list |  record */;
+expression:		IDCON | NATCON | SYMBOLCON ;
 field:			expression '.' IDCON ;
 cat:			expression '+' expression ;
 list:			'[' expression ( ',' expression ) ']' ;
@@ -90,9 +88,7 @@ pretext:		'"' TEXTCHAR* '<' ;
 posttext:		'>' TEXTCHAR* '"' ;
 midtext:		'>' TEXTCHAR* '<' ;
 
-/******************************
- *	LEXER RULES
- *****************************/
+// Lexical rules
 fragment LETTER:	'a'..'z' | 'A'..'Z' ;
 fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
@@ -105,7 +101,7 @@ fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') 
 
 TEXT:			'"' TEXTCHAR* '"' ;
 fragment TEXTCHAR:	~( '\u0000'..'\u001F' | '&' | '"' | '\u0080'..'\uFFFF' ) |
-			'\n' | '\r' | '\t' | ESCQUOTE | AMP | CHARREF | ENTREF ;
+						'\n' | '\r' | '\t' | ESCQUOTE | AMP | CHARREF | ENTREF ;
 fragment ESCQUOTE:	'\\' | '\"' ;		
 fragment AMP:		'\&' ~('#' | '0'..'9' | 'a'..'z' | 'A'..'Z' | '_' | ':') ;
 fragment CHARREF:	'&#' DIGIT+ ';' | '&#x' HEXADECIMAL ';' ;
@@ -116,10 +112,12 @@ fragment STRCHAR:	~( '\u0000'..'\u001F' | '"' | '\\' ) | ESCLAYOUT | DECIMAL ;
 fragment ESCLAYOUT:	'\\\\n' | '\\\\t' | '\\\\"' | '\\\\\\\\' ;
 fragment DECIMAL:	'\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT ;	
 
+/**
 PATH:			PATHELEMENT ( '/' PATHELEMENT )* '/' FILENAME | FILENAME ;
 fragment PATHELEMENT:	~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' )+ ;
 fragment FILENAME:	PATHELEMENT '.' FILEEXT ;		
-fragment FILEEXT:	( LETTER | DIGIT )+ ;	
+fragment FILEEXT:	( LETTER | DIGIT )+ ;
+**/
 
 COMMENTS:		'//' .* '\n' | '/*' .* '*/' { $channel = HIDDEN; } ;
 LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; } ;
