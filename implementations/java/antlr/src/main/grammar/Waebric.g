@@ -110,7 +110,8 @@ fragment FILEEXT:	( LETTER | DIGIT )+ ;
  
 // Text
 TEXT:			'"' TEXTCHAR* '"' ;
-fragment TEXTCHAR:	ESCQUOTE | AMP | CHARREF | ENTREF ;
+fragment TEXTCHAR:	~( '\u0000'..'\u001F' | '&' | '"' | '\u0080'..'\uFFFF' ) |
+			'\n' | '\r' | '\t' | ESCQUOTE | AMP | CHARREF | ENTREF ;
 fragment ESCQUOTE:	'\\' | '\"' ;		
 fragment AMP:		'\&' ~('#' | '0'..'9' | 'a'..'z' | 'A'..'Z' | '_' | ':') ;
 fragment CHARREF:	'&#' DIGIT+ ';' | '&#x' HEXADECIMAL ';' ;
@@ -118,7 +119,7 @@ fragment ENTREF:	'&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' |
 
 // String
 STRCON:			'\"' STRCHAR* '\"' ;
-fragment STRCHAR:	ESCLAYOUT | DECIMAL | ~( '\u0000'..'\u001F' | '"' | '\\' ) ;
+fragment STRCHAR:	~( '\u0000'..'\u001F' | '"' | '\\' ) | ESCLAYOUT | DECIMAL ;
 fragment ESCLAYOUT:	'\\n' | '\\t' | '\\\\"' | '\\\\\\\\' ;
 fragment DECIMAL:	'\\' 'a' ('0'..'9') 'b' ('0'..'9') 'c' ('0'..'9') ;		
 
