@@ -104,7 +104,9 @@ Directory = {PathElement} ("/" {PathElement})*
 
 
 /* identifiers */
-Identifier = [A-Za-z][A-Za-z\-0-9]*
+IdentifierChars = [A-Za-z][A-Za-z\-0-9]*
+ForbiddenKeywords = "if" | "comment" | "echo" | "cdata" | "each" | "let" | "module" | "import" | "def" | "end" | "site"
+Identifier = !( !({IdentifierChars}) | ({ForbiddenKeywords}) )
 
 SiteFilename = {PathElement} "." {FileExt}
 
@@ -156,9 +158,6 @@ SiteFilename = {PathElement} "." {FileExt}
  
     
   /* separators and operators*/
-//  "&#x"                          { return nextToken(Terminals.TEXTCHARREF); }
-//  "&#"                           { return nextToken(Terminals.TEXTCHARREF); }  
-  
   "("                            { Debug("LPAREN"); return nextToken(Terminals.LPAREN); }
   ")"                            { Debug("RPAREN"); return nextToken(Terminals.RPAREN); }
   "{"                            { Debug("LBRACE"); return nextToken(Terminals.LBRACE); }
@@ -178,16 +177,18 @@ SiteFilename = {PathElement} "." {FileExt}
   "&&"                           { Debug("ANDAND"); return nextToken(Terminals.ANDAND); }
   "||"                           { Debug("OROR"); return nextToken(Terminals.OROR); }
   "="                            { Debug("EQ");return nextToken(Terminals.EQ); }
+  "$"                            { Debug("DOLLAR"); return nextToken(Terminals.DOLLAR); }
+  "#"                            { Debug("HASH"); return nextToken(Terminals.HASH); }   
   
   "'" {SymbolChar}*              { Debug("SYMBOLCON " + yytext()); return nextToken(Terminals.SYMBOLCON, yytext() );}
 
-  "#"{WhiteSpace}*{Identifier}   { Debug("HASHIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
+ /* "#"{WhiteSpace}*{Identifier}   { Debug("HASHIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.HASHIDCON, temp.substring(1) ); }
   "."{WhiteSpace}*{Identifier}   { Debug("ATTDOTIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTDOTIDCON, temp.substring(1) ); }
   "$"{WhiteSpace}*{Identifier}   { Debug("ATTDOLLARIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTDOLLARIDCON, temp.substring(1) ); }
   ":"{WhiteSpace}*{Identifier}   { Debug("ATTCOLONIDCON " + yytext()); String temp = yytext(); return nextToken(Terminals.ATTCOLONIDCON, temp.substring(1) ); }
   "@"{WhiteSpace}*{Natcon}       { Debug("ADDCHARNATCON " + yytext()); String temp = yytext(); return nextToken(Terminals.ADDCHARNATCON, temp.substring(1) ); }
   "%"{WhiteSpace}*{Natcon}       { Debug("NATCON " + yytext()); String temp = yytext(); return nextToken(Terminals.NATCON, temp.substring(1) ); }
-
+*/
 
   /* comments */
   {Comment}                      { /* ignore */ }
@@ -249,7 +250,7 @@ SiteFilename = {PathElement} "." {FileExt}
 	{TextChar}			   { string.append( yytext() ); }
 	 "\\".				   { string.append( "\\" + yytext() ); }
       \"                       { Debug("TEXT " + string + yytext() ); yybegin(YYINITIAL); string.append(  yytext() );  return nextToken(Terminals.TEXT,  string.toString() ); }
-      "<"                        { Debug("PRETEXT " + string+ yytext() ); yybegin(YYINITIAL); string.append(  yytext()  );  return nextToken(Terminals.PRETEXT,  string.toString() ); }
+      "<"                        { Debug("PRETEXT " + string+ yytext() ); yybegin(YYINITIAL); string.append(  yytext()  );  return nextToken(Terminals.PRETEXT, string.toString() ); }
 
 }
 
@@ -258,7 +259,6 @@ SiteFilename = {PathElement} "." {FileExt}
 	 "\\".				   { string.append( "\\" + yytext() ); }
 	\"                       { Debug("POSTTEXT " + string + yytext() );  yybegin(YYINITIAL);  string.append( '\"' );  return nextToken(Terminals.POSTTEXT, string.toString() ); }
 	"<"                        { Debug("MIDTEXT " + string + yytext());  yybegin(YYINITIAL);  string.append( yytext());  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
-	{TextChar}/"<"             { Debug("MIDTEXT " + string + yytext());  yybegin(YYINITIAL);  string.append( yytext() + '<' );  return nextToken(Terminals.MIDTEXT,  string.toString() ); }
 }
 
 
