@@ -7,28 +7,6 @@ options {
 }
 
 tokens {
-	// Symbols
-	COMMA = ',';
-	PERIOD = '.';
-	PLUS = '+';
-	MINUS = '-';
-	EQUALS = '=';
-	COLON = ':';
-	SEMICOLON = ';';
-	LPAREN = '(';
-	RPARENT = ')';
-	LCBRACKET = '{';
-	RCBRACKET = '}';
-	LBRACKET = '[';
-	RBRACKET = ']';
-	AT = '@';
-	DOLLAR = '$';
-	POUND = '#';
-	PERCENT = '%';
-	AMP = '&';
-	LESS_THAN = '<';
-	GREATER_THAN = '>';
-	
 	// Keywords
 	MODULE = 'module';
 	IMPORT = 'import';
@@ -89,7 +67,8 @@ argument:		expression;
 expression:		IDCON | NATCON | SYMBOLCON;	// TODO: Priorities etc
 
 // Statement
-statement:		'if' '(' predicate ')' statement ('else' statement)? | 
+statement:		'if' '(' predicate ')' statement 'else' statement | 
+			'if' '(' predicate ')' statement |
 			'each' '(' IDCON ':' expression ')' statement | 
 			'let' assignment+ 'in' statement* 'end' |
 			'{' statement* '}' |
@@ -123,30 +102,31 @@ midtext:		'>' TEXTCHAR* '<';
  * LEXER RULES
  *------------------------------------------------------------------*/
 fragment LETTER:	'a'..'z' | 'A'..'Z';
-fragment NUMBER:	'0'..'9';
-fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | NUMBER )+;
+fragment DIGIT:		'0'..'9';
+fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+;
 
-NATCON:			NUMBER+;
-IDCON:			LETTER (LETTER | NUMBER)*;
+// Basic
+NATCON:			DIGIT+;
+IDCON:			LETTER (LETTER | DIGIT | '-')*;
  
 // Text
 TEXT:			'"' TEXTCHAR* '"';
-fragment TEXTCHAR:	'\"' | // Quote
-			'\\' | // Slash
-			'\&' ~('#' | '0'..'9' | 'a'..'z' | 'A'..'Z' | '_' | ':') | // Amp
-			'&#' ('0'..'9')+ ';' | // Text character reference
-			'&#x' ('0'..'9' | 'a'..'f' | 'A'..'F')+ ';' | // Text character reference
-			'&' ('a'..'z' | 'A'..'Z' | '_' | ':') ('a'..'z' | 'A'..'Z' | '0'..'9' | '.' | '-' | '_' | ':')* ';' ; // Text entity reference
+fragment TEXTCHAR:	ESCQUOTE | AMP | CHARREF | ENTREF;
+fragment ESCQUOTE:	'\\' | '\"';		
+fragment AMP:		'\&' ~('#' | '0'..'9' | 'a'..'z' | 'A'..'Z' | '_' | ':');
+fragment CHARREF:	'&#' DIGIT+ ';' | '&#x' HEXADECIMAL ';';
+fragment ENTREF:	'&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':')* ';';
 
 // String
-STRCON:			'\"' STRCHAR '\"';
-fragment STRCHAR:	'\\n' | '\\t' | '\\\\"' | '\\\\\\\\' |
-			'\\' 'a' ('0'..'9') 'b' ('0'..'9') 'c' ('0'..'9') | // Decimal
-			~('\n' | '\t' | '"' | '\\'); // TODO: !0..31	
+STRCON:			'\"' STRCHAR* '\"';
+fragment STRCHAR:	ESCLAYOUT | DECIMAL | ~( '\u0000'..'\u001F' | '"' | '\\' );
+fragment ESCLAYOUT:	'\\n' | '\\t' | '\\\\"' | '\\\\\\\\';
+fragment DECIMAL:	'\\' 'a' ('0'..'9') 'b' ('0'..'9') 'c' ('0'..'9');		
 
 // Symbol
 SYMBOLCON:		'\'' SYMBOLCHAR*;
-fragment SYMBOLCHAR:	~( ' ' | '\t' | '\n' | '\r' | ';' | ',' | '>' | '}' | ')'); // TODO: !0..31
+fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')');
 
+// Layout
 COMMENTS:		'//' .* '\n' | '/*' .* '*/' { $channel = HIDDEN; };
 LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; };
