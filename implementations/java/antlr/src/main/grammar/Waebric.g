@@ -7,10 +7,6 @@ options {
 }
 
 tokens {
-	LPAREN = '(';
-	RPAREN = ')';
-
-	// Keywords
 	MODULE = 'module' ;
 	IMPORT = 'import' ;
 	SITE = 'site' ;
@@ -32,7 +28,9 @@ tokens {
 	STRING = 'string' ;
 }
 
-// Parser rules
+@header { package org.cwi.waebric; }
+@lexer::header { package org.cwi.waebric; }
+
 module returns [String result = "lol "]
 	: 		'module' 
 			id = moduleId { $result += id.toString(); } 
@@ -96,7 +94,6 @@ pretext:		'"' TEXTCHAR* '<' ;
 posttext:		'>' TEXTCHAR* '"' ;
 midtext:		'>' TEXTCHAR* '<' ;
 
-// Lexical rules
 fragment LETTER:	'a'..'z' | 'A'..'Z' ;
 fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
