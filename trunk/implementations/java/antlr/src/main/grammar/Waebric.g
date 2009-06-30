@@ -111,7 +111,7 @@ fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') 
 TEXT:			'\"' TEXTCHAR* '\"' ;
 fragment TEXTCHAR:	~( '\u0000'..'\u001F' | '&' | '"' | '\u0080'..'\uFFFF' ) |
 			 '\n' | '\r' | '\t' | ESCQUOTE | AMP | CHARREF | ENTREF ;
-fragment ESCQUOTE:	'\\' | '\"' ;		
+fragment ESCQUOTE:	'\\\\' | '\\"' ;		
 fragment AMP:		'\&' ~('#' | '0'..'9' | 'a'..'z' | 'A'..'Z' | '_' | ':')+ ;
 fragment CHARREF:	'&#' DIGIT+ ';' | '&#x' HEXADECIMAL ';' ;
 fragment ENTREF:	'&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':')* ';' ;
