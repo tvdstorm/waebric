@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-06-26 16:21:48
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-06-30 13:30:22
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -6,47 +6,69 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class WaebricLexer extends Lexer {
-    public static final int T__29=29;
-    public static final int T__28=28;
-    public static final int T__27=27;
-    public static final int T__26=26;
-    public static final int T__25=25;
-    public static final int T__24=24;
-    public static final int T__23=23;
-    public static final int T__22=22;
-    public static final int T__21=21;
-    public static final int T__20=20;
-    public static final int STRCON=10;
-    public static final int TEXTCHAR=7;
+    public static final int ESCLAYOUT=42;
+    public static final int DEF=9;
+    public static final int T__57=57;
+    public static final int END=10;
+    public static final int LIST=20;
+    public static final int T__51=51;
+    public static final int FILEEXT=33;
+    public static final int T__47=47;
+    public static final int T__50=50;
+    public static final int STRCHAR=41;
+    public static final int T__65=65;
+    public static final int SYMBOLCON=35;
+    public static final int COMMENTS=44;
+    public static final int IDCON=23;
+    public static final int DECIMAL=43;
+    public static final int IMPORT=7;
+    public static final int HEXADECIMAL=31;
+    public static final int TEXTCHAR=28;
+    public static final int T__52=52;
+    public static final int T__46=46;
+    public static final int ECHO=17;
+    public static final int T__62=62;
+    public static final int STRCON=27;
+    public static final int MODULE=6;
+    public static final int T__49=49;
+    public static final int AMP=37;
+    public static final int RPAREN=5;
+    public static final int T__61=61;
+    public static final int LPAREN=4;
+    public static final int T__59=59;
+    public static final int DIGIT=30;
+    public static final int RECORD=21;
+    public static final int T__54=54;
+    public static final int T__48=48;
+    public static final int LAYOUT=40;
+    public static final int ESCQUOTE=36;
+    public static final int PATHELEMENT=32;
+    public static final int T__56=56;
+    public static final int ENTREF=39;
+    public static final int LETTER=29;
+    public static final int CDATA=18;
+    public static final int SITE=8;
+    public static final int T__58=58;
+    public static final int STRING=22;
+    public static final int T__64=64;
+    public static final int SYMBOLCHAR=34;
+    public static final int COMMENT=16;
+    public static final int YIELD=19;
+    public static final int T__45=45;
+    public static final int T__55=55;
+    public static final int IN=15;
+    public static final int CHARREF=38;
+    public static final int ELSE=12;
+    public static final int T__63=63;
+    public static final int LET=14;
+    public static final int IF=11;
     public static final int EOF=-1;
-    public static final int TYPE=6;
-    public static final int T__19=19;
-    public static final int T__16=16;
-    public static final int T__15=15;
-    public static final int T__18=18;
-    public static final int T__17=17;
-    public static final int IDCON=4;
-    public static final int T__14=14;
-    public static final int STRCHAR=9;
-    public static final int T__42=42;
-    public static final int T__43=43;
-    public static final int T__40=40;
-    public static final int T__41=41;
-    public static final int SYMBOLCON=12;
-    public static final int WHITESPACE=13;
-    public static final int SYMBOLCHAR=11;
-    public static final int TEXT=8;
-    public static final int NATCON=5;
-    public static final int T__30=30;
-    public static final int T__31=31;
-    public static final int T__32=32;
-    public static final int T__33=33;
-    public static final int T__34=34;
-    public static final int T__35=35;
-    public static final int T__36=36;
-    public static final int T__37=37;
-    public static final int T__38=38;
-    public static final int T__39=39;
+    public static final int T__53=53;
+    public static final int TEXT=26;
+    public static final int NATCON=25;
+    public static final int T__60=60;
+    public static final int EACH=13;
+    public static final int PATH=24;
 
     // delegates
     // delegators
@@ -59,15 +81,55 @@ public class WaebricLexer extends Lexer {
         super(input,state);
 
     }
-    public String getGrammarFileName() { return "/ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g"; }
+    public String getGrammarFileName() { return "/Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g"; }
 
-    // $ANTLR start "T__14"
-    public final void mT__14() throws RecognitionException {
+    // $ANTLR start "LPAREN"
+    public final void mLPAREN() throws RecognitionException {
         try {
-            int _type = T__14;
+            int _type = LPAREN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:3:7: ( 'module' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:3:9: 'module'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:7:8: ( '(' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:7:10: '('
+            {
+            match('('); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "LPAREN"
+
+    // $ANTLR start "RPAREN"
+    public final void mRPAREN() throws RecognitionException {
+        try {
+            int _type = RPAREN;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:8:8: ( ')' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:8:10: ')'
+            {
+            match(')'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "RPAREN"
+
+    // $ANTLR start "MODULE"
+    public final void mMODULE() throws RecognitionException {
+        try {
+            int _type = MODULE;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:9:8: ( 'module' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:9:10: 'module'
             {
             match("module"); 
 
@@ -80,56 +142,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__14"
+    // $ANTLR end "MODULE"
 
-    // $ANTLR start "T__15"
-    public final void mT__15() throws RecognitionException {
+    // $ANTLR start "IMPORT"
+    public final void mIMPORT() throws RecognitionException {
         try {
-            int _type = T__15;
+            int _type = IMPORT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:4:7: ( 'end' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:4:9: 'end'
-            {
-            match("end"); 
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__15"
-
-    // $ANTLR start "T__16"
-    public final void mT__16() throws RecognitionException {
-        try {
-            int _type = T__16;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:5:7: ( '.' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:5:9: '.'
-            {
-            match('.'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__16"
-
-    // $ANTLR start "T__17"
-    public final void mT__17() throws RecognitionException {
-        try {
-            int _type = T__17;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:6:7: ( 'import' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:6:9: 'import'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:10:8: ( 'import' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:10:10: 'import'
             {
             match("import"); 
 
@@ -142,35 +163,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__17"
+    // $ANTLR end "IMPORT"
 
-    // $ANTLR start "T__18"
-    public final void mT__18() throws RecognitionException {
+    // $ANTLR start "SITE"
+    public final void mSITE() throws RecognitionException {
         try {
-            int _type = T__18;
+            int _type = SITE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:7:7: ( ';' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:7:9: ';'
-            {
-            match(';'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__18"
-
-    // $ANTLR start "T__19"
-    public final void mT__19() throws RecognitionException {
-        try {
-            int _type = T__19;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:8:7: ( 'site' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:8:9: 'site'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:11:6: ( 'site' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:11:8: 'site'
             {
             match("site"); 
 
@@ -183,15 +184,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__19"
+    // $ANTLR end "SITE"
 
-    // $ANTLR start "T__20"
-    public final void mT__20() throws RecognitionException {
+    // $ANTLR start "DEF"
+    public final void mDEF() throws RecognitionException {
         try {
-            int _type = T__20;
+            int _type = DEF;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:9:7: ( 'def' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:9:9: 'def'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:12:5: ( 'def' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:12:7: 'def'
             {
             match("def"); 
 
@@ -204,17 +205,18 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__20"
+    // $ANTLR end "DEF"
 
-    // $ANTLR start "T__21"
-    public final void mT__21() throws RecognitionException {
+    // $ANTLR start "END"
+    public final void mEND() throws RecognitionException {
         try {
-            int _type = T__21;
+            int _type = END;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:10:7: ( '(' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:10:9: '('
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:13:5: ( 'end' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:13:7: 'end'
             {
-            match('('); 
+            match("end"); 
+
 
             }
 
@@ -224,155 +226,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__21"
+    // $ANTLR end "END"
 
-    // $ANTLR start "T__22"
-    public final void mT__22() throws RecognitionException {
+    // $ANTLR start "IF"
+    public final void mIF() throws RecognitionException {
         try {
-            int _type = T__22;
+            int _type = IF;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:11:7: ( ',' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:11:9: ','
-            {
-            match(','); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__22"
-
-    // $ANTLR start "T__23"
-    public final void mT__23() throws RecognitionException {
-        try {
-            int _type = T__23;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:12:7: ( ')' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:12:9: ')'
-            {
-            match(')'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__23"
-
-    // $ANTLR start "T__24"
-    public final void mT__24() throws RecognitionException {
-        try {
-            int _type = T__24;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:13:7: ( '#' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:13:9: '#'
-            {
-            match('#'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__24"
-
-    // $ANTLR start "T__25"
-    public final void mT__25() throws RecognitionException {
-        try {
-            int _type = T__25;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:14:7: ( '$' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:14:9: '$'
-            {
-            match('$'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__25"
-
-    // $ANTLR start "T__26"
-    public final void mT__26() throws RecognitionException {
-        try {
-            int _type = T__26;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:15:7: ( ':' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:15:9: ':'
-            {
-            match(':'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__26"
-
-    // $ANTLR start "T__27"
-    public final void mT__27() throws RecognitionException {
-        try {
-            int _type = T__27;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:16:7: ( '@' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:16:9: '@'
-            {
-            match('@'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__27"
-
-    // $ANTLR start "T__28"
-    public final void mT__28() throws RecognitionException {
-        try {
-            int _type = T__28;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:17:7: ( '%' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:17:9: '%'
-            {
-            match('%'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__28"
-
-    // $ANTLR start "T__29"
-    public final void mT__29() throws RecognitionException {
-        try {
-            int _type = T__29;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:18:7: ( 'if' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:18:9: 'if'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:14:4: ( 'if' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:14:6: 'if'
             {
             match("if"); 
 
@@ -385,15 +247,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__29"
+    // $ANTLR end "IF"
 
-    // $ANTLR start "T__30"
-    public final void mT__30() throws RecognitionException {
+    // $ANTLR start "ELSE"
+    public final void mELSE() throws RecognitionException {
         try {
-            int _type = T__30;
+            int _type = ELSE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:19:7: ( 'else' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:19:9: 'else'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:15:6: ( 'else' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:15:8: 'else'
             {
             match("else"); 
 
@@ -406,15 +268,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__30"
+    // $ANTLR end "ELSE"
 
-    // $ANTLR start "T__31"
-    public final void mT__31() throws RecognitionException {
+    // $ANTLR start "EACH"
+    public final void mEACH() throws RecognitionException {
         try {
-            int _type = T__31;
+            int _type = EACH;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:20:7: ( 'each' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:20:9: 'each'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:16:6: ( 'each' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:16:8: 'each'
             {
             match("each"); 
 
@@ -427,15 +289,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__31"
+    // $ANTLR end "EACH"
 
-    // $ANTLR start "T__32"
-    public final void mT__32() throws RecognitionException {
+    // $ANTLR start "LET"
+    public final void mLET() throws RecognitionException {
         try {
-            int _type = T__32;
+            int _type = LET;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:21:7: ( 'let' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:21:9: 'let'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:17:5: ( 'let' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:17:7: 'let'
             {
             match("let"); 
 
@@ -448,15 +310,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__32"
+    // $ANTLR end "LET"
 
-    // $ANTLR start "T__33"
-    public final void mT__33() throws RecognitionException {
+    // $ANTLR start "IN"
+    public final void mIN() throws RecognitionException {
         try {
-            int _type = T__33;
+            int _type = IN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:22:7: ( 'in' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:22:9: 'in'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:18:4: ( 'in' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:18:6: 'in'
             {
             match("in"); 
 
@@ -469,17 +331,18 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__33"
+    // $ANTLR end "IN"
 
-    // $ANTLR start "T__34"
-    public final void mT__34() throws RecognitionException {
+    // $ANTLR start "COMMENT"
+    public final void mCOMMENT() throws RecognitionException {
         try {
-            int _type = T__34;
+            int _type = COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:23:7: ( '{' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:23:9: '{'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:19:9: ( 'comment' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:19:11: 'comment'
             {
-            match('{'); 
+            match("comment"); 
+
 
             }
 
@@ -489,35 +352,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__34"
+    // $ANTLR end "COMMENT"
 
-    // $ANTLR start "T__35"
-    public final void mT__35() throws RecognitionException {
+    // $ANTLR start "ECHO"
+    public final void mECHO() throws RecognitionException {
         try {
-            int _type = T__35;
+            int _type = ECHO;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:24:7: ( '}' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:24:9: '}'
-            {
-            match('}'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__35"
-
-    // $ANTLR start "T__36"
-    public final void mT__36() throws RecognitionException {
-        try {
-            int _type = T__36;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:25:7: ( 'echo' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:25:9: 'echo'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:20:6: ( 'echo' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:20:8: 'echo'
             {
             match("echo"); 
 
@@ -530,15 +373,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__36"
+    // $ANTLR end "ECHO"
 
-    // $ANTLR start "T__37"
-    public final void mT__37() throws RecognitionException {
+    // $ANTLR start "CDATA"
+    public final void mCDATA() throws RecognitionException {
         try {
-            int _type = T__37;
+            int _type = CDATA;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:26:7: ( 'cdata' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:26:9: 'cdata'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:21:7: ( 'cdata' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:21:9: 'cdata'
             {
             match("cdata"); 
 
@@ -551,15 +394,359 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__37"
+    // $ANTLR end "CDATA"
 
-    // $ANTLR start "T__38"
-    public final void mT__38() throws RecognitionException {
+    // $ANTLR start "YIELD"
+    public final void mYIELD() throws RecognitionException {
         try {
-            int _type = T__38;
+            int _type = YIELD;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:27:7: ( 'yield;' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:27:9: 'yield;'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:22:7: ( 'yield' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:22:9: 'yield'
+            {
+            match("yield"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "YIELD"
+
+    // $ANTLR start "LIST"
+    public final void mLIST() throws RecognitionException {
+        try {
+            int _type = LIST;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:23:6: ( 'list' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:23:8: 'list'
+            {
+            match("list"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "LIST"
+
+    // $ANTLR start "RECORD"
+    public final void mRECORD() throws RecognitionException {
+        try {
+            int _type = RECORD;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:24:8: ( 'record' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:24:10: 'record'
+            {
+            match("record"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "RECORD"
+
+    // $ANTLR start "STRING"
+    public final void mSTRING() throws RecognitionException {
+        try {
+            int _type = STRING;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:25:8: ( 'string' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:25:10: 'string'
+            {
+            match("string"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "STRING"
+
+    // $ANTLR start "T__45"
+    public final void mT__45() throws RecognitionException {
+        try {
+            int _type = T__45;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:26:7: ( '.' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:26:9: '.'
+            {
+            match('.'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__45"
+
+    // $ANTLR start "T__46"
+    public final void mT__46() throws RecognitionException {
+        try {
+            int _type = T__46;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:27:7: ( ';' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:27:9: ';'
+            {
+            match(';'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__46"
+
+    // $ANTLR start "T__47"
+    public final void mT__47() throws RecognitionException {
+        try {
+            int _type = T__47;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:28:7: ( ':' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:28:9: ':'
+            {
+            match(':'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__47"
+
+    // $ANTLR start "T__48"
+    public final void mT__48() throws RecognitionException {
+        try {
+            int _type = T__48;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:29:7: ( '#' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:29:9: '#'
+            {
+            match('#'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__48"
+
+    // $ANTLR start "T__49"
+    public final void mT__49() throws RecognitionException {
+        try {
+            int _type = T__49;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:30:7: ( '$' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:30:9: '$'
+            {
+            match('$'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__49"
+
+    // $ANTLR start "T__50"
+    public final void mT__50() throws RecognitionException {
+        try {
+            int _type = T__50;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:31:7: ( '@' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:31:9: '@'
+            {
+            match('@'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__50"
+
+    // $ANTLR start "T__51"
+    public final void mT__51() throws RecognitionException {
+        try {
+            int _type = T__51;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:32:7: ( '%' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:32:9: '%'
+            {
+            match('%'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__51"
+
+    // $ANTLR start "T__52"
+    public final void mT__52() throws RecognitionException {
+        try {
+            int _type = T__52;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:33:7: ( ',' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:33:9: ','
+            {
+            match(','); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__52"
+
+    // $ANTLR start "T__53"
+    public final void mT__53() throws RecognitionException {
+        try {
+            int _type = T__53;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:34:7: ( '+' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:34:9: '+'
+            {
+            match('+'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__53"
+
+    // $ANTLR start "T__54"
+    public final void mT__54() throws RecognitionException {
+        try {
+            int _type = T__54;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:35:7: ( '[' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:35:9: '['
+            {
+            match('['); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__54"
+
+    // $ANTLR start "T__55"
+    public final void mT__55() throws RecognitionException {
+        try {
+            int _type = T__55;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:36:7: ( ']' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:36:9: ']'
+            {
+            match(']'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__55"
+
+    // $ANTLR start "T__56"
+    public final void mT__56() throws RecognitionException {
+        try {
+            int _type = T__56;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:37:7: ( '{' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:37:9: '{'
+            {
+            match('{'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__56"
+
+    // $ANTLR start "T__57"
+    public final void mT__57() throws RecognitionException {
+        try {
+            int _type = T__57;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:38:7: ( '}' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:38:9: '}'
+            {
+            match('}'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__57"
+
+    // $ANTLR start "T__58"
+    public final void mT__58() throws RecognitionException {
+        try {
+            int _type = T__58;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:39:7: ( 'yield;' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:39:9: 'yield;'
             {
             match("yield;"); 
 
@@ -572,15 +759,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__38"
+    // $ANTLR end "T__58"
 
-    // $ANTLR start "T__39"
-    public final void mT__39() throws RecognitionException {
+    // $ANTLR start "T__59"
+    public final void mT__59() throws RecognitionException {
         try {
-            int _type = T__39;
+            int _type = T__59;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:28:7: ( '=' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:28:9: '='
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:40:7: ( '=' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:40:9: '='
             {
             match('='); 
 
@@ -592,15 +779,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__39"
+    // $ANTLR end "T__59"
 
-    // $ANTLR start "T__40"
-    public final void mT__40() throws RecognitionException {
+    // $ANTLR start "T__60"
+    public final void mT__60() throws RecognitionException {
         try {
-            int _type = T__40;
+            int _type = T__60;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:29:7: ( '!' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:29:9: '!'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:41:7: ( '!' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:41:9: '!'
             {
             match('!'); 
 
@@ -612,15 +799,57 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__40"
+    // $ANTLR end "T__60"
 
-    // $ANTLR start "T__41"
-    public final void mT__41() throws RecognitionException {
+    // $ANTLR start "T__61"
+    public final void mT__61() throws RecognitionException {
         try {
-            int _type = T__41;
+            int _type = T__61;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:30:7: ( '\"' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:30:9: '\"'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:42:7: ( '&&' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:42:9: '&&'
+            {
+            match("&&"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__61"
+
+    // $ANTLR start "T__62"
+    public final void mT__62() throws RecognitionException {
+        try {
+            int _type = T__62;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:43:7: ( '||' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:43:9: '||'
+            {
+            match("||"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__62"
+
+    // $ANTLR start "T__63"
+    public final void mT__63() throws RecognitionException {
+        try {
+            int _type = T__63;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:44:7: ( '\"' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:44:9: '\"'
             {
             match('\"'); 
 
@@ -632,15 +861,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__41"
+    // $ANTLR end "T__63"
 
-    // $ANTLR start "T__42"
-    public final void mT__42() throws RecognitionException {
+    // $ANTLR start "T__64"
+    public final void mT__64() throws RecognitionException {
         try {
-            int _type = T__42;
+            int _type = T__64;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:31:7: ( '<' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:31:9: '<'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:45:7: ( '<' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:45:9: '<'
             {
             match('<'); 
 
@@ -652,15 +881,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__42"
+    // $ANTLR end "T__64"
 
-    // $ANTLR start "T__43"
-    public final void mT__43() throws RecognitionException {
+    // $ANTLR start "T__65"
+    public final void mT__65() throws RecognitionException {
         try {
-            int _type = T__43;
+            int _type = T__65;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:32:7: ( '>' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:32:9: '>'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:46:7: ( '>' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:46:9: '>'
             {
             match('>'); 
 
@@ -672,572 +901,15 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__43"
+    // $ANTLR end "T__65"
 
-    // $ANTLR start "TYPE"
-    public final void mTYPE() throws RecognitionException {
+    // $ANTLR start "LETTER"
+    public final void mLETTER() throws RecognitionException {
         try {
-            int _type = TYPE;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:77:5: ( 'string' | 'list' | 'record' )
-            int alt1=3;
-            switch ( input.LA(1) ) {
-            case 's':
-                {
-                alt1=1;
-                }
-                break;
-            case 'l':
-                {
-                alt1=2;
-                }
-                break;
-            case 'r':
-                {
-                alt1=3;
-                }
-                break;
-            default:
-                NoViableAltException nvae =
-                    new NoViableAltException("", 1, 0, input);
-
-                throw nvae;
-            }
-
-            switch (alt1) {
-                case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:77:9: 'string'
-                    {
-                    match("string"); 
-
-
-                    }
-                    break;
-                case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:77:20: 'list'
-                    {
-                    match("list"); 
-
-
-                    }
-                    break;
-                case 3 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:77:29: 'record'
-                    {
-                    match("record"); 
-
-
-                    }
-                    break;
-
-            }
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "TYPE"
-
-    // $ANTLR start "TEXT"
-    public final void mTEXT() throws RecognitionException {
-        try {
-            int _type = TEXT;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:80:5: ( '\"' ( TEXTCHAR )* '\"' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:80:9: '\"' ( TEXTCHAR )* '\"'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:100:16: ( 'a' .. 'z' | 'A' .. 'Z' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
             {
-            match('\"'); 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:80:13: ( TEXTCHAR )*
-            loop2:
-            do {
-                int alt2=2;
-                int LA2_0 = input.LA(1);
-
-                if ( (LA2_0=='\"') ) {
-                    int LA2_1 = input.LA(2);
-
-                    if ( (LA2_1=='\"'||LA2_1=='&'||LA2_1=='\\') ) {
-                        alt2=1;
-                    }
-
-
-                }
-                else if ( (LA2_0=='&'||LA2_0=='\\') ) {
-                    alt2=1;
-                }
-
-
-                switch (alt2) {
-            	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:80:13: TEXTCHAR
-            	    {
-            	    mTEXTCHAR(); 
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop2;
-                }
-            } while (true);
-
-            match('\"'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "TEXT"
-
-    // $ANTLR start "TEXTCHAR"
-    public final void mTEXTCHAR() throws RecognitionException {
-        try {
-            int _type = TEXTCHAR;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:81:9: ( '\\\"' | '\\\\' | '\\&' ~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) | '&#' ( '0' .. '9' )+ ';' | '&#x' ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ ';' | '&' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '.' | '-' | '_' | ':' )* ';' )
-            int alt6=6;
-            switch ( input.LA(1) ) {
-            case '\"':
-                {
-                alt6=1;
-                }
-                break;
-            case '\\':
-                {
-                alt6=2;
-                }
-                break;
-            case '&':
-                {
-                int LA6_3 = input.LA(2);
-
-                if ( ((LA6_3>='\u0000' && LA6_3<='\"')||(LA6_3>='$' && LA6_3<='/')||(LA6_3>=';' && LA6_3<='@')||(LA6_3>='[' && LA6_3<='^')||LA6_3=='`'||(LA6_3>='{' && LA6_3<='\uFFFF')) ) {
-                    alt6=3;
-                }
-                else if ( (LA6_3=='#') ) {
-                    int LA6_5 = input.LA(3);
-
-                    if ( (LA6_5=='x') ) {
-                        alt6=5;
-                    }
-                    else if ( ((LA6_5>='0' && LA6_5<='9')) ) {
-                        alt6=4;
-                    }
-                    else {
-                        NoViableAltException nvae =
-                            new NoViableAltException("", 6, 5, input);
-
-                        throw nvae;
-                    }
-                }
-                else if ( (LA6_3==':'||(LA6_3>='A' && LA6_3<='Z')||LA6_3=='_'||(LA6_3>='a' && LA6_3<='z')) ) {
-                    alt6=6;
-                }
-                else {
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 6, 3, input);
-
-                    throw nvae;
-                }
-                }
-                break;
-            default:
-                NoViableAltException nvae =
-                    new NoViableAltException("", 6, 0, input);
-
-                throw nvae;
-            }
-
-            switch (alt6) {
-                case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:81:12: '\\\"'
-                    {
-                    match('\"'); 
-
-                    }
-                    break;
-                case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:82:4: '\\\\'
-                    {
-                    match('\\'); 
-
-                    }
-                    break;
-                case 3 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:83:4: '\\&' ~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' )
-                    {
-                    match('&'); 
-                    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\"')||(input.LA(1)>='$' && input.LA(1)<='/')||(input.LA(1)>=';' && input.LA(1)<='@')||(input.LA(1)>='[' && input.LA(1)<='^')||input.LA(1)=='`'||(input.LA(1)>='{' && input.LA(1)<='\uFFFF') ) {
-                        input.consume();
-
-                    }
-                    else {
-                        MismatchedSetException mse = new MismatchedSetException(null,input);
-                        recover(mse);
-                        throw mse;}
-
-
-                    }
-                    break;
-                case 4 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:84:4: '&#' ( '0' .. '9' )+ ';'
-                    {
-                    match("&#"); 
-
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:84:9: ( '0' .. '9' )+
-                    int cnt3=0;
-                    loop3:
-                    do {
-                        int alt3=2;
-                        int LA3_0 = input.LA(1);
-
-                        if ( ((LA3_0>='0' && LA3_0<='9')) ) {
-                            alt3=1;
-                        }
-
-
-                        switch (alt3) {
-                    	case 1 :
-                    	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:84:10: '0' .. '9'
-                    	    {
-                    	    matchRange('0','9'); 
-
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    if ( cnt3 >= 1 ) break loop3;
-                                EarlyExitException eee =
-                                    new EarlyExitException(3, input);
-                                throw eee;
-                        }
-                        cnt3++;
-                    } while (true);
-
-                    match(';'); 
-
-                    }
-                    break;
-                case 5 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:85:4: '&#x' ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ ';'
-                    {
-                    match("&#x"); 
-
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:85:10: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+
-                    int cnt4=0;
-                    loop4:
-                    do {
-                        int alt4=2;
-                        int LA4_0 = input.LA(1);
-
-                        if ( ((LA4_0>='0' && LA4_0<='9')||(LA4_0>='A' && LA4_0<='F')||(LA4_0>='a' && LA4_0<='f')) ) {
-                            alt4=1;
-                        }
-
-
-                        switch (alt4) {
-                    	case 1 :
-                    	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
-                    	    {
-                    	    if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') ) {
-                    	        input.consume();
-
-                    	    }
-                    	    else {
-                    	        MismatchedSetException mse = new MismatchedSetException(null,input);
-                    	        recover(mse);
-                    	        throw mse;}
-
-
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    if ( cnt4 >= 1 ) break loop4;
-                                EarlyExitException eee =
-                                    new EarlyExitException(4, input);
-                                throw eee;
-                        }
-                        cnt4++;
-                    } while (true);
-
-                    match(';'); 
-
-                    }
-                    break;
-                case 6 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:86:4: '&' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '.' | '-' | '_' | ':' )* ';'
-                    {
-                    match('&'); 
-                    if ( input.LA(1)==':'||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
-                        input.consume();
-
-                    }
-                    else {
-                        MismatchedSetException mse = new MismatchedSetException(null,input);
-                        recover(mse);
-                        throw mse;}
-
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:86:42: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '.' | '-' | '_' | ':' )*
-                    loop5:
-                    do {
-                        int alt5=2;
-                        int LA5_0 = input.LA(1);
-
-                        if ( ((LA5_0>='-' && LA5_0<='.')||(LA5_0>='0' && LA5_0<=':')||(LA5_0>='A' && LA5_0<='Z')||LA5_0=='_'||(LA5_0>='a' && LA5_0<='z')) ) {
-                            alt5=1;
-                        }
-
-
-                        switch (alt5) {
-                    	case 1 :
-                    	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
-                    	    {
-                    	    if ( (input.LA(1)>='-' && input.LA(1)<='.')||(input.LA(1)>='0' && input.LA(1)<=':')||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
-                    	        input.consume();
-
-                    	    }
-                    	    else {
-                    	        MismatchedSetException mse = new MismatchedSetException(null,input);
-                    	        recover(mse);
-                    	        throw mse;}
-
-
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    break loop5;
-                        }
-                    } while (true);
-
-                    match(';'); 
-
-                    }
-                    break;
-
-            }
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "TEXTCHAR"
-
-    // $ANTLR start "STRCON"
-    public final void mSTRCON() throws RecognitionException {
-        try {
-            int _type = STRCON;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:89:7: ( '\"' STRCHAR '\"' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:89:11: '\"' STRCHAR '\"'
-            {
-            match('\"'); 
-            mSTRCHAR(); 
-            match('\"'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "STRCON"
-
-    // $ANTLR start "STRCHAR"
-    public final void mSTRCHAR() throws RecognitionException {
-        try {
-            int _type = STRCHAR;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:90:8: ( '\\\\n' | '\\\\t' | '\\\\\\\\\"' | '\\\\\\\\\\\\\\\\' | '\\\\' 'a' ( '0' .. '9' ) 'b' ( '0' .. '9' ) 'c' ( '0' .. '9' ) )
-            int alt7=5;
-            int LA7_0 = input.LA(1);
-
-            if ( (LA7_0=='\\') ) {
-                switch ( input.LA(2) ) {
-                case 'n':
-                    {
-                    alt7=1;
-                    }
-                    break;
-                case 't':
-                    {
-                    alt7=2;
-                    }
-                    break;
-                case '\\':
-                    {
-                    int LA7_4 = input.LA(3);
-
-                    if ( (LA7_4=='\"') ) {
-                        alt7=3;
-                    }
-                    else if ( (LA7_4=='\\') ) {
-                        alt7=4;
-                    }
-                    else {
-                        NoViableAltException nvae =
-                            new NoViableAltException("", 7, 4, input);
-
-                        throw nvae;
-                    }
-                    }
-                    break;
-                case 'a':
-                    {
-                    alt7=5;
-                    }
-                    break;
-                default:
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 7, 1, input);
-
-                    throw nvae;
-                }
-
-            }
-            else {
-                NoViableAltException nvae =
-                    new NoViableAltException("", 7, 0, input);
-
-                throw nvae;
-            }
-            switch (alt7) {
-                case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:90:11: '\\\\n'
-                    {
-                    match("\\n"); 
-
-
-                    }
-                    break;
-                case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:90:19: '\\\\t'
-                    {
-                    match("\\t"); 
-
-
-                    }
-                    break;
-                case 3 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:90:27: '\\\\\\\\\"'
-                    {
-                    match("\\\\\""); 
-
-
-                    }
-                    break;
-                case 4 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:90:37: '\\\\\\\\\\\\\\\\'
-                    {
-                    match("\\\\\\\\"); 
-
-
-                    }
-                    break;
-                case 5 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:4: '\\\\' 'a' ( '0' .. '9' ) 'b' ( '0' .. '9' ) 'c' ( '0' .. '9' )
-                    {
-                    match('\\'); 
-                    match('a'); 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:13: ( '0' .. '9' )
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:14: '0' .. '9'
-                    {
-                    matchRange('0','9'); 
-
-                    }
-
-                    match('b'); 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:28: ( '0' .. '9' )
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:29: '0' .. '9'
-                    {
-                    matchRange('0','9'); 
-
-                    }
-
-                    match('c'); 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:43: ( '0' .. '9' )
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:44: '0' .. '9'
-                    {
-                    matchRange('0','9'); 
-
-                    }
-
-
-                    }
-                    break;
-
-            }
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "STRCHAR"
-
-    // $ANTLR start "SYMBOLCON"
-    public final void mSYMBOLCON() throws RecognitionException {
-        try {
-            int _type = SYMBOLCON;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:95:10: ( '\\'' ( SYMBOLCHAR )* )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:95:13: '\\'' ( SYMBOLCHAR )*
-            {
-            match('\''); 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:95:18: ( SYMBOLCHAR )*
-            loop8:
-            do {
-                int alt8=2;
-                int LA8_0 = input.LA(1);
-
-                if ( ((LA8_0>='\u0000' && LA8_0<='\b')||(LA8_0>='\u000B' && LA8_0<='\f')||(LA8_0>='\u000E' && LA8_0<='\u001F')||(LA8_0>='!' && LA8_0<='(')||(LA8_0>='*' && LA8_0<='+')||(LA8_0>='-' && LA8_0<=':')||(LA8_0>='<' && LA8_0<='=')||(LA8_0>='?' && LA8_0<='|')||(LA8_0>='~' && LA8_0<='\uFFFF')) ) {
-                    alt8=1;
-                }
-
-
-                switch (alt8) {
-            	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:95:18: SYMBOLCHAR
-            	    {
-            	    mSYMBOLCHAR(); 
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop8;
-                }
-            } while (true);
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "SYMBOLCON"
-
-    // $ANTLR start "SYMBOLCHAR"
-    public final void mSYMBOLCHAR() throws RecognitionException {
-        try {
-            int _type = SYMBOLCHAR;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:96:11: (~ ( ' ' | '\\t' | '\\n' | '\\r' | ';' | ',' | '>' | '}' | ')' ) )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:96:14: ~ ( ' ' | '\\t' | '\\n' | '\\r' | ';' | ',' | '>' | '}' | ')' )
-            {
-            if ( (input.LA(1)>='\u0000' && input.LA(1)<='\b')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\u001F')||(input.LA(1)>='!' && input.LA(1)<='(')||(input.LA(1)>='*' && input.LA(1)<='+')||(input.LA(1)>='-' && input.LA(1)<=':')||(input.LA(1)>='<' && input.LA(1)<='=')||(input.LA(1)>='?' && input.LA(1)<='|')||(input.LA(1)>='~' && input.LA(1)<='\uFFFF') ) {
+            if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
 
             }
@@ -1249,50 +921,265 @@ public class WaebricLexer extends Lexer {
 
             }
 
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "LETTER"
+
+    // $ANTLR start "DIGIT"
+    public final void mDIGIT() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:101:15: ( '0' .. '9' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:101:18: '0' .. '9'
+            {
+            matchRange('0','9'); 
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "DIGIT"
+
+    // $ANTLR start "HEXADECIMAL"
+    public final void mHEXADECIMAL() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:102:21: ( ( 'a' .. 'f' | 'A' .. 'F' | DIGIT )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:102:23: ( 'a' .. 'f' | 'A' .. 'F' | DIGIT )+
+            {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:102:23: ( 'a' .. 'f' | 'A' .. 'F' | DIGIT )+
+            int cnt1=0;
+            loop1:
+            do {
+                int alt1=2;
+                int LA1_0 = input.LA(1);
+
+                if ( ((LA1_0>='0' && LA1_0<='9')||(LA1_0>='A' && LA1_0<='F')||(LA1_0>='a' && LA1_0<='f')) ) {
+                    alt1=1;
+                }
+
+
+                switch (alt1) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
+            	    {
+            	    if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') ) {
+            	        input.consume();
+
+            	    }
+            	    else {
+            	        MismatchedSetException mse = new MismatchedSetException(null,input);
+            	        recover(mse);
+            	        throw mse;}
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt1 >= 1 ) break loop1;
+                        EarlyExitException eee =
+                            new EarlyExitException(1, input);
+                        throw eee;
+                }
+                cnt1++;
+            } while (true);
+
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "HEXADECIMAL"
+
+    // $ANTLR start "PATH"
+    public final void mPATH() throws RecognitionException {
+        try {
+            int _type = PATH;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:104:5: ( ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:104:9: ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT
+            {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:104:9: ( PATHELEMENT '/' )*
+            loop2:
+            do {
+                int alt2=2;
+                alt2 = dfa2.predict(input);
+                switch (alt2) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:104:11: PATHELEMENT '/'
+            	    {
+            	    mPATHELEMENT(); 
+            	    match('/'); 
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop2;
+                }
+            } while (true);
+
+            mPATHELEMENT(); 
+            match('.'); 
+            mFILEEXT(); 
+
+            }
+
             state.type = _type;
             state.channel = _channel;
         }
         finally {
         }
     }
-    // $ANTLR end "SYMBOLCHAR"
+    // $ANTLR end "PATH"
+
+    // $ANTLR start "PATHELEMENT"
+    public final void mPATHELEMENT() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:105:21: ( ( LETTER | DIGIT )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:105:23: ( LETTER | DIGIT )+
+            {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:105:23: ( LETTER | DIGIT )+
+            int cnt3=0;
+            loop3:
+            do {
+                int alt3=2;
+                int LA3_0 = input.LA(1);
+
+                if ( ((LA3_0>='0' && LA3_0<='9')||(LA3_0>='A' && LA3_0<='Z')||(LA3_0>='a' && LA3_0<='z')) ) {
+                    alt3=1;
+                }
+
+
+                switch (alt3) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
+            	    {
+            	    if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
+            	        input.consume();
+
+            	    }
+            	    else {
+            	        MismatchedSetException mse = new MismatchedSetException(null,input);
+            	        recover(mse);
+            	        throw mse;}
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt3 >= 1 ) break loop3;
+                        EarlyExitException eee =
+                            new EarlyExitException(3, input);
+                        throw eee;
+                }
+                cnt3++;
+            } while (true);
+
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "PATHELEMENT"
+
+    // $ANTLR start "FILEEXT"
+    public final void mFILEEXT() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:106:17: ( ( LETTER | DIGIT )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:106:19: ( LETTER | DIGIT )+
+            {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:106:19: ( LETTER | DIGIT )+
+            int cnt4=0;
+            loop4:
+            do {
+                int alt4=2;
+                int LA4_0 = input.LA(1);
+
+                if ( ((LA4_0>='0' && LA4_0<='9')||(LA4_0>='A' && LA4_0<='Z')||(LA4_0>='a' && LA4_0<='z')) ) {
+                    alt4=1;
+                }
+
+
+                switch (alt4) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
+            	    {
+            	    if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
+            	        input.consume();
+
+            	    }
+            	    else {
+            	        MismatchedSetException mse = new MismatchedSetException(null,input);
+            	        recover(mse);
+            	        throw mse;}
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt4 >= 1 ) break loop4;
+                        EarlyExitException eee =
+                            new EarlyExitException(4, input);
+                        throw eee;
+                }
+                cnt4++;
+            } while (true);
+
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "FILEEXT"
 
     // $ANTLR start "NATCON"
     public final void mNATCON() throws RecognitionException {
         try {
             int _type = NATCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:99:7: ( ( '0' .. '9' )+ )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:99:11: ( '0' .. '9' )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:108:7: ( ( DIGIT )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:108:11: ( DIGIT )+
             {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:99:11: ( '0' .. '9' )+
-            int cnt9=0;
-            loop9:
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:108:11: ( DIGIT )+
+            int cnt5=0;
+            loop5:
             do {
-                int alt9=2;
-                int LA9_0 = input.LA(1);
+                int alt5=2;
+                int LA5_0 = input.LA(1);
 
-                if ( ((LA9_0>='0' && LA9_0<='9')) ) {
-                    alt9=1;
+                if ( ((LA5_0>='0' && LA5_0<='9')) ) {
+                    alt5=1;
                 }
 
 
-                switch (alt9) {
+                switch (alt5) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:99:11: '0' .. '9'
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:108:11: DIGIT
             	    {
-            	    matchRange('0','9'); 
+            	    mDIGIT(); 
 
             	    }
             	    break;
 
             	default :
-            	    if ( cnt9 >= 1 ) break loop9;
+            	    if ( cnt5 >= 1 ) break loop5;
                         EarlyExitException eee =
-                            new EarlyExitException(9, input);
+                            new EarlyExitException(5, input);
                         throw eee;
                 }
-                cnt9++;
+                cnt5++;
             } while (true);
 
 
@@ -1311,34 +1198,27 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = IDCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:100:6: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:100:10: ( 'a' .. 'z' | 'A' .. 'Z' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:109:6: ( LETTER ( LETTER | DIGIT | '-' )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:109:10: LETTER ( LETTER | DIGIT | '-' )+
             {
-            if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
-                input.consume();
-
-            }
-            else {
-                MismatchedSetException mse = new MismatchedSetException(null,input);
-                recover(mse);
-                throw mse;}
-
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:100:32: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
-            loop10:
+            mLETTER(); 
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:109:17: ( LETTER | DIGIT | '-' )+
+            int cnt6=0;
+            loop6:
             do {
-                int alt10=2;
-                int LA10_0 = input.LA(1);
+                int alt6=2;
+                int LA6_0 = input.LA(1);
 
-                if ( ((LA10_0>='0' && LA10_0<='9')||(LA10_0>='A' && LA10_0<='Z')||(LA10_0>='a' && LA10_0<='z')) ) {
-                    alt10=1;
+                if ( (LA6_0=='-'||(LA6_0>='0' && LA6_0<='9')||(LA6_0>='A' && LA6_0<='Z')||(LA6_0>='a' && LA6_0<='z')) ) {
+                    alt6=1;
                 }
 
 
-                switch (alt10) {
+                switch (alt6) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
             	    {
-            	    if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
+            	    if ( input.LA(1)=='-'||(input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
             	        input.consume();
 
             	    }
@@ -1352,8 +1232,12 @@ public class WaebricLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop10;
+            	    if ( cnt6 >= 1 ) break loop6;
+                        EarlyExitException eee =
+                            new EarlyExitException(6, input);
+                        throw eee;
                 }
+                cnt6++;
             } while (true);
 
 
@@ -1367,29 +1251,842 @@ public class WaebricLexer extends Lexer {
     }
     // $ANTLR end "IDCON"
 
-    // $ANTLR start "WHITESPACE"
-    public final void mWHITESPACE() throws RecognitionException {
+    // $ANTLR start "SYMBOLCON"
+    public final void mSYMBOLCON() throws RecognitionException {
         try {
-            int _type = WHITESPACE;
+            int _type = SYMBOLCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:105:11: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:105:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:111:10: ( '\\'' ( SYMBOLCHAR )* )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:111:13: '\\'' ( SYMBOLCHAR )*
             {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:105:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
-            int cnt11=0;
-            loop11:
+            match('\''); 
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:111:18: ( SYMBOLCHAR )*
+            loop7:
             do {
-                int alt11=2;
-                int LA11_0 = input.LA(1);
+                int alt7=2;
+                int LA7_0 = input.LA(1);
 
-                if ( ((LA11_0>='\t' && LA11_0<='\n')||(LA11_0>='\f' && LA11_0<='\r')||LA11_0==' ') ) {
-                    alt11=1;
+                if ( ((LA7_0>='!' && LA7_0<='(')||(LA7_0>='*' && LA7_0<='+')||(LA7_0>='-' && LA7_0<=':')||(LA7_0>='<' && LA7_0<='=')||(LA7_0>='?' && LA7_0<='|')||(LA7_0>='~' && LA7_0<='\uFFFF')) ) {
+                    alt7=1;
                 }
 
 
-                switch (alt11) {
+                switch (alt7) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:111:18: SYMBOLCHAR
+            	    {
+            	    mSYMBOLCHAR(); 
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop7;
+                }
+            } while (true);
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "SYMBOLCON"
+
+    // $ANTLR start "SYMBOLCHAR"
+    public final void mSYMBOLCHAR() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:112:20: (~ ( '\\u0000' .. '\\u001F' | ' ' | ';' | ',' | '>' | '}' | ')' ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:112:22: ~ ( '\\u0000' .. '\\u001F' | ' ' | ';' | ',' | '>' | '}' | ')' )
+            {
+            if ( (input.LA(1)>='!' && input.LA(1)<='(')||(input.LA(1)>='*' && input.LA(1)<='+')||(input.LA(1)>='-' && input.LA(1)<=':')||(input.LA(1)>='<' && input.LA(1)<='=')||(input.LA(1)>='?' && input.LA(1)<='|')||(input.LA(1)>='~' && input.LA(1)<='\uFFFF') ) {
+                input.consume();
+
+            }
+            else {
+                MismatchedSetException mse = new MismatchedSetException(null,input);
+                recover(mse);
+                throw mse;}
+
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "SYMBOLCHAR"
+
+    // $ANTLR start "TEXT"
+    public final void mTEXT() throws RecognitionException {
+        try {
+            int _type = TEXT;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:5: ( '\\\"' ( TEXTCHAR )* '\\\"' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:9: '\\\"' ( TEXTCHAR )* '\\\"'
+            {
+            match('\"'); 
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:14: ( TEXTCHAR )*
+            loop8:
+            do {
+                int alt8=2;
+                int LA8_0 = input.LA(1);
+
+                if ( (LA8_0=='\"') ) {
+                    int LA8_1 = input.LA(2);
+
+                    if ( ((LA8_1>='\t' && LA8_1<='\n')||LA8_1=='\r'||(LA8_1>=' ' && LA8_1<='\u007F')) ) {
+                        alt8=1;
+                    }
+
+
+                }
+                else if ( ((LA8_0>='\t' && LA8_0<='\n')||LA8_0=='\r'||(LA8_0>=' ' && LA8_0<='!')||(LA8_0>='#' && LA8_0<='\u007F')) ) {
+                    alt8=1;
+                }
+
+
+                switch (alt8) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:14: TEXTCHAR
+            	    {
+            	    mTEXTCHAR(); 
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop8;
+                }
+            } while (true);
+
+            match('\"'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "TEXT"
+
+    // $ANTLR start "TEXTCHAR"
+    public final void mTEXTCHAR() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:115:18: (~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '\\u0080' .. '\\uFFFF' ) | '\\n' | '\\r' | '\\t' | ESCQUOTE | AMP | CHARREF | ENTREF )
+            int alt9=8;
+            alt9 = dfa9.predict(input);
+            switch (alt9) {
+                case 1 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:115:20: ~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '\\u0080' .. '\\uFFFF' )
+                    {
+                    if ( (input.LA(1)>=' ' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='%')||(input.LA(1)>='\'' && input.LA(1)<='\u007F') ) {
+                        input.consume();
+
+                    }
+                    else {
+                        MismatchedSetException mse = new MismatchedSetException(null,input);
+                        recover(mse);
+                        throw mse;}
+
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:116:5: '\\n'
+                    {
+                    match('\n'); 
+
+                    }
+                    break;
+                case 3 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:116:12: '\\r'
+                    {
+                    match('\r'); 
+
+                    }
+                    break;
+                case 4 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:116:19: '\\t'
+                    {
+                    match('\t'); 
+
+                    }
+                    break;
+                case 5 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:116:26: ESCQUOTE
+                    {
+                    mESCQUOTE(); 
+
+                    }
+                    break;
+                case 6 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:116:37: AMP
+                    {
+                    mAMP(); 
+
+                    }
+                    break;
+                case 7 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:116:43: CHARREF
+                    {
+                    mCHARREF(); 
+
+                    }
+                    break;
+                case 8 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:116:53: ENTREF
+                    {
+                    mENTREF(); 
+
+                    }
+                    break;
+
+            }
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "TEXTCHAR"
+
+    // $ANTLR start "ESCQUOTE"
+    public final void mESCQUOTE() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:117:18: ( '\\\\' | '\\\"' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
+            {
+            if ( input.LA(1)=='\"'||input.LA(1)=='\\' ) {
+                input.consume();
+
+            }
+            else {
+                MismatchedSetException mse = new MismatchedSetException(null,input);
+                recover(mse);
+                throw mse;}
+
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "ESCQUOTE"
+
+    // $ANTLR start "AMP"
+    public final void mAMP() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:118:13: ( '\\&' (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:118:16: '\\&' (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+
+            {
+            match('&'); 
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:118:21: (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+
+            int cnt10=0;
+            loop10:
+            do {
+                int alt10=2;
+                int LA10_0 = input.LA(1);
+
+                if ( ((LA10_0>='\u0000' && LA10_0<='\"')||(LA10_0>='$' && LA10_0<='/')||(LA10_0>=';' && LA10_0<='@')||(LA10_0>='[' && LA10_0<='^')||LA10_0=='`'||(LA10_0>='{' && LA10_0<='\uFFFF')) ) {
+                    alt10=1;
+                }
+
+
+                switch (alt10) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:118:21: ~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' )
+            	    {
+            	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\"')||(input.LA(1)>='$' && input.LA(1)<='/')||(input.LA(1)>=';' && input.LA(1)<='@')||(input.LA(1)>='[' && input.LA(1)<='^')||input.LA(1)=='`'||(input.LA(1)>='{' && input.LA(1)<='\uFFFF') ) {
+            	        input.consume();
+
+            	    }
+            	    else {
+            	        MismatchedSetException mse = new MismatchedSetException(null,input);
+            	        recover(mse);
+            	        throw mse;}
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt10 >= 1 ) break loop10;
+                        EarlyExitException eee =
+                            new EarlyExitException(10, input);
+                        throw eee;
+                }
+                cnt10++;
+            } while (true);
+
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "AMP"
+
+    // $ANTLR start "CHARREF"
+    public final void mCHARREF() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:119:17: ( '&#' ( DIGIT )+ ';' | '&#x' HEXADECIMAL ';' )
+            int alt12=2;
+            int LA12_0 = input.LA(1);
+
+            if ( (LA12_0=='&') ) {
+                int LA12_1 = input.LA(2);
+
+                if ( (LA12_1=='#') ) {
+                    int LA12_2 = input.LA(3);
+
+                    if ( (LA12_2=='x') ) {
+                        alt12=2;
+                    }
+                    else if ( ((LA12_2>='0' && LA12_2<='9')) ) {
+                        alt12=1;
+                    }
+                    else {
+                        NoViableAltException nvae =
+                            new NoViableAltException("", 12, 2, input);
+
+                        throw nvae;
+                    }
+                }
+                else {
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 12, 1, input);
+
+                    throw nvae;
+                }
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 12, 0, input);
+
+                throw nvae;
+            }
+            switch (alt12) {
+                case 1 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:119:19: '&#' ( DIGIT )+ ';'
+                    {
+                    match("&#"); 
+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:119:24: ( DIGIT )+
+                    int cnt11=0;
+                    loop11:
+                    do {
+                        int alt11=2;
+                        int LA11_0 = input.LA(1);
+
+                        if ( ((LA11_0>='0' && LA11_0<='9')) ) {
+                            alt11=1;
+                        }
+
+
+                        switch (alt11) {
+                    	case 1 :
+                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:119:24: DIGIT
+                    	    {
+                    	    mDIGIT(); 
+
+                    	    }
+                    	    break;
+
+                    	default :
+                    	    if ( cnt11 >= 1 ) break loop11;
+                                EarlyExitException eee =
+                                    new EarlyExitException(11, input);
+                                throw eee;
+                        }
+                        cnt11++;
+                    } while (true);
+
+                    match(';'); 
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:119:37: '&#x' HEXADECIMAL ';'
+                    {
+                    match("&#x"); 
+
+                    mHEXADECIMAL(); 
+                    match(';'); 
+
+                    }
+                    break;
+
+            }
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "CHARREF"
+
+    // $ANTLR start "ENTREF"
+    public final void mENTREF() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:120:16: ( '&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':' )* ';' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:120:18: '&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':' )* ';'
+            {
+            match('&'); 
+            if ( input.LA(1)==':'||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
+                input.consume();
+
+            }
+            else {
+                MismatchedSetException mse = new MismatchedSetException(null,input);
+                recover(mse);
+                throw mse;}
+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:120:45: ( LETTER | DIGIT | '.' | '-' | '_' | ':' )*
+            loop13:
+            do {
+                int alt13=2;
+                int LA13_0 = input.LA(1);
+
+                if ( ((LA13_0>='-' && LA13_0<='.')||(LA13_0>='0' && LA13_0<=':')||(LA13_0>='A' && LA13_0<='Z')||LA13_0=='_'||(LA13_0>='a' && LA13_0<='z')) ) {
+                    alt13=1;
+                }
+
+
+                switch (alt13) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
+            	    {
+            	    if ( (input.LA(1)>='-' && input.LA(1)<='.')||(input.LA(1)>='0' && input.LA(1)<=':')||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
+            	        input.consume();
+
+            	    }
+            	    else {
+            	        MismatchedSetException mse = new MismatchedSetException(null,input);
+            	        recover(mse);
+            	        throw mse;}
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop13;
+                }
+            } while (true);
+
+            match(';'); 
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "ENTREF"
+
+    // $ANTLR start "STRCON"
+    public final void mSTRCON() throws RecognitionException {
+        try {
+            int _type = STRCON;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:122:7: ( 'comment' LAYOUT '\\\"' ( STRCHAR )* '\\\"' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:122:11: 'comment' LAYOUT '\\\"' ( STRCHAR )* '\\\"'
+            {
+            match("comment"); 
+
+            mLAYOUT(); 
+            match('\"'); 
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:122:33: ( STRCHAR )*
+            loop14:
+            do {
+                int alt14=2;
+                int LA14_0 = input.LA(1);
+
+                if ( ((LA14_0>=' ' && LA14_0<='!')||(LA14_0>='#' && LA14_0<='\uFFFF')) ) {
+                    alt14=1;
+                }
+
+
+                switch (alt14) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:122:33: STRCHAR
+            	    {
+            	    mSTRCHAR(); 
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop14;
+                }
+            } while (true);
+
+            match('\"'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "STRCON"
+
+    // $ANTLR start "STRCHAR"
+    public final void mSTRCHAR() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:123:17: (~ ( '\\u0000' .. '\\u001F' | '\"' | '\\\\' ) | ESCLAYOUT | DECIMAL )
+            int alt15=3;
+            int LA15_0 = input.LA(1);
+
+            if ( ((LA15_0>=' ' && LA15_0<='!')||(LA15_0>='#' && LA15_0<='[')||(LA15_0>=']' && LA15_0<='\uFFFF')) ) {
+                alt15=1;
+            }
+            else if ( (LA15_0=='\\') ) {
+                int LA15_2 = input.LA(2);
+
+                if ( (LA15_2=='\\') ) {
+                    int LA15_3 = input.LA(3);
+
+                    if ( (LA15_3=='\"'||LA15_3=='\\'||LA15_3=='n'||LA15_3=='t') ) {
+                        alt15=2;
+                    }
+                    else if ( (LA15_3=='a') ) {
+                        alt15=3;
+                    }
+                    else {
+                        NoViableAltException nvae =
+                            new NoViableAltException("", 15, 3, input);
+
+                        throw nvae;
+                    }
+                }
+                else {
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 15, 2, input);
+
+                    throw nvae;
+                }
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 15, 0, input);
+
+                throw nvae;
+            }
+            switch (alt15) {
+                case 1 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:123:19: ~ ( '\\u0000' .. '\\u001F' | '\"' | '\\\\' )
+                    {
+                    if ( (input.LA(1)>=' ' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
+                        input.consume();
+
+                    }
+                    else {
+                        MismatchedSetException mse = new MismatchedSetException(null,input);
+                        recover(mse);
+                        throw mse;}
+
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:123:58: ESCLAYOUT
+                    {
+                    mESCLAYOUT(); 
+
+                    }
+                    break;
+                case 3 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:123:70: DECIMAL
+                    {
+                    mDECIMAL(); 
+
+                    }
+                    break;
+
+            }
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "STRCHAR"
+
+    // $ANTLR start "ESCLAYOUT"
+    public final void mESCLAYOUT() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:124:19: ( '\\\\\\\\n' | '\\\\\\\\t' | '\\\\\\\\\"' | '\\\\\\\\\\\\\\\\' )
+            int alt16=4;
+            int LA16_0 = input.LA(1);
+
+            if ( (LA16_0=='\\') ) {
+                int LA16_1 = input.LA(2);
+
+                if ( (LA16_1=='\\') ) {
+                    switch ( input.LA(3) ) {
+                    case 'n':
+                        {
+                        alt16=1;
+                        }
+                        break;
+                    case 't':
+                        {
+                        alt16=2;
+                        }
+                        break;
+                    case '\"':
+                        {
+                        alt16=3;
+                        }
+                        break;
+                    case '\\':
+                        {
+                        alt16=4;
+                        }
+                        break;
+                    default:
+                        NoViableAltException nvae =
+                            new NoViableAltException("", 16, 2, input);
+
+                        throw nvae;
+                    }
+
+                }
+                else {
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 16, 1, input);
+
+                    throw nvae;
+                }
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 16, 0, input);
+
+                throw nvae;
+            }
+            switch (alt16) {
+                case 1 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:124:21: '\\\\\\\\n'
+                    {
+                    match("\\\\n"); 
+
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:124:31: '\\\\\\\\t'
+                    {
+                    match("\\\\t"); 
+
+
+                    }
+                    break;
+                case 3 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:124:41: '\\\\\\\\\"'
+                    {
+                    match("\\\\\""); 
+
+
+                    }
+                    break;
+                case 4 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:124:51: '\\\\\\\\\\\\\\\\'
+                    {
+                    match("\\\\\\\\"); 
+
+
+                    }
+                    break;
+
+            }
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "ESCLAYOUT"
+
+    // $ANTLR start "DECIMAL"
+    public final void mDECIMAL() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:125:17: ( '\\\\\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:125:19: '\\\\\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT
+            {
+            match("\\\\"); 
+
+            match("a:"); 
+
+            mDIGIT(); 
+            match("b:"); 
+
+            mDIGIT(); 
+            match("c:"); 
+
+            mDIGIT(); 
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "DECIMAL"
+
+    // $ANTLR start "COMMENTS"
+    public final void mCOMMENTS() throws RecognitionException {
+        try {
+            int _type = COMMENTS;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:127:9: ( '//' ( . )* '\\n' | '/*' ( . )* '*/' )
+            int alt19=2;
+            int LA19_0 = input.LA(1);
+
+            if ( (LA19_0=='/') ) {
+                int LA19_1 = input.LA(2);
+
+                if ( (LA19_1=='/') ) {
+                    alt19=1;
+                }
+                else if ( (LA19_1=='*') ) {
+                    alt19=2;
+                }
+                else {
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 19, 1, input);
+
+                    throw nvae;
+                }
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 19, 0, input);
+
+                throw nvae;
+            }
+            switch (alt19) {
+                case 1 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:127:12: '//' ( . )* '\\n'
+                    {
+                    match("//"); 
+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:127:17: ( . )*
+                    loop17:
+                    do {
+                        int alt17=2;
+                        int LA17_0 = input.LA(1);
+
+                        if ( (LA17_0=='\n') ) {
+                            alt17=2;
+                        }
+                        else if ( ((LA17_0>='\u0000' && LA17_0<='\t')||(LA17_0>='\u000B' && LA17_0<='\uFFFF')) ) {
+                            alt17=1;
+                        }
+
+
+                        switch (alt17) {
+                    	case 1 :
+                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:127:17: .
+                    	    {
+                    	    matchAny(); 
+
+                    	    }
+                    	    break;
+
+                    	default :
+                    	    break loop17;
+                        }
+                    } while (true);
+
+                    match('\n'); 
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:127:27: '/*' ( . )* '*/'
+                    {
+                    match("/*"); 
+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:127:32: ( . )*
+                    loop18:
+                    do {
+                        int alt18=2;
+                        int LA18_0 = input.LA(1);
+
+                        if ( (LA18_0=='*') ) {
+                            int LA18_1 = input.LA(2);
+
+                            if ( (LA18_1=='/') ) {
+                                alt18=2;
+                            }
+                            else if ( ((LA18_1>='\u0000' && LA18_1<='.')||(LA18_1>='0' && LA18_1<='\uFFFF')) ) {
+                                alt18=1;
+                            }
+
+
+                        }
+                        else if ( ((LA18_0>='\u0000' && LA18_0<=')')||(LA18_0>='+' && LA18_0<='\uFFFF')) ) {
+                            alt18=1;
+                        }
+
+
+                        switch (alt18) {
+                    	case 1 :
+                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:127:32: .
+                    	    {
+                    	    matchAny(); 
+
+                    	    }
+                    	    break;
+
+                    	default :
+                    	    break loop18;
+                        }
+                    } while (true);
+
+                    match("*/"); 
+
+                     _channel = HIDDEN; 
+
+                    }
+                    break;
+
+            }
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "COMMENTS"
+
+    // $ANTLR start "LAYOUT"
+    public final void mLAYOUT() throws RecognitionException {
+        try {
+            int _type = LAYOUT;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:128:7: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:128:11: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:128:11: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            int cnt20=0;
+            loop20:
+            do {
+                int alt20=2;
+                int LA20_0 = input.LA(1);
+
+                if ( ((LA20_0>='\t' && LA20_0<='\n')||(LA20_0>='\f' && LA20_0<='\r')||LA20_0==' ') ) {
+                    alt20=1;
+                }
+
+
+                switch (alt20) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
             	    {
             	    if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||(input.LA(1)>='\f' && input.LA(1)<='\r')||input.LA(1)==' ' ) {
             	        input.consume();
@@ -1405,12 +2102,12 @@ public class WaebricLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt11 >= 1 ) break loop11;
+            	    if ( cnt20 >= 1 ) break loop20;
                         EarlyExitException eee =
-                            new EarlyExitException(11, input);
+                            new EarlyExitException(20, input);
                         throw eee;
                 }
-                cnt11++;
+                cnt20++;
             } while (true);
 
              _channel = HIDDEN; 
@@ -1423,290 +2120,346 @@ public class WaebricLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "WHITESPACE"
+    // $ANTLR end "LAYOUT"
 
     public void mTokens() throws RecognitionException {
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:8: ( T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | TYPE | TEXT | TEXTCHAR | STRCON | STRCHAR | SYMBOLCON | SYMBOLCHAR | NATCON | IDCON | WHITESPACE )
-        int alt12=40;
-        alt12 = dfa12.predict(input);
-        switch (alt12) {
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:8: ( LPAREN | RPAREN | MODULE | IMPORT | SITE | DEF | END | IF | ELSE | EACH | LET | IN | COMMENT | ECHO | CDATA | YIELD | LIST | RECORD | STRING | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | PATH | NATCON | IDCON | SYMBOLCON | TEXT | STRCON | COMMENTS | LAYOUT )
+        int alt21=48;
+        alt21 = dfa21.predict(input);
+        switch (alt21) {
             case 1 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:10: T__14
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:10: LPAREN
                 {
-                mT__14(); 
+                mLPAREN(); 
 
                 }
                 break;
             case 2 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:16: T__15
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:17: RPAREN
                 {
-                mT__15(); 
+                mRPAREN(); 
 
                 }
                 break;
             case 3 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:22: T__16
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:24: MODULE
                 {
-                mT__16(); 
+                mMODULE(); 
 
                 }
                 break;
             case 4 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:28: T__17
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:31: IMPORT
                 {
-                mT__17(); 
+                mIMPORT(); 
 
                 }
                 break;
             case 5 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:34: T__18
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:38: SITE
                 {
-                mT__18(); 
+                mSITE(); 
 
                 }
                 break;
             case 6 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:40: T__19
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:43: DEF
                 {
-                mT__19(); 
+                mDEF(); 
 
                 }
                 break;
             case 7 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:46: T__20
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:47: END
                 {
-                mT__20(); 
+                mEND(); 
 
                 }
                 break;
             case 8 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:52: T__21
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:51: IF
                 {
-                mT__21(); 
+                mIF(); 
 
                 }
                 break;
             case 9 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:58: T__22
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:54: ELSE
                 {
-                mT__22(); 
+                mELSE(); 
 
                 }
                 break;
             case 10 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:64: T__23
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:59: EACH
                 {
-                mT__23(); 
+                mEACH(); 
 
                 }
                 break;
             case 11 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:70: T__24
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:64: LET
                 {
-                mT__24(); 
+                mLET(); 
 
                 }
                 break;
             case 12 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:76: T__25
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:68: IN
                 {
-                mT__25(); 
+                mIN(); 
 
                 }
                 break;
             case 13 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:82: T__26
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:71: COMMENT
                 {
-                mT__26(); 
+                mCOMMENT(); 
 
                 }
                 break;
             case 14 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:88: T__27
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:79: ECHO
                 {
-                mT__27(); 
+                mECHO(); 
 
                 }
                 break;
             case 15 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:94: T__28
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:84: CDATA
                 {
-                mT__28(); 
+                mCDATA(); 
 
                 }
                 break;
             case 16 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:100: T__29
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:90: YIELD
                 {
-                mT__29(); 
+                mYIELD(); 
 
                 }
                 break;
             case 17 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:106: T__30
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:96: LIST
                 {
-                mT__30(); 
+                mLIST(); 
 
                 }
                 break;
             case 18 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:112: T__31
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:101: RECORD
                 {
-                mT__31(); 
+                mRECORD(); 
 
                 }
                 break;
             case 19 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:118: T__32
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:108: STRING
                 {
-                mT__32(); 
+                mSTRING(); 
 
                 }
                 break;
             case 20 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:124: T__33
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:115: T__45
                 {
-                mT__33(); 
+                mT__45(); 
 
                 }
                 break;
             case 21 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:130: T__34
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:121: T__46
                 {
-                mT__34(); 
+                mT__46(); 
 
                 }
                 break;
             case 22 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:136: T__35
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:127: T__47
                 {
-                mT__35(); 
+                mT__47(); 
 
                 }
                 break;
             case 23 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:142: T__36
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:133: T__48
                 {
-                mT__36(); 
+                mT__48(); 
 
                 }
                 break;
             case 24 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:148: T__37
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:139: T__49
                 {
-                mT__37(); 
+                mT__49(); 
 
                 }
                 break;
             case 25 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:154: T__38
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:145: T__50
                 {
-                mT__38(); 
+                mT__50(); 
 
                 }
                 break;
             case 26 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:160: T__39
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:151: T__51
                 {
-                mT__39(); 
+                mT__51(); 
 
                 }
                 break;
             case 27 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:166: T__40
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:157: T__52
                 {
-                mT__40(); 
+                mT__52(); 
 
                 }
                 break;
             case 28 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:172: T__41
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:163: T__53
                 {
-                mT__41(); 
+                mT__53(); 
 
                 }
                 break;
             case 29 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:178: T__42
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:169: T__54
                 {
-                mT__42(); 
+                mT__54(); 
 
                 }
                 break;
             case 30 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:184: T__43
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:175: T__55
                 {
-                mT__43(); 
+                mT__55(); 
 
                 }
                 break;
             case 31 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:190: TYPE
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:181: T__56
                 {
-                mTYPE(); 
+                mT__56(); 
 
                 }
                 break;
             case 32 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:195: TEXT
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:187: T__57
                 {
-                mTEXT(); 
+                mT__57(); 
 
                 }
                 break;
             case 33 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:200: TEXTCHAR
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:193: T__58
                 {
-                mTEXTCHAR(); 
+                mT__58(); 
 
                 }
                 break;
             case 34 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:209: STRCON
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:199: T__59
                 {
-                mSTRCON(); 
+                mT__59(); 
 
                 }
                 break;
             case 35 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:216: STRCHAR
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:205: T__60
                 {
-                mSTRCHAR(); 
+                mT__60(); 
 
                 }
                 break;
             case 36 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:224: SYMBOLCON
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:211: T__61
                 {
-                mSYMBOLCON(); 
+                mT__61(); 
 
                 }
                 break;
             case 37 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:234: SYMBOLCHAR
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:217: T__62
                 {
-                mSYMBOLCHAR(); 
+                mT__62(); 
 
                 }
                 break;
             case 38 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:245: NATCON
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:223: T__63
+                {
+                mT__63(); 
+
+                }
+                break;
+            case 39 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:229: T__64
+                {
+                mT__64(); 
+
+                }
+                break;
+            case 40 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:235: T__65
+                {
+                mT__65(); 
+
+                }
+                break;
+            case 41 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:241: PATH
+                {
+                mPATH(); 
+
+                }
+                break;
+            case 42 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:246: NATCON
                 {
                 mNATCON(); 
 
                 }
                 break;
-            case 39 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:252: IDCON
+            case 43 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:253: IDCON
                 {
                 mIDCON(); 
 
                 }
                 break;
-            case 40 :
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:258: WHITESPACE
+            case 44 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:259: SYMBOLCON
                 {
-                mWHITESPACE(); 
+                mSYMBOLCON(); 
+
+                }
+                break;
+            case 45 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:269: TEXT
+                {
+                mTEXT(); 
+
+                }
+                break;
+            case 46 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:274: STRCON
+                {
+                mSTRCON(); 
+
+                }
+                break;
+            case 47 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:281: COMMENTS
+                {
+                mCOMMENTS(); 
+
+                }
+                break;
+            case 48 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:290: LAYOUT
+                {
+                mLAYOUT(); 
 
                 }
                 break;
@@ -1716,308 +2469,333 @@ public class WaebricLexer extends Lexer {
     }
 
 
-    protected DFA12 dfa12 = new DFA12(this);
-    static final String DFA12_eotS =
-        "\1\uffff\2\41\1\uffff\1\41\1\uffff\2\41\10\uffff\1\41\2\uffff\2"+
-        "\41\2\uffff\1\76\2\uffff\1\41\1\103\1\41\1\uffff\3\41\2\uffff\1"+
-        "\44\1\uffff\4\44\1\uffff\1\44\1\114\1\115\3\44\6\uffff\2\44\1\uffff"+
-        "\2\44\6\uffff\1\44\4\uffff\1\44\1\131\4\44\2\uffff\2\44\1\140\1"+
-        "\141\3\44\2\uffff\2\44\1\uffff\1\151\1\152\1\153\1\44\1\155\1\44"+
-        "\2\uffff\1\157\2\44\1\77\1\uffff\2\44\3\uffff\1\44\1\uffff\1\44"+
-        "\1\uffff\1\170\1\44\2\uffff\1\44\1\173\1\174\1\157\2\uffff\1\157"+
-        "\2\uffff";
-    static final String DFA12_eofS =
-        "\175\uffff";
-    static final String DFA12_minS =
-        "\1\0\2\60\1\uffff\1\60\1\uffff\2\60\10\uffff\1\60\2\uffff\2\60\2"+
-        "\uffff\1\42\2\uffff\1\60\1\134\1\0\1\uffff\2\60\1\11\2\uffff\1\144"+
-        "\1\uffff\1\144\1\163\1\143\1\150\1\uffff\1\160\2\60\1\164\1\162"+
-        "\1\146\6\uffff\1\164\1\163\1\uffff\1\141\1\145\2\uffff\1\42\3\uffff"+
-        "\1\143\4\uffff\1\165\1\60\1\145\1\150\2\157\2\uffff\1\145\1\151"+
-        "\2\60\2\164\1\154\1\uffff\1\42\1\157\1\154\1\uffff\3\60\1\162\1"+
-        "\60\1\156\2\uffff\1\60\1\141\1\144\2\42\1\162\1\145\3\uffff\1\164"+
-        "\1\uffff\1\147\1\uffff\1\60\1\73\1\uffff\1\42\1\144\3\60\2\uffff"+
-        "\1\60\2\uffff";
-    static final String DFA12_maxS =
-        "\1\uffff\2\172\1\uffff\1\172\1\uffff\2\172\10\uffff\1\172\2\uffff"+
-        "\2\172\2\uffff\1\134\2\uffff\1\172\1\164\1\uffff\1\uffff\1\71\1"+
-        "\172\1\40\2\uffff\1\144\1\uffff\1\144\1\163\1\143\1\150\1\uffff"+
-        "\1\160\2\172\1\164\1\162\1\146\6\uffff\1\164\1\163\1\uffff\1\141"+
-        "\1\145\2\uffff\1\164\3\uffff\1\143\4\uffff\1\165\1\172\1\145\1\150"+
-        "\2\157\2\uffff\1\145\1\151\2\172\2\164\1\154\1\uffff\1\134\1\157"+
-        "\1\154\1\uffff\3\172\1\162\1\172\1\156\2\uffff\1\172\1\141\1\144"+
-        "\1\42\1\134\1\162\1\145\3\uffff\1\164\1\uffff\1\147\1\uffff\1\172"+
-        "\1\73\1\uffff\1\134\1\144\3\172\2\uffff\1\172\2\uffff";
-    static final String DFA12_acceptS =
-        "\3\uffff\1\3\1\uffff\1\5\2\uffff\1\10\1\11\1\12\1\13\1\14\1\15\1"+
-        "\16\1\17\1\uffff\1\25\1\26\2\uffff\1\32\1\33\1\uffff\1\35\1\36\3"+
-        "\uffff\1\44\3\uffff\1\45\1\50\1\uffff\1\47\4\uffff\1\3\6\uffff\1"+
-        "\10\1\13\1\14\1\15\1\16\1\17\2\uffff\1\25\2\uffff\1\32\1\33\1\uffff"+
-        "\1\34\1\40\1\35\1\uffff\1\43\1\41\1\44\1\46\6\uffff\1\20\1\24\7"+
-        "\uffff\1\42\3\uffff\1\2\6\uffff\1\7\1\23\7\uffff\1\21\1\22\1\27"+
-        "\1\uffff\1\6\1\uffff\1\37\2\uffff\1\40\5\uffff\1\30\1\31\1\uffff"+
-        "\1\1\1\4";
-    static final String DFA12_specialS =
-        "\1\1\33\uffff\1\0\140\uffff}>";
-    static final String[] DFA12_transitionS = {
-            "\11\41\2\42\1\41\1\40\1\42\22\41\1\42\1\26\1\27\1\13\1\14\1"+
-            "\17\1\34\1\35\1\10\1\12\2\41\1\11\1\41\1\3\1\41\12\36\1\15\1"+
-            "\5\1\30\1\25\1\31\1\41\1\16\32\37\1\41\1\33\4\41\2\37\1\23\1"+
-            "\7\1\2\3\37\1\4\2\37\1\20\1\1\4\37\1\32\1\6\5\37\1\24\1\37\1"+
-            "\21\1\41\1\22\uff82\41",
-            "\12\44\7\uffff\32\44\6\uffff\16\44\1\43\13\44",
-            "\12\44\7\uffff\32\44\6\uffff\1\47\1\44\1\50\10\44\1\46\1\44"+
-            "\1\45\14\44",
-            "",
-            "\12\44\7\uffff\32\44\6\uffff\5\44\1\53\6\44\1\52\1\54\14\44",
-            "",
-            "\12\44\7\uffff\32\44\6\uffff\10\44\1\55\12\44\1\56\6\44",
-            "\12\44\7\uffff\32\44\6\uffff\4\44\1\57\25\44",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "\12\44\7\uffff\32\44\6\uffff\4\44\1\66\3\44\1\67\21\44",
-            "",
-            "",
-            "\12\44\7\uffff\32\44\6\uffff\3\44\1\71\26\44",
-            "\12\44\7\uffff\32\44\6\uffff\10\44\1\72\21\44",
-            "",
-            "",
-            "\1\77\3\uffff\1\77\65\uffff\1\75",
-            "",
-            "",
-            "\12\44\7\uffff\32\44\6\uffff\4\44\1\101\25\44",
-            "\1\102\4\uffff\1\102\14\uffff\1\102\5\uffff\1\102",
-            "\60\103\12\uffff\uffc6\103",
-            "",
-            "\12\105",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\2\42\1\uffff\2\42\22\uffff\1\42",
-            "",
-            "",
-            "\1\106",
-            "",
-            "\1\107",
-            "\1\110",
-            "\1\111",
-            "\1\112",
-            "",
-            "\1\113",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\1\116",
-            "\1\117",
-            "\1\120",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "\1\121",
-            "\1\122",
-            "",
-            "\1\123",
-            "\1\124",
-            "",
-            "",
-            "\1\77\3\uffff\1\77\65\uffff\1\126\4\uffff\1\125\14\uffff\1"+
-            "\125\5\uffff\1\125",
-            "",
-            "",
-            "",
-            "\1\127",
-            "",
-            "",
-            "",
-            "",
-            "\1\130",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\1\132",
-            "\1\133",
-            "\1\134",
-            "\1\135",
-            "",
-            "",
-            "\1\136",
-            "\1\137",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\1\142",
-            "\1\143",
-            "\1\144",
-            "",
-            "\1\145\3\uffff\1\77\65\uffff\1\146",
-            "\1\147",
-            "\1\150",
-            "",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\1\154",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\1\156",
-            "",
-            "",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\1\160",
-            "\1\161",
-            "\1\162",
-            "\1\77\3\uffff\1\77\65\uffff\1\163",
-            "\1\164",
-            "\1\165",
-            "",
-            "",
-            "",
-            "\1\166",
-            "",
-            "\1\167",
-            "",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\1\171",
-            "",
-            "\1\162\3\uffff\1\77\65\uffff\1\77",
-            "\1\172",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
-            "",
-            "",
-            "\12\44\7\uffff\32\44\6\uffff\32\44",
+    protected DFA2 dfa2 = new DFA2(this);
+    protected DFA9 dfa9 = new DFA9(this);
+    protected DFA21 dfa21 = new DFA21(this);
+    static final String DFA2_eotS =
+        "\4\uffff";
+    static final String DFA2_eofS =
+        "\4\uffff";
+    static final String DFA2_minS =
+        "\1\60\1\56\2\uffff";
+    static final String DFA2_maxS =
+        "\2\172\2\uffff";
+    static final String DFA2_acceptS =
+        "\2\uffff\1\2\1\1";
+    static final String DFA2_specialS =
+        "\4\uffff}>";
+    static final String[] DFA2_transitionS = {
+            "\12\1\7\uffff\32\1\6\uffff\32\1",
+            "\1\2\1\3\12\1\7\uffff\32\1\6\uffff\32\1",
             "",
             ""
     };
 
-    static final short[] DFA12_eot = DFA.unpackEncodedString(DFA12_eotS);
-    static final short[] DFA12_eof = DFA.unpackEncodedString(DFA12_eofS);
-    static final char[] DFA12_min = DFA.unpackEncodedStringToUnsignedChars(DFA12_minS);
-    static final char[] DFA12_max = DFA.unpackEncodedStringToUnsignedChars(DFA12_maxS);
-    static final short[] DFA12_accept = DFA.unpackEncodedString(DFA12_acceptS);
-    static final short[] DFA12_special = DFA.unpackEncodedString(DFA12_specialS);
-    static final short[][] DFA12_transition;
+    static final short[] DFA2_eot = DFA.unpackEncodedString(DFA2_eotS);
+    static final short[] DFA2_eof = DFA.unpackEncodedString(DFA2_eofS);
+    static final char[] DFA2_min = DFA.unpackEncodedStringToUnsignedChars(DFA2_minS);
+    static final char[] DFA2_max = DFA.unpackEncodedStringToUnsignedChars(DFA2_maxS);
+    static final short[] DFA2_accept = DFA.unpackEncodedString(DFA2_acceptS);
+    static final short[] DFA2_special = DFA.unpackEncodedString(DFA2_specialS);
+    static final short[][] DFA2_transition;
 
     static {
-        int numStates = DFA12_transitionS.length;
-        DFA12_transition = new short[numStates][];
+        int numStates = DFA2_transitionS.length;
+        DFA2_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA12_transition[i] = DFA.unpackEncodedString(DFA12_transitionS[i]);
+            DFA2_transition[i] = DFA.unpackEncodedString(DFA2_transitionS[i]);
         }
     }
 
-    class DFA12 extends DFA {
+    class DFA2 extends DFA {
 
-        public DFA12(BaseRecognizer recognizer) {
+        public DFA2(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 12;
-            this.eot = DFA12_eot;
-            this.eof = DFA12_eof;
-            this.min = DFA12_min;
-            this.max = DFA12_max;
-            this.accept = DFA12_accept;
-            this.special = DFA12_special;
-            this.transition = DFA12_transition;
+            this.decisionNumber = 2;
+            this.eot = DFA2_eot;
+            this.eof = DFA2_eof;
+            this.min = DFA2_min;
+            this.max = DFA2_max;
+            this.accept = DFA2_accept;
+            this.special = DFA2_special;
+            this.transition = DFA2_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | TYPE | TEXT | TEXTCHAR | STRCON | STRCHAR | SYMBOLCON | SYMBOLCHAR | NATCON | IDCON | WHITESPACE );";
+            return "()* loopback of 104:9: ( PATHELEMENT '/' )*";
+        }
+    }
+    static final String DFA9_eotS =
+        "\12\uffff";
+    static final String DFA9_eofS =
+        "\12\uffff";
+    static final String DFA9_minS =
+        "\1\11\5\uffff\1\0\3\uffff";
+    static final String DFA9_maxS =
+        "\1\177\5\uffff\1\uffff\3\uffff";
+    static final String DFA9_acceptS =
+        "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\uffff\1\7\1\10\1\6";
+    static final String DFA9_specialS =
+        "\6\uffff\1\0\3\uffff}>";
+    static final String[] DFA9_transitionS = {
+            "\1\4\1\2\2\uffff\1\3\22\uffff\2\1\1\5\3\1\1\6\131\1",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "\43\11\1\7\14\11\12\uffff\1\10\6\11\32\10\4\11\1\10\1\11\32"+
+            "\10\uff85\11",
+            "",
+            "",
+            ""
+    };
+
+    static final short[] DFA9_eot = DFA.unpackEncodedString(DFA9_eotS);
+    static final short[] DFA9_eof = DFA.unpackEncodedString(DFA9_eofS);
+    static final char[] DFA9_min = DFA.unpackEncodedStringToUnsignedChars(DFA9_minS);
+    static final char[] DFA9_max = DFA.unpackEncodedStringToUnsignedChars(DFA9_maxS);
+    static final short[] DFA9_accept = DFA.unpackEncodedString(DFA9_acceptS);
+    static final short[] DFA9_special = DFA.unpackEncodedString(DFA9_specialS);
+    static final short[][] DFA9_transition;
+
+    static {
+        int numStates = DFA9_transitionS.length;
+        DFA9_transition = new short[numStates][];
+        for (int i=0; i<numStates; i++) {
+            DFA9_transition[i] = DFA.unpackEncodedString(DFA9_transitionS[i]);
+        }
+    }
+
+    class DFA9 extends DFA {
+
+        public DFA9(BaseRecognizer recognizer) {
+            this.recognizer = recognizer;
+            this.decisionNumber = 9;
+            this.eot = DFA9_eot;
+            this.eof = DFA9_eof;
+            this.min = DFA9_min;
+            this.max = DFA9_max;
+            this.accept = DFA9_accept;
+            this.special = DFA9_special;
+            this.transition = DFA9_transition;
+        }
+        public String getDescription() {
+            return "115:10: fragment TEXTCHAR : (~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '\\u0080' .. '\\uFFFF' ) | '\\n' | '\\r' | '\\t' | ESCQUOTE | AMP | CHARREF | ENTREF );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA12_28 = input.LA(1);
+                        int LA9_6 = input.LA(1);
 
                         s = -1;
-                        if ( ((LA12_28>='\u0000' && LA12_28<='/')||(LA12_28>=':' && LA12_28<='\uFFFF')) ) {s = 67;}
+                        if ( (LA9_6=='#') ) {s = 7;}
 
-                        else s = 33;
+                        else if ( (LA9_6==':'||(LA9_6>='A' && LA9_6<='Z')||LA9_6=='_'||(LA9_6>='a' && LA9_6<='z')) ) {s = 8;}
 
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
-                        int LA12_0 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA12_0=='m') ) {s = 1;}
-
-                        else if ( (LA12_0=='e') ) {s = 2;}
-
-                        else if ( (LA12_0=='.') ) {s = 3;}
-
-                        else if ( (LA12_0=='i') ) {s = 4;}
-
-                        else if ( (LA12_0==';') ) {s = 5;}
-
-                        else if ( (LA12_0=='s') ) {s = 6;}
-
-                        else if ( (LA12_0=='d') ) {s = 7;}
-
-                        else if ( (LA12_0=='(') ) {s = 8;}
-
-                        else if ( (LA12_0==',') ) {s = 9;}
-
-                        else if ( (LA12_0==')') ) {s = 10;}
-
-                        else if ( (LA12_0=='#') ) {s = 11;}
-
-                        else if ( (LA12_0=='$') ) {s = 12;}
-
-                        else if ( (LA12_0==':') ) {s = 13;}
-
-                        else if ( (LA12_0=='@') ) {s = 14;}
-
-                        else if ( (LA12_0=='%') ) {s = 15;}
-
-                        else if ( (LA12_0=='l') ) {s = 16;}
-
-                        else if ( (LA12_0=='{') ) {s = 17;}
-
-                        else if ( (LA12_0=='}') ) {s = 18;}
-
-                        else if ( (LA12_0=='c') ) {s = 19;}
-
-                        else if ( (LA12_0=='y') ) {s = 20;}
-
-                        else if ( (LA12_0=='=') ) {s = 21;}
-
-                        else if ( (LA12_0=='!') ) {s = 22;}
-
-                        else if ( (LA12_0=='\"') ) {s = 23;}
-
-                        else if ( (LA12_0=='<') ) {s = 24;}
-
-                        else if ( (LA12_0=='>') ) {s = 25;}
-
-                        else if ( (LA12_0=='r') ) {s = 26;}
-
-                        else if ( (LA12_0=='\\') ) {s = 27;}
-
-                        else if ( (LA12_0=='&') ) {s = 28;}
-
-                        else if ( (LA12_0=='\'') ) {s = 29;}
-
-                        else if ( ((LA12_0>='0' && LA12_0<='9')) ) {s = 30;}
-
-                        else if ( ((LA12_0>='A' && LA12_0<='Z')||(LA12_0>='a' && LA12_0<='b')||(LA12_0>='f' && LA12_0<='h')||(LA12_0>='j' && LA12_0<='k')||(LA12_0>='n' && LA12_0<='q')||(LA12_0>='t' && LA12_0<='x')||LA12_0=='z') ) {s = 31;}
-
-                        else if ( (LA12_0=='\f') ) {s = 32;}
-
-                        else if ( ((LA12_0>='\u0000' && LA12_0<='\b')||LA12_0=='\u000B'||(LA12_0>='\u000E' && LA12_0<='\u001F')||(LA12_0>='*' && LA12_0<='+')||LA12_0=='-'||LA12_0=='/'||LA12_0=='?'||LA12_0=='['||(LA12_0>=']' && LA12_0<='`')||LA12_0=='|'||(LA12_0>='~' && LA12_0<='\uFFFF')) ) {s = 33;}
-
-                        else if ( ((LA12_0>='\t' && LA12_0<='\n')||LA12_0=='\r'||LA12_0==' ') ) {s = 34;}
+                        else if ( ((LA9_6>='\u0000' && LA9_6<='\"')||(LA9_6>='$' && LA9_6<='/')||(LA9_6>=';' && LA9_6<='@')||(LA9_6>='[' && LA9_6<='^')||LA9_6=='`'||(LA9_6>='{' && LA9_6<='\uFFFF')) ) {s = 9;}
 
                         if ( s>=0 ) return s;
                         break;
             }
             NoViableAltException nvae =
-                new NoViableAltException(getDescription(), 12, _s, input);
+                new NoViableAltException(getDescription(), 9, _s, input);
             error(nvae);
             throw nvae;
+        }
+    }
+    static final String DFA21_eotS =
+        "\35\uffff\1\71\2\uffff\1\73\4\uffff\1\50\1\uffff\1\50\1\uffff\1"+
+        "\50\1\76\1\77\15\50\3\uffff\2\50\2\uffff\2\50\1\121\1\122\3\50\1"+
+        "\126\7\50\1\136\1\50\2\uffff\1\140\1\141\1\142\1\uffff\1\143\6\50"+
+        "\1\uffff\1\50\4\uffff\1\50\1\154\1\156\1\50\1\160\1\161\1\162\1"+
+        "\50\3\uffff\1\164\3\uffff\1\165\3\uffff";
+    static final String DFA21_eofS =
+        "\167\uffff";
+    static final String DFA21_minS =
+        "\1\11\2\uffff\11\55\21\uffff\1\11\2\uffff\1\56\1\55\3\uffff\1\56"+
+        "\1\uffff\1\56\1\uffff\1\56\2\55\15\56\3\uffff\2\56\2\uffff\2\56"+
+        "\2\55\3\56\1\55\7\56\1\55\1\56\2\uffff\3\55\1\uffff\1\55\6\56\1"+
+        "\uffff\1\56\4\uffff\1\56\2\55\1\56\3\55\1\56\3\uffff\1\55\3\uffff"+
+        "\1\11\3\uffff";
+    static final String DFA21_maxS =
+        "\1\175\2\uffff\11\172\21\uffff\1\177\2\uffff\2\172\3\uffff\1\172"+
+        "\1\uffff\1\172\1\uffff\20\172\3\uffff\2\172\2\uffff\21\172\2\uffff"+
+        "\3\172\1\uffff\7\172\1\uffff\1\172\4\uffff\10\172\3\uffff\1\172"+
+        "\3\uffff\1\172\3\uffff";
+    static final String DFA21_acceptS =
+        "\1\uffff\1\1\1\2\11\uffff\1\24\1\25\1\26\1\27\1\30\1\31\1\32\1\33"+
+        "\1\34\1\35\1\36\1\37\1\40\1\42\1\43\1\44\1\45\1\uffff\1\47\1\50"+
+        "\2\uffff\1\54\1\57\1\60\1\uffff\1\51\1\uffff\1\53\20\uffff\1\46"+
+        "\1\55\1\52\2\uffff\1\10\1\14\21\uffff\1\6\1\7\3\uffff\1\13\7\uffff"+
+        "\1\5\1\uffff\1\11\1\12\1\16\1\21\10\uffff\1\17\1\41\1\20\1\uffff"+
+        "\1\3\1\4\1\23\1\uffff\1\22\1\15\1\56";
+    static final String DFA21_specialS =
+        "\167\uffff}>";
+    static final String[] DFA21_transitionS = {
+            "\2\44\1\uffff\2\44\22\uffff\1\44\1\32\1\35\1\17\1\20\1\22\1"+
+            "\33\1\42\1\1\1\2\1\uffff\1\24\1\23\1\uffff\1\14\1\43\12\40\1"+
+            "\16\1\15\1\36\1\31\1\37\1\uffff\1\21\32\41\1\25\1\uffff\1\26"+
+            "\3\uffff\2\41\1\11\1\6\1\7\3\41\1\4\2\41\1\10\1\3\4\41\1\13"+
+            "\1\5\5\41\1\12\1\41\1\27\1\34\1\30",
+            "",
+            "",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\16\47\1\45\13\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\5\47\1\52\6\47\1\51"+
+            "\1\53\14\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\10\47\1\54\12\47\1\55"+
+            "\6\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\4\47\1\56\25\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\1\61\1\47\1\62\10\47"+
+            "\1\60\1\47\1\57\14\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\4\47\1\63\3\47\1\64"+
+            "\21\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\3\47\1\66\12\47\1\65"+
+            "\13\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\10\47\1\67\21\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\4\47\1\70\25\47",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "\2\72\2\uffff\1\72\22\uffff\140\72",
+            "",
+            "",
+            "\2\46\12\40\7\uffff\32\46\6\uffff\32\46",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "",
+            "",
+            "",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\3\47\1\74\26\47",
+            "",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\17\47\1\75\12\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\23\47\1\100\6\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\21\47\1\101\10\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\5\47\1\102\24\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\3\47\1\103\26\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\22\47\1\104\7\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\2\47\1\105\27\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\7\47\1\106\22\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\23\47\1\107\6\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\22\47\1\110\7\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\14\47\1\111\15\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\1\112\31\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\4\47\1\113\25\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\2\47\1\114\27\47",
+            "",
+            "",
+            "",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\24\47\1\115\5\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\16\47\1\116\13\47",
+            "",
+            "",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\4\47\1\117\25\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\10\47\1\120\21\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\4\47\1\123\25\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\7\47\1\124\22\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\16\47\1\125\13\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\23\47\1\127\6\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\14\47\1\130\15\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\23\47\1\131\6\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\13\47\1\132\16\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\16\47\1\133\13\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\13\47\1\134\16\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\21\47\1\135\10\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\15\47\1\137\14\47",
+            "",
+            "",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\4\47\1\144\25\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\1\145\31\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\3\47\1\146\26\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\21\47\1\147\10\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\4\47\1\150\25\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\23\47\1\151\6\47",
+            "",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\6\47\1\152\23\47",
+            "",
+            "",
+            "",
+            "",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\15\47\1\153\14\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\1\50\2\46\12\47\1\uffff\1\155\5\uffff\32\47\6\uffff\32\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\3\47\1\157\26\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "\2\46\12\47\7\uffff\32\47\6\uffff\23\47\1\163\6\47",
+            "",
+            "",
+            "",
+            "\1\50\2\46\12\47\7\uffff\32\47\6\uffff\32\47",
+            "",
+            "",
+            "",
+            "\2\166\1\uffff\2\166\22\uffff\1\166\14\uffff\1\50\2\46\12\47"+
+            "\7\uffff\32\47\6\uffff\32\47",
+            "",
+            "",
+            ""
+    };
+
+    static final short[] DFA21_eot = DFA.unpackEncodedString(DFA21_eotS);
+    static final short[] DFA21_eof = DFA.unpackEncodedString(DFA21_eofS);
+    static final char[] DFA21_min = DFA.unpackEncodedStringToUnsignedChars(DFA21_minS);
+    static final char[] DFA21_max = DFA.unpackEncodedStringToUnsignedChars(DFA21_maxS);
+    static final short[] DFA21_accept = DFA.unpackEncodedString(DFA21_acceptS);
+    static final short[] DFA21_special = DFA.unpackEncodedString(DFA21_specialS);
+    static final short[][] DFA21_transition;
+
+    static {
+        int numStates = DFA21_transitionS.length;
+        DFA21_transition = new short[numStates][];
+        for (int i=0; i<numStates; i++) {
+            DFA21_transition[i] = DFA.unpackEncodedString(DFA21_transitionS[i]);
+        }
+    }
+
+    class DFA21 extends DFA {
+
+        public DFA21(BaseRecognizer recognizer) {
+            this.recognizer = recognizer;
+            this.decisionNumber = 21;
+            this.eot = DFA21_eot;
+            this.eof = DFA21_eof;
+            this.min = DFA21_min;
+            this.max = DFA21_max;
+            this.accept = DFA21_accept;
+            this.special = DFA21_special;
+            this.transition = DFA21_transition;
+        }
+        public String getDescription() {
+            return "1:1: Tokens : ( LPAREN | RPAREN | MODULE | IMPORT | SITE | DEF | END | IF | ELSE | EACH | LET | IN | COMMENT | ECHO | CDATA | YIELD | LIST | RECORD | STRING | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | PATH | NATCON | IDCON | SYMBOLCON | TEXT | STRCON | COMMENTS | LAYOUT );";
         }
     }
  

@@ -7,6 +7,9 @@ options {
 }
 
 tokens {
+	LPAREN = '(';
+	RPAREN = ')';
+
 	// Keywords
 	MODULE = 'module' ;
 	IMPORT = 'import' ;
@@ -30,7 +33,12 @@ tokens {
 }
 
 // Parser rules
-module:	 		'module' moduleId moduleElement* 'end' EOF ;
+module returns [String result = "lol "]
+	: 		'module' 
+			id = moduleId { $result += id.toString(); } 
+			( e = moduleElement { $result += e.toString(); } )* 
+			'end' EOF ;
+	
 moduleId:		IDCON ( '.' IDCON )* ;
 moduleElement:		imprt | site | function ;
 imprt:			'import' moduleId ';' ;
@@ -43,7 +51,8 @@ markup:			designator arguments | designator ;
 designator:		IDCON attribute* ;
 attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
 			'@' NATCON | '@' NATCON '%' NATCON;
-arguments:		( '(' expression ( ',' expression  )* ')' ) ;
+arguments:		'(' argument? ( ',' argument )* ')' ; // With text expressions it works as '(' argument* but not as '(' argument* ')'
+argument:		expression ;
 
 expression:		IDCON | NATCON | TEXT ;
 field:			expression '.' IDCON ;
@@ -62,7 +71,7 @@ statement:		'if' '(' predicate ')' statement 'else' statement |
 			'{' statement* '}' |
 			STRCON ';' |
 			'echo' expression ';' |
-			//'echo' embedding ';' |
+			'echo' embedding ';' |
 			'cdata' expression ';' | 
 			'yield;' |
 			markup ';' |
@@ -93,8 +102,11 @@ fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
 
 PATH:			( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT ;
-fragment PATHELEMENT:	( LETTER | DIGIT )+ ; //~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' )+ ; //
+fragment PATHELEMENT:	( LETTER | DIGIT )+ ; // ~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' )+ ; // Causes java heap exception
 fragment FILEEXT:	( LETTER | DIGIT )+ ;
+
+NATCON:			DIGIT+ ;
+IDCON:			LETTER ( LETTER | DIGIT | '-' )+ ;
 
 SYMBOLCON:		'\'' SYMBOLCHAR* ;
 fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') ;
@@ -110,10 +122,7 @@ fragment ENTREF:	'&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' |
 STRCON:			'comment' LAYOUT '\"' STRCHAR* '\"' ;
 fragment STRCHAR:	~( '\u0000'..'\u001F' | '"' | '\\' ) | ESCLAYOUT | DECIMAL ;
 fragment ESCLAYOUT:	'\\\\n' | '\\\\t' | '\\\\"' | '\\\\\\\\' ;
-fragment DECIMAL:	'\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT ;	
-
-NATCON:			DIGIT+ ;
-IDCON:			LETTER ( LETTER | DIGIT | '-' )+ ;
+fragment DECIMAL:	'\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT ;
 
 COMMENTS:		'//' .* '\n' | '/*' .* '*/' { $channel = HIDDEN; } ;
 LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; } ;

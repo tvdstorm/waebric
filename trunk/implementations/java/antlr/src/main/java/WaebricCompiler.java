@@ -17,7 +17,7 @@ public class WaebricCompiler {
 	        WaebricLexer lexer = new WaebricLexer(input);
 	        CommonTokenStream tokens = new CommonTokenStream(lexer);
 	        WaebricParser parser = new WaebricParser(tokens);
-	        parser.module();
+	        System.out.println(parser.module().result);
 	}
 		
 }
