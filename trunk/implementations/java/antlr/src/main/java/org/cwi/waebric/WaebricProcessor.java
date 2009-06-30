@@ -1,5 +1,7 @@
 package org.cwi.waebric;
 
+import java.io.StringReader;
+
 import org.antlr.runtime.*;
 
 /**
@@ -17,9 +19,19 @@ public class WaebricProcessor {
 	public static void main(String[] args) throws Exception {
 	        ANTLRInputStream input = new ANTLRInputStream(System.in);
 	        WaebricLexer lexer = new WaebricLexer(input);
+	        
+	        Token token;
+	        do { 
+	        	token = lexer.nextToken(); 
+	        	System.out.println("Text: " + token.getText());
+	        	System.out.println("Type: " + token.getType());
+	        } while (token.getType() != WaebricLexer.EOF); 
+
+	        /*
 	        CommonTokenStream tokens = new CommonTokenStream(lexer);
 	        WaebricParser parser = new WaebricParser(tokens);
 	        System.out.println(parser.module().result);
+	        */
 	}
 		
 }
