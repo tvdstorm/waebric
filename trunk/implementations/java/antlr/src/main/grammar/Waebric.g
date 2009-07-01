@@ -53,6 +53,7 @@ tokens {
 
 @parser::header {package org.cwi.waebric;}
 @lexer::header {package org.cwi.waebric;}
+@lexer::members {private boolean inSite = false;}
 
 // Parser rules
 module returns [String result="lol "]
@@ -104,7 +105,7 @@ assignment:		IDCON '=' expression ';' | // Variable binding
 predicate:		( expression | not | is ) ( '&&' predicate | '||' predicate )*;
 not:			'!' predicate ;		
 is:			expression '.' type ;
-type:			LIST | RECORD | STRING ;
+type:			'list' | 'record' | 'string' ;
 
 embedding:		PRETEXT embed texttail ;	
 embed:			markup* expression |
@@ -112,11 +113,14 @@ embed:			markup* expression |
 texttail:		POSTTEXT | MIDTEXT embed texttail ;
 
 // Lexical rules
+SITE:			'site' { inSite = true; } ;
+END:			'end' { inSite = false; } ;	
+
 fragment LETTER:	'a'..'z' | 'A'..'Z' ;
 fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
 
-PATH:			( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT ;
+PATH:			( { inSite }? => ( ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT ) ) ; 
 fragment PATHELEMENT:	( LETTER | DIGIT )+ ; // ~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' )+ ; Causes java heap exception
 fragment FILEEXT:	( LETTER | DIGIT )+ ;
 
