@@ -58,6 +58,8 @@ tokens {
 	import org.cwi.waebric.parser.ast.module.*;
 	import org.cwi.waebric.parser.ast.module.site.*;
 	import org.cwi.waebric.parser.ast.module.function.*;
+	import org.cwi.waebric.parser.ast.markup.*;
+	import org.cwi.waebric.parser.ast.expression.*;
 }
 
 @lexer::header {
@@ -73,47 +75,66 @@ tokens {
 	private boolean inString = false;
 }
 
-/**
- * Parser rules
- */
- 
-// Module
-module returns [Module node = new Module()]
-	: 		'module' 
-			id=moduleId { $node.setIdentifier(id.node); } 
-			( 	
-				i=imprt { $node.addImport(i.node); } |
-				s=site { $node.addSite(s.node); } |
-				f=function {  }
-			)* 'end' ;
+// language.waebric.module
+module returns [Module result = new Module()] : 		
+	'module' id=moduleId { $result.setIdentifier(id.result); } ( 	
+		i=imprt { $result.addImport(i.result); } |
+		s=site { $result.addSite(s.result); } |
+		f=function {  }
+	)* 'end' ;
 	
-moduleId returns [ModuleId node = new ModuleId()]
-	:		id = IDCON { $node.add(new IdCon(id.getText())); }
-			( '.' id=IDCON { $node.add(new IdCon(id.getText())); } )* ;
+moduleId returns [ModuleId result = new ModuleId()] :
+	id = IDCON { $result.add(new IdCon(id.getText())); }
+	( '.' id=IDCON { $result.add(new IdCon(id.getText())); } )* ;
 
-imprt returns [Import node = new Import()]
-	:		'import' id=moduleId ';' { $node.setIdentifier(id.node); } ;
+imprt returns [Import result = new Import()] :
+	'import' id=moduleId ';' { $result.setIdentifier(id.result); } ;
 
-// Site
-site returns [Site node = new Site()]
-	:		'site' m=mappings 'end' { $node.setMappings(m.node); } ;
+// language.waebric.site
+site returns [Site result = new Site()]:
+	'site' m=mappings 'end' { $result.setMappings(m.result); } ;
 
-mappings returns [Mappings node = new Mappings()]
-	:		mapping? ( ';' mapping )* ;
+mappings returns [Mappings result = new Mappings()] :
+	( m=mapping { $result.add(m.result); } )? ( ';' m=mapping { $result.add(m.result); } )* ;
 
-mapping	:		PATH ':' markup ;
+mapping	returns [Mapping result = new Mapping()] :
+	p=PATH { $result.setPath(new Path(p.getText())); } 
+	':' m=markup { $result.setMarkup(m.result); } ;
 
-markup:			designator arguments | designator ;
-designator:		IDCON attribute* ;
-attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
-			'@' NATCON | '@' NATCON '%' NATCON;
-arguments:		'(' argument? ( ',' argument )* ')' ;
-argument:		expression ;
+// language.waebric.markup
+markup returns [Markup result] :
+	d=designator args=arguments { $result = new Markup.Call(d.result, args.result); } | 
+	d=designator { $result = new Markup.Tag(d.result); } ;
+	
+designator returns [Designator result] :
+	id=IDCON atts=attributes { $result = new Designator(new IdCon(id.getText()), atts.result); } ;
+	
+attributes returns [Attributes result = new Attributes()] :
+	( att=attribute { $result.add(att.result); } )*;
+	
+attribute returns [Attribute result] :
+	'#' id=IDCON { $result = new Attribute.IdAttribute(new IdCon(id.getText())); } | 
+	'.' id=IDCON { $result = new Attribute.ClassAttribute(new IdCon(id.getText())); } | 
+	'$' id=IDCON { $result = new Attribute.NameAttribute(new IdCon(id.getText())); } | 
+	':' id=IDCON { $result = new Attribute.TypeAttribute(new IdCon(id.getText())); } | 
+	'@' w=NATCON { $result = new Attribute.WidthAttribute(new NatCon(w.getText())); } | 
+	'@' w=NATCON '%' h=NATCON { $result = new Attribute.WidthHeightAttribute(new NatCon(w.getText()), new NatCon(h.getText())); } ;
+	
+arguments returns [Arguments result = new Arguments()] :
+	'(' ( arg=argument { $result.add(arg.result); } )? ( ',' arg=argument { $result.add(arg.result); } )* ')' ;
 
-expression:		( IDCON | NATCON | TEXT | SYMBOLCON | list | record ) ( '.' IDCON | '+' expression )* ;
+argument returns [Argument result] :
+	e=expression { $result = new Argument.RegularArgument(e.result); } | 
+	id=IDCON '=' e=expression { $result = new Argument.Attr(new IdCon(id.getText()), e.result); } ;
+
+// language.waebric.expression
+expression returns [Expression result = null] :		
+	( IDCON | NATCON | TEXT | SYMBOLCON | list | record ) ( '.' IDCON | '+' expression )* ;
+	
 list:			'[' expression? ( ',' expression )* ']' ;
 record:			'{' keyvaluepair? ( ',' keyvaluepair )* '}' ;	
 keyvaluepair:		IDCON ':' expression ;
+
 
 // Function
 function:		'def' IDCON formals statement* 'end';
