@@ -51,20 +51,42 @@ tokens {
 	OR = '||' ;	
 }
 
-@parser::header {package org.cwi.waebric;}
-@lexer::header {package org.cwi.waebric;}
-@lexer::members {private boolean inSite = false;}
+@parser::header {
+	package org.cwi.waebric;
+	
+	import org.cwi.waebric.parser.ast.basic.*;
+	import org.cwi.waebric.parser.ast.module.*;
+}
+
+@lexer::header {
+	package org.cwi.waebric;
+}
+
+@lexer::members {
+	// Differentiate between idcon and path
+	private boolean inSite = false;
+	private boolean inPath = false;
+	
+	// Differentiate between text and string
+	private boolean inString = false;
+}
 
 // Parser rules
-module returns [String result="lol "]
+module returns [Module node = new Module()]
 	: 		'module' 
-			id=moduleId { $result += id.toString(); } 
-			( e=moduleElement { $result += e.toString(); } )* 
-			'end' ;
+			id=moduleId { $node.setIdentifier(id.node); } 
+			( 	
+				i=imprt { $node.addImport(i.node); } |
+				s=site {  } |
+				f=function {  }
+			)* 'end' ;
 	
-moduleId:		IDCON ( '.' IDCON )* ;
-moduleElement:		imprt | site | function ;
-imprt:			'import' moduleId ';' ;
+moduleId returns [ModuleId node = new ModuleId()]
+	:		id = IDCON { $node.add(new IdCon(id.getText())); }
+			( '.' id=IDCON { $node.add(new IdCon(id.getText())); } )* ;
+
+imprt returns [Import node = new Import()]
+	:		'import' id=moduleId ';' { $node.setIdentifier(id.node); } ;
 
 site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
@@ -90,7 +112,7 @@ statement:		'if' '(' predicate ')' statement 'else' statement |
 			'each' '(' IDCON ':' expression ')' statement | 
 			'let' assignment+ 'in' statement* 'end' |
 			'{' statement* '}' |
-			STRCON ';' |
+			'comment' STRCON ';' |
 			'echo' expression ';' |
 			'echo' embedding ';' |
 			'cdata' expression ';' | 
@@ -113,16 +135,23 @@ embed:			markup* expression |
 texttail:		POSTTEXT | MIDTEXT embed texttail ;
 
 // Lexical rules
-SITE:			'site' { inSite = true; } ;
-END:			'end' { inSite = false; } ;	
+COMMENT	:		'comment' { inString = true; } ;
+SITE:			'site' { inSite = true; inPath = true; } ;
+END:			'end' { inSite = false; inPath = false; } ;
+SEMICOLON:		';' { inPath = inSite; } ;			
 
 fragment LETTER:	'a'..'z' | 'A'..'Z' ;
 fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
 
-PATH:			( { inSite }? => ( ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT ) ) ; 
+PATH:			( { inPath }? => ( ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT ) { inPath = false; } ) ; 
 fragment PATHELEMENT:	( LETTER | DIGIT )+ ; // ~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' )+ ; Causes java heap exception
 fragment FILEEXT:	( LETTER | DIGIT )+ ;
+
+STRCON:			( { inString }? => ( '\"' STRCHAR* '\"' ) { inString = false; } ) ;
+fragment STRCHAR:	~( '\u0000'..'\u001F' | '"' | '\\' ) | ESCLAYOUT | DECIMAL ;
+fragment ESCLAYOUT:	'\\\\n' | '\\\\t' | '\\\\"' | '\\\\\\\\' ;
+fragment DECIMAL:	'\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT ;
 
 PRETEXT:		'"' TEXTCHAR* '<' ;
 POSTTEXT:		'>' TEXTCHAR* '"' ;
@@ -138,11 +167,6 @@ fragment ENTREF:	'&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' |
 
 SYMBOLCON:		'\'' SYMBOLCHAR* ;
 fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') ;
-
-STRCON:			'comment' LAYOUT '\"' STRCHAR* '\"' ;
-fragment STRCHAR:	~( '\u0000'..'\u001F' | '"' | '\\' ) | ESCLAYOUT | DECIMAL ;
-fragment ESCLAYOUT:	'\\\\n' | '\\\\t' | '\\\\"' | '\\\\\\\\' ;
-fragment DECIMAL:	'\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT ;
 
 NATCON:			DIGIT+ ;
 IDCON:			LETTER ( LETTER | DIGIT | '-' )+ ;
