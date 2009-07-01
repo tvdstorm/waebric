@@ -1,0 +1,23 @@
+Difficulties occured translating ASF+SDF in ANTLR grammar:
+1. Lexing is done seperately from parsing. Thus while lexing the tokens have no notion
+   of parsing context. This causes ambiguity between pathelement and idcon + text and string.
+   To solve this problem some additional conditionals were held in java for both path and
+   string context, ANTLR supports java conditionals in grammar.
+2. ANTLR returned personal AST, which needed to be mapped on available AST. ANTLR supports
+   custom AST's but they need to inherit from an AST interface, used return rules instead.
+   The only difficulty here is that action code has no syntax highlighting, not even in 
+   ANTLRWORKS (ANTLR IDE). 
+3. All grammar rules are currently stored in one grammar file, these need to be separated
+   ; there are two options:
+   	1. Separate lexical from parsing rules (lexer grammar, parser/tree grammar)
+   	2. Seperate different modules (e.g. module, markup, expression etc.) and use import.
+   	
+   	
+CHECKING:
+ANTLR supports checking functionality with @rulecheck. // TODO: Figure out what kind
+of checks are supported. Is it pure token type checking or also e.g. var, func decls.
+
+INTERPRETING:
+With a tree grammar an output can be generated, however I already implemented an interpreter
+in vanilla Java. This interpreter follows a visitor pattern making it very similar to the
+ANTLR implementation.
