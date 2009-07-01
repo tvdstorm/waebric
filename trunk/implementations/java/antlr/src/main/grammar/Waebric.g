@@ -129,12 +129,31 @@ argument returns [Argument result] :
 
 // language.waebric.expression
 expression returns [Expression result = null] :		
-	( IDCON | NATCON | TEXT | SYMBOLCON | list | record ) ( '.' IDCON | '+' expression )* ;
+	( 
+		id=IDCON { $result = new Expression.VarExpression(new IdCon(id.getText())); } | 
+		n=NATCON { $result = new Expression.NatExpression(new NatCon(n.getText())); } | 
+		t=TEXT { $result = new Expression.TextExpression(new Text(t.getText())); } | 
+		s=SYMBOLCON { $result = new Expression.SymbolExpression(new SymbolCon(s.getText().substring(1))); } | 
+		l=list { $result = l.result; } | 
+		r=record { $result = r.result; }
+	)
 	
-list:			'[' expression? ( ',' expression )* ']' ;
-record:			'{' keyvaluepair? ( ',' keyvaluepair )* '}' ;	
-keyvaluepair:		IDCON ':' expression ;
-
+	(
+		'.' id=IDCON { $result = new Expression.Field($result, new IdCon(id.getText())); } | 
+		'+' e=expression { $result = new Expression.CatExpression($result, e.result); }
+	)* ;
+	
+list returns [Expression.ListExpression result = new Expression.ListExpression()] :			
+	'[' ( e=expression { $result.addExpression(e.result); } )? 
+	( ',' e=expression { $result.addExpression(e.result); } )* ']' ;
+	
+record returns [Expression.RecordExpression result = new Expression.RecordExpression()] :			
+	'{' ( p=keyvaluepair { $result.addKeyValuePair(p.result); } )? 
+	( ',' p=keyvaluepair { $result.addKeyValuePair(p.result); } )* '}' ;
+	
+keyvaluepair returns [KeyValuePair result = new KeyValuePair()] :
+	id=IDCON { $result.setIdentifier(new IdCon(id.getText())); } 
+	':' e=expression { $result.setExpression(e.result); } ;
 
 // Function
 function:		'def' IDCON formals statement* 'end';
