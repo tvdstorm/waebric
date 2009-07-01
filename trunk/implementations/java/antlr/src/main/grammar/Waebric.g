@@ -26,7 +26,29 @@ tokens {
 	RECORD = 'record' ;
 	STRING = 'string' ;
 	
-	
+	LPAREN = '(' ;
+	RPAREN = ')' ;
+	LBRACKET = '[' ;
+	RBRACKET = ']' ;
+	LCBRACKET = '{' ;
+	RCBRACKET = '}' ;	
+	LEMBED = '<' ;
+	REMBED = '>' ;	
+			
+	PERIOD = '.' ;	
+	COMMA = ',' ;	
+	SEMICOLON = ';' ;
+	COLON = ':' ;	
+	HASH = '#' ;
+	AT = '@' ;
+	PERCENT = '%' ;
+	DOLLAR = '$' ;	
+	PLUS = '+' ;
+	EQUALS = '=' ;	
+	EQCLAMATION = '!' ;	
+	DQUOTE = '"' ;
+	AND = '&&' ;
+	OR = '||' ;	
 }
 
 @parser::header {package org.cwi.waebric;}
