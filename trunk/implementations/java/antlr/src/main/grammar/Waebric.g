@@ -54,7 +54,7 @@ attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON |
 arguments:		'(' argument? ( ',' argument )* ')' ; // With text expressions it works as '(' argument* but not as '(' argument* ')'
 argument:		expression ;
 
-expression:		IDCON | NATCON | TEXT ;
+expression:		IDCON | NATCON | TEXT | SYMBOLCON ;
 field:			expression '.' IDCON ;
 cat:			expression '+' expression ;
 list:			'[' expression ( ',' expression ) ']' ;
