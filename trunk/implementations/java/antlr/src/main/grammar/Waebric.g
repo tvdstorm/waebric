@@ -2,7 +2,6 @@ grammar Waebric ;
 
 options {
 	backtrack = true ;
-	language = Java ;
 	output = AST ;
 }
 
@@ -26,16 +25,19 @@ tokens {
 	LIST = 'list' ;
 	RECORD = 'record' ;
 	STRING = 'string' ;
+	
+	
 }
 
-@header { package org.cwi.waebric; }
-@lexer::header { package org.cwi.waebric; }
+@parser::header {package org.cwi.waebric;}
+@lexer::header {package org.cwi.waebric;}
 
-module returns [String result = "lol "]
+// Parser rules
+module returns [String result="lol "]
 	: 		'module' 
-			id = moduleId { $result += id.toString(); } 
-			( e = moduleElement { $result += e.toString(); } )* 
-			'end' EOF ;
+			id=moduleId { $result += id.toString(); } 
+			( e=moduleElement { $result += e.toString(); } )* 
+			'end' ;
 	
 moduleId:		IDCON ( '.' IDCON )* ;
 moduleElement:		imprt | site | function ;
@@ -94,6 +96,7 @@ pretext:		'"' TEXTCHAR* '<' ;
 posttext:		'>' TEXTCHAR* '"' ;
 midtext:		'>' TEXTCHAR* '<' ;
 
+// Lexical rules
 fragment LETTER:	'a'..'z' | 'A'..'Z' ;
 fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
