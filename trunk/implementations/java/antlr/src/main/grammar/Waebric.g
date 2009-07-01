@@ -56,6 +56,8 @@ tokens {
 	
 	import org.cwi.waebric.parser.ast.basic.*;
 	import org.cwi.waebric.parser.ast.module.*;
+	import org.cwi.waebric.parser.ast.module.site.*;
+	import org.cwi.waebric.parser.ast.module.function.*;
 }
 
 @lexer::header {
@@ -71,13 +73,17 @@ tokens {
 	private boolean inString = false;
 }
 
-// Parser rules
+/**
+ * Parser rules
+ */
+ 
+// Module
 module returns [Module node = new Module()]
 	: 		'module' 
 			id=moduleId { $node.setIdentifier(id.node); } 
 			( 	
 				i=imprt { $node.addImport(i.node); } |
-				s=site {  } |
+				s=site { $node.addSite(s.node); } |
 				f=function {  }
 			)* 'end' ;
 	
@@ -88,8 +94,13 @@ moduleId returns [ModuleId node = new ModuleId()]
 imprt returns [Import node = new Import()]
 	:		'import' id=moduleId ';' { $node.setIdentifier(id.node); } ;
 
-site:			'site' mappings 'end' ;
-mappings:		mapping? ( ';' mapping )* ;
+// Site
+site returns [Site node = new Site()]
+	:		'site' m=mappings 'end' { $node.setMappings(m.node); } ;
+
+mappings returns [Mappings node = new Mappings()]
+	:		mapping? ( ';' mapping )* ;
+
 mapping	:		PATH ':' markup ;
 
 markup:			designator arguments | designator ;
@@ -104,6 +115,7 @@ list:			'[' expression? ( ',' expression )* ']' ;
 record:			'{' keyvaluepair? ( ',' keyvaluepair )* '}' ;	
 keyvaluepair:		IDCON ':' expression ;
 
+// Function
 function:		'def' IDCON formals statement* 'end';
 formals:		'(' IDCON? ( ',' IDCON )* ')' | ;
 
@@ -134,7 +146,10 @@ embed:			markup* expression |
 			markup* markup ;
 texttail:		POSTTEXT | MIDTEXT embed texttail ;
 
-// Lexical rules
+/**
+ * Lexer rules
+ */
+ 
 COMMENT	:		'comment' { inString = true; } ;
 SITE:			'site' { inSite = true; inPath = true; } ;
 END:			'end' { inSite = false; inPath = false; } ;
