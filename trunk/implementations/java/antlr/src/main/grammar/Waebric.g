@@ -73,14 +73,12 @@ markup:			designator arguments | designator ;
 designator:		IDCON attribute* ;
 attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
 			'@' NATCON | '@' NATCON '%' NATCON;
-arguments:		'(' argument? ( ',' argument )* ')' ; // With text expressions it works as '(' argument* but not as '(' argument* ')'
+arguments:		'(' argument? ( ',' argument )* ')' ;
 argument:		expression ;
 
-expression:		IDCON | NATCON | TEXT | SYMBOLCON ;
-field:			expression '.' IDCON ;
-cat:			expression '+' expression ;
-list:			'[' expression ( ',' expression ) ']' ;
-record:			'{' keyvaluepair ( ',' keyvaluepair ) '}' ;	
+expression:		( IDCON | NATCON | TEXT | SYMBOLCON | list | record ) ( '.' IDCON | '+' expression )* ;
+list:			'[' expression? ( ',' expression )* ']' ;
+record:			'{' keyvaluepair? ( ',' keyvaluepair )* '}' ;	
 keyvaluepair:		IDCON ':' expression ;
 
 function:		'def' IDCON formals statement* 'end';
@@ -103,12 +101,10 @@ statement:		'if' '(' predicate ')' statement 'else' statement |
 assignment:		IDCON '=' expression ';' | // Variable binding
 			IDCON formals statement ; // Function binding
 
-predicate:		expression | not | /* and | or | */ is;
-not:			'!' predicate ;
-and:			( predicate '&&' ) predicate ;
-or:			( predicate '||' ) predicate ;
+predicate:		( expression | not | is ) ( '&&' predicate | '||' predicate )*;
+not:			'!' predicate ;		
 is:			expression '.' type ;
-type:			LIST | RECORD | STRING ;	
+type:			LIST | RECORD | STRING ;
 
 embedding:		pretext embed texttail ;	
 embed:			markup* expression |
@@ -124,7 +120,7 @@ fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
 
 PATH:			( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT ;
-fragment PATHELEMENT:	( LETTER | DIGIT )+ ; // ~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' )+ ; // Causes java heap exception
+fragment PATHELEMENT:	( LETTER | DIGIT )+ ; // ~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' )+ ; Causes java heap exception
 fragment FILEEXT:	( LETTER | DIGIT )+ ;
 
 NATCON:			DIGIT+ ;
