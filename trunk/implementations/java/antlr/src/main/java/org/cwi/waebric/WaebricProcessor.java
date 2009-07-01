@@ -1,6 +1,8 @@
 package org.cwi.waebric;
 
 import org.antlr.runtime.*;
+import org.cwi.waebric.WaebricParser.module_return;
+import org.cwi.waebric.parser.ast.module.Module;
 
 /**
  * Waebric compiler
@@ -19,7 +21,7 @@ public class WaebricProcessor {
 	        WaebricLexer lexer = new WaebricLexer(input);
 	        CommonTokenStream tokens = new CommonTokenStream(lexer);
 	        WaebricParser parser = new WaebricParser(tokens);
-	        System.out.println(parser.module());
+	        System.out.println(parser.module().node.toString());
 	}
 		
 }
