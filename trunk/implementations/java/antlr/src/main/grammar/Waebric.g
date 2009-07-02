@@ -5,52 +5,6 @@ options {
 	output = AST ;
 }
 
-tokens {
-	MODULE = 'module' ;
-	IMPORT = 'import' ;
-	SITE = 'site' ;
-	DEF = 'def' ;
-	END = 'end' ;
-	
-	IF = 'if' ;
-	ELSE = 'else' ;
-	EACH = 'each' ;
-	LET = 'let' ;
-	IN = 'in' ;
-	COMMENT = 'comment' ;
-	ECHO = 'echo' ;
-	CDATA = 'cdata' ;
-	YIELD = 'yield' ;
-	
-	LIST = 'list' ;
-	RECORD = 'record' ;
-	STRING = 'string' ;
-	
-	LPAREN = '(' ;
-	RPAREN = ')' ;
-	LBRACKET = '[' ;
-	RBRACKET = ']' ;
-	LCBRACKET = '{' ;
-	RCBRACKET = '}' ;	
-	LEMBED = '<' ;
-	REMBED = '>' ;	
-			
-	PERIOD = '.' ;	
-	COMMA = ',' ;	
-	SEMICOLON = ';' ;
-	COLON = ':' ;	
-	HASH = '#' ;
-	AT = '@' ;
-	PERCENT = '%' ;
-	DOLLAR = '$' ;	
-	PLUS = '+' ;
-	EQUALS = '=' ;	
-	EQCLAMATION = '!' ;	
-	DQUOTE = '"' ;
-	AND = '&&' ;
-	OR = '||' ;	
-}
-
 @parser::header {
 	package org.cwi.waebric;
 	
@@ -60,6 +14,7 @@ tokens {
 	import org.cwi.waebric.parser.ast.module.function.*;
 	import org.cwi.waebric.parser.ast.markup.*;
 	import org.cwi.waebric.parser.ast.expression.*;
+	import org.cwi.waebric.parser.ast.statement.*;
 }
 
 @lexer::header {
@@ -67,11 +22,9 @@ tokens {
 }
 
 @lexer::members {
-	// Differentiate between idcon and path
+	// Maintain context information
 	private boolean inSite = false;
 	private boolean inPath = false;
-	
-	// Differentiate between text and string
 	private boolean inString = false;
 }
 
@@ -80,7 +33,7 @@ module returns [Module result = new Module()] :
 	'module' id=moduleId { $result.setIdentifier(id.result); } ( 	
 		i=imprt { $result.addImport(i.result); } |
 		s=site { $result.addSite(s.result); } |
-		f=function {  }
+		f=function { $result.addFunctionDef(f.result); }
 	)* 'end' ;
 	
 moduleId returns [ModuleId result = new ModuleId()] :
@@ -156,10 +109,22 @@ keyvaluepair returns [KeyValuePair result = new KeyValuePair()] :
 	':' e=expression { $result.setExpression(e.result); } ;
 
 // Function
-function:		'def' IDCON formals statement* 'end';
-formals:		'(' IDCON? ( ',' IDCON )* ')' | ;
+function returns [FunctionDef result = new FunctionDef()] :		
+	'def' id=IDCON { $result.setIdentifier(new IdCon(id.getText())); } 
+	f=formals { $result.setFormals(f.result); }
+	( s=statement { $result.addStatement(s.result); } )* 'end';
 
-statement:		'if' '(' predicate ')' statement 'else' statement | 
+formals returns [Formals result] :
+	r=regularFormal { $result=r.result; } | e=emptyFormal { $result=e.result; } ;
+	
+regularFormal returns [Formals.RegularFormal result = new Formals.RegularFormal()] :
+	'(' ( id=IDCON { $result.addIdentifier(new IdCon(id.getText())); } )? 
+	( ',' id=IDCON { $result.addIdentifier(new IdCon(id.getText())); } )* ')';
+	
+emptyFormal returns [Formals.EmptyFormal result = new Formals.EmptyFormal()]: ;
+
+statement returns [Statement result = null]: // TODO
+			'if' '(' predicate ')' statement 'else' statement | 
 			'if' '(' predicate ')' statement |
 			'each' '(' IDCON ':' expression ')' statement | 
 			'let' assignment+ 'in' statement* 'end' |
@@ -189,12 +154,28 @@ texttail:		POSTTEXT | MIDTEXT embed texttail ;
 /**
  * Lexer rules
  */
- 
-COMMENT	:		'comment' { inString = true; } ;
-SITE:			'site' { inSite = true; inPath = true; } ;
-END:			'end' { inSite = false; inPath = false; } ;
-SEMICOLON:		';' { inPath = inSite; } ;			
+MODULE:			'module' ;
+IMPORT:			'import' ;
+SITE:			'site' { inSite = true; inPath = true; } ; // Site init
+DEF:			'def' ;
+END:			'end' { inSite = false; inPath = false; } ; // Site kill
 
+IF:			'if' ;
+ELSE:			'else' ;
+EACH:			'each' ;
+LET:			'let' ;
+ECHO:			'echo' ;
+CDATA:			'cdata' ;
+IN:			'in' ;
+YIELD:			'yield' ;
+COMMENT	:		'comment' { inString = true; } ;
+
+LIST:			'list' ;
+RECORD:			'record' ;
+STRING:			'string' ;
+
+SEMICOLON:		';' { inPath = inSite; } ; // Mapping separator
+ 
 fragment LETTER:	'a'..'z' | 'A'..'Z' ;
 fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
