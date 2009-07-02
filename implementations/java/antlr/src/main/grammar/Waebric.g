@@ -15,6 +15,8 @@ options {
 	import org.cwi.waebric.parser.ast.markup.*;
 	import org.cwi.waebric.parser.ast.expression.*;
 	import org.cwi.waebric.parser.ast.statement.*;
+	import org.cwi.waebric.parser.ast.statement.predicate.*;
+	import org.cwi.waebric.parser.ast.statement.embedding.*;
 }
 
 @lexer::header {
@@ -37,8 +39,8 @@ module returns [Module result = new Module()] :
 	)* 'end' ;
 	
 moduleId returns [ModuleId result = new ModuleId()] :
-	id=IDCON { $result.add(new IdCon(id.getText())); }
-	( '.' id=IDCON { $result.add(new IdCon(id.getText())); } )* ;
+	id=idcon { $result.add(id.result); }
+	( '.' id=idcon { $result.add(id.result); } )* ;
 
 imprt returns [Import result = new Import()] :
 	'import' id=moduleId ';' { $result.setIdentifier(id.result); } ;
@@ -60,28 +62,28 @@ markup returns [Markup result] :
 	d=designator { $result = new Markup.Tag(d.result); } ;
 	
 designator returns [Designator result] :
-	id=IDCON atts=attributes { $result = new Designator(new IdCon(id.getText()), atts.result); } ;
+	id=idcon atts=attributes { $result = new Designator(id.result, atts.result); } ;
 	
 attributes returns [Attributes result = new Attributes()] :
 	( att=attribute { $result.add(att.result); } )*;
 	
 attribute returns [Attribute result] :
-	'#' id=IDCON { $result = new Attribute.IdAttribute(new IdCon(id.getText())); } | 
-	'.' id=IDCON { $result = new Attribute.ClassAttribute(new IdCon(id.getText())); } | 
-	'$' id=IDCON { $result = new Attribute.NameAttribute(new IdCon(id.getText())); } | 
-	':' id=IDCON { $result = new Attribute.TypeAttribute(new IdCon(id.getText())); } | 
-	'@' w=NATCON { $result = new Attribute.WidthAttribute(new NatCon(w.getText())); } | 
-	'@' w=NATCON '%' h=NATCON { $result = new Attribute.WidthHeightAttribute(new NatCon(w.getText()), new NatCon(h.getText())); } ;
+	'#' id=idcon { $result = new Attribute.IdAttribute(id.result); } | 
+	'.' id=idcon { $result = new Attribute.ClassAttribute(id.result); } | 
+	'$' id=idcon { $result = new Attribute.NameAttribute(id.result); } | 
+	':' id=idcon { $result = new Attribute.TypeAttribute(id.result); } | 
+	'@' w=natcon { $result = new Attribute.WidthAttribute(w.result); } | 
+	'@' w=natcon '%' h=natcon { $result = new Attribute.WidthHeightAttribute(w.result, h.result); } ;
 	
 arguments returns [Arguments result = new Arguments()] :
 	'(' ( arg=argument { $result.add(arg.result); } )? ( ',' arg=argument { $result.add(arg.result); } )* ')' ;
 
 argument returns [Argument result] :
 	e=expression { $result = new Argument.RegularArgument(e.result); } | 
-	id=IDCON '=' e=expression { $result = new Argument.Attr(new IdCon(id.getText()), e.result); } ;
+	id=idcon '=' e=expression { $result = new Argument.Attr(id.result, e.result); } ;
 
 // language.waebric.expression
-expression returns [Expression result = null] :		
+expression returns [Expression result] :		
 	(
 		// Non-recursive expressions
 		i=idExpression { $result = i.result; } | 
@@ -94,21 +96,21 @@ expression returns [Expression result = null] :
 	
 	(
 		// Recursive expressions (see: left-recurssion removal)
-		'.' id=IDCON { $result = new Expression.Field($result, new IdCon(id.getText())); } | 
+		'.' id=idcon { $result = new Expression.Field($result, id.result); } | 
 		'+' e=expression { $result = new Expression.CatExpression($result, e.result); }
 	)* ;
 
 idExpression returns [Expression.VarExpression result] :
-	id=IDCON { $result = new Expression.VarExpression(new IdCon(id.getText())); } ;
+	id=idcon { $result = new Expression.VarExpression(id.result); } ;
 
 natExpression returns [Expression.NatExpression result] :
-	n=NATCON { $result = new Expression.NatExpression(new NatCon(n.getText())); } ;
+	n=natcon { $result = new Expression.NatExpression(n.result); } ;
 	
 symbolExpression returns [Expression.SymbolExpression result] :
-	s=SYMBOLCON { $result = new Expression.SymbolExpression(new SymbolCon(s.getText().substring(1))); } ;
+	s=symbolcon { $result = new Expression.SymbolExpression(s.result); } ;
 	
 textExpression returns [Expression.TextExpression result] :
-	t=TEXT { $result = new Expression.TextExpression(new Text(t.getText())); } ;
+	t=text { $result = new Expression.TextExpression(t.result); } ;
 
 listExpression returns [Expression.ListExpression result = new Expression.ListExpression()] :			
 	'[' ( e=expression { $result.addExpression(e.result); } )? 
@@ -119,12 +121,12 @@ recordExpression returns [Expression.RecordExpression result = new Expression.Re
 	( ',' p=keyvaluepair { $result.addKeyValuePair(p.result); } )* '}' ;
 	
 keyvaluepair returns [KeyValuePair result = new KeyValuePair()] :
-	id=IDCON { $result.setIdentifier(new IdCon(id.getText())); } 
+	id=idcon { $result.setIdentifier(id.result); } 
 	':' e=expression { $result.setExpression(e.result); } ;
 
-// Function
+// language.waebric.function
 function returns [FunctionDef result = new FunctionDef()] :		
-	'def' id=IDCON { $result.setIdentifier(new IdCon(id.getText())); } 
+	'def' id=idcon { $result.setIdentifier(id.result); } 
 	f=formals { $result.setFormals(f.result); }
 	( s=statement { $result.addStatement(s.result); } )* 'end';
 
@@ -132,12 +134,13 @@ formals returns [Formals result] :
 	r=regularFormal { $result=r.result; } | e=emptyFormal { $result=e.result; } ;
 	
 regularFormal returns [Formals.RegularFormal result = new Formals.RegularFormal()] :
-	'(' ( id=IDCON { $result.addIdentifier(new IdCon(id.getText())); } )? 
-	( ',' id=IDCON { $result.addIdentifier(new IdCon(id.getText())); } )* ')';
+	'(' ( id=idcon { $result.addIdentifier(id.result); } )? 
+	( ',' id=idcon { $result.addIdentifier(id.result); } )* ')';
 	
 emptyFormal returns [Formals.EmptyFormal result = new Formals.EmptyFormal()]: ;
 
-statement returns [Statement result = null]: // TODO
+// language.waebric.statement TODO
+statement returns [Statement result] :
 			'if' '(' predicate ')' statement 'else' statement | 
 			'if' '(' predicate ')' statement |
 			'each' '(' IDCON ':' expression ')' statement | 
@@ -152,22 +155,55 @@ statement returns [Statement result = null]: // TODO
 			markup+ statement ';' |
 			markup+ markup ';' |
 			markup+ expression ';' ;
+			
+ifElseStatement returns [Statement.IfElse result = new Statement.IfElse()] :	
+	'if' '(' p=predicate ')' { $result.setPredicate(p.result); }
+	t=statement { $result.setTrueStatement(t.result); }
+	'else' f=statement { $result.setFalseStatement(f.result); } ;
 
+ifStatement returns [Statement.If result = new Statement.If()] :
+	'if' '(' p=predicate ')' { $result.setPredicate(p.result); }
+	t=statement { $result.setTrueStatement(t.result); } ;
+	
+eachStatement returns [Statement.Each result = new Statement.Each()] :
+	'each' '(' id=idcon ':' { $result.setVar(id.result); }
+	e=expression ')' { $result.setExpression(e.result); }
+	s=statement { $result.setStatement(s.result); } ;
+			
+assignment returns [Assignment result] :	
+	IDCON '=' expression ';' | // Variable binding
+	IDCON formals statement ; // Function binding
 
-				
-assignment:		IDCON '=' expression ';' | // Variable binding
-			IDCON formals statement ; // Function binding
-
-predicate:		( expression | not | is ) ( '&&' predicate | '||' predicate )*;
+// language.waebric.statement.predicate TODO
+predicate returns [Predicate result] :
+	( expression | not | is ) ( '&&' predicate | '||' predicate )*;
+	
 not:			'!' predicate ;		
 is:			expression '.' type ;
 type:			'list' | 'record' | 'string' ;
 
+// language.waebric.statement.embedding TODO
 embedding:		PRETEXT embed texttail ;	
 embed:			markup* expression |
 			markup* markup ;
 texttail:		POSTTEXT | MIDTEXT embed texttail ;
 
+// language.waebric.basic
+idcon returns [IdCon result]:	
+	id=IDCON { $result = new IdCon(id.getText(), id.getLine(), id.getCharPositionInLine()); } ;
+	
+natcon returns [NatCon result]:	
+	n=NATCON { $result = new NatCon(n.getText()); } ;
+
+symbolcon returns [SymbolCon result] :	
+	s=SYMBOLCON { $result = new SymbolCon(s.getText().substring(1)); } ;
+
+text returns [Text result] :
+	t=TEXT { $result = new Text(t.getText()); } ;
+
+string returns [StrCon result] :
+	s=STRCON { $result = new StrCon(s.getText()); } ;	
+			
 /**
  * Lexer rules
  */

@@ -1,7 +1,6 @@
 package org.cwi.waebric;
 
 import org.antlr.runtime.*;
-import org.cwi.waebric.WaebricParser.module_return;
 import org.cwi.waebric.parser.ast.module.Module;
 
 /**
