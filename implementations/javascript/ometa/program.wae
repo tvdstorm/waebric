@@ -1,4 +1,13 @@
-module kebab
+module abon
 
-import turkije
-import belgie
+def abonnementen 
+ a;
+end
+
+def tijdschriften 
+ b;
+end
+
+def promoties 
+ c;
+end

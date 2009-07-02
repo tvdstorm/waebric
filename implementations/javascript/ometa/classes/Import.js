@@ -4,6 +4,6 @@
  * @author Nickolas Heirbaut
  */
 
-function Import (moduleId){
-	this.moduleId = moduleId
+function Import(moduleId){
+	this.moduleId = moduleId;
 }

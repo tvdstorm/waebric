@@ -9,4 +9,3 @@ function FunctionDefinition (functionName, formals, statements){
 	this.formals = formals;
 	this.statements = statements;
 }
-

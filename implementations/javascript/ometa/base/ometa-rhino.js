@@ -1,3 +1,5 @@
+importPackage(java.io.File)
+importPackage(java.io.FilenameFilter)
 importPackage(java.io)
 
 load("lib.js")
@@ -9,9 +11,25 @@ load("bs-ometa-optimizer.js")
 load("bs-ometa-js-compiler.js")
 
 load("../classes/Module.js")
-load("../classes/ModuleElement.js")
-load("../classes/Import.js")
 load("../classes/ModuleId.js")
+load("../classes/Import.js")
+load("../classes/Site.js")
+load("../classes/Mapping.js")
+load("../classes/FunctionDefinition.js")
+load("../classes/Statement.js")
+load("../classes/Designator.js")
+load("../classes/Argument.js")
+load("../classes/Attribute.js")
+load("../classes/Embed.js")
+load("../classes/Embedding.js")
+load("../classes/Expression.js")
+load("../classes/KeyValuePair.js")
+load("../classes/Path.js")
+load("../classes/Predicate.js")
+load("../classes/TextTail.js")
+load("../classes/Type.js")
+load("../classes/Assignment.js")
+
 
 /**
  * Returns the Waebric grammar written in OMeta for parsing
@@ -58,8 +76,8 @@ getInterpreter = function() {
  * 
  * @return Waebric program (String)
  */
-getProgram = function() {
-    fis = new FileInputStream('../program.wae');
+getProgram = function(path) {
+    fis = new FileInputStream(path);
     bis = new BufferedInputStream(fis);
     dis = new DataInputStream(bis);
 
@@ -78,8 +96,8 @@ getProgram = function() {
  * 
  * @return Input rhino (String)
  */
-getSource = function(){
-	program = getProgram();
+getSource = function(programPath){
+	program = getProgram(programPath);
 
 	source 	= getParser() + ';'
 	        + 'tree = WaebricParser.matchAll(program, "Module");'
@@ -94,7 +112,6 @@ getSource = function(){
 	        + 'alert("\n");'
 			+ getInterpreter() + ';'
 			+ 'html_output = WaebricInterpreter.match(tree, "interp");'
-			+ 'alert(module.moduleElements);' 
 
 	return source;
 }
@@ -119,6 +136,62 @@ translateCode = function(source) {
 alert = print
 
 /**
- * Evaluate the waebric parser and interpreter and display the output
+ * Automated tests (demo's)
  */
-eval(translateCode(getSource()));
+startAutomatedTest = function(){
+	//Get directories	
+	directory = new File("../../../../demos/");
+	directories = directory.listFiles();
+	
+	//Ceate new output file
+	fw = new FileWriter("../results.txt");
+	fw.close();
+	
+	//Evaluate all files in the directories
+	for(var i = 0; i < directories.length; i++){
+		if (directories[i].getName() != ".svn") {
+			evalFiles(directories[i]);
+		}
+	}	
+}
+
+/**
+ * For each waebric program found in the directory, an evaluation is made
+ * This function outputs a file with the result of the evaluation
+ * 
+ * @param {Object} directory
+ */
+evalFiles = function(directory){
+	//Get all files
+	files = directory.listFiles();	
+	
+	//Only evaluate .wae files
+	//Files in subdirectories are ignored
+	for(var i = 0; i < files.length; i++){
+		if (files[i].isFile()){
+			var fileName = files[i].getName();
+			var ext = fileName.substr(fileName.length() - 3 , 3);
+			if(ext == "wae"){
+				//Export the result to a file
+				var result = eval(translateCode(getSource(files[i])));
+				if (result == '') {
+					saveResult('FAILED');
+				}
+				else {
+					saveResult(result);
+				}
+			}
+		}
+	}
+}
+
+saveResult = function(){
+	fw = new FileWriter("../results.txt", true);
+    bw = new BufferedWriter(fw);
+    bw.write(html_output + "\n");
+    bw.close();
+}
+
+//startAutomatedTest();
+eval(translateCode(getSource("../program.wae")));
+

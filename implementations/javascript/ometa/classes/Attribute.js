@@ -4,27 +4,27 @@
  * @author Nickolas Heirbaut
  */
 
-function IdAttribute (id){
+function IdAttribute(id){
 	this.id = id;
 }
 
-function ClassAttribute (className){
+function ClassAttribute(className){
 	this.className = className;
 }
 
-function NameAttribute (name){
+function NameAttribute(name){
 	this.name = name;
 }
 
-function TypeAttribute (type){
+function TypeAttribute(type){
 	this.type = type;
 }
 
-function WidthHeightAttribute (width, height){
+function WidthHeightAttribute(width, height){
 	this.width = width;
 	this.height = height;
 }
 
-function WidthAttribute (width){
+function WidthAttribute(width){
 	this.width = width;
 }
