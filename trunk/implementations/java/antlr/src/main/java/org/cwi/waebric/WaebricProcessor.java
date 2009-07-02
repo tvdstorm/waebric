@@ -5,6 +5,7 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.DOTTreeGenerator;
 import org.antlr.stringtemplate.StringTemplate;
 
@@ -43,6 +44,13 @@ public class WaebricProcessor {
 	        CommonTree tree = (CommonTree) result.getTree();
 	        String s = tree.toStringTree();
 	        System.out.println(s);
+	        
+	        CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
+	        WaebricChecker checker = new WaebricChecker(nodes);
+	        curr = System.currentTimeMillis();
+	        checker.module();
+	        long check_time = System.currentTimeMillis() - curr;
+	        System.out.println("Checked in " + check_time + "ms.");
 	}
 		
 }
