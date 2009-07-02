@@ -1,7 +1,9 @@
 package org.cwi.waebric;
 
-import org.antlr.runtime.*;
-import org.cwi.waebric.parser.ast.module.Module;
+import org.antlr.runtime.ANTLRFileStream;
+import org.antlr.runtime.ANTLRInputStream;
+import org.antlr.runtime.CharStream;
+import org.antlr.runtime.CommonTokenStream;
 
 /**
  * Waebric compiler
@@ -16,12 +18,25 @@ public class WaebricProcessor {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-	        ANTLRInputStream input = new ANTLRInputStream(System.in);
-	        WaebricLexer lexer = new WaebricLexer(input);
+			CharStream is;
+			if(args.length == 1) {
+				is = new ANTLRFileStream(args[0]);
+			} else {
+				is = new ANTLRInputStream(System.in);
+			}
+
+	        long curr = System.currentTimeMillis();
+	        WaebricLexer lexer = new WaebricLexer(is);
 	        CommonTokenStream tokens = new CommonTokenStream(lexer);
+	        long scan_time = System.currentTimeMillis() - curr;
+	        System.out.println("Scanned in " + scan_time + "ms.");
+	        
 	        WaebricParser parser = new WaebricParser(tokens);
-	        Module result = parser.module().result;
-	        System.out.println(result);
+	        curr = System.currentTimeMillis();
+	        parser.module();
+	        long parse_time = System.currentTimeMillis() - curr;
+	        System.out.println("Parsed in " + parse_time + "ms.");
+
 	}
 		
 }
