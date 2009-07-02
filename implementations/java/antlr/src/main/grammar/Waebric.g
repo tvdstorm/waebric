@@ -32,11 +32,13 @@ options {
 
 // language.waebric.module
 module returns [Module result = new Module()] : 		
-	'module' id=moduleId { $result.setIdentifier(id.result); } ( 	
+	'module' id=moduleId { $result.setIdentifier(id.result); } 
+	( 	
 		i=imprt { $result.addImport(i.result); } |
 		s=site { $result.addSite(s.result); } |
 		f=function { $result.addFunctionDef(f.result); }
-	)* 'end' ;
+	)* 
+	'end' ;
 	
 moduleId returns [ModuleId result = new ModuleId()] :
 	id=idcon { $result.add(id.result); }
