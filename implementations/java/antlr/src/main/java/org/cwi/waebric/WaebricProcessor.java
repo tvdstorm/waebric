@@ -4,6 +4,9 @@ import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.DOTTreeGenerator;
+import org.antlr.stringtemplate.StringTemplate;
 
 /**
  * Waebric compiler
@@ -33,10 +36,13 @@ public class WaebricProcessor {
 	        
 	        WaebricParser parser = new WaebricParser(tokens);
 	        curr = System.currentTimeMillis();
-	        parser.module();
+	        WaebricParser.module_return result = parser.module();
 	        long parse_time = System.currentTimeMillis() - curr;
 	        System.out.println("Parsed in " + parse_time + "ms.");
-
+	        
+	        CommonTree tree = (CommonTree) result.getTree();
+	        String s = tree.toStringTree();
+	        System.out.println(s);
 	}
 		
 }
