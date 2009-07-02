@@ -37,7 +37,7 @@ module returns [Module result = new Module()] :
 	)* 'end' ;
 	
 moduleId returns [ModuleId result = new ModuleId()] :
-	id = IDCON { $result.add(new IdCon(id.getText())); }
+	id=IDCON { $result.add(new IdCon(id.getText())); }
 	( '.' id=IDCON { $result.add(new IdCon(id.getText())); } )* ;
 
 imprt returns [Import result = new Import()] :
@@ -82,25 +82,39 @@ argument returns [Argument result] :
 
 // language.waebric.expression
 expression returns [Expression result = null] :		
-	( 
-		id=IDCON { $result = new Expression.VarExpression(new IdCon(id.getText())); } | 
-		n=NATCON { $result = new Expression.NatExpression(new NatCon(n.getText())); } | 
-		t=TEXT { $result = new Expression.TextExpression(new Text(t.getText())); } | 
-		s=SYMBOLCON { $result = new Expression.SymbolExpression(new SymbolCon(s.getText().substring(1))); } | 
-		l=list { $result = l.result; } | 
-		r=record { $result = r.result; }
+	(
+		// Non-recursive expressions
+		i=idExpression { $result = i.result; } | 
+		n=natExpression { $result = n.result; } |
+		s=symbolExpression { $result = s.result; } | 
+		t=textExpression { $result = t.result; } |
+		l=listExpression { $result = l.result; } | 
+		r=recordExpression { $result = r.result; }
 	)
 	
 	(
+		// Recursive expressions (see: left-recurssion removal)
 		'.' id=IDCON { $result = new Expression.Field($result, new IdCon(id.getText())); } | 
 		'+' e=expression { $result = new Expression.CatExpression($result, e.result); }
 	)* ;
+
+idExpression returns [Expression.VarExpression result] :
+	id=IDCON { $result = new Expression.VarExpression(new IdCon(id.getText())); } ;
+
+natExpression returns [Expression.NatExpression result] :
+	n=NATCON { $result = new Expression.NatExpression(new NatCon(n.getText())); } ;
 	
-list returns [Expression.ListExpression result = new Expression.ListExpression()] :			
+symbolExpression returns [Expression.SymbolExpression result] :
+	s=SYMBOLCON { $result = new Expression.SymbolExpression(new SymbolCon(s.getText().substring(1))); } ;
+	
+textExpression returns [Expression.TextExpression result] :
+	t=TEXT { $result = new Expression.TextExpression(new Text(t.getText())); } ;
+
+listExpression returns [Expression.ListExpression result = new Expression.ListExpression()] :			
 	'[' ( e=expression { $result.addExpression(e.result); } )? 
 	( ',' e=expression { $result.addExpression(e.result); } )* ']' ;
 	
-record returns [Expression.RecordExpression result = new Expression.RecordExpression()] :			
+recordExpression returns [Expression.RecordExpression result = new Expression.RecordExpression()] :			
 	'{' ( p=keyvaluepair { $result.addKeyValuePair(p.result); } )? 
 	( ',' p=keyvaluepair { $result.addKeyValuePair(p.result); } )* '}' ;
 	
@@ -137,7 +151,10 @@ statement returns [Statement result = null]: // TODO
 			markup ';' |
 			markup+ statement ';' |
 			markup+ markup ';' |
-			markup+ expression ';' ;	
+			markup+ expression ';' ;
+
+
+				
 assignment:		IDCON '=' expression ';' | // Variable binding
 			IDCON formals statement ; // Function binding
 
