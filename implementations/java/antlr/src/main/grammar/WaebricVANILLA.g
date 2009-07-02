@@ -1,4 +1,4 @@
-grammar CompleteWaebric ;
+grammar WaebricVANILLA ;
 
 options {
 	backtrack = true ;

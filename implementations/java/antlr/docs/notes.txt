@@ -21,3 +21,9 @@ INTERPRETING:
 With a tree grammar an output can be generated, however I already implemented an interpreter
 in vanilla Java. This interpreter follows a visitor pattern making it very similar to the
 ANTLR implementation.
+
+
+
+TREE CONSTRUCTION:
+1. Custom AST can be created using TreeAdapter, however!! it only works on tokens not
+on nodes. THUS i'll have to reimplement ALL parsing rules in the create function, no ty.

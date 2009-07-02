@@ -6,6 +6,7 @@ options {
 }
 
 tokens {
+	// Keywords
 	MODULE = 'module' ;
 	IMPORT = 'import' ;
 	SITE = 'site' ;
@@ -43,7 +44,7 @@ tokens {
 }
 
 // Parser rules
-module: 		'module' moduleId ( imprt | site | function )* 'end' ;
+module: 		'module' moduleId ( imprt | site | function )* 'end';
 moduleId:		IDCON ( '.' IDCON )* ;
 imprt:			'import' moduleId ';' ;
 
@@ -51,52 +52,56 @@ site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
 
-markup:			designator arguments | designator ;
+markup:			designator arguments? ;
 designator:		IDCON attribute* ;
 attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
 			'@' NATCON | '@' NATCON '%' NATCON;
 arguments:		'(' argument? ( ',' argument )* ')' ;
 argument:		expression ;
 
-expression:		( IDCON | NATCON | TEXT | SYMBOLCON | list | record ) ( '.' IDCON | '+' expression )* ;
-list:			'[' expression? ( ',' expression )* ']' ;
-record:			'{' keyvaluepair? ( ',' keyvaluepair )* '}' ;	
+expression:		( idExpr | natExpr | textExpr | symbolExpr | listExpr | recordExpr ) 
+			( '.' IDCON | '+' expression )* ; // Left-recusion removal
+idExpr:			IDCON;	
+natExpr:		NATCON;
+textExpr:		TEXT;
+symbolExpr:		SYMBOLCON;			
+listExpr:		'[' expression? ( ',' expression )* ']' ;
+recordExpr:		'{' keyvaluepair? ( ',' keyvaluepair )* '}' ;	
 keyvaluepair:		IDCON ':' expression ;
 
 function:		'def' IDCON formals statement* 'end';
 formals:		'(' IDCON? ( ',' IDCON )* ')' | ;
 
-statement:		'if' '(' predicate ')' statement 'else' statement | 
-			'if' '(' predicate ')' statement |
-			'each' '(' IDCON ':' expression ')' statement | 
-			'let' assignment+ 'in' statement* 'end' |
-			'{' statement* '}' |
-			STRCON ';' |
-			'echo' expression ';' |
-			'echo' embedding ';' |
-			'cdata' expression ';' | 
-			'yield;' |
-			markup ';' |
-			markup+ statement ';' |
-			markup+ markup ';' |
-			markup+ expression ';' ;	
+statement:		ifElseStm | ifStm | eachStm | letStm | blockStm | 
+			commentStm | echoStm | cdataStm | yieldStm | markupStm;	
+ifStm:			'if' '(' predicate ')' statement ; // TODO: Look-ahead no else
+ifElseStm:		'if' '(' predicate ')' statement 'else' statement ;	
+eachStm:		'each' '(' IDCON ':' expression ')' statement ;	
+letStm:			'let' assignment+ 'in' statement* 'end' ;
+blockStm:		'{' statement* '}' ;
+commentStm:		'comment' STRCON ';' ;
+echoStm:		'echo' expression ';'  | 'echo' embedding ';' ;
+cdataStm:		'cdata' expression ';' ;
+yieldStm:		'yield;' ;
+markupStm:		markup ';' | markup+ statement ';' | markup+ markup ';' | markup+ expression ';' ;
 assignment:		IDCON '=' expression ';' | // Variable binding
 			IDCON formals statement ; // Function binding
 
-predicate:		( expression | not | is ) ( '&&' predicate | '||' predicate )*;
-not:			'!' predicate ;		
-is:			expression '.' type ;
+predicate:		( notPredicate | declaredPredicate | isPredicate ) 
+			( '&&' predicate | '||' predicate )* ; // Left-recussion removal 
+notPredicate:		'!' predicate ;	
+declaredPredicate:	expression ; // Check expression declaration (not null)
+isPredicate:		expression '.' type ; // Check expression type
 type:			'list' | 'record' | 'string' ;
 
 embedding:		PRETEXT embed texttail ;	
-embed:			markup* expression |
-			markup* markup ;
+embed:			markup* expression | markup* markup ;
 texttail:		POSTTEXT | MIDTEXT embed texttail ;
 
 // Lexical rules
 COMMENT	:		'comment' { inString = true; } ;
-SITE:			'site' { inSite = true; inPath = true; } ;
-END:			'end' { inSite = false; inPath = false; } ;
+SITE:			'site' { inSite = true; inPath = true; } ; // Site constructor
+END:			'end' { inSite = false; inPath = false; } ; // Site destructor
 SEMICOLON:		';' { inPath = inSite; } ; // Mapping separator
  
 fragment LETTER:	'a'..'z' | 'A'..'Z' ;
@@ -104,7 +109,7 @@ fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
 
 PATH:			( { inPath }? => ( ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT ) { inPath = false; } ) ; 
-fragment PATHELEMENT:	( LETTER | DIGIT )+ ; // ~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' )+ ; Causes java heap exception
+fragment PATHELEMENT:	~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' | '!'..'+' )+ ; // '!'..'+' causes java heap exception
 fragment FILEEXT:	( LETTER | DIGIT )+ ;
 
 STRCON:			( { inString }? => ( '\"' STRCHAR* '\"' ) { inString = false; } ) ;
@@ -130,5 +135,5 @@ fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') 
 NATCON:			DIGIT+ ;
 IDCON:			LETTER ( LETTER | DIGIT | '-' )+ ;
 
-COMMENTS:		'//' .* '\n' | '/*' .* '*/' { $channel = HIDDEN; } ;
-LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; } ;
+COMMENTS:		'//' .* '\n' | '/*' .* '*/' { skip(); } ;
+LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { skip(); } ;
