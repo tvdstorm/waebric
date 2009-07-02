@@ -1,0 +1,4 @@
+module bla.text
+	site lol20lol.html: bla("lol") end
+	import lol;
+end
