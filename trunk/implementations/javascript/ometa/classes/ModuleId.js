@@ -4,6 +4,6 @@
  * @author Nickolas Heirbaut
  */
 
-function ModuleId (moduleId){
-	this.moduleId = moduleId;
+function ModuleId (identifier){
+	this.identifier = identifier;	
 }

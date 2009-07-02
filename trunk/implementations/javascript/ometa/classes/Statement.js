@@ -4,49 +4,49 @@
  * @author Nickolas Heirbaut
  */
 
-function IfStatement (predicate, ifStatement){
+function IfStatement(predicate, ifStatement){
 	this.predicate = predicate;
 	this.ifStatement = ifStatement;
 }
 
-function IfElseStatement (predicate, ifStatement, elseStatement){
+function IfElseStatement(predicate, ifStatement, elseStatement){
 	this.predicate = predicate;
 	this.ifStatement = ifStatement;
 	this.elseStatement = elseStatement;
 }
 
-function EachStatement (identifier, expression, statement){
+function EachStatement(identifier, expression, statement){
 	this.identifier = identifier;
 	this.expression = expression;
 	this.statement = statement;
 }
 
-function LetStatement (assignments, statements){
+function LetStatement(assignments, statements){
 	this.assignments = assignments;
 	this.statements = statements;
 }
 
-function BlockStatement (statements){
+function BlockStatement(statements){
 	this.statements = statements;
 }
 
-function CommentStatement (comment){
+function CommentStatement(comment){
 	this.comment = comment;
 }
 
-function EchoStatement (expression){
+function EchoStatement(expression){
 	this.expression = expression;
 }
 
-function EchoEmbeddingStatement (Embedding){
+function EchoEmbeddingStatement(embedding){
 	this.embedding = embedding;
 }
 
-function CDataExpression (expression){
+function CDataExpression(expression){
 	this.expression = expression;
 }
 
-function YieldStatement (expression){
+function YieldStatement(){
 
 }
 
@@ -54,7 +54,7 @@ function MarkupStatement (markup){
 	this.markup = markup;
 }
 
-function MarkupExpStatement (markup, expression){
+function MarkupExpressionStatement (markup, expression){
 	this.markup = markup;
 	this.expression = expression;
 }
@@ -63,12 +63,12 @@ function MarkupMarkupStatement (markup){
 	this.markup = markup;
 }
 
-function MarkupStatStatement (markup, statement){
+function MarkupStatementStatement (markup, statement){
 	this.markup = markup;
 	this.statement = statement;
 }
 
-function MarkupEmbeddingStatement (markup, statement){
+function MarkupEmbeddingStatement (markup, embedding){
 	this.markup = markup;
 	this.embedding = embedding;
 }

@@ -1,19 +1,17 @@
 
 ometa WaebricParser <: Parser {
 
-  Module          	= "module" spaces ModuleId:moduleId spaces ModuleElement*:moduleElement spaces
+  Module          	= "module" spaces ModuleId:moduleId spaces ModuleElement*:moduleElement spaces end
                     -> ['module', moduleId, moduleElement],
   ModuleId        	= listOf(#IdCon, "."):moduleId
                     -> ['module-id', moduleId.join('')],
-  ModuleElement   	= Site:site
+  ModuleElement   	= Site
                   	| FunctionDef
                   	| Import,
 
   Import			= "import" ModuleId:modId -> ['import', modId],
 
-  Site            	= "site" spaces Mappings:mappings spaces "end" -> ['site', mappings],
-  Mappings          = listOf(#Mapping, ";"):mapping -> mapping
-  					| spaces,
+  Site            	= "site" listOf(#Mapping, ';'):mappings "end" -> ['site', mappings],
   Mapping         	= spaces Path:path spaces ":" spaces Markup:markup spaces -> ['mapping', path, markup],
 
   Path            	= Directory:dir FileName:file -> ['path', "\"".concat(dir.toString().substring(0, dir.length - 1)).concat("\""), file]
@@ -35,11 +33,11 @@ ometa WaebricParser <: Parser {
                   	| "@" spaces NatCon:width spaces "%" spaces NatCon:height  -> ['width-height', width, height]
                   	| "@" spaces NatCon:width -> ['width', width],
   Arguments       	= "(" listOf(#Argument, ','):args ")" -> ['args', args] ,
-  Argument        	= spaces Var:idVar spaces "=" spaces Expression:expr -> ['attr', idVar, expr]
+  Argument        	= spaces Var:idVar spaces "=" spaces Expression:expr -> ['arg', idVar, expr]
                   	| spaces Expression:expr -> expr,
 
   FunctionDef     	= "def" spaces IdCon:defId spaces Formals:formals spaces Statement*:stmts spaces "end" -> ['def', defId, formals, stmts]
-                  	| "def" spaces IdCon:defId spaces Statement*:stmts spaces "end" -> ['def', defId, 'empty', stmts],
+                  	| "def" spaces IdCon:defId spaces Statement*:stmts spaces "end" -> ['def', defId, ['formals', ''], stmts],
 
   Formals         	= "(" listOf(#IdCon, ','):list ")" -> ['formals', list],
 
@@ -49,8 +47,8 @@ ometa WaebricParser <: Parser {
                   	| spaces Var:idVar spaces -> ['var', idVar]
                   	| spaces NatCon:idNatCon spaces -> ['num', idNatCon]
                   	| spaces SymbolCon:idSymbolCon spaces -> ['sym', idSymbolCon]
-                  	| spaces "[" listOf(#Expression, ','):expr "]" -> ['list', expr]
-                  	| spaces "{" listOf(#KeyValuePair, ','):record "}" -> ['record', record]
+                  	| spaces "[" listOf(#Expression, ','):list "]" -> ['list', list]
+                  	| spaces "{" listOf(#KeyValuePair, ','):records "}" -> ['record', records]
                   	,
 
 
@@ -59,7 +57,7 @@ ometa WaebricParser <: Parser {
   Statement       	= "if" spaces "(" spaces Predicate:pred spaces ")" spaces Statement:stmt NoElseMayFollow -> ['if', pred,  stmt]
                   	| "if" spaces "(" spaces Predicate:pred spaces ")" spaces Statement:ifStmt spaces "else" spaces Statement:elseStmt  -> ['if-else', pred,  ifStmt, elseStmt]
      	            | "each" spaces "(" spaces Var:varId spaces ":" spaces Expression:expr spaces ")" spaces Statement:stmt -> ['each', varId, expr, stmt]
-    	           	| "let" Assignment+:ass "in" Statement*:stmt "end" -> ['let', ass, stmt]
+    	           	| "let" Assignment+:ass "in" Statement*:stmts "end" -> ['let', ass, stmts]
 	             	| "{" spaces Statement*:stmts spaces "}" -> ['block', stmts]
                   	| "comment" spaces StrCon:comm spaces ";" -> ['comment', comm]
                   	| "echo" spaces Expression:expr spaces ";" -> ['echo', expr]
@@ -87,7 +85,7 @@ ometa WaebricParser <: Parser {
                   	| "string" -> 'string-type',
 
   Assignment      	= spaces Var:varId spaces "=" spaces Expression:expr spaces ";" spaces -> ['var-bind', varId, expr]
-                  	| IdCon:idCon "(" listOf(#IdCon, ','):frm ")" spaces "=" spaces  Statement:stmt -> ['func-bind', idCon, frm, stmt],
+                  	| IdCon:idCon spaces Formals:frm spaces "=" spaces  Statement:stmt -> ['func-bind', idCon, frm, stmt],
 
   TextEntityRef   	= "&" XMLSymbol XML* ";",
   TextEntityRefHead = letter | "_" | ":",
@@ -99,10 +97,10 @@ ometa WaebricParser <: Parser {
   TextCharRef     	= "&#" digit+ ";"
                   	| "&#x" HexaDecimal+ ";",
 
-  Embedding       	= spaces PreText:pre spaces Embed:emb spaces TextTail:post spaces -> ['pre', pre,emb,post],
-  Embed           	= Markup*:mrk spaces Expression:expr -> ['expr-embedding', mrk, expr]
-  					| Markup*:mrk ?(mrk[mrk.length -1][0] == 'tag') -> ['expr-embedding', mrk.slice(0,mrk.length-1), ['var', mrk[mrk.length-1][1]]]
-  					| Markup*:mrk -> ['markup-embedding', mrk],
+  Embedding       	= spaces PreText:head spaces Embed:emb spaces TextTail:tail spaces -> ['pre', head, emb, tail],
+  Embed           	= Markup*:mrk spaces Expression:expr -> ['expr-embed', mrk, expr]
+  					| Markup*:mrk ?(mrk[mrk.length -1][0] == 'tag') -> ['expr-embed', mrk.slice(0,mrk.length-1), ['var', mrk[mrk.length-1][1]]]
+  					| Markup*:mrk -> ['markup-embed', mrk],
 
   PreText         	= "\"" TextChar*:text "<" -> "\"".concat(text.join('')).concat("\""),
   PostText        	= ">" TextChar*:text "\"" -> "\"".concat(text.join('')).concat("\""),

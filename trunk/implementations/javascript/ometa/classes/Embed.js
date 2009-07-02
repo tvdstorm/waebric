@@ -4,11 +4,11 @@
  * @author Nickolas Heirbaut
  */
 
-function ExpressionEmbedding (markup, expression){
-	this.markup = markup;
+function ExpressionEmbedding(markups, expression){
+	this.markups = markups;
 	this.expression = expression;
 }
 
-function MarkupEmbedding (markup){
-	this.markup = markup;
+function MarkupEmbedding(markups){
+	this.markups = markups;
 }

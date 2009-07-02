@@ -9,7 +9,8 @@ function VariableBinding (variable, expression){
 	this.expression = expression;
 }
 
-function FunctionBinding (formals, statement){
+function FunctionBinding (variable, formals, statement){
+	this.variable = variable
 	this.formals = formals;
 	this.statement = statement;
 }

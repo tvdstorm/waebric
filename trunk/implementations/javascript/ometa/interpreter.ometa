@@ -1,16 +1,162 @@
-var module;
 
 ometa WaebricInterpreter {
   interp =
 
-  		 	[	'module-id' anything:id
-  			]	-> id
+  		    [	'module' interp:moduleId [interp*:moduleElements]
+         	]	-> new Module(moduleId, moduleElements)
 
-  		 |  [	'import' interp:m
-  			]	-> (imp = m)
+		|	[	'module-id' anything:indentifier
+  			]	-> new ModuleId(indentifier)
 
-         | 	[	'module' interp:moduleId [interp*:moduleElement]
-         	]	-> (module = new Module(moduleId,moduleElement))
+ 		|  	[	'import' interp:moduleId
+  			]	-> new Import(moduleId)
+
+  		|  	[	'site' [interp*:mappings]
+  			]	-> new Site(mappings)
+
+  		|  	[	'mapping' anything:path interp:markup
+  			]	-> new Mapping(path, markup)
+
+  		|  	[	'def' anything:functionName interp:formals [interp*:statements]
+			]	-> new FunctionDefinition(functionName, formals, statements)
+
+		|  	[	'formals' [anything*:formals]
+			]	-> formals
+
+		|  	[	'call' interp:tag interp:attributes
+  			]	-> new Designator(tag, attributes)
+
+  		|  	[	'tag' anything:idCon [anything*:attributes]
+  			]   -> new Designator(idCon, attributes)
+
+  		|  	[	'id' anything:id
+  			]	-> new IdAttribute(id)
+
+  		|  	[	'class' anything:idClass
+  			]	-> new ClassAttribute(className)
+
+  		|  	[	'name' anything:name
+  			]	-> new NameAttribute(name)
+
+  		|  	[	'type' anything:type
+  			]	-> new TypeAttribute(type)
+
+  		|  	[	'width-height' anything:width anything:height
+  			]	-> new WidthHeightAttribute(width, height)
+
+  		|  	[	'width' anything:width
+  			]	-> new WidthAttribute(width)
+
+  		|  	[	'args' [interp*:args]
+  			]	-> args
+
+  		|  	[	'arg' anything:variable interp:expression
+  			]	-> new Argument(variable, expression)
+
+  		|  	[	'field' interp:expression anything:field
+  			]	-> new FieldExpression(expression,field)
+
+  		|  	[	'cat' interp:expressionLeft interp:expressionRight
+  			]	-> new CatExpression(expressionLeft, expressionRight)
+
+  		|  	[	'text' anything:text
+  			]	-> new TextExpression(text)
+
+  		|  	[	'var' anything:variable
+  			]	-> new VarExpression(variable)
+
+  		|  	[	'num' anything:natural
+  			]	-> new NatExpression(natural)
+
+  		|  	[	'sym' anything:symbol
+  			]	-> new SymbolExpression(symbol)
+
+  		|  	[	'list' [interp*:list]
+  			]	-> new ListExpression(list)
+
+  		|  	[	'record' [interp*:records]
+  			]	-> new RecordExpression(records)
+
+  		|  	[	'pair' anything:key interp:value
+  			]	-> new KeyValuePair(key, value)
+
+  		|  	[	'if' interp:predicate interp:ifStatement
+  			]	-> new IfStatement(predicate, ifStatement)
+
+  		|  	[	'if-else' interp:predicate interp:ifStatement interp:elseStatement
+  			]	-> new IfElseStatement(predicate, ifStatement, elseStatement)
+
+  		|  	[	'each' anything:identifier interp:expression interp:statement
+  			]	-> new EachStatement(identifier, expression, statement)
+
+  		|  	[	'let' [interp+:assignments] [interp*:statements]
+  			]	-> new LetStatement(assignments, statements)
+
+  		|  	[	'block' [interp*:statements]
+  			]	-> new BlockStatement(statements)
+
+  		|  	[	'comment' anything:comment
+  			]	-> new CommentStatement(comment)
+
+  		|  	[	'echo' interp:expression
+  			]	-> new EchoStatement(expression)
+
+  		|  	[	'echo-embedding' interp:embedding
+  			]	-> new EchoEmbeddingStatement(embedding)
+
+  		|  	[	'cdata' interp:expression
+  			]	-> new CDataExpression(expression)
+
+  		|  	[	'yield'
+  			]	-> new YieldStatement()
+
+  		|  	[	'markup' interp:markup
+  			]	-> (new MarkupStatement(markup))
+
+  		|  	[	'markup-expr' [interp+:markupExpression] interp:expression
+  			]	-> new MarkupExpressionStatement(markupExpression, expression)
+
+  		|  	[	'markup-markup' [interp+:markup]
+  			]	-> new MarkupMarkupStatement(markup)
+
+  		|  	[	'markup-stat' [interp+:markup] interp:statement
+  			]	-> new MarkupStatementStatement(markup, statement)
+
+  		|  	[	'markup-embedding' [interp+:mrk] interp:embedding
+  			]	-> new MarkupEmbeddingStatement(markup, embedding)
+
+  		|  	[	'not' interp:predicate
+  			]	-> new NotPredicate(predicate)
+
+		|  	[	'and' interp:predicateLeft interp:predicateRight
+  			]	-> new AndPredicate(predicateLeft, predicateRight)
+
+  		|  	[	'or' interp:predicateLeft interp:predicateRight
+  			]	-> new OrPredicate(predicateLeft, predicateRight)
+
+  		|  	[	'is-a' interp:expression anything:type
+  			]	-> new isAPredicate(expression, type)
+
+  		|  	[	'var-bind' anything:variable interp:expression
+  			]	-> new VariableBinding(variable, expression)
+
+  		|  	[	'func-bind' anything:variable interp:formals interp:statement
+  			]	-> new FunctionBinding(variable, formals, statement)
+
+  		|  	[	'pre' anything:head interp:embed interp:tail
+  			]	-> new Embedding(head, embed, tail)
+
+  		|  	[	'expr-embed' [interp*:markups] interp:expression
+  			]	-> new ExpressionEmbedding(markups, expression)
+
+  		|  	[	'markup-embed' [interp*:markups]
+  			]	-> new MarkupEmbedding(markups)
+
+  		|  	[	'post' anything:text
+  			]	-> new PostTextTail(text)
+
+  		|  	[	'mid' anything:mid interp:embed interp:tail
+  			]	-> new MidTextTail(mid, embed, tail)
+
 
 }
-

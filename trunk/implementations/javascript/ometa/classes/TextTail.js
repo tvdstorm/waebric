@@ -4,12 +4,12 @@
  * @author Nickolas Heirbaut
  */
 
-function PostTextTail (text){
+function PostTextTail(text){
 	this.text = text;
 }
 
-function MidTextTail (midText, embed, tailText){
-	this.midText = midText;
+function MidTextTail(mid, embed, tail){
+	this.mid = mid;
 	this.embed = embed;
-	this.tailText = tailText;
+	this.tail = tail;
 }
