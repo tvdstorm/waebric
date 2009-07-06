@@ -1,0 +1,7 @@
+module products
+
+import utility
+
+def getProductName(productId)
+  div action();
+end
