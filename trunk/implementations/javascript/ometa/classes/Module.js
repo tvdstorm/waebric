@@ -1,18 +1,26 @@
-/**
- * Module class
+/**************************************************************************** 
+ * Specifies a Module, the root object of the data structure
  * 
- * @author Nickolas Heirbaut
- */
+ * @author Nickolas Heirbaut 
+ ****************************************************************************/
 
+/**
+ * Module Class
+ * 
+ * "module" ModuleId ModuleElement* -> Module ("module")
+ * 
+ * @param {Object} moduleId
+ * @param {Array} Array of module elements
+ */
 function Module(moduleId, moduleElements){
 	this.moduleId = moduleId;
 	this.imports = new Array();
-	this.sites = new Array();
+	this.site = new Site(new Array());
 	this.functionDefinitions = new Array();
 	
 	for(i = 0; i < moduleElements.length; i++){
 		if(moduleElements[i] instanceof Site){
-			this.sites.push(moduleElements[i]);
+			this.site.mappings = this.site.mappings.concat(moduleElements[i].mappings);
 		}else if(moduleElements[i] instanceof Import){
 			this.imports.push(moduleElements[i]);
 		}else if(moduleElements[i] instanceof FunctionDefinition){
@@ -20,4 +28,5 @@ function Module(moduleId, moduleElements){
 		}
 	}
 	
+	this.dependencies = new Array();
 }

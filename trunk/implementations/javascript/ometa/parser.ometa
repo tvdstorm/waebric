@@ -33,7 +33,7 @@ ometa WaebricParser <: Parser {
                   	| "@" spaces NatCon:width spaces "%" spaces NatCon:height  -> ['width-height', width, height]
                   	| "@" spaces NatCon:width -> ['width', width],
   Arguments       	= "(" listOf(#Argument, ','):args ")" -> ['args', args] ,
-  Argument        	= spaces Var:idVar spaces "=" spaces Expression:expr -> ['arg', idVar, expr]
+  Argument        	= spaces IdCon:idCon spaces "=" spaces Expression:expr -> ['attr', idCon, expr]
                   	| spaces Expression:expr -> expr,
 
   FunctionDef     	= "def" spaces IdCon:defId spaces Formals:formals spaces Statement*:stmts spaces "end" -> ['def', defId, formals, stmts]
@@ -44,7 +44,7 @@ ometa WaebricParser <: Parser {
   Expression      	= spaces Expression:expr spaces "." spaces IdCon:idCon ~"?" -> ['field', expr, idCon]
 					| spaces Expression:expr1 spaces "+" spaces Expression:expr2 ~"?" -> ['cat', expr1, expr2]
                   	| spaces Text:idText spaces -> ['text', idText]
-                  	| spaces Var:idVar spaces -> ['var', idVar]
+                  	| spaces IdCon:idCon spaces -> ['var', idCon]
                   	| spaces NatCon:idNatCon spaces -> ['num', idNatCon]
                   	| spaces SymbolCon:idSymbolCon spaces -> ['sym', idSymbolCon]
                   	| spaces "[" listOf(#Expression, ','):list "]" -> ['list', list]
@@ -56,7 +56,7 @@ ometa WaebricParser <: Parser {
 
   Statement       	= "if" spaces "(" spaces Predicate:pred spaces ")" spaces Statement:stmt NoElseMayFollow -> ['if', pred,  stmt]
                   	| "if" spaces "(" spaces Predicate:pred spaces ")" spaces Statement:ifStmt spaces "else" spaces Statement:elseStmt  -> ['if-else', pred,  ifStmt, elseStmt]
-     	            | "each" spaces "(" spaces Var:varId spaces ":" spaces Expression:expr spaces ")" spaces Statement:stmt -> ['each', varId, expr, stmt]
+     	            | "each" spaces "(" spaces IdCon:idCon spaces ":" spaces Expression:expr spaces ")" spaces Statement:stmt -> ['each', idCon, expr, stmt]
     	           	| "let" Assignment+:ass "in" Statement*:stmts "end" -> ['let', ass, stmts]
 	             	| "{" spaces Statement*:stmts spaces "}" -> ['block', stmts]
                   	| "comment" spaces StrCon:comm spaces ";" -> ['comment', comm]
@@ -80,18 +80,18 @@ ometa WaebricParser <: Parser {
                   	| Expression:expr "." Type:type "?" -> ['is-a', expr, type]
                   	| Expression,
 
-  Type            	= "list" -> 'list-type'
-                  	| "record" -> 'record-type'
-                  	| "string" -> 'string-type',
+  Type            	= "list" -> ['list-type', '']
+                  	| "record" -> ['record-type', '']
+                  	| "string" -> ['string-type', ''],
 
-  Assignment      	= spaces Var:varId spaces "=" spaces Expression:expr spaces ";" spaces -> ['var-bind', varId, expr]
+  Assignment      	= spaces IdCon:idCon spaces "=" spaces Expression:expr spaces ";" spaces -> ['var-bind', idCon, expr]
                   	| IdCon:idCon spaces Formals:frm spaces "=" spaces  Statement:stmt -> ['func-bind', idCon, frm, stmt],
 
   TextEntityRef   	= "&" XMLSymbol XML* ";",
   TextEntityRefHead = letter | "_" | ":",
   TextEntityRefTail = letterOrDigit | "." | "-" | "_" | ":",
 
-  Text            	= '"':prefix (EscQuote | ~'"'  TextChar)*:idText '"':suffix -> prefix.concat(idText.join('')).concat(suffix),
+  Text            	= '"' (EscQuote | ~'"'  TextChar)*:idText '"' -> idText.join(''),
   TextChar        	= TextSymbolChar | Amp | TextCharRef | TextEntityRef | space,
   TextSymbolChar 	= cRange(' ','!') | cRange('#','%') | cRange('\'',';') | cRange('=','~'),
   TextCharRef     	= "&#" digit+ ";"
@@ -108,7 +108,6 @@ ometa WaebricParser <: Parser {
   TextTail        	= PostText:text -> ['post', text]
                   	| MidText:mid Embed:embed TextTail:tail -> ['mid', mid, embed, tail],
 
-  Var             	= IdCon ,
   IdCon           	= spaces IdCharHead:head IdCharTail*:tail spaces
   					? (
 					  (head.concat(tail.join('')) != 'if' )
@@ -124,7 +123,7 @@ ometa WaebricParser <: Parser {
   					&&(head.concat(tail.join('')) != 'end' )
   					&&(head.concat(tail.join('')) != 'site' )
   					  )
-  					-> "\"".concat(head.concat(tail.join(''))).concat("\""),
+  					-> head.concat(tail.join('')),
   IdCharHead      	= letter,
   IdCharTail      	= letterOrDigit | '-',
   NatCon          	= digit+:d -> d.join('') ,

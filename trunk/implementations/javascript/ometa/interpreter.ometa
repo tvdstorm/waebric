@@ -23,11 +23,11 @@ ometa WaebricInterpreter {
 		|  	[	'formals' [anything*:formals]
 			]	-> formals
 
-		|  	[	'call' interp:tag interp:attributes
-  			]	-> new Designator(tag, attributes)
+		|  	[	'call' interp:designator interp:args
+  			]	-> new MarkupCall(designator, args)
 
   		|  	[	'tag' anything:idCon [anything*:attributes]
-  			]   -> new Designator(idCon, attributes)
+  			]   -> new DesignatorTag(idCon, attributes)
 
   		|  	[	'id' anything:id
   			]	-> new IdAttribute(id)
@@ -50,7 +50,7 @@ ometa WaebricInterpreter {
   		|  	[	'args' [interp*:args]
   			]	-> args
 
-  		|  	[	'arg' anything:variable interp:expression
+  		|  	[	'attr' anything:variable interp:expression
   			]	-> new Argument(variable, expression)
 
   		|  	[	'field' interp:expression anything:field
@@ -113,8 +113,8 @@ ometa WaebricInterpreter {
   		|  	[	'markup' interp:markup
   			]	-> (new MarkupStatement(markup))
 
-  		|  	[	'markup-expr' [interp+:markupExpression] interp:expression
-  			]	-> new MarkupExpressionStatement(markupExpression, expression)
+  		|  	[	'markup-expr' [interp+:markups] interp:expression
+  			]	-> new MarkupExpressionStatement(markups, expression)
 
   		|  	[	'markup-markup' [interp+:markup]
   			]	-> new MarkupMarkupStatement(markup)
@@ -134,8 +134,17 @@ ometa WaebricInterpreter {
   		|  	[	'or' interp:predicateLeft interp:predicateRight
   			]	-> new OrPredicate(predicateLeft, predicateRight)
 
-  		|  	[	'is-a' interp:expression anything:type
+  		|  	[	'is-a' interp:expression interp:type
   			]	-> new isAPredicate(expression, type)
+
+  		|  	[	'list-type' anything:type
+  			]	-> new ListType()
+
+  		|  	[	'record-type' anything:type
+  			]	-> new RecordType()
+
+  		|  	[	'string-type' anything:type
+  			]	-> new StringType()
 
   		|  	[	'var-bind' anything:variable interp:expression
   			]	-> new VariableBinding(variable, expression)
