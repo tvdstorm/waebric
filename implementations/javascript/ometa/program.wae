@@ -1,13 +1,7 @@
 module abon
 
-def abonnementen 
- a;
-end
+import products
 
-def tijdschriften 
- b;
-end
-
-def promoties 
- c;
+def showProduct(productId)
+   table tr td getProductName(productId);
 end

@@ -1,10 +1,18 @@
-/**
- * Designator class
- *
- * @author Nickolas Heirbaut
- */
+/**************************************************************************** 
+ * Specifies an designator used in markup
+ * 
+ * @author Nickolas Heirbaut 
+ ****************************************************************************/
 
-function Designator (idCon, attributes){
+/** 
+ * Designator Tag Class
+ *
+ * IdCon Attribute* -> Designator ("tag")
+ * 
+ * @param {object} identifier
+ * @param {Array} Array of attributes
+ */
+function DesignatorTag (idCon, attributes){
 	this.idCon = idCon;
 	this.attributes = attributes;
 }
