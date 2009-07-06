@@ -27,9 +27,10 @@ load("../classes/Predicate.js")
 load("../classes/TextTail.js")
 load("../classes/Type.js")
 load("../classes/Assignment.js")
-load("../checker/SemanticException.js")
-load("../checker/SemanticValidation.js")
-load("../checker/XHTMLTag.js")
+load("../checker/WaebricSemanticException.js")
+load("../checker/WaebricSemanticValidator.js")
+load("../checker/WaebricSemanticCollector.js")
+load("../checker/XHTML.js")
 
 /**
  * Returns the Waebric grammar written in OMeta for parsing
@@ -190,6 +191,6 @@ try {
 var module = evaluateProgram('../program.wae');
 
 //Perform semantic validation
-var validator = new SemanticValidation();
-var exceptions = validator.validateAll(module);
-print(exceptions);
+var validator = new WaebricSemanticValidator();
+var exceptions = WaebricSemanticValidator.validateAll(module);
+print(exceptions)

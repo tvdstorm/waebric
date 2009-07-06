@@ -1,0 +1,5 @@
+module bout
+
+def test
+ test;
+end
