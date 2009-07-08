@@ -13,4 +13,9 @@
 function Mapping (path, markup){
 	this.path = path;
 	this.markup = markup;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }

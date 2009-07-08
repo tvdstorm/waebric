@@ -13,6 +13,11 @@
  */
 function NotPredicate (predicate){
 	this.predicate = predicate;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -26,6 +31,11 @@ function NotPredicate (predicate){
 function AndPredicate (predicateLeft, predicateRight){
 	this.predicateLeft = predicateLeft;
 	this.predicateRight = predicateRight;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -39,6 +49,11 @@ function AndPredicate (predicateLeft, predicateRight){
 function OrPredicate (predicateLeft, predicateRight){
 	this.predicateLeft = predicateLeft;
 	this.predicateRight = predicateRight;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -52,4 +67,9 @@ function OrPredicate (predicateLeft, predicateRight){
 function isAPredicate (expression, type){
 	this.expression = expression;
 	this.type = type;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }

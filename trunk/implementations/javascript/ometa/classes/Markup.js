@@ -16,21 +16,21 @@ function MarkupCall (designator, arguments){
 	this.designator = designator;
 	this.arguments = arguments;
 	
-	this.toString = designatorCallToString;
-	this.arguments.toString = argumentsToString;
-}
-
-
-
-function designatorCallToString(){
-	return this.designator.idCon + "(" + this.arguments + ")";
-}
-
-function argumentsToString(){
-	var argumentsString = '';
-	for(var i = 0; i < this.length; i++){
-		argumentsString += this[i] + ',';	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}	
+	
+	//To string methods
+	this.toString = function(){
+		return this.designator.idCon + "(" + this.arguments + ")";
 	}
-	argumentsString = argumentsString.substr(0, argumentsString.length-1);
-	return argumentsString;
+	this.arguments.toString = function(){
+		var argumentsString = '';
+		for(var i = 0; i < this.length; i++){
+			argumentsString += this[i] + ',';	
+		}
+		argumentsString = argumentsString.substr(0, argumentsString.length-1);
+		return argumentsString;
+	}
 }

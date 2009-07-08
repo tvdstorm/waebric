@@ -15,4 +15,9 @@
 function DesignatorTag (idCon, attributes){
 	this.idCon = idCon;
 	this.attributes = attributes;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }

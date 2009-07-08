@@ -122,7 +122,7 @@ ometa WaebricInterpreter {
   		|  	[	'markup-stat' [interp+:markup] interp:statement
   			]	-> new MarkupStatementStatement(markup, statement)
 
-  		|  	[	'markup-embedding' [interp+:mrk] interp:embedding
+  		|  	[	'markup-embedding' [interp+:markup] interp:embedding
   			]	-> new MarkupEmbeddingStatement(markup, embedding)
 
   		|  	[	'not' interp:predicate

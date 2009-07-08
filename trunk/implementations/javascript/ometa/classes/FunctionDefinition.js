@@ -14,13 +14,18 @@
  * @param {Array} Array of statements
  */
 function FunctionDefinition (functionName, formals, statements){
+	//Fields
 	this.functionName = functionName;
 	this.formals = formals;
-	this.statements = statements;
+	this.statements = statements;	
 	
-	this.toString = functionToString;
-}
-
-function functionToString(){
-	return this.functionName + "(" + this.formals + ")";
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
+	
+	//To string 
+	this.toString = function(){
+		return this.functionName + "(" + this.formals + ")";
+	}
 }
