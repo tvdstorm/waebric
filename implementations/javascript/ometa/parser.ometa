@@ -4,7 +4,7 @@ ometa WaebricParser <: Parser {
   Module          	= "module" spaces ModuleId:moduleId spaces ModuleElement*:moduleElement spaces end
                     -> ['module', moduleId, moduleElement],
   ModuleId        	= listOf(#IdCon, "."):moduleId
-                    -> ['module-id', moduleId.join('')],
+                    -> ['module-id', moduleId.join('.')],
   ModuleElement   	= Site
                   	| FunctionDef
                   	| Import,

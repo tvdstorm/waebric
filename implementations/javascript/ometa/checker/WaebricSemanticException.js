@@ -3,8 +3,12 @@
  * @param {String} The exception message
  * @return {Error} An error exception
  */
-function SemanticException(exceptionMessage){
-	return new Error(exceptionMessage);
+function SemanticException(){
+	this.message = "";
+	
+	this.toString = function(){
+		return this.message;
+	}
 }
 
 /** Semantic Exception class for non existing modules
@@ -13,8 +17,10 @@ function SemanticException(exceptionMessage){
  * @return {SemanticException} A Semantic Exception
  */
 function NonExistingModuleException(path){
-	return new SemanticException("The dependency " + path + " was not found on the filesystem.");
+	this.path = path;
+	this.message = "The module " + path + " was not found on the filesystem.";
 }
+NonExistingModuleException.prototype = new SemanticException();
 
 /** Semantic Exception class for undefined functions
  * 
@@ -22,8 +28,9 @@ function NonExistingModuleException(path){
  * @return {SemanticException} A Semantic Exception
  */
 function UndefinedFunctionException(functionCall){
-	return new SemanticException("The function " + functionCall + " was not found in any of the loaded modules, nor is the functionname part of XHTML");
+	this.message = "The function " + functionCall + " was not found in any of the loaded modules, nor is the functionname part of XHTML";
 }
+UndefinedFunctionException.prototype = new SemanticException();
 
 /** Semantic Exception class for duplicate functions
  * 
@@ -31,8 +38,9 @@ function UndefinedFunctionException(functionCall){
  * @return {SemanticException} A Semantic Exception
  */
 function DuplicateDefinitionException(func){
-	return new SemanticException("Duplicate function found: " + func);
+	this.message = "Duplicate function found: " + func;
 }
+DuplicateDefinitionException.prototype = new SemanticException();
 
 /** Semantic Exception class for functions calls with incorrect arguments 
  * 
@@ -40,8 +48,9 @@ function DuplicateDefinitionException(func){
  * @return {SemanticException} A Semantic Exception
  */
 function IncorrectArgumentsException(functionCall){
-	return new SemanticException("The functioncall " + functionCall + " has an incorrect number of arguments. ")
+	this.message = "The functioncall " + functionCall + " has an incorrect number of arguments. ";
 }
+IncorrectArgumentsException.prototype = new SemanticException();
 
 /** Semantic Exception class for undefined variables
  * 
@@ -49,5 +58,6 @@ function IncorrectArgumentsException(functionCall){
  * @return {SemanticException} A Semantic Exception
  */
 function UndefinedVariableException(variable){
-	return new SemanticException("Variable "+ variable + " not declared.")
+	this.message = "Variable "+ variable + " not declared.";
 }
+UndefinedVariableException.prototype = new SemanticException();
