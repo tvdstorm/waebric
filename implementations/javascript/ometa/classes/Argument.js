@@ -9,14 +9,14 @@
  * 
  * IdCon "=" Expression -> Argument ("attr")
  */
+
 function Argument (variable, expression){
 	this.variable = variable;
-	this.expression = expression;
-	
-	this.toString = attributeToString;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
+	this.expression = expression;	
 }
+Argument.prototype = new Node();
+
+
+
+
+

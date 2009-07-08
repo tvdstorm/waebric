@@ -14,13 +14,10 @@
  */
 function VariableBinding (variable, expression){
 	this.variable = variable;
-	this.expression = expression;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
+	this.expression = expression;	
 }
+VariableBinding.prototype = new Node(); //Inheritance base class
+
 /**
  * Function Binding Class
  * 
@@ -34,9 +31,5 @@ function FunctionBinding (variable, formals, statement){
 	this.variable = variable
 	this.formals = formals;
 	this.statement = statement;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+FunctionBinding.prototype = new Node(); //Inheritance base class

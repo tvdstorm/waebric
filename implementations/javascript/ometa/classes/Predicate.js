@@ -13,12 +13,8 @@
  */
 function NotPredicate (predicate){
 	this.predicate = predicate;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+NotPredicate.prototype = new Node(); //Inheritance base class
 
 /**
  * And Predicate Class
@@ -31,12 +27,8 @@ function NotPredicate (predicate){
 function AndPredicate (predicateLeft, predicateRight){
 	this.predicateLeft = predicateLeft;
 	this.predicateRight = predicateRight;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+AndPredicate.prototype = new Node(); //Inheritance base class
 
 /**
  * Or Predicate Class 
@@ -49,12 +41,8 @@ function AndPredicate (predicateLeft, predicateRight){
 function OrPredicate (predicateLeft, predicateRight){
 	this.predicateLeft = predicateLeft;
 	this.predicateRight = predicateRight;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+OrPredicate.prototype = new Node(); //Inheritance base class
 
 /**
  * Is-a Predicate Class
@@ -64,12 +52,8 @@ function OrPredicate (predicateLeft, predicateRight){
  * @param {Object} expression
  * @param {Object} type
  */
-function isAPredicate (expression, type){
+function IsAPredicate (expression, type){
 	this.expression = expression;
 	this.type = type;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+IsAPredicate.prototype = new Node(); //Inheritance base class

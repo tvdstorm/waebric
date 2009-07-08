@@ -19,13 +19,9 @@ function FunctionDefinition (functionName, formals, statements){
 	this.formals = formals;
 	this.statements = statements;	
 	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
-	
-	//To string 
+	//Methods
 	this.toString = function(){
-		return this.functionName + "(" + this.formals + ")";
+		return this.functionName + "(" + this.formals.join('') + ")";
 	}
 }
+FunctionDefinition.prototype = new Node(); //Inheritance base class

@@ -14,3 +14,4 @@
 function Import(moduleId){
 	this.moduleId = moduleId;
 }
+Import.prototype = new Node(); //Inheritance base class
