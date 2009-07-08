@@ -1,5 +1,6 @@
 module abon
 
+import sub.products
 
 def output3(menu)
 	let
@@ -13,7 +14,7 @@ def output3(menu)
      end
 end
 
-def output3(menu)
+def output2(menu)
 	let
 	       make(img, alt) = td action(width="160",height="160", alt=alt,src=img, border=0);
 	in
