@@ -28,4 +28,9 @@ function MidTextTail(mid, embed, tail){
 	this.mid = mid;
 	this.embed = embed;
 	this.tail = tail;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }

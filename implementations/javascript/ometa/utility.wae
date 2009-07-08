@@ -2,12 +2,12 @@ module utility
 
 def test
  let 
-        div(img, alt) = td img(width="160",height="160", alt=alt,src=img);
+        placeImage(img, alt) = td img(width="160",height="160", alt=alt,src=img);
       in
        tr {
- 	      td("images/lavakaft_13-34.jpg", "lava 13-34");
- 	      td("images/lavakaft_14-1.jpg", "lava 14-1");
- 	      td("images/lavakaft_14-2.jpg", "lava 14-2");
+ 	      placeImage1("images/lavakaft_13-34.jpg", "lava 13-34");
+ 	      placeImage1("images/lavakaft_14-1.jpg", "lava 14-1");
+ 	      placeImage1("images/lavakaft_14-2.jpg", "lava 14-2");
       }
   end
 end

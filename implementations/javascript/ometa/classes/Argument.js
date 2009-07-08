@@ -14,4 +14,9 @@ function Argument (variable, expression){
 	this.expression = expression;
 	
 	this.toString = attributeToString;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }

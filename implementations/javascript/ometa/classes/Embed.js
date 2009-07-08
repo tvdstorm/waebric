@@ -15,6 +15,11 @@
 function ExpressionEmbedding(markups, expression){
 	this.markups = markups;
 	this.expression = expression;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -26,4 +31,9 @@ function ExpressionEmbedding(markups, expression){
  */
 function MarkupEmbedding(markups){
 	this.markups = markups;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }

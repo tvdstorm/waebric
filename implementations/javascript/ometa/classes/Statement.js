@@ -15,6 +15,11 @@
 function IfStatement(predicate, ifStatement){
 	this.predicate = predicate;
 	this.ifStatement = ifStatement;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -30,6 +35,11 @@ function IfElseStatement(predicate, ifStatement, elseStatement){
 	this.predicate = predicate;
 	this.ifStatement = ifStatement;
 	this.elseStatement = elseStatement;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -45,6 +55,11 @@ function EachStatement(identifier, expression, statement){
 	this.identifier = identifier;
 	this.expression = expression;
 	this.statement = statement;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -58,6 +73,11 @@ function EachStatement(identifier, expression, statement){
 function LetStatement(assignments, statements){
 	this.assignments = assignments;
 	this.statements = statements;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -69,6 +89,11 @@ function LetStatement(assignments, statements){
  */
 function BlockStatement(statements){
 	this.statements = statements;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -80,6 +105,11 @@ function BlockStatement(statements){
  */
 function CommentStatement(comment){
 	this.comment = comment;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -91,6 +121,11 @@ function CommentStatement(comment){
  */
 function EchoStatement(expression){
 	this.expression = expression;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -102,6 +137,11 @@ function EchoStatement(expression){
  */
 function EchoEmbeddingStatement(embedding){
 	this.embedding = embedding;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -113,6 +153,11 @@ function EchoEmbeddingStatement(embedding){
  */
 function CDataExpression(expression){
 	this.expression = expression;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -133,6 +178,11 @@ function YieldStatement(){
  */
 function MarkupStatement (markup){
 	this.markup = markup;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -146,6 +196,11 @@ function MarkupStatement (markup){
 function MarkupExpressionStatement (markups, expression){
 	this.markups = markups;
 	this.expression = expression;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -157,6 +212,11 @@ function MarkupExpressionStatement (markups, expression){
  */
 function MarkupMarkupStatement (markups){
 	this.markups = markups;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -170,6 +230,11 @@ function MarkupMarkupStatement (markups){
 function MarkupStatementStatement (markups, statement){
 	this.markups = markups;
 	this.statement = statement;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -183,4 +248,9 @@ function MarkupStatementStatement (markups, statement){
 function MarkupEmbeddingStatement (markups, embedding){
 	this.markups = markups;
 	this.embedding = embedding;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }

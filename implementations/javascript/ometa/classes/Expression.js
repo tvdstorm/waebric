@@ -18,6 +18,11 @@ function FieldExpression (expression, field){
 	this.field = field;
 	
 	this.toString = fieldExpressionToString;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -33,6 +38,11 @@ function CatExpression (expressionLeft, expressionRight){
 	this.expressionRight = expressionRight;
 	
 	this.toString = catExpressionToString;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -46,6 +56,11 @@ function TextExpression(text){
 	this.text = text;
 	
 	this.toString = textExpressionToString;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -59,6 +74,11 @@ function VarExpression(variable){
 	this.variable = variable;
 	
 	this.toString = varExpressionToString;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -72,6 +92,11 @@ function NatExpression(natural){
 	this.natural = natural;
 	
 	this.toString = natExpressionToString;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -85,6 +110,11 @@ function SymbolExpression(symbol){
 	this.symbol = symbol;
 	
 	this.toString = sybmolExpressionToString;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -98,6 +128,11 @@ function ListExpression(list){
 	this.list = list;
 	
 	this.toString = listExpressionToString;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 /**
@@ -111,6 +146,11 @@ function RecordExpression(record){
 	this.record = record;
 	
 	this.toString = recordExpressionToString;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
 
 

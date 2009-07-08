@@ -18,7 +18,7 @@ function NonExistingModuleException(path){
 
 /** Semantic Exception class for undefined functions
  * 
- * @param {Designator} The function call for which no function definition exists
+ * @param {Markup} The function call for which no function definition exists
  * @return {SemanticException} A Semantic Exception
  */
 function UndefinedFunctionException(functionCall){
@@ -36,7 +36,7 @@ function DuplicateDefinitionException(func){
 
 /** Semantic Exception class for functions calls with incorrect arguments 
  * 
- * @param {Designator} The function call with the incorrect number of arguments
+ * @param {Markup} The function call with the incorrect number of arguments
  * @return {SemanticException} A Semantic Exception
  */
 function IncorrectArgumentsException(functionCall){
@@ -48,6 +48,6 @@ function IncorrectArgumentsException(functionCall){
  * @param {Object} exception
  * @return {SemanticException} A Semantic Exception
  */
-function UndefinedVariableException(exception){
-	return new SemanticException("Variable not declared.")
+function UndefinedVariableException(variable){
+	return new SemanticException("Variable "+ variable + " not declared.")
 }

@@ -15,8 +15,12 @@
 function VariableBinding (variable, expression){
 	this.variable = variable;
 	this.expression = expression;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }
-
 /**
  * Function Binding Class
  * 
@@ -30,4 +34,9 @@ function FunctionBinding (variable, formals, statement){
 	this.variable = variable
 	this.formals = formals;
 	this.statement = statement;
+	
+	//Visitor pattern
+	this.accept = function(visitorObject, env){
+		visitorObject.visit(this, env);
+	}
 }

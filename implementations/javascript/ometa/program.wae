@@ -2,6 +2,60 @@ module abon
 
 import products
 
-def showProduct(productId)
-   table tr td getProductName(productId);
+def output3(menu)
+	let
+	       make(img, alt) = td div(width="160",height="160", alt=alt,src=img);
+	in
+		tr {
+			td("images/lavakaft_13-34.jpg", "lava 13-34");
+			td("images/lavakaft_14-1.jpg", "lava 14-1");
+		 	td("images/lavakaft_14-2.jpg", "lava 14-2");
+      		}
+     end
+end
+
+def output4(menu)
+	let
+	       make(img, alt) = td action(width="160",height="160", alt=alt,src=img, border=0);
+	in
+
+			make(menu.kids, "lava 13-34");
+			make("images/lavakaft_14-1.jpg", menu);
+		 	make("images/lavakaft_14-2.jpg", menu);
+
+     end
+end
+
+def action(width, height,alt, src, border)
+	img(width, height,alt, src, border);
+end
+
+def test(input)
+  echo input;
+  echo "p<fail() action(10,10,"none", "../img.jpg", 0)>";
+end
+
+
+def fail()
+  table getProductName("1");
+  cdata "test";
+  jeroeneke;
+  p fail();
+  table tr td fail();
+  table "p<fail() action(10,10,"none", "../img.jpg", "test")>";
+end
+
+def new(title)
+	let
+		title = "we love you all";
+	in
+		p title;
+		fail() title;
+		div title;
+	end
+end
+
+
+def thumbnail(image)
+	table ["nickolas", {a:image}];
 end
