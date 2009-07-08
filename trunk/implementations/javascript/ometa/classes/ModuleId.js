@@ -12,5 +12,12 @@
  * @param {Object} identifier
  */
 function ModuleId (identifier){
+	//Fields
 	this.identifier = identifier;	
+	
+	//Methods
+	this.toString = function(){
+		return this.identifier;
+	}
 }
+ModuleId.prototype = new Node(); //Inheritance base class

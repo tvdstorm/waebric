@@ -135,7 +135,7 @@ ometa WaebricInterpreter {
   			]	-> new OrPredicate(predicateLeft, predicateRight)
 
   		|  	[	'is-a' interp:expression interp:type
-  			]	-> new isAPredicate(expression, type)
+  			]	-> new IsAPredicate(expression, type)
 
   		|  	[	'list-type' anything:type
   			]	-> new ListType()

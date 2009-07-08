@@ -8,6 +8,7 @@ load("bs-ometa-compiler.js")
 load("bs-ometa-optimizer.js")
 load("bs-ometa-js-compiler.js")
 
+load("../classes/Node.js")
 load("../classes/Module.js")
 load("../classes/ModuleId.js")
 load("../classes/Import.js")
@@ -28,11 +29,10 @@ load("../classes/TextTail.js")
 load("../classes/Type.js")
 load("../classes/Assignment.js")
 load("../checker/WaebricSemanticException.js")
-load("../checker/WaebricSemanticValidator.js")
-load("../checker/WaebricSemanticCollector.js")
 load("../checker/XHTML.js")
 load("../checker/WaebricSemanticVisitor.js")
 load("../checker/Environment.js")
+
 
 /**
  * Returns the Waebric grammar written in OMeta for parsing
@@ -193,11 +193,6 @@ try {
 var module = evaluateProgram('../program.wae');
 
 //Perform semantic validation
-//var validator = new WaebricSemanticValidator();
-//var exceptions = WaebricSemanticValidator.validateAll(module);
-//print(exceptions)
 var root = new Environment(null);
 module.accept(new ModuleVisitor(), root);
-//print(root.functions);
-//print(root.variables);
 print(root.getExceptions());

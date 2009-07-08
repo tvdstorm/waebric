@@ -15,12 +15,8 @@
 function IfStatement(predicate, ifStatement){
 	this.predicate = predicate;
 	this.ifStatement = ifStatement;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+IfStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * IfElse Statement Class
@@ -35,12 +31,8 @@ function IfElseStatement(predicate, ifStatement, elseStatement){
 	this.predicate = predicate;
 	this.ifStatement = ifStatement;
 	this.elseStatement = elseStatement;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+IfElseStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Each Statement Class
@@ -55,12 +47,8 @@ function EachStatement(identifier, expression, statement){
 	this.identifier = identifier;
 	this.expression = expression;
 	this.statement = statement;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+EachStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Let Statement Class
@@ -73,12 +61,8 @@ function EachStatement(identifier, expression, statement){
 function LetStatement(assignments, statements){
 	this.assignments = assignments;
 	this.statements = statements;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+LetStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Block Statement Class
@@ -89,12 +73,8 @@ function LetStatement(assignments, statements){
  */
 function BlockStatement(statements){
 	this.statements = statements;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+BlockStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Comment Statement Class
@@ -105,12 +85,8 @@ function BlockStatement(statements){
  */
 function CommentStatement(comment){
 	this.comment = comment;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+CommentStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Echo Statement Class
@@ -121,12 +97,8 @@ function CommentStatement(comment){
  */
 function EchoStatement(expression){
 	this.expression = expression;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+EchoStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Echo Embedding Statement Class
@@ -137,12 +109,8 @@ function EchoStatement(expression){
  */
 function EchoEmbeddingStatement(embedding){
 	this.embedding = embedding;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+EchoEmbeddingStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * CData Statement Class
@@ -153,12 +121,8 @@ function EchoEmbeddingStatement(embedding){
  */
 function CDataExpression(expression){
 	this.expression = expression;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+CDataExpression.prototype = new Node(); //Inheritance base class
 
 /**
  * Yield Statement Class
@@ -168,6 +132,7 @@ function CDataExpression(expression){
 function YieldStatement(){
 
 }
+YieldStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Markup Statement Class
@@ -178,12 +143,8 @@ function YieldStatement(){
  */
 function MarkupStatement (markup){
 	this.markup = markup;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+MarkupStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Markup Expression Statement Class
@@ -196,12 +157,8 @@ function MarkupStatement (markup){
 function MarkupExpressionStatement (markups, expression){
 	this.markups = markups;
 	this.expression = expression;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+MarkupExpressionStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Markup Markup Statement Class
@@ -212,12 +169,8 @@ function MarkupExpressionStatement (markups, expression){
  */
 function MarkupMarkupStatement (markups){
 	this.markups = markups;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+MarkupMarkupStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Markup Statement Statement Class
@@ -230,12 +183,8 @@ function MarkupMarkupStatement (markups){
 function MarkupStatementStatement (markups, statement){
 	this.markups = markups;
 	this.statement = statement;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+MarkupStatementStatement.prototype = new Node(); //Inheritance base class
 
 /**
  * Markup Embedding Statement Class
@@ -248,9 +197,5 @@ function MarkupStatementStatement (markups, statement){
 function MarkupEmbeddingStatement (markups, embedding){
 	this.markups = markups;
 	this.embedding = embedding;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+MarkupEmbeddingStatement.prototype = new Node(); //Inheritance base class

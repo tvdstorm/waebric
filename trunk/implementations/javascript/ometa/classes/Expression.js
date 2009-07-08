@@ -14,16 +14,16 @@
  * @param {object} field
  */
 function FieldExpression (expression, field){
+	//Fields
 	this.expression = expression;
 	this.field = field;
 	
-	this.toString = fieldExpressionToString;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
+	//Methods
+	this.toString = new function(){
+		return this.expression + "." + this.field;
 	}
 }
+FieldExpression.prototype = new Node(); //Inheritance base class
 
 /**
  * Cat Expression Class
@@ -34,16 +34,16 @@ function FieldExpression (expression, field){
  * @param {Object} expressionRight
  */
 function CatExpression (expressionLeft, expressionRight){
+	//Fields
 	this.expressionLeft = expressionLeft;
 	this.expressionRight = expressionRight;
 	
-	this.toString = catExpressionToString;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
+	//Methods
+	this.toString = new function(){
+		 return this.expressionLeft + "+" + expressionRight;
 	}
 }
+CatExpression.prototype = new Node(); //Inheritance base class
 
 /**
  * Text Expression Class
@@ -53,15 +53,15 @@ function CatExpression (expressionLeft, expressionRight){
  * @param {Object} text
  */
 function TextExpression(text){
+	//Fields
 	this.text = text;
 	
-	this.toString = textExpressionToString;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
+	//Methods
+	this.toString = function(){
+		return this.text;
 	}
 }
+TextExpression.prototype = new Node(); //Inheritance base class
 
 /**
  * Variable Expression Class
@@ -71,15 +71,15 @@ function TextExpression(text){
  * @param {Object} variable
  */
 function VarExpression(variable){
+	//Fields
 	this.variable = variable;
 	
-	this.toString = varExpressionToString;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
+	//Methods
+	this.toString = function(){
+		return this.variable;
 	}
 }
+VarExpression.prototype = new Node(); //Inheritance base class
 
 /**
  * Natural Expression Class
@@ -89,15 +89,15 @@ function VarExpression(variable){
  * @param {Object} natural
  */
 function NatExpression(natural){
+	//Fields
 	this.natural = natural;
 	
-	this.toString = natExpressionToString;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
+	//Methods
+	this.toString = function(){
+		return this.natural;
 	}
 }
+NatExpression.prototype = new Node(); //Inheritance base class
 
 /**
  * Symbol Expression Class
@@ -107,15 +107,15 @@ function NatExpression(natural){
  * @param {Object} symbol
  */
 function SymbolExpression(symbol){
+	//Fields
 	this.symbol = symbol;
 	
-	this.toString = sybmolExpressionToString;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
+	//Methods
+	this.toString = function(){
+		return this.symbol;
 	}
 }
+SymbolExpression.prototype = new Node(); //Inheritance base class
 
 /**
  * List Expression Class
@@ -125,15 +125,15 @@ function SymbolExpression(symbol){
  * @param {Object} list
  */
 function ListExpression(list){
+	//Fields
 	this.list = list;
 	
-	this.toString = listExpressionToString;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
+	//Methods
+	this.toString = function(){
+		return this.list;
 	}
 }
+ListExpression.prototype = new Node(); //Inheritance base class
 
 /**
  * Record Expression Class
@@ -143,46 +143,12 @@ function ListExpression(list){
  * @param {Object} record
  */
 function RecordExpression(record){
+	//Fields
 	this.record = record;
 	
-	this.toString = recordExpressionToString;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
+	//Methods
+	this.toString = function(){
+		return this.record;
 	}
 }
-
-
-
-function fieldExpressionToString() {
-    return this.expression + "." + this.field;
-}
-
-function catExpressionToString() {
-    return this.expressionLeft + "+" + expressionRight;
-}
-
-function textExpressionToString() {
-    return this.text;
-}
-
-function varExpressionToString() {
-    return this.variable;
-}
-
-function natExpressionToString() {
-    return this.natural;
-}
-
-function sybmolExpressionToString() {
-    return this.symbol;
-}
-
-function listExpressionToString(){
-	return this.list;
-}
-
-function recordExpressionToString(){
-	return this.record;
-}
+RecordExpression.prototype = new Node(); //Inheritance base class

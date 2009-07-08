@@ -15,9 +15,5 @@
 function KeyValuePair(key, value){
 	this.key = key;
 	this.value = value;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+KeyValuePair.prototype = new Node(); //Inheritance base class

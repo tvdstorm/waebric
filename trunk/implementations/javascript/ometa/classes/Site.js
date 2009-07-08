@@ -14,3 +14,4 @@
 function Site (mappings){
 	this.mappings = mappings;
 }
+Site.prototype = new Node(); //Inheritance base class

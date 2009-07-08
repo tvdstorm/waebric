@@ -31,9 +31,8 @@ function Module(moduleId, moduleElements){
 		}
 	}
 	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
+	this.toString = function(){
+		return moduleId;
 	}
 }
-
+Module.prototype = new Node(); //Inheritance base class

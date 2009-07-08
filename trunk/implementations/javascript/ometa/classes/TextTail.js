@@ -14,6 +14,7 @@
 function PostTextTail(text){
 	this.text = text;
 }
+PostTextTail.prototype = new Node(); //Inheritance base class
 
 /**
  * Mid TextTail Class
@@ -28,9 +29,5 @@ function MidTextTail(mid, embed, tail){
 	this.mid = mid;
 	this.embed = embed;
 	this.tail = tail;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+MidTextTail.prototype = new Node(); //Inheritance base class

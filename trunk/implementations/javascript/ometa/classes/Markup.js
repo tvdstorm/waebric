@@ -13,18 +13,15 @@
  * @param {Array} Array of arguments
  */
 function MarkupCall (designator, arguments){
+	//Fields
 	this.designator = designator;
 	this.arguments = arguments;
 	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}	
-	
-	//To string methods
+	//Methods
 	this.toString = function(){
 		return this.designator.idCon + "(" + this.arguments + ")";
 	}
+	
 	this.arguments.toString = function(){
 		var argumentsString = '';
 		for(var i = 0; i < this.length; i++){
@@ -34,3 +31,4 @@ function MarkupCall (designator, arguments){
 		return argumentsString;
 	}
 }
+MarkupCall.prototype = new Node(); //Inheritance base class

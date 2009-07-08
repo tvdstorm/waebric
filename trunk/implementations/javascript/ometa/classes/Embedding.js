@@ -17,9 +17,5 @@ function Embedding(head, embed, tail){
 	this.head = head;
 	this.embed = embed;
 	this.tail = tail;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+Embedding.prototype = new Node(); //Inheritance base class

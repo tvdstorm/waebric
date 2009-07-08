@@ -12,6 +12,7 @@
 function ListType(){
 	
 }
+ListType.prototype = new Node(); //Inheritance base class
 
 /**
  * Record Type Class
@@ -21,6 +22,7 @@ function ListType(){
 function RecordType(){
 	
 }
+RecordType.prototype = new Node(); //Inheritance base class
 
 /**
  * String Type Class
@@ -30,3 +32,4 @@ function RecordType(){
 function StringType(){
 	
 }
+StringType.prototype = new Node(); //Inheritance base class

@@ -15,12 +15,8 @@
 function ExpressionEmbedding(markups, expression){
 	this.markups = markups;
 	this.expression = expression;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+ExpressionEmbedding.prototype = new Node(); //Inheritance base class
 
 /**
  * Markup Embedding Class
@@ -31,9 +27,5 @@ function ExpressionEmbedding(markups, expression){
  */
 function MarkupEmbedding(markups){
 	this.markups = markups;
-	
-	//Visitor pattern
-	this.accept = function(visitorObject, env){
-		visitorObject.visit(this, env);
-	}
 }
+MarkupEmbedding.prototype = new Node(); //Inheritance base class
