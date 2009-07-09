@@ -33,10 +33,13 @@ options {
 module:		MODULE moduleId END;
 
 // Check if module id references to an existing file
-moduleId:	id=IDCON {String path = id.getText();} 
-		( '.' id=IDCON { path += "/" + id.getText(); } )* 
-		{ System.out.println("Checking module: " + path + ".wae"); } ;
+moduleId
+	@init { String path = ""; }
+	@after { System.out.println("Checking module: " + path + ".wae"); }
+	:	id=IDCON { path = id.getText();}
+		( '.' id=IDCON { path += "/" + id.getText(); } )* ;
 
 imprt:		IMPORT moduleId;
 site:		SITE .* END;
+
 function:	DEF .* END;
