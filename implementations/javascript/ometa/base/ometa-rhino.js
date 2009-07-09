@@ -185,11 +185,11 @@ function getDependencies(path, module){
 		var directoryDependency = module.imports[i].moduleId.identifier.replace('.', '/');
 				
 		//Determine relative path of dependency towards file system
-		var path = directoryParent + directoryDependency + ".wae"  
+		var new_path = directoryParent + directoryDependency + ".wae"  
 		
 		//Load module based on path
         try {
-            var dependency = evaluateProgram(path)
+            var dependency = evaluateProgram(new_path)
             dependencies.push(dependency)
 		}catch(exception if exception instanceof NonExistingModuleException){
 			//Dependency couldn't be found, save as SemanticException
@@ -209,7 +209,6 @@ var interpreter = getInterpreter();
 
 //Start new environment for logging exceptions	
 var root = new Environment(null);
-
 try {
 	//Evaluate waebric program
 	var module = evaluateProgram('../program.wae');

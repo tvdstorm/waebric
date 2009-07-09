@@ -1,11 +1,7 @@
 module products
 
-import utilitys
+import utility
 
-def getProductName(productId)
-  div td();
-end
-
-def actions(input)
-  div td();
+def getProduct(productId)
+  div;
 end
