@@ -43,15 +43,17 @@ tokens {
 	private boolean inString = false;
 }
 
-// Parser rules
+// org.waebric.module
 module: 		'module' moduleId ( imprt | site | function )* 'end';
 moduleId:		IDCON ( '.' IDCON )* ;
 imprt:			'import' moduleId ';' ;
 
+// org.waebric.site
 site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
 
+// org.waebric.markup
 markup:			designator arguments? ;
 designator:		IDCON attribute* ;
 attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
@@ -59,34 +61,39 @@ attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON |
 arguments:		'(' argument? ( ',' argument )* ')' ;
 argument:		expression ;
 
-expression:		( idExpr | natExpr | textExpr | symbolExpr | listExpr | recordExpr ) 
-			( '.' IDCON | '+' expression )* ; // Left-recusion removal
-idExpr:			IDCON;	
-natExpr:		NATCON;
-textExpr:		TEXT;
-symbolExpr:		SYMBOLCON;			
-listExpr:		'[' expression? ( ',' expression )* ']' ;
-recordExpr:		'{' keyvaluepair? ( ',' keyvaluepair )* '}' ;	
-keyvaluepair:		IDCON ':' expression ;
+// org.waebric.expression
+expression:		( idExpression | natExpression | textExpression | symbolExpression | listExpression | recordExpression )
+			( '+' expression /* Cat expression */ | '.' IDCON /* Field expression */ )* ;
+idExpression:		IDCON ;
+natExpression:		NATCON ;
+textExpression:		TEXT ;
+symbolExpression:	SYMBOLCON ;			
+listExpression:		'[' expression? ( ',' expression )* ']' ;
+recordExpression:	'{' keyValuePair? ( ',' keyValuePair )* '}' ;
+keyValuePair:		IDCON ':' expression ;
 
+// org.waebric.function
 function:		'def' IDCON formals statement* 'end';
 formals:		'(' IDCON? ( ',' IDCON )* ')' | ;
 
-statement:		ifElseStm | ifStm | eachStm | letStm | blockStm | 
-			commentStm | echoStm | cdataStm | yieldStm | markupStm;	
-ifStm:			'if' '(' predicate ')' statement ; // TODO: Look-ahead no else
-ifElseStm:		'if' '(' predicate ')' statement 'else' statement ;	
-eachStm:		'each' '(' IDCON ':' expression ')' statement ;	
-letStm:			'let' assignment+ 'in' statement* 'end' ;
-blockStm:		'{' statement* '}' ;
-commentStm:		'comment' STRCON ';' ;
-echoStm:		'echo' expression ';'  | 'echo' embedding ';' ;
-cdataStm:		'cdata' expression ';' ;
-yieldStm:		'yield;' ;
-markupStm:		markup ';' | markup+ statement ';' | markup+ markup ';' | markup+ expression ';' ;
-assignment:		IDCON '=' expression ';' | // Variable binding
-			IDCON formals statement ; // Function binding
+// org.waebric.statement
+statement:		ifElseStatement | ifStatement | eachStatement | letStatement | blockStatement | 
+			commentStatement | echoStatement | cdataStatement | yieldStatement | markupStatement ;	
+ifStatement:		'if' '(' predicate ')' statement ; // TODO: Look-ahead no else
+ifElseStatement:	'if' '(' predicate ')' statement 'else' statement ;	
+eachStatement:		'each' '(' IDCON ':' expression ')' statement ;	
+letStatement:		'let' assignment+ 'in' statement* 'end' ;
+blockStatement:		'{' statement* '}' ;
+commentStatement:	'comment' STRCON ';' ;
+echoStatement:		'echo' expression ';'  | 'echo' embedding ';' ;
+cdataStatement:		'cdata' expression ';' ;
+yieldStatement:		'yield;' ;
+markupStatement:	markup ';' | markup+ statement ';' | markup+ markup ';' | markup+ expression ';' ;
+assignment:		varBinding | funcBinding ;
+varBinding:		IDCON '=' expression ';' ;
+funcBinding:		IDCON formals statement ;
 
+// org.waebric.predicate
 predicate:		( notPredicate | declaredPredicate | isPredicate ) 
 			( '&&' predicate | '||' predicate )* ; // Left-recussion removal 
 notPredicate:		'!' predicate ;	
@@ -94,9 +101,10 @@ declaredPredicate:	expression ; // Check expression declaration (not null)
 isPredicate:		expression '.' type ; // Check expression type
 type:			'list' | 'record' | 'string' ;
 
-embedding:		PRETEXT embed texttail ;	
+// org.waebric.embedding
+embedding:		PRETEXT embed textTail ;	
 embed:			markup* expression | markup* markup ;
-texttail:		POSTTEXT | MIDTEXT embed texttail ;
+textTail:		POSTTEXT | MIDTEXT embed textTail ;
 
 // Lexical rules
 COMMENT	:		'comment' { inString = true; } ;
