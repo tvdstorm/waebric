@@ -208,10 +208,10 @@ var parser = getParser();
 var interpreter = getInterpreter();
 
 //Start new environment for logging exceptions	
-var root = new Environment(null);
+var root = new Environment();
 try {
 	//Evaluate waebric program
-	var module = evaluateProgram('../program.wae');
+	var module = evaluateProgram('../../../../demos/misc/menus.wae');
 	
 	//Perform semantic validation
 	module.accept(new ModuleVisitor(), root);

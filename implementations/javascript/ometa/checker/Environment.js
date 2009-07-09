@@ -154,6 +154,19 @@ function Environment(){
 	 * 
 	 * @return {Environment} The root environment
 	 */
+	this.getParentModule = function(){
+		if (this.type != 'module') {			
+			return this.parent.getParentModule();
+		} else {
+			return this.name;
+		}
+	}
+	
+	/**
+	 * Returns the root environment with no parents.
+	 * 
+	 * @return {Environment} The root environment
+	 */
 	this.getRoot = function(){
 		if (this.parent != null) {			
 			return this.parent.getRoot();

@@ -26,6 +26,11 @@
  */
 function ModuleVisitor(){
 	this.visit = function(module, env){ 
+		//Assign name to environment for exception logging
+		if(env.name == ''){
+			env.name = module.moduleId.identifier;
+		}
+		
 		//Visit dependencies
 		//Should be done before the current module is visited			
 		for(var i = 0; i < module.dependencies.length; i++){
@@ -346,7 +351,7 @@ function FunctionBindingVisitor(){
 		if (!env.containsFunction(newFunctionName)) {
 			env.addFunction(newFunction);
 		}else{
-			env.addException(new DuplicateDefinitionException(newFunction));
+			env.addException(new DuplicateDefinitionException(newFunction, env));
 		}
 		
 		//Visit FunctionDefinition
@@ -397,7 +402,7 @@ function PredicateVisitor(){
 		}else if(predicate instanceof OrPredicate){
 			predicate.predicateLeft.accept(new PredicateVisitor(), env);
 			predicate.predicateRight.accept(new PredicateVisitor(), env);
-		}else if(predicate instanceof isAPredicate){
+		}else if(predicate instanceof IsAPredicate){
 			predicate.expression.accept(new ExpressionVisitor(), env);
 		}else{	//Predicate is not recognized
 			predicate.accept(new ExpressionVisitor(), env); //Predicate is an Expression
@@ -600,23 +605,26 @@ function MarkupVisitor(){
 			var functionDefinition = env.getLocalFunction(markup.designator.idCon);
 			if(functionDefinition != null){
 				//Check if number of the arguments equals
-				if(functionDefinition.formals.length != markup.arguments.length){
-					env.addException(new IncorrectArgumentsException(markup));
-				}						
-				//Visit Formals
-				for(var i = 0; i < markup.arguments.length; i++){									
-					var argument = markup.arguments[i];
-					argument.accept(new ArgumentVisitor(), env);
-				}
-			}else if(XHTML.isXHTMLTag(markup.designator.idCon)){
-				//Visit formals
-				for(var i = 0; i < markup.arguments.length; i++){									
-					var argument = markup.arguments[i];
-					argument.accept(new ArgumentVisitor(), env);
-				}
-			}else{
-				env.addException(new UndefinedFunctionException(markup))
+				if (functionDefinition.formals.length != markup.arguments.length) {
+					 //If arguments do not equal and the designator tag is not part
+					//of XHTML, then it must be a function call with incorrect arguments.
+					if (!XHTML.isXHTMLTag(markup.designator.idCon)) {
+						env.addException(new IncorrectArgumentsException(markup, env));
+					}
+				}							
+			}else if(!XHTML.isXHTMLTag(markup.designator.idCon)){
+				//If function does not exists and the designator tag is not part of
+				//XHTML, then it must be an undefined function						
+				env.addException(new UndefinedFunctionException(markup, env))
+			}else{//XHTML tag
+				//No action required
 			}
+			
+			//Visit arguments/formals
+			for(var i = 0; i < markup.arguments.length; i++){									
+				var argument = markup.arguments[i];
+				argument.accept(new ArgumentVisitor(), env);
+			}	
 		}else{	//Markup is MarkupTag Expression			
 			//No action required
 		}
@@ -630,7 +638,7 @@ function VarExpressionVisitor(){
 	this.visit = function(variable, env){
 		//Check if variable exists
 		if(env.getVariable(variable) == null){
-			env.addException(new UndefinedVariableException(variable));
+			env.addException(new UndefinedVariableException(variable, env));
 		}
 	}
 }
