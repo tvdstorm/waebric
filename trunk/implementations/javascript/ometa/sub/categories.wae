@@ -1,0 +1,11 @@
+module categories
+
+import utility
+
+def getCategory(productId)
+  div;
+end
+
+def getProduct(productId)
+  div;
+end

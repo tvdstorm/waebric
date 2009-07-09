@@ -27,18 +27,28 @@
 function ModuleVisitor(){
 	this.visit = function(module, env){ 
 		//Visit dependencies
-		//Should be done before the current module is visited
-		//Otherwise, functioncalls from the current module to dependencies
-		// would not be recognized since they wouldn't be visited
+		//Should be done before the current module is visited			
 		for(var i = 0; i < module.dependencies.length; i++){
+			//Visit only unprocessed dependencies
 			var dependency = module.dependencies[i];
-			dependency.accept(new ModuleVisitor(), env);
+			var dependencyName = dependency.moduleId.identifier;
+			var existingDependency = env.getDependency(dependencyName);
+			
+			//If dependency is not processed before, visit it
+			if (existingDependency == null) {			
+				var new_env = env.addDependency('module');
+				new_env.name = dependency.moduleId.identifier;	
+				dependency.accept(new ModuleVisitor(), new_env);
+			}
+			//If dependency was processed before, add existing dependecy to
+			//current environment but do not visit it again.
+			else{
+				env.addExistingDependency(existingDependency);
+			}
 		}
 		
 		//Store Function Definitions
 		//Should be done before the FunctionDefinitionVisitor is called
-		//If not done, a function in a Waebric program would then be declared before
-		//a functioncall, which is not wanted
 		for(var i = 0; i < module.functionDefinitions.length; i++){
 			var functionDefinition = module.functionDefinitions[i];
 			if (!env.containsFunction(functionDefinition.functionName)) {
@@ -69,7 +79,7 @@ function ModuleVisitor(){
 function FunctionDefinitionVisitor(){
 	this.visit = function(functionDefinition, env){		
 		//Add Arguments of function to new environment		
-		var new_env = env.addEnvironment();		
+		var new_env = env.addEnvironment('func-def');		
 		for (var i = 0; i < functionDefinition.formals.length; i++) {
 			var formal = functionDefinition.formals[i];
 			new_env.addVariable(formal);
@@ -103,6 +113,9 @@ function StatementVisitor(){
 		else if(statement instanceof BlockStatement){
 			statement.accept(new BlockStatementVisitor(), env);
 		}
+		else if(statement instanceof CommentStatement){
+			//No action required
+		}
 		else if(statement instanceof EchoStatement){
 			statement.accept(new EchoStatementVisitor(), env)
 		}
@@ -111,6 +124,9 @@ function StatementVisitor(){
 		}
 		else if(statement instanceof CDataExpression){
 			statement.accept(new CDataExpressionVisitor(), env)
+		}
+		else if(statement instanceof YieldStatement){
+			//No action required
 		}
 		else if(statement instanceof MarkupStatement){
 			statement.accept(new MarkupStatementVisitor(), env);			
@@ -172,8 +188,8 @@ function EmbeddingVisitor(){
  */
 function TextTailVisitor(){
 	this.visit = function(textTail, env){
-		if (textTail instanceof MidTextTail) {
-			embedding.tail.accept(new MidTextTail(), env);
+		if (textTail instanceof MidTextTail){
+			textTail.accept(new MidTextTailVisitor(), env);
 		}else if(textTail instanceof PostTextTail){
 			//No action required
 		}else{ //TextTail is not recognized
@@ -270,7 +286,7 @@ function LetStatementVisitor(){
 		//Assignments and statements in a let statement require a new environment under
 		//the current environment since the scope of the assignments (function/variable declaration)
 		// is limited to the statements inside the let statement
-		var new_env = env.addEnvironment();
+		var new_env = env.addEnvironment('let-stmt');
 		
 		//Visit Assignments
 		for(var i = 0; i < letStmt.assignments.length; i++){
@@ -467,7 +483,7 @@ function EachStatementVisitor(){
 	this.visit = function(eachStmt, env){
 		//Add new environment because the scope of the variable declaration (identifier)
 		// is limited to the statement inside the each statement.
-		var new_env = env.addEnvironment();
+		var new_env = env.addEnvironment('each-stmt');
 		
 		//Add variable to new environment of each statement
 		new_env.addVariable(eachStmt.identifier);
@@ -580,8 +596,8 @@ function KeyValueVisitor(){
 function MarkupVisitor(){
 	this.visit = function(markup, env){ 
 		if(markup instanceof MarkupCall){	
-			//Check if function already exists
-			var functionDefinition = env.getFunction(markup.designator.idCon);
+			//Check if function already exists in current environment (incl dependecies)
+			var functionDefinition = env.getLocalFunction(markup.designator.idCon);
 			if(functionDefinition != null){
 				//Check if number of the arguments equals
 				if(functionDefinition.formals.length != markup.arguments.length){
@@ -624,8 +640,8 @@ function VarExpressionVisitor(){
  */
 function ArgumentVisitor(){
 	this.visit = function(argument, env){
-		if (argument instanceof Argument) {
-			argument.expression.accept(new ExpressionVisitor(), env);
+		if(argument instanceof Argument) {
+			argument.accept(new ArgumentExpressionVisitor(), env);
 		}else{  //Argument is expression
 			argument.accept(new ExpressionVisitor(), env);
 		}
@@ -633,15 +649,12 @@ function ArgumentVisitor(){
 }
 
 /**
- * Visitor Argument
+ * Visitor Argument Expression
  */
-function ArgumentExpression(){
-	this.visit = function(argument, env){
-		//Visit Variable Expression
-		argument.variable.visit(new VarExpressionVisitor(), env);
-		
+function ArgumentExpressionVisitor(){
+	this.visit = function(argument, env){		
 		//Visit Expression
-		argument.expression.visit(new ExpressionVisitor(), env);
+		argument.expression.accept(new ExpressionVisitor(), env);
 	}
 }
 
