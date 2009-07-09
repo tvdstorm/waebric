@@ -27,8 +27,8 @@ NonExistingModuleException.prototype = new SemanticException();
  * @param {Markup} The function call for which no function definition exists
  * @return {SemanticException} A Semantic Exception
  */
-function UndefinedFunctionException(functionCall){
-	this.message = "The function " + functionCall + " was not found in any of the loaded modules, nor is the functionname part of XHTML";
+function UndefinedFunctionException(functionCall, env){
+	this.message = "The function '" + functionCall + "' in module '" + env.getParentModule() + "'was not found in any of the loaded modules, nor is the functionname part of XHTML";
 }
 UndefinedFunctionException.prototype = new SemanticException();
 
@@ -37,8 +37,8 @@ UndefinedFunctionException.prototype = new SemanticException();
  * @param {FunctionDefinition} The function definition 
  * @return {SemanticException} A Semantic Exception
  */
-function DuplicateDefinitionException(func){
-	this.message = "Duplicate function found: " + func;
+function DuplicateDefinitionException(func, env){
+	this.message = "Duplicate function found: " + func + "' in module '" + env.getParentModule() + "'";
 }
 DuplicateDefinitionException.prototype = new SemanticException();
 
@@ -47,8 +47,8 @@ DuplicateDefinitionException.prototype = new SemanticException();
  * @param {Markup} The function call with the incorrect number of arguments
  * @return {SemanticException} A Semantic Exception
  */
-function IncorrectArgumentsException(functionCall){
-	this.message = "The functioncall " + functionCall + " has an incorrect number of arguments. ";
+function IncorrectArgumentsException(functionCall, env){
+	this.message = "The functioncall '" + functionCall + "' in module '" + env.getParentModule() + "' has an incorrect number of arguments. ";
 }
 IncorrectArgumentsException.prototype = new SemanticException();
 
@@ -57,7 +57,7 @@ IncorrectArgumentsException.prototype = new SemanticException();
  * @param {Object} exception
  * @return {SemanticException} A Semantic Exception
  */
-function UndefinedVariableException(variable){
-	this.message = "Variable "+ variable + " not declared.";
+function UndefinedVariableException(variable, env){
+	this.message = "The variable '" + variable + "' in module '" + env.getParentModule() + "' is not declared.";
 }
 UndefinedVariableException.prototype = new SemanticException();
