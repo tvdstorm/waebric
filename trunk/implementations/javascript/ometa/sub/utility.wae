@@ -1,0 +1,14 @@
+module utility
+
+def nickolas
+ let
+        placeImage(img, alt) = td img(width="160",height="160", alt=alt,src=img);
+      in
+       tr {
+ 	      placeImage("images/lavakaft_13-34.jpg", "lava 13-34");
+ 	      placeImage("images/lavakaft_14-1.jpg", "lava 14-1");
+ 	      placeImage("images/lavakaft_14-2.jpg", "lava 14-2");
+      }
+  end
+end
+
