@@ -57,17 +57,18 @@ tokens {
 }
 
 // $<Module
-
 module: 		'module' moduleId ( imprt | site | function )* 'end'
-				-> ^( 'module' moduleId imprt* site* function* 'end' ) ;
+				-> ^( 'module' moduleId imprt* site* function* ) ;
 
-moduleId returns [String path = ""] 
-	@after { $path += ".wae"; }
+moduleId 
+	returns [String path = ""] // Determine physical path of module identifier
+	@after { $path += ".wae"; } // Each reference ends with waebric extension
 	:		e=IDCON { $path += e.getText(); } 
-			( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
+			( '.' e=IDCON { $path += "/" + e.getText(); } )*
+				-> ^( IDCON IDCON* );
 	
 imprt:			'import' id=moduleId ';' 
-				-> ^( 'import' moduleId ^( { parseImport($id.path) } ) ) ;
+				-> ^( 'import' moduleId ^({ parseImport($id.path) }) ) ;
 
 // $>
 
