@@ -30,6 +30,11 @@ tokens {
 
 @parser::header {
 	package org.cwi.waebric;
+	import java.util.ArrayList;
+}
+
+@parser::members {
+	private ArrayList<String> dependancies = new ArrayList<String>();
 }
 
 @lexer::header {
@@ -43,12 +48,16 @@ tokens {
 	private boolean inString = false;
 }
 
-// org.waebric.module
 // $<Module
 
 module: 		'module' moduleId ( imprt | site | function )* 'end';
-moduleId:		IDCON ( '.' IDCON )* ;
-imprt:			'import' moduleId ';' ;
+
+moduleId returns [String path]
+	@init { $path = ""; }
+	@after { $path += ".wae"; }
+	:		e=IDCON { $path += e.getText(); } ( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
+	
+imprt:			'import' id=moduleId ';' { dependancies.add($id.path); } ;
 
 // $>
 
@@ -60,7 +69,6 @@ mapping	:		PATH ':' markup ;
 
 // $>
 
-// org.waebric.markup
 // $<Markup
 
 markup:			designator arguments? ;
@@ -128,7 +136,6 @@ type:			'list' | 'record' | 'string' ;
 
 // $>
 
-// org.waebric.embedding
 // $<Embedding
 
 embedding:		PRETEXT embed textTail ;	

@@ -45,12 +45,12 @@ public class WaebricProcessor {
 	        String s = tree.toStringTree();
 	        System.out.println(s);
 	        
-	        CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
-	        WaebricChecker checker = new WaebricChecker(nodes);
-	        curr = System.currentTimeMillis();
-	        checker.module();
-	        long check_time = System.currentTimeMillis() - curr;
-	        System.out.println("Checked in " + check_time + "ms.");
+//	        CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
+//	        WaebricChecker checker = new WaebricChecker(nodes);
+//	        curr = System.currentTimeMillis();
+//	        checker.module();
+//	        long check_time = System.currentTimeMillis() - curr;
+//	        System.out.println("Checked in " + check_time + "ms.");
 	}
 		
 }
