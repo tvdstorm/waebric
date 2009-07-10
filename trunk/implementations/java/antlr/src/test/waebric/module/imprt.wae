@@ -1,0 +1,3 @@
+module imprt
+	import moddef;
+end
