@@ -34,7 +34,15 @@ tokens {
 }
 
 @parser::members {
-	private ArrayList<String> dependancies = new ArrayList<String>();
+	private CommonTree parseImport(String path) throws RecognitionException {
+		try {
+			CharStream is = new ANTLRFileStream(path);
+			WaebricLexer lexer = new WaebricLexer(is);
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
+      			WaebricParser parser = new WaebricParser(tokens);
+      			return (CommonTree) parser.module().getTree();
+      		} catch(java.io.IOException e) { return new CommonTree(); }
+	}
 }
 
 @lexer::header {
@@ -50,14 +58,16 @@ tokens {
 
 // $<Module
 
-module: 		'module' moduleId ( imprt | site | function )* 'end';
+module: 		'module' moduleId ( imprt | site | function )* 'end'
+				-> ^( 'module' moduleId imprt* site* function* 'end' ) ;
 
-moduleId returns [String path]
-	@init { $path = ""; }
+moduleId returns [String path = ""] 
 	@after { $path += ".wae"; }
-	:		e=IDCON { $path += e.getText(); } ( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
+	:		e=IDCON { $path += e.getText(); } 
+			( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
 	
-imprt:			'import' id=moduleId ';' { dependancies.add($id.path); } ;
+imprt:			'import' id=moduleId ';' 
+				-> ^( 'import' moduleId ^( { parseImport($id.path) } ) ) ;
 
 // $>
 

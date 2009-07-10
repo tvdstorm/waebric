@@ -1,3 +1,0 @@
-module imprt
-	import moduledef;
-end

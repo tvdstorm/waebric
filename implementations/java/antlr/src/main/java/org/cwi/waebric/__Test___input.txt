@@ -1,0 +1,3 @@
+module got.skillz.nub 
+	def lol(arg) echo arg.lol; end
+end
