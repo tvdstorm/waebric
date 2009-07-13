@@ -1,6 +1,7 @@
 module test
-	site index.html:lol(bla.lulz) end
+	
 	def lol(call)
 		if (identifier) yield; else bla call.test;
 	end
+	site index.html:lol(bla.lulz) end
 end

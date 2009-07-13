@@ -24,11 +24,20 @@ options {
 @members {
 	private Set<String> variables = new HashSet<String>();
 	private Set<String> functions = new HashSet<String>();
+	private List<CommonTree> calls = new ArrayList<CommonTree>();
 
 	private List<SemanticException> exceptions;
 	public List<SemanticException> checkAST() throws RecognitionException {
 		exceptions = new ArrayList<SemanticException>();
-		module(); // Perform check
+		module(); // Start checking
+		
+		// Check calls after all functions are loaded
+		for(CommonTree e: calls) {
+			if(! functions.contains(e.getText())) {
+				exceptions.add(new UndefinedFunctionException(e));
+			}
+		}
+		
 		return exceptions; // Return results
 	}
 	
@@ -95,9 +104,7 @@ mapping	:		PATH ':' markup ;
 
 markup:			designator arguments? ;
 designator:		id=IDCON attribute* {
-				if(! functions.contains($id.getText())) { 
-					exceptions.add(new UndefinedFunctionException($id));
-				}
+				calls.add($id);
 			} ;
 attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
 			'@' NATCON | '@' NATCON '%' NATCON;
@@ -117,7 +124,6 @@ keyValuePair:		IDCON ':' expression ;
 
 function: 		'def' id=IDCON f=formals .* 'end' {
 				functions.add($id.getText());
-				System.out.println(variables.toString());
 			} ;
 			
 formals:		{ variables.clear(); } 
