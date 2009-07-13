@@ -182,7 +182,15 @@ listExpression:		'[' expression? ( ',' expression )* ']' ;
 recordExpression:	'{' keyValuePair? ( ',' keyValuePair )* '}' ;
 keyValuePair:		. ':' expression ;
 
-function:	 ^( 'def' IDCON formals? statement* 'end' ) ;
+function
+	@init{ int args = 0; }
+	:		 ^( 'def' id=IDCON (f=formals {args=$f.args;})? statement* 'end' ) {
+				if(functions.containsKey($id.getText())) {
+					exceptions.add(new DuplicateFunctionException($id));
+				} else {
+					functions.put($id.getText(),args);
+				}
+			} ;
 	
 formals	returns [int args = 0]
 	:		{ variables.clear(); } // Store formal as variables
