@@ -1,5 +1,4 @@
 module test
-	def lol(call)
-		if (identifier) yield; else bla call.test;
-	end
+	def lol(call) if(call) yield; else bla bla2; end
+	def lol yield; end
 end

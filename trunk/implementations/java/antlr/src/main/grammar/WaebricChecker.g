@@ -97,7 +97,7 @@ options {
        	public class UndefinedFunctionException extends SemanticException {
        		private static final long serialVersionUID = -4569708425419653397L;
         	public UndefinedFunctionException(CommonTree id) {
-        		super("Function call  " + id.getText() + " at line " + id.getLine() 
+        		super("Function call " + id.getText() + " at line " + id.getLine() 
         				+ " and character " + id.getCharPositionInLine()
         				+ ", is made to an undefined function.");
        		}
@@ -152,17 +152,18 @@ moduleId
 				}
 			} ;
 		
-imprt:			'import' id=moduleId ';' ^ module ;
+imprt:			^( 'import' id=moduleId ';' ^module ) ;
 
-site:			'site' mappings 'end' ;
+site:			^( 'site' mappings 'end' ) ;
 mappings:		mapping? ( ';' mapping )* ;
-mapping	:		PATH ':' markup ;
+mapping	:		. ':' markup ;
 
 markup
 	@init { int args = 0; }
 	:		d=designator ( a=arguments { args = $a.args; } )? {
 				calls.put($d.tree, args); // Store call and argument count
 			} ;
+			
 designator:		IDCON attribute* ;
 attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
 			'@' NATCON | '@' NATCON '%' NATCON;
@@ -179,18 +180,44 @@ varExpression:		id=IDCON {
 			} ;			
 listExpression:		'[' expression? ( ',' expression )* ']' ;
 recordExpression:	'{' keyValuePair? ( ',' keyValuePair )* '}' ;
-keyValuePair:		IDCON ':' expression ;
+keyValuePair:		. ':' expression ;
 
-function: 		'def' id=IDCON f=formals .* 'end' { 
-				if(functions.containsKey($id.getText())) {
-					exceptions.add(new DuplicateFunctionException($id));
-				} else {
-					functions.put($id.getText(), $f.args); 
-				}
-			} ; // Store definition and expected argument count
-			
+function:	 ^( 'def' IDCON formals? statement* 'end' ) ;
+	
 formals	returns [int args = 0]
 	:		{ variables.clear(); } // Store formal as variables
-			( '(' ( id=IDCON { variables.add($id.getText()); $args++; } )? 
-			( ',' id=IDCON { variables.add($id.getText()); $args++; } )* ')' 
-			| /* Empty formal */ ) ;
+			'(' ( id=IDCON { variables.add($id.getText()); $args++; } )? 
+			( ',' id=IDCON { variables.add($id.getText()); $args++; } )* ')'  ;
+
+statement:		ifElseStatement | ifStatement | eachStatement | letStatement | blockStatement | commentStatement |
+			echoStatement | cdataStatement | yieldStatement | markupStatements ;
+ifStatement:		'if' '(' predicate ')' statement ; // TODO: Look-ahead no else
+ifElseStatement:	'if' '(' predicate ')' statement 'else' statement ;	
+eachStatement:		'each' '(' IDCON ':' expression ')' statement ;	
+letStatement:		'let' assignment+ 'in' statement* 'end' ;
+blockStatement:		'{' statement* '}' ;
+commentStatement:	'comment' STRCON ';' ;
+echoStatement:		'echo' expression ';'  | 'echo' . ';' ;
+cdataStatement:		'cdata' expression ';' ;
+yieldStatement:		'yield;' ;
+
+markupStatements:	functionCall | markupExpression | markupStatement | markupMarkup ;
+functionCall:		markup ';' ;	
+markupExpression:	markup+ expression ';' ;
+markupStatement:	markup+ statement ';' ;
+markupMarkup:		markup+ markup ';' ;
+
+predicate:		( notPredicate | declaredPredicate | isPredicate ) ( '&&' predicate | '||' predicate )* ; 
+notPredicate:		'!' predicate ;	
+declaredPredicate:	expression ;
+isPredicate:		expression '.' . ;	
+
+assignment:		varBinding | funcBinding ;
+varBinding:		id=IDCON '=' expression ';' {
+				variables.add($id.getText());
+			} ;
+funcBinding:		id=IDCON f=formals statement {
+				if(functions.containsKey($id.getText())) {
+					exceptions.add(new DuplicateFunctionException($id));
+				} else { functions.put($id.getText(), $f.args); }
+			} ;
