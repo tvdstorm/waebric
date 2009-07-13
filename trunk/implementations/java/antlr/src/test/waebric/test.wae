@@ -1,4 +1,4 @@
 module test
-	def lol(call) if(call) yield; else word yield; end
+	def lol(bla) each(bla:["1","2","3"]) echo bla; end
 	def lol yield; end
 end
