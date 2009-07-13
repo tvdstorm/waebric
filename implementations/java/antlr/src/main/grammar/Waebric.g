@@ -68,18 +68,18 @@ moduleId
 				-> IDCON ( '.' IDCON )* ;
 	
 imprt:			'import' id=moduleId ';' 
-				-> 'import' moduleId ';' ^( { parseFile($id.path) } ) ;
+				-> ^( 'import' moduleId ';' ^( { parseFile($id.path) } ) ) ;
 
 // $>
-
 // $<Site
 
-site:			'site' mappings 'end' ;
+site:			'site' mappings 'end'
+				-> ^( 'site' mappings 'end' ) ;
+				
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
 
 // $>
-
 // $<Markup
 
 markup:			designator arguments? ;
@@ -90,7 +90,6 @@ arguments:		'(' argument? ( ',' argument )* ')' ;
 argument:		expression ;
 
 // $>
-
 // $<Expressions
 
 expression:		( varExpression | natExpression | textExpression | symbolExpression | listExpression | recordExpression )
@@ -104,18 +103,19 @@ recordExpression:	'{' keyValuePair? ( ',' keyValuePair )* '}' ;
 keyValuePair:		IDCON ':' expression ;
 
 // $>
-
 // $<Function
 
-function:		'def' IDCON formals statement* 'end';
-formals:		'(' IDCON? ( ',' IDCON )* ')' | ;
+function:		'def' IDCON formals? statement* 'end' 
+				-> ^( 'def' IDCON formals? statement* 'end' ) ;
+				
+formals:		'(' IDCON? ( ',' IDCON )* ')' ;
 
 // $>
 
 // $<Statements
 
-statement:		ifElseStatement | ifStatement | eachStatement | letStatement | blockStatement | 
-			commentStatement | echoStatement | cdataStatement | yieldStatement | markupStatement ;	
+statement:		ifElseStatement | ifStatement | eachStatement | letStatement | blockStatement | commentStatement |
+			echoStatement | cdataStatement | yieldStatement | markupStatements ;
 ifStatement:		'if' '(' predicate ')' statement ; // TODO: Look-ahead no else
 ifElseStatement:	'if' '(' predicate ')' statement 'else' statement ;	
 eachStatement:		'each' '(' IDCON ':' expression ')' statement ;	
@@ -125,7 +125,12 @@ commentStatement:	'comment' STRCON ';' ;
 echoStatement:		'echo' expression ';'  | 'echo' embedding ';' ;
 cdataStatement:		'cdata' expression ';' ;
 yieldStatement:		'yield;' ;
-markupStatement:	markup ';' | markup+ statement ';' | markup+ expression ';' | markup+ markup ';' ;
+
+markupStatements:	functionCall | markupExpression | markupStatement | markupMarkup ;
+functionCall:		markup ';' ;	
+markupExpression:	markup+ expression ';' ;
+markupStatement:	markup+ statement ';' ;
+markupMarkup:		markup+ markup ';' ;		
 
 // $>
 // $<Assignments
@@ -135,21 +140,20 @@ varBinding:		IDCON '=' expression ';' ;
 funcBinding:		IDCON formals statement ;
 
 // $>
-
 // $<Predicates
 
 predicate:		( notPredicate | declaredPredicate | isPredicate ) 
-			( '&&' predicate | '||' predicate )* ; // Left-recussion removal 
+			( '&&' predicate | '||' predicate )* ; // Left-recussion removal
 notPredicate:		'!' predicate ;	
 declaredPredicate:	expression ; // Check expression declaration (not null)
 isPredicate:		expression '.' type ; // Check expression type
 type:			'list' | 'record' | 'string' ;
 
 // $>
-
 // $<Embedding
 
-embedding:		PRETEXT embed textTail ;	
+embedding:		PRETEXT embed textTail 
+				-> ^( PRETEXT embed textTail ) ;
 embed:			markup* expression | markup* markup ;
 textTail:		POSTTEXT | MIDTEXT embed textTail ;
 
