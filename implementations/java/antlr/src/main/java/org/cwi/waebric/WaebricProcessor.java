@@ -1,5 +1,7 @@
 package org.cwi.waebric;
 
+import java.util.List;
+
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
@@ -7,6 +9,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.TokenSource;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
+import org.cwi.waebric.WaebricChecker.SemanticException;
 
 /**
  * Waebric compiler
@@ -46,9 +49,13 @@ public class WaebricProcessor {
 	        CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
 	        WaebricChecker checker = new WaebricChecker(nodes);
 	        curr = System.currentTimeMillis();
-	        checker.module();
+	        List<SemanticException> se = checker.checkAST();
 	        long check_time = System.currentTimeMillis() - curr;
-	        System.out.println("Checked in " + check_time + "ms.");
+	        System.out.println("Checked in " + check_time + "ms, with " + se.size() + " semantic exceptions");
+	        
+	        for(SemanticException e: se) {
+	        	e.printStackTrace();
+	        }
 	}
 		
 }
