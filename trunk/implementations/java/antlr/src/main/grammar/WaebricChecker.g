@@ -203,9 +203,9 @@ yieldStatement:		'yield;' ;
 
 markupStatements:	functionCall | markupExpression | markupStatement | markupMarkup ;
 functionCall:		markup ';' ;	
-markupExpression:	markup+ expression ';' ;
-markupStatement:	markup+ statement ';' ;
-markupMarkup:		markup+ markup ';' ;
+markupExpression:	expression markup+ ';' ;
+markupStatement:	markup+ statement ;
+markupMarkup:		markup+ ';' ;
 
 predicate:		( notPredicate | declaredPredicate | isPredicate ) ( '&&' predicate | '||' predicate )* ; 
 notPredicate:		'!' predicate ;	

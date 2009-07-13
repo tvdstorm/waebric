@@ -1,4 +1,4 @@
 module test
-	def lol(call) if(call) yield; else word; end
+	def lol(call) if(call) yield; else word yield; end
 	def lol yield; end
 end

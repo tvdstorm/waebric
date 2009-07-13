@@ -128,8 +128,8 @@ yieldStatement:		'yield;' ;
 
 markupStatements:	functionCall | markupExpression | markupStatement | markupMarkup ;
 functionCall:		markup ';' ;	
-markupExpression:	markup+ expression ';' ;
-markupStatement:	markup+ statement ';' ;
+markupExpression:	markup+ expression ';' -> expression markup+ ';' ;
+markupStatement:	markup+ statement ;
 markupMarkup:		markup+ markup ';' ;		
 
 // $>
