@@ -9,7 +9,7 @@ options {
 @header {
 	package org.cwi.waebric;
 	
-	import java.util.Set;
+	import java.util.HashMap;
 	import java.util.HashSet;
 	import java.util.List;
 	import java.util.ArrayList;	
@@ -22,19 +22,24 @@ options {
 }
 
 @members {
-	private Set<String> variables = new HashSet<String>();
-	private Set<String> functions = new HashSet<String>();
-	private List<CommonTree> calls = new ArrayList<CommonTree>();
+	private HashSet<String> variables = new HashSet<String>();
+	private HashMap<String, Integer> functions = new HashMap<String, Integer>();
+	private HashMap<CommonTree, Integer> calls = new HashMap<CommonTree, Integer>();
 
-	private List<SemanticException> exceptions;
+	private ArrayList<SemanticException> exceptions;
 	public List<SemanticException> checkAST() throws RecognitionException {
 		exceptions = new ArrayList<SemanticException>();
 		module(); // Start checking
 		
-		// Check calls after all functions are loaded
-		for(CommonTree e: calls) {
-			if(! functions.contains(e.getText())) {
+		for(CommonTree e: calls.keySet()) {
+			// Check if function is defined
+			if(! functions.containsKey(e.getText())) {
 				exceptions.add(new UndefinedFunctionException(e));
+			} else {
+				int expectedArgs = functions.get(e.getText());
+				if(expectedArgs != calls.get(e)) {
+					exceptions.add(new ArityMismatchException(e, expectedArgs));
+				} 
 			}
 		}
 		
@@ -62,6 +67,14 @@ options {
        		}
        	}
        	
+       /**
+	 * If a variable reference x cannot be traced back to an enclosing 
+	 * let-definition or function parameter, this is an error. The 
+	 * variable x will be undefined and evaluate to the string "undef".
+	 * 
+	 * @author Jeroen van Schagen
+	 * @date 09-06-2009
+	 */
        	public class UndefinedVariableException extends SemanticException {
        		private static final long serialVersionUID = -4479175462744485497L;
         	public UndefinedVariableException(CommonTree id) {
@@ -71,6 +84,16 @@ options {
        		}
        	}
        	
+       	/**
+	 * If for a markup-call (f) no function definition can be found in 
+	 * the current module or one of its (transitive) imports, and, if 
+	 * f is not a tag defined in the XHTML 1.0 Transitional standard, 
+	 * then this is an error. [f will be interpreted as if it was part 
+	 * of XHTML 1.0 transitional.]
+	 * 
+	 * @author Jeroen van Schagen
+	 * @date 09-06-2009
+	 */
        	public class UndefinedFunctionException extends SemanticException {
        		private static final long serialVersionUID = -4569708425419653397L;
         	public UndefinedFunctionException(CommonTree id) {
@@ -79,6 +102,40 @@ options {
         				+ ", is made to an undefined function.");
        		}
        	}
+       	
+	/**
+	 * If a function is called with an incorrect number of arguments 
+	 * (as follows from its definition), this is an error.
+	 * 
+	 * @author Jeroen van Schagen
+	 * @date 09-06-2009
+	 */
+	public class ArityMismatchException extends SemanticException {
+		private static final long serialVersionUID = -954167103131401047L;
+		public ArityMismatchException(CommonTree id, int args) {
+			super("Function call " + id.getText() + " at line " + id.getLine() 
+        				+ " and character " + id.getCharPositionInLine()
+        				+ ", is made to an arity mismatch."
+        				+ " Use the expected " + args + " argument(s).");
+		}
+		
+	}
+	
+	/**
+	 * Multiple function definitions with the same name are disallowed.
+	 * 
+	 * @author Jeroen van Schagen
+	 * @date 09-06-2009
+	 */
+	public class DuplicateFunctionException extends SemanticException {
+		private static final long serialVersionUID = -8833578229100261366L;
+		public DuplicateFunctionException(CommonTree id) {
+			super("Function " + id.getText() + " at line " + id.getLine() 
+        				+ " and character " + id.getCharPositionInLine()
+					+ " has a duplicate definition.");
+		}
+		
+	}
 }
 
 module:			^( 'module' moduleId imprt* site* function* 'end' );
@@ -90,7 +147,6 @@ moduleId
 			( '.' id=IDCON { path += "/" + id.getText(); } )* {
 				path += ".wae"; // Include default extension
 				java.io.File file = new java.io.File(path);
-				// Check if import references to an existing file
 				if(! file.isFile()) {
 					exceptions.add(new NonExistingModuleException($id));
 				}
@@ -102,18 +158,21 @@ site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
 
-markup:			designator arguments? ;
-designator:		id=IDCON attribute* {
-				calls.add($id);
+markup
+	@init { int args = 0; }
+	:		d=designator ( a=arguments { args = $a.args; } )? {
+				calls.put($d.tree, args); // Store call and argument count
 			} ;
+designator:		IDCON attribute* ;
 attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
 			'@' NATCON | '@' NATCON '%' NATCON;
-arguments:		'(' argument? ( ',' argument )* ')' ;
+arguments returns [int args = 0]
+	:		'(' ( argument {$args++;} )? ( ',' argument {$args++;} )* ')' ;
 argument:		expression ;
 
-expression:		( varExpression | listExpression | recordExpression )
-			( '+' expression | '.' IDCON )* ;
-varExpression:		id=IDCON { 
+expression:		( varExpression | listExpression | recordExpression | . ) ( '+' expression | '.' IDCON )* ;
+varExpression:		id=IDCON {
+				// Check if referenced variable is defined
 				if(! variables.contains($id.getText())) { 
 					exceptions.add(new UndefinedVariableException($id));
 				}
@@ -122,10 +181,16 @@ listExpression:		'[' expression? ( ',' expression )* ']' ;
 recordExpression:	'{' keyValuePair? ( ',' keyValuePair )* '}' ;
 keyValuePair:		IDCON ':' expression ;
 
-function: 		'def' id=IDCON f=formals .* 'end' {
-				functions.add($id.getText());
-			} ;
+function: 		'def' id=IDCON f=formals .* 'end' { 
+				if(functions.containsKey($id.getText())) {
+					exceptions.add(new DuplicateFunctionException($id));
+				} else {
+					functions.put($id.getText(), $f.args); 
+				}
+			} ; // Store definition and expected argument count
 			
-formals:		{ variables.clear(); } 
-			( '(' ( id=IDCON { variables.add($id.getText()); } )? ( ',' id=IDCON { variables.add($id.getText()); } )* ')' 
+formals	returns [int args = 0]
+	:		{ variables.clear(); } // Store formal as variables
+			( '(' ( id=IDCON { variables.add($id.getText()); $args++; } )? 
+			( ',' id=IDCON { variables.add($id.getText()); $args++; } )* ')' 
 			| /* Empty formal */ ) ;
