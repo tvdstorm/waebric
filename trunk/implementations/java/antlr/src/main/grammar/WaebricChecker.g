@@ -24,7 +24,13 @@ options {
 	private Set<String> variables = new HashSet<String>();
 	private Set<String> functions = new HashSet<String>();
 	
-	private List<SemanticException> exceptions = new ArrayList<SemanticException>();
+	private List<SemanticException> exceptions;
+	public List<SemanticException> checkAST() throws RecognitionException {
+		exceptions = new ArrayList<SemanticException>();
+		module(); // Perform check
+		return exceptions; // Return results
+	}
+	
     	public abstract class SemanticException extends Exception { 
 			private static final long serialVersionUID = 9032805899029042730L;
 			public SemanticException(String message) { super(message); }
