@@ -125,7 +125,7 @@ commentStatement:	'comment' STRCON ';' ;
 echoStatement:		'echo' expression ';'  | 'echo' embedding ';' ;
 cdataStatement:		'cdata' expression ';' ;
 yieldStatement:		'yield;' ;
-markupStatement:	markup ';' | markup+ statement ';' | markup+ markup ';' | markup+ expression ';' ;
+markupStatement:	markup ';' | markup+ statement ';' | markup+ expression ';' | markup+ markup ';' ;
 
 // $>
 // $<Assignments
