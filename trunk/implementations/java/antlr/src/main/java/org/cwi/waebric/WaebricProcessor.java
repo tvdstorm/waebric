@@ -4,6 +4,7 @@ import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.TokenSource;
 import org.antlr.runtime.tree.CommonTree;
 
 /**
@@ -31,7 +32,7 @@ public class WaebricProcessor {
 	        CommonTokenStream tokens = new CommonTokenStream(lexer);
 	        long scan_time = System.currentTimeMillis() - curr;
 	        System.out.println("Scanned in " + scan_time + "ms.");
-	        
+
 	        WaebricParser parser = new WaebricParser(tokens);
 	        curr = System.currentTimeMillis();
 	        WaebricParser.module_return result = parser.module();
