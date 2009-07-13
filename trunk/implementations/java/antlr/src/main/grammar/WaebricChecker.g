@@ -10,6 +10,8 @@ options {
 	
 	import java.util.Set;
 	import java.util.HashSet;
+	import java.util.List;
+	import java.util.ArrayList;	
 }
 
 @rulecatch {
@@ -22,34 +24,27 @@ options {
 	private Set<String> variables = new HashSet<String>();
 	private Set<String> functions = new HashSet<String>();
 	
-    	/**
-    	 * If for an import directive import m no corresponding file m.wae 
-    	 * can be found, this a an error. [The import directive is skipped]
-    	 * 
-    	 * @author Jeroen van Schagen
-    	 * @date 09-06-2009
-    	 */
-    	public class NonExistingModuleException extends RecognitionException {
-
-    		/**
-    		 * Generated serial ID
-    		 */
-    		private static final long serialVersionUID = -4503945323554024642L;
-    		private CommonTree id;
-
-    		public NonExistingModuleException(IntStream stream, CommonTree id) {
-    			super(stream);
-    			this.id = id;
-    		}
-    		
-    		@Override
-    		public String getMessage() {
-    			return "Module identifier at line " + id.getLine() 
-    					+ " and character " + id.getCharPositionInLine()
-    					+ ", refers to a non-existing module.";
-    		}
-    		
+	private List<SemanticException> exceptions = new ArrayList<SemanticException>();
+    	public abstract class SemanticException extends Exception { 
+			private static final long serialVersionUID = 9032805899029042730L;
+			public SemanticException(String message) { super(message); }
     	}
+    	
+        /**
+         * If for an import directive import m no corresponding file m.wae 
+         * can be found, this a an error. [The import directive is skipped]
+         * 
+         * @author Jeroen van Schagen
+         * @date 09-06-2009
+         */
+        public class NonExistingModuleException extends SemanticException {
+        	private static final long serialVersionUID = -4503945323554024642L;
+        	public NonExistingModuleException(CommonTree id) {
+        		super("Module identifier at line " + id.getLine() 
+        				+ " and character " + id.getCharPositionInLine()
+        				+ ", refers to a non-existing module.");
+       		}
+       	}
 }
 
 module:		^( 'module' moduleId imprt* site* function* 'end' );
@@ -63,7 +58,7 @@ moduleId
 			java.io.File file = new java.io.File(path);
 			// Check if import references to an existing file
 			if(! file.isFile()) {
-				throw new NonExistingModuleException(input, $id);
+				exceptions.add(new NonExistingModuleException($id));
 			}
 		} ;
 
