@@ -34,7 +34,7 @@ tokens {
 }
 
 @parser::members {
-	private CommonTree parseImport(String path) throws RecognitionException {
+	private CommonTree parseFile(String path) throws RecognitionException {
 		try {
 			CharStream is = new ANTLRFileStream(path);
 			WaebricLexer lexer = new WaebricLexer(is);
@@ -58,17 +58,17 @@ tokens {
 
 // $<Module
 module: 		'module' moduleId ( imprt | site | function )* 'end'
-				-> ^( 'module' moduleId imprt* site* function* ) ;
+				-> ^( 'module' moduleId imprt* site* function* 'end' ) ;
 
 moduleId 
 	returns [String path = ""] // Determine physical path of module identifier
 	@after { $path += ".wae"; } // Each reference ends with waebric extension
 	:		e=IDCON { $path += e.getText(); } 
 			( '.' e=IDCON { $path += "/" + e.getText(); } )*
-				-> ^( IDCON IDCON* );
+				-> IDCON ( '.' IDCON )* ;
 	
 imprt:			'import' id=moduleId ';' 
-				-> ^( 'import' moduleId ^({ parseImport($id.path) }) ) ;
+				-> 'import' moduleId ';' ^( { parseFile($id.path) } ) ;
 
 // $>
 

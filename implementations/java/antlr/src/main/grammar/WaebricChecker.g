@@ -8,7 +8,7 @@ options {
 @header {
 	package org.cwi.waebric;
 	
-	import java.util.Set;
+	import java.util.HashMap;
 	import java.util.HashSet;
 }
 
@@ -19,15 +19,8 @@ options {
 }
 
 @members {
-	private Set<String> variables = new HashSet<String>();
-	
-	public boolean isVariable(String variable) {
-		return variables.contains(variable);
-	}
-	
-	public void declareVariable(String variable) {
-		variables.add(variable);
-	}
+	private HashSet<String> variables = new HashSet<String>();
+	private HashMap<String, Object> functions = new HashMap<String,Object>();
 }
 
 module:		MODULE moduleId END;
@@ -39,7 +32,7 @@ moduleId
 	:	id=IDCON { path = id.getText();}
 		( '.' id=IDCON { path += "/" + id.getText(); } )* ;
 
-imprt:		IMPORT moduleId;
-site:		SITE .* END;
+imprt:		IMPORT moduleId ;
+site:		SITE .* END ;
 
-function:	DEF .* END;
+function: DEF id=IDCON f=. s=.* END { functions.put(id.getText(), s.start.streamIndex); } ;
