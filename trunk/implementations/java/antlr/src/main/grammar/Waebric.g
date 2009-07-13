@@ -128,7 +128,7 @@ yieldStatement:		'yield;' ;
 
 markupStatements:	functionCall | markupExpression | markupStatement | markupMarkup ;
 functionCall:		markup ';' ;	
-markupExpression:	markup+ expression ';' -> expression markup+ ';' ;
+markupExpression:	markup+ expression ';' -> expression markup+ ';' ; // Swapped as variables are recognized as part of markup+ otherwise
 markupStatement:	markup+ statement ;
 markupMarkup:		markup+ markup ';' ;		
 
