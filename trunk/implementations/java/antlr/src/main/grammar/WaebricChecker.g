@@ -23,7 +23,7 @@ options {
 	private HashMap<String, Object> functions = new HashMap<String,Object>();
 }
 
-module:		MODULE moduleId END;
+module:		^( 'module' moduleId imprt* site* function* 'end' );
 
 // Check if module id references to an existing file
 moduleId
@@ -32,7 +32,8 @@ moduleId
 	:	id=IDCON { path = id.getText();}
 		( '.' id=IDCON { path += "/" + id.getText(); } )* ;
 
-imprt:		IMPORT moduleId ;
-site:		SITE .* END ;
+imprt:		'import' moduleId ';' ^module ;
 
-function: DEF id=IDCON f=. s=.* END { functions.put(id.getText(), s.start.streamIndex); } ;
+// TODO: Unfinished, starting with module
+site:		'site' .* 'end' ;
+function: 	'def' id=IDCON f=. s=.* 'end' ;
