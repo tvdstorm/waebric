@@ -1,3 +1,5 @@
-module got.skillz.nub 
-	def lol(arg) echo arg.lol; end
+module test
+	def lol(call)
+		if (identifier) yield; else bla call.test;
+	end
 end

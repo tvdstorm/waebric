@@ -1,6 +1,7 @@
 tree grammar WaebricChecker;
 
 options {
+	backtrack = true;
 	tokenVocab = Waebric;
 	ASTLabelType = CommonTree;
 }
@@ -23,7 +24,7 @@ options {
 @members {
 	private Set<String> variables = new HashSet<String>();
 	private Set<String> functions = new HashSet<String>();
-	
+
 	private List<SemanticException> exceptions;
 	public List<SemanticException> checkAST() throws RecognitionException {
 		exceptions = new ArrayList<SemanticException>();
@@ -103,7 +104,8 @@ attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON |
 arguments:		'(' argument? ( ',' argument )* ')' ;
 argument:		expression ;
 
-expression:		varExpression | listExpression | recordExpression | . ;
+expression:		( varExpression | listExpression | recordExpression )
+			( '+' expression | '.' IDCON )* ;
 varExpression:		id=IDCON { 
 				if(! variables.contains($id.getText())) { 
 					exceptions.add(new UndefinedVariableException($id));
@@ -113,4 +115,11 @@ listExpression:		'[' expression? ( ',' expression )* ']' ;
 recordExpression:	'{' keyValuePair? ( ',' keyValuePair )* '}' ;
 keyValuePair:		IDCON ':' expression ;
 
-function: 		'def' id=IDCON f=. s=.* 'end' ;
+function: 		'def' id=IDCON f=formals .* 'end' {
+				functions.add($id.getText());
+				System.out.println(variables.toString());
+			} ;
+			
+formals:		{ variables.clear(); } 
+			( '(' ( id=IDCON { variables.add($id.getText()); } )? ( ',' id=IDCON { variables.add($id.getText()); } )* ')' 
+			| /* Empty formal */ ) ;
