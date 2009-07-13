@@ -93,9 +93,9 @@ argument:		expression ;
 
 // $<Expressions
 
-expression:		( idExpression | natExpression | textExpression | symbolExpression | listExpression | recordExpression )
+expression:		( varExpression | natExpression | textExpression | symbolExpression | listExpression | recordExpression )
 			( '+' expression /* Cat expression */ | '.' IDCON /* Field expression */ )* ;
-idExpression:		IDCON ;
+varExpression:		IDCON ;
 natExpression:		NATCON ;
 textExpression:		TEXT ;
 symbolExpression:	SYMBOLCON ;			

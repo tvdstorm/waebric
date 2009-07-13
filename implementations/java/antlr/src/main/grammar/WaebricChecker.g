@@ -45,25 +45,52 @@ options {
         				+ ", refers to a non-existing module.");
        		}
        	}
+       	
+       	public class UndefinedVariableException extends SemanticException {
+        	public UndefinedVariableException(CommonTree id) {
+        		super("Variable " + id.getText() + " at line " + id.getLine() 
+        				+ " and character " + id.getCharPositionInLine()
+        				+ ", is undefined.");
+       		}
+       	}
 }
 
-module:		^( 'module' moduleId imprt* site* function* 'end' );
+module:			^( 'module' moduleId imprt* site* function* 'end' );
 
 // Check if module id references to an existing file
 moduleId
 	@init { String path = ""; }
-	:	id=IDCON { path = id.getText();}
-		( '.' id=IDCON { path += "/" + id.getText(); } )* {
-			path += ".wae"; // Include default extension
-			java.io.File file = new java.io.File(path);
-			// Check if import references to an existing file
-			if(! file.isFile()) {
-				exceptions.add(new NonExistingModuleException($id));
-			}
-		} ;
+	:		id=IDCON { path = id.getText();}
+			( '.' id=IDCON { path += "/" + id.getText(); } )* {
+				path += ".wae"; // Include default extension
+				java.io.File file = new java.io.File(path);
+				// Check if import references to an existing file
+				if(! file.isFile()) {
+					exceptions.add(new NonExistingModuleException($id));
+				}
+			} ;
+		
+imprt:			'import' id=moduleId ';' ^ module ;
 
-imprt:		'import' moduleId ';' ^module ;
+site:			'site' mappings 'end' ;
+mappings:		mapping? ( ';' mapping )* ;
+mapping	:		PATH ':' markup ;
 
-// TODO: Unfinished, starting with module
-site:		'site' .* 'end' ;
-function: 	'def' id=IDCON f=. s=.* 'end' ;
+markup:			designator arguments? ;
+designator:		IDCON attribute* ;
+attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
+			'@' NATCON | '@' NATCON '%' NATCON;
+arguments:		'(' argument? ( ',' argument )* ')' ;
+argument:		expression ;
+
+expression:		varExpression | listExpression | recordExpression | . ;
+varExpression:		id=IDCON { 
+				if(! variables.contains($id.getText())) { 
+					exceptions.add(new UndefinedVariableException($id));
+				}
+			} ;			
+listExpression:		'[' expression? ( ',' expression )* ']' ;
+recordExpression:	'{' keyValuePair? ( ',' keyValuePair )* '}' ;
+keyValuePair:		IDCON ':' expression ;
+
+function: 		'def' id=IDCON f=. s=.* 'end' ;
