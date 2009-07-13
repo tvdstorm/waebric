@@ -53,10 +53,20 @@ options {
        	}
        	
        	public class UndefinedVariableException extends SemanticException {
+       		private static final long serialVersionUID = -4479175462744485497L;
         	public UndefinedVariableException(CommonTree id) {
         		super("Variable " + id.getText() + " at line " + id.getLine() 
         				+ " and character " + id.getCharPositionInLine()
         				+ ", is undefined.");
+       		}
+       	}
+       	
+       	public class UndefinedFunctionException extends SemanticException {
+       		private static final long serialVersionUID = -4569708425419653397L;
+        	public UndefinedFunctionException(CommonTree id) {
+        		super("Function call  " + id.getText() + " at line " + id.getLine() 
+        				+ " and character " + id.getCharPositionInLine()
+        				+ ", is made to an undefined function.");
        		}
        	}
 }
@@ -83,7 +93,11 @@ mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
 
 markup:			designator arguments? ;
-designator:		IDCON attribute* ;
+designator:		id=IDCON attribute* {
+				if(! functions.contains($id.getText())) { 
+					exceptions.add(new UndefinedFunctionException($id));
+				}
+			} ;
 attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
 			'@' NATCON | '@' NATCON '%' NATCON;
 arguments:		'(' argument? ( ',' argument )* ')' ;
