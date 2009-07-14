@@ -152,8 +152,7 @@ type:			'list' | 'record' | 'string' ;
 // $>
 // $<Embedding
 
-embedding:		PRETEXT embed textTail 
-				-> ^( PRETEXT embed textTail ) ;
+embedding:		PRETEXT embed textTail ;
 embed:			markup* expression | markup* markup ;
 textTail:		POSTTEXT | MIDTEXT embed textTail ;
 
