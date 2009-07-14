@@ -2,6 +2,8 @@ module test
 	def func1(arg) end
 	def func2(arg,arg) end
 
-	def test(bla) each(element:["1","2","3"]) func1(bla,bla); end
+	def test(bla) 
+		let mylizzle=["1","2","3"]; in func1(mylizzle); end 
+	end
 	def test yield; end
 end
