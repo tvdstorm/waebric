@@ -7,9 +7,8 @@ options {
 }
 
 scope Environment {
-	String name; // Environment name
-	HashSet<String> variables; // Variable names
-	HashMap<String, Integer> functions; // Function name and args
+	HashSet<String> variables;
+	HashMap<String, Integer> functions;
 }
 
 @header {
@@ -32,10 +31,17 @@ scope Environment {
 	boolean isDefinedFunction(String id) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(id)) {
-				System.out.println(id + " found in " + $Environment[i]::name);
 				return true; 
 			}
 		} return false;
+	}
+	
+	int getFunctionArgs(String id) {
+		for(int i=$Environment.size()-1; i>=0; i--) {
+			if($Environment[i]::functions.containsKey(id)) {
+				return $Environment[i]::functions.get(id); 
+			}
+		} return -1;
 	}
 	
 	void defineVariable(CommonTree id) {
@@ -45,7 +51,6 @@ scope Environment {
 	boolean isDefinedVariable(String id) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::variables.contains(id)) { 
-				System.out.println(id + " found in " + $Environment[i]::name);
 				return true; 
 			}
 		} return false;
@@ -125,10 +130,10 @@ scope Environment {
 	class ArityMismatchException extends SemanticException {
 		private static final long serialVersionUID = -954167103131401047L;
 		public ArityMismatchException(CommonTree id, int args) {
-			super("Function call " + id.getText() + " at line " + id.getLine() 
+			super("Arity mismatch at function call " + id.getText() 
+					+ " positioned on line " + id.getLine() 
         				+ " and character " + id.getCharPositionInLine()
-        				+ ", is made to an arity mismatch."
-        				+ " Use the expected " + args + " argument(s).");
+        				+ ". Use the expected " + args + " argument(s).");
 		}
 		
 	}
@@ -162,7 +167,7 @@ module
 moduleId
 	@init { 
 		String path = "";
-	}:		id=IDCON { path = id.getText();}
+	} :		id=IDCON { path = id.getText();}
 			( '.' id=IDCON { path += "/" + id.getText(); } )* {
 				path += ".wae"; // Include default extension
 				java.io.File file = new java.io.File(path);
@@ -185,7 +190,14 @@ mapping	:		. ':' markup ;
 markup
 	@init { int args = 0; }
 	:		d=designator ( a=arguments { args = $a.args; } )? {
-				// TODO: Process call
+				if(! isDefinedFunction($d.tree.getText())) {
+					exceptions.add(new UndefinedFunctionException($d.tree));
+				} else {
+					int expected = getFunctionArgs($d.tree.getText());
+					if(args != expected) {
+						exceptions.add(new ArityMismatchException($d.tree, expected));
+					}
+				}
 			} ;
 			
 designator:		IDCON attribute* ;
@@ -202,7 +214,6 @@ expression:		( varExpression | listExpression | recordExpression | . ) ( '+' exp
 
 varExpression:		id=IDCON {
 				if(! isDefinedVariable($id.getText())) {
-					// Check if referenced variable is defined
 					exceptions.add(new UndefinedVariableException($id));
 				}
 			} ;
@@ -214,10 +225,17 @@ keyValuePair:		. ':' expression ;
 // $>
 
 function
-	@init{ int args = 0; }
-	:		 ^( 'def' id=IDCON ( f=formals { args = $f.args; } )? statement* 'end' ) 
-			{ defineFunction($id, args); } ;
-	
+	scope Environment;
+	@init {
+		$Environment::variables = new HashSet<String>();
+		$Environment::functions = new HashMap<String, Integer>();
+		int args = 0; // Argument count
+	} :		^( 'def' id=IDCON ( f=formals { args = $f.args; } )? statement* 'end' ) { 
+				if(isDefinedFunction(id.getText())) {
+					exceptions.add(new DuplicateFunctionException(id));
+				} else { $Environment[0]::functions.put(id.getText(), args); }
+			} ;
+			
 formals	returns [int args = 0]
 	:		'(' ( id=IDCON { defineVariable($id); $args++; } )? 
 			( ',' id=IDCON { defineVariable($id); $args++; } )* ')'  ;

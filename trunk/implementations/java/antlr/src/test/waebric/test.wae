@@ -1,4 +1,7 @@
 module test
-	def lol(bla) each(bla:["1","2","3"]) blaz blaz blaz bla; end
-	def lol yield; end
+	def func1(arg) end
+	def func2(arg,arg) end
+
+	def test(bla) each(element:["1","2","3"]) func1(bla,bla); end
+	def test yield; end
 end
