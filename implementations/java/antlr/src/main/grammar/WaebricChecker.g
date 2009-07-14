@@ -6,6 +6,12 @@ options {
 	ASTLabelType = CommonTree;
 }
 
+scope Environment {
+	String name; // Environment name
+	HashSet<String> variables; // Variable names
+	HashMap<String, Integer> functions; // Function name and args
+}
+
 @header {
 	package org.cwi.waebric;
 	
@@ -16,27 +22,39 @@ options {
 }
 
 @members {
-	private HashSet<String> variables = new HashSet<String>();
-	private HashMap<String, Integer> functions = new HashMap<String, Integer>();
-	private HashMap<CommonTree, Integer> calls = new HashMap<CommonTree, Integer>();
+	void defineFunction(CommonTree id, int args) {
+		// Check if function is already defined
+		if(isDefinedFunction(id.getText())) {
+			exceptions.add(new DuplicateFunctionException(id));
+		} else { $Environment::functions.put(id.getText(), args); }
+	}
 
-	private ArrayList<SemanticException> exceptions;
+	boolean isDefinedFunction(String id) {
+		for(int i=$Environment.size()-1; i>=0; i--) {
+			if($Environment[i]::functions.containsKey(id)) {
+				System.out.println(id + " found in " + $Environment[i]::name);
+				return true; 
+			}
+		} return false;
+	}
+	
+	void defineVariable(CommonTree id) {
+		$Environment::variables.add(id.getText());
+	}
+	
+	boolean isDefinedVariable(String id) {
+		for(int i=$Environment.size()-1; i>=0; i--) {
+			if($Environment[i]::variables.contains(id)) { 
+				System.out.println(id + " found in " + $Environment[i]::name);
+				return true; 
+			}
+		} return false;
+	}
+
+	ArrayList<SemanticException> exceptions;
 	public List<SemanticException> checkAST() throws RecognitionException {
 		exceptions = new ArrayList<SemanticException>();
 		module(); // Start checking
-		
-		for(CommonTree e: calls.keySet()) {
-			// Check if function is defined
-			if(! functions.containsKey(e.getText())) {
-				exceptions.add(new UndefinedFunctionException(e));
-			} else {
-				int expectedArgs = functions.get(e.getText());
-				if(expectedArgs != calls.get(e)) {
-					exceptions.add(new ArityMismatchException(e, expectedArgs));
-				} 
-			}
-		}
-		
 		return exceptions; // Return results
 	}
 	
@@ -52,7 +70,7 @@ options {
          * @author Jeroen van Schagen
          * @date 09-06-2009
          */
-        public class NonExistingModuleException extends SemanticException {
+        class NonExistingModuleException extends SemanticException {
         	private static final long serialVersionUID = -4503945323554024642L;
         	public NonExistingModuleException(CommonTree id) {
         		super("Module identifier at line " + id.getLine() 
@@ -69,7 +87,7 @@ options {
 	 * @author Jeroen van Schagen
 	 * @date 09-06-2009
 	 */
-       	public class UndefinedVariableException extends SemanticException {
+       	class UndefinedVariableException extends SemanticException {
        		private static final long serialVersionUID = -4479175462744485497L;
         	public UndefinedVariableException(CommonTree id) {
         		super("Variable " + id.getText() + " at line " + id.getLine() 
@@ -88,7 +106,7 @@ options {
 	 * @author Jeroen van Schagen
 	 * @date 09-06-2009
 	 */
-       	public class UndefinedFunctionException extends SemanticException {
+       	class UndefinedFunctionException extends SemanticException {
        		private static final long serialVersionUID = -4569708425419653397L;
         	public UndefinedFunctionException(CommonTree id) {
         		super("Function call " + id.getText() + " at line " + id.getLine() 
@@ -104,7 +122,7 @@ options {
 	 * @author Jeroen van Schagen
 	 * @date 09-06-2009
 	 */
-	public class ArityMismatchException extends SemanticException {
+	class ArityMismatchException extends SemanticException {
 		private static final long serialVersionUID = -954167103131401047L;
 		public ArityMismatchException(CommonTree id, int args) {
 			super("Function call " + id.getText() + " at line " + id.getLine() 
@@ -121,7 +139,7 @@ options {
 	 * @author Jeroen van Schagen
 	 * @date 09-06-2009
 	 */
-	public class DuplicateFunctionException extends SemanticException {
+	class DuplicateFunctionException extends SemanticException {
 		private static final long serialVersionUID = -8833578229100261366L;
 		public DuplicateFunctionException(CommonTree id) {
 			super("Function " + id.getText() + " at line " + id.getLine() 
@@ -132,94 +150,122 @@ options {
 	}
 }
 
-module:			^( 'module' moduleId imprt* site* function* 'end' );
+// $<Modules
 
-// Check if module id references to an existing file
+module
+	scope Environment;
+	@init {
+		$Environment::variables = new HashSet<String>();
+		$Environment::functions = new HashMap<String, Integer>();
+	} :		^( 'module' moduleId imprt* site* function* 'end' );
+
 moduleId
-	@init { String path = ""; }
-	:		id=IDCON { path = id.getText();}
+	@init { 
+		String path = "";
+	}:		id=IDCON { path = id.getText();}
 			( '.' id=IDCON { path += "/" + id.getText(); } )* {
 				path += ".wae"; // Include default extension
 				java.io.File file = new java.io.File(path);
 				if(! file.isFile()) {
+					// Each import reference should be a valid file
 					exceptions.add(new NonExistingModuleException($id));
 				}
 			} ;
 		
 imprt:			^( 'import' id=moduleId ';' ^module ) ;
 
+// $>
+
 site:			^( 'site' mappings 'end' ) ;
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		. ':' markup ;
 
+// $<Markups
+
 markup
 	@init { int args = 0; }
 	:		d=designator ( a=arguments { args = $a.args; } )? {
-				calls.put($d.tree, args); // Store call and argument count
+				// TODO: Process call
 			} ;
 			
 designator:		IDCON attribute* ;
-attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
-			'@' NATCON | '@' NATCON '%' NATCON;
+attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | '@' NATCON ( '%' NATCON )?;
+			
 arguments returns [int args = 0]
-	:		'(' ( argument {$args++;} )? ( ',' argument {$args++;} )* ')' ;
-argument:		expression ;
+	:		'(' ( expression {$args++;} )? ( ',' expression {$args++;} )* ')' ;
+
+// $>
+
+// $<Expressions
 
 expression:		( varExpression | listExpression | recordExpression | . ) ( '+' expression | '.' IDCON )* ;
+
 varExpression:		id=IDCON {
-				// Check if referenced variable is defined
-				if(! variables.contains($id.getText())) { 
+				if(! isDefinedVariable($id.getText())) {
+					// Check if referenced variable is defined
 					exceptions.add(new UndefinedVariableException($id));
 				}
-			} ;			
+			} ;
+			
 listExpression:		'[' expression? ( ',' expression )* ']' ;
 recordExpression:	'{' keyValuePair? ( ',' keyValuePair )* '}' ;
 keyValuePair:		. ':' expression ;
 
+// $>
+
 function
 	@init{ int args = 0; }
-	:		 ^( 'def' id=IDCON (f=formals {args=$f.args;})? statement* 'end' ) {
-				if(functions.containsKey($id.getText())) {
-					exceptions.add(new DuplicateFunctionException($id));
-				} else {
-					functions.put($id.getText(),args);
-				}
-			} ;
+	:		 ^( 'def' id=IDCON ( f=formals { args = $f.args; } )? statement* 'end' ) 
+			{ defineFunction($id, args); } ;
 	
 formals	returns [int args = 0]
-	:		{ variables.clear(); } // Store formal as variables
-			'(' ( id=IDCON { variables.add($id.getText()); $args++; } )? 
-			( ',' id=IDCON { variables.add($id.getText()); $args++; } )* ')'  ;
+	:		'(' ( id=IDCON { defineVariable($id); $args++; } )? 
+			( ',' id=IDCON { defineVariable($id); $args++; } )* ')'  ;
 
-statement:		ifElseStatement | ifStatement | eachStatement | letStatement | blockStatement | commentStatement |
-			echoStatement | cdataStatement | yieldStatement | markupStatements ;
-ifStatement:		'if' '(' predicate ')' statement ; // TODO: Look-ahead no else
-ifElseStatement:	'if' '(' predicate ')' statement 'else' statement ;	
-eachStatement:		'each' '(' IDCON ':' expression ')' statement ;	
-letStatement:		'let' assignment+ 'in' statement* 'end' ;
+// $<Statements
+
+statement:		ifElseStatement | ifStatement | eachStatement | letStatement | blockStatement | 
+			commentStatement | echoStatement | cdataStatement | yieldStatement | markupStatements ;
+
+ifElseStatement:	'if' '(' predicate ')' statement 'else' statement ;			
+ifStatement:		'if' '(' predicate ')' statement ;
+
+// $<Predicate
+
+predicate:		( notPredicate | declaredPredicate | isPredicate ) ( '&&' predicate | '||' predicate )* ; 
+notPredicate:		'!' predicate ;	
+declaredPredicate:	expression ;
+isPredicate:		expression '.' . ;		
+
+// $>
+
 blockStatement:		'{' statement* '}' ;
 commentStatement:	'comment' STRCON ';' ;
-echoStatement:		'echo' expression ';'  | 'echo' . ';' ;
+echoStatement:		'echo' expression ';'  | 'echo' embedding ';' ;
+
+// $<Embedding
+
+embedding:		PRETEXT embed textTail ;
+embed:			markup* expression | markup* markup ;
+textTail:		POSTTEXT | MIDTEXT embed textTail ;
+
+// $>
+
 cdataStatement:		'cdata' expression ';' ;
 yieldStatement:		'yield;' ;
 
 markupStatements:	functionCall | markupExpression | markupStatement | markupMarkup ;
 functionCall:		markup ';' ;	
-markupExpression:	markup+ ';' expression ';' { System.out.println("markup-expr"); } ;
+markupExpression:	markup+ ';' expression ';' ;
 markupStatement:	markup+ ';' statement ;
 markupMarkup:		markup+ ';' ;
 
-predicate:		( notPredicate | declaredPredicate | isPredicate ) ( '&&' predicate | '||' predicate )* ; 
-notPredicate:		'!' predicate ;	
-declaredPredicate:	expression ;
-isPredicate:		expression '.' . ;	
+// $<Assignments
+
+eachStatement:		'each' '(' IDCON ':' expression ')' statement ;
+
+letStatement:		'let' assignment+ 'in' statement* 'end' ;
 
 assignment:		varBinding | funcBinding ;
-varBinding:		id=IDCON '=' expression ';' {
-				variables.add($id.getText());
-			} ;
-funcBinding:		id=IDCON f=formals statement {
-				if(functions.containsKey($id.getText())) {
-					exceptions.add(new DuplicateFunctionException($id));
-				} else { functions.put($id.getText(), $f.args); }
-			} ;
+varBinding:		id=IDCON '=' expression ';' { defineVariable($id); } ;
+funcBinding:		id=IDCON f=formals statement { defineFunction($id, $f.args); } ;
