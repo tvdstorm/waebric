@@ -21,46 +21,69 @@ scope Environment {
 }
 
 @members {
+	List<SemanticException> exceptions;
+	public List<SemanticException> checkAST() throws RecognitionException {
+		exceptions = new ArrayList<SemanticException>();
+		module(); // Start checking
+		
+		// Process calls after retrieving all function definitions
+		for(Call call: calls) {
+			// Restore call environment
+			Stack actual = $Environment;
+			$Environment = call.env;
+			
+			if(! isDefinedFunction(call.id)) {
+				exceptions.add(new UndefinedFunctionException(call.id));
+			} else {
+				int args = expectedArgs(call.id);
+				if(call.args != args) {
+					exceptions.add(new ArityMismatchException(call.id, args));
+				}
+			}
+			
+			// Return to actual environment
+			$Environment = actual;
+		}
+		
+		return exceptions; // Return results
+	}
+	
+	class Call { public CommonTree id; public int args; public Stack env; }
+	List<Call> calls = new ArrayList<Call>();
+
 	void defineFunction(CommonTree id, int args, int depth) {
 		// Check if function is already defined
-		if(isDefinedFunction(id.getText())) {
+		if(isDefinedFunction(id)) {
 			exceptions.add(new DuplicateFunctionException(id));
 		} else { $Environment[depth]::functions.put(id.getText(), args); }
 	}
 
-	boolean isDefinedFunction(String id) {
+	boolean isDefinedFunction(CommonTree id) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::functions.containsKey(id)) {
+			if($Environment[i]::functions.containsKey(id.getText())) {
 				return true; 
 			}
 		} return false;
-	}
-	
-	int getFunctionArgs(String id) {
-		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::functions.containsKey(id)) {
-				return $Environment[i]::functions.get(id); 
-			}
-		} return -1;
 	}
 	
 	void defineVariable(CommonTree id) {
 		$Environment::variables.add(id.getText());
 	}
 	
-	boolean isDefinedVariable(String id) {
+	boolean isDefinedVariable(CommonTree id) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::variables.contains(id)) { 
+			if($Environment[i]::variables.contains(id.getText())) { 
 				return true; 
 			}
 		} return false;
 	}
-
-	ArrayList<SemanticException> exceptions;
-	public List<SemanticException> checkAST() throws RecognitionException {
-		exceptions = new ArrayList<SemanticException>();
-		module(); // Start checking
-		return exceptions; // Return results
+	
+	int expectedArgs(CommonTree id) {
+		for(int i=$Environment.size()-1; i>=0; i--) {
+			if($Environment[i]::functions.containsKey(id.getText())) {
+				return $Environment[i]::functions.get(id.getText()); 
+			}
+		} return -1;
 	}
 	
     	public abstract class SemanticException extends Exception { 
@@ -189,14 +212,12 @@ mapping	:		. ':' markup ;
 markup
 	@init { int args = 0; }
 	:		d=designator ( a=arguments { args = $a.args; } )? {
-				if(! isDefinedFunction($d.tree.getText())) {
-					exceptions.add(new UndefinedFunctionException($d.tree));
-				} else {
-					int expected = getFunctionArgs($d.tree.getText());
-					if(args != expected) {
-						exceptions.add(new ArityMismatchException($d.tree, expected));
-					}
-				}
+				// Store function call
+				Call call = new Call();
+				call.id = $d.tree;
+				call.args = args;
+				call.env = (Stack) $Environment.clone();
+				calls.add(call);
 			} ;
 			
 designator:		IDCON attribute* ;
@@ -212,7 +233,7 @@ arguments returns [int args = 0]
 expression:		( varExpression | listExpression | recordExpression | . ) ( '+' expression | '.' IDCON )* ;
 
 varExpression:		id=IDCON {
-				if(! isDefinedVariable($id.getText())) {
+				if(! isDefinedVariable($id)) {
 					exceptions.add(new UndefinedVariableException($id));
 				}
 			} ;

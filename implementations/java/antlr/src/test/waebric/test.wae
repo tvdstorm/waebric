@@ -1,9 +1,11 @@
 module test
-	def func1(arg) end
-	def func2(arg,arg) end
+
 
 	def test(bla) 
-		let mylizzle=["1","2","3"]; func3(arg,arg) { bla bla; } in func3(mylizzle,bla); end 
+		let mylizzle=["1","2","3"]; func3(arg,arg) { bla bla; } in func1(mylizzle,bla); end 
 	end
 	def test yield; end
+	
+		def func1(arg) end
+	def func2(arg,arg) end
 end
