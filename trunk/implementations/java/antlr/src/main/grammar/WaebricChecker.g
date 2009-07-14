@@ -15,12 +15,6 @@ options {
 	import java.util.ArrayList;	
 }
 
-@rulecatch {
-	catch(RecognitionException e) {
-		throw e;
-	}
-}
-
 @members {
 	private HashSet<String> variables = new HashSet<String>();
 	private HashMap<String, Integer> functions = new HashMap<String, Integer>();
@@ -211,8 +205,8 @@ yieldStatement:		'yield;' ;
 
 markupStatements:	functionCall | markupExpression | markupStatement | markupMarkup ;
 functionCall:		markup ';' ;	
-markupExpression:	expression markup+ ';' ;
-markupStatement:	markup+ statement ;
+markupExpression:	markup+ ';' expression ';' { System.out.println("markup-expr"); } ;
+markupStatement:	markup+ ';' statement ;
 markupMarkup:		markup+ ';' ;
 
 predicate:		( notPredicate | declaredPredicate | isPredicate ) ( '&&' predicate | '||' predicate )* ; 
