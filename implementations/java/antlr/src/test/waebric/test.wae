@@ -2,7 +2,7 @@ module test
 
 
 	def test(bla) 
-		let mylizzle=["1","2","3"]; func3(my,argz) { echo my; echo argz; } in func1("LOL"); end 
+		let mylizzle=["1","2","3"]; func3(my,argz) { echo my; html title argz; } in func1("LOL"); end 
 	end
 	def test yield; end
 	
