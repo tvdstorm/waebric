@@ -30,7 +30,9 @@ options {
 	private boolean inString = false;
 }
 
-// language.waebric.module
+
+// $<language.waebric.module
+
 module returns [Module result = new Module()] : 		
 	'module' id=moduleId { $result.setIdentifier(id.result); } 
 	( 	
@@ -47,7 +49,10 @@ moduleId returns [ModuleId result = new ModuleId()] :
 imprt returns [Import result = new Import()] :
 	'import' id=moduleId ';' { $result.setIdentifier(id.result); } ;
 
-// language.waebric.site
+// $>
+
+// $<language.waebric.site
+
 site returns [Site result = new Site()]:
 	'site' m=mappings 'end' { $result.setMappings(m.result); } ;
 
@@ -58,7 +63,10 @@ mapping	returns [Mapping result = new Mapping()] :
 	p=PATH { $result.setPath(new Path(p.getText())); } 
 	':' m=markup { $result.setMarkup(m.result); } ;
 
-// language.waebric.markup
+// $>
+
+// $<language.waebric.markup
+
 markup returns [Markup result] :
 	d=designator args=arguments { $result = new Markup.Call(d.result, args.result); } | 
 	d=designator { $result = new Markup.Tag(d.result); } ;
@@ -84,7 +92,10 @@ argument returns [Argument result] :
 	e=expression { $result = new Argument.RegularArgument(e.result); } | 
 	id=idcon '=' e=expression { $result = new Argument.Attr(id.result, e.result); } ;
 
-// language.waebric.expression
+// $>
+
+// $<language.waebric.expression
+
 expression returns [Expression result] :		
 	(
 		// Non-recursive expressions
@@ -126,7 +137,10 @@ keyvaluepair returns [KeyValuePair result = new KeyValuePair()] :
 	id=idcon { $result.setIdentifier(id.result); } 
 	':' e=expression { $result.setExpression(e.result); } ;
 
-// language.waebric.function
+// $>
+
+// $<language.waebric.function
+
 function returns [FunctionDef result = new FunctionDef()] :		
 	'def' id=idcon { $result.setIdentifier(id.result); } 
 	f=formals { $result.setFormals(f.result); }
@@ -141,22 +155,25 @@ regularFormal returns [Formals.RegularFormal result = new Formals.RegularFormal(
 	
 emptyFormal returns [Formals.EmptyFormal result = new Formals.EmptyFormal()]: ;
 
-// language.waebric.statement
+// $>
+
+// $<language.waebric.statement
+
 statement returns [Statement result] :
 			s=ifElseStatement { $result = s.result; } | 
 			s=ifStatement { $result = s.result; } |
 			s=eachStatement { $result = s.result; } | 
-			'let' assignment+ 'in' statement* 'end' |
-			'{' statement* '}' |
-			'comment' STRCON ';' |
-			'echo' expression ';' |
-			'echo' embedding ';' |
-			'cdata' expression ';' | 
-			'yield;' |
-			markup ';' |
-			markup+ statement ';' |
-			markup+ markup ';' |
-			markup+ expression ';' ;
+			s=letStatement { $result = s.result; } |
+			s=blockStatement { $result = s.result; } |
+			s=commentStatement { $result = s.result; } |
+			s=echoExpressionStatement { $result = s.result; } |
+			s=echoEmbeddingStatement { $result = s.result; } |
+			s=cdataStatement { $result = s.result; } | 
+			s=yieldStatement { $result = s.result; } |
+			s=markupStatement { $result = s.result; } |
+			s=markupsExpressionStatement { $result = s.result; } |
+			s=markupsStatementStatement { $result = s.result; } |
+			s=markupsMarkupStatement { $result = s.result; } ;
 			
 ifElseStatement returns [Statement.IfElse result = new Statement.IfElse()] :	
 	'if' '(' p=predicate ')' { $result.setPredicate(p.result); }
@@ -172,6 +189,44 @@ eachStatement returns [Statement.Each result = new Statement.Each()] :
 	e=expression ')' { $result.setExpression(e.result); }
 	s=statement { $result.setStatement(s.result); } ;
 			
+letStatement returns [Statement.Let result = new Statement.Let();] :
+	'let' ( a=assignment { $result.addAssignment(a.result); } )+ 
+	'in' ( s=statement { $result.addStatement(s.result); } )* 'end' ;
+	
+blockStatement returns [Statement.Block result = new Statement.Block();] :
+	'{' ( s=statement { $result.add(s.result); } )* '}' ;
+	
+commentStatement returns [Statement.Comment result = new Statement.Comment();] :
+	'comment' s=string { $result.setString(s.result); } ';' ;
+	
+echoExpressionStatement returns [Statement.EchoExpression result = new Statement.EchoExpression();] :
+	'echo' e=expression ';' { $result.setExpression(e.result); } ;
+	
+echoEmbeddingStatement returns [Statement.EchoEmbedding result = new Statement.EchoEmbedding();] :
+	'echo' e=embedding ';' { $result.setEmbedding(e.result); } ;
+	
+cdataStatement returns [Statement.CData result = new Statement.CData();] :
+	'cdata' e=expression ';' { $result.setExpression(e.result); } ;
+	
+yieldStatement returns [Statement.Yield result = new Statement.Yield();] :
+	'yield;' ;
+	
+markupStatement returns [Statement.MarkupStatement result = new Statement.MarkupStatement();] :
+	m=markup ';' { $result.setMarkup(m.result); } ;
+	
+markupsExpressionStatement returns [Statement.MarkupsExpression result = new Statement.MarkupsExpression();] :
+	( m=markup { $result.addMarkup(m); } )+ e=expression { $result.setExpression(e.result); } ';'  ;
+
+markupsStatementStatement returns [Statement.MarkupsExpression result = new Statement.MarkupsExpression();] :
+	( m=markup { $result.addMarkup(m); } )+ s=statement { $result.setStatement(s.result); } ';'  ;
+	
+markupsMarkupStatement returns [Statement.MarkupsExpression result = new Statement.MarkupsExpression();] :
+	( m=markup { $result.addMarkup(m); } )+ m=markup { $result.setMarkup(m.result); } ';'  ;
+
+// $>
+
+// $<language.waebric.statement.assignment
+
 assignment returns [Assignment result] :	
 	a=varBind { $result = a.result; } |
 	a=funcBind { $result = a.result; } ;
@@ -189,7 +244,10 @@ funcBind returns [Assignment.FuncBind result = new Assignment.FuncBind();] :
 		$result.setStatement(s.result);
 	};
 
-// language.waebric.statement.predicate
+// $>
+
+// $<language.waebric.statement.predicate
+
 predicate returns [Predicate result] :
 	( 
 		// Non-recursive predicates
@@ -222,7 +280,10 @@ type returns [Type result] :
 	'record' { $result = new Type.RecordType(); } | 
 	'string' { $result = new Type.StringType(); } ;
 
-// language.waebric.statement.embedding
+// $>
+
+// $<language.waebric.statement.embedding
+
 embedding returns [Embedding result = new Embedding();] :
 	p=PRETEXT e=embed t=texttail {
 		$result.setPreText(new PreText($p.getText().substring(1, $p.getText().length()-1)));
@@ -253,8 +314,11 @@ midTail returns [TextTail.MidTail] :
 		$result.setEmbed(e.result);
 		$result.setTextTail(t.result);
 	} ;
+	
+// $>
 
-// language.waebric.basic
+// $<language.waebric.basic
+
 idcon returns [IdCon result]:	
 	id=IDCON { $result = new IdCon(id.getText(), id.getLine(), id.getCharPositionInLine()); } ;
 	
@@ -268,11 +332,14 @@ text returns [Text result] :
 	t=TEXT { $result = new Text(t.getText()); } ;
 
 string returns [StrCon result] :
-	s=STRCON { $result = new StrCon(s.getText()); } ;	
+	s=STRCON { $result = new StrCon(s.getText()); } ;
+	
+// $>
 			
 /**
- * Lexer rules
+ * Lexical rules
  */
+ 
 MODULE:			'module' ;
 IMPORT:			'import' ;
 SITE:			'site' { inSite = true; inPath = true; } ; // Site init
@@ -326,5 +393,7 @@ fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') 
 NATCON:			DIGIT+ ;
 IDCON:			LETTER ( LETTER | DIGIT | '-' )+ ;
 
-COMMENTS:		'//' .* '\n' | '/*' .* '*/' { $channel = HIDDEN; } ;
+COMMENTS:		'//' ( options {greedy=false;} : . )*  '\n' | 
+			'/*' ( options {greedy=false;} : . )*  '*/' 
+			{ skip(); } ; // Skip comments to optimze performance
 LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; } ;
