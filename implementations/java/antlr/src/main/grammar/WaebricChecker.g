@@ -67,6 +67,7 @@ scope Environment {
 	}
 	
 	void defineVariable(CommonTree id) {
+		System.out.println("Defining variable " + id.getText() + "...");
 		$Environment::variables.add(id.getText());
 	}
 	
@@ -311,19 +312,23 @@ eachStatement
 			} statement ;
 
 letStatement
-	scope Environment; // Environment containing all assignments
-	@init {
-		$Environment::variables = new HashSet<String>();
-		$Environment::functions = new HashMap<String, Integer>();
-	} :		'let' assignment+ 'in' statement* 'end' ;
-
-assignment:		varBinding | funcBinding ;
-
-varBinding:		id=IDCON '=' expression ';' { defineVariable($id); } ;
-
-funcBinding
 	scope Environment;
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		id=IDCON f=regularFormals statement { defineFunction($id, $f.args, $Environment.size()-2); } ;
+		int curr = $Environment.size()-1;
+	} :		'let' assignment[curr]+ 'in' statement* 'end' ;
+
+assignment [int depth]:	
+			varBinding | funcBinding[depth] ;
+
+varBinding:		id=IDCON '=' expression ';' { 
+				defineVariable($id); 
+			} ;
+			
+funcBinding [int depth]
+	scope Environment;
+	@init {
+		$Environment::variables = new HashSet<String>();
+		$Environment::functions = new HashMap<String, Integer>();
+	} :		id=IDCON f=regularFormals statement { defineFunction($id, $f.args, depth); } ;

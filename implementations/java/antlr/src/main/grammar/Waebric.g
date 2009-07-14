@@ -196,5 +196,7 @@ fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') 
 NATCON:			DIGIT+ ;
 IDCON:			LETTER ( LETTER | DIGIT | '-' )+ ;
 
-COMMENTS:		'//' .* '\n' | '/*' .* '*/' { skip(); } ;
-LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { skip(); } ;
+COMMENTS:		'//' ( options {greedy=false;} : . )*  '\n' | 
+			'/*' ( options {greedy=false;} : . )*  '*/' 
+			{ skip(); } ; // Skip comments to optimze performance
+LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; } ;
