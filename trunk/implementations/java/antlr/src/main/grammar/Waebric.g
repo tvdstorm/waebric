@@ -108,7 +108,8 @@ keyValuePair:		IDCON ':' expression ;
 function:		'def' IDCON formals? statement* 'end' 
 				-> ^( 'def' IDCON formals? statement* 'end' ) ;
 				
-formals:		'(' IDCON? ( ',' IDCON )* ')' ;
+formals:		'(' IDCON? ( ',' IDCON )* ')' 
+				-> '(' IDCON* ')' ;
 
 // $>
 

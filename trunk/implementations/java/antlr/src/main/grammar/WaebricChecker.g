@@ -21,11 +21,11 @@ scope Environment {
 }
 
 @members {
-	void defineFunction(CommonTree id, int args) {
+	void defineFunction(CommonTree id, int args, int depth) {
 		// Check if function is already defined
 		if(isDefinedFunction(id.getText())) {
 			exceptions.add(new DuplicateFunctionException(id));
-		} else { $Environment::functions.put(id.getText(), args); }
+		} else { $Environment[depth]::functions.put(id.getText(), args); }
 	}
 
 	boolean isDefinedFunction(String id) {
@@ -228,16 +228,17 @@ function
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-		int args = 0; // Argument count
-	} :		^( 'def' id=IDCON ( f=formals { args = $f.args; } )? statement* 'end' ) { 
-				if(isDefinedFunction(id.getText())) {
-					exceptions.add(new DuplicateFunctionException(id));
-				} else { $Environment[0]::functions.put(id.getText(), args); }
+	} :		^( 'def' id=IDCON f=formals statement* 'end' ) { 
+				defineFunction($id, $f.args, 0);
 			} ;
 			
-formals	returns [int args = 0]
-	:		'(' ( id=IDCON { defineVariable($id); $args++; } )? 
-			( ',' id=IDCON { defineVariable($id); $args++; } )* ')'  ;
+formals	returns [int args = 0] 
+	:		r=regularFormals { $args = $r.args; } | emptyFormals ;
+			
+regularFormals returns [int args = 0]
+	:		'(' ( id=IDCON { defineVariable($id); $args++; } )* ')' ;
+
+emptyFormals:		/* No formals defined */ ;
 
 // $<Statements
 
@@ -289,12 +290,19 @@ eachStatement
 			} statement ;
 
 letStatement
-	scope Environment;
+	scope Environment; // Environment containing all assignments
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
 	} :		'let' assignment+ 'in' statement* 'end' ;
 
 assignment:		varBinding | funcBinding ;
+
 varBinding:		id=IDCON '=' expression ';' { defineVariable($id); } ;
-funcBinding:		id=IDCON f=formals statement { defineFunction($id, $f.args); } ;
+
+funcBinding
+	scope Environment;
+	@init {
+		$Environment::variables = new HashSet<String>();
+		$Environment::functions = new HashMap<String, Integer>();
+	} :		id=IDCON f=regularFormals statement { defineFunction($id, $f.args, $Environment.size()-2); } ;
