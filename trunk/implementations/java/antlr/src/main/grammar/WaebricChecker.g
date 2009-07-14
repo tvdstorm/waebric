@@ -80,7 +80,7 @@ scope Environment {
         	public NonExistingModuleException(CommonTree id) {
         		super("Module identifier at line " + id.getLine() 
         				+ " and character " + id.getCharPositionInLine()
-        				+ ", refers to a non-existing module.");
+        				+ " refers to a non-existing module.");
        		}
        	}
        	
@@ -95,9 +95,8 @@ scope Environment {
        	class UndefinedVariableException extends SemanticException {
        		private static final long serialVersionUID = -4479175462744485497L;
         	public UndefinedVariableException(CommonTree id) {
-        		super("Variable " + id.getText() + " at line " + id.getLine() 
-        				+ " and character " + id.getCharPositionInLine()
-        				+ ", is undefined.");
+        		super("Undefined variable " + id.getText() + " at line " + id.getLine() 
+        				+ " and character " + id.getCharPositionInLine() + ".");
        		}
        	}
        	
@@ -147,9 +146,9 @@ scope Environment {
 	class DuplicateFunctionException extends SemanticException {
 		private static final long serialVersionUID = -8833578229100261366L;
 		public DuplicateFunctionException(CommonTree id) {
-			super("Function " + id.getText() + " at line " + id.getLine() 
-        				+ " and character " + id.getCharPositionInLine()
-					+ " has a duplicate definition.");
+			super("Duplicate definition of function " + id.getText() 
+					+ " at line " + id.getLine() 
+        				+ " and character " + id.getCharPositionInLine() + ".");
 		}
 		
 	}
@@ -176,8 +175,8 @@ moduleId
 					exceptions.add(new NonExistingModuleException($id));
 				}
 			} ;
-		
-imprt:			^( 'import' id=moduleId ';' ^module ) ;
+
+imprt:			^( 'import' id=moduleId ';' ^ module ) ;
 
 // $>
 
@@ -280,9 +279,21 @@ markupMarkup:		markup+ ';' ;
 
 // $<Assignments
 
-eachStatement:		'each' '(' IDCON ':' expression ')' statement ;
+eachStatement
+	scope Environment;
+	@init {
+		$Environment::variables = new HashSet<String>();
+		$Environment::functions = new HashMap<String, Integer>();
+	} :		'each' '(' id=IDCON ':' expression ')' { 
+				defineVariable($id); // Define variable before statement is executed
+			} statement ;
 
-letStatement:		'let' assignment+ 'in' statement* 'end' ;
+letStatement
+	scope Environment;
+	@init {
+		$Environment::variables = new HashSet<String>();
+		$Environment::functions = new HashMap<String, Integer>();
+	} :		'let' assignment+ 'in' statement* 'end' ;
 
 assignment:		varBinding | funcBinding ;
 varBinding:		id=IDCON '=' expression ';' { defineVariable($id); } ;
