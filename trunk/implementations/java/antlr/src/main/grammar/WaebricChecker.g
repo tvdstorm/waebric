@@ -32,13 +32,13 @@ scope Environment {
 			Stack actual = $Environment;
 			$Environment = call.env;
 			
-			if(! isDefinedFunction(call.id)) {
-				exceptions.add(new UndefinedFunctionException(call.id));
-			} else {
+			if(isDefinedFunction(call.id)) {
 				int args = expectedArgs(call.id);
 				if(call.args != args) {
 					exceptions.add(new ArityMismatchException(call.id, args));
 				}
+			} else if(! XHTMLTag.isXHTMLTag(call.id.getText())) {
+				exceptions.add(new UndefinedFunctionException(call.id));
 			}
 			
 			// Return to actual environment
@@ -67,7 +67,6 @@ scope Environment {
 	}
 	
 	void defineVariable(CommonTree id) {
-		System.out.println("Defining variable " + id.getText() + "...");
 		$Environment::variables.add(id.getText());
 	}
 	
