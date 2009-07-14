@@ -3,7 +3,7 @@ module test
 	def func2(arg,arg) end
 
 	def test(bla) 
-		let mylizzle=["1","2","3"]; in func1(mylizzle); end 
+		let mylizzle=["1","2","3"]; func3(arg,arg) { bla bla; } in func3(mylizzle,bla); end 
 	end
 	def test yield; end
 end
