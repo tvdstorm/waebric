@@ -117,7 +117,7 @@ formals:		'(' IDCON? ( ',' IDCON )* ')'
 
 statement:		ifElseStatement | ifStatement | eachStatement | letStatement | blockStatement | commentStatement |
 			echoStatement | cdataStatement | yieldStatement | markupStatements ;
-ifStatement:		'if' '(' predicate ')' statement ; // TODO: Look-ahead no else
+ifStatement:		'if' '(' predicate ')' statement ;
 ifElseStatement:	'if' '(' predicate ')' statement 'else' statement ;	
 eachStatement:		'each' '(' IDCON ':' expression ')' statement ;	
 letStatement:		'let' assignment+ 'in' statement* 'end' ;
