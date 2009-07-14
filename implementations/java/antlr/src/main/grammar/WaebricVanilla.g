@@ -1,4 +1,4 @@
-grammar WaebricVANILLA ;
+grammar WaebricVanilla ;
 
 options {
 	backtrack = true ;
@@ -141,11 +141,11 @@ regularFormal returns [Formals.RegularFormal result = new Formals.RegularFormal(
 	
 emptyFormal returns [Formals.EmptyFormal result = new Formals.EmptyFormal()]: ;
 
-// language.waebric.statement TODO
+// language.waebric.statement
 statement returns [Statement result] :
-			'if' '(' predicate ')' statement 'else' statement | 
-			'if' '(' predicate ')' statement |
-			'each' '(' IDCON ':' expression ')' statement | 
+			s=ifElseStatement { $result = s.result; } | 
+			s=ifStatement { $result = s.result; } |
+			s=eachStatement { $result = s.result; } | 
 			'let' assignment+ 'in' statement* 'end' |
 			'{' statement* '}' |
 			'comment' STRCON ';' |
@@ -173,22 +173,86 @@ eachStatement returns [Statement.Each result = new Statement.Each()] :
 	s=statement { $result.setStatement(s.result); } ;
 			
 assignment returns [Assignment result] :	
-	IDCON '=' expression ';' | // Variable binding
-	IDCON formals statement ; // Function binding
-
-// language.waebric.statement.predicate TODO
-predicate returns [Predicate result] :
-	( expression | not | is ) ( '&&' predicate | '||' predicate )*;
+	a=varBind { $result = a.result; } |
+	a=funcBind { $result = a.result; } ;
 	
-not:			'!' predicate ;		
-is:			expression '.' type ;
-type:			'list' | 'record' | 'string' ;
+varBind returns [Assignment.VarBind result = new Assignment.VarBind();] :
+	id=idcon '=' e=expression ';' {
+		$result.setIdentifier(id.result);
+		$result.setExpression(e.result);
+	} ;
+	
+funcBind returns [Assignment.FuncBind result = new Assignment.FuncBind();] :
+	id=idcon f=regularFormal s=statement {
+		$result.setIdentifier(id.result);
+		$result.setFormals(f.result);
+		$result.setStatement(s.result);
+	};
 
-// language.waebric.statement.embedding TODO
-embedding:		PRETEXT embed texttail ;	
-embed:			markup* expression |
-			markup* markup ;
-texttail:		POSTTEXT | MIDTEXT embed texttail ;
+// language.waebric.statement.predicate
+predicate returns [Predicate result] :
+	( 
+		// Non-recursive predicates
+		d=declared { $result = d.result; } | 
+		n=not { $result = n.result; } |
+		i=is { $result = i.result; }
+	)	
+		
+		
+	( 
+		// Recursive predicates (see: left-recurssion removal)
+		'&&' p=predicate { $result = new Predicate.And($result, p.result); } | 
+		'||' p=predicate { $result = new Predicate.Or($result, p.result); }
+	)* ;
+	
+declared returns [Predicate.Declared result = new Predicate.Declared()] :
+	e=expression { $result.setExpression(e.result); } ;
+	
+not returns [Predicate.Not result = new Predicate.Not()] :
+	'!' p=predicate { $result.setPredicate(p.result); } ;	
+		
+is returns [Predicate.Is result = new Predicate.Is()] :
+	e=expression '.' t=type { 
+		$result.setExpression(e.result);
+		$result.setType(t.result);
+	} ;
+	
+type returns [Type result] :
+	'list' { $result = new Type.ListType(); } | 
+	'record' { $result = new Type.RecordType(); } | 
+	'string' { $result = new Type.StringType(); } ;
+
+// language.waebric.statement.embedding
+embedding returns [Embedding result = new Embedding();] :
+	p=PRETEXT e=embed t=texttail {
+		$result.setPreText(new PreText($p.getText().substring(1, $p.getText().length()-1)));
+		$result.setEmbed(e.result);
+		$result.setTextTail(t.result);
+	};	
+	
+embed returns [Embed result] :
+	e=expressionEmbed { $result = e.result; } |
+	m=markupEmbed { $result = m.result; } ;
+
+expressionEmbed returns [Embed.ExpressionEmbed result = new Embed.ExpressionEmbed();] :
+	( m=markup { $result.addMarkup(m.result); } )* 
+	e=expression { $result.setExpression(e.result); } ;
+	
+markupEmbed returns [Embed.MarkupEmbed result = new Embed.MarkupEmbed();] :
+	( m=markup { $result.addMarkup(m.result); } )* 
+	m=expression { $result.setMarkup(m.result); } ;
+			
+texttail: ;
+			
+postTail returns [TextTail.PostTail] :	
+	p=POSTTEXT { $result.setPostText(new PostText($p.getText().substring(1, $p.getText().length()-1))); } ;
+
+midTail returns [TextTail.MidTail] :
+	m=MIDTEXT e=embed t=texttail {
+		$result.setMidText(new MidText($p.getText().substring(1, $p.getText().length()-1)));
+		$result.setEmbed(e.result);
+		$result.setTextTail(t.result);
+	} ;
 
 // language.waebric.basic
 idcon returns [IdCon result]:	
