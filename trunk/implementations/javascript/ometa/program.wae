@@ -1,8 +1,0 @@
-module abon
-
-import sub.products
-import sub.categories
-
-def main
-	div getProductName('test');
-end
