@@ -1,5 +1,5 @@
 
-ometa WaebricInterpreter {
+ometa WaebricOMetaInterpreter {
   interp =
 
   		    [	'module' interp:moduleId [interp*:moduleElements]
@@ -26,13 +26,13 @@ ometa WaebricInterpreter {
 		|  	[	'call' interp:designator interp:args
   			]	-> new MarkupCall(designator, args)
 
-  		|  	[	'tag' anything:idCon [anything*:attributes]
+  		|  	[	'tag' anything:idCon [interp*:attributes]
   			]   -> new DesignatorTag(idCon, attributes)
 
   		|  	[	'id' anything:id
   			]	-> new IdAttribute(id)
 
-  		|  	[	'class' anything:idClass
+  		|  	[	'class' anything:className
   			]	-> new ClassAttribute(className)
 
   		|  	[	'name' anything:name

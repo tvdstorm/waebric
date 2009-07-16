@@ -1,0 +1,5 @@
+module abon
+
+def main
+  p;
+end
