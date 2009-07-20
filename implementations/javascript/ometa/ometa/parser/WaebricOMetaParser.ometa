@@ -65,7 +65,7 @@ ometa WaebricOMetaParser <: Parser {
                   	| "cdata" spaces Expression:expression spaces ";" -> new CDataExpression(expression)
                   	| "yield" ";" -> new YieldStatement()
                   	| Markup:markup ";" -> new MarkupStatement(markup)
-                  	| Markup+:markups spaces ";" spaces ?(markups[markups.length -1] instanceof DesignatorTag) -> new MarkupExpressionStatement(markups.slice(0,markups.length-1), new VarExpression( markups[markups.length-1][1]))
+                  	| Markup+:markups spaces ";" spaces ?(markups[markups.length -1] instanceof DesignatorTag) -> new MarkupExpressionStatement(markups.slice(0,markups.length-1), new VarExpression( markups[markups.length-1].idCon))
                   	| Markup+:markups spaces ";" spaces ?(markups.length >= 2)  -> new MarkupMarkupStatement(markups)
                   	| Markup+:markups spaces Expression:expression spaces ";"  spaces -> new MarkupExpressionStatement(markups, expression)
                   	| Markup+:markups spaces Statement:statement -> new MarkupStatementStatement(markups, statement)
@@ -99,7 +99,7 @@ ometa WaebricOMetaParser <: Parser {
 
   Embedding       	= spaces PreText:head spaces Embed:embed spaces TextTail:tail spaces -> new Embedding(head, embed, tail),
   Embed           	= Markup*:markups spaces Expression:expression -> new ExpressionEmbedding(markups, expression)
-  					| Markup*:markups ?(markups[markups.length -1] instanceof DesignatorTag ) -> new ExpressionEmbedding(markups.slice(0,markups.length-1), new VarExpression(markups[markups.length-1][1]))  
+  					| Markup*:markups ?(markups[markups.length -1] instanceof DesignatorTag ) -> new ExpressionEmbedding(markups.slice(0,markups.length-1), new VarExpression(markups[markups.length-1].idCon))  
   					| Markup*:markups -> new MarkupEmbedding(markups),
 
   PreText         	= "\"" TextChar*:text "<" -> "\"".concat(text.join('')).concat("\""),

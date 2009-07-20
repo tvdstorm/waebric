@@ -91,7 +91,13 @@ function WaebricInterpreterVisitor(env){
 		this.dom = dom;
 		this.visit = function(functionDefinition){
 			//Add Arguments of function to new environment	
-			var new_env = this.env.addEnvironment('func-def');
+			var new_env;
+			if (!functionDefinition.isFunctionBinding) {
+				new_env = this.env.addEnvironment('func-def');
+			}else{
+				new_env = this.env.addEnvironment('func-bind')
+			}
+			
 			for (var i = 0; i < functionDefinition.formals.length; i++){
 				//Get variable name from arguments 				
 				var variableName = functionDefinition.formals[i];
@@ -99,7 +105,12 @@ function WaebricInterpreterVisitor(env){
 				//Retrieve variable value from parent environment (markup call)
 				//The value of the first function argument equals the first argument
 				//in the function call (markup call)
-				var variableValue = this.env.variables[i].value;
+				var variableValue;
+				if (this.env.variables.length > i) {
+					 variableValue = this.env.variables[i].value;
+				}else{
+					variableValue = 'undef';
+				}
 				
 				//Save variable
 				new_env.addVariable(variableName, variableValue);
@@ -107,6 +118,7 @@ function WaebricInterpreterVisitor(env){
 			
 			//VisitStatements
 			for (var i = 0; i < functionDefinition.statements.length; i++) {
+				print('visit statements')
 				var statement = functionDefinition.statements[i];
 				statement.accept(new StatementVisitor(new_env, this.dom));
 			}
@@ -156,14 +168,6 @@ function WaebricInterpreterVisitor(env){
 		}
 	}
 	
-	
-	/**
-	 * Validates the expression
-	 * 
-	 * @param {Object} expression
-	 * @param {Object} env
-	 * @return returns whether the expression is valid
-	 */
 	function isValidExpression(expression, env){
 		if(expression instanceof FieldExpression){
 			return isValidFieldExpression(expression, env);
@@ -175,6 +179,26 @@ function WaebricInterpreterVisitor(env){
 	}
 	
 	function isValidFieldExpression(expression, env){
+		return getFieldExpressionRootData(expression, env) != null;
+	}
+	
+	function isValidCatExpression(expression, env){
+		var isValidLeftExpression = isValidExpression(expression.expressionLeft, env);
+		var isValidRightExpression = isValidExpression(expression.expressionRight, env);
+		return isValidLeftExpression && isValidRightExpression;
+	}
+	
+	function getExpressionValue(expression, env){
+		if (expression instanceof FieldExpression) {
+			return getFieldExpressionValue(expression, env);
+		}else if(expression instanceof VarExpression){
+			return env.getVariable(expression).value;
+		}else{
+			return expression;
+		}
+	}
+	
+	function getFieldExpressionValue(expression, env){
 		//Store fields in array
 		var fields = new Array();
 		var expr = expression;
@@ -185,9 +209,9 @@ function WaebricInterpreterVisitor(env){
 		fields = fields.reverse();
 		
 		//Get root variable value
-		var data = getDataFieldExpression(expression, env);
+		var data = getFieldExpressionRootValue(expression, env);
 		if (data == null) {
-			return false
+			return null;
 		}
 		
 		//Get data by fields in array
@@ -195,19 +219,13 @@ function WaebricInterpreterVisitor(env){
 			var field = fields[i];
 			data = data.getValue(field);	
 			if(data == null){
-				return null;
+				return data;
 			}
 		}
-		return data != null;
+		return data;
 	}
 	
-	function isValidCatExpression(expression, env){
-		var isValidLeftExpression = isValidExpression(expression.expressionLeft, env);
-		var isValidRightExpression = isValidExpression(expression.expressionRight, env);
-		return isValidLeftExpression && isValidRightExpression;
-	}
-	
-	function getDataFieldExpression(expression, env){
+	function getFieldExpressionRootValue(expression, env){
 		var root = expression;
 		while (root instanceof FieldExpression) {
 			root = root.expression;
@@ -230,9 +248,8 @@ function WaebricInterpreterVisitor(env){
 	function IfStatementVisitor(env, dom){
 		this.env = env;
 		this.dom = dom;
-		this.visit = function(ifStmt){			
-			var isValidExpression = isValidExpression(ifStmt.predicate, this.env);
-			if (isValidExpression) {
+		this.visit = function(ifStmt){	
+			if (isValidExpression(ifStmt.predicate, this.env)) {
 				ifStmt.ifStatement.accept(new StatementVisitor(this.env, this.dom))
 			}
 		}
@@ -244,10 +261,8 @@ function WaebricInterpreterVisitor(env){
 	function IfElseStatementVisitor(env, dom){
 		this.env = env;
 		this.dom = dom;
-		this.visit = function(ifElseStmt){
-			var isValidExpression = isValidExpression(ifStmt.predicate, this.env);
-			
-			if (isValidExpression) {
+		this.visit = function(ifElseStmt){			
+			if (isValidExpression(ifElseStmt.predicate, this.env)) {
 				ifElseStmt.ifStatement.accept(new StatementVisitor(this.env, this.dom));
 			}else{
 				ifElseStmt.elseStatement.accept(new StatementVisitor(this.env, this.dom));
@@ -269,13 +284,27 @@ function WaebricInterpreterVisitor(env){
 			//Add variable to new environment of each statement
 			new_env.addVariable(eachStmt.identifier);
 			
-			//Visit Expression
-			eachStmt.expression.accept(new ExpressionVisitor(this.env, this.dom));
+			//Get expression value
+			var expressionValue = getExpressionValue(eachStmt.expression, this.env);
 			
-			//Visit Statement
-			eachStmt.statement.accept(new StatementVisitor(this.env, this.dom));
+			//Expression value should be an array
+			var lastElement = this.dom.lastElement;
+			if(expressionValue instanceof ListExpression){				
+				//Loop all records and output statement
+				for(var i = 0; i < expressionValue.list.length; i++){					
+					var listValue = expressionValue.list[i];			
+					//Save variable to environment
+					new_env.addVariable(eachStmt.identifier, listValue);	
+					//Visit statement				
+					eachStmt.statement.accept(new StatementVisitor(new_env, this.dom));
+					//Set last element back to original (otherwise nesting)
+					this.dom.lastElement = lastElement;
+				}				
+			}
 		}
 	}
+	
+	
 	
 	/**
 	 * Visitor Let Statement
@@ -289,16 +318,18 @@ function WaebricInterpreterVisitor(env){
 			// is limited to the statements inside the let statement
 			var new_env = this.env.addEnvironment('let-stmt');
 			
-			//Visit Assignments
+			//Visit Assignments (converts to function definition)
 			for (var i = 0; i < letStmt.assignments.length; i++) {
 				var assignment = letStmt.assignments[i];
-				assignment.accept(new AssignmentVisitor(this.env, this.dom));
+				assignment.accept(new AssignmentVisitor(new_env, this.dom));
 			}
 			
 			//Visit Statements
+			var lastElement = this.dom.lastElement;
 			for (var j = 0; j < letStmt.statements.length; j++) {
 				var statement = letStmt.statements[j];
-				statement.accept(new StatementVisitor(this.env, this.dom));
+				statement.accept(new StatementVisitor(new_env, this.dom));
+				this.dom.lastElement = lastElement; //Prevent nested nodes
 			}
 		}
 	}
@@ -475,17 +506,12 @@ function WaebricInterpreterVisitor(env){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(variable){
-			//Check if variable exists
-			if (this.env.getVariable(variable) == null) {
-				this.env.addException(new UndefinedVariableException(variable, this.env));
-			}
-			
-			//Save value temporary
-			var variable = this.env.getVariable(variable);
-			if (variable != null) {
-				this.dom.lastValue = variable.value;
+			var _var = this.env.getVariable(variable);	
+			if (_var != null) {
+				this.dom.lastValue = _var.value;
 			}else{
-				this.dom.lastValue = 'undef';
+				this.env.addException(new UndefinedVariableException(variable, this.env));
+				this.dom.lastValue = 'undef';				
 			}
 		}
 	}
@@ -747,19 +773,16 @@ function WaebricInterpreterVisitor(env){
 			var newFunctionName = funcbind.variable;
 			var newFunctionFormals = funcbind.formals;
 			var newFunctionStatements = [funcbind.statement];
-			var newFunction = new FunctionDefinition(newFunctionName, newFunctionFormals, newFunctionStatements);
+			var newFunction = new FunctionDefinition(newFunctionName, newFunctionFormals, newFunctionStatements, true);
 			
 			//Add function to current environment (let statement)
 			//(not done by FunctionDefinitionVisitor)
-			if (!this.env.containsFunction(newFunctionName)) {
+			//if (!this.env.containsLocalFunction(newFunctionName)) {
+			//	print('add function ' + newFunctionName + ' to ' + this.env.type)
 				this.env.addFunction(newFunction);
-			} else {
-				this.env.addException(new DuplicateDefinitionException(newFunction, this.env));
-			}
-			
-			//Visit FunctionDefinition
-			newFunction.accept(new FunctionDefinitionVisitor(this.env, this.dom));
-			
+			//} else {
+			//	this.env.addException(new DuplicateDefinitionException(newFunction, this.env));
+			//}
 		}
 	}
 
@@ -785,12 +808,19 @@ function WaebricInterpreterVisitor(env){
 					}
 					//Store variables
 					for(var i = 0; i < markup.arguments.length; i++){
-						var variableValue = markup.arguments[i];												
+						print('store var : ' + markup.arguments[i]);
+						var variableValue = getExpressionValue(markup.arguments[i], this.env);								
 						new_env.addVariable('arg' + i, variableValue);
 					}
 					
 					//Visit function definition
-					functionDefinition.accept(new FunctionDefinitionVisitor(new_env, this.dom));					
+					functionDefinition.accept(new FunctionDefinitionVisitor(new_env, this.dom));
+					
+					//Visit arguments/formals
+					for (var i = 0; i < markup.arguments.length; i++) {
+						var argument = markup.arguments[i];
+						argument.accept(new ArgumentVisitor(new_env, this.dom));
+					}					
 				} else if (!XHTML.isXHTMLTag(markup.designator.idCon)) {
 					//If function does not exists and the designator tag is not part of
 					//XHTML, then it must be an undefined function						
@@ -800,12 +830,12 @@ function WaebricInterpreterVisitor(env){
 					var element = this.dom.document.createElement(markup.designator.idCon);				
 					this.dom.lastElement.appendChild(element);
 					this.dom.lastElement = element;
-				}
-				
-				//Visit arguments/formals
-				for (var i = 0; i < markup.arguments.length; i++) {
-					var argument = markup.arguments[i];
-					argument.accept(new ArgumentVisitor(new_env, this.dom));
+					
+					//Visit arguments/formals
+					for (var i = 0; i < markup.arguments.length; i++) {
+						var argument = markup.arguments[i];
+						argument.accept(new ArgumentVisitor(new_env, this.dom));
+					}
 				}
 			} else { //Markup is MarkupTag Expression	
 				//Add tag/element to document	
