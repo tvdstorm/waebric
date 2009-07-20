@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricChecker.g 2009-07-20 14:51:00
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricChecker.g 2009-07-20 14:58:27
 
 	package org.cwi.waebric;
 	
@@ -194,7 +194,7 @@ public class WaebricChecker extends TreeParser {
             class NonExistingModuleException extends SemanticException {
             	private static final long serialVersionUID = -4503945323554024642L;
             	public NonExistingModuleException(CommonTree id) {
-            		super("Module identifier at line " + id.getLine() 
+            		super("Module identifier \"" + id.getText() + "\" at line " + id.getLine() 
             				+ " and character " + id.getCharPositionInLine()
             				+ " refers to a non-existing module.");
            		}
@@ -211,7 +211,7 @@ public class WaebricChecker extends TreeParser {
            	class UndefinedVariableException extends SemanticException {
            		private static final long serialVersionUID = -4479175462744485497L;
             	public UndefinedVariableException(CommonTree id) {
-            		super("Undefined variable " + id.getText() + " at line " + id.getLine() 
+            		super("Undefined variable \"" + id.getText() + "\" at line " + id.getLine() 
             				+ " and character " + id.getCharPositionInLine() + ".");
            		}
            	}
@@ -229,7 +229,7 @@ public class WaebricChecker extends TreeParser {
            	class UndefinedFunctionException extends SemanticException {
            		private static final long serialVersionUID = -4569708425419653397L;
             	public UndefinedFunctionException(CommonTree id) {
-            		super("Function call " + id.getText() + " at line " + id.getLine() 
+            		super("Function call \"" + id.getText() + "\" at line " + id.getLine() 
             				+ " and character " + id.getCharPositionInLine()
             				+ ", is made to an undefined function.");
            		}
@@ -245,8 +245,8 @@ public class WaebricChecker extends TreeParser {
     	class ArityMismatchException extends SemanticException {
     		private static final long serialVersionUID = -954167103131401047L;
     		public ArityMismatchException(CommonTree id, int args) {
-    			super("Arity mismatch at function call " + id.getText() 
-    					+ " positioned on line " + id.getLine() 
+    			super("Arity mismatch at function call \"" + id.getText() 
+    					+ "\" positioned on line " + id.getLine() 
             				+ " and character " + id.getCharPositionInLine()
             				+ ". Use the expected " + args + " argument(s).");
     		}
@@ -262,8 +262,8 @@ public class WaebricChecker extends TreeParser {
     	class DuplicateFunctionException extends SemanticException {
     		private static final long serialVersionUID = -8833578229100261366L;
     		public DuplicateFunctionException(CommonTree id) {
-    			super("Duplicate definition of function " + id.getText() 
-    					+ " at line " + id.getLine() 
+    			super("Duplicate definition of function \"" + id.getText() 
+    					+ "\" at line " + id.getLine() 
             				+ " and character " + id.getCharPositionInLine() + ".");
     		}
     		
