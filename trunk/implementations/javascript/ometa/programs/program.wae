@@ -1,5 +1,21 @@
 module abon
 
 def main
-  p;
+  p("button");
+end
+
+def p(input)
+	let
+		td(img) = temptd("center", img, input);
+	in
+		td("foto1.jpg");
+	end
+end
+
+def temptd(align, img, input)
+	td(align, img);
+end
+
+def td(align, img, input)
+	div(align=align, img=img, input=input);
 end

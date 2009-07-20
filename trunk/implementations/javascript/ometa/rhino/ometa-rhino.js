@@ -223,7 +223,7 @@ var html_output = "";
 //Try evaluating the waebric program
 try {
 	//Evaluate waebric program
-	module = evaluateProgram('../../../../demos/lava/lava.wae');
+	module = evaluateProgram('../programs/program.wae');
 	
 	//Semantic validation
 	exceptions = WaebricSemanticValidator.validateAll(module);	

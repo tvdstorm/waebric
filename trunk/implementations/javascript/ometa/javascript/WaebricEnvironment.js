@@ -31,7 +31,12 @@ function WaebricEnvironment(){
 	 * @param {VariableName} variable
 	 */
 	this.addVariable = function(name, value){
-		this.variables.push(new Variable(name, value));
+		var foundVariable = this.getLocalVariable(name);
+		if (foundVariable == null) {
+			this.variables.push(new Variable(name, value));
+		}else{
+			foundVariable.value = value
+		}
 	}
 	
 	/**
@@ -86,7 +91,7 @@ function WaebricEnvironment(){
 	 * @return The requested function. Null if not found.
 	 */
 	this.getFunction = function(funcName){
-		var root = this.getRoot();		
+		var root = this.getRootModule();		
 		return root.getLocalFunction(funcName)
 	}
 	
@@ -97,7 +102,14 @@ function WaebricEnvironment(){
 	 * @param {String} funcName
 	 * @return The requested function. Null if not found.
 	 */
-	this.getLocalFunction = function(funcName){		
+	this.getLocalFunction = function(funcName){	
+	
+		//Work arround for preventing endless loop in function bindings
+		if(this.parent != null && this.parent.type == 'func-bind'){
+			var parentModule = this.getParentModule();
+			return parentModule.getLocalFunction(funcName);
+		}
+		
 		//Search function local environment
 		for(var i = 0; i < this.functions.length; i++){
 			var func = this.functions[i];
@@ -151,7 +163,7 @@ function WaebricEnvironment(){
 	}
 	
 	/**
-	 * Returns the root environment with no parents.
+	 * Returns the parent environment
 	 * 
 	 * @return {Environment} The root environment
 	 */
@@ -159,7 +171,7 @@ function WaebricEnvironment(){
 		if (this.type != 'module') {			
 			return this.parent.getParentModule();
 		} else {
-			return this.name;
+			return this;
 		}
 	}
 	
@@ -168,9 +180,9 @@ function WaebricEnvironment(){
 	 * 
 	 * @return {Environment} The root environment
 	 */
-	this.getRoot = function(){
+	this.getRootModule = function(){
 		if (this.parent != null) {			
-			return this.parent.getRoot();
+			return this.parent.getRootModule();
 		} else {
 			return this;
 		}
@@ -182,7 +194,7 @@ function WaebricEnvironment(){
 	 * @param {Object} dependencyName
 	 */
 	this.getDependency = function(dependencyName){		
-		var root = this.getRoot();
+		var root = this.getRootModule();
 		return root.getLocalDependency(dependencyName)
 	}
 	
@@ -222,7 +234,7 @@ function WaebricEnvironment(){
 		//Search function in parent environment
 		if(this.parent != null && this.type != 'func-def') {
 			return this.parent.getVariable(name)
-		}
+		}		
 		
 		return null;
 	}
