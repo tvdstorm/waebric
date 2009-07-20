@@ -101,7 +101,7 @@ scope Environment {
         class NonExistingModuleException extends SemanticException {
         	private static final long serialVersionUID = -4503945323554024642L;
         	public NonExistingModuleException(CommonTree id) {
-        		super("Module identifier at line " + id.getLine() 
+        		super("Module identifier \"" + id.getText() + "\" at line " + id.getLine() 
         				+ " and character " + id.getCharPositionInLine()
         				+ " refers to a non-existing module.");
        		}
@@ -118,7 +118,7 @@ scope Environment {
        	class UndefinedVariableException extends SemanticException {
        		private static final long serialVersionUID = -4479175462744485497L;
         	public UndefinedVariableException(CommonTree id) {
-        		super("Undefined variable " + id.getText() + " at line " + id.getLine() 
+        		super("Undefined variable \"" + id.getText() + "\" at line " + id.getLine() 
         				+ " and character " + id.getCharPositionInLine() + ".");
        		}
        	}
@@ -136,7 +136,7 @@ scope Environment {
        	class UndefinedFunctionException extends SemanticException {
        		private static final long serialVersionUID = -4569708425419653397L;
         	public UndefinedFunctionException(CommonTree id) {
-        		super("Function call " + id.getText() + " at line " + id.getLine() 
+        		super("Function call \"" + id.getText() + "\" at line " + id.getLine() 
         				+ " and character " + id.getCharPositionInLine()
         				+ ", is made to an undefined function.");
        		}
@@ -152,8 +152,8 @@ scope Environment {
 	class ArityMismatchException extends SemanticException {
 		private static final long serialVersionUID = -954167103131401047L;
 		public ArityMismatchException(CommonTree id, int args) {
-			super("Arity mismatch at function call " + id.getText() 
-					+ " positioned on line " + id.getLine() 
+			super("Arity mismatch at function call \"" + id.getText() 
+					+ "\" positioned on line " + id.getLine() 
         				+ " and character " + id.getCharPositionInLine()
         				+ ". Use the expected " + args + " argument(s).");
 		}
@@ -169,8 +169,8 @@ scope Environment {
 	class DuplicateFunctionException extends SemanticException {
 		private static final long serialVersionUID = -8833578229100261366L;
 		public DuplicateFunctionException(CommonTree id) {
-			super("Duplicate definition of function " + id.getText() 
-					+ " at line " + id.getLine() 
+			super("Duplicate definition of function \"" + id.getText() 
+					+ "\" at line " + id.getLine() 
         				+ " and character " + id.getCharPositionInLine() + ".");
 		}
 		
