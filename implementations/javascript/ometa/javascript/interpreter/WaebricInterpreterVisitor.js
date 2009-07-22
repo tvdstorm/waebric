@@ -185,6 +185,10 @@ function WaebricInterpreterVisitor(env){
 			return getFieldExpressionValue(expression, env);
 		}else if(expression instanceof VarExpression){
 			return env.getVariable(expression).value;
+		}else if(expression instanceof RecordExpression){
+			return getRecordExpressionValue(expression, env);
+		}else if(expression instanceof ListExpression){
+			return getListExpressionValue(expression, env);
 		}else{
 			return expression;
 		}
@@ -203,19 +207,21 @@ function WaebricInterpreterVisitor(env){
 		//Get root variable value
 		var data = getFieldExpressionRootValue(expression, env);
 		
-		//Data should be record expression
+		//Data should be record expression or a variable
 		if (!(data instanceof RecordExpression)) {
 			return null;
 		}
 		
 		//Get data by fields in array
 		for(var i = 0; i < fields.length; i++){
-			var field = fields[i];
-			data = data.getValue(field);	
-			if(data == null){
-				return null;
-			}
+			//Get field data
+			var field = fields[i];	
+			var fieldValue = data.getValue(field);
+			
+			//Get incapsulated data
+			data = getExpressionValue(fieldValue, env);
 		}
+		
 		return data;
 	}
 	
@@ -235,6 +241,40 @@ function WaebricInterpreterVisitor(env){
 		}
 	}
 	
+	function getRecordExpressionValue(recordExpr, env){
+		for (var i = 0; i < recordExpr.records.length; i++) {
+			var keyValuePair = recordExpr.records[i];
+			recordExpr.records[i].value = getExpressionValue(keyValuePair.value, env);
+		}
+		return recordExpr;
+	}
+	
+	function getListExpressionValue(listExpr, env){
+		for (var i = 0; i < listExpr.list.length; i++) {
+			var item = listExpr.list[i];
+			listExpr.list[i] = getExpressionValue(item, env);			
+		}
+		
+		return listExpr;
+	}
+		
+	function getRecordExpressionStringValue(recordExpr, env){
+		var records = '{'
+		for (var i = 0; i < recordExpr.records.length; i++) {
+			var keyValuePair = recordExpr.records[i];
+			records = records.concat(keyValuePair.key).concat(':').concat(getExpressionValue(keyValuePair.value)).concat(',');
+		}
+		return records.substr(0, records.length - 1).concat('}')
+	}
+		
+	function getListExpressionStringValue(listExpr, env){
+		var list = '[';
+		for (var i = 0; i < listExpr.list.length; i++) {
+			var expression = listExpr.list[i];			
+			list = list.concat(getExpressionValue(expression)).concat(',');
+		}
+		return list.substr(0, list.length - 1).concat(']')
+	}
 			
 	/**
 	 * Visitor IfStatement
@@ -310,7 +350,7 @@ function WaebricInterpreterVisitor(env){
 			// is limited to the statements inside the let statement
 			var new_env = this.env.addEnvironment('let-stmt');
 			
-			//Visit Assignments (converts to function definition)
+			//Visit Assignments
 			for (var i = 0; i < letStmt.assignments.length; i++) {
 				var assignment = letStmt.assignments[i];
 				assignment.accept(new AssignmentVisitor(new_env, this.dom));
@@ -606,15 +646,8 @@ function WaebricInterpreterVisitor(env){
 	function ListExpressionVisitor(env, dom){
 		this.env = env;
 		this.dom = dom;
-		this.visit = function(listExpr){
-			var list = '[';
-			for (var i = 0; i < listExpr.list.length; i++) {
-				var expression = listExpr.list[i];
-				expression.accept(new ExpressionVisitor(this.env, this.dom));
-				list = list.concat(this.dom.lastValue).concat(',');
-			}
-			list = list.substr(0, list.length - 1).concat(']')
-			this.dom.lastValue = list;
+		this.visit = function(listExpr){			
+			this.dom.lastValue = getListExpressionStringValue(listExpr, this.env);
 		}
 	}
 	
@@ -626,15 +659,8 @@ function WaebricInterpreterVisitor(env){
 	function RecordExpressionVisitor(env, dom){
 		this.env = env;
 		this.dom = dom;
-		this.visit = function(recordExpr){
-			var records = '{'
-			for (var i = 0; i < recordExpr.records.length; i++) {
-				var keyValuePair = recordExpr.records[i];
-				keyValuePair.accept(new KeyValueVisitor(this.env, this.dom));
-				records = records.concat(keyValuePair.key).concat(':').concat(this.dom.lastValue).concat(',');
-			}
-			records = records.substr(0, records.length - 1).concat('}')
-			this.dom.lastValue = records;
+		this.visit = function(recordExpr){			
+			this.dom.lastValue = getRecordExpressionValue(recordExpr, this.env);
 		}
 	}
 		
@@ -645,10 +671,24 @@ function WaebricInterpreterVisitor(env){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(embedding){
-			//Visit Embed
-			embedding.embed.accept(new EmbedVisitor(this.env, this.dom));
+			//Add PreText as normal text to document
+			if (eval(embedding.head) != "") {
+				var text = this.dom.document.createTextNode(eval(embedding.head));
+				this.dom.lastElement.appendChild(text);
+			}
+				
+			//Prepare swap	
+			var lastElement = this.dom.lastElement;
 			
-			//Visit Tail
+			//Visit Embed
+			//this.dom.lastValue = "";
+			embedding.embed.accept(new EmbedVisitor(this.env, this.dom));
+					
+			//Swap last element	(prevent adding the tail to the embed section)
+			this.dom.lastElement = lastElement;				
+				
+			//Visit Tail	
+			//this.dom.lastValue = "";		
 			embedding.tail.accept(new TextTailVisitor(this.env, this.dom));
 		}
 	}
@@ -680,7 +720,7 @@ function WaebricInterpreterVisitor(env){
 			if (textTail instanceof MidTextTail) {
 				textTail.accept(new MidTextTailVisitor(this.env, this.dom));
 			} else if (textTail instanceof PostTextTail) {
-				//No action required
+				textTail.accept(new PostTextTailVisitor(this.env, this.dom))
 			} else { //TextTail is not recognized
 				print("Unrecognized TextTail found. Parser should have thrown an error.");
 			}
@@ -693,12 +733,41 @@ function WaebricInterpreterVisitor(env){
 	function MidTextTailVisitor(env, dom){
 		this.env = env;
 		this.dom = dom;
-		this.visit = function(midTextTail){
+		this.visit = function(midTextTail){				
+			//Add mid text as normal text to document
+			if(eval(midTextTail.mid) != ""){
+				var text = this.dom.document.createTextNode(eval(midTextTail.mid));
+				this.dom.lastElement.appendChild(text);
+			}
+			
+			//Prepare swap
+			this.lastElement = this.dom.lastElement;
+					
 			//Visit Embed
+			//this.dom.lastValue = "";
 			midTextTail.embed.accept(new EmbedVisitor(this.env, this.dom));
 			
+			//Swap last Element (prevent adding the tail to the embed section)
+			this.dom.lastElement = this.lastElement;
+			
 			//Visit Tail
+			//this.dom.lastValue = "";
 			midTextTail.tail.accept(new TextTailVisitor(this.env, this.dom));
+		}
+	}
+	
+	/**
+	 * Visitor for Post Text Tail
+	 */
+	function PostTextTailVisitor(env, dom){
+		this.env = env;
+		this.dom = dom;
+		this.visit = function(postText){	
+			//Add mid post text to document
+			if (eval(postText.text) != "") {
+				var text = this.dom.document.createTextNode(eval(postText.text));
+				this.dom.lastElement.appendChild(text);
+			}	
 		}
 	}
 			
@@ -717,6 +786,10 @@ function WaebricInterpreterVisitor(env){
 			
 			//Visit expression
 			exprEmbed.expression.accept(new ExpressionVisitor(this.env, this.dom));
+			
+			//Add expression value to document
+			var text = this.dom.document.createTextNode(eval(this.dom.lastValue));
+			this.dom.lastElement.appendChild(text);
 		}
 	}
 	
@@ -760,7 +833,7 @@ function WaebricInterpreterVisitor(env){
 		this.dom = dom;
 		this.visit = function(varbind){
 			//Add variable to current environment (let statement)
-			this.env.addVariable(varbind.variable);
+			this.env.addVariable(varbind.variable, getExpressionValue(varbind.expression));
 			
 			//Visit expression
 			varbind.expression.accept(new ExpressionVisitor(this.env, this.dom));
@@ -781,13 +854,7 @@ function WaebricInterpreterVisitor(env){
 			var newFunction = new FunctionDefinition(newFunctionName, newFunctionFormals, newFunctionStatements, true);
 			
 			//Add function to current environment (let statement)
-			//(not done by FunctionDefinitionVisitor)
-			//if (!this.env.containsLocalFunction(newFunctionName)) {
-			//	print('add function ' + newFunctionName + ' to ' + this.env.type)
-				this.env.addFunction(newFunction);
-			//} else {
-			//	this.env.addException(new DuplicateDefinitionException(newFunction, this.env));
-			//}
+			this.env.addFunction(newFunction);
 		}
 	}
 
@@ -819,7 +886,7 @@ function WaebricInterpreterVisitor(env){
 			if (functionDefinition != null) {
 				//Store variables
 				for(var i = 0; i < markup.arguments.length; i++){
-					var variableValue = getExpressionValue(markup.arguments[i], this.env);								
+					var variableValue = getExpressionValue(markup.arguments[i], this.env);	
 					new_env.addVariable('arg' + i, variableValue);
 				}				
 				//Visit function definition
