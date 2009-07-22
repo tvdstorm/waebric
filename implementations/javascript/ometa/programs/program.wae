@@ -1,11 +1,9 @@
-module menus
-
-import temp
-
-site
-  menus.html: main
-end
+module test
 
 def main
-  p outputBusinessCard({lastName: "Heirbaut", firstName: "Nickolas", street: "Lamstraat", streetNumber : 77, postal: 9100, city: "Sint-Niklaas", country: "Belgium"});
+  zoef(id="Nickolas");
+end
+
+def home(msg)
+  td msg;
 end
