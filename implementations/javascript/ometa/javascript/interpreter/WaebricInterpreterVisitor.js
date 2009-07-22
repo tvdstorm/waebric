@@ -14,9 +14,21 @@ function WaebricInterpreterVisitor(env){
 	function ModuleVisitor(env, dom){	
 		this.env = env;
 		this.dom = dom;	
-		this.visit = function(module){			
-			//Store Function Definitions
-			//Should be done before the FunctionDefinitionVisitor is called
+		this.visit = function(module){		
+			//Assign name to environment for exception logging
+			if (this.env.name == '') {
+				this.env.name = module.moduleId.identifier;
+			}
+						
+			//Store Function Definitions dependencies
+			//Preprocessing: should be done before the FunctionDefinitionVisitor is called
+			for (var i = 0; i < module.dependencies.length; i++) {
+				var dependency = module.dependencies[i];
+				dependency.accept(new DependencyVisitor(this.env, this.dom));
+			}
+				
+			//Store Function Definitions local module
+			//Preprocessing: should be done before the FunctionDefinitionVisitor is called
 			for (var i = 0; i < module.functionDefinitions.length; i++) {
 				var functionDefinition = module.functionDefinitions[i];
 				if (!this.env.containsFunction(functionDefinition.functionName)) {
@@ -41,9 +53,8 @@ function WaebricInterpreterVisitor(env){
 	function DependencyVisitor(env, dom){
 		this.env = env;
 		this.dom = dom;
-		this.visit = function(module){
+		this.visit = function(dependency){
 			//Visit only unprocessed dependencies
-			var dependency = module.dependencies[i];
 			var dependencyName = dependency.moduleId.identifier;
 			var existingDependency = this.env.getDependency(dependencyName);
 			
