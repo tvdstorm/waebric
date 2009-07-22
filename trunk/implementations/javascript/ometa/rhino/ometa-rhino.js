@@ -210,12 +210,30 @@ function getDependencies(path, module){
     return dependencies;
 }
 
+/**
+ * Outputs the HTML environment for an array with waebric environments
+ * 
+ * @param {Array} waebricEnvironments
+ */
+function outputHTML(waebricEnvironment){
+	//print(waebricEnvironments.length);
+	for(var i = 0; i < waebricEnvironments.length; i++){
+		var waebricEnvironment = waebricEnvironments[i];
+		var fw = new FileWriter(waebricEnvironment.path);
+		var bf = new BufferedWriter(fw);
+		bf.write(waebricEnvironment.document);
+		bf.close();
+	}
+}
+
+
+
 //Setup parser and interpreter
 var parser = getWaebricOMetaParser();
 var interpreter = getWaebricOMetaInterpreter();
 var module;
 var exceptions = new Array();
-var html_output = "";
+var waebricEnvironments = "";
 
 //Try evaluating the waebric program
 try {
@@ -226,22 +244,16 @@ try {
 	//exceptions = WaebricSemanticValidator.validateAll(module);	
 	
 	//Interprete
-	html_output = WaebricInterpreter.interpreteAll(module);	
+	waebricEnvironments = WaebricInterpreter.interpreteAll(module);	
 }catch(exception if exception instanceof NonExistingModuleException){
-	//Waebric program not found
 	print(exception)
 }finally{
-	if (exceptions.length != 0) {
-		print(exceptions);
-	}
-	print(html_output)
+	//print("Exceptions: " + exceptions + "\n\n\n");
+	outputHTML(waebricEnvironments);
 }
 
-//Write html 
-var fw = new FileWriter("output.html");
-var bf = new BufferedWriter(fw);
-bf.write(html_output);
-bf.close();
+print(waebricEnvironments[0].document);
+
 
 
 

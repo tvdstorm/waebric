@@ -14,6 +14,7 @@ function WaebricEnvironment(){
 	this.exceptions = new Array();
 	this.dependencies = new Array();	
 	
+	this.path = '';
 	this.type = 'module';
 	this.name = '';	
 	this.document;

@@ -1,48 +1,90 @@
-function WaebricInterpreterVisitor(env){
+function WaebricInterpreterVisitor(){	
 	
 	/**
 	 * Returns a module visitor
 	 */
-	this.getModuleVisitor = function(env, dom){
+	this.getModuleVisitor = function(env, dom){		
 		return new ModuleVisitor(env, dom);
 	}
 	
 	/**
+	 * Returns a main visitor
+	 */
+	this.getMainVisitor = function(env, dom){		
+		return new MainVisitor(env, dom);
+	}
+	
+	/**
+	 * Returns a mapping visitor
+	 */
+	this.getMappingVisitor = function(env, dom){		
+		return new MappingVisitor(env, dom);
+	}
+	
+	/**
+	 * Visitor for main function
+	 * 
+	 */
+	function MainVisitor(env, dom){
+		this.env = env;
+		this.dom = dom;
+		this.visit = function(module){			
+			//Get main function and output its statements
+			var mainFunction = this.env.getLocalFunction('main');
+			if (mainFunction != null) {
+				//Set path for output location
+				this.env.path = module.moduleId.identifier + '.htm';
+				
+				//Output main function
+				this.dom.createXHTMLRoot();
+				mainFunction.accept(new FunctionDefinitionVisitor(this.env, this.dom));
+			}
+		}
+	}
+	
+	/**
+	 * Visitor for mappings
+	 * 
+	 */
+	function MappingVisitor(env, dom){
+		this.env = env;
+		this.dom = dom;
+		this.visit = function(mapping){
+			//Set path for output location
+			this.env.path = eval(mapping.path);
+			
+			//Output mapping markup			
+			this.dom.createXHTMLRoot();		
+			mapping.markup.accept(new MarkupVisitor(this.env, this.dom));
+		}
+	}
+	
+	/**
 	 * Visitor for Module
-	 *
+	 * 
+	 * Preprocessor
 	 */
 	function ModuleVisitor(env, dom){	
 		this.env = env;
 		this.dom = dom;	
-		this.visit = function(module){		
-			//Assign name to environment for exception logging
-			if (this.env.name == '') {
-				this.env.name = module.moduleId.identifier;
-			}
-						
+		this.visit = function(module){					
+			//Assign name to environment
+			this.env.name = module.moduleId.identifier;			
+			
 			//Store Function Definitions dependencies
 			//Preprocessing: should be done before the FunctionDefinitionVisitor is called
 			for (var i = 0; i < module.dependencies.length; i++) {
 				var dependency = module.dependencies[i];
 				dependency.accept(new DependencyVisitor(this.env, this.dom));
 			}
-				
+			
 			//Store Function Definitions local module
 			//Preprocessing: should be done before the FunctionDefinitionVisitor is called
 			for (var i = 0; i < module.functionDefinitions.length; i++) {
 				var functionDefinition = module.functionDefinitions[i];
 				if (!this.env.containsFunction(functionDefinition.functionName)) {
 					this.env.addFunction(functionDefinition);
-				} else {
-					this.env.addException(new DuplicateDefinitionException(functionDefinition));
 				}
-			}
-			
-			//Get main function
-			var mainFunction = this.env.getLocalFunction('main');
-			if(mainFunction != null){				
-				this.dom.createXHTMLRoot();
-				mainFunction.accept(new FunctionDefinitionVisitor(this.env, this.dom));
 			}
 		}
 	}	
@@ -57,7 +99,7 @@ function WaebricInterpreterVisitor(env){
 			//Visit only unprocessed dependencies
 			var dependencyName = dependency.moduleId.identifier;
 			var existingDependency = this.env.getDependency(dependencyName);
-			
+
 			//If dependency is not processed before, visit it
 			if (existingDependency == null) {
 				var new_env = this.env.addDependency('module');
@@ -143,7 +185,7 @@ function WaebricInterpreterVisitor(env){
 			} else if (statement instanceof CDataExpression) {
 				statement.accept(new CDataExpressionVisitor(this.env, this.dom));
 			} else if (statement instanceof YieldStatement) {
-				//No action required
+				statement.accept(new YieldStatementVisitor(this.env, this.dom));
 			} else if (statement instanceof MarkupStatement) {
 				statement.accept(new MarkupStatementVisitor(this.env, this.dom));
 			} else if (statement instanceof MarkupMarkupStatement) {
@@ -432,6 +474,20 @@ function WaebricInterpreterVisitor(env){
 			echoEmbeddingStmt.embedding.accept(new EmbeddingVisitor(this.env, this.dom));
 		}
 	}
+	
+	/**
+	 * Visitor for Yield
+	 */
+	function YieldStatementVisitor(env, dom){
+		this.env = env;
+		this.dom = dom;
+		this.visit = function(yieldStmt){
+			//Visit yield markup
+			if (this.dom.yieldValue != null) {
+				this.dom.yieldValue.accept(new StatementVisitor(this.dom.yieldEnv, this.dom));
+			}
+		}
+	}
 
 	/**
 	 * Visitor for CData
@@ -462,6 +518,56 @@ function WaebricInterpreterVisitor(env){
 	}
 	
 	/**
+	 * Constructs a new Markup Statement
+	 * 
+	 * Utility function for the YIELD statement workaround.
+	 * If a MarkupCall is found in a Statement, then the remaining 
+	 * items that follow the MarkupCall are ignored and not processed.
+	 * The remaining items are reconstructed into a new statement
+	 * which is processed when a YIELD Statement is found. This function
+	 * reconstructs the statement based on the head (= markups) and the 
+	 * tail (= Empty, Embedding, Expression, statement). 
+	 * 
+	 * @param {Object} markups
+	 * @param {Object} tail
+	 */
+	function constructNewMarkupStatement(markups, tail){
+		if(tail == null){
+			return new MarkupMarkupStatement(markups);
+		}else if(tail instanceof Embedding){
+			return new MarkupEmbeddingStatement(markups, tail);
+		}else if(tail instanceof VarExpression){
+			return new MarkupExpressionStatement(markups, tail);
+		}else if(tail instanceof TextExpression){
+			return new MarkupExpressionStatement(markups, tail);
+		}else if(tail instanceof SymbolExpression){
+			return new MarkupExpressionStatement(markups, tail);
+		}else if(tail instanceof NatExpression){
+			return new MarkupExpressionStatement(markups, tail);
+		}else if(tail instanceof FieldExpression){
+			return new MarkupExpressionStatement(markups, tail);
+		}else if(tail instanceof CatExpression){
+			return new MarkupExpressionStatement(markups, tail);
+		}else if(tail instanceof ListExpression){
+			return new MarkupExpressionStatement(markups, tail);
+		}else if(tail instanceof RecordExpression){
+			return new MarkupExpressionStatement(markups, tail);
+		}else{
+			return new MarkupStatementStatement(markups, tail);
+		}
+	}
+	
+	/**
+	 * Checks whether the requested markup is a function call to a valid function;
+	 * 
+	 * @param {Object} markup
+	 * @param {Object} env
+	 */
+	function isValidMarkupCall(markup, env){
+		return ((markup instanceof MarkupCall) && (env.containsFunction(markup.designator.idCon)));
+	}
+	
+	/**
 	 * Visitor MarkupMarkup Statement
 	 */
 	function MarkupMarkupStatementVisitor(env, dom){
@@ -470,8 +576,17 @@ function WaebricInterpreterVisitor(env){
 		this.visit = function(markupMarkupStmt){
 			//Visit Markups
 			for (var i = 0; i < markupMarkupStmt.markups.length; i++) {
-				var markup = markupMarkupStmt.markups[i];
-				markup.accept(new MarkupVisitor(this.env, this.dom));
+				var markup = markupMarkupStmt.markups[i];					
+				//If a MarkupCall is found, then the remaining markups/statements are
+				//intended for the YIELD statement 												
+				if(isValidMarkupCall(markup, this.env)){	
+					this.dom.yieldValue = constructNewMarkupStatement(markupMarkupStmt.markups.slice(i+1));
+					this.dom.yieldEnv = this.env;	
+					markup.accept(new MarkupVisitor(this.env, this.dom));				
+					break;
+				}else{
+					markup.accept(new MarkupVisitor(this.env, this.dom));
+				}
 			}
 		}
 	}
@@ -484,13 +599,24 @@ function WaebricInterpreterVisitor(env){
 		this.dom = dom;
 		this.visit = function(markupEmbeddingStmt){
 			//Visit Markups
+			var markup;
 			for (var i = 0; i < markupEmbeddingStmt.markups.length; i++) {
-				var markup = markupEmbeddingStmt.markups[i];
-				markup.accept(new MarkupVisitor(this.env, this.dom));
+				markup = markupEmbeddingStmt.markups[i];								
+				//If a MarkupCall is found, then the remaining markups are
+				//intended for the YIELD statement 												
+				if(isValidMarkupCall(markup, this.env)){	
+					this.dom.yieldValue = constructNewMarkupStatement(markupEmbeddingStmt.markups.slice(i+1), markupEmbeddingStmt.embedding);
+					this.dom.yieldEnv = this.env;	
+					markup.accept(new MarkupVisitor(this.env, this.dom));				
+					return;
+				}else{
+					markup.accept(new MarkupVisitor(this.env, this.dom));
+				}				
 			}
 			
 			//Visit Embedding
 			markupEmbeddingStmt.embedding.accept(new EmbeddingVisitor(this.env, this.dom));
+			
 		}
 	}
 	
@@ -504,7 +630,16 @@ function WaebricInterpreterVisitor(env){
 			//Visit Markups
 			for (var i = 0; i < markupStmtStmt.markups.length; i++) {
 				var markup = markupStmtStmt.markups[i];
-				markup.accept(new MarkupVisitor(this.env, this.dom));
+				//If a MarkupCall is found, then the remaining markups are
+				//intended for the YIELD statement 												
+				if(isValidMarkupCall(markup, this.env)){		
+					this.dom.yieldValue = constructNewMarkupStatement(markupStmtStmt.markups.slice(i+1), markupStmtStmt.statement);
+					this.dom.yieldEnv = this.env;	
+					markup.accept(new MarkupVisitor(this.env, this.dom));				
+					return;
+				}else{
+					markup.accept(new MarkupVisitor(this.env, this.dom));
+				}		
 			}
 			
 			//Visit Statement
@@ -522,7 +657,16 @@ function WaebricInterpreterVisitor(env){
 			//Visit Markups
 			for (var i = 0; i < markupExprStmt.markups.length; i++) {
 				var markup = markupExprStmt.markups[i];
-				markup.accept(new MarkupVisitor(this.env, this.dom));
+				//If a MarkupCall is found, then the remaining markups are
+				//intended for the YIELD statement 					
+				if(isValidMarkupCall(markup, this.env)){			
+					this.dom.yieldValue = constructNewMarkupStatement(markupExprStmt.markups.slice(i+1), markupExprStmt.expression);
+					this.dom.yieldEnv = this.env;	
+					markup.accept(new MarkupVisitor(this.env, this.dom));	
+					return;
+				}else{
+					markup.accept(new MarkupVisitor(this.env, this.dom));
+				}		
 			}
 			
 			//Visit Expression
@@ -570,11 +714,11 @@ function WaebricInterpreterVisitor(env){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(variable){
+			print('search for ' + variable)
 			var _var = this.env.getVariable(variable);	
 			if (_var != null) {
 				this.dom.lastValue = _var.value;
 			}else{
-				this.env.addException(new UndefinedVariableException(variable, this.env));
 				this.dom.lastValue = 'undef';				
 			}
 		}
@@ -875,11 +1019,24 @@ function WaebricInterpreterVisitor(env){
 	function MarkupVisitor(env, dom){
 		this.env = env;
 		this.dom = dom;
-		this.visit = function(markup){
-			if (markup instanceof MarkupCall) {
-				markup.accept(new MarkupCallVisitor(this.env, this.dom))
-			} else { //Markup is MarkupTag Expression	
-				markup.accept(new MarkupTagVisitor(this.env, this.dom))
+		this.visit = function(markup){			
+			if (markup instanceof MarkupCall){
+				//Call to function should exist, otherwise it's a tag
+				if (this.env.containsFunction(markup.designator.idCon)) {
+					markup.accept(new MarkupCallVisitor(this.env, this.dom))
+				}else{
+					markup.accept(new MarkupXHTMLTagVisitor(this.env, this.dom))
+				}
+			}else{
+				//Tag should not be a reference to a function, 
+				//otherwise, it is processed as a MarkupCall
+				if(!this.env.containsFunction(markup.idCon)){
+					markup.accept(new MarkupTagVisitor(this.env, this.dom))
+				}else{
+					//Convert to Markup Call
+					markup = new MarkupCall(markup, [])
+					markup.accept(new MarkupCallVisitor(this.env, this.dom))
+				}
 			}
 		}
 	}
@@ -894,17 +1051,14 @@ function WaebricInterpreterVisitor(env){
 			var new_env = this.env.addEnvironment('markup-call')			
 			//Check if function already exists in current environment (incl dependecies)
 			var functionDefinition = this.env.getLocalFunction(markup.designator.idCon);
-			if (functionDefinition != null) {
-				//Store variables
-				for(var i = 0; i < markup.arguments.length; i++){
-					var variableValue = getExpressionValue(markup.arguments[i], this.env);	
-					new_env.addVariable('arg' + i, variableValue);
-				}				
-				//Visit function definition
-				functionDefinition.accept(new FunctionDefinitionVisitor(new_env, this.dom));					
-			}else {//XHTML tag
-				markup.accept(new MarkupXHTMLTagVisitor(new_env, this.dom));
-			}
+						
+			//Store variables
+			for(var i = 0; i < markup.arguments.length; i++){
+				var variableValue = getExpressionValue(markup.arguments[i], this.env);	
+				new_env.addVariable('arg' + i, variableValue);
+			}				
+			//Visit function definition
+			functionDefinition.accept(new FunctionDefinitionVisitor(new_env, this.dom));	
 		}
 	}
 	

@@ -7,6 +7,9 @@ function DOM(){
 	this.lastElement;
 	this.lastValue;
 	
+	this.yieldValue;
+	this.yieldEnv;
+	
 	/**
 	 * Creates the body of a strict XHTML document
 	 * 
