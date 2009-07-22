@@ -4663,7 +4663,7 @@ __extend__(DOMDocument.prototype, {
           // create DOMComment specifying 'this' as ownerDocument
           var node = new DOMComment(this);
         
-          // assign values to properties (and aliases)
+          // assign values to properties (and aliases) 
           node.data      = data;
         
           return node;
