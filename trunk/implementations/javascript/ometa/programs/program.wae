@@ -4,28 +4,10 @@ site
   menus.html: main
 end
 
-def main()
-	test("jeroen");
-end
-
-def test(input)
-	home({first:{id:"hier komt de titel", tag:input}});
+def main
+  home({id:"pika"});
 end
 
 def home(title)
-  if (title.first.tag.list?)
-  	div "it's a list";
-  else
-  	div "it's not a list";
-
-  if (title.first.tag.record?)
-    	div "it's a record";
-    else
-  	div "it's not a record";
-
-  if (title.first.tag.string?)
-    	div "it's a string";
-    else
-  	div "it's not a string";
-
+   echo "strong<p(id=title.id)>strong<div b()>strong<div b()>strong";
 end
