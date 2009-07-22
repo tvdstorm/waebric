@@ -1,21 +1,31 @@
-module abon
+module menus
 
-def main
-  p("button");
+site
+  menus.html: main
 end
 
-def p(input)
-	let
-		td(img) = temptd("center", img, input);
-	in
-		td("foto1.jpg");
-	end
+def main()
+	test("jeroen");
 end
 
-def temptd(align, img, input)
-	td(align, img);
+def test(input)
+	home({first:{id:"hier komt de titel", tag:input}});
 end
 
-def td(align, img, input)
-	div(align=align, img=img, input=input);
+def home(title)
+  if (title.first.tag.list?)
+  	div "it's a list";
+  else
+  	div "it's not a list";
+
+  if (title.first.tag.record?)
+    	div "it's a record";
+    else
+  	div "it's not a record";
+
+  if (title.first.tag.string?)
+    	div "it's a string";
+    else
+  	div "it's not a string";
+
 end

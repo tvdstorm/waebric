@@ -164,9 +164,6 @@ function evaluateProgram(path){
         //Parse the Waebric program with OMeta
         var module = this.parser.matchAll(programSource, "Module");
 
-        //Interprete the parse tree of the Waebric program
-        //var module = this.interpreter.match(tree, "interp");
-
 		//Get dependencies	
         module.dependencies = getDependencies(path, module);   
 		
@@ -226,22 +223,25 @@ try {
 	module = evaluateProgram('../programs/program.wae');
 	
 	//Semantic validation
-	exceptions = WaebricSemanticValidator.validateAll(module);	
+	//exceptions = WaebricSemanticValidator.validateAll(module);	
 	
 	//Interprete
 	html_output = WaebricInterpreter.interpreteAll(module);	
 }catch(exception if exception instanceof NonExistingModuleException){
 	//Waebric program not found
 	print(exception)
-}/*catch(exception){
-	//Unexpected exception thrown
-	print('\n');
-	print("BEGIN UNEXPECTED EXCEPTION")
-	print(exception)
-	print("END UNEXPECTED EXCEPTION")
 }finally{
 	if (exceptions.length != 0) {
 		print(exceptions);
 	}
 	print(html_output)
-}*/
+}
+
+//Write html 
+var fw = new FileWriter("output.html");
+var bf = new BufferedWriter(fw);
+bf.write(html_output);
+bf.close();
+
+
+

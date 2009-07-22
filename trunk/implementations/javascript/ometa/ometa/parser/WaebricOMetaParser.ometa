@@ -25,7 +25,7 @@ ometa WaebricOMetaParser <: Parser {
 
   Markup          	= spaces Designator:designator Arguments:arguments spaces -> new MarkupCall(designator, arguments)
                   	| spaces Designator:tag spaces  -> tag,
-  Designator      	= IdCon:identifier Attribute*:attributes -> new DesignatorTag(identifier, attributes),
+  Designator      	= IdCon:identifier Attribute*:attributes ~"+" -> new DesignatorTag(identifier, attributes),
   Attribute       	= "#" spaces IdCon:idCon -> new IdAttribute(idCon)
                     | "." spaces IdCon:idClass -> new ClassAttribute(idClass)
                     | "$" spaces IdCon:idName -> new NameAttribute(idName)
@@ -54,9 +54,9 @@ ometa WaebricOMetaParser <: Parser {
 
   KeyValuePair    	= spaces IdCon:key spaces ":" Expression:value -> new KeyValuePair(key, value),
 
-  Statement       	= "if" spaces "(" spaces Predicate:predicate spaces ")" spaces Statement:ifStatement NoElseMayFollow -> new IfStatement(predicate, ifStatement)
-                  	| "if" spaces "(" spaces Predicate:predicate spaces ")" spaces Statement:ifStatement spaces "else" spaces Statement:elseStatement  -> new IfElseStatement(predicate, ifStatement, elseStatement)
-     	            | "each" spaces "(" spaces IdCon:identifier spaces ":" spaces Expression:expression spaces ")" spaces Statement:statement -> new EachStatement(identifier, expression, statement)
+  Statement       	= "if" spaces "(" spaces Predicate:predicate spaces ")" spaces Statement:ifStatement NoElseMayFollow -> new IfStatement(predicate, ifStatement)                  	
+    				| "if" spaces "(" spaces Predicate:predicate spaces ")" spaces Statement:ifStatement spaces "else" spaces Statement:elseStatement  -> new IfElseStatement(predicate, ifStatement, elseStatement)
+  		            | "each" spaces "(" spaces IdCon:identifier spaces ":" spaces Expression:expression spaces ")" spaces Statement:statement -> new EachStatement(identifier, expression, statement)
     	           	| "let" Assignment+:assignments "in" Statement*:statements "end" -> new LetStatement(assignments, statements)
 	             	| "{" spaces Statement*:statements spaces "}" -> new BlockStatement(statements)
                   	| "comment" spaces StrCon:comment spaces ";" -> new CommentStatement(comment)
@@ -65,8 +65,15 @@ ometa WaebricOMetaParser <: Parser {
                   	| "cdata" spaces Expression:expression spaces ";" -> new CDataExpression(expression)
                   	| "yield" ";" -> new YieldStatement()
                   	| Markup:markup ";" -> new MarkupStatement(markup)
-                  	| Markup+:markups spaces ";" spaces ?(markups[markups.length -1] instanceof DesignatorTag) -> new MarkupExpressionStatement(markups.slice(0,markups.length-1), new VarExpression( markups[markups.length-1].idCon))
-                  	| Markup+:markups spaces ";" spaces ?(markups.length >= 2)  -> new MarkupMarkupStatement(markups)
+                  	| Markup+:markups spaces ";" spaces 
+                  		?((markups[markups.length -1] instanceof DesignatorTag) 
+                  		&& (markups[markups.length -1].containsClassAttribute() == false)) 
+                  		-> new MarkupExpressionStatement(markups.slice(0,markups.length-1), new VarExpression( markups[markups.length-1].idCon))
+                  	| Markup+:markups spaces ";" spaces 
+                  		?(	(markups[markups.length -1] instanceof DesignatorTag) 
+                  		&& 	(markups[markups.length -1].containsClassAttribute() == true)) 
+                  		-> new MarkupExpressionStatement(markups.slice(0,markups.length-1), convertToFieldExpression(markups[markups.length-1]))
+                  	| Markup+:markups spaces ";" spaces ?(markups.length > 1) -> new MarkupMarkupStatement(markups)
                   	| Markup+:markups spaces Expression:expression spaces ";"  spaces -> new MarkupExpressionStatement(markups, expression)
                   	| Markup+:markups spaces Statement:statement -> new MarkupStatementStatement(markups, statement)
                   	| Markup+:markups spaces Embedding:embedding spaces ";" -> new MarkupEmbeddingStatement(markups, embedding)
@@ -99,7 +106,14 @@ ometa WaebricOMetaParser <: Parser {
 
   Embedding       	= spaces PreText:head spaces Embed:embed spaces TextTail:tail spaces -> new Embedding(head, embed, tail),
   Embed           	= Markup*:markups spaces Expression:expression -> new ExpressionEmbedding(markups, expression)
-  					| Markup*:markups ?(markups[markups.length -1] instanceof DesignatorTag ) -> new ExpressionEmbedding(markups.slice(0,markups.length-1), new VarExpression(markups[markups.length-1].idCon))  
+  					| Markup*:markups 
+  						?( (markups[markups.length -1] instanceof DesignatorTag ) 
+  						&& (markups[markups.length -1].containsClassAttribute() == false)) 
+  						-> new ExpressionEmbedding(markups.slice(0,markups.length-1), new VarExpression(markups[markups.length-1].idCon))  
+  					| Markup+:markups 
+                  		?(	(markups[markups.length -1] instanceof DesignatorTag) 
+                  		&& 	(markups[markups.length -1].containsClassAttribute() == true)) 
+                  		-> new MarkupExpressionStatement(markups.slice(0,markups.length-1), convertToFieldExpression(markups[markups.length-1]))
   					| Markup*:markups -> new MarkupEmbedding(markups),
 
   PreText         	= "\"" TextChar*:text "<" -> "\"".concat(text.join('')).concat("\""),
@@ -111,6 +125,7 @@ ometa WaebricOMetaParser <: Parser {
   IdCon           	= spaces IdCharHead:head IdCharTail*:tail spaces
   					? (
 					  (head.concat(tail.join('')) != 'if' )
+					&&(head.concat(tail.join('')) != 'else' )		
   					&&(head.concat(tail.join('')) != 'comment' )
   					&&(head.concat(tail.join('')) != 'echo' )
   					&&(head.concat(tail.join('')) != 'cdata' )
@@ -139,3 +154,19 @@ ometa WaebricOMetaParser <: Parser {
   fromTo :x :y    	= seq(x) (~seq(y) char)* seq(y),
   cRange :x :y    	= char:c ?(c >= x) ?(c <= y) -> c
 }
+
+function convertToFieldExpression(designatorTag){
+		//IdCon converts to a variable reference
+		var fieldExpression = new VarExpression(designatorTag.idCon);
+		
+		//Loop all attributes which are actualy fields
+		for(var i = 0; i < designatorTag.attributes.length; i++){
+			var attr = designatorTag.attributes[i];
+			if(attr instanceof ClassAttribute){
+				//Attributes converst to a new fieldexpression
+				//with last fieldexpression as expression of new field expression
+				fieldExpression = new FieldExpression(fieldExpression, attr.className);				
+			}
+		}
+		return fieldExpression;
+	}

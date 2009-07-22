@@ -14,19 +14,7 @@ function WaebricInterpreterVisitor(env){
 	function ModuleVisitor(env, dom){	
 		this.env = env;
 		this.dom = dom;	
-		this.visit = function(module){
-			/*//Assign name to environment for exception logging
-			if (this.env.name == '') {
-				this.env.name = module.moduleId.identifier;
-			}			
-			
-			//Visit dependencies
-			//Should be done before the current module is visited			
-			for (var i = 0; i < module.dependencies.length; i++) {
-				var dependency = module.dependencies[i];
-				dependency.accept(new DependencyVisitor(this.env, this.dom));
-			}*/
-			
+		this.visit = function(module){			
 			//Store Function Definitions
 			//Should be done before the FunctionDefinitionVisitor is called
 			for (var i = 0; i < module.functionDefinitions.length; i++) {
@@ -38,22 +26,12 @@ function WaebricInterpreterVisitor(env){
 				}
 			}
 			
+			//Get main function
 			var mainFunction = this.env.getLocalFunction('main');
 			if(mainFunction != null){				
 				this.dom.createXHTMLRoot();
 				mainFunction.accept(new FunctionDefinitionVisitor(this.env, this.dom));
 			}
-			
-			/*//Visit Function Definitions{
-			for (var i = 0; i < module.functionDefinitions.length; i++) {
-				var functionDefinition = module.functionDefinitions[i];
-				functionDefinition.accept(new FunctionDefinitionVisitor(this.env, this.dom));
-			}
-			//Visit Mappings
-			for (var i = 0; i < module.site.mappings.length; i++) {
-				var mapping = module.site.mappings[i];
-				mapping.markup.accept(new MarkupVisitor(this.env, this.dom));
-			}*/
 		}
 	}	
 	
@@ -98,6 +76,7 @@ function WaebricInterpreterVisitor(env){
 				new_env = this.env.addEnvironment('func-bind')
 			}
 			
+			//Process formals
 			for (var i = 0; i < functionDefinition.formals.length; i++){
 				//Get variable name from arguments 				
 				var variableName = functionDefinition.formals[i];
@@ -116,9 +95,8 @@ function WaebricInterpreterVisitor(env){
 				new_env.addVariable(variableName, variableValue);
 			}
 			
-			//VisitStatements
+			//Visit Statements
 			for (var i = 0; i < functionDefinition.statements.length; i++) {
-				print('visit statements')
 				var statement = functionDefinition.statements[i];
 				statement.accept(new StatementVisitor(new_env, this.dom));
 			}
@@ -132,6 +110,9 @@ function WaebricInterpreterVisitor(env){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(statement){
+			//Remember last element to be set back after statement is processed
+			var lastElement = this.dom.lastElement;			
+			
 			if (statement instanceof IfStatement) {
 				statement.accept(new IfStatementVisitor(this.env, this.dom));
 			} else if (statement instanceof IfElseStatement) {
@@ -143,7 +124,7 @@ function WaebricInterpreterVisitor(env){
 			} else if (statement instanceof BlockStatement) {
 				statement.accept(new BlockStatementVisitor(this.env, this.dom));
 			} else if (statement instanceof CommentStatement) {
-				//No action required
+				statement.accept(new CommentStatementVisitor(this.env, this.dom));
 			} else if (statement instanceof EchoStatement) {
 				statement.accept(new EchoStatementVisitor(this.env, this.dom));
 			} else if (statement instanceof EchoEmbeddingStatement) {
@@ -163,8 +144,11 @@ function WaebricInterpreterVisitor(env){
 			} else if (statement instanceof MarkupExpressionStatement) {
 				statement.accept(new MarkupExpressionStatementVisitor(this.env, this.dom));
 			} else { //Statement is not recognizederror.");
+				print('unrecognized statement')
 			}
-			
+						
+			//After statement is processed, the tags should be closed.
+			this.dom.lastElement = lastElement;
 		}
 	}
 	
@@ -173,13 +157,21 @@ function WaebricInterpreterVisitor(env){
 			return isValidFieldExpression(expression, env);
 		}else if(expression instanceof CatExpression){
 			return isValidCatExpression(expression, env)
-		}else{
+		}else if(expression instanceof AndPredicate){
+			return isValidExpression(expression.predicateLeft, env) && isValidExpression(expression.predicateRight, env);
+		}else if(expression instanceof OrPredicate){
+			return isValidExpression(expression.predicateLeft, env) || isValidExpression(expression.predicateRight, env);	
+		}else if(expression instanceof NotPredicate){
+			return !isValidExpression(expression.predicate, env)
+		}else if(expression instanceof IsAPredicate){
+			return getExpressionValue(expression.expression, env) instanceof expression.type.type;
+		}else{//Return true for text, symbols, natcons and concat
 			return true;
 		}
 	}
 	
 	function isValidFieldExpression(expression, env){
-		return getFieldExpressionRootData(expression, env) != null;
+		return getFieldExpressionValue(expression, env) != null;
 	}
 	
 	function isValidCatExpression(expression, env){
@@ -210,7 +202,9 @@ function WaebricInterpreterVisitor(env){
 		
 		//Get root variable value
 		var data = getFieldExpressionRootValue(expression, env);
-		if (data == null) {
+		
+		//Data should be record expression
+		if (!(data instanceof RecordExpression)) {
 			return null;
 		}
 		
@@ -219,7 +213,7 @@ function WaebricInterpreterVisitor(env){
 			var field = fields[i];
 			data = data.getValue(field);	
 			if(data == null){
-				return data;
+				return null;
 			}
 		}
 		return data;
@@ -303,9 +297,7 @@ function WaebricInterpreterVisitor(env){
 			}
 		}
 	}
-	
-	
-	
+		
 	/**
 	 * Visitor Let Statement
 	 */
@@ -348,6 +340,19 @@ function WaebricInterpreterVisitor(env){
 			}
 		}
 	}
+	
+	/**
+	 * Visitor Comment Statement
+	 */
+	function CommentStatementVisitor(env, dom){
+		this.env = env;
+		this.dom = dom;
+		this.visit = function(commentStmt){
+			//Create comment
+			var comment = this.dom.document.createComment(commentStmt.toString());
+			this.dom.lastElement.appendChild(comment);
+		}
+	}
 
 	/**
 	 * Visitor Echo Statement
@@ -358,6 +363,10 @@ function WaebricInterpreterVisitor(env){
 		this.visit = function(echoStmt){
 			//Visit Expression	
 			echoStmt.expression.accept(new ExpressionVisitor(this.env, this.dom));
+			
+			//Create textnode
+			var text = this.dom.document.createTextNode(this.dom.lastValue);
+			this.dom.lastElement.appendChild(text);
 		}
 	}
 	
@@ -379,9 +388,13 @@ function WaebricInterpreterVisitor(env){
 	function CDataExpressionVisitor(env, dom){
 		this.env = env;
 		this.dom = dom;
-		this.visit = function(cdataExpr){
+		this.visit = function(cdataExpr){			
 			//Visit Expression
 			cdataExpr.expression.accept(new ExpressionVisitor(this.env, this.dom));
+			
+			//Create CDATA element
+			var cdata = this.dom.document.createCDATASection(this.dom.lastValue);
+			this.dom.lastElement.appendChild(cdata);
 		}
 	}
 	
@@ -560,8 +573,7 @@ function WaebricInterpreterVisitor(env){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(fieldExpr){
-			//Visit Expression
-			fieldExpr.expression.accept(new ExpressionVisitor(this.env, this.dom));
+			this.dom.lastValue = getFieldExpressionValue(fieldExpr, this.env);
 		}
 	}	
 			
@@ -572,64 +584,57 @@ function WaebricInterpreterVisitor(env){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(catExpr){
-			//Visit Expression Left
+			var cat = '';
+						
+			//Visit Expression Left			
 			catExpr.expressionLeft.accept(new ExpressionVisitor(this.env, this.dom));
+			cat += this.dom.lastValue;
 			
 			//Visit Expression Right
 			catExpr.expressionRight.accept(new ExpressionVisitor(this.env, this.dom));
+			cat += this.dom.lastValue;
+			
+			this.dom.lastValue = cat;
 		}
 	}	
 	
 	/**
 	 * Visitor List Expression
+	 * 
+	 * [value1, value2, value3, ...]
 	 */
 	function ListExpressionVisitor(env, dom){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(listExpr){
-			//Visit Expressions
+			var list = '[';
 			for (var i = 0; i < listExpr.list.length; i++) {
 				var expression = listExpr.list[i];
 				expression.accept(new ExpressionVisitor(this.env, this.dom));
+				list = list.concat(this.dom.lastValue).concat(',');
 			}
+			list = list.substr(0, list.length - 1).concat(']')
+			this.dom.lastValue = list;
 		}
 	}
 	
 	/**
 	 * Visitor Record Expression
+	 * 
+	 * {key1  value1, key2  value2};'
 	 */
 	function RecordExpressionVisitor(env, dom){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(recordExpr){
-			//Visit KeyValuePairs
+			var records = '{'
 			for (var i = 0; i < recordExpr.records.length; i++) {
 				var keyValuePair = recordExpr.records[i];
 				keyValuePair.accept(new KeyValueVisitor(this.env, this.dom));
+				records = records.concat(keyValuePair.key).concat(':').concat(this.dom.lastValue).concat(',');
 			}
-		}
-	}
-		
-	/**
-	 * Visitor Predicate
-	 */
-	function PredicateVisitor(env, dom){
-		this.env = env;
-		this.dom = dom;
-		this.visit = function(predicate){
-			if (predicate instanceof NotPredicate) {
-				predicate.predicate.accept(new PredicateVisitor(this.env, this.dom));
-			} else if (predicate instanceof AndPredicate) {
-				predicate.predicateLeft.accept(new PredicateVisitor(this.env, this.dom));
-				predicate.predicateRight.accept(new PredicateVisitor(this.env, this.dom));
-			} else if (predicate instanceof OrPredicate) {
-				predicate.predicateLeft.accept(new PredicateVisitor(this.env, this.dom));
-				predicate.predicateRight.accept(new PredicateVisitor(this.env, this.dom));
-			} else if (predicate instanceof IsAPredicate) {
-				predicate.expression.accept(new ExpressionVisitor(this.env, this.dom));
-			} else { //Predicate is not recognized
-				predicate.accept(new ExpressionVisitor(this.env, this.dom)); //Predicate is an Expression
-			}
+			records = records.substr(0, records.length - 1).concat('}')
+			this.dom.lastValue = records;
 		}
 	}
 		
@@ -790,64 +795,87 @@ function WaebricInterpreterVisitor(env){
 	 * Visitor Markup
 	 */
 	function MarkupVisitor(env, dom){
-		this.env = env
+		this.env = env;
 		this.dom = dom;
 		this.visit = function(markup){
 			if (markup instanceof MarkupCall) {
-				var new_env = this.env.addEnvironment('markup-call')
-				//Check if function already exists in current environment (incl dependecies)
-				var functionDefinition = this.env.getLocalFunction(markup.designator.idCon);
-				if (functionDefinition != null) {
-					//Check if number of the arguments equals
-					if (functionDefinition.formals.length != markup.arguments.length) {
-						//If arguments do not equal and the designator tag is not part
-						//of XHTML, then it must be a function call with incorrect arguments.
-						if (!XHTML.isXHTMLTag(markup.designator.idCon)) {
-							new_env.addException(new IncorrectArgumentsException(markup, new_env));
-						}
-					}
-					//Store variables
-					for(var i = 0; i < markup.arguments.length; i++){
-						print('store var : ' + markup.arguments[i]);
-						var variableValue = getExpressionValue(markup.arguments[i], this.env);								
-						new_env.addVariable('arg' + i, variableValue);
-					}
-					
-					//Visit function definition
-					functionDefinition.accept(new FunctionDefinitionVisitor(new_env, this.dom));
-					
-					//Visit arguments/formals
-					for (var i = 0; i < markup.arguments.length; i++) {
-						var argument = markup.arguments[i];
-						argument.accept(new ArgumentVisitor(new_env, this.dom));
-					}					
-				} else if (!XHTML.isXHTMLTag(markup.designator.idCon)) {
-					//If function does not exists and the designator tag is not part of
-					//XHTML, then it must be an undefined function						
-					this.env.addException(new UndefinedFunctionException(markup, this.env))
-				} else {//XHTML tag
-					//Add tag/element to document	
-					var element = this.dom.document.createElement(markup.designator.idCon);				
-					this.dom.lastElement.appendChild(element);
-					this.dom.lastElement = element;
-					
-					//Visit arguments/formals
-					for (var i = 0; i < markup.arguments.length; i++) {
-						var argument = markup.arguments[i];
-						argument.accept(new ArgumentVisitor(new_env, this.dom));
-					}
-				}
+				markup.accept(new MarkupCallVisitor(this.env, this.dom))
 			} else { //Markup is MarkupTag Expression	
-				//Add tag/element to document	
-				var element = this.dom.document.createElement(markup.idCon);				
+				markup.accept(new MarkupTagVisitor(this.env, this.dom))
+			}
+		}
+	}
+	
+	/**
+	 * Visitor Markup Calls
+	 */
+	function MarkupCallVisitor(env, dom){
+		this.env = env;
+		this.dom = dom;
+		this.visit = function(markup){			
+			var new_env = this.env.addEnvironment('markup-call')			
+			//Check if function already exists in current environment (incl dependecies)
+			var functionDefinition = this.env.getLocalFunction(markup.designator.idCon);
+			if (functionDefinition != null) {
+				//Store variables
+				for(var i = 0; i < markup.arguments.length; i++){
+					var variableValue = getExpressionValue(markup.arguments[i], this.env);								
+					new_env.addVariable('arg' + i, variableValue);
+				}				
+				//Visit function definition
+				functionDefinition.accept(new FunctionDefinitionVisitor(new_env, this.dom));					
+			}else {//XHTML tag
+				markup.accept(new MarkupXHTMLTagVisitor(new_env, this.dom));
+			}
+		}
+	}
+	
+	/**
+	 * Visitor Markup XHTML Tag
+	 */
+	function MarkupXHTMLTagVisitor(env, dom){
+		this.env = env;
+		this.dom = dom;
+		this.visit = function(markup){	
+			//Add tag/element to document (ignore html tags)
+			if (markup.designator.idCon != 'html') {
+				var element = this.dom.document.createElement(markup.designator.idCon);
 				this.dom.lastElement.appendChild(element);
 				this.dom.lastElement = element;
-				
-				//Visit arguments of tag/element
-				for(var i = 0; i < markup.attributes.length; i++){
-					var attribute = markup.attributes[i];
-					attribute.accept(new AttributeVisitor(this.env, this.dom));
-				}
+			}			
+			
+			//Visit short-hand arguments of tag/element
+			for(var i = 0; i < markup.designator.attributes.length; i++){
+				var attribute = markup.designator.attributes[i];
+				attribute.accept(new AttributeVisitor(this.env, this.dom));
+			}
+			
+			//Visit arguments/formals
+			for (var i = 0; i < markup.arguments.length; i++) {
+				var argument = markup.arguments[i];
+				argument.accept(new ArgumentVisitor(this.env, this.dom));
+			}
+		}
+	}
+	
+	/**
+	 * Visitor Markup Tags
+	 */
+	function MarkupTagVisitor(env, dom){
+		this.env = env;
+		this.dom = dom;
+		this.visit = function(markup){
+			//Add tag/element to document (ignore html tags)
+			if (markup.idCon != 'html') {
+				var element = this.dom.document.createElement(markup.idCon);
+				this.dom.lastElement.appendChild(element);
+				this.dom.lastElement = element;
+			}	
+			
+			//Visit short-hand arguments of tag/element
+			for(var i = 0; i < markup.attributes.length; i++){
+				var attribute = markup.attributes[i];
+				attribute.accept(new AttributeVisitor(this.env, this.dom));
 			}
 		}
 	}
