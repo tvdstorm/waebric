@@ -51,7 +51,7 @@ function WaebricInterpreterVisitor(){
 		this.dom = dom;
 		this.visit = function(mapping){
 			//Set path for output location
-			this.env.path = eval(mapping.path);
+			this.env.path = mapping.path;
 			
 			//Output mapping markup			
 			this.dom.createXHTMLRoot();		
@@ -458,7 +458,7 @@ function WaebricInterpreterVisitor(){
 			echoStmt.expression.accept(new ExpressionVisitor(this.env, this.dom));
 			
 			//Create textnode
-			var text = this.dom.document.createTextNode(this.dom.lastValue);
+			var text = this.dom.document.createTextNode(normalize(this.dom.lastValue));			
 			this.dom.lastElement.appendChild(text);
 		}
 	}
@@ -673,7 +673,7 @@ function WaebricInterpreterVisitor(){
 			markupExprStmt.expression.accept(new ExpressionVisitor(this.env, this.dom));
 			
 			//Print out HTML from expression
-			var text = this.dom.document.createTextNode(this.dom.lastValue);
+			var text = this.dom.document.createTextNode(normalize(this.dom.lastValue));
 			this.dom.lastElement.appendChild(text);
 		}
 	}
@@ -714,7 +714,6 @@ function WaebricInterpreterVisitor(){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(variable){
-			print('search for ' + variable)
 			var _var = this.env.getVariable(variable);	
 			if (_var != null) {
 				this.dom.lastValue = _var.value;
@@ -756,10 +755,9 @@ function WaebricInterpreterVisitor(){
 		this.dom = dom;
 		this.visit = function(text){
 			//Save value temporary
-			this.dom.lastValue = text;
+			this.dom.lastValue = normalize(text);
 		}
 	}
-	
 	
 	/**
 	 * Visitor Field Expression
@@ -827,8 +825,8 @@ function WaebricInterpreterVisitor(){
 		this.dom = dom;
 		this.visit = function(embedding){
 			//Add PreText as normal text to document
-			if (eval(embedding.head) != "") {
-				var text = this.dom.document.createTextNode(eval(embedding.head));
+			if (normalize(embedding.head) != "") {
+				var text = this.dom.document.createTextNode(normalize(embedding.head));
 				this.dom.lastElement.appendChild(text);
 			}
 				
@@ -836,14 +834,12 @@ function WaebricInterpreterVisitor(){
 			var lastElement = this.dom.lastElement;
 			
 			//Visit Embed
-			//this.dom.lastValue = "";
 			embedding.embed.accept(new EmbedVisitor(this.env, this.dom));
 					
 			//Swap last element	(prevent adding the tail to the embed section)
 			this.dom.lastElement = lastElement;				
 				
-			//Visit Tail	
-			//this.dom.lastValue = "";		
+			//Visit Tail		
 			embedding.tail.accept(new TextTailVisitor(this.env, this.dom));
 		}
 	}
@@ -890,8 +886,8 @@ function WaebricInterpreterVisitor(){
 		this.dom = dom;
 		this.visit = function(midTextTail){				
 			//Add mid text as normal text to document
-			if(eval(midTextTail.mid) != ""){
-				var text = this.dom.document.createTextNode(eval(midTextTail.mid));
+			if((normalize(midTextTail.mid)) != ""){
+				var text = this.dom.document.createTextNode((normalize(midTextTail.mid)));				
 				this.dom.lastElement.appendChild(text);
 			}
 			
@@ -899,16 +895,20 @@ function WaebricInterpreterVisitor(){
 			this.lastElement = this.dom.lastElement;
 					
 			//Visit Embed
-			//this.dom.lastValue = "";
 			midTextTail.embed.accept(new EmbedVisitor(this.env, this.dom));
 			
 			//Swap last Element (prevent adding the tail to the embed section)
 			this.dom.lastElement = this.lastElement;
 			
 			//Visit Tail
-			//this.dom.lastValue = "";
 			midTextTail.tail.accept(new TextTailVisitor(this.env, this.dom));
 		}
+	}
+	
+	function normalize(str){
+		str = str.toString().replace(/\n/g,' ');
+		str = str.toString().replace(/[\r\t\\]/g,'');
+		return str;
 	}
 	
 	/**
@@ -918,9 +918,9 @@ function WaebricInterpreterVisitor(){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(postText){	
-			//Add mid post text to document
-			if (eval(postText.text) != "") {
-				var text = this.dom.document.createTextNode(eval(postText.text));
+			//Add mid post text to document			
+			if ((normalize(postText.text)) != "") {
+				var text = this.dom.document.createTextNode((normalize(postText.text)));
 				this.dom.lastElement.appendChild(text);
 			}	
 		}
@@ -942,8 +942,8 @@ function WaebricInterpreterVisitor(){
 			//Visit expression
 			exprEmbed.expression.accept(new ExpressionVisitor(this.env, this.dom));
 			
-			//Add expression value to document
-			var text = this.dom.document.createTextNode(eval(this.dom.lastValue));
+			//Add expression value to document			
+			var text = this.dom.document.createTextNode(normalize(this.dom.lastValue));
 			this.dom.lastElement.appendChild(text);
 		}
 	}
@@ -1186,8 +1186,8 @@ function WaebricInterpreterVisitor(){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(attribute){
-			this.dom.lastElement.setAttribute('width', attribute.width);
-			this.dom.lastElement.setAttribute('height', attribute.height);
+			this.dom.lastElement.setAttribute('width', attribute.width + 'px');
+			this.dom.lastElement.setAttribute('height', attribute.height + 'px');
 		}
 	}
 	
@@ -1198,7 +1198,7 @@ function WaebricInterpreterVisitor(){
 		this.env = env;
 		this.dom = dom;
 		this.visit = function(attribute){
-			this.dom.lastElement.setAttribute('width', attribute.width);
+			this.dom.lastElement.setAttribute('width', attribute.width + 'px');
 		}
 	}
 	

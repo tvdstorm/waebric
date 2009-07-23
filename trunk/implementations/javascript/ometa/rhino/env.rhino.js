@@ -3653,12 +3653,12 @@ var escGtRegEx = />/g;
 var quotRegEx = /"/g;
 var aposRegEx = /'/g;
 function __escapeXML__(str) {
-    str = str.replace(escAmpRegEx, "&amp;").
+    /*str = str.replace(escAmpRegEx, "&amp;").
             replace(escLtRegEx, "&lt;").
             replace(escGtRegEx, "&gt;").
             replace(quotRegEx, "&quot;").
             replace(aposRegEx, "&apos;");
-
+	*/
     return str;
 };
 

@@ -1,9 +1,9 @@
 module test
 
 def main
-  zoef(id="Nickolas");
-end
 
-def home(msg)
-  td msg;
+  script(type="text/javascript") {
+      echo "var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\");";
+	}
+
 end
