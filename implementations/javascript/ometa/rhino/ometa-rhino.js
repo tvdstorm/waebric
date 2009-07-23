@@ -65,26 +65,6 @@ function loadWaebricOMetaParser(){
 }
 
 /**
- * Returns the Waebric grammar written in OMeta for interpreting
- *
- * @return Waebric interpreter (String)
- */
-function loadWaebricOMetaInterpreter(){
-    var fis = new FileInputStream('../ometa/interpreter/WabericOMetaInterpreter.ometa');
-    var bis = new BufferedInputStream(fis);
-    var dis = new DataInputStream(bis);
-    
-    var interpreter = '';
-    while (dis.available() != 0) {
-        interpreter += dis.readLine() + '\n';
-    }
-    fis.close();
-    bis.close();
-    dis.close();
-    return interpreter;
-}
-
-/**
  * Returns a waebric program without dependencies
  *
  * @return Waebric program (String)
@@ -216,9 +196,10 @@ function getDependencies(path, module){
  * @param {Array} waebricEnvironments
  */
 function outputHTML(waebricEnvironment){
-	//print(waebricEnvironments.length);
+	print(waebricEnvironments.length);	
 	for(var i = 0; i < waebricEnvironments.length; i++){
 		var waebricEnvironment = waebricEnvironments[i];
+		print(waebricEnvironment.path.toString())
 		var fw = new FileWriter(waebricEnvironment.path);
 		var bf = new BufferedWriter(fw);
 		bf.write(waebricEnvironment.document);
@@ -230,7 +211,6 @@ function outputHTML(waebricEnvironment){
 
 //Setup parser and interpreter
 var parser = getWaebricOMetaParser();
-var interpreter = getWaebricOMetaInterpreter();
 var module;
 var exceptions = new Array();
 var waebricEnvironments = "";
@@ -238,21 +218,21 @@ var waebricEnvironments = "";
 //Try evaluating the waebric program
 try {
 	//Evaluate waebric program
-	module = evaluateProgram('../programs/program.wae');
-	
+	module = evaluateProgram('../../../../demos/lava/lava.wae');
+	//module = evaluateProgram('../programs/program.wae');
 	//Semantic validation
 	//exceptions = WaebricSemanticValidator.validateAll(module);	
 	
 	//Interprete
 	waebricEnvironments = WaebricInterpreter.interpreteAll(module);	
 }catch(exception if exception instanceof NonExistingModuleException){
-	print(exception)
+	//print(exception)
 }finally{
 	//print("Exceptions: " + exceptions + "\n\n\n");
 	outputHTML(waebricEnvironments);
 }
 
-print(waebricEnvironments[0].document);
+//print(waebricEnvironments[0].document);
 
 
 

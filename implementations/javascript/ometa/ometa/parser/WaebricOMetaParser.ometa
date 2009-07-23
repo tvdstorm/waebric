@@ -14,12 +14,12 @@ ometa WaebricOMetaParser <: Parser {
   Site            	= "site" listOf(#Mapping, ';'):mappings "end" -> new Site(mappings),
   Mapping         	= spaces Path:path spaces ":" spaces Markup:markup spaces -> new Mapping(path, markup),
 
-  Path            	= Directory:dir FileName:file -> new Path("\"".concat(dir.toString().substring(0, dir.length - 1)).concat("\""), file)
+  Path            	= Directory:dir FileName:file -> new Path(dir.toString().substring(0, dir.length - 1), file)
                     | FileName:file -> file,
   Directory       	= PathElement+:pathElement -> pathElement.join(''),
   PathElement       = PathChar+:elem "/":sep -> elem.join('').concat(sep),
   PathChar        	= cRange('!', '-') | cRange('0','[') | cRange(']','~'),
-  FileName        	= FileChar+:fileChar '.' FileExt:fileExt -> "\"".concat(fileChar.join('').concat('.').concat(fileExt.join(''))).concat("\""),
+  FileName        	= FileChar+:fileChar '.' FileExt:fileExt -> (fileChar.join('').concat('.').concat(fileExt.join(''))),
   FileChar        	= PathChar,
   FileExt         	= letterOrDigit+,
 
@@ -116,9 +116,9 @@ ometa WaebricOMetaParser <: Parser {
                   		-> new MarkupExpressionStatement(markups.slice(0,markups.length-1), convertToFieldExpression(markups[markups.length-1]))
   					| Markup*:markups -> new MarkupEmbedding(markups),
 
-  PreText         	= "\"" TextChar*:text "<" -> "\"".concat(text.join('')).concat("\""),
-  PostText        	= ">" TextChar*:text "\"" -> "\"".concat(text.join('')).concat("\""),
-  MidText         	= ">" TextChar*:text "<" -> "\"".concat(text.join('')).concat("\""),
+  PreText         	= "\"" TextChar*:text "<" -> (text.join('')),
+  PostText        	= ">" TextChar*:text "\"" -> (text.join('')),
+  MidText         	= ">" TextChar*:text "<" -> (text.join('')),
   TextTail        	= PostText:text -> new PostTextTail(text)
                   	| MidText:mid Embed:embed TextTail:tail -> new MidTextTail(mid, embed, tail),
 

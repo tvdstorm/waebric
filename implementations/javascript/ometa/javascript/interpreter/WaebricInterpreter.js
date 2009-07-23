@@ -10,17 +10,11 @@ function WaebricInterpreter(){
  * 
  * @param {Array} an array of WaebricEnvironments
  */
-WaebricInterpreter.interpreteAll = function(module){
-	var output = new Array();	
+WaebricInterpreter.interpreteAll = function(module){	
+	var envMainDocument = [getEvnMainDocument(module)];
+	var envSiteMappings = getEnvSiteMappings(module);
 	
-	var envMainDocument = getEvnMainDocument(module);
-	if (envMainDocument.path != '') {
-		output.push(envMainDocument);
-	}
-	
-	var outputSiteMappings = getSiteMappings(module);
-	output = output.concat(outputSiteMappings);
-	return output;
+	return envMainDocument.concat(envSiteMappings);
 }
 
 /**
@@ -44,12 +38,27 @@ function getEvnMainDocument(module){
 	return environment;
 }
 
+function getEnvSiteMappings(module){
+	//Visit local site mappings
+	var envLocalSiteMapping = getEnvLocalSiteMappings(module);
+	
+	//Visit dependency mappings
+	var envDependencySiteMappings = new Array();
+	for(var i = 0; i < module.dependencies.length; i++){
+		var dependency = module.dependencies[i];
+		var envDependencySiteMapping = getEnvSiteMappings(dependency);
+		envDependencySiteMappings = envDependencySiteMappings.concat(envDependencySiteMapping);		
+	}
+	
+	return envLocalSiteMapping.concat(envDependencySiteMappings);
+}
+
 /**
  * Returns the HTML output for the site mappings function
  * 
  * @param {Array} an array of WaebricEnvironments
  */
-function getSiteMappings(module){
+function getEnvLocalSiteMappings(module){
 	var siteEnvironments = new Array();
 	for (var i = 0; i < module.site.mappings.length; i++) {
 		//Visit module (preprocessing)
