@@ -86,7 +86,8 @@ module Waebric
     language Waebric
     {
         //Starting symbol
-        syntax Main = Modules.Module;
+        syntax Main = m:Modules.Module
+            => m;
         
         interleave Whitespace = 
         Whitespacing.Whitespace | Comments.Comment;
@@ -98,7 +99,7 @@ module Waebric
         syntax Import = ImportKeyword m:ModuleId
             => Import[m];
         syntax ModuleElement = 
-            Import ;
+            Import | Sites.Site;
         
         //{IdCon "."}+
         syntax ModuleId 
@@ -125,24 +126,48 @@ module Waebric
     {
         //site {Mapping ";"}* end
         syntax Site = Modules.SiteKeyword m:Mappings* Modules.EndKeyword
-            => Site [m];
+            => Site [valuesof(m)];
         
-        //{Mapping ";"}
-        syntax Mappings
+        syntax Mappings 
             = item:Mapping
-                => item
+                => Mappings[item]
             | list: Mapping ";" item:Mapping
-                => [valuesof(list), item];
+                => Mappings[list, item];
         
-        syntax Mapping = p:Path ":" m:Markups.Markup
-           => [p, m];   
-        token Path = 'p';
+        //{Path ":" Markup}* -> Mapping
+        syntax Mapping 
+            = p:Path ":" m:Markups.Markup
+                => Mapping[p, m];  
+        
+        // ~[\ \t\n\r\.\/\\]+
+        token PathElement = ^(
+                '\u0020' | // Space Character
+                '\u0009' | // Horizontal tab
+                '\u000A' | // New Line
+                '\u000D' | // Carriage Return
+                '\u002E' | // Point
+                '\u005C' | // Backslash
+                '\u002F')+ // Slash
+        ;        
+        
+        //{PathElement "/"}+ -> Directory
+        syntax Directory 
+            = item:PathElement 
+                => item
+            | list: PathElement "/" item:PathElement
+                => [valuesof(list), item];
+        syntax Filename = p:PathElement "." f:FileExt
+                => Filename[p,f];
+               
+        syntax Path = Directory "/" Filename | Filename;
+        
         token FileExt = FileExtChars+;
         token FileExtChars = 'a'..'z' | 'A'..'Z' | '0'..'9';
     }
     
+    //Language containing markup
     language Markups
     {
-        token Markup = 'a';
+        token Markup = 'markup()';
     }
 }
