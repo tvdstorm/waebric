@@ -124,8 +124,7 @@ ometa WaebricOMetaParser <: Parser {
 
   IdCon           	= spaces IdCharHead:head IdCharTail*:tail spaces
   					? (
-					  (head.concat(tail.join('')) != 'if' )
-					&&(head.concat(tail.join('')) != 'else' )		
+					  (head.concat(tail.join('')) != 'if' )		
   					&&(head.concat(tail.join('')) != 'comment' )
   					&&(head.concat(tail.join('')) != 'echo' )
   					&&(head.concat(tail.join('')) != 'cdata' )
@@ -156,17 +155,17 @@ ometa WaebricOMetaParser <: Parser {
 }
 
 function convertToFieldExpression(designatorTag){
-		//IdCon converts to a variable reference
-		var fieldExpression = new VarExpression(designatorTag.idCon);
-		
-		//Loop all attributes which are actualy fields
-		for(var i = 0; i < designatorTag.attributes.length; i++){
-			var attr = designatorTag.attributes[i];
-			if(attr instanceof ClassAttribute){
-				//Attributes converst to a new fieldexpression
-				//with last fieldexpression as expression of new field expression
-				fieldExpression = new FieldExpression(fieldExpression, attr.className);				
-			}
+	//IdCon converts to a variable reference
+	var fieldExpression = new VarExpression(designatorTag.idCon);
+	
+	//Loop all attributes which are actualy fields
+	for(var i = 0; i < designatorTag.attributes.length; i++){
+		var attr = designatorTag.attributes[i];
+		if(attr instanceof ClassAttribute){
+			//Attributes converst to a new fieldexpression
+			//with last fieldexpression as expression of new field expression
+			fieldExpression = new FieldExpression(fieldExpression, attr.className);				
 		}
-		return fieldExpression;
 	}
+	return fieldExpression;
+}
