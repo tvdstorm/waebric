@@ -1,6 +1,0 @@
-module utility
-
-def getProductName(id)
- p;
-end
-
