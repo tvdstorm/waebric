@@ -1,47 +1,15 @@
 importPackage(java.io)
 
 load('env.rhino.js')
+load('vanilla-rhino.js')
 
-load("../ometa/base/lib.js")
-load("../ometa/base/ometa-base.js")
-load("../ometa/base/parser.js")
-load("../ometa/base/bs-js-compiler.js")
-load("../ometa/base/bs-ometa-compiler.js")
-load("../ometa/base/bs-ometa-optimizer.js")
-load("../ometa/base/bs-ometa-js-compiler.js")
-
-
-load("../javascript/WaebricEnvironment.js")
-load("../javascript/VisitorNode.js")
-load("../javascript/classes/Node.js")
-load("../javascript/classes/Path.js")
-load("../javascript/classes/Module.js")
-load("../javascript/classes/ModuleId.js")
-load("../javascript/classes/Import.js")
-load("../javascript/classes/Site.js")
-load("../javascript/classes/Mapping.js")
-load("../javascript/classes/FunctionDefinition.js")
-load("../javascript/classes/Statement.js")
-load("../javascript/classes/Designator.js")
-load("../javascript/classes/Attribute.js")
-load("../javascript/classes/Argument.js")
-load("../javascript/classes/Markup.js")
-load("../javascript/classes/Embed.js")
-load("../javascript/classes/Embedding.js")
-load("../javascript/classes/Expression.js")
-load("../javascript/classes/KeyValuePair.js")
-load("../javascript/classes/Predicate.js")
-load("../javascript/classes/TextTail.js")
-load("../javascript/classes/Type.js")
-load("../javascript/classes/Variable.js")
-load("../javascript/classes/Assignment.js")
-load('../javascript/interpreter/WaebricInterpreter.js')
-load("../javascript/interpreter/WaebricInterpreterVisitor.js")
-load('../javascript/interpreter/DOM.js')
-load("../javascript/validator/WaebricSemanticValidator.js")
-load("../javascript/validator/WaebricSemanticValidatorVisitor.js")
-load("../javascript/validator/WaebricSemanticValidatorException.js")
-load("../javascript/validator/XHTML.js")
+load("../base/lib.js")
+load("../base/ometa-base.js")
+load("../base/parser.js")
+load("../base/bs-js-compiler.js")
+load("../base/bs-ometa-compiler.js")
+load("../base/bs-ometa-optimizer.js")
+load("../base/bs-ometa-js-compiler.js")
 
 
 /**
@@ -50,7 +18,7 @@ load("../javascript/validator/XHTML.js")
  * @return Waebric parser (String)
  */
 function loadWaebricOMetaParser(){
-    var fis = new FileInputStream('../ometa/parser/WaebricOmetaParser.ometa');
+    var fis = new FileInputStream('../parser/WaebricOmetaParser.ometa');
     var bis = new BufferedInputStream(fis);
     var dis = new DataInputStream(bis);
     
@@ -218,8 +186,8 @@ var waebricEnvironments = "";
 //Try evaluating the waebric program
 try {
 	//Evaluate waebric program
-	module = evaluateProgram('../../../../demos/lava/lava.wae');
-	//module = evaluateProgram('../programs/program.wae');
+	//module = evaluateProgram('../../../../demos/lava/lava.wae');
+	module = evaluateProgram('../programs/program.wae');
 	//Semantic validation
 	//exceptions = WaebricSemanticValidator.validateAll(module);	
 	
