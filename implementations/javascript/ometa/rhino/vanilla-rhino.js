@@ -23,10 +23,12 @@ load("../../vanilla/ast/Type.js")
 load("../../vanilla/ast/Variable.js")
 load("../../vanilla/ast/Assignment.js")
 
+load('../../vanilla/interpreter/WaebricInterpreterResult.js')
 load('../../vanilla/interpreter/WaebricInterpreter.js')
 load("../../vanilla/interpreter/WaebricInterpreterVisitor.js")
 load('../../vanilla/interpreter/DOM.js')
 
+load('../../vanilla/validator/WaebricSemanticValidatorResult.js')
 load("../../vanilla/validator/WaebricSemanticValidator.js")
 load("../../vanilla/validator/WaebricSemanticValidatorVisitor.js")
 load("../../vanilla/validator/WaebricSemanticValidatorException.js")
