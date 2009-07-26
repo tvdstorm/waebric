@@ -1,4 +1,14 @@
 /**
+ * ENV-JS
+ * 
+ * A pure JavaScript browser environment.
+ * Developed by John Resig (http://ejohn.org)
+ * 
+ * http://github.com/thatcher/env-js/tree/master
+ * 
+ * Bugfix by @author Nickolas : Activated the namespace of nodes
+ *  
+ * @author John Resig
  * @author thatcher
  */
 var Envjs = function(){

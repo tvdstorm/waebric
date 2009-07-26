@@ -1,3 +1,10 @@
+/**
+ * OMeta parser for Waebric language
+ *
+ * Translated from the SDF specification (Meta-Environment: www.meta-environment.org/): 
+ * http://code.google.com/p/waebric/source/browse/trunk/doc/waebric.pdf
+ *
+ */
 
 ometa WaebricOMetaParser <: Parser {
 
@@ -67,11 +74,11 @@ ometa WaebricOMetaParser <: Parser {
                   	| Markup:markup ";" -> new MarkupStatement(markup)
                   	| Markup+:markups spaces ";" spaces 
                   		?((markups[markups.length -1] instanceof DesignatorTag) 
-                  		&& (markups[markups.length -1].containsClassAttribute() == false)) 
+                  		&& !containsClassAttribute(markups[markups.length -1]))
                   		-> new MarkupExpressionStatement(markups.slice(0,markups.length-1), new VarExpression( markups[markups.length-1].idCon))
                   	| Markup+:markups spaces ";" spaces 
                   		?(	(markups[markups.length -1] instanceof DesignatorTag) 
-                  		&& 	(markups[markups.length -1].containsClassAttribute() == true)) 
+                  		&& 	containsClassAttribute(markups[markups.length -1]))
                   		-> new MarkupExpressionStatement(markups.slice(0,markups.length-1), convertToFieldExpression(markups[markups.length-1]))
                   	| Markup+:markups spaces ";" spaces ?(markups.length > 1) -> new MarkupMarkupStatement(markups)
                   	| Markup+:markups spaces Expression:expression spaces ";"  spaces -> new MarkupExpressionStatement(markups, expression)
@@ -108,11 +115,11 @@ ometa WaebricOMetaParser <: Parser {
   Embed           	= Markup*:markups spaces Expression:expression -> new ExpressionEmbedding(markups, expression)
   					| Markup*:markups 
   						?( (markups[markups.length -1] instanceof DesignatorTag ) 
-  						&& (markups[markups.length -1].containsClassAttribute() == false)) 
+  						&& !containsClassAttribute(markups[markups.length -1]))
   						-> new ExpressionEmbedding(markups.slice(0,markups.length-1), new VarExpression(markups[markups.length-1].idCon))  
   					| Markup+:markups 
                   		?(	(markups[markups.length -1] instanceof DesignatorTag) 
-                  		&& 	(markups[markups.length -1].containsClassAttribute() == true)) 
+                  		&& 	containsClassAttribute(markups[markups.length -1]))
                   		-> new MarkupExpressionStatement(markups.slice(0,markups.length-1), convertToFieldExpression(markups[markups.length-1]))
   					| Markup*:markups -> new MarkupEmbedding(markups),
 
@@ -154,6 +161,17 @@ ometa WaebricOMetaParser <: Parser {
   cRange :x :y    	= char:c ?(c >= x) ?(c <= y) -> c
 }
 
+/**
+* Converts a Markup designator tag to a field expression (example: idCon.idCon)
+*
+* The last value in a Markup statement can never be a designator tag, but it can end
+* with an expression. OMeta parser is unable to distinguish a markup designator tag
+* from an expression as they both exists out of the same terminals. If the last element
+* of the markup is a designator tag, and it contains a class attribute, then the designator
+* tag is in fact a field expression. The idCon from the designator becomes the expression of
+* the FieldExpression, the classattribute becomes the field. Multiple class attributes result
+* in nested fieldexpressions.
+*/
 function convertToFieldExpression(designatorTag){
 	//IdCon converts to a variable reference
 	var fieldExpression = new VarExpression(designatorTag.idCon);
@@ -168,4 +186,17 @@ function convertToFieldExpression(designatorTag){
 		}
 	}
 	return fieldExpression;
+}
+
+/**
+* Checks if the designator tag contains class attributes. 
+*/
+function containsClassAttribute(designatorTag){
+	for(var i = 0; i < designatorTag.attributes.length; i++){
+		var attr = designatorTag.attributes[i];
+		if(attr instanceof ClassAttribute){
+			return true;
+		}
+	}
+	return false;
 }
