@@ -182,7 +182,7 @@ function WaebricOMetaParser(){
  */
 WaebricOMetaParser.parseAll = function(path){	
 	try {
-		var fileExists = (new File("filename")).exists();
+		var fileExists = (new File(path)).exists();
 		if (fileExists) {
 			var parser = new WaebricOMetaParser();
 			var module = parser.parseModule(path, true);

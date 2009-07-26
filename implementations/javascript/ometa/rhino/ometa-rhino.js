@@ -24,8 +24,20 @@ load('../parser/WaebricOMetaParserException.js')
  * @param {Array} An array of XML documents
  */
 function write(waebricEnvironments){
-	for(var i = 0; i < waebricEnvironments.length; i++){
+	for(var i = 0; i < waebricEnvironments.length; i++){	
 		var waebricEnvironment = waebricEnvironments[i];
+		var path = waebricEnvironment.path.toString();		
+		
+		//Create directory
+		var pathElements = path.split('/');
+		var directory = pathElements.slice(0, pathElements.length - 1).join('');
+		
+		var fDir = new File(directory);
+		if (!fDir.exists()) {
+			fDir.mkdir();
+		}
+		
+		//Write file
 		var fw = new FileWriter(waebricEnvironment.path);
 		var bf = new BufferedWriter(fw);
 		bf.write(waebricEnvironment.document);
@@ -40,20 +52,23 @@ function convertToHTML(path){
 	try {
 		//Parsing
 		var parserResult = WaebricOMetaParser.parseAll(path);
+		print(parserResult.exceptions);
 		
 		//Validation		
 		var validationResult = WaebricSemanticValidator.validateAll(parserResult.module)
+		print(validationResult.exceptions)
 		
 		//Interpreting
-		var interpreterResult = WaebricInterpreter.interpreteAll(parserResult.module);
+		var interpreterResult = WaebricInterpreter.interpreteAll(parserResult.module);		
 		
 		//Output results
-		write(interpreterResult);
+		print(interpreterResult.environments[0].document)
+		write(interpreterResult.environments);
 	}catch(exception){
 		//Unexcpected error thrown
 		print(exception)
 	}
 }
 
-convertToHTML('../../../../demos/lava/lava.waes')
+convertToHTML('../../../../demos/lava/lava.wae')
 
