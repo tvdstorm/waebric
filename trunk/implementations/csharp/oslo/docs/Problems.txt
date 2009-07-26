@@ -1,0 +1,1 @@
+- Bug in Intellipad higlighting which highlights a keyword when not matching the specified token rule.
