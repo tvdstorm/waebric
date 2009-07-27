@@ -70,5 +70,7 @@ function convertToHTML(path){
 	}
 }
 
-convertToHTML('../../../../demos/lava/lava.wae')
+//convertToHTML('../../../../demos/lava/lava.wae')
+convertToHTML('../programs/program.wae')
+
 
