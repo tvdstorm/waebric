@@ -26,7 +26,7 @@ ometa WaebricOMetaParser <: Parser {
   Directory       	= PathElement+:pathElement -> pathElement.join(''),
   PathElement       = PathChar+:elem "/":sep -> elem.join('').concat(sep),
   PathChar        	= cRange('!', '-') | cRange('0','[') | cRange(']','~'),
-  FileName        	= FileChar+:fileChar '.' FileExt:fileExt -> (fileChar.join('').concat('.').concat(fileExt.join(''))),
+  FileName        	= FileChar+:fileChar '.' FileExt:fileExt spaces -> (fileChar.join('').concat('.').concat(fileExt.join(''))),
   FileChar        	= PathChar,
   FileExt         	= letterOrDigit+,
 
@@ -143,6 +143,8 @@ ometa WaebricOMetaParser <: Parser {
   					&&(head.concat(tail.join('')) != 'def' )
   					&&(head.concat(tail.join('')) != 'end' )
   					&&(head.concat(tail.join('')) != 'site' )
+  					&&(head.concat(tail.join('')) != 'else' )
+  					&&(head.concat(tail.join('')) != 'in' )
   					  )
   					-> head.concat(tail.join('')),
   IdCharHead      	= letter,

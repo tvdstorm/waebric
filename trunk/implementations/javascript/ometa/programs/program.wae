@@ -1,9 +1,14 @@
 module test
 
- def main
+site
+  site/index.html: home;
+  site/index.html: hometype()
+end
+
+def main
  home("test");
 end
 
-def home(list)
-  p list;
+def home(in)
+  p in;
 end
