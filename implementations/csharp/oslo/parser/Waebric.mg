@@ -6,9 +6,11 @@ module Waebric
 {
     export Waebric;
     
+    
     language Waebric
     {
-        //---Comments---
+               
+       //---Comments---
         @{Classification["Comment"]}
         token Comment = CommentMultipleLine | CommentLine;
         
@@ -26,6 +28,7 @@ module Waebric
             ^('*') 
             | '*'  ^('/')
         ;
+        
         //---WhiteSpace---
         token NewLine =
             '\u000A'   // New Line
@@ -38,10 +41,12 @@ module Waebric
 
         @{Classification["Whitespace"]}
         token Whitespace = WhitespaceCharacter+;
-        token HT = '\u0009';
-        token VT = '\u000B';
-        token FF = '\u000C';
-        token Space = '\u0020';
+        token CR = '\u000D';    //Carriage Return
+        token LF = '\u000A';    //Line Feed
+        token HT = '\u0009';    //Horizontal Tab
+        token VT = '\u000B';    //Vertical Tab
+        token FF = '\u000C';    //Form Feed
+        token Space = '\u0020'; //Space
         
         
         token WhitespaceCharacter =
@@ -50,33 +55,96 @@ module Waebric
             | FF // Form Feed
             | Space // Space
             | NewLine
-        ;        
+        ;     
         
-        //---IdCon---
-        token IdCon = Head Tail*; 
+        //---Separators---
+        token Left_Paren = '(';
+        token Right_Paren = ')';
+        token Left_Brace = '{';
+        token Right_Brace = '}';
+        token Left_Bracket = '[';
+        token Right_Bracket = ']';
+        token Semi_Colon = ';';
+        token Comma = ',';
+        token Dot = '.';
+        token Caret = '^';
+        token Number_Sign = '#';
+        token Dollar_Sign = '$';
+        token At_Sign = '@';
+        token Percent_Sign = '%';
+        token Question_Mark = '?';
+        token Exclam_Mark = '!';
+        token And = '&&';
+        token Or = '||';
+           
+        //---Operators---
+        token Colon = ':';
+        token Assign = '=';
+        token Slash = '/';
+        token Plus = '+';
         
-        token Head = 'A'..'Z' | 'a'..'z';
-        token Tail = Head | '0'..'9';
-    
-        //---NatCon---
-        token NatCon = Digits;
-        
-        token Digits = Digit+;
+        //---Helping Tokens---
+        token Letter = 'a'..'z' | 'A'..'Z';
         token Digit = '0'..'9';
+        token Minus = '-';
+        token Amp = '&';
+        token Esc_Quote = ('\\' | '\"');
+        token Str_Char = ('\n' | '\t' | '\"' | '\\' Digit Digit Digit | '\u0020'..'\u0021' | '\u0023'..'\u005C');
+        token Input_Chars = '\u0020'..'\u007F';
+        
+        //---Text Tokens---
+        token Text_Chars = ((Input_Chars + (HT + (CR + LF))) - ('"' + '<'));
+        token Text_Char_Ref = '&#' Digit+ ';' | '&#x' (Digit|Letter)+ ';';
+        token Text_Entity_Ref = '&' (Letter | '_' | '"') (Letter | Digit | '.' | '-' | '_' | ':')* ';';
+        token Text_Char = (Text_Chars | Esc_Quote | Amp | Text_Char_Ref | Text_Entity_Ref);
+        
+        //---Identifier---
+        token IdCon = Letter (Letter | Digit | Minus)*;
+        token NatCon = Digit+;
+        token SymbolCon = '\'' (Input_Chars - (((')' + Space) + (HT + CR)) + ((LF + ';') + (',' + '>'))))*;  
+        token StrCon = '"' Str_Char* '"';   
+        
+        //---Misc---
+        token Text = '"' Text_Char* '"';
+        token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
+        token Pre_Text = '"' Text_Char* '<';
+        token Post_Text = '>' Text_Char* '"';
+        token Mid_Text = '>' Text_Char* '<';
+
+        //---Keyword Tokens---
+        @{Classification["Keyword"]} token ModuleKeyword = "module";
+        @{Classification["Keyword"]} token ImportKeyword = "import";
+        @{Classification["Keyword"]} token DefKeyword = "def";
+        @{Classification["Keyword"]} token EndKeyword = "end";
+        @{Classification["Keyword"]} token SiteKeyword = "site";
+        @{Classification["keyword"]} token EchoKeyword = "echo";
+        @{Classification["keyword"]} token EachKeyword = "each";
+        @{Classification["keyword"]} token IfKeyword = "if";
+        @{Classification["keyword"]} token ElseKeyword = "else";
+        @{Classification["keyword"]} token YieldKeyword = "yield";
+        @{Classification["keyword"]} token LetKeyword = "let";
+        @{Classification["keyword"]} token CommentKeyword = "comment";
+        @{Classification["keyword"]} token CDataKeyword = "cdata";
+        @{Classification["keyword"]} token String = "string";
+        @{Classification["keyword"]} token Record = "record";
+        @{Classification["keyword"]} token List = "list";
         
         //---Waebric---
         //Starting symbol
-        syntax Main = m:Module
-            => m;
+        syntax Main 
+            = m:Module
+                => m;
         
-        interleave Skippable = 
-        Whitespace | Comment;
+        interleave Skippable 
+            = Whitespace | Comment;
     
         //---Modules---
-        syntax Import = "import" m:ModuleId
-            => Import[m];
-        syntax ModuleElement = 
-            Import | Site;// | Functions.FunctionDef;
+        syntax Import 
+            = "import" m:ModuleId
+                => Import[m];
+        
+        syntax ModuleElement 
+            = Import | Site | FunctionDefinition;
         
         //{IdCon "."}+
         syntax ModuleId 
@@ -88,96 +156,45 @@ module Waebric
         syntax Module = "module" m:ModuleId e:ModuleElement*
                 => Module[m,e];
         
-        token ModuleIdentifier = IdCon;        
+        token  ModuleIdentifier = IdCon;
+     
         
         //---Sites---
         //site {Mapping ";"}* end
         syntax Site = "site" m:Mappings* "end"
             => Site [valuesof(m)];
         
-        //
+        //{Mapping ";"}
         syntax Mappings
             = item:Mapping
                 => Mappings[item]
-            | list: Mapping ";" item:Mapping
-                => Mappings[list, item];
+            | list: Mappings ";" item:Mapping
+                => Mappings[valuesof(list), item];
         
         //{Path ":" Markup}* -> Mapping
         syntax Mapping 
             = p:Path ":" m:Markup
-                => Mapping[p, m];  
-        
-        // ~[\ \t\n\r\.\/\\]+
-        token PathElement = ^(
-                '\u0020' | // Space Character
-                '\u0009' | // Horizontal tab
-                '\u000A' | // New Line
-                '\u000D' | // Carriage Return
-                '\u002E' | // Point
-                '\u005C' | // Backslash
-                '\u002F')+ // Slash
-        ;
+                => Mapping[valuesof(p), m];  
+    
                  
-        token Directory
-                = item:PathElement
-                    => item
-                | list:PathElement "/" item:PathElement
-                    => [list, item]
+        syntax Path = Filename;      
+             
         
-        ;
+        //---Functions---
+        syntax FunctionDefinition 
+            = "def" i:IdCon f:Formals? "end"
+                => FunctionDef[i,f];
         
-        token Filename = PathElement "." FileExt;
-               
-        token Path = Directory "/" Filename | Filename;
-
-        token FileExt = FileExtChars+;
-        token FileExtChars = 'a'..'z' | 'A'..'Z' | '0'..'9';
+        syntax Formals = Left_Paren f:Formal? Right_Paren
+            => Formals[f];
         
+        syntax Formal 
+            = item: IdCon
+                => [item]
+            | list: Formal Comma item: IdCon
+                => [valuesof(list), item];
+       
         //---Markup---
-        token Markup = 'markup()';
-        
-        
-        
-        //---Keyword Tokens---
-        @{Classification["Keyword"]} final token ModuleKeyword = "module";
-        @{Classification["Keyword"]} final token ImportKeyword = "import";
-        @{Classification["Keyword"]} final token DefKeyword = "def";
-        @{Classification["Keyword"]} final token EndKeyword = "end";
-        @{Classification["Keyword"]} final token SiteKeyword = "site";
-        @{Classification["keyword"]} final token EchoKeyword = "echo";
-        @{Classification["keyword"]} final token EachKeyword = "each";
-        @{Classification["keyword"]} final token IfKeyword = "if";
-        @{Classification["keyword"]} final token ElseKeyword = "else";
-        @{Classification["keyword"]} final token YieldKeyword = "yield";
-        @{Classification["keyword"]} final token LetKeyword = "let";
-        @{Classification["keyword"]} final token CommentKeyword = "comment";
-        @{Classification["keyword"]} final token CDataKeyword = "cdata";
-        @{Classification["keyword"]} final token String = "string";
-        @{Classification["keyword"]} final token Record = "record";
-        @{Classification["keyword"]} final token List = "list";
+        token Markup = 'markup("text")';
     }
-
-    
-    //language containing functions
-    /*language Functions
-    {
-        //"def" IdCon Formals Statement* "end" -> FunctionDef
-        syntax FunctionDef = Modules.DefKeyword i:IdentifierCon.IdCon f:FormalDef? Modules.EndKeyword
-            => FunctionDef[i];
-                              
-        syntax FormalDef = "()" | "(" Formals ")";
-        
-        syntax Formals 
-            = item:IdentifierCon.IdCon
-                => item
-            | list:IdentifierCon.IdCon "," item:IdentifierCon.IdCon
-                => [valuesof(list), item];        
-    }*/
-    
-    //language containing statements
-    /*language Statements
-    {
-        syntax Statement = "stmt";
-    }*/
-   
 }
