@@ -127,9 +127,10 @@ echoStatement:		'echo' expression ';'  | 'echo' embedding ';' ;
 cdataStatement:		'cdata' expression ';' ;
 yieldStatement:		'yield;' ;
 
-markupStatements:	functionCall | markupExpression | markupStatement | markupMarkup ;
+markupStatements:	functionCall | markupExpression | markupEmbedding | markupStatement | markupMarkup ;
 functionCall:		markup ';' ;	
 markupExpression:	markup+ expression ';' -> markup+ ';' expression ';' ;
+markupEmbedding:	markup+ embedding ';' -> markup+ ';' embedding ';' ;
 markupStatement:	markup+ statement -> markup+ ';' statement ;
 markupMarkup:		markup+ markup ';' ;		
 
