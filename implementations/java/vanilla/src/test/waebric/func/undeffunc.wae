@@ -1,4 +1,4 @@
-module undeffunc
+module src.test.waebric.func.undeffunc
 
 site
 	index.html: undef() // Call to undefined function
