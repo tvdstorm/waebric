@@ -4,65 +4,11 @@
 */
 module Waebric
 {
-    //Exports to access this grammar outside this one
-    export Waebric, Whitespacing, Comments;
+    export Waebric;
     
-    //Language containing IdCon
-    language IdentifierCon
+    language Waebric
     {
-        token IdCon = Head Tail* ; 
-        
-        token Head = 'A'..'Z' | 'a'..'z';
-        token Tail = Head | '0'..'9';
-    }
-    
-    //Language containing NatCon
-    language NaturalCon
-    {
-        token NatCon = Digits;
-        
-        token Digits = Digit+;
-        token Digit = '0'..'9';
-    }
-    
-    //Language containing StringCon
-    language StringCon
-    {
-        //token StrCon = " StrChar* ";
-    }
-    
-    //Language containing Text
-    language Text
-    {
-    
-    }
-    
-    //Language containing Whitespace definitions
-    language Whitespacing
-    {
-        token NewLine =
-            '\u000A'   // New Line
-            | '\u000D' // Carriage Return
-            | '\u000D' '\u000A' 
-            | '\u0085' // Next Line
-            | '\u2028' // Line Separator
-            | '\u2029' // Paragraph Separator
-        ;
-
-        @{Classification["Whitespace"]}
-        token Whitespace = WhitespaceCharacter+;
-        token WhitespaceCharacter =
-            '\u0009'   // Horizontal Tab
-            | '\u000B' // Vertical Tab
-            | '\u000C' // Form Feed
-            | '\u0020' // Space
-            | NewLine
-        ;
-    }
-    
-    //Language containing Comment definitions
-    language Comments
-    {
+        //---Comments---
         @{Classification["Comment"]}
         token Comment = CommentMultipleLine | CommentLine;
         
@@ -80,26 +26,57 @@ module Waebric
             ^('*') 
             | '*'  ^('/')
         ;
-    }
+        //---WhiteSpace---
+        token NewLine =
+            '\u000A'   // New Line
+            | '\u000D' // Carriage Return
+            | '\u000D' '\u000A' 
+            | '\u0085' // Next Line
+            | '\u2028' // Line Separator
+            | '\u2029' // Paragraph Separator
+        ;
+
+        @{Classification["Whitespace"]}
+        token Whitespace = WhitespaceCharacter+;
+        token HT = '\u0009';
+        token VT = '\u000B';
+        token FF = '\u000C';
+        token Space = '\u0020';
+        
+        
+        token WhitespaceCharacter =
+            HT   // Horizontal Tab
+            | VT // Vertical Tab
+            | FF // Form Feed
+            | Space // Space
+            | NewLine
+        ;        
+        
+        //---IdCon---
+        token IdCon = Head Tail*; 
+        
+        token Head = 'A'..'Z' | 'a'..'z';
+        token Tail = Head | '0'..'9';
     
-    //Language containing start point of language
-    language Waebric
-    {
+        //---NatCon---
+        token NatCon = Digits;
+        
+        token Digits = Digit+;
+        token Digit = '0'..'9';
+        
+        //---Waebric---
         //Starting symbol
-        syntax Main = m:Modules.Module
+        syntax Main = m:Module
             => m;
         
-        interleave Whitespace = 
-        Whitespacing.Whitespace | Comments.Comment;
-    }
+        interleave Skippable = 
+        Whitespace | Comment;
     
-    //Language containg module
-    language Modules
-    {
-        syntax Import = ImportKeyword m:ModuleId
+        //---Modules---
+        syntax Import = "import" m:ModuleId
             => Import[m];
         syntax ModuleElement = 
-            Import | Sites.Site;
+            Import | Site;// | Functions.FunctionDef;
         
         //{IdCon "."}+
         syntax ModuleId 
@@ -108,27 +85,18 @@ module Waebric
             | list: ModuleId "." item:ModuleIdentifier
                 => ModuleId[valuesof(list), item];
                 
-        syntax Module = ModuleKeyword m:ModuleId e:ModuleElement*
+        syntax Module = "module" m:ModuleId e:ModuleElement*
                 => Module[m,e];
         
-        token ModuleIdentifier = IdentifierCon.IdCon;
+        token ModuleIdentifier = IdCon;        
         
-        //Module Keywords
-        @{Classification["Keyword"]} final token ModuleKeyword = "module";
-        @{Classification["Keyword"]} final token ImportKeyword = "import";
-        @{Classification["Keyword"]} final token DefKeyword = "def";
-        @{Classification["Keyword"]} final token EndKeyword = "end";
-        @{Classification["Keyword"]} final token SiteKeyword = "site";
-    }
-    
-    //Language containing site
-    language Sites
-    {
+        //---Sites---
         //site {Mapping ";"}* end
-        syntax Site = Modules.SiteKeyword m:Mappings* Modules.EndKeyword
+        syntax Site = "site" m:Mappings* "end"
             => Site [valuesof(m)];
         
-        syntax Mappings 
+        //
+        syntax Mappings
             = item:Mapping
                 => Mappings[item]
             | list: Mapping ";" item:Mapping
@@ -136,7 +104,7 @@ module Waebric
         
         //{Path ":" Markup}* -> Mapping
         syntax Mapping 
-            = p:Path ":" m:Markups.Markup
+            = p:Path ":" m:Markup
                 => Mapping[p, m];  
         
         // ~[\ \t\n\r\.\/\\]+
@@ -148,26 +116,68 @@ module Waebric
                 '\u002E' | // Point
                 '\u005C' | // Backslash
                 '\u002F')+ // Slash
-        ;        
+        ;
+                 
+        token Directory
+                = item:PathElement
+                    => item
+                | list:PathElement "/" item:PathElement
+                    => [list, item]
         
-        //{PathElement "/"}+ -> Directory
-        syntax Directory 
-            = item:PathElement 
-                => item
-            | list: PathElement "/" item:PathElement
-                => [valuesof(list), item];
-        syntax Filename = p:PathElement "." f:FileExt
-                => Filename[p,f];
+        ;
+        
+        token Filename = PathElement "." FileExt;
                
-        syntax Path = Directory "/" Filename | Filename;
-        
+        token Path = Directory "/" Filename | Filename;
+
         token FileExt = FileExtChars+;
         token FileExtChars = 'a'..'z' | 'A'..'Z' | '0'..'9';
-    }
-    
-    //Language containing markup
-    language Markups
-    {
+        
+        //---Markup---
         token Markup = 'markup()';
+        
+        
+        
+        //---Keyword Tokens---
+        @{Classification["Keyword"]} final token ModuleKeyword = "module";
+        @{Classification["Keyword"]} final token ImportKeyword = "import";
+        @{Classification["Keyword"]} final token DefKeyword = "def";
+        @{Classification["Keyword"]} final token EndKeyword = "end";
+        @{Classification["Keyword"]} final token SiteKeyword = "site";
+        @{Classification["keyword"]} final token EchoKeyword = "echo";
+        @{Classification["keyword"]} final token EachKeyword = "each";
+        @{Classification["keyword"]} final token IfKeyword = "if";
+        @{Classification["keyword"]} final token ElseKeyword = "else";
+        @{Classification["keyword"]} final token YieldKeyword = "yield";
+        @{Classification["keyword"]} final token LetKeyword = "let";
+        @{Classification["keyword"]} final token CommentKeyword = "comment";
+        @{Classification["keyword"]} final token CDataKeyword = "cdata";
+        @{Classification["keyword"]} final token String = "string";
+        @{Classification["keyword"]} final token Record = "record";
+        @{Classification["keyword"]} final token List = "list";
     }
+
+    
+    //language containing functions
+    /*language Functions
+    {
+        //"def" IdCon Formals Statement* "end" -> FunctionDef
+        syntax FunctionDef = Modules.DefKeyword i:IdentifierCon.IdCon f:FormalDef? Modules.EndKeyword
+            => FunctionDef[i];
+                              
+        syntax FormalDef = "()" | "(" Formals ")";
+        
+        syntax Formals 
+            = item:IdentifierCon.IdCon
+                => item
+            | list:IdentifierCon.IdCon "," item:IdentifierCon.IdCon
+                => [valuesof(list), item];        
+    }*/
+    
+    //language containing statements
+    /*language Statements
+    {
+        syntax Statement = "stmt";
+    }*/
+   
 }
