@@ -293,9 +293,10 @@ textTail:		POSTTEXT | MIDTEXT embed textTail ;
 cdataStatement:		'cdata' expression ';' ;
 yieldStatement:		'yield;' ;
 
-markupStatements:	functionCall | markupExpression | markupStatement | markupMarkup ;
-functionCall:		markup ';' ;	
+markupStatements:	functionCall | markupExpression | markupEmbedding | markupStatement | markupMarkup ;
+functionCall:		markup ';' ;
 markupExpression:	markup+ ';' expression ';' ;
+markupEmbedding: 	markup+ ';' embedding ';' ;
 markupStatement:	markup+ ';' statement ;
 markupMarkup:		markup+ ';' ;
 
