@@ -1,4 +1,0 @@
-module test
-	def lol(call) if(call) yield; else bla bla2; end
-	def lol yield; end
-end
