@@ -87,6 +87,7 @@ module Waebric
         //---Helping Tokens---
         token Letter = 'a'..'z' | 'A'..'Z';
         token Digit = '0'..'9';
+        token HexaDecimal = '0'..'9' | 'A'..'F' | 'a'..'f';
         token Minus = '-';
         token Amp = '&';
         token Esc_Quote = ('\\' | '\"');
@@ -94,16 +95,18 @@ module Waebric
         token Input_Chars = '\u0020'..'\u007F';
         
         //---Text Tokens---
-        token Text_Chars = ((Input_Chars + (HT + (CR + LF))) - ('"' + '<'));
-        token Text_Char_Ref = '&#' Digit+ ';' | '&#x' (Digit|Letter)+ ';';
+        token EscQuote = '\\' '\"' => '\\\"';
+        token Text_Char_Ref = '&#' Digit+ ';' | '&#x' HexaDecimal+ ';';
         token Text_Entity_Ref = '&' (Letter | '_' | '"') (Letter | Digit | '.' | '-' | '_' | ':')* ';';
-        token Text_Char = (Text_Chars | Esc_Quote | Amp | Text_Char_Ref | Text_Entity_Ref);
+        token Text_Char = (TextSymbolChar | Amp | Text_Char_Ref | Text_Entity_Ref | Space);
+        token TextSymbolChar = ('\u0020'..'\u0021' | '\u0023'..'\u0025' | '\u0027'..'\u003B' | '\u003D'..'\u007E');
+        token Text = '"' t:(Text_Char | EscQuote)* '"' => t;        
         
         //---Identifier---
         token IdCon = Letter (Letter | Digit | Minus)*;
         token NatCon = Digit+;
         token SymbolCon = '\'' (Input_Chars - (((')' + Space) + (HT + CR)) + ((LF + ';') + (',' + '>'))))*;  
-        token StrCon = '"' Str_Char* '"';   
+        token StrCon = '"' s:Str_Char* '"' => s;   
         
         //---Path---
         token PathChar = ('\u0021'..'\u002D' | '\u0030'..'\u005B' | '\u005D'..'\u007E');
@@ -113,13 +116,12 @@ module Waebric
         token Filename = PathChar+ "." FileExt;
         
         //---Misc---       
-        token Text = '"' Text_Char* '"';
         token IdList = i:IdCon ("." j:IdCon)*;
 
         //token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
-        token Pre_Text = '"' Text_Char* '<';
-        token Post_Text = '>' Text_Char* '"';
-        token Mid_Text = '>' Text_Char* '<';
+        token Pre_Text = '"' t:Text_Char* '<';
+        token Post_Text = '>' t:Text_Char* '"';
+        token Mid_Text = '>' t:Text_Char* '<';
 
         //---Keyword Tokens---
         @{Classification["Keyword"]} token ModuleKeyword = "module";
@@ -217,12 +219,16 @@ module Waebric
             | CommentStatement
             | CDataStatement
             | YieldStatement;
-         
-        syntax IfStatement = "if" "(" p:Predicate ")" t:Statement;
-        syntax IfElseStatement = "if" "(" p:Predicate ")" t:Statement "else" f:Statement;
+        
+        syntax IfStatement 
+            = "if" "(" p:Predicate ")" t:Statement
+                => IfStatement[p,t];
+        syntax IfElseStatement 
+            = "if" "(" p:Predicate ")" t:Statement "else" f:Statement
+                => IfElseStatement[p,t,f];
         syntax EachStatement = "each" "(" i:IdCon ":" e:Expression ")" s:Statement;
         syntax LetStatement = "let" a:Assignment+ "in" s:Statement*;
-        syntax BlockStatement = "{" s:Statement* "}" => s;
+        syntax BlockStatement = "{" s:Statement* "}" => BlockStatement[valuesof(s)];
         //syntax EchoEmbeddingStatement = "echo" e:Embedding ";";
         syntax EchoStatement = "echo" e:Expression ";";
         syntax CommentStatement = "comment" c:StrCon ";";
