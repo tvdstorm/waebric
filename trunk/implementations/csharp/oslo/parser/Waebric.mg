@@ -10,7 +10,7 @@ module Waebric
     language Waebric
     {
                
-       //---Comments---
+        //---Comments---
         @{Classification["Comment"]}
         token Comment = CommentMultipleLine | CommentLine;
         
@@ -117,7 +117,7 @@ module Waebric
         token Filename = PathChar+ "." FileExt;
         
         //---Misc---       
-        token IdList = i:IdCon ("." j:IdCon)*;
+        token IdList = IdCon ("." IdCon)*;
 
         //token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
         token Pre_Text = '"' t:Text_Char* '<';
@@ -169,7 +169,7 @@ module Waebric
         syntax Module = "module" m:ModuleId e:ModuleElement*
                 => Module[m,valuesof(e)];
         
-        token  ModuleIdentifier = IdCon;
+        //token  ModuleIdentifier = IdCon;
      
         
         //---Sites---
@@ -202,18 +202,20 @@ module Waebric
                 => FunctionDef[i,f,Statements[valuesof(s)]];
         
         syntax Formals = "(" f:Formal? ")"
-            => Formals[f];
+            => Formals[valuesof(f)];
         
         syntax Formal 
             = item: IdCon
                 => [item]
-            | list: Formal Comma item: IdCon
+            | list: Formal "," item: IdCon
                 => [valuesof(list), item];
        
         //---Statements
         syntax Statement 
             = IfStatement
             | IfElseStatement
+            | EachStatement
+            | LetStatement
             | BlockStatement
             | EchoStatement
             //| EchoEmbeddingStatement
@@ -224,24 +226,38 @@ module Waebric
         syntax IfStatement 
             = "if" "(" p:Predicate ")" t:Statement
                 => IfStatement[p,t];
+        
         syntax IfElseStatement 
             = "if" "(" p:Predicate ")" t:Statement "else" f:Statement
                 => IfElseStatement[p,t,f];
-        syntax EachStatement = "each" "(" i:IdCon ":" e:Expression ")" s:Statement;
-        syntax LetStatement = "let" a:Assignment+ "in" s:Statement*;
+        
+        syntax EachStatement 
+            = "each" "(" i:IdCon ":" e:Expression ")" s:Statement
+               => EachStatement[i,e,s];
+               
+        syntax LetStatement 
+            = "let" a:Assignment+ "in" s:Statement* "end"
+                => LetStatement[a,s];
+                
         syntax BlockStatement = "{" s:Statement* "}" => BlockStatement[valuesof(s)];
         //syntax EchoEmbeddingStatement = "echo" e:Embedding ";";
-        syntax EchoStatement = "echo" e:Expression ";";
-        syntax CommentStatement = "comment" c:StrCon ";";
-        syntax CDataStatement = "cdata" e:Expression ";";
-        syntax YieldStatement = "yield" ";";
+        syntax EchoStatement = "echo" e:Expression ";" => EchoStatement[e];
+        syntax CommentStatement = "comment" c:StrCon ";" => CommentStatement[c];
+        syntax CDataStatement = "cdata" e:Expression ";" => CDataStatement[e];
+        syntax YieldStatement = "yield" ";" => YieldStatement[];
         
         syntax Assignment 
-                = VarBindAssignment
-                | FuncBindAssignment;
+                = FuncBindAssignment
+                |VarBindAssignment
+                ;
                 
-        syntax VarBindAssignment = i:IdCon "=" e:Expression;
-        syntax FuncBindAssignment = i:IdCon "(" (IdCon ",")* ")" "=" s:Statement;
+        syntax VarBindAssignment 
+            = i:IdCon "=" e:Expression ";"
+                => VarBindAssignment[i,e];
+                
+        syntax FuncBindAssignment 
+            = i:IdCon f:Formals "=" s:Statement ";"
+                => FuncBindAssignment[i,f,s];
         
         //---Predicates---
         syntax Predicate 
@@ -313,6 +329,6 @@ module Waebric
                 => KeyValuePair[i,e];
        
         //---Markup---
-        token Markup = 'markup("text")';
+        
     }
 }
