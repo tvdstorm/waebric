@@ -1,14 +1,9 @@
 module test
 
 site
-  site/index.html: home;
-  site/index.html: hometype()
+  site/index.html: home
 end
 
 def main
- home("test");
-end
-
-def home(in)
-  p in;
+ p ['Nick;olas];
 end
