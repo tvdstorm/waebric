@@ -5,35 +5,16 @@ options {
 	output = AST ;
 }
 
-tokens {
-	// Keywords
-	MODULE = 'module' ;
-	IMPORT = 'import' ;
-	SITE = 'site' ;
-	DEF = 'def' ;
-	END = 'end' ;
-	
-	IF = 'if' ;
-	ELSE = 'else' ;
-	EACH = 'each' ;
-	LET = 'let' ;
-	IN = 'in' ;
-	COMMENT = 'comment' ;
-	ECHO = 'echo' ;
-	CDATA = 'cdata' ;
-	YIELD = 'yield' ;
-	
-	LIST = 'list' ;
-	RECORD = 'record' ;
-	STRING = 'string' ;
-}
-
 @parser::header {
 	package org.cwi.waebric;
 	import java.util.ArrayList;
 }
 
 @parser::members {
+	/**
+	 * Parse file on specified path.
+	 * @return AST
+	 */
 	private CommonTree parseFile(String path) throws RecognitionException {
 		try {
 			CharStream is = new ANTLRFileStream(path);
@@ -58,7 +39,7 @@ tokens {
 
 // $<Module
 module: 		'module' moduleId ( imprt | site | function )* 'end'
-				-> ^( 'module' moduleId imprt* site* function* 'end' ) ;
+				-> ^( 'module' moduleId imprt* site* function* 'end' ) ; // Requires root node
 
 moduleId 
 	returns [String path = ""] // Determine physical path of module identifier
@@ -68,13 +49,12 @@ moduleId
 				-> IDCON ( '.' IDCON )* ;
 	
 imprt:			'import' id=moduleId ';' 
-				-> ^( 'import' moduleId ';' ^( { parseFile($id.path) } ) ) ;
+				-> 'import' moduleId ';' ^( { parseFile($id.path) } ) ;
 
 // $>
 // $<Site
 
-site:			'site' mappings 'end'
-				-> ^( 'site' mappings 'end' ) ;
+site:			'site' mappings 'end' ;
 				
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
@@ -84,71 +64,64 @@ mapping	:		PATH ':' markup ;
 
 markup:			designator arguments? ;
 designator:		IDCON attribute* ;
-attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | 
-			'@' NATCON | '@' NATCON '%' NATCON;
+attribute:		'#' IDCON // ID attribute
+			| '.' IDCON // Class attribute
+			| '$' IDCON // Name attribute
+			| ':' IDCON // Type attribute
+			| '@' NATCON // Width attribute
+			| '@' NATCON '%' NATCON; // Width-height attribute
 arguments:		'(' argument? ( ',' argument )* ')' ;
 argument:		expression ;
 
 // $>
 // $<Expressions
 
-expression:		( varExpression | natExpression | textExpression | symbolExpression | listExpression | recordExpression )
-			( '+' expression /* Cat expression */ | '.' IDCON /* Field expression */ )* ;
-varExpression:		IDCON ;
-natExpression:		NATCON ;
-textExpression:		TEXT ;
-symbolExpression:	SYMBOLCON ;			
-listExpression:		'[' expression? ( ',' expression )* ']' ;
-recordExpression:	'{' keyValuePair? ( ',' keyValuePair )* '}' ;
+expression:		( IDCON | NATCON | TEXT | SYMBOLCON 
+				| '[' expression? ( ',' expression )* ']' // List
+				| '{' keyValuePair? ( ',' keyValuePair )* '}' // Record
+			) ( '+' expression /* Cat */ | '.' IDCON /* Field */ )* ;
 keyValuePair:		IDCON ':' expression ;
 
 // $>
 // $<Function
 
-function:		'def' IDCON formals? statement* 'end' 
-				-> ^( 'def' IDCON formals? statement* 'end' ) ;
-				
+function:		'def' IDCON formals? statement* 'end' ;
 formals:		'(' IDCON? ( ',' IDCON )* ')' 
-				-> '(' IDCON* ')' ;
+				-> '(' IDCON* ')' ; // Removed redundant ',' seperator
 
 // $>
 
 // $<Statements
 
-statement:		ifElseStatement | ifStatement | eachStatement | letStatement | blockStatement | commentStatement |
-			echoStatement | cdataStatement | yieldStatement | markupStatements ;
-ifStatement:		'if' '(' predicate ')' statement ;
-ifElseStatement:	'if' '(' predicate ')' statement 'else' statement ;	
-eachStatement:		'each' '(' IDCON ':' expression ')' statement ;	
-letStatement:		'let' assignment+ 'in' statement* 'end' ;
-blockStatement:		'{' statement* '}' ;
-commentStatement:	'comment' STRCON ';' ;
-echoStatement:		'echo' expression ';'  | 'echo' embedding ';' ;
-cdataStatement:		'cdata' expression ';' ;
-yieldStatement:		'yield;' ;
-
-markupStatements:	functionCall | markupExpression | markupEmbedding | markupStatement | markupMarkup ;
-functionCall:		markup ';' ;	
-markupExpression:	markup+ expression ';' -> markup+ ';' expression ';' ;
-markupEmbedding:	markup+ embedding ';' -> markup+ ';' embedding ';' ;
-markupStatement:	markup+ statement -> markup+ ';' statement ;
-markupMarkup:		markup+ markup ';' ;		
+statement:		'if' '(' predicate ')' statement 'else' statement 
+			| 'if' '(' predicate ')' statement 
+			| 'each' '(' IDCON ':' expression ')' statement 
+			| 'let' assignment+ 'in' statement* 'end' 
+			| '{' statement* '}' 
+			| 'comment' STRCON ';' 
+			| 'echo' expression ';' 
+			| 'echo' embedding ';'
+			| 'cdata' expression ';' 
+			| 'yield;' 
+			| markup ';'
+			| markup+ expression ';' -> markup+ ';' expression ';' // Insert seperator
+			| markup+ statement -> markup+ ';' statement // Insert seperator
+			| markup+ embedding ';' 
+			| markup+ markup ';' ; // Stored as: Markup* ';'
 
 // $>
 // $<Assignments
 
-assignment:		varBinding | funcBinding ;
-varBinding:		IDCON '=' expression ';' ;
-funcBinding:		IDCON formals statement ;
+assignment:		IDCON '=' expression ';' // Variable binding
+			| IDCON formals statement ; // Function binding
 
 // $>
 // $<Predicates
 
-predicate:		( notPredicate | declaredPredicate | isPredicate ) 
-			( '&&' predicate | '||' predicate )* ; // Left-recussion removal
-notPredicate:		'!' predicate ;	
-declaredPredicate:	expression ; // Check expression declaration (not null)
-isPredicate:		expression '.' type ; // Check expression type
+predicate:		( '!' predicate 
+				| expression // Not null
+				| expression '.' type // Is type 
+			) ( '&&' predicate | '||' predicate )* ; // Left-recussion removal
 type:			'list' | 'record' | 'string' ;
 
 // $>
