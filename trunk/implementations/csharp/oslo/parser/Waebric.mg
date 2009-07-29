@@ -105,7 +105,8 @@ module Waebric
         //---Identifier---
         token IdCon = Letter (Letter | Digit | Minus)*;
         token NatCon = Digit+;
-        token SymbolCon = '\'' (Input_Chars - (((')' + Space) + (HT + CR)) + ((LF + ';') + (',' + '>'))))*;  
+        token SymbolCon = "'" s:SymbolChar* => s;
+        token SymbolChar = ('\u0021'..'\u0028' | '\u002A'..'\u002B' | '\u002D'..'\u003A' | '\u003C'..'\u003D' | '\u003F'..'\u005C' | '\u005E'..'\u007C' | '\u007E'..'\u007F');
         token StrCon = '"' s:Str_Char* '"' => s;   
         
         //---Path---
@@ -200,7 +201,7 @@ module Waebric
             = "def" i:IdCon f:Formals? s:Statement* "end"
                 => FunctionDef[i,f,Statements[valuesof(s)]];
         
-        syntax Formals = Left_Paren f:Formal? Right_Paren
+        syntax Formals = "(" f:Formal? ")"
             => Formals[f];
         
         syntax Formal 
@@ -271,16 +272,45 @@ module Waebric
         
         //syntax FieldExpression = Expression "." IdCon ^('?');
         syntax TextExpression = Text;
-        syntax SymbolExpression = SymbolCon;
-        syntax VarExpression = IdCon;
-        syntax NatExpression = NatCon;
+        
+        syntax SymbolExpression 
+            = s:SymbolCon
+                => SymbolExpression[s];
+        
+        syntax VarExpression 
+            = i:IdCon
+                => VarExpression[i];
+        
+        syntax NatExpression 
+            = n:NatCon
+                => NatExpression[n];
+        
         syntax CatExpression 
             = l:Expression "+" r:Expression;
+        
         syntax ListExpression
-            = "[" (Expression ",")* "]";
+            = "[" e:ExpressionList* "]"
+                => ListExpression[valuesof(e)];
+        
+        syntax ExpressionList 
+            = item: Expression
+                => Expressions[item]    
+            | list:ExpressionList "," item:Expression
+                => Expressions[valuesof(list),item];
+            
         syntax RecordExpression
-            = "{" (KeyValuePair ",")* "}";
-        syntax KeyValuePair = IdCon ":" Expression;
+            = "{" r:RecordList* "}"
+                => RecordExpression[valuesof(r)];
+        
+        syntax RecordList 
+            = item : KeyValuePair
+                => Records[item]
+            | list: RecordList "," item:KeyValuePair
+                => Records[valuesof(list),item];     
+            
+        syntax KeyValuePair 
+            = i:IdCon ":" e:Expression
+                => KeyValuePair[i,e];
        
         //---Markup---
         token Markup = 'markup("text")';
