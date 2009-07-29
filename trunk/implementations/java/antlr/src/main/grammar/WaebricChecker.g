@@ -199,11 +199,11 @@ moduleId
 				}
 			} ;
 
-imprt:			^( 'import' id=moduleId ';' ^ module ) ;
+imprt:			'import' id=moduleId ';' ^module ;
 
 // $>
 
-site:			^( 'site' mappings 'end' ) ;
+site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		. ':' markup ;
 
@@ -222,15 +222,20 @@ markup
 			
 designator:		IDCON attribute* ;
 attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | '@' NATCON ( '%' NATCON )?;
-			
+	
 arguments returns [int args = 0]
-	:		'(' ( expression {$args++;} )? ( ',' expression {$args++;} )* ')' ;
+	:		'(' ( expression {$args++;} )? 
+			( ',' expression {$args++;} )* ')' ;
 
 // $>
 
 // $<Expressions
 
-expression:		( varExpression | listExpression | recordExpression | . ) ( '+' expression | '.' IDCON )* ;
+expression:		( varExpression 
+				| '[' expression? ( ',' expression )* ']' 
+				| '{' keyValuePair? ( ',' keyValuePair )* '}' 
+				| . // All remaining single token expressions
+			) ( '+' expression | '.' IDCON )* ;
 
 varExpression:		id=IDCON {
 				if(! isDefinedVariable($id)) {
@@ -238,9 +243,7 @@ varExpression:		id=IDCON {
 				}
 			} ;
 			
-listExpression:		'[' expression? ( ',' expression )* ']' ;
-recordExpression:	'{' keyValuePair? ( ',' keyValuePair )* '}' ;
-keyValuePair:		. ':' expression ;
+keyValuePair:		IDCON ':' expression ;
 
 // $>
 
@@ -249,7 +252,7 @@ function
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		^( 'def' id=IDCON f=formals statement* 'end' ) { 
+	} :		'def' id=IDCON f=formals statement* 'end' { 
 				defineFunction($id, $f.args, 0);
 			} ;
 			
@@ -263,44 +266,21 @@ emptyFormals:		/* No formals defined */ ;
 
 // $<Statements
 
-statement:		ifElseStatement | ifStatement | eachStatement | letStatement | blockStatement | 
-			commentStatement | echoStatement | cdataStatement | yieldStatement | markupStatements ;
-
-ifElseStatement:	'if' '(' predicate ')' statement 'else' statement ;			
-ifStatement:		'if' '(' predicate ')' statement ;
-
-// $<Predicate
-
-predicate:		( notPredicate | declaredPredicate | isPredicate ) ( '&&' predicate | '||' predicate )* ; 
-notPredicate:		'!' predicate ;	
-declaredPredicate:	expression ;
-isPredicate:		expression '.' . ;		
-
-// $>
-
-blockStatement:		'{' statement* '}' ;
-commentStatement:	'comment' STRCON ';' ;
-echoStatement:		'echo' expression ';'  | 'echo' embedding ';' ;
-
-// $<Embedding
-
-embedding:		PRETEXT embed textTail ;
-embed:			markup* expression | markup* markup ;
-textTail:		POSTTEXT | MIDTEXT embed textTail ;
-
-// $>
-
-cdataStatement:		'cdata' expression ';' ;
-yieldStatement:		'yield;' ;
-
-markupStatements:	functionCall | markupExpression | markupEmbedding | markupStatement | markupMarkup ;
-functionCall:		markup ';' ;
-markupExpression:	markup+ ';' expression ';' ;
-markupEmbedding: 	markup+ ';' embedding ';' ;
-markupStatement:	markup+ ';' statement ;
-markupMarkup:		markup+ ';' ;
-
-// $<Assignments
+statement:		'if' '(' predicate ')' statement 'else' statement
+			| 'if' '(' predicate ')' statement
+			| eachStatement
+			| letStatement
+			| '{' statement* '}'
+			| 'comment' STRCON ';'
+			| 'echo' expression ';'
+			| 'echo' embedding ';'
+			| 'cdata' expression ';'
+			| 'yield;'
+			| markup ';'
+			| markup+ ';' expression ';'
+			| markup+ ';' statement
+			| markup+ embedding ';'
+			| markup+ ';' ;
 
 eachStatement
 	scope Environment;
@@ -332,3 +312,18 @@ funcBinding [int depth]
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
 	} :		id=IDCON f=regularFormals statement { defineFunction($id, $f.args, depth); } ;
+
+// $<Predicate
+
+predicate:		( '!' predicate 
+				| expression
+				| expression '.' .
+			) ( '&&' predicate | '||' predicate )* ;		
+
+// $>
+
+// $<Embedding
+
+embedding:		PRETEXT embed textTail ;
+embed:			markup* expression | markup* markup ;
+textTail:		POSTTEXT | MIDTEXT embed textTail ;
