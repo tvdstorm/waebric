@@ -8,19 +8,6 @@ function OMetaCompiler(){
 	 *
 	 * @return {Object} The parser
 	 */
-	this.compileWaebricParser = function(){
-		try {
-			this.compile('../parser/WaebricParser.ometa');
-		} catch (exception) {
-			throw exception;
-		}
-	}
-	
-	/**
-	 * Compiles the parser and saves it to a file
-	 *
-	 * @return {Object} The parser
-	 */
 	this.compile = function(pathInput){
 		try {
 			var source = this.getOMetaSource(pathInput);
@@ -85,5 +72,5 @@ OMetaCompiler.compile = function(pathInput){
 
 OMetaCompiler.compileWaebricParser = function(){
 	var compiler = new OMetaCompiler();
-	compiler.compileWaebricParser()
+	compiler.compile('../parser/WaebricParser.ometa');
 }
