@@ -38,7 +38,7 @@
   <!-- We also use JFlex -->
   <taskdef name="jflex" 
            classname="JFlex.anttask.JFlexTask" 
-           classpath="${bin}/JFlex.jar" 
+           classpath="${lib}/JFlex.jar" 
   />
    
   <!-- We have Classgen 1.5pre -->
@@ -50,7 +50,7 @@
 	<!-- We also use CUP-11a -->
   <taskdef name="cup" 
            classname="java_cup.anttask.CUPTask" 
-           classpath="${bin}/java-cup-11a.jar"
+           classpath="${lib}/java-cup-11a.jar"
   />
 
   <target name="init">
