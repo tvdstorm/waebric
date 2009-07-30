@@ -1,9 +1,20 @@
 module test
 
-site
-  site/index.html: home
+def main
+  home() "Nickolas heirbaut";
 end
 
-def main
- p ['Nick;olas];
+def home()
+   output() h1 yield;
+end
+
+def output()
+   table tr data() yield;
+end
+
+def data()
+ {
+   td div "name :";
+   yield;
+ }
 end
