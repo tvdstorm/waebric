@@ -1,0 +1,29 @@
+module waebric.java.rats.parser.Waebric;
+
+import waebric.java.rats.parser.Identifiers;
+import waebric.java.rats.parser.Strings;
+import waebric.java.rats.parser.Text;
+import waebric.java.rats.parser.Expressions;
+import waebric.java.rats.parser.Predicates;
+import waebric.java.rats.parser.Markup;
+import waebric.java.rats.parser.Statements;
+import waebric.java.rats.parser.Sites;
+
+public generic Module = "module":Keyword ModuleId ModuleElement*;
+
+generic ModuleElement =
+	Import
+	/ Site
+	/ Function;
+
+generic Import = "import":Keyword ModuleId;
+
+generic ModuleId = 
+	(Identifier void:".":Op)+ Identifier
+	/ Identifier;
+
+generic Function = 
+	"def":Keyword Identifier void:"(":Op Formals void:")":Op Statement* "end":Keyword
+	/ "def":Keyword Identifier Statement* "end":Keyword;
+	
+

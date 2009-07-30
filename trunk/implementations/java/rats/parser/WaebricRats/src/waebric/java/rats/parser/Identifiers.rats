@@ -1,0 +1,43 @@
+module waebric.java.rats.parser.Identifiers;
+
+import waebric.java.rats.parser.Layout;
+
+body {
+  static {
+    add(RESERVED, new String[] {
+	"module",
+	"site",
+	"import",
+	"def",
+	"end",
+	"if",
+	"else",
+	"each",
+	"echo",
+	"comment",
+	"let",
+	"in",
+	"yield",
+	"cdata"
+    });
+  }
+}
+
+option setOfString(RESERVED);
+
+
+// Hack?
+String Keyword = Word Spacing;
+String Op = OpChars Spacing;
+
+transient String OpChars = [#$=?@,&|+:{}\[\]();.]+;  
+
+String Identifier =
+  yyValue:Word &{ !contains(RESERVED, toText(yyValue)) } ;
+
+String Word = WordCharacters Spacing ;
+
+transient String WordCharacters =
+  start:_ &{ Character.isLetter(start) }
+    ( part:_ &{ Character.isLetterOrDigit(part) } )*
+  ;

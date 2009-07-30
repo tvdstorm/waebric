@@ -1,0 +1,38 @@
+module waebric.java.rats.parser.Statements;
+
+import waebric.java.rats.parser.Expressions;
+import waebric.java.rats.parser.Identifiers;
+import waebric.java.rats.parser.Predicates;
+import waebric.java.rats.parser.Embedding;
+import waebric.java.rats.parser.Markup;
+import waebric.java.rats.parser.Strings;
+
+public generic Statement = 
+	"if":Keyword void:"(":Op Predicate void:")":Op Statement "else":Keyword Statement
+	/ "if":Keyword void:"(":Op Predicate void:")":Op Statement
+	/ "each":Keyword void:"(":Op Identifier void:":":Op Expression void:")":Op Statement
+	/ "let":Keyword Assignment+ "in":Keyword Statement* "end":Keyword
+	/ "comment":Keyword String void:";":Op
+	/ "echo":Keyword Expression void:";":Op
+	/ "echo":Keyword Embedding void:";":Op
+	/ "cdata":Keyword Expression void:";":Op
+	/ "yield":Keyword void:";":Op
+	/ "{":Op Statement* "}":Op
+	/ Designator void:";":Op 
+	/ Markup+ Ending void:";":Op;
+	
+generic Ending =
+	Embedding
+	/ Expression
+	/ Markup;
+	
+
+generic Assignment =
+	Identifier void:"=":Op Expression void:";":Op
+	/ Identifier "(" Formals ")" "=" Statement;
+
+
+generic Formals =
+	Identifier
+	/ (Identifier void:',')+ Identifier
+	/ /* empty */;

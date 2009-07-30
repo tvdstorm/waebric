@@ -1,0 +1,3 @@
+module waebric.java.rats.parser.Numbers;
+
+String Number = [0-9]+;
