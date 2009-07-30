@@ -4,7 +4,7 @@
  * @param {Object} module
  * @param {Object} exceptions
  */
-function WaebricOMetaParserResult(module, exceptions){
+function WaebricParserResult(module, exceptions){
 	this.module = module;
 	this.exceptions = exceptions;
 }

@@ -4,7 +4,7 @@
  * Represents exceptions found during semantic validation
  * 
  */
-function WaebricOMetaParserException(message){
+function WaebricParserException(message){
 	this.message = message;
 	
 	this.toString = function(){

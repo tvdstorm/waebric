@@ -15,8 +15,9 @@ load('../base/bs-js-compiler.js')
 load('../base/bs-ometa-compiler.js')
 load('../base/bs-ometa-optimizer.js')
 load('../base/bs-ometa-js-compiler.js')
-load('../parser/WaebricOMetaParser.js')
-load('../parser/WaebricOMetaParserException.js')
+load('../parser/WaebricParser.js')
+load('../parser/WaebricParserException.js')
+load('../compiler/OMetaCompiler.js')
 
 /**
  * Outputs the HTML code to a set of files
@@ -48,10 +49,11 @@ function write(waebricEnvironments){
 /**
  * Returns the HTML output of a Waebric program
  */
-function convertToHTML(path){		
+function convertToHTML(path){
+	
 	try {
 		//Parsing
-		var parserResult = WaebricOMetaParser.parseAll(path);
+		var parserResult = WaebricParser.parseAll(path);
 		print(parserResult.exceptions);
 		
 		//Validation		
@@ -71,6 +73,5 @@ function convertToHTML(path){
 }
 
 //convertToHTML('../../../../demos/lava/lava.wae')
-convertToHTML('../programs/program.wae')
-
-
+//convertToHTML('../programs/program.wae')
+OMetaCompiler.compileWaebricParser();
