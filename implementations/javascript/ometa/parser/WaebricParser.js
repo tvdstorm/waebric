@@ -1,10 +1,10 @@
-load('../parser/WaebricOMetaParserResult.js')
+load('../parser/WaebricParserResult.js')
 /**
  * Returns the Waebric OMeta Parser
  * 
  * @return Waebric Parser
  */
-function WaebricOMetaParser(){	
+function WaebricParser(){	
 	
 	this.exceptions = new Array();
 	
@@ -111,15 +111,15 @@ function WaebricOMetaParser(){
 	        throw new NonExistingModuleException(path);
 	    }
 	}
-	
+		
 	/**
-	 * Returns the source of the parser
+	 * Returns the source of the compiled parser
 	 * 
 	 * @return {String} Parser source
 	 */
-	this.getSourceWaebricOMetaParser = function(){
+	this.getSourceCompiledWaebricParser = function(){
 		try {
-			var fis = new FileInputStream('../parser/WaebricOmetaParser.ometa');
+			var fis = new FileInputStream('../parser/WaebricParser.ometa.js');
 			var bis = new BufferedInputStream(fis);
 			var dis = new DataInputStream(bis);
 			
@@ -136,41 +136,8 @@ function WaebricOMetaParser(){
 		}
 	}
 	
-	/**
-	 * Parses OMeta source code by OMeta base code
-	 * 
-	 * @param {String} The OMeta source code
-	 * @return {Object} Parser object
-	 */	
-	this.translateCode = function(source){
-	    var translationError = function(m, i){
-	        print("Translation error - please tell Alex about this!");
-	        throw fail
-	    }, tree = BSOMetaJSParser.matchAll(source, "topLevel", undefined, function(m, i){
-	        throw fail.delegated({
-	            errorPos: i
-	        })
-	    })
-	    return BSOMetaJSTranslator.match(tree, "trans", undefined, translationError)
-	}
-	
-	/**
-	 * Returns the parser
-	 * 
-	 * @return {Object} The parser
-	 */
-	this.buildWaebricOMetaParser = function(){	
-		print('\n**** Building parser...');
-		try{
-			var source = this.getSourceWaebricOMetaParser();		
-			return eval(this.translateCode(source));
-		}catch(exception){
-			throw exception;
-		}
-	}
-	
 	//Global variable
-	this.parser = this.buildWaebricOMetaParser();
+	this.parser = eval(this.getSourceCompiledWaebricParser());
 	
 }
 
@@ -180,17 +147,17 @@ function WaebricOMetaParser(){
  * @param {Array} The path of the Waebric program on the filesystem
  * @return {Module} The module
  */
-WaebricOMetaParser.parseAll = function(path){	
+WaebricParser.parseAll = function(path){	
 	try {
 		var fileExists = (new File(path)).exists();
 		if (fileExists) {
-			var parser = new WaebricOMetaParser();
+			var parser = new WaebricParser();
 			var module = parser.parseModule(path, true);
-			return new WaebricOMetaParserResult(module, parser.exceptions);
+			return new WaebricParserResult(module, parser.exceptions);
 		}else{
 			throw "Waebric program doesn't exists";
 		}
 	}catch(exception){
-		throw new WaebricOMetaParserException(exception);
+		throw new WaebricParserException(exception);
 	}
 }
