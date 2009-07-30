@@ -1,0 +1,33 @@
+module waebric.java.rats.parser.Sites;
+
+import waebric.java.rats.parser.Identifiers;
+import waebric.java.rats.parser.Markup;
+import waebric.java.rats.parser.Layout;
+
+
+generic Site = 
+	"site":Keyword Mappings "end":Keyword;
+
+generic Mapping =
+	Path void:":":Op Markup;
+
+generic Mappings =
+	(Mapping void:';')+ Mapping 
+	/ Mapping
+	/ /* empty */ ;
+
+String Path = 
+	DirName void:'/' ![ \t\n\r./\\] FileName
+	/ FileName ;
+
+String DirName = Directory ![/];
+
+String PathElement = (![ \t\n\r./\\] _)+;
+	
+String FileExt = [a-zA-Z0-9]+;
+
+String Directory = 
+	(PathElement '/')+ PathElement
+	/ PathElement;
+
+String FileName = PathElement '.' FileExt;

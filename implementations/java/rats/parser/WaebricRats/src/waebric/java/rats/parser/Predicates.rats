@@ -1,0 +1,26 @@
+module waebric.java.rats.parser.Predicates;
+
+import waebric.java.rats.parser.Identifiers;
+import waebric.java.rats.parser.Expressions;
+
+// Can these still be inreserverd this way?
+
+String Type = 
+	"list":Identifier
+	/ "record":Identifier
+	/ "string":Identifier;
+	
+generic Predicate =
+	Predicate '&' '&' UnaryPredicate 
+	/ Predicate '|' '|' UnaryPredicate
+	/ UnaryPredicate; 
+
+generic UnaryPredicate =
+	'!' UnaryPredicate
+	/ Condition;
+
+generic Condition =
+	Expression '.' Type '?'
+	/ Expression;
+	
+

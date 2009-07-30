@@ -1,0 +1,25 @@
+module waebric.java.rats.parser.Embedding;
+
+import waebric.java.rats.parser.Expressions;
+import waebric.java.rats.parser.Markup;
+import waebric.java.rats.parser.Text;
+
+
+String PreText = '"' TextChar* '<';
+
+String PostText = '>' TextChar* '"';
+
+String MidText = '>' TextChar* '<';
+
+
+generic TextTail =
+	PostText
+	/ MidText Embed TextTail;
+
+generic Embedding = PreText Embed TextTail;
+
+generic Embed =
+	Expression
+	/ Markup+ Markup; 
+
+ 

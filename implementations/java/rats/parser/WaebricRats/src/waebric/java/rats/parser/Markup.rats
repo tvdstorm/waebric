@@ -1,0 +1,32 @@
+module  waebric.java.rats.parser.Markup;
+
+import waebric.java.rats.parser.Expressions;
+import waebric.java.rats.parser.Identifiers;
+import waebric.java.rats.parser.Numbers;
+import waebric.java.rats.parser.Layout;
+
+generic Arguments = 
+	Argument Spacing
+	/ (Argument void:":":Op)+ Argument Spacing
+	/ /* empty */;
+	
+generic Argument =
+	Identifier void:"=":Op Expression
+	/ Expression;
+	
+generic Markup =
+	Designator void:"(":Op Arguments void:")":Op 
+	/ Designator;
+	
+generic Designator =
+	Identifier Attribute*;
+	
+generic Attribute =
+	"#":Op Identifier
+	/ ".":Op Identifier
+	/ "$":Op Identifier
+	/ ":":Op Identifier
+	/ "@":Op Number "%":Op Number 
+	/ "@":Op Number; 
+	
+	
