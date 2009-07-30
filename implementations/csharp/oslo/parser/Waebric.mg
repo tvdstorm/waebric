@@ -221,7 +221,8 @@ module Waebric
             //| EchoEmbeddingStatement
             | CommentStatement
             | CDataStatement
-            | YieldStatement;
+            | YieldStatement
+            | MarkupStatement;
         
         syntax IfStatement 
             = "if" "(" p:Predicate ")" t:Statement
@@ -245,6 +246,7 @@ module Waebric
         syntax CommentStatement = "comment" c:StrCon ";" => CommentStatement[c];
         syntax CDataStatement = "cdata" e:Expression ";" => CDataStatement[e];
         syntax YieldStatement = "yield" ";" => YieldStatement[];
+        syntax MarkupStatement = m:Markup ";" => MarkupStatement[m];
         
         syntax Assignment 
                 = FuncBindAssignment
@@ -329,6 +331,60 @@ module Waebric
                 => KeyValuePair[i,e];
        
         //---Markup---
+        syntax Markup = MarkupCall | RegularMarkup;
         
+        syntax MarkupCall = Designator Arguments;
+        syntax RegularMarkup = Designator;
+        
+        syntax Arguments 
+            = "(" a:ArgumentList? ")"
+                => Arguments[a];
+                
+        syntax ArgumentList 
+            = item: Argument
+                => [item]
+            | list:ArgumentList "," item:Argument
+                => [valuesof(list), item];
+        
+        syntax Argument = AttrArgument | ExpressionArgument;
+        
+        syntax AttrArgument = i:IdCon "=" e:Expression => AttrArgument[i,e];
+        syntax ExpressionArgument = Expression;
+        
+        syntax Designator 
+            = i:IdCon a:Attribute*
+                => Designator[i,Attributes[valuesof(a)]];
+        
+        syntax Attribute 
+            = IdAttribute
+            | ClassAttribute
+            | NameAttribute
+            | TypeAttribute
+            | Width_HeightAttribute
+            | WidthAttribute;
+                                
+        syntax IdAttribute 
+            = '#' i:IdCon
+                => i;
+                
+        syntax ClassAttribute 
+            = '.' i:IdCon
+                => i;
+                
+        syntax NameAttribute
+            = '$' i:IdCon
+                => i;
+                
+        syntax TypeAttribute 
+            = ':' i:IdCon
+                => i;
+                
+        syntax Width_HeightAttribute 
+            = '@' w:NatCon '%' h:NatCon
+                => Width_HeightAttribute[w,h];
+                
+        syntax WidthAttribute 
+            = '@' w:NatCon
+                => w;
     }
 }
