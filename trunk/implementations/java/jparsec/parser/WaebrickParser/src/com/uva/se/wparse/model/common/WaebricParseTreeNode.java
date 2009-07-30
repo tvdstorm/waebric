@@ -145,7 +145,7 @@ public abstract class WaebricParseTreeNode implements TransformerOutput {
 	 * @return the unbraced list with the begin and end braces for a list
 	 */
 	protected String outputBracedList(String unbracedList) {
-		if (!unbracedList.isEmpty()) {
+		if (unbracedList.length() != 0) {
 			return OUTPUT_LIST_BEGIN + unbracedList + OUTPUT_LIST_END;
 		} else {
 			return unbracedList;
@@ -179,10 +179,10 @@ public abstract class WaebricParseTreeNode implements TransformerOutput {
 	 * @return New block with both the original block and the new item(s)
 	 */
 	protected String outputAddToBlock(String block, String newBlockItem) {
-		if (newBlockItem.isEmpty()) {
+		if (newBlockItem.length() == 0) {
 			return block;
 		}
-		if (block.isEmpty()) {
+		if (block.length() == 0) {
 			return newBlockItem;
 		}
 		return block + OUTPUT_BLOCK_SEPARATOR + newBlockItem;
