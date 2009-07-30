@@ -222,7 +222,11 @@ module Waebric
             | CommentStatement
             | CDataStatement
             | YieldStatement
-            | MarkupStatement;
+            | precedence 1: MarkupStatStatement
+            | precedence 2: MarkupStatement
+            | precedence 3: MarkupMarkupStatement
+            | precedence 4: MarkupExpressionStatement;
+            //| precedence 5: MarkupEmbeddingStatement;
         
         syntax IfStatement 
             = "if" "(" p:Predicate ")" t:Statement
@@ -247,6 +251,10 @@ module Waebric
         syntax CDataStatement = "cdata" e:Expression ";" => CDataStatement[e];
         syntax YieldStatement = "yield" ";" => YieldStatement[];
         syntax MarkupStatement = m:Markup ";" => MarkupStatement[m];
+        syntax MarkupStatStatement = ml:MarkupList s:Statement => MarkupStatStatement[ml, s];
+        syntax MarkupMarkupStatement = ml:MarkupList m:Markup ";" => MarkupMarkupStatement[ml, m];
+        syntax MarkupExpressionStatement = ml:MarkupList e:Expression ";" => MarkupExpressionStatement[ml, e];
+        //syntax MarkupEmbeddingStatement = ml:MarkupList e:Embedding ";" => MarkupEmbeddingStatement[ml, e];
         
         syntax Assignment 
                 = FuncBindAssignment
@@ -260,6 +268,12 @@ module Waebric
         syntax FuncBindAssignment 
             = i:IdCon f:Formals "=" s:Statement ";"
                 => FuncBindAssignment[i,f,s];
+                
+        syntax MarkupList
+            = item:Markup
+                => MarkupList[item]
+            | list:MarkupList item:Markup
+                => MarkupList[valuesof(list), item];
         
         //---Predicates---
         syntax Predicate 
@@ -331,7 +345,7 @@ module Waebric
                 => KeyValuePair[i,e];
        
         //---Markup---
-        syntax Markup = MarkupCall | RegularMarkup;
+        syntax Markup = RegularMarkup | MarkupCall;
         
         syntax MarkupCall = Designator Arguments;
         syntax RegularMarkup = Designator;
