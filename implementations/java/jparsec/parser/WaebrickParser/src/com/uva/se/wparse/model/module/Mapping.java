@@ -104,7 +104,7 @@ public class Mapping extends WaebricParseTreeNode {
 		String filename = file + "." + extention;
 		String pathname = Strings.join("/", path);
 		String fullfilename = outputQuote(filename);
-		if (!pathname.isEmpty()) {
+		if (pathname.length() != 0) {
 			fullfilename = OUTPUT_MAPPING_PATH
 					+ outputBracedBlock(outputQuote(pathname) + ","
 							+ fullfilename);

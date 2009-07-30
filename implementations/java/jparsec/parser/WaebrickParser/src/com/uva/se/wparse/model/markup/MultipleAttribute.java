@@ -94,7 +94,7 @@ public class MultipleAttribute extends WaebricParseTreeNode implements
 	@Override
 	public String toTransformerOutput() {
 
-		if ((height != null) && !height.isEmpty()) {
+		if ((height != null) && height.length() != 0) {
 			return OUTPUT_ATTRIBUTE_WIDTH_HEIGTH
 					+ outputBracedBlock(width + OUTPUT_BLOCK_SEPARATOR + height);
 		} else {
