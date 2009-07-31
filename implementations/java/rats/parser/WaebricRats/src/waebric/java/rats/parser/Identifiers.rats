@@ -25,22 +25,13 @@ body {
 
 option setOfString(RESERVED);
 
-
-// Hack?
 String Sym = SymChar Spacing;
 
 transient String SymChar = [#$=?%@,&|+:{}\[\]();.<>];  
 
-String Identifier =
-  yyValue:Word &{ !contains(RESERVED, toText(yyValue)) } ;
+String Identifier = yyValue:Word &{ !contains(RESERVED, toText(yyValue)) } ;
 
 String Word = WordCharacters Spacing ;
 
-String WordCharacters = 
-	[a-zA-Z][\-a-zA-Z0-9]*;
+String WordCharacters = [a-zA-Z][\-a-zA-Z0-9]*;
 	
-/*
-  start:_ &{ Character.isLetter(start) }
-    ( part:_ &{ (Character.isLetterOrDigit(part) || part == '-') } )*
-  ;
-*/

@@ -18,7 +18,6 @@ public generic TestStatement = Statement;
 public generic TestSite = Site;
 public generic TestFunction = Function;
 
-
 generic ModuleElement =
 	Import
 	/ Site
@@ -26,8 +25,7 @@ generic ModuleElement =
 
 generic Import = void:"import":Word ModuleId void:";":Sym;
 
-generic ModuleId = 
-	Identifier (void:".":Sym Identifier)* ;
+generic ModuleId = Identifier (void:".":Sym Identifier)* ;
 
 generic Function = 
 	void:"def":Word Identifier void:"(":Sym Formals? void:")":Sym Statement* void:"end":Word
