@@ -1,13 +1,15 @@
 module waebric.java.rats.parser.Text;
 
+import waebric.java.rats.parser.Strings;
+
 String Text =
-	'"' '"'  
-	/ '"' TextChar+ '"';
+	'"' TextChar* '"';
 
 String TextChar =
-	'&' '#' 'x' [0-9a-fA-F]+ ';' 
+	EscapeSequence
+	/ '&' '#' 'x' [0-9a-fA-F]+ ';' 
 	/ '&' '#' [0-9]+ ';'
 	/ '&' [a-zA-Z_:] [a-zA-Z0-9.\-_:]* ';'
 	/ '&' ![a-zA-Z0-9#_:]
 	/ [\n\r\t]
-	/ ![&"<] _;
+	/ ![\\&"<] _;

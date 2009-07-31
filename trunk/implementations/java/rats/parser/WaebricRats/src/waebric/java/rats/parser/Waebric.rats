@@ -9,7 +9,13 @@ import waebric.java.rats.parser.Markup;
 import waebric.java.rats.parser.Statements;
 import waebric.java.rats.parser.Sites;
 
+// The true start symbol
 public generic Module = "module":Keyword ModuleId ModuleElement*;
+
+// Helper start symbols for testing purposes
+public generic TestExpression = Expression;
+public generic TestStatement = Statement;
+
 
 generic ModuleElement =
 	Import
