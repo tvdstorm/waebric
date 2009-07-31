@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.junit.Before;
 import org.junit.Test;
 
 
@@ -14,11 +13,6 @@ public class TestDemos extends RatsTesting {
 	private final static String MENUS = DEMO_DIR + "/menus.wae";
 	private final static String SWFOBJECT = DEMO_DIR + "/swfobject.wae";
 	private final static String LAYOUT = DEMO_DIR + "/layout.wae";
-	
-	@Before
-	public void setup() {
-		setLogging(true);
-	}
 	
 	private String load(String fileName) {
 		BufferedReader reader = null;

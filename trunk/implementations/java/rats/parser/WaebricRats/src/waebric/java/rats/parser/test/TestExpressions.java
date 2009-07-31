@@ -5,11 +5,6 @@ import org.junit.Test;
 
 public class TestExpressions extends RatsTesting {
 
-	@Before
-	public void setUp() {
-		setLogging(true);
-	}
-
 	@Test
 	public void numbers() {
 		testExp("1234");

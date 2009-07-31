@@ -1,15 +1,9 @@
 package waebric.java.rats.parser.test;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class TestStatements extends RatsTesting {
 
-	@Before
-	public void setup() {
-		setLogging(true);
-	}
-	
 	@Test
 	public void echo() {
 		testStat("echo a;");

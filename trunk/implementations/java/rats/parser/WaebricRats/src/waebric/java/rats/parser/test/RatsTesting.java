@@ -11,7 +11,7 @@ import xtc.parser.Result;
 import xtc.tree.Node;
 
 public class RatsTesting {
-	private boolean logging = true;
+	private boolean logging = false;
 	
 	public void setLogging(boolean flag) {
 		this.logging = flag;
