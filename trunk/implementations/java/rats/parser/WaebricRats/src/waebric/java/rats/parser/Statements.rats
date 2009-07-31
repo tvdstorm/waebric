@@ -6,33 +6,60 @@ import waebric.java.rats.parser.Predicates;
 import waebric.java.rats.parser.Embedding;
 import waebric.java.rats.parser.Markup;
 import waebric.java.rats.parser.Strings;
+import waebric.java.rats.parser.Layout;
 
 public generic Statement = 
-	"if":Keyword void:"(":Op Predicate void:")":Op Statement "else":Keyword Statement
-	/ "if":Keyword void:"(":Op Predicate void:")":Op Statement
-	/ "each":Keyword void:"(":Op Identifier void:":":Op Expression void:")":Op Statement
-	/ "let":Keyword Assignment+ "in":Keyword Statement* "end":Keyword
-	/ "comment":Keyword String void:";":Op
-	/ "echo":Keyword Expression void:";":Op
-	/ "echo":Keyword Embedding void:";":Op
-	/ "cdata":Keyword Expression void:";":Op
-	/ "yield":Keyword void:";":Op
-	/ "{":Op Statement* "}":Op
-	/ Designator void:";":Op 
-	/ Markup+ Ending void:";":Op;
-	
-generic Ending =
-	Embedding
-	/ Expression
-	/ Markup;
-	
+	If
+	/ Each
+	/ Let
+	/ Comment
+	/ Echo
+	/ CData
+	/ Yield
+	/ Block
+	/ Call;
 
-generic Assignment =
-	Identifier void:"=":Op Expression void:";":Op
-	/ Identifier "(" Formals ")" "=" Statement;
+generic If = 
+	void:"if":Word void:"(":Sym Predicate void:")":Sym Statement void:"else":Word Statement
+	/ void:"if":Word void:"(":Sym Predicate void:")":Sym Statement null;
 
+	
+generic Each = void:"each":Word void:"(":Sym Pair void:")":Sym Statement;
+
+generic Let = void:"let":Word Binding+ void:"in":Word Statement* void:"end":Word;
+
+generic Comment = void:"comment":Word String void:";":Sym;
+
+generic Echo = 
+	void:"echo":Word Expression void:";":Sym
+	/ void:"echo":Word Embedding void:";":Sym;
+	
+generic CData = void:"cdata":Word Expression void:";":Sym;
+
+generic Yield = void:"yield":Word void:";":Sym;
+
+generic Block = void:"{":Sym Statement* void:"}":Sym;
+
+
+generic Call =
+	null Designator void:";":Sym
+	/ Markups Expression void:";":Sym 
+	/ Markups Markup void:";":Sym 
+	/ Markups Statement;
+
+Pair<Node> Markups = (Markup ![;])+;
+
+/*
+generic Call = 
+	null Designator void:";":Sym
+	/ Markup+ Var void:";":Sym 
+	/ Markup+ Expression void:";":Sym
+	/ Markup+ Statement;
+*/
+
+generic Binding  =
+	Identifier void:"=":Sym Expression void:";":Sym
+	/ Identifier void:"(":Sym Formals? void:")":Sym void:"=":Sym Statement;
 
 generic Formals =
-	Identifier
-	/ (Identifier void:',')+ Identifier
-	/ /* empty */;
+	Identifier (void:",":Sym Identifier)*;

@@ -1,41 +1,40 @@
 module waebric.java.rats.parser.Expressions;
 
-import waebric.java.rats.parser.Layout;
-import waebric.java.rats.parser.Identifiers;
 import waebric.java.rats.parser.Text;
 import waebric.java.rats.parser.Numbers;
+import waebric.java.rats.parser.Layout;
+import waebric.java.rats.parser.Identifiers;
+
+
+public generic Expression = 
+	<Add> Expression void:"+":Sym Postfix @AddExpression
+	/ <Post> Postfix @PostExpression;
+		
+generic Postfix = 
+	<Field> Postfix void:".":Sym Identifier @FieldExpression
+	/ <Primary> Primary @PrimaryExpression;
+	
+generic Primary =
+	Constant
+	/ List
+	/ Record
+	/ Var;
+	
+generic Var = Identifier;
+
+generic Constant = Text Spacing / Number;
+	
+generic Record = void:"{":Sym Pairs? void:"}":Sym;
+ 
+generic	List = void:"[":Sym Expressions? void:"]":Sym;
+		
+Pair<Node> Expressions = Expression (void:",":Sym Expression)*;
+
+generic Pair = Identifier void:":":Sym Expression;
+
+Pair<Node> Pairs = Pair (void:",":Sym Pair)*;
 
 
 // This seems to trigger a bug in Rats! code generation
 // \000 did also not work
 String Symbol = void:'\'' ![\001-\037\200-\377\t\n\r;,> )] _;
-
-generic Literal = 
-	Text
-	/ Number
-//	/ Symbol 
-	/ Identifier
-	/ void:"{":Op Pairs void:"}":Op
-	/ void:"[":Op Expressions void:"]":Op;
-
-generic Primary = 
-	Primary void:".":Op Identifier
-	/ Literal;
-
-public generic Expression = 
-	Expression void:"+":Op Primary
-	/ Primary;
-		
-generic Expressions =
-	Expression
-	/ (Expression void:",":Op)+ Expression
-	/ 	/* empty */ ;
-
-generic Pair = Identifier void:":":Op Expression;
-
-generic Pairs =
-	Pair
-	/ (Pair void:",":Op)+ Pair
-	/ 	/* empty */ ;
-
-

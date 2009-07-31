@@ -5,28 +5,26 @@ import waebric.java.rats.parser.Identifiers;
 import waebric.java.rats.parser.Numbers;
 import waebric.java.rats.parser.Layout;
 
-generic Arguments = 
-	Argument Spacing
-	/ (Argument void:":":Op)+ Argument Spacing
-	/ /* empty */;
+Pair<Node> Arguments = 
+	Argument (void:",":Sym Argument)*;
 	
 generic Argument =
-	Identifier void:"=":Op Expression
+	Identifier void:"=":Sym Expression
 	/ Expression;
 	
 generic Markup =
-	Designator void:"(":Op Arguments void:")":Op 
+	Designator void:"(":Sym Arguments? void:")":Sym 
 	/ Designator;
 	
 generic Designator =
 	Identifier Attribute*;
 	
 generic Attribute =
-	"#":Op Identifier
-	/ ".":Op Identifier
-	/ "$":Op Identifier
-	/ ":":Op Identifier
-	/ "@":Op Number "%":Op Number 
-	/ "@":Op Number; 
+	"#":Sym Identifier
+	/ ".":Sym Identifier
+	/ "$":Sym Identifier
+	/ ":":Sym Identifier
+	/ "@":Sym Number "%":Sym Number 
+	/ "@":Sym Number; 
 	
 	

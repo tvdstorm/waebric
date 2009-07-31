@@ -1,9 +1,10 @@
 module waebric.java.rats.parser.Text;
 
 import waebric.java.rats.parser.Strings;
+import waebric.java.rats.parser.Layout;
 
-String Text =
-	'"' TextChar* '"';
+generic Text =
+	void:'"' TextChar* void:'"' Spacing;
 
 String TextChar =
 	EscapeSequence
