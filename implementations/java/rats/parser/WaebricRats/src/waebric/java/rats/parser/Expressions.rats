@@ -37,4 +37,4 @@ generic Pair = Identifier void:":":Sym Expression;
 
 Pair<Node> Pairs = Pair (void:",":Sym Pair)*;
 
-String Symbol = ['][:\-a-zA-Z0-9!@#$%^&*_=+<{}\[\],./?\\|`~]+;
+String Symbol = ['][:\-a-zA-Z0-9!@#$%^&*_=+<{}\[\]./?\\|`~]+;
