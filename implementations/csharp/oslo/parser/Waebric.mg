@@ -92,13 +92,13 @@ module Waebric
         token Amp = '&';
         token Esc_Quote = ('\\' | '\"');
         token Str_Char = ('\n' | '\t' | '\"' | '\\' Digit Digit Digit | '\u0020'..'\u0021' | '\u0023'..'\u005C');
-        token Input_Chars = '\u0020'..'\u007F';
+        //token Input_Chars = '\u0020'..'\u007F';
         
         //---Text Tokens---
         token EscQuote = '\\' '\"' => '\\\"';
         token Text_Char_Ref = '&#' Digit+ ';' | '&#x' HexaDecimal+ ';';
         token Text_Entity_Ref = '&' (Letter | '_' | '"') (Letter | Digit | '.' | '-' | '_' | ':')* ';';
-        token Text_Char = (TextSymbolChar | Amp | Text_Char_Ref | Text_Entity_Ref | Space);
+        token Text_Char = (TextSymbolChar | Amp | Text_Char_Ref | Text_Entity_Ref | Space | CR | LF | HT);
         token TextSymbolChar = ('\u0020'..'\u0021' | '\u0023'..'\u0025' | '\u0027'..'\u003B' | '\u003D'..'\u007E');
         token Text = '"' t:(Text_Char | EscQuote)* '"' => t;        
         
@@ -110,14 +110,18 @@ module Waebric
         token StrCon = '"' s:Str_Char* '"' => s;   
         
         //---Path---
-        token PathChar = ('\u0021'..'\u002D' | '\u0030'..'\u005B' | '\u005D'..'\u007E');
-        token PathElement = PathChar+ "/";
-        token Directory = PathElement+;
-        token FileExt = (Letter | Digit)+;
-        token Filename = PathChar+ "." FileExt;
+        //token PathChar = ('\u0021'..'\u0029' | '\u002B'..'\u002D' | '\u0030'..'\u0039' | '\u003B' | '\u003D' | '\u0040'..'\u005B' | '\u005D'..'\u007B' | '\u007D'..'\u007F');
+        //token PathChar = ('\u0021'..'\u002D' | '\u0030'..'\u005A' | '\u005E'..'\u007E');
+        /*token PathElement = PathChar+ "/";
+        token Directory = PathElement+;*/
+        //token FileExt = (Letter | Digit)+;
+        //token PathChar = ('\u0021'..'\u002D');
+        token Filename = '[' 'a' ']';
+        
+        //token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
         
         //---Misc---       
-        token IdList = IdCon ("." IdCon)*;
+        //token IdList = IdCon ("." IdCon)*;
 
         //token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
         token Pre_Text = '"' t:Text_Char* '<';
@@ -160,22 +164,19 @@ module Waebric
             = Import | Site | FunctionDefinition;
         
         //{IdCon "."}+
-        syntax ModuleId = IdList;
-            /*= item:ModuleIdentifier
+        syntax ModuleId  
+            = item:IdCon
                 => ModuleId[item]
-            | list: ModuleId "." item:ModuleIdentifier
-                => ModuleId[valuesof(list), item];*/
+            | list: ModuleId "." item:IdCon
+                => ModuleId[valuesof(list), item];
                 
         syntax Module = "module" m:ModuleId e:ModuleElement*
                 => Module[m,valuesof(e)];
-        
-        //token  ModuleIdentifier = IdCon;
      
-        
         //---Sites---
         //site {Mapping ";"}* end
-        syntax Site = "site" m:Mappings* "end"
-            => Site [valuesof(m)];
+        syntax Site = "site" Filename "end";//m:Mappings* "end"
+            //=> Site [valuesof(m)];
         
         //{Mapping ";"}
         syntax Mappings
@@ -185,16 +186,16 @@ module Waebric
                 => Mappings[valuesof(list), item];
         
         //{Path ":" Markup}* -> Mapping
-        syntax Mapping 
-            = p:Path ":" m:Markup
-                => Mapping[p, m];  
+        syntax Mapping = Filename;
+           /* = p:Filename ":" m:Markup
+                => Mapping[p, m];  */
     
                  
-        syntax Path 
-            = d:Directory f:Filename 
+        //syntax Path = f:Filename => Path[f];
+           /* = d:Directory f:Filename 
                => Path[d,f]
             | f:Filename
-                => Path[f];      
+                => Path[f];     */ 
             
         //---Functions---
         syntax FunctionDefinition 
@@ -211,50 +212,53 @@ module Waebric
                 => [valuesof(list), item];
        
         //---Statements
-        syntax Statement 
-            = IfStatement
-            | IfElseStatement
-            | EachStatement
-            | LetStatement
-            | BlockStatement
-            | EchoStatement
-            //| EchoEmbeddingStatement
-            | CommentStatement
-            | CDataStatement
-            | YieldStatement
-            | precedence 1: MarkupStatStatement
-            | precedence 2: MarkupStatement
-            | precedence 3: MarkupMarkupStatement
-            | precedence 4: MarkupExpressionStatement;
-            //| precedence 5: MarkupEmbeddingStatement;
-        
-        syntax IfStatement 
-            = "if" "(" p:Predicate ")" t:Statement
-                => IfStatement[p,t];
-        
-        syntax IfElseStatement 
-            = "if" "(" p:Predicate ")" t:Statement "else" f:Statement
-                => IfElseStatement[p,t,f];
-        
-        syntax EachStatement 
+        syntax Statement  
+            = Statement_No_Markup
+            | precedence 1: m:Markup+ s:Statement_No_Markup
+                => MarkupStatStatement[m,s]
+            | precedence 2: Statement_Markup_No_Statement;
+            
+        syntax Statement_No_Markup
             = "each" "(" i:IdCon ":" e:Expression ")" s:Statement
-               => EachStatement[i,e,s];
-               
-        syntax LetStatement 
+                => EachStatement[i,e,s]
+            | precedence 2: "if" "(" p:Predicate ")" ts:Statement
+                => IfStatement[p,ts]
+            | precedence 1: "if" "(" p:Predicate ")" ts:Statement_No_Short_If "else" fs:Statement
+                => IfElseStatement[p,valuesof(ts),valuesof(fs)]
+            | Statement_No_Markup_No_Short_If;
+        
+        syntax Statement_No_Short_If
+            = Statement_No_Markup_No_Short_If
+            | Statement_Markup_No_Statement
+            | "if" "(" p:Predicate ")" ts:Statement_No_Short_If "else" fs:Statement_No_Short_If 
+                => IfElseStatement[p,valuesof(ts),valuesof(fs)];
+        
+        syntax Statement_Markup_No_Statement
+            = m:Markup ";"
+                => MarkupStatement[m]
+            | ml:Markup+ m:Markup_No_Short_Markup ";"
+                => MarkupMarkupStatement[ml,m]
+            | ml:Markup+ e:Expression ";"
+                => MarkupExpressionStatement[ml, e]
+            | ml:Markup+ e:Embedding ";"
+                => MarkupEmbeddingStatement[ml,e];
+        
+        syntax Statement_No_Markup_No_Short_If 
             = "let" a:Assignment+ "in" s:Statement* "end"
-                => LetStatement[a,s];
-                
-        syntax BlockStatement = "{" s:Statement* "}" => BlockStatement[valuesof(s)];
-        //syntax EchoEmbeddingStatement = "echo" e:Embedding ";";
-        syntax EchoStatement = "echo" e:Expression ";" => EchoStatement[e];
-        syntax CommentStatement = "comment" c:StrCon ";" => CommentStatement[c];
-        syntax CDataStatement = "cdata" e:Expression ";" => CDataStatement[e];
-        syntax YieldStatement = "yield" ";" => YieldStatement[];
-        syntax MarkupStatement = m:Markup ";" => MarkupStatement[m];
-        syntax MarkupStatStatement = ml:MarkupList s:Statement => MarkupStatStatement[ml, s];
-        syntax MarkupMarkupStatement = ml:MarkupList m:Markup ";" => MarkupMarkupStatement[ml, m];
-        syntax MarkupExpressionStatement = ml:MarkupList e:Expression ";" => MarkupExpressionStatement[ml, e];
-        //syntax MarkupEmbeddingStatement = ml:MarkupList e:Embedding ";" => MarkupEmbeddingStatement[ml, e];
+                => LetStatement[a,s]
+            | "{" s:Statement* "}"
+                => BlockStatement[s]
+            | "comment" s:StrCon ";"
+                => CommentStatement[s]
+            | "echo" e:Expression ";"
+                => EchoExpressionStatement[e]
+            | "echo" e:Embedding ";"
+                => EchoEmbeddingStatement[e]
+            | "cdata" e:Expression ";"
+                => CDataStatement[e]
+            | "yield" ";"
+                => YieldStatement[];
+        
         
         syntax Assignment 
                 = FuncBindAssignment
@@ -269,11 +273,11 @@ module Waebric
             = i:IdCon f:Formals "=" s:Statement ";"
                 => FuncBindAssignment[i,f,s];
                 
-        syntax MarkupList
+        /*syntax MarkupList
             = item:Markup
                 => MarkupList[item]
             | list:MarkupList item:Markup
-                => MarkupList[valuesof(list), item];
+                => MarkupList[valuesof(list), item];*/
         
         //---Predicates---
         syntax Predicate 
@@ -283,72 +287,68 @@ module Waebric
             | IsAPredicate
             | Expression;
         
-        syntax NotPredicate = Exclam_Mark Predicate;
-        syntax AndPredicate = Predicate And Predicate;
-        syntax OrPredicate = Predicate Or Predicate; 
-        syntax IsAPredicate = Expression "." Type "?";
+        syntax NotPredicate 
+            = Exclam_Mark p:Predicate
+                => NotPredicate[p];
+                
+        syntax AndPredicate 
+            = l:Predicate And r:Predicate
+                => AndPredicate[l,r];
+        
+        syntax OrPredicate 
+            = l:Predicate Or r:Predicate
+                => OrPredicate[l,r]; 
+        
+        syntax IsAPredicate 
+            = e:Expression ":" t:Type "?"
+                => IsAPredicate[e,t];
         
         syntax Type = "string" | "record" | "list";
 
         //---Expressions---
-        syntax Expression
-            = //FieldExpression
-             TextExpression
-            | CatExpression
-            | TextExpression
-            | VarExpression
-            | NatExpression
-            | SymbolExpression
-            | ListExpression
-            | RecordExpression;
-        
-        //syntax FieldExpression = Expression "." IdCon ^('?');
-        syntax TextExpression = Text;
-        
-        syntax SymbolExpression 
-            = s:SymbolCon
-                => SymbolExpression[s];
-        
-        syntax VarExpression 
+        syntax Expression 
+            = Expression_No_Plus
+            | l:Expression "+" r:Expression_No_Plus 
+                => CatExpression[l,r];
+                
+        syntax Expression_No_Plus 
             = i:IdCon
-                => VarExpression[i];
-        
-        syntax NatExpression 
-            = n:NatCon
-                => NatExpression[n];
-        
-        syntax CatExpression 
-            = l:Expression "+" r:Expression;
-        
-        syntax ListExpression
-            = "[" e:ExpressionList* "]"
-                => ListExpression[valuesof(e)];
-        
-        syntax ExpressionList 
-            = item: Expression
-                => Expressions[item]    
+                => VarExpression[i]
+            | t:Text
+                => TextExpression[t]
+            | s:SymbolCon 
+                => SymbolExpression[s]
+            | n:NatCon
+                => NatExpression[n]
+            | e:Expression_No_Plus "^" i:IdCon
+                => FieldExpression[e,i]
+            | "[" e:ExpressionList? "]"
+                => ListExpression[valuesof(e)]
+            | "{" k:KeyValuePairList? "}"
+                => RecordExpression[valuesof(k)];
+         
+        syntax ExpressionList
+            = item:Expression
+                => [item]
             | list:ExpressionList "," item:Expression
-                => Expressions[valuesof(list),item];
-            
-        syntax RecordExpression
-            = "{" r:RecordList* "}"
-                => RecordExpression[valuesof(r)];
+                => [valuesof(list), item];
+                
+        syntax KeyValuePairList
+            = item:KeyValuePair
+                => [item]
+            | list:KeyValuePairList "," item:KeyValuePair
+                => [valuesof(list), item];
         
-        syntax RecordList 
-            = item : KeyValuePair
-                => Records[item]
-            | list: RecordList "," item:KeyValuePair
-                => Records[valuesof(list),item];     
-            
-        syntax KeyValuePair 
+        syntax KeyValuePair
             = i:IdCon ":" e:Expression
                 => KeyValuePair[i,e];
        
         //---Markup---
-        syntax Markup = RegularMarkup | MarkupCall;
-        
-        syntax MarkupCall = Designator Arguments;
-        syntax RegularMarkup = Designator;
+        syntax Markup 
+            = Markup_No_Short_Markup
+            | d:Designator
+                => d;
+        syntax Markup_No_Short_Markup = Designator Arguments;
         
         syntax Arguments 
             = "(" a:ArgumentList? ")"
@@ -360,45 +360,42 @@ module Waebric
             | list:ArgumentList "," item:Argument
                 => [valuesof(list), item];
         
-        syntax Argument = AttrArgument | ExpressionArgument;
-        
-        syntax AttrArgument = i:IdCon "=" e:Expression => AttrArgument[i,e];
-        syntax ExpressionArgument = Expression;
+        syntax Argument 
+            = i:IdCon "=" e:Expression
+                => AttrArgument[i,e]
+            | e:Expression
+                => ExpressionArgument[e];        
         
         syntax Designator 
             = i:IdCon a:Attribute*
                 => Designator[i,Attributes[valuesof(a)]];
         
-        syntax Attribute 
-            = IdAttribute
-            | ClassAttribute
-            | NameAttribute
-            | TypeAttribute
-            | Width_HeightAttribute
-            | WidthAttribute;
-                                
-        syntax IdAttribute 
-            = '#' i:IdCon
-                => i;
+        syntax Attribute
+            = "#" i:IdCon
+                => IdAttribute[i]
+            | "." i:IdCon
+                => ClassAttribute[i]
+            | "$" i:IdCon
+                => NameAttribute[i]
+            | ":" i:IdCon
+                => TypeAttribute[i]
+            | "@" w:NatCon "%" h:NatCon
+                => WidthHeigthAttribute[w,h]
+            | "@" w:NatCon
+                => WidthAttribute[w];
                 
-        syntax ClassAttribute 
-            = '.' i:IdCon
-                => i;
-                
-        syntax NameAttribute
-            = '$' i:IdCon
-                => i;
-                
-        syntax TypeAttribute 
-            = ':' i:IdCon
-                => i;
-                
-        syntax Width_HeightAttribute 
-            = '@' w:NatCon '%' h:NatCon
-                => Width_HeightAttribute[w,h];
-                
-        syntax WidthAttribute 
-            = '@' w:NatCon
-                => w;
+        //---Embedding---
+        syntax Embedding 
+            = p:Pre_Text e:Embed t:TextTail
+                => Embedding[p,e,t];
+        
+        syntax Embed 
+            = Markup+ Markup_No_Short_Markup
+            | Markup+ Expression;
+            
+        syntax TextTail 
+            = Post_Text
+            | Mid_Text Embed TextTail;
+  
     }
 }
