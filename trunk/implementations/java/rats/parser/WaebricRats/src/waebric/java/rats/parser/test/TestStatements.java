@@ -201,5 +201,35 @@ public class TestStatements extends RatsTesting {
 		testStat("echo \"abc< X >def< Y >ghij< Z >klm\";");
 	}
 	
+	@Test
+	public void comment() {
+		testStat("comment \"\";");
+		testStat("comment \"ab\";");
+		testStat("comment \"a b c\";");
+	}
+
+	@Test
+	public void cdata() {
+		testStat("cdata \"\";");
+		testStat("cdata \"ab\";");
+		testStat("cdata \"a b c\";");
+		testStat("cdata a;");
+		testStat("cdata a + b;");
+		testStat("cdata a.c;");
+	}
+	
+	
+	@Test
+	public void let() {
+		testStat("let a = 3; in echo a; end");
+		testStat("let a = 3; b = 4; in echo a; end");
+		testStat("let a() = echo a; in a; end");
+		testStat("let a() = echo a; b() = if (x) echo 3; in a; end");
+		testStat("let a() = echo a; b() = if (x) echo 3; else echo 5; in b(); end");
+		testStat("let a() = echo a; y = 5; x = 5; in echo x; end");
+		testStat("let x = 4; a(y) = each (x: [1,2,3]) echo x + y; in a(x); end");
+	}
+	
+
 	
 }
