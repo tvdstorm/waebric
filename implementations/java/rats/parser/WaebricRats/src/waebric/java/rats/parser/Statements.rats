@@ -54,4 +54,4 @@ generic Binding  =
 	/ Identifier void:"(":Sym Formals? void:")":Sym void:"=":Sym Statement;
 
 Pair<Node> Formals =
-	Identifier (void:",":Sym Identifier)*;
+	Var (void:",":Sym Var)*;

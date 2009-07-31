@@ -11,8 +11,24 @@ public class TestExpressions extends RatsTesting {
 	}
 
 	@Test
+	public void numberZero() {
+		testExp("0");
+	}
+	
+
+	@Test
 	public void number() {
 		testExp("1234");
+	}
+
+
+	@Test
+	public void symbols() {
+		testExp("'1234");
+		testExp("'1234abcd-ef/dskjdks ");
+		testExp("'askdjhasjd98398723498");
+		testExp("'askdjhaskdhuwb&^%^&*#&@*#&@*");
+		testExp("'http://www.example.com");
 	}
 
 	@Test
@@ -24,11 +40,6 @@ public class TestExpressions extends RatsTesting {
 		testExp("aabc-d-efff");
 	}
 
-	
-	@Test
-	public void numberZero() {
-		testExp("0");
-	}
 	
 	
 	@Test
