@@ -11,7 +11,7 @@ import xtc.parser.Result;
 import xtc.tree.Node;
 
 public class RatsTesting {
-	private boolean logging = false;
+	private boolean logging = true;
 	
 	public void setLogging(boolean flag) {
 		this.logging = flag;
@@ -70,9 +70,33 @@ public class RatsTesting {
 	
 	
 	public void testStat(String source) {
-		new Parser("Expression", source, this.getClass().getName()) {
+		new Parser("Statement", source, this.getClass().getName()) {
 			public Result parse() throws IOException {
 				return parser.pTestStatement(0);
+			}
+		}.run();
+	}
+
+	public void testModule(String source) {
+		new Parser("Module", source, this.getClass().getName()) {
+			public Result parse() throws IOException {
+				return parser.pModule(0);
+			}
+		}.run();
+	}
+	
+	public void testSite(String source) {
+		new Parser("Site", source, this.getClass().getName()) {
+			public Result parse() throws IOException {
+				return parser.pTestSite(0);
+			}
+		}.run();
+	}
+	
+	public void testFunction(String source) {
+		new Parser("Function", source, this.getClass().getName()) {
+			public Result parse() throws IOException {
+				return parser.pTestFunction(0);
 			}
 		}.run();
 	}

@@ -14,11 +14,22 @@ public class TestExpressions extends RatsTesting {
 	public void number() {
 		testExp("1234");
 	}
+
+	@Test
+	public void identifiers() {
+		testExp("a");
+		testExp("a-b");
+		testExp("abc");
+		testExp("ab");
+		testExp("aabc-d-efff");
+	}
+
 	
 	@Test
 	public void numberZero() {
 		testExp("0");
 	}
+	
 	
 	@Test
 	public void addition() {
