@@ -53,5 +53,5 @@ generic Binding  =
 	Identifier void:"=":Sym Expression void:";":Sym
 	/ Identifier void:"(":Sym Formals? void:")":Sym void:"=":Sym Statement;
 
-generic Formals =
+Pair<Node> Formals =
 	Identifier (void:",":Sym Identifier)*;

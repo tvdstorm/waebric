@@ -21,7 +21,7 @@ generic Embedding = PreText Spacing Embed TextTail;
 
 generic Embed =
 	Expression &[>] 
-	/ (Markup ![>])+ Expression ![(]
+	/ (Markup ![>])+ Expression &[>]
 	/ Markup+;
  
  
