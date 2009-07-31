@@ -1,6 +1,5 @@
 package waebric.java.rats.parser.test;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class TestExpressions extends RatsTesting {

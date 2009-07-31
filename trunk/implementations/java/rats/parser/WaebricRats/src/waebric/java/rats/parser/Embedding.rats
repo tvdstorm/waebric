@@ -5,13 +5,11 @@ import waebric.java.rats.parser.Markup;
 import waebric.java.rats.parser.Text;
 import waebric.java.rats.parser.Layout;
 
-
 String PreText = '"' TextChar* '<';
 
 String PostText = '>' TextChar* '"';
 
 String MidText = '>' TextChar* '<';
-
 
 generic TextTail =
 	PostText

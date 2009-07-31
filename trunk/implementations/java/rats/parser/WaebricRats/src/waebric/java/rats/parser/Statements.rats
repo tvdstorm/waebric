@@ -22,7 +22,6 @@ public generic Statement =
 generic If = 
 	void:"if":Word void:"(":Sym Predicate void:")":Sym Statement void:"else":Word Statement
 	/ void:"if":Word void:"(":Sym Predicate void:")":Sym Statement null;
-
 	
 generic Each = void:"each":Word void:"(":Sym Pair void:")":Sym Statement;
 
@@ -40,7 +39,6 @@ generic Yield = void:"yield":Word void:";":Sym;
 
 generic Block = void:"{":Sym Statement* void:"}":Sym;
 
-
 generic Call =
 	null Markup void:";":Sym
 	/ Markups Expression void:";":Sym 
@@ -53,5 +51,4 @@ generic Binding  =
 	Identifier void:"=":Sym Expression void:";":Sym
 	/ Identifier void:"(":Sym Formals? void:")":Sym void:"=":Sym Statement;
 
-Pair<Node> Formals =
-	Var (void:",":Sym Var)*;
+Pair<Node> Formals = Var (void:",":Sym Var)*;

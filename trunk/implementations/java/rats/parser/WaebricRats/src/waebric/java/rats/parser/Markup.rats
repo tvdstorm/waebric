@@ -5,8 +5,7 @@ import waebric.java.rats.parser.Identifiers;
 import waebric.java.rats.parser.Numbers;
 import waebric.java.rats.parser.Layout;
 
-Pair<Node> Arguments = 
-	Argument (void:",":Sym Argument)*;
+Pair<Node> Arguments = Argument (void:",":Sym Argument)*;
 	
 generic Argument =
 	Identifier void:"=":Sym Expression
@@ -16,8 +15,7 @@ generic Markup =
 	Designator void:"(":Sym Arguments? void:")":Sym 
 	/ Designator;
 	
-generic Designator =
-	Identifier Attribute*;
+generic Designator = Identifier Attribute*;
 	
 generic Attribute =
 	"#":Sym Identifier

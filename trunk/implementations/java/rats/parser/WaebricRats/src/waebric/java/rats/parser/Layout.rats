@@ -1,11 +1,6 @@
 module waebric.java.rats.parser.Layout;
 
-transient void Spacing =
-  ( Space
-  / TraditionalComment
-  / EndOfLineComment
-  )*
-  ;
+transient void Spacing = (Space / TraditionalComment / EndOfLineComment)*;
 
 transient void Space              = ' ' /  '\t' / '\f' / LineTerminator ;
 transient void TraditionalComment = "/*" ( '*' !'/' / !'*' _ )* "*/" ;
