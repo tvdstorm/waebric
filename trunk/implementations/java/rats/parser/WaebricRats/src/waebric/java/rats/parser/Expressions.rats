@@ -22,7 +22,10 @@ generic Primary =
 	
 generic Var = Identifier;
 
-generic Constant = Text Spacing / Number;
+generic Constant = 
+	Text Spacing
+	/ Symbol Spacing
+	/ Number;
 	
 generic Record = void:"{":Sym Pairs? void:"}":Sym;
  
@@ -34,7 +37,4 @@ generic Pair = Identifier void:":":Sym Expression;
 
 Pair<Node> Pairs = Pair (void:",":Sym Pair)*;
 
-
-// This seems to trigger a bug in Rats! code generation
-// \000 did also not work
-String Symbol = void:'\'' ![\001-\037\200-\377\t\n\r;,> )] _;
+String Symbol = ['][:\-a-zA-Z0-9!@#$%^&*_=+<{}\[\],./?\\|`~]+;
