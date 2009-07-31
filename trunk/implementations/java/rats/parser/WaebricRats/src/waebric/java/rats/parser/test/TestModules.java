@@ -59,5 +59,21 @@ public class TestModules extends RatsTesting {
  "		     else \n" +
  "		       a(href=mi.link) mi.title;\n" +
  "		end");
+		
+		testFunction("def swfobject(url, width, height, id)\n" +
+ " object(classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000, width=width, height=height) {\n" +
+ "    param$movie(url);\n" +
+ "    param$quality('high);\n" +
+ "    param$bgcolor('#fffce6);\n" +
+ "    comment \"[if !IE]>\";\n" +
+ "    object(type='application/x-shockwave-flash, data=url, width=width, height=height) {\n" +
+ "      param$quality('high);\n" +
+ "      param$bgcolor('#fffce6);\n" +
+ "      comment \"<![endif]\";\n" +
+ "      comment \"[if !IE]>\";\n" +
+ "    }      \n" +
+ "    comment \"<![endif]\";\n" +
+ "  }\n" +
+ "end");
 	}
 }
