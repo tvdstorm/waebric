@@ -29,7 +29,7 @@ option setOfString(RESERVED);
 // Hack?
 String Sym = SymChar Spacing;
 
-transient String SymChar = [#$=?%@,&|+:{}\[\]();.];  
+transient String SymChar = [#$=?%@,&|+:{}\[\]();.<>];  
 
 String Identifier =
   yyValue:Word &{ !contains(RESERVED, toText(yyValue)) } ;

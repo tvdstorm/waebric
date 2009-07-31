@@ -175,20 +175,30 @@ public class TestStatements extends RatsTesting {
 		testStat("a(1,2,3);");
 		testStat("a(1,2,\"aaa\");");
 		testStat("a(1);");
-//		
-//		testStat("");
-//		testStat("");
-//		testStat("");
-//		testStat("");
-//		testStat("");
-//		testStat("");
-//		testStat("");
-//		testStat("");
-//		testStat("");
-//		testStat("");
-//
-//		testStat("a.b$b");
 		
+	}
+	
+	@Test
+	public void embedding() {
+		testStat("echo \"<a>\";");
+		testStat("echo \"<a b>\";");
+		testStat("echo \"<a b c>\";");
+		testStat("echo \"<a b c()>\";");
+		testStat("echo \"<a.b>\";");
+		testStat("echo \"<a b.c>\";");
+		testStat("echo \"<a.d b c>\";");
+		testStat("echo \"<a.d b c()>\";");
+		testStat("echo \"<a.d b c(x,y,z)>\";");
+		testStat("echo \"<a.d b c(x, y, z)>\";");
+		
+		testStat("echo \"abc<X>def\";");
+		testStat("echo \"abc<X>def<Y>ghij\";");
+		testStat("echo \"abc<X>def<Y>ghij<Z>klm\";");
+		
+		// Layout around embeddings
+		testStat("echo \"abc< X >def\";");
+		testStat("echo \"abc< X >def< Y >ghij\";");
+		testStat("echo \"abc< X >def< Y >ghij< Z >klm\";");
 	}
 	
 	
