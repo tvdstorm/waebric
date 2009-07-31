@@ -11,6 +11,16 @@ public class TestExpressions extends RatsTesting {
 	}
 
 	@Test
+	public void number() {
+		testExp("1234");
+	}
+	
+	@Test
+	public void numberZero() {
+		testExp("0");
+	}
+	
+	@Test
 	public void addition() {
 		testExp("x + x");
 	}
@@ -60,4 +70,72 @@ public class TestExpressions extends RatsTesting {
 		testExp("\"\\\"abc\"");
 	}
 
+	@Test 
+	public void recordEmpty() {
+		testExp("{ }");
+	}
+
+	@Test 
+	public void recordEmptyNoWs() {
+		testExp("{}");
+	}
+
+	@Test 
+	public void recordSingle() {
+		testExp("{a: 3}");
+	}
+	
+	@Test 
+	public void recordMany() {
+		testExp("{a: 123, b: 345}");
+	}
+	
+	@Test 
+	public void listEmpty() {
+		testExp("[ ]");
+	}
+	
+	@Test 
+	public void listEmptyNoWs() {
+		testExp("[]");
+	}
+
+	@Test 
+	public void listSingle() {
+		testExp("[a]");
+	}
+	
+	
+	@Test 
+	public void listMany() {
+		testExp("[a, b, c, 123]");
+	}
+
+	@Test 
+	public void listNestingDirectEmpty() {
+		testExp("[[]]");
+	}
+
+	@Test 
+	public void listNesting() {
+		testExp("[a, [b, c], a]");
+	}
+
+	@Test 
+	public void listNestingInject() {
+		testExp("[a, [b, c], [[[123]]]]");
+	}
+
+	@Test 
+	public void recordNesting() {
+		testExp("{a: {b: 123, c: {k: 345}}}");
+	}
+	
+	@Test 
+	public void variable() {
+		testExp("a");
+	}
+	
+	
+	
 }

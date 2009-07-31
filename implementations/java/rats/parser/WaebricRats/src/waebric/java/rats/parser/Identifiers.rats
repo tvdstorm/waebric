@@ -27,10 +27,9 @@ option setOfString(RESERVED);
 
 
 // Hack?
-String Keyword = Word Spacing;
-String Op = OpChars Spacing;
+String Sym = SymChar Spacing;
 
-transient String OpChars = [#$=?@,&|+:{}\[\]();.]+;  
+transient String SymChar = [#$=?%@,&|+:{}\[\]();.];  
 
 String Identifier =
   yyValue:Word &{ !contains(RESERVED, toText(yyValue)) } ;
@@ -39,5 +38,5 @@ String Word = WordCharacters Spacing ;
 
 transient String WordCharacters =
   start:_ &{ Character.isLetter(start) }
-    ( part:_ &{ Character.isLetterOrDigit(part) } )*
+    ( part:_ &{ (Character.isLetterOrDigit(part) || part == '-') } )*
   ;

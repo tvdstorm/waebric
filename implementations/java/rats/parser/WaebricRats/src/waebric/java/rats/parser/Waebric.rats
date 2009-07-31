@@ -10,7 +10,7 @@ import waebric.java.rats.parser.Statements;
 import waebric.java.rats.parser.Sites;
 
 // The true start symbol
-public generic Module = "module":Keyword ModuleId ModuleElement*;
+public generic Module = void:"module":Word ModuleId ModuleElement*;
 
 // Helper start symbols for testing purposes
 public generic TestExpression = Expression;
@@ -22,14 +22,13 @@ generic ModuleElement =
 	/ Site
 	/ Function;
 
-generic Import = "import":Keyword ModuleId;
+generic Import = void:"import":Word ModuleId;
 
 generic ModuleId = 
-	(Identifier void:".":Op)+ Identifier
-	/ Identifier;
+	Identifier (void:".":Sym Identifier)* ;
 
 generic Function = 
-	"def":Keyword Identifier void:"(":Op Formals void:")":Op Statement* "end":Keyword
-	/ "def":Keyword Identifier Statement* "end":Keyword;
+	void:"def":Word Identifier void:"(":Sym Formals? void:")":Sym Statement* void:"end":Word
+	/ void:"def":Word Identifier null Statement* void:"end":Word;
 	
 
