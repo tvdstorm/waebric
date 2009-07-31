@@ -36,7 +36,11 @@ String Identifier =
 
 String Word = WordCharacters Spacing ;
 
-transient String WordCharacters =
+String WordCharacters = 
+	[a-zA-Z][\-a-zA-Z0-9]*;
+	
+/*
   start:_ &{ Character.isLetter(start) }
     ( part:_ &{ (Character.isLetterOrDigit(part) || part == '-') } )*
   ;
+*/

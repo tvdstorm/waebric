@@ -42,20 +42,12 @@ generic Block = void:"{":Sym Statement* void:"}":Sym;
 
 
 generic Call =
-	null Designator void:";":Sym
+	null Markup void:";":Sym
 	/ Markups Expression void:";":Sym 
 	/ Markups Markup void:";":Sym 
 	/ Markups Statement;
 
 Pair<Node> Markups = (Markup ![;])+;
-
-/*
-generic Call = 
-	null Designator void:";":Sym
-	/ Markup+ Var void:";":Sym 
-	/ Markup+ Expression void:";":Sym
-	/ Markup+ Statement;
-*/
 
 generic Binding  =
 	Identifier void:"=":Sym Expression void:";":Sym

@@ -9,22 +9,14 @@ generic Site =
 	void:"site":Word Mappings? void:"end":Word;
 
 generic Mapping =
-	Path void:":":Sym Markup;
+	Dir void:":":Sym Markup;
 
 Pair<Node> Mappings =
 	Mapping (void:";":Sym Mapping)*;  
 
-String Path = 
-	DirName '/' ![ \t\n\r./\\] FileName
-	/ FileName ;
+String Elt = (![ \t\n\r:/\\] _)+;
 
-String DirName = Directory ![/];
-
-String PathElement = (![ \t\n\r./\\] _)+;
+String Dir = 
+	Elt ('/' Elt)*
+	/ ('/' Elt)*;
 	
-String FileExt = [a-zA-Z0-9]+;
-
-String Directory = 
-	PathElement ('/' PathElement)*;
-
-String FileName = PathElement '.' FileExt;

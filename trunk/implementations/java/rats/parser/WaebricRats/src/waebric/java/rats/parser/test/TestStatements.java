@@ -79,6 +79,7 @@ public class TestStatements extends RatsTesting {
 		testStat("each(x: y) echo x;");
 		testStat("each(x: y) { echo x; echo x; }");
 		testStat("each(x: [ ]) echo x;");
+		testStat("each(x: []) echo x;");
 		testStat("each(x: [1, 2, 3]) { echo x; echo x; }");
 	}
 
@@ -101,6 +102,7 @@ public class TestStatements extends RatsTesting {
 	@Test
 	public void markup() {
 		testStat("a;");
+		testStat("a();");
 		testStat("a b;");
 		testStat("a b c;");
 		testStat("a b();");
@@ -165,8 +167,14 @@ public class TestStatements extends RatsTesting {
 		testStat("a b() if (x) echo y; else  echo z;");
 		testStat("a b c() if (x) echo y; else  echo z;");
 
+		// Difference between empty record and block;
 		
+		testStat("a {}");
+		testStat("a {};");
 		
+		testStat("a(1,2,3);");
+		testStat("a(1,2,\"aaa\");");
+		testStat("a(1);");
 //		
 //		testStat("");
 //		testStat("");
