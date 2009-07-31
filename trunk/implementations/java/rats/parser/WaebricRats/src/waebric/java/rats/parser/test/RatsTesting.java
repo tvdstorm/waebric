@@ -43,7 +43,7 @@ public class RatsTesting {
 					Assert.fail();
 				}
 				else {
-					log(((Node)result.semanticValue()).get(0));
+					log(((Node)result.semanticValue()));
 					Assert.assertTrue(parser.isEOF(result.index));
 				}
 			} catch (IOException e) {
