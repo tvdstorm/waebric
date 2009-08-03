@@ -111,12 +111,12 @@ module Waebric
         
         //---Path---
         //token PathChar = ('\u0021'..'\u0029' | '\u002B'..'\u002D' | '\u0030'..'\u0039' | '\u003B' | '\u003D' | '\u0040'..'\u005B' | '\u005D'..'\u007B' | '\u007D'..'\u007F');
-        //token PathChar = ('\u0021'..'\u002D' | '\u0030'..'\u005A' | '\u005E'..'\u007E');
+        token PathChar = ('\u0021'..'\u002D' | '\u002F'..'\u005A' | '\u005E'..'\u007E');
         /*token PathElement = PathChar+ "/";
         token Directory = PathElement+;*/
         //token FileExt = (Letter | Digit)+;
         //token PathChar = ('\u0021'..'\u002D');
-        token Filename = '[' 'a' ']';
+        token Filename = ('/' | './')  PathChar+ ^('/') '.' (Letter | Digit)+;
         
         //token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
         
@@ -175,8 +175,8 @@ module Waebric
      
         //---Sites---
         //site {Mapping ";"}* end
-        syntax Site = "site" Filename "end";//m:Mappings* "end"
-            //=> Site [valuesof(m)];
+        syntax Site = "site" m:Mappings "end"
+            => Site [valuesof(m)];
         
         //{Mapping ";"}
         syntax Mappings
@@ -186,16 +186,9 @@ module Waebric
                 => Mappings[valuesof(list), item];
         
         //{Path ":" Markup}* -> Mapping
-        syntax Mapping = Filename;
-           /* = p:Filename ":" m:Markup
-                => Mapping[p, m];  */
-    
-                 
-        //syntax Path = f:Filename => Path[f];
-           /* = d:Directory f:Filename 
-               => Path[d,f]
-            | f:Filename
-                => Path[f];     */ 
+        syntax Mapping
+            = p:Filename ":" m:Markup
+                => Mapping[p, m];   
             
         //---Functions---
         syntax FunctionDefinition 
@@ -214,15 +207,15 @@ module Waebric
         //---Statements
         syntax Statement  
             = Statement_No_Markup
-            | precedence 1: m:Markup+ s:Statement_No_Markup
+            | m:MarkupList s:Statement_No_Markup
                 => MarkupStatStatement[m,s]
-            | precedence 2: Statement_Markup_No_Statement;
+            | Statement_Markup_No_Statement;
             
         syntax Statement_No_Markup
             = "each" "(" i:IdCon ":" e:Expression ")" s:Statement
-                => EachStatement[i,e,s]
+                => EachStatement[i,e,valuesof(s)]
             | precedence 2: "if" "(" p:Predicate ")" ts:Statement
-                => IfStatement[p,ts]
+                => IfStatement[p,valuesof(ts)]
             | precedence 1: "if" "(" p:Predicate ")" ts:Statement_No_Short_If "else" fs:Statement
                 => IfElseStatement[p,valuesof(ts),valuesof(fs)]
             | Statement_No_Markup_No_Short_If;
@@ -236,20 +229,32 @@ module Waebric
         syntax Statement_Markup_No_Statement
             = m:Markup ";"
                 => MarkupStatement[m]
-            | ml:Markup+ m:Markup_No_Short_Markup ";"
-                => MarkupMarkupStatement[ml,m]
-            | ml:Markup+ e:Expression ";"
-                => MarkupExpressionStatement[ml, e]
+            | MarkupStatement
+           // | ml:MarkupList m:MarkupCall ";"
+           //     => MarkupMarkupStatement[ml, m]
+           // | ml:MarkupList e:Expression ";"
+           //     => MarkupExpressionStatement[ml, e]
             | ml:Markup+ e:Embedding ";"
-                => MarkupEmbeddingStatement[ml,e];
+               => MarkupEmbeddingStatement[ml,e];
+                
+        syntax MarkupStatement 
+            = ml:MarkupList me:MarkupExpression ";" 
+                => MarkupStatement[ml, me]
+            | m:Markup ";"
+                => MarkupStatement[m];        
+        syntax MarkupExpression 
+            = d:Designator a:Arguments 
+                => [d,a]
+            | e:Expression
+                => [e];
         
         syntax Statement_No_Markup_No_Short_If 
             = "let" a:Assignment+ "in" s:Statement* "end"
                 => LetStatement[a,s]
             | "{" s:Statement* "}"
                 => BlockStatement[s]
-            | "comment" s:StrCon ";"
-                => CommentStatement[s]
+            | "comment" t:Text ";"
+                => CommentStatement[t]
             | "echo" e:Expression ";"
                 => EchoExpressionStatement[e]
             | "echo" e:Embedding ";"
@@ -258,7 +263,12 @@ module Waebric
                 => CDataStatement[e]
             | "yield" ";"
                 => YieldStatement[];
-        
+                
+        syntax MarkupList
+            = item:Markup
+                => MarkupList[item]
+            | list:MarkupList item:Markup
+                => MarkupList[valuesof(list),item];
         
         syntax Assignment 
                 = FuncBindAssignment
@@ -273,12 +283,6 @@ module Waebric
             = i:IdCon f:Formals "=" s:Statement ";"
                 => FuncBindAssignment[i,f,s];
                 
-        /*syntax MarkupList
-            = item:Markup
-                => MarkupList[item]
-            | list:MarkupList item:Markup
-                => MarkupList[valuesof(list), item];*/
-        
         //---Predicates---
         syntax Predicate 
             = NotPredicate
@@ -314,7 +318,10 @@ module Waebric
         syntax Expression_No_Plus 
             = i:IdCon
                 => VarExpression[i]
-            | t:Text
+            | Expression_No_Var;
+        
+        syntax Expression_No_Var
+            = t:Text
                 => TextExpression[t]
             | s:SymbolCon 
                 => SymbolExpression[s]
@@ -345,10 +352,12 @@ module Waebric
        
         //---Markup---
         syntax Markup 
-            = Markup_No_Short_Markup
+            = MarkupCall
             | d:Designator
-                => d;
-        syntax Markup_No_Short_Markup = Designator Arguments;
+                => MarkupTag[d];
+        syntax MarkupCall 
+            = d:Designator a:Arguments
+                => MarkupCall[d,a];
         
         syntax Arguments 
             = "(" a:ArgumentList? ")"
@@ -390,7 +399,7 @@ module Waebric
                 => Embedding[p,e,t];
         
         syntax Embed 
-            = Markup+ Markup_No_Short_Markup
+            = Markup+ MarkupCall
             | Markup+ Expression;
             
         syntax TextTail 
