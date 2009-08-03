@@ -234,7 +234,7 @@ module Waebric
            //     => MarkupMarkupStatement[ml, m]
            // | ml:MarkupList e:Expression ";"
            //     => MarkupExpressionStatement[ml, e]
-            | ml:Markup+ e:Embedding ";"
+            | ml:MarkupList e:Embedding ";"
                => MarkupEmbeddingStatement[ml,e];
                 
         syntax MarkupStatement 
@@ -267,8 +267,8 @@ module Waebric
         syntax MarkupList
             = item:Markup
                 => MarkupList[item]
-            | list:MarkupList item:Markup
-                => MarkupList[valuesof(list),item];
+            | item:Markup list:MarkupList
+                => MarkupList[item,valuesof(list)];
         
         syntax Assignment 
                 = FuncBindAssignment
