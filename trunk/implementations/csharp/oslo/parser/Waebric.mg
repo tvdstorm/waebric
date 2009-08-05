@@ -1,6 +1,6 @@
 /*
-    Module Waebric
-    This module contains the starting point for this language
+    Waebric Oslo implementation
+    Implemented by Jeroen van Lieshout
 */
 module Waebric
 {
@@ -124,9 +124,9 @@ module Waebric
         //token IdList = IdCon ("." IdCon)*;
 
         //token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
-        token Pre_Text = '"' t:Text_Char* '<';
-        token Post_Text = '>' t:Text_Char* '"';
-        token Mid_Text = '>' t:Text_Char* '<';
+        token Pre_Text = '"' t:Text_Char* '<' => t;
+        token Post_Text = '>' t:Text_Char* '"' => t;
+        token Mid_Text = '>' t:Text_Char* '<' => t;
 
         //---Keyword Tokens---
         @{Classification["Keyword"]} token ModuleKeyword = "module";
@@ -206,45 +206,48 @@ module Waebric
        
         //---Statements
         syntax Statement  
-            = Statement_No_Markup
+            = s:Statement_No_Markup
+                => s
             | m:MarkupList s:Statement_No_Markup
                 => MarkupStatStatement[m,s]
-            | Statement_Markup_No_Statement;
+            | s:Statement_Markup_No_Statement
+                => s;
             
         syntax Statement_No_Markup
             = "each" "(" i:IdCon ":" e:Expression ")" s:Statement
-                => EachStatement[i,e,valuesof(s)]
-            | precedence 2: "if" "(" p:Predicate ")" ts:Statement
-                => IfStatement[p,valuesof(ts)]
-            | precedence 1: "if" "(" p:Predicate ")" ts:Statement_No_Short_If "else" fs:Statement
-                => IfElseStatement[p,valuesof(ts),valuesof(fs)]
-            | Statement_No_Markup_No_Short_If;
+                => EachStatement[i,e,s]
+            | "if" "(" p:Predicate ")" ts:Statement
+                => IfStatement[p,TrueStatement[ts]]
+            | "if" "(" p:Predicate ")" ts:Statement_No_Short_If "else" fs:Statement
+                => IfElseStatement[p,TrueStatement[ts],FalseStatement[fs]]
+            | s:Statement_No_Markup_No_Short_If
+                => s;
         
         syntax Statement_No_Short_If
-            = Statement_No_Markup_No_Short_If
-            | Statement_Markup_No_Statement
+            = s:Statement_No_Markup_No_Short_If
+                => s
+            | s:Statement_Markup_No_Statement
+                => s
             | "if" "(" p:Predicate ")" ts:Statement_No_Short_If "else" fs:Statement_No_Short_If 
-                => IfElseStatement[p,valuesof(ts),valuesof(fs)];
+                => IfElseStatement[p,TrueStatement[ts],FalseStatement[fs]];
         
         syntax Statement_Markup_No_Statement
             = m:Markup ";"
                 => MarkupStatement[m]
-            | MarkupStatement
-           // | ml:MarkupList m:MarkupCall ";"
-           //     => MarkupMarkupStatement[ml, m]
-           // | ml:MarkupList e:Expression ";"
-           //     => MarkupExpressionStatement[ml, e]
+            | m:MarkupsStatement
+                => MarkupsStatement[m]
             | ml:MarkupList e:Embedding ";"
                => MarkupEmbeddingStatement[ml,e];
                 
-        syntax MarkupStatement 
+        syntax MarkupsStatement 
             = ml:MarkupList me:MarkupExpression ";" 
-                => MarkupStatement[ml, me]
+                => MarkupsStatement[ml, valuesof(me)]
             | m:Markup ";"
-                => MarkupStatement[m];        
+                => MarkupsStatement[m];        
+        
         syntax MarkupExpression 
-            = d:Designator a:Arguments 
-                => [d,a]
+            = mc:MarkupCall
+                => [mc]
             | e:Expression
                 => [e];
         
@@ -285,40 +288,36 @@ module Waebric
                 
         //---Predicates---
         syntax Predicate 
-            = NotPredicate
-            | AndPredicate
-            | OrPredicate
-            | IsAPredicate
-            | Expression;
+            = p:Predicate_No_And_Or
+                => p
+            | l:Predicate "&&" r:Predicate_No_And_Or
+                => AndPredicate[l,r]
+            | l:Predicate "||" r:Predicate_No_And_Or
+                => OrPredicate[l,r];
         
-        syntax NotPredicate 
-            = Exclam_Mark p:Predicate
+        syntax Predicate_No_And_Or
+            = e:Expression
+                => e
+            | e:Expression "." t:Type "?"
+                => IsAPredicate[e, t]
+            | "!" p:Predicate_No_And_Or
                 => NotPredicate[p];
-                
-        syntax AndPredicate 
-            = l:Predicate And r:Predicate
-                => AndPredicate[l,r];
-        
-        syntax OrPredicate 
-            = l:Predicate Or r:Predicate
-                => OrPredicate[l,r]; 
-        
-        syntax IsAPredicate 
-            = e:Expression ":" t:Type "?"
-                => IsAPredicate[e,t];
+
         
         syntax Type = "string" | "record" | "list";
 
         //---Expressions---
         syntax Expression 
-            = Expression_No_Plus
+            = e:Expression_No_Plus
+               => e
             | l:Expression "+" r:Expression_No_Plus 
                 => CatExpression[l,r];
                 
         syntax Expression_No_Plus 
             = i:IdCon
                 => VarExpression[i]
-            | Expression_No_Var;
+            | e:Expression_No_Var
+                => e;
         
         syntax Expression_No_Var
             = t:Text
@@ -327,7 +326,7 @@ module Waebric
                 => SymbolExpression[s]
             | n:NatCon
                 => NatExpression[n]
-            | e:Expression_No_Plus "^" i:IdCon
+            | e:Expression_No_Plus "." i:IdCon
                 => FieldExpression[e,i]
             | "[" e:ExpressionList? "]"
                 => ListExpression[valuesof(e)]
@@ -352,7 +351,8 @@ module Waebric
        
         //---Markup---
         syntax Markup 
-            = MarkupCall
+            = mc:MarkupCall
+               => mc
             | d:Designator
                 => MarkupTag[d];
         syntax MarkupCall 
@@ -366,8 +366,8 @@ module Waebric
         syntax ArgumentList 
             = item: Argument
                 => [item]
-            | list:ArgumentList "," item:Argument
-                => [valuesof(list), item];
+            |  item:Argument "," list:ArgumentList
+                => [item, valuesof(list)];
         
         syntax Argument 
             = i:IdCon "=" e:Expression
@@ -399,12 +399,13 @@ module Waebric
                 => Embedding[p,e,t];
         
         syntax Embed 
-            = Markup+ MarkupCall
-            | Markup+ Expression;
+            = ml:MarkupList mc:MarkupCall
+                => Embed[ml,mc]
+            | ml:MarkupList e:Expression
+                => Embed[ml,e];
             
         syntax TextTail 
             = Post_Text
             | Mid_Text Embed TextTail;
-  
     }
 }
