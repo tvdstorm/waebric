@@ -121,13 +121,13 @@ module Waebric
         //token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
         
         //---Misc---       
+        token Pre_Text = '"' t:Text_Char* '<' => PreText[t];
+        token Post_Text = '>' t:Text_Char* '"' => PostText[t];
+        token Mid_Text = '>' t:Text_Char* '<' => MidText[t];
         //token IdList = IdCon ("." IdCon)*;
 
         //token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
-        token Pre_Text = '"' t:Text_Char* '<' => t;
-        token Post_Text = '>' t:Text_Char* '"' => t;
-        token Mid_Text = '>' t:Text_Char* '<' => t;
-
+        
         //---Keyword Tokens---
         @{Classification["Keyword"]} token ModuleKeyword = "module";
         @{Classification["Keyword"]} token ImportKeyword = "import";
@@ -182,8 +182,8 @@ module Waebric
         syntax Mappings
             = item:Mapping
                 => Mappings[item]
-            | list: Mappings ";" item:Mapping
-                => Mappings[valuesof(list), item];
+            | item:Mapping ";" list: Mappings
+                => Mappings[item, valuesof(list)];
         
         //{Path ":" Markup}* -> Mapping
         syntax Mapping
@@ -241,7 +241,7 @@ module Waebric
             = m:Markup ";"
                 => MarkupStatement[m]
             | m:MarkupsStatement
-                => MarkupsStatement[m]
+                => m
             | ml:MarkupList e:Embedding ";"
                => MarkupEmbeddingStatement[ml,e];
                 
@@ -342,8 +342,8 @@ module Waebric
         syntax ExpressionList
             = item:Expression
                 => [item]
-            | list:ExpressionList "," item:Expression
-                => [valuesof(list), item];
+            | item:Expression "," list:ExpressionList 
+                => [item, valuesof(list)];
                 
         syntax KeyValuePairList
             = item:KeyValuePair
@@ -405,13 +405,24 @@ module Waebric
                 => Embedding[p,e,t];
         
         syntax Embed 
-            = ml:MarkupList mc:MarkupCall
-                => Embed[ml,mc]
-            | ml:MarkupList e:Expression
-                => Embed[ml,e];
+            = ml:MarkupList? me:EmbedMarkupExpression 
+                => Embed[ml, valuesof(me)]
+            | m:Markup
+                => Embed[m];
+                
+        syntax EmbedMarkupExpression 
+            = mc:MarkupCall
+                => [mc]
+            | e:Expression
+                => [e];
             
         syntax TextTail 
-            = Post_Text
-            | Mid_Text Embed TextTail;
+            = p:Post_Text
+                => TextTail[p]
+            | m:Mid_Text e:Embed t:TextTail
+                => TextTail[m,e,t];
+        
+
+        
     }
 }
