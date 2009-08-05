@@ -192,8 +192,14 @@ module Waebric
             
         //---Functions---
         syntax FunctionDefinition 
-            = "def" i:IdCon f:Formals? s:Statement* "end"
-                => FunctionDef[i,f,Statements[valuesof(s)]];
+            = "def" i:IdCon f:Formals? s:StatementList "end"
+                => FunctionDef[i,f,s];
+                
+        syntax StatementList 
+            = item:Statement?
+                => StatementList[item]
+            | item:Statement list:StatementList
+                => StatementList[item, valuesof(list)];
         
         syntax Formals = "(" f:Formal? ")"
             => Formals[valuesof(f)];
@@ -254,7 +260,7 @@ module Waebric
         syntax Statement_No_Markup_No_Short_If 
             = "let" a:Assignment+ "in" s:Statement* "end"
                 => LetStatement[a,s]
-            | "{" s:Statement* "}"
+            | "{" s:StatementList "}"
                 => BlockStatement[s]
             | "comment" t:Text ";"
                 => CommentStatement[t]
