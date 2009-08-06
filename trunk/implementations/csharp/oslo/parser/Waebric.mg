@@ -198,8 +198,8 @@ module Waebric
         syntax Formal 
             = item: IdCon
                 => [item]
-            | list: Formal "," item: IdCon
-                => [valuesof(list), item];
+            | item: IdCon "," list: Formal
+                => [item, valuesof(list)];
        
         //---Statements
         syntax Statement  
@@ -412,8 +412,6 @@ module Waebric
                 => TextTail[p]
             | m:Mid_Text e:Embed t:TextTail
                 => TextTail[m,e,t];
-        
 
-        
     }
 }
