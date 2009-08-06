@@ -249,8 +249,8 @@ module Waebric
                 => [e];
         
         syntax Statement_No_Markup_No_Short_If 
-            = "let" a:Assignment+ "in" s:Statement* "end"
-                => LetStatement[a,s]
+            = "let" a:Assignment+ "in" s:StatementList "end"
+                => LetStatement[Assignments[valuesof(a)],s]
             | "{" s:StatementList "}"
                 => BlockStatement[s]
             | t:CommentKey
@@ -358,7 +358,7 @@ module Waebric
         
         syntax Arguments 
             = "(" a:ArgumentList? ")"
-                => Arguments[a];
+                => Arguments[valuesof(a)];
                 
         syntax ArgumentList 
             = item: Argument
