@@ -90,43 +90,33 @@ module Waebric
         token HexaDecimal = '0'..'9' | 'A'..'F' | 'a'..'f';
         token Minus = '-';
         token Amp = '&';
-        token Esc_Quote = ('\\' | '\"');
-        token Str_Char = ('\n' | '\t' | '\"' | '\\' Digit Digit Digit | '\u0020'..'\u0021' | '\u0023'..'\u005C');
-        //token Input_Chars = '\u0020'..'\u007F';
+        token Esc_Quote = ('\\' | '\"') => '\\\"';
+        token Str_Char = ("\\n" | "\\t" | "\\\"" | "\\\\" | "\\" Digit Digit Digit | '\u0020'..'\u0021' | '\u0023'..'\u005B' | '\u005D'..'\u007E');
         
         //---Text Tokens---
-        token EscQuote = '\\' '\"' => '\\\"';
+        token EscQuote = '\\' '\"';
         token Text_Char_Ref = '&#' Digit+ ';' | '&#x' HexaDecimal+ ';';
         token Text_Entity_Ref = '&' (Letter | '_' | '"') (Letter | Digit | '.' | '-' | '_' | ':')* ';';
         token Text_Char = (TextSymbolChar | Amp | Text_Char_Ref | Text_Entity_Ref | Space | CR | LF | HT);
         token TextSymbolChar = ('\u0020'..'\u0021' | '\u0023'..'\u0025' | '\u0027'..'\u003B' | '\u003D'..'\u007E');
-        token Text = '"' t:(Text_Char | EscQuote)* '"' => t;        
+        token Text = '"' t:(EscQuote | Text_Char)* '"' => t;        
         
         //---Identifier---
         token IdCon = Letter (Letter | Digit | Minus)*;
         token NatCon = Digit+;
         token SymbolCon = "'" s:SymbolChar* => s;
         token SymbolChar = ('\u0021'..'\u0028' | '\u002A'..'\u002B' | '\u002D'..'\u003A' | '\u003C'..'\u003D' | '\u003F'..'\u005C' | '\u005E'..'\u007C' | '\u007E'..'\u007F');
-        token StrCon = '"' s:Str_Char* '"' => s;   
+        token StrCon = '"' s:Str_Char* '"' => s;
         
         //---Path---
-        //token PathChar = ('\u0021'..'\u0029' | '\u002B'..'\u002D' | '\u0030'..'\u0039' | '\u003B' | '\u003D' | '\u0040'..'\u005B' | '\u005D'..'\u007B' | '\u007D'..'\u007F');
         token PathChar = ('\u0021'..'\u002D' | '\u002F'..'\u005A' | '\u005E'..'\u007E');
-        /*token PathElement = PathChar+ "/";
-        token Directory = PathElement+;*/
-        //token FileExt = (Letter | Digit)+;
-        //token PathChar = ('\u0021'..'\u002D');
         token Filename = ('/' | './')  PathChar+ ^('/') '.' (Letter | Digit)+;
         
-        //token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
-        
         //---Misc---       
+        token CommentKey = "comment" Spaces t:StrCon Spaces ";" => t;
         token Pre_Text = '"' t:Text_Char* '<' => PreText[t];
         token Post_Text = '>' t:Text_Char* '"' => PostText[t];
         token Mid_Text = '>' t:Text_Char* '<' => MidText[t];
-        //token IdList = IdCon ("." IdCon)*;
-
-        //token Filename = '[' ((Input_Chars - (((Space - HT) + (LF + CR)) + ('.' + '\\'))))+ '.' (Digit | Letter)+ ']';
         
         //---Keyword Tokens---
         @{Classification["Keyword"]} token ModuleKeyword = "module";
@@ -134,17 +124,18 @@ module Waebric
         @{Classification["Keyword"]} token DefKeyword = "def";
         @{Classification["Keyword"]} token EndKeyword = "end";
         @{Classification["Keyword"]} token SiteKeyword = "site";
-        @{Classification["keyword"]} token EchoKeyword = "echo";
-        @{Classification["keyword"]} token EachKeyword = "each";
-        @{Classification["keyword"]} token IfKeyword = "if";
-        @{Classification["keyword"]} token ElseKeyword = "else";
-        @{Classification["keyword"]} token YieldKeyword = "yield";
-        @{Classification["keyword"]} token LetKeyword = "let";
-        @{Classification["keyword"]} token CommentKeyword = "comment";
-        @{Classification["keyword"]} token CDataKeyword = "cdata";
-        @{Classification["keyword"]} token String = "string";
-        @{Classification["keyword"]} token Record = "record";
-        @{Classification["keyword"]} token List = "list";
+        @{Classification["Keyword"]} token EchoKeyword = "echo";
+        @{Classification["Keyword"]} token EachKeyword = "each";
+        @{Classification["Keyword"]} token IfKeyword = "if";
+        @{Classification["Keyword"]} token ElseKeyword = "else";
+        @{Classification["Keyword"]} token YieldKeyword = "yield";
+        @{Classification["Keyword"]} token LetKeyword = "let";
+        @{Classification["Keyword"]} token InKeyword = "in";
+        @{Classification["Keyword"]} token CommentKeyword = "comment";
+        @{Classification["Keyword"]} token CDataKeyword = "cdata";
+        @{Classification["Keyword"]} token String = "string";
+        @{Classification["Keyword"]} token Record = "record";
+        @{Classification["Keyword"]} token List = "list";
         
         //---Waebric---
         //Starting symbol
@@ -262,7 +253,7 @@ module Waebric
                 => LetStatement[a,s]
             | "{" s:StatementList "}"
                 => BlockStatement[s]
-            | "comment" t:Text ";"
+            | t:CommentKey
                 => CommentStatement[t]
             | "echo" e:Expression ";"
                 => EchoExpressionStatement[e]
