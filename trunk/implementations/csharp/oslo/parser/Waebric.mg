@@ -280,7 +280,7 @@ module Waebric
                 => VarBindAssignment[i,e];
                 
         syntax FuncBindAssignment 
-            = i:IdCon f:Formals "=" s:Statement ";"
+            = i:IdCon f:Formals "=" s:Statement
                 => FuncBindAssignment[i,f,s];
                 
         //---Predicates---
