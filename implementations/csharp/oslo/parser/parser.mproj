@@ -22,10 +22,7 @@
   </PropertyGroup>
   <Import Project="$(MTargetsPath)\Microsoft.M.targets" />
   <ItemGroup>
-    <Content Include="common.mg">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="waebric.mg">
+    <Content Include="Waebric.mg">
       <SubType>Content</SubType>
     </Content>
   </ItemGroup>
