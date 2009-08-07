@@ -22,8 +22,8 @@
   </PropertyGroup>
   <Import Project="$(MTargetsPath)\Microsoft.M.targets" />
   <ItemGroup>
-    <Content Include="Waebric.mg">
+    <Compile Include="Waebric.mg">
       <SubType>Content</SubType>
-    </Content>
+    </Compile>
   </ItemGroup>
 </Project>
