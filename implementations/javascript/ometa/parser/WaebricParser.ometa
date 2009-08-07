@@ -101,7 +101,7 @@ ometa WaebricOMetaParser <: Parser {
   Assignment      	= spaces IdCon:variable spaces "=" spaces Expression:expression spaces ";" spaces -> new VariableBinding(variable, expression)
                   	| IdCon:variable spaces Formals:formals spaces "=" spaces Statement:statement -> new FunctionBinding(variable, formals, statement),
 
-  TextEntityRef   	= "&" XMLSymbol XML* ";",
+  TextEntityRef   	= "&" TextEntityRefHead TextEntityRefTail* ";",
   TextEntityRefHead = letter | "_" | ":",
   TextEntityRefTail = letterOrDigit | "." | "-" | "_" | ":",
 
