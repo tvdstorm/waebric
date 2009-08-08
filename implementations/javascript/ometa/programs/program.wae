@@ -1,17 +1,12 @@
-module test
 
-def main
-  home("nickolas");
+module homepage
+
+
+def main()
+	table home("Hello World");
 end
 
+
 def home(input)
-  let
-    tds(img) = img(src=img, border=0);
-	tds(img) = h1 div tds(img);
-	jeroen(img) = p div "Jeroen";
-    tds(img) = tr td tds(img);
-    tds(img) = table tds(img);
-  in
-    tds('../image01.jpg);
-  end
+	tr td input;
 end

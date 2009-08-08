@@ -54,7 +54,7 @@ function convertToHTML(path){
 	try {
 		//Parsing
 		var parserResult = WaebricParser.parseAll(path);
-		print(parserResult.exceptions);
+		print(parserResult.module.functionDefinitions)
 		
 		//Validation		
 		var validationResult = WaebricSemanticValidator.validateAll(parserResult.module)
