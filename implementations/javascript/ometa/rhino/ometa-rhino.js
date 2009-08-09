@@ -54,11 +54,11 @@ function convertToHTML(path){
 	try {
 		//Parsing
 		var parserResult = WaebricParser.parseAll(path);
-		print(parserResult.module.functionDefinitions)
+		//print(parserResult.module.functionDefinitions)
 		
 		//Validation		
 		var validationResult = WaebricSemanticValidator.validateAll(parserResult.module)
-		print(validationResult.exceptions)
+		//print(validationResult.exceptions)
 		
 		//Interpreting
 		var interpreterResult = WaebricInterpreter.interpreteAll(parserResult.module);		
@@ -72,6 +72,6 @@ function convertToHTML(path){
 	}
 }
 
-//convertToHTML('../../../../demos/lava/lava.wae')
-convertToHTML('../programs/program.wae')
 //OMetaCompiler.compileWaebricParser();
+convertToHTML('../../../../demos/lava/lava.wae')
+
