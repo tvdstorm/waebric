@@ -31,14 +31,14 @@ function WaebricParser(){
 			this.exceptions.push(exception);
 			print('! FAILED !')
 		}catch(exception){
-			//Unexpected exception thrown. Evaluation will be terminated
+			//Unexpected exception thrown. Evaluation terminated
 			throw exception;
 		}
 	}
 	
 	
 	/**
-	 * Returns all transitive dependencies for a given module
+	 * Returns transitive dependencies for a given module
 	 *
 	 * @param {String} The path of the waebric program
 	 * @param {Module} The module for which the transitive dependencies will be returned
@@ -152,7 +152,7 @@ WaebricParser.parseAll = function(path){
 		var fileExists = (new File(path)).exists();
 		if (fileExists) {
 			var parser = new WaebricParser();
-			var module = parser.parseModule(path, true);
+			var module = parser.parseModule(path);
 			return new WaebricParserResult(module, parser.exceptions);
 		}else{
 			throw "Waebric program doesn't exists";
