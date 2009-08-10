@@ -205,7 +205,7 @@ imprt:			'import' id=moduleId ';' ^module ;
 
 site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
-mapping	:		. ':' markup ;
+mapping	:		PATH ':' markup ;
 
 // $<Markups
 
@@ -231,10 +231,9 @@ arguments returns [int args = 0]
 
 // $<Expressions
 
-expression:		( varExpression 
+expression:		( varExpression | NATCON | TEXT | SYMBOLCON 
 				| '[' expression? ( ',' expression )* ']' 
 				| '{' keyValuePair? ( ',' keyValuePair )* '}' 
-				| . // All remaining single token expressions
 			) ( '+' expression | '.' IDCON )* ;
 
 varExpression:		id=IDCON {
@@ -317,8 +316,9 @@ funcBinding [int depth]
 
 predicate:		( '!' predicate 
 				| expression
-				| expression '.' .
-			) ( '&&' predicate | '||' predicate )* ;		
+				| expression '.' type
+			) ( '&&' predicate | '||' predicate )* ;
+type:			'list' | 'record' | 'string' ;		
 
 // $>
 
