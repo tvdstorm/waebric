@@ -7,12 +7,11 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <MTargetsPath Condition="$(MTargetsPath) == ''">$(MSBuildExtensionsPath32)\Microsoft\M\v1.0</MTargetsPath>
-    <ProjectName>parser</ProjectName>
-    <RootNamespace>parser</RootNamespace>
-    <AssemblyName>parser</AssemblyName>
+    <ProjectName>WaebricGrammar</ProjectName>
+    <RootNamespace>WaebricGrammar</RootNamespace>
+    <AssemblyName>WaebricGrammar</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <Name>parser</Name>
-    <ProjectGuid>{1c597527-ae70-4b16-b00b-247398edaa89}</ProjectGuid>
+    <Name>WaebricGrammar</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -20,10 +19,8 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
-  <Import Project="$(MTargetsPath)\Microsoft.M.targets" />
   <ItemGroup>
-    <Compile Include="Waebric.mg">
-      <SubType>Content</SubType>
-    </Compile>
+    <Compile Include="Model.m" />
   </ItemGroup>
+  <Import Project="$(MTargetsPath)\Microsoft.M.targets" />
 </Project>
