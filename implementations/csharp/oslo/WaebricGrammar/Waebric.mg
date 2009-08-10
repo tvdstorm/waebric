@@ -152,14 +152,19 @@ module Waebric
                 => Import[m];
         
         syntax ModuleElement 
-            = Import | Site | FunctionDefinition;
+            = i:Import 
+                => i
+            | s:Site 
+                => s
+            | f:FunctionDefinition
+                => f;
         
         //{IdCon "."}+
         syntax ModuleId  
             = item:IdCon
                 => ModuleId[item]
-            | list: ModuleId "." item:IdCon
-                => ModuleId[valuesof(list), item];
+            | item:IdCon "." list: ModuleId 
+                => ModuleId[item, valuesof(list)];
                 
         syntax Module = "module" m:ModuleId e:ModuleElement*
                 => Module[m,valuesof(e)];
