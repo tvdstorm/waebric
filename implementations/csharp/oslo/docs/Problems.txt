@@ -2,5 +2,5 @@
 - Due problems with tokens some tokens could not defined so strictly idcon.idcon and idcon.   idcon is parsed the same.
 - Problems with Filename token. Added extra restrictions to directory and filenames according to Windows Directory/Filename convention.
 - Problems with some list constructions which should be straight-recursive to be handled correctly. Due this problem also syntax* does
-not work correctly and needs such alternative list constructions
- 
+not work correctly and needs such alternative list constructions.
+- API for using AST in C# not well documented. This gives some startup problems when developing.
