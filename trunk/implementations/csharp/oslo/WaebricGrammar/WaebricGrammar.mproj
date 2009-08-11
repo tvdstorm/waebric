@@ -12,6 +12,7 @@
     <AssemblyName>WaebricGrammar</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <Name>WaebricGrammar</Name>
+    <ProjectGuid>{f2f50d5a-e318-43ee-9099-4de044d7a3db}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -20,7 +21,9 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Model.m" />
+    <Compile Include="Waebric.mg">
+      <SubType>Content</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MTargetsPath)\Microsoft.M.targets" />
 </Project>
