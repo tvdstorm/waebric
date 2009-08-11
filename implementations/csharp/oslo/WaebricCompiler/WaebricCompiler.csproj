@@ -70,12 +70,19 @@
   <ItemGroup>
     <Compile Include="WaebricCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WaebricParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Checker\Checker.csproj">
       <Project>{4CBCBF73-6D2E-4ABA-A634-56635A4984A8}</Project>
       <Name>Checker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{00DB670A-DAD2-420C-B2F1-35892494962E}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Parser\Parser.csproj">
+      <Project>{2ED49A8E-BEB4-47EE-9952-AF9A105327A9}</Project>
+      <Name>Parser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
