@@ -107,7 +107,7 @@ ometa WaebricOMetaParser <: Parser {
 
   Text            	= '"' (EscQuote | ~'"'  TextChar)*:idText '"' -> idText.join(''),
   TextChar        	= TextSymbolChar | Amp | TextCharRef | TextEntityRef | space,
-  TextSymbolChar 	= cRange(' ','!') | cRange('#','%') | cRange('\'',';') | cRange('=','~'),
+  TextSymbolChar 	= '!' | cRange('#','%') | cRange('\'',';') | cRange('=','~') | space,
   TextCharRef     	= "&#" digit+ ";"
                   	| "&#x" HexaDecimal+ ";",
 

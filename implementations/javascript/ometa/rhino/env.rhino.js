@@ -6,7 +6,7 @@
  * 
  * http://github.com/thatcher/env-js/tree/master
  * 
- * Bugfix by @author Nickolas : Activated the namespace of nodes
+ * Bugfix by @author Nickolas : Activated the namespace of nodes + removed auto creation tbody in table
  *  
  * @author John Resig
  * @author thatcher
@@ -7286,7 +7286,7 @@ __extend__(HTMLTableElement.prototype, {
     appendChild : function (child) {
 
         var tagName = child.tagName.toLowerCase();
-        if (tagName === "tr") {
+        /*if (tagName === "tr") {
             // need an implcit <tbody> to contain this...
             if (!this.currentBody) {
                 this.currentBody = document.createElement("tbody");
@@ -7300,9 +7300,9 @@ __extend__(HTMLTableElement.prototype, {
             this.currentBody = child;
             return DOMNode.prototype.appendChild.apply(this, arguments);  
             
-        } else {
+        } else {*/
             return DOMNode.prototype.appendChild.apply(this, arguments);
-        }
+        //}
     },
      
     get tBodies() {

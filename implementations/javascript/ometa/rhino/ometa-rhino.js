@@ -24,47 +24,89 @@ load('../compiler/OMetaCompiler.js')
  * 
  * @param {Array} An array of XML documents
  */
-function write(waebricEnvironments){
+function createHTML(waebricEnvironments, siteName){
 	for(var i = 0; i < waebricEnvironments.length; i++){	
 		var waebricEnvironment = waebricEnvironments[i];
-		var path = waebricEnvironment.path.toString();		
-		
-		//Create directory
-		var pathElements = path.split('/');
-		var directory = pathElements.slice(0, pathElements.length - 1).join('');
-		
-		var fDir = new File(directory);
-		if (!fDir.exists()) {
-			fDir.mkdir();
-		}
+		var rootPath = '../../demos/ometa/';
+		var sitePath = siteName + '/' + waebricEnvironment.path.toString();	
+		createDirectories(rootPath, sitePath)
 		
 		//Write file
-		var fw = new FileWriter(waebricEnvironment.path);
+		var fw = new FileWriter(rootPath + sitePath);
 		var bf = new BufferedWriter(fw);
 		bf.write(waebricEnvironment.document);
 		bf.close();
-	}
+	}	
 }
+
+/**
+ * Creates the directory structure for the HTML output
+ * 
+ * @param {String} rootPath
+ * @param {String} sitePath
+ */
+function createDirectories(rootPath, sitePath){		
+	var fDir = new File(rootPath);
+	if (!fDir.exists()) {
+		fDir.mkdir();
+	}
+	
+	var lastDirectory = rootPath;
+	var pathElements = sitePath.split('/')
+	for(var itemIndex = 0; itemIndex < pathElements.length - 1; itemIndex++){
+		var pathElement = pathElements[itemIndex];
+		var fDir = new File(lastDirectory+pathElement);
+		if (!fDir.exists()) {
+			fDir.mkdir();
+		}
+		lastDirectory += pathElement + '/';
+	}
+	
+}
+
+/**
+ * Creates a text file that serves as the input for Tidy,
+ * a pretty printer for HTML
+ * 
+ * @param {Array} An array of XML documents
+ */
+function createTidyOutput(waebricEnvironments, siteName){
+	var output = '';
+	for(var i = 0; i < waebricEnvironments.length; i++){	
+		var waebricEnvironment = waebricEnvironments[i];
+		output += '../../demos/ometa/' + siteName + '/' + waebricEnvironment.path.toString() + ' ';	
+	}
+	//Write file
+	var fw = new FileWriter('../../demos/ometa/tidy.txt');
+	var bf = new BufferedWriter(fw);
+	bf.write(output);
+	bf.close();
+}
+
 
 /**
  * Returns the HTML output of a Waebric program
  */
-function convertToHTML(path){
+function convertToHTML(path, siteName){
 	
 	try {
 		//Parsing
 		var parserResult = WaebricParser.parseAll(path);
-		print(parserResult.module.functionDefinitions)
 		
 		//Validation		
 		var validationResult = WaebricSemanticValidator.validateAll(parserResult.module)
-		//print(validationResult.exceptions)
+		print('---------------VALIDATOR --------------------')
+		print(validationResult.exceptions)
+		print('---------------------------------------------')
 		
 		//Interpreting
 		var interpreterResult = WaebricInterpreter.interpreteAll(parserResult.module);		
 		
 		//Output results
-		write(interpreterResult.environments);
+		createHTML(interpreterResult.environments, siteName);
+	
+		//Create text file for pretty printer
+		createTidyOutput(interpreterResult.environments, siteName);
 	}catch(exception){
 		//Unexcpected error thrown
 		print(exception)
@@ -72,5 +114,5 @@ function convertToHTML(path){
 }
 
 //OMetaCompiler.compileWaebricParser();
-convertToHTML('../../../../demos/misc/menus.wae')
+convertToHTML('../../../../demos/lava/lava.wae', 'lava')
 
