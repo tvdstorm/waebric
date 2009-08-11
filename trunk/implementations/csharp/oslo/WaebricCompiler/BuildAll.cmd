@@ -1,6 +1,6 @@
 @echo off
 ::Checking arguments and setting variable to store proper setting
-if "%1" == "" set version=debug
+if "%1" == "" set version=Debug
 if "%1" == "-debug" set version=Debug
 if "%1" == "-release" set version=Release
 
@@ -27,5 +27,5 @@ msbuild WaebricGrammar.mproj /p:Configuration=%version%
 cd ..\WaebricCompiler
 echo Compiling Compiler...
 msbuild WaebricCompiler.csproj /p:Configuration=%version%
-echo Copying compiler grammar to right location
+echo Copying compiled grammar to right location
 copy ..\WaebricGrammar\bin\%version%\WaebricGrammar.mx bin\%version%\Waebric.mx
