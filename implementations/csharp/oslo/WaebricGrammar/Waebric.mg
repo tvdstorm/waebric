@@ -276,9 +276,10 @@ module Waebric
                 => MarkupList[item,valuesof(list)];
         
         syntax Assignment 
-                = FuncBindAssignment
-                |VarBindAssignment
-                ;
+                = f:FuncBindAssignment
+                    => f
+                | v:VarBindAssignment
+                    => v;
                 
         syntax VarBindAssignment 
             = i:IdCon "=" e:Expression ";"
