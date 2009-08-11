@@ -154,7 +154,22 @@ namespace Checker
         /// <param name="eachStatement">EachStatement to visit</param>
         public void VisitEachStatement(Node eachStatement)
         {
+            CreateChildSymbolTable();
 
+            //Store variable in eachstatement
+            Node identifier = eachStatement.ViewAllNodes().ElementAt(0);
+            Node expression = eachStatement.ViewAllNodes().ElementAt(1);
+            SymbolTable.AddVariableDefinition(identifier.AtomicValue.ToString(), expression);
+
+            //Place single statement in list to make visiting easier
+            NodeGraphBuilder graphBuilder = new NodeGraphBuilder();
+            Node statementList = (Node)graphBuilder.DefineNode("StatementList");
+            statementList.Add(eachStatement.ViewAllNodes().ElementAt(2));
+
+            //Visit statement
+            VisitSubNodes(statementList);
+            
+            MoveToParentSymbolTable();
         }
 
         /// <summary>
