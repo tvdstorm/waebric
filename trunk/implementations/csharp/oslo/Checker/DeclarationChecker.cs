@@ -22,6 +22,10 @@ namespace Checker
 
         #region Public Methods
 
+        /// <summary>
+        /// Creates DeclarationChecker
+        /// </summary>
+        /// <param name="exceptionList"></param>
         public DeclarationChecker(List<Exception> exceptionList)
         {
             ExceptionList = exceptionList;
@@ -83,7 +87,7 @@ namespace Checker
                         VisitVarBindAssignment(currentNode);
                         break;
                     case "FuncBindAssignment":
-                        Visit
+                        VisitFuncBindAssignment(currentNode);
                         break;
                     default:
                         //If non of above types are matched, visit subnodes of current node
@@ -122,9 +126,28 @@ namespace Checker
         /// <param name="letStatement">LetStatement to visit</param>
         public void VisitLetStatement(Node letStatement)
         {
+            //Store assignments into SymbolTable
+            Node Assignments = letStatement.ViewAllNodes().ElementAt(0);
+            foreach (Node Assignment in Assignments.ViewAllNodes())
+            {
+                //Create new scope for every assignment
+                CreateChildSymbolTable();
 
+                //Visit assignment
+                VisitSubNodes(Assignment);
+            }
+
+            //Visit statements
+            Node Statements = letStatement.ViewAllNodes().ElementAt(1);
+            VisitSubNodes(Statements);
+
+            //Restore scoping on end of LetStatement
+            foreach (Node Assignment in Assignments.ViewAllNodes())
+            {
+                MoveToParentSymbolTable();
+            }
         }
-
+       
         /// <summary>
         /// Visit EachStatement
         /// </summary>
@@ -140,7 +163,12 @@ namespace Checker
         /// <param name="varExpression">VarExpression to visit</param>
         public void VisitVarExpression(Node varExpression)
         {
-
+            //Check if reference to variable exists
+            Node identifier = varExpression.ViewAllNodes().ElementAt(0);
+            if(!SymbolTable.ContainsVariable(identifier.AtomicValue.ToString()))
+            {   //Undefined variable referenced
+                ExceptionList.Add(new UndefinedVariable(identifier.AtomicValue.ToString()));
+            }
         }
         
         /// <summary>
@@ -167,7 +195,12 @@ namespace Checker
         /// <param name="varBindAssignment">VarBindAssignment to visit</param>
         public void VisitVarBindAssignment(Node varBindAssignment)
         {
+            //Visit Expression
+            VisitSubNodes(varBindAssignment);
 
+            //Store variable
+            NodeCollection subNodes = varBindAssignment.ViewAllNodes();
+            SymbolTable.AddVariableDefinition(subNodes.ElementAt(0).AtomicValue.ToString(), subNodes.ElementAt(1));
         }
 
         /// <summary>
@@ -176,7 +209,25 @@ namespace Checker
         /// <param name="funcBindAssignment">FuncBindAssignment to visit</param>
         public void VisitFuncBindAssignment(Node funcBindAssignment)
         {
+            //Convert FuncBind in a FunctionDef node
+            NodeGraphBuilder graphBuilder = new NodeGraphBuilder();
 
+            //Create functionDef node
+            Node functionDef = (Node) graphBuilder.DefineNode("FunctionDef");
+
+            //Add identifier of function
+            functionDef.Add(funcBindAssignment.ViewAllNodes().ElementAt(0));
+
+            //Add formals
+            functionDef.Add(funcBindAssignment.ViewAllNodes().ElementAt(1));
+
+            //Create StatementList to store the single statement in
+            Node statementList = (Node)graphBuilder.DefineNode("StatementList");
+            statementList.Add(funcBindAssignment.ViewAllNodes().ElementAt(2));
+            functionDef.Add(statementList);
+
+            //Visit this functionDefinition
+            VisitFunctionDef(functionDef);
         }
 
         #endregion
