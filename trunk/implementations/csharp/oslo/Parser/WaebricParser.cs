@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.M.Grammar;
 using Microsoft.M;
 using System.Dataflow;
+using System.IO;
 
 namespace WaebricCompiler
 {
@@ -23,6 +24,10 @@ namespace WaebricCompiler
 
         #region Public Methods
 
+        /// <summary>
+        /// Parses an specified file
+        /// </summary>
+        /// <param name="filename">Filename of file to parse</param>
         public WaebricParser(String filename)
         {
             //Read grammar and create NodeGraphBuilder
@@ -31,7 +36,14 @@ namespace WaebricCompiler
             Parser.GraphBuilder = new NodeGraphBuilder();
 
             //Open sourcefile and parse it
-            Root = (Node)Parser.Parse(filename, ErrorReporter.Standard);
+            try
+            {
+                Root = (Node)Parser.Parse(filename, ErrorReporter.Standard);
+            }
+            catch
+            {
+                Root = null;
+            }
         }
 
         /// <summary>
