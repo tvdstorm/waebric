@@ -177,7 +177,34 @@ namespace Checker
         /// <param name="markupCall">MarkupCall to visit</param>
         public void VisitMarkupCall(Node markupCall)
         {
+            Node Designator = markupCall.ViewAllNodes().ElementAt(0);
+            String identifier = Designator.ViewAllNodes().ElementAt(0).AtomicValue.ToString();
 
+            if (SymbolTable.ContainsFunction(identifier))
+            {
+                //Get nr of formals
+                Node calledFunction = SymbolTable.GetFunctionDefinition(identifier);
+                Node formals = calledFunction.ViewAllNodes().ElementAt(1);
+                int nrFormals = formals.ViewAllNodes().Count;
+               
+                //Get nr of arguments
+                Node Arguments = markupCall.ViewAllNodes().ElementAt(1);
+                int nrArguments = Arguments.ViewAllNodes().Count;
+
+                //Check arity
+                if (nrFormals != nrArguments)
+                {
+                    ExceptionList.Add(new FunctionCallArityIncorrect(identifier));
+                }
+            }
+            else
+            {
+                //Check if it is XHTML, if not its undefined
+                if (!IdentifierIsXHTML(identifier))
+                {
+                    ExceptionList.Add(new UndefinedFunction(identifier));
+                }
+            }
         }
 
         /// <summary>
@@ -186,7 +213,30 @@ namespace Checker
         /// <param name="markupTag">MarkupTag to visit</param>
         public void VisitMarkupTag(Node markupTag)
         {
+            Node Designator = markupTag.ViewAllNodes().ElementAt(0);
+            String identifier = Designator.ViewAllNodes().ElementAt(0).AtomicValue.ToString();
 
+            if (SymbolTable.ContainsFunction(identifier))
+            {
+                //Get nr of formals
+                Node calledFunction = SymbolTable.GetFunctionDefinition(identifier);
+                Node formals = calledFunction.ViewAllNodes().ElementAt(1);
+                int nrFormals = formals.ViewAllNodes().Count;
+
+                //Check arity
+                if (nrFormals != 0)
+                {
+                    ExceptionList.Add(new FunctionCallArityIncorrect(identifier));
+                }
+            }
+            else
+            {
+                //Check if it is XHTML, if not its undefined
+                if (!IdentifierIsXHTML(identifier))
+                {
+                    ExceptionList.Add(new UndefinedFunction(identifier));
+                }
+            }
         }
 
         /// <summary>
@@ -228,6 +278,10 @@ namespace Checker
 
             //Visit this functionDefinition
             VisitFunctionDef(functionDef);
+            
+            //Add function to SymbolTable
+            Node identifier = funcBindAssignment.ViewAllNodes().ElementAt(0);
+            SymbolTable.AddFunctionDefinition(identifier.AtomicValue.ToString(), functionDef);
         }
 
         #endregion
@@ -273,6 +327,24 @@ namespace Checker
                     }                   
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks if an identifier is an XHTML tag
+        /// </summary>
+        /// <param name="identifier">Identifier to check</param>
+        /// <returns>True if identifier is XHTML, otherwhise false</returns>
+        private bool IdentifierIsXHTML(String identifier)
+        {
+            String[] xhtmlTags = Enum.GetNames(typeof(XHTMLTags));
+            foreach (String item in xhtmlTags)
+            {
+                if (item.Equals(identifier.ToUpper()))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion
