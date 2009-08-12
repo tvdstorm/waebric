@@ -44,10 +44,11 @@ scope Environment {
 		document = new Document();
 	}
 	
-	private WaebricInterpreter(TreeNodeStream input, Stack environment, Document document) {
+	private WaebricInterpreter(TreeNodeStream input, Stack environment, Document document, Element current) {
 		super(input);
 		this.Environment_stack = environment;
 		this.document = document;
+		this.current = current;
 	}
 	
 	/**
@@ -60,7 +61,8 @@ scope Environment {
 			WaebricInterpreter sub = new WaebricInterpreter( 
 				new CommonTreeNodeStream(main),
 				Environment_stack,
-				document);
+				document,
+				current);
 			sub.function(); // Interpret function and fill document
 			outputDocument(document, os);
 		} 
@@ -85,22 +87,19 @@ scope Environment {
 	}
 	
 	private void addContent(Content content) {
-		// Construct root element
-		if(current == null) {
+		if(current == null) { // Construct root element
 			if(content instanceof Element) {
-				Element rootElement = (Element) content;
-				document.setRootElement(rootElement);
-				current = rootElement;
-				return; // Content added, quit function
+				document.setRootElement((Element) content);
 			} else {
-				Element XHTML = createXHTMLTag();
-				document.setRootElement(XHTML);
-				current = XHTML;
-			}
+				document.setRootElement(createXHTMLTag());
+				document.addContent(content);
+			}	
+    			
+			current = document.getRootElement();
+		} else { // Add content to current element
+			current.addContent(content); // Attach content
+			if(content instanceof Element) { current = (Element) content; } // Update current
 		}
-		
-		current.addContent(content); // Attach content
-		if(content instanceof Element) { current = (Element) content; } // Update current
 	}
 	
 	private Element createXHTMLTag() {
@@ -173,7 +172,8 @@ markup:			IDCON attribute* arguments? { // Designator lifted as it complicated a
 					WaebricInterpreter sub = new WaebricInterpreter( 
 						new CommonTreeNodeStream(func),
 						Environment_stack,
-						document);
+						document,
+						current);
 					sub.function(); // Walk called function
 				} else {
 					addContent(new Element($IDCON.getText()));
