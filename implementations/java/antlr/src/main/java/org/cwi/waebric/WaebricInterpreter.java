@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-12 11:47:13
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-12 11:50:51
 
 	package org.cwi.waebric;
 	import java.util.Map;
@@ -1999,7 +1999,12 @@ public class WaebricInterpreter extends TreeParser {
 
             }
 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:111:33: ( statement )*
+            if ( state.backtracking==0 ) {
+               
+              				System.out.println("Walking function " + IDCON59.getText() + "! WOAAA.." );
+              			
+            }
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:113:6: ( statement )*
             loop19:
             do {
                 int alt19=2;
@@ -2015,7 +2020,7 @@ public class WaebricInterpreter extends TreeParser {
             	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:0:0: statement
             	    {
             	    _last = (CommonTree)input.LT(1);
-            	    pushFollow(FOLLOW_statement_in_function482);
+            	    pushFollow(FOLLOW_statement_in_function484);
             	    statement61=statement();
 
             	    state._fsp--;
@@ -2034,16 +2039,11 @@ public class WaebricInterpreter extends TreeParser {
             } while (true);
 
             _last = (CommonTree)input.LT(1);
-            string_literal62=(CommonTree)match(input,END,FOLLOW_END_in_function485); if (state.failed) return retval;
+            string_literal62=(CommonTree)match(input,END,FOLLOW_END_in_function487); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             string_literal62_tree = (CommonTree)adaptor.dupNode(string_literal62);
 
             adaptor.addChild(root_0, string_literal62_tree);
-            }
-            if ( state.backtracking==0 ) {
-               
-              				System.out.println("Walking function " + IDCON59.getText() + "! WOAAA.." );
-              			
             }
 
             if ( state.backtracking==0 ) {
@@ -4928,8 +4928,8 @@ public class WaebricInterpreter extends TreeParser {
     public static final BitSet FOLLOW_49_in_function475 = new BitSet(new long[]{0x0000000000000010L});
     public static final BitSet FOLLOW_IDCON_in_function477 = new BitSet(new long[]{0x03B442000000A010L});
     public static final BitSet FOLLOW_formals_in_function479 = new BitSet(new long[]{0x03B440000000A010L});
-    public static final BitSet FOLLOW_statement_in_function482 = new BitSet(new long[]{0x03B440000000A010L});
-    public static final BitSet FOLLOW_END_in_function485 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_statement_in_function484 = new BitSet(new long[]{0x03B440000000A010L});
+    public static final BitSet FOLLOW_END_in_function487 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_41_in_formals496 = new BitSet(new long[]{0x0000080000000010L});
     public static final BitSet FOLLOW_IDCON_in_formals498 = new BitSet(new long[]{0x0000080000000010L});
     public static final BitSet FOLLOW_43_in_formals501 = new BitSet(new long[]{0x0000000000000002L});
