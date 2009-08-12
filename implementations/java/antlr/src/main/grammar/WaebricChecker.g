@@ -31,8 +31,8 @@ scope Environment {
 			Stack actual = $Environment;
 			$Environment = call.env;
 			
-			if(isDefinedFunction(call.id)) {
-				int args = expectedArgs(call.id);
+			if(isDefinedFunction(call.id.getText())) {
+				int args = getFunctionArgs(call.id.getText());
 				if(call.args != args) {
 					exceptions.add(new ArityMismatchException(call.id, args));
 				}
@@ -58,7 +58,7 @@ scope Environment {
 	 */
 	void defineFunction(CommonTree id, int args, int depth) {
 		// Check if function is already defined
-		if(isDefinedFunction(id)) {
+		if(isDefinedFunction(id.getText())) {
 			exceptions.add(new DuplicateFunctionException(id));
 		} else { $Environment[depth]::functions.put(id.getText(), args); }
 	}
@@ -67,9 +67,9 @@ scope Environment {
 	 * Check if a function is defined
 	 * @param name: Function name
 	 */
-	boolean isDefinedFunction(CommonTree id) {
+	boolean isDefinedFunction(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::functions.containsKey(id.getText())) {
+			if($Environment[i]::functions.containsKey(name)) {
 				return true; 
 			}
 		} return false;
@@ -79,10 +79,10 @@ scope Environment {
 	 * Retrieve excepted function arguments
 	 * @param name: Function name
 	 */
-	int expectedArgs(CommonTree id) {
+	int getFunctionArgs(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::functions.containsKey(id.getText())) {
-				return $Environment[i]::functions.get(id.getText()); 
+			if($Environment[i]::functions.containsKey(name)) {
+				return $Environment[i]::functions.get(name); 
 			}
 		} return -1;
 	}

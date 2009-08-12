@@ -8,6 +8,7 @@ options {
 
 scope Environment {
 	Map<String,CommonTree> functions;
+	Map<String,CommonTree> variables;
 }
 
 @header {
@@ -42,6 +43,14 @@ scope Environment {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(name)) {
 				return $Environment[i]::functions.get(name); 
+			}
+		} return null;
+	}
+	
+	private CommonTree getVariable(String name) {
+		for(int i=$Environment.size()-1; i>=0; i--) {
+			if($Environment[i]::variables.containsKey(name)) {
+				return $Environment[i]::variables.get(name); 
 			}
 		} return null;
 	}

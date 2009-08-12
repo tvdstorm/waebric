@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricChecker.g 2009-08-12 14:00:32
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricChecker.g 2009-08-12 14:09:15
 
 	package org.cwi.waebric;
 	import java.util.HashMap;
@@ -123,8 +123,8 @@ public class WaebricChecker extends TreeParser {
     			Stack actual = Environment_stack;
     			Environment_stack = call.env;
     			
-    			if(isDefinedFunction(call.id)) {
-    				int args = expectedArgs(call.id);
+    			if(isDefinedFunction(call.id.getText())) {
+    				int args = getFunctionArgs(call.id.getText());
     				if(call.args != args) {
     					exceptions.add(new ArityMismatchException(call.id, args));
     				}
@@ -150,7 +150,7 @@ public class WaebricChecker extends TreeParser {
     	 */
     	void defineFunction(CommonTree id, int args, int depth) {
     		// Check if function is already defined
-    		if(isDefinedFunction(id)) {
+    		if(isDefinedFunction(id.getText())) {
     			exceptions.add(new DuplicateFunctionException(id));
     		} else { ((Environment_scope)Environment_stack.elementAt(depth)).functions.put(id.getText(), args); }
     	}
@@ -159,9 +159,9 @@ public class WaebricChecker extends TreeParser {
     	 * Check if a function is defined
     	 * @param name: Function name
     	 */
-    	boolean isDefinedFunction(CommonTree id) {
+    	boolean isDefinedFunction(String name) {
     		for(int i=Environment_stack.size()-1; i>=0; i--) {
-    			if(((Environment_scope)Environment_stack.elementAt(i)).functions.containsKey(id.getText())) {
+    			if(((Environment_scope)Environment_stack.elementAt(i)).functions.containsKey(name)) {
     				return true; 
     			}
     		} return false;
@@ -171,10 +171,10 @@ public class WaebricChecker extends TreeParser {
     	 * Retrieve excepted function arguments
     	 * @param name: Function name
     	 */
-    	int expectedArgs(CommonTree id) {
+    	int getFunctionArgs(String name) {
     		for(int i=Environment_stack.size()-1; i>=0; i--) {
-    			if(((Environment_scope)Environment_stack.elementAt(i)).functions.containsKey(id.getText())) {
-    				return ((Environment_scope)Environment_stack.elementAt(i)).functions.get(id.getText()); 
+    			if(((Environment_scope)Environment_stack.elementAt(i)).functions.containsKey(name)) {
+    				return ((Environment_scope)Environment_stack.elementAt(i)).functions.get(name); 
     			}
     		} return -1;
     	}
