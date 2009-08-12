@@ -189,7 +189,7 @@ module
 moduleId
 	@init { 
 		String path = "";
-	} :		id=IDCON { path = id.getText();}
+	} :		id=IDCON { path = id.getText(); }
 			( '.' id=IDCON { path += "/" + id.getText(); } )* {
 				path += ".wae"; // Include default extension
 				java.io.File file = new java.io.File(path);
@@ -221,7 +221,11 @@ markup
 			} ;
 			
 designator:		IDCON attribute* ;
-attribute:		'#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | '@' NATCON ( '%' NATCON )?;
+attribute:		'#' IDCON 
+				| '.' IDCON 
+				| '$' IDCON 
+				| ':' IDCON 
+				| '@' NATCON ( '%' NATCON )?;
 	
 arguments returns [int args = 0]
 	:		'(' ( expression {$args++;} )? 

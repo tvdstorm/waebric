@@ -45,8 +45,7 @@ moduleId
 	returns [String path = ""] // Determine physical path of module identifier
 	@after { $path += ".wae"; } // Each reference ends with waebric extension
 	:		e=IDCON { $path += e.getText(); } 
-			( '.' e=IDCON { $path += "/" + e.getText(); } )*
-				-> IDCON ( '.' IDCON )* ;
+			( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
 	
 imprt:			'import' id=moduleId ';' 
 				-> 'import' moduleId ';' ^( { parseFile($id.path) } ) ;
@@ -55,7 +54,6 @@ imprt:			'import' id=moduleId ';'
 // $<Site
 
 site:			'site' mappings 'end' ;
-				
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
 
@@ -170,7 +168,7 @@ fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') 
 NATCON:			DIGIT+ ;
 IDCON:			LETTER ( LETTER | DIGIT | '-' )+ ;
 
-COMMENTS:		'//' ( options {greedy=false;} : . )*  '\n' | 
-			'/*' ( options {greedy=false;} : . )*  '*/' 
+COMMENTS:		'//' ( options { greedy=false; } : . )*  '\n' | 
+			'/*' ( options { greedy=false; } : . )*  '*/' 
 			{ skip(); } ; // Skip comments to optimze performance
 LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; } ;
