@@ -1,6 +1,7 @@
 package org.cwi.waebric;
 
 import java.util.List;
+import java.util.Map;
 
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRInputStream;
@@ -45,8 +46,7 @@ public class WaebricProcessor {
 	        CommonTree tree = (CommonTree) result.getTree();
 	        System.out.println(tree.toStringTree());
 	        
-	        CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
-	        WaebricChecker checker = new WaebricChecker(nodes);
+	        WaebricChecker checker = new WaebricChecker(new CommonTreeNodeStream(tree));
 	        curr = System.currentTimeMillis();
 	        List<SemanticException> se = checker.checkAST();
 	        long check_time = System.currentTimeMillis() - curr;
@@ -55,6 +55,15 @@ public class WaebricProcessor {
 	        for(SemanticException e: se) {
 	        	e.printStackTrace();
 	        }
+	        
+	        WaebricFunctionLoader loader = new WaebricFunctionLoader(new CommonTreeNodeStream(tree));
+	        Map<String,CommonTree> functions = loader.getFunctions();
+	        
+	        WaebricInterpreter interpreter = new WaebricInterpreter(new CommonTreeNodeStream(tree), functions);
+	        curr = System.currentTimeMillis();
+	        interpreter.interpretProgram();
+	        long inter_time = System.currentTimeMillis() - curr;
+	        System.out.println("Interpreted in " + inter_time + "ms");
 	}
 		
 }

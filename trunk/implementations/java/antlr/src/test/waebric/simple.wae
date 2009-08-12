@@ -1,0 +1,11 @@
+module simple
+
+def main
+	html {
+		callme;
+	}
+end
+
+def callme
+	title "It works!";
+end
