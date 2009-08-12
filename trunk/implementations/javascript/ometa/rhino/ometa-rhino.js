@@ -85,7 +85,7 @@ function createTidyOutput(waebricEnvironments, siteName){
 
 
 /**
- * Returns the HTML output of a Waebric program
+ * Converts a Waebric program to HTML
  */
 function convertToHTML(path, siteName){
 	
