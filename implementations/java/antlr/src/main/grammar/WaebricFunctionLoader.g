@@ -21,7 +21,7 @@ options {
 }
 
 // $<Module
-module: 		^( 'module' moduleId imprt* site* function* 'end' ) ;
+module: 		^( 'module' moduleId imprt* site* function* ) ;
 
 moduleId:		IDCON ( '.' e=IDCON )* ;
 	
