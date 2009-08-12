@@ -75,12 +75,17 @@ argument:		expression ;
 // $>
 // $<Expressions
 
-expression:		( IDCON | NATCON | TEXT | SYMBOLCON 
-				| '[' expression? ( ',' expression )* ']' // List
-				| '{' keyValuePair? ( ',' keyValuePair )* '}' // Record
-			) ( '+' expression /* Cat */ | '.' IDCON /* Field */ )* ;
+expression returns [String eval]
+	: 	( var=IDCON { $eval = $var.getText(); }
+				| NATCON { $eval = $NATCON.getText(); }
+				| TEXT { $eval = $TEXT.getText(); }
+				| SYMBOLCON { $eval = $SYMBOLCON.getText(); }
+				| '[' ( e=expression { $eval = $e.eval; } )? ( ',' e=expression { $eval += ", " + $e.eval ; } )* ']'
+				| '{' ( p=keyValuePair { $eval = $p.eval; } )? ( ',' p=keyValuePair { $eval += ", " + $p.eval ; } )* '}' 
+			) ( '+' e=expression { $eval += $e.eval; } | '.' IDCON /* Field */ )* 	;
 			
-keyValuePair:		IDCON ':' expression ;
+keyValuePair returns [String eval]
+	:		IDCON ':' e=expression { $eval = $IDCON.getText() + ":" + $e.eval; } ;
 
 // $>
 // $<Function
