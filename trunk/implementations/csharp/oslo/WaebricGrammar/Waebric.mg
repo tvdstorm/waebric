@@ -300,7 +300,7 @@ module Waebric
         
         syntax Predicate_No_And_Or
             = e:Expression
-                => e
+                => ExpressionPredicate[e]
             | e:Expression "." t:Type "?"
                 => IsAPredicate[e, t]
             | "!" p:Predicate_No_And_Or
