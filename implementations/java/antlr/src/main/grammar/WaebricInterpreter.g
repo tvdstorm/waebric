@@ -229,7 +229,7 @@ statement:		'if' '(' predicate ')' statement 'else' statement
 			| 'echo' embedding ';'
 			| 'cdata' expression ';' 
 			| 'yield;' 
-			| markup+ ',' expression ';'
+			| markup+ ',' expression ';' { current.setText($expression.eval); }
 			| markup+ ',' statement
 			| markup+ embedding ';' 
 			| markup+ ';' ;
