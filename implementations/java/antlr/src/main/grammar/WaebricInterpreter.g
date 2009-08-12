@@ -8,7 +8,7 @@ options {
 
 scope Environment {
 	Map<String,CommonTree> functions;
-	Map<String,CommonTree> variables;
+	Map<String,String> variables;
 }
 
 @header {
@@ -17,7 +17,9 @@ scope Environment {
 	import java.io.IOException;
 	import java.io.OutputStream;
 	import java.text.SimpleDateFormat;
+	
 	import java.util.Date;
+	import java.util.HashMap;
 	import java.util.Map;
 		
 	import org.jdom.CDATA;
@@ -40,6 +42,7 @@ scope Environment {
 		super(input);
 		Environment_scope base = new Environment_scope();
 		base.functions = functions;
+		base.variables = new HashMap<String,String>();
 		Environment_stack.push(base);
 		document = new Document();
 	}
@@ -143,21 +146,21 @@ scope Environment {
 	 * Retrieve variable
 	 * @param name: Variable name
 	 */
-	private CommonTree getVariable(String name) {
+	private String getVariable(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::variables.containsKey(name)) {
 				return $Environment[i]::variables.get(name); 
 			}
-		} return null;
+		} return "undef";
 	}
 	
 	/**
 	 * Define variable
 	 * @param name: Variable name
-	 * @param tree: Variable AST
+	 * @param eval: Variable evaluation
 	 */
-	private void defineVariable(String name, CommonTree tree) {
-		$Environment::variables.put(name, tree);
+	private void defineVariable(String name, String eval) {
+		$Environment::variables.put(name, eval);
 	}
 	
 }
@@ -199,7 +202,7 @@ argument:		expression ;
 // $<Expressions
 
 expression returns [String eval]
-	: 	( var=IDCON { $eval = $var.getText(); }
+	: 	( var=IDCON { $eval = getVariable($var.getText()); }
 				| NATCON { $eval = $NATCON.getText(); }
 				| TEXT { $eval = $TEXT.getText(); }
 				| SYMBOLCON { $eval = $SYMBOLCON.getText(); }
