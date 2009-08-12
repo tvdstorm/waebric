@@ -1,11 +1,19 @@
 module test
 
+def test(bla) 
+	let 
+		mylizzle=["1","2","3"]; 
+		func3(my,argz) { echo my; html title argz; } 
+		in func1("LOL"); 
+	end 
+end
 
-	def test(bla) 
-		let mylizzle=["1","2","3"]; func3(my,argz) { echo my; html title argz; } in func1("LOL"); end 
-	end
-	def test yield; end
+def test 
+	yield; 
+end
 	
-		def func1(arg) end
-	def func2(arg,arg) end
+def func1(arg) 
+end
+
+def func2(arg,arg) 
 end

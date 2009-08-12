@@ -244,10 +244,10 @@ markup
 designator:		IDCON attribute* ;
 
 attribute:		'#' IDCON 
-				| '.' IDCON 
-				| '$' IDCON 
-				| ':' IDCON 
-				| '@' NATCON ( '%' NATCON )?;
+			| '.' IDCON 
+			| '$' IDCON 
+			| ':' IDCON 
+			| '@' NATCON ( '%' NATCON )?;
 	
 arguments returns [int args = 0]
 	:		'(' ( expression {$args++;} )? 
@@ -300,8 +300,8 @@ statement:		'if' '(' predicate ')' statement 'else' statement
 			| 'echo' embedding ';'
 			| 'cdata' expression ';'
 			| 'yield;'
-			| markup+ ':' expression ';'
-			| markup+ ':' statement
+			| markup+ ',' expression ';'
+			| markup+ ',' statement
 			| markup+ embedding ';'
 			| markup+ ';' ;
 
@@ -319,23 +319,23 @@ letStatement
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-		int curr = $Environment.size()-1;
-	} :		'let' assignment[curr]+ 'in' statement* 'end' ;
+	} :		'let' assignment+ 'in' statement* 'end' ;
 
-assignment [int depth]:	
-			varBinding | funcBinding[depth] ;
-
-varBinding:		IDCON '=' expression ';' { 
+assignment:		IDCON '=' expression ';' { 
 				defineVariable($IDCON.getText()); 
-			} ;
+			} | funcBinding ;
 			
-funcBinding [int depth]
+funcBinding // Separated because only function bindings have local scopes
 	scope Environment;
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		IDCON regularFormals statement { defineFunction($IDCON, $regularFormals.args, depth); } ;
-
+		int parent = $Environment.size()-1;
+	} : 		IDCON regularFormals statement {
+				defineFunction($IDCON, $regularFormals.args, parent);
+			} ;
+		
+			
 // $<Predicate
 
 predicate:		( '!' predicate 
