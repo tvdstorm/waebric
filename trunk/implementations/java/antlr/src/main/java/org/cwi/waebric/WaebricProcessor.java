@@ -61,7 +61,7 @@ public class WaebricProcessor {
 	        
 	        WaebricInterpreter interpreter = new WaebricInterpreter(new CommonTreeNodeStream(tree), functions);
 	        curr = System.currentTimeMillis();
-	        interpreter.interpretProgram();
+	        interpreter.interpretProgram(System.out);
 	        long inter_time = System.currentTimeMillis() - curr;
 	        System.out.println("Interpreted in " + inter_time + "ms");
 	}
