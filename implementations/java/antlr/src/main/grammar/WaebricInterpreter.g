@@ -56,16 +56,25 @@ scope Environment {
 	 * @param os: Output stream for interpreting main function
 	 */
 	public void interpretProgram(OutputStream os) throws RecognitionException {
+		// Interpret the main function
 		CommonTree main = getFunction("main");
 		if(main != null) {
-			WaebricInterpreter sub = new WaebricInterpreter( 
-				new CommonTreeNodeStream(main),
-				Environment_stack,
-				document,
-				current);
-			sub.function(); // Interpret function and fill document
+			interpretFunction(main);
 			outputDocument(document, os);
-		} 
+		}
+	}
+	
+	/**
+	 * Interpret function
+	 * @param function: Function AST
+	 */
+	private void interpretFunction(CommonTree function) throws RecognitionException {
+		WaebricInterpreter instance = new WaebricInterpreter(
+			new CommonTreeNodeStream(function),
+			Environment_stack,
+			document,
+			current);
+		instance.function();
 	}
 	
 	/**
@@ -73,16 +82,16 @@ scope Environment {
 	 */
 	private void outputDocument(Document document, OutputStream os) {
 		try {
-			if(os == null) { return; }
-			
-			// Brand-mark document
-			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			Comment comment = new Comment("Generated on " + format.format(new Date()));
-			document.addContent(0, comment);
+			if(os != null) {
+				// Brand-mark document
+				SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				Comment comment = new Comment("Generated on " + format.format(new Date()));
+				document.addContent(0, comment);
 		
-			// Output document
-			XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
-			out.output(document, os);
+				// Output document
+				XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+				out.output(document, os);
+			}
 		} catch(IOException e) { e.printStackTrace(); }
 	}
 	
@@ -108,9 +117,10 @@ scope Environment {
 		tag.setAttribute("lang", "en");
 		return tag;
 	}
-	
+
 	/**
 	 * Retrieve function
+	 * @param name: Function name
 	 */
 	private CommonTree getFunction(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
@@ -122,6 +132,8 @@ scope Environment {
 	
 	/**
 	 * Define function
+	 * @param name: Function name
+	 * @param tree: Function AST
 	 */
 	private void defineFunction(String name, CommonTree tree) {
 		$Environment::functions.put(name, tree);
@@ -129,6 +141,7 @@ scope Environment {
 	
 	/**
 	 * Retrieve variable
+	 * @param name: Variable name
 	 */
 	private CommonTree getVariable(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
@@ -140,6 +153,8 @@ scope Environment {
 	
 	/**
 	 * Define variable
+	 * @param name: Variable name
+	 * @param tree: Variable AST
 	 */
 	private void defineVariable(String name, CommonTree tree) {
 		$Environment::variables.put(name, tree);
@@ -147,14 +162,6 @@ scope Environment {
 	
 }
 
-// $<Module
-module: 		^( 'module' moduleId imprt* site* function* ) ;
-
-moduleId:		IDCON ( '.' e=IDCON )* ;
-	
-imprt:			'import' moduleId ';' ^ module ;
-
-// $>
 // $<Site
 
 site:			'site' mappings 'end' ;
@@ -167,16 +174,13 @@ mapping	:		PATH ':' markup ;
 // $<Markup
 
 markup:			IDCON attribute* arguments? { // Designator lifted as it complicated argument exchange
-				CommonTree func = getFunction($IDCON.getText());
-				if(func != null) {
-					WaebricInterpreter sub = new WaebricInterpreter( 
-						new CommonTreeNodeStream(func),
-						Environment_stack,
-						document,
-						current);
-					sub.function(); // Walk called function
+				CommonTree call = getFunction($IDCON.getText());
+				if(call != null) {
+					// Interpret called function
+					interpretFunction(call);
 				} else {
-					addContent(new Element($IDCON.getText()));
+					// Process markup as XHTML tag
+					addContent(new Element($IDCON.getText())); 
 				}
 			} ;
 
@@ -209,9 +213,7 @@ keyValuePair returns [String eval]
 // $>
 // $<Function
 
-function:		'def' IDCON formals? { 
-				System.out.println("Walking function " + $IDCON.getText() + "! WOAAA.." );
-			} statement* 'end' ;
+function:		'def' IDCON formals? statement* 'end' ;
 
 formals:		'(' IDCON* ')' ;
 
