@@ -1,9 +1,9 @@
 tree grammar WaebricChecker;
 
 options {
-	backtrack = true;
 	tokenVocab = Waebric;
 	ASTLabelType = CommonTree;
+	backtrack = true;
 }
 
 scope Environment {
@@ -13,7 +13,6 @@ scope Environment {
 
 @header {
 	package org.cwi.waebric;
-	
 	import java.util.HashMap;
 	import java.util.HashSet;
 	import java.util.List;
@@ -259,13 +258,12 @@ function
 				defineFunction($id, $f.args, 0);
 			} ;
 			
-formals	returns [int args = 0] 
-	:		r=regularFormals { $args = $r.args; } | emptyFormals ;
+formals	returns [int args = 0] :
+			r=regularFormals { $args = $r.args; } 
+			| /* Empty formals */ ;
 			
-regularFormals returns [int args = 0]
-	:		'(' ( id=IDCON { defineVariable($id); $args++; } )* ')' ;
-
-emptyFormals:		/* No formals defined */ ;
+regularFormals returns [int args = 0]:
+			'(' ( id=IDCON { defineVariable($id); $args++; } )* ')' ;
 
 // $<Statements
 
