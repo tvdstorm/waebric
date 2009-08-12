@@ -88,8 +88,8 @@ statement:		'if' '(' predicate ')' statement 'else' statement
 			| 'echo' embedding ';'
 			| 'cdata' expression ';' 
 			| 'yield;' 
-			| markup+ ':' expression ';'
-			| markup+ ':' statement
+			| markup+ ',' expression ';'
+			| markup+ ',' statement
 			| markup+ embedding ';' 
 			| markup+ ';' ;
 
