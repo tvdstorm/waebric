@@ -80,6 +80,10 @@
       <Project>{00DB670A-DAD2-420C-B2F1-35892494962E}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Interpreter\Interpreter.csproj">
+      <Project>{BDCDE17D-679A-4931-998F-20CC5BF6E845}</Project>
+      <Name>Interpreter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Parser\Parser.csproj">
       <Project>{2ED49A8E-BEB4-47EE-9952-AF9A105327A9}</Project>
       <Name>Parser</Name>
