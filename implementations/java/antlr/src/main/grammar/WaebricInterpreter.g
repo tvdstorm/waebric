@@ -18,10 +18,14 @@ scope Environment {
 @members {
 	public WaebricInterpreter(TreeNodeStream input, HashMap<String,CommonTree> functions) {
 		super(input);
-		
 		Environment_scope base = new Environment_scope();
 		base.functions = functions;
 		Environment_stack.push(base);
+	}
+	
+	public WaebricInterpreter(TreeNodeStream input, Stack env) {
+		super(input);
+		Environment_stack = env;
 	}
 	
 	public void interpretProgram() throws RecognitionException {
@@ -57,9 +61,17 @@ mapping	:		PATH ':' markup ;
 // $>
 // $<Markup
 
-markup:			designator arguments? ;
-
-designator:		IDCON attribute* ;
+markup:			IDCON attribute* arguments? { // Designator lifted as it complicated argument exchange
+				CommonTree func = getFunction($IDCON.getText());
+				if(func != null) {
+					WaebricInterpreter sub = new WaebricInterpreter( 
+						new CommonTreeNodeStream(func),
+						Environment_stack);
+					sub.function(); // Walk called function
+				} else {
+					// TODO: Create XHTML tag
+				}
+			} ;
 
 attribute:		'#' IDCON // ID attribute
 			| '.' IDCON // Class attribute
