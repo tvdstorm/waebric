@@ -123,10 +123,11 @@ assignment:		IDCON '=' expression ';' // Variable binding
 // $>
 // $<Predicates
 
-predicate:		( '!' predicate 
+predicate returns [boolean eval]
+	:		( '!' p=predicate { $eval = ! $p.eval; }
 				| expression // Not null
 				| expression '.' type // Is type 
-			) ( '&&' predicate | '||' predicate )* ;
+			) ( '&&' p=predicate { $eval = $eval && $p.eval; } | '||' p=predicate { $eval = $eval || $p.eval; } )* ;
 			
 type:			'list' | 'record' | 'string' ;
 
