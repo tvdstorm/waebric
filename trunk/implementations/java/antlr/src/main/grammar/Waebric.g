@@ -102,8 +102,8 @@ statement:		'if' '(' predicate ')' statement 'else' statement
 			| 'cdata' expression ';' 
 			| 'yield;' 
 			| markup ';'
-			| markup+ expression ';' -> markup+ ';' expression ';' // Insert seperator
-			| markup+ statement -> markup+ ';' statement // Insert seperator
+			| markup+ expression ';' -> markup+ ':' expression ';' // Insert seperator
+			| markup+ statement -> markup+ ':' statement // Insert seperator
 			| markup+ embedding ';' 
 			| markup+ markup ';' ; // Stored as: Markup* ';'
 

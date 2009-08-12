@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-12 11:41:03
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-12 11:47:27
 
 	package org.cwi.waebric;
 	import java.util.ArrayList;
@@ -231,7 +231,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: moduleId, site, imprt, function, 33
+            // elements: 33, imprt, function, site, moduleId
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -436,7 +436,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: SEMICOLON, 35, moduleId
+            // elements: 35, moduleId, SEMICOLON
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1968,7 +1968,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: IDCON, 41, 43
+            // elements: 43, IDCON, 41
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2021,7 +2021,7 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "statement"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:94:1: statement : ( 'if' '(' predicate ')' statement 'else' statement | 'if' '(' predicate ')' statement | 'each' '(' IDCON ':' expression ')' statement | 'let' ( assignment )+ 'in' ( statement )* 'end' | '{' ( statement )* '}' | 'comment' STRCON ';' | 'echo' expression ';' | 'echo' embedding ';' | 'cdata' expression ';' | 'yield;' | markup ';' | ( markup )+ expression ';' -> ( markup )+ ';' expression ';' | ( markup )+ statement -> ( markup )+ ';' statement | ( markup )+ embedding ';' | ( markup )+ markup ';' );
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:94:1: statement : ( 'if' '(' predicate ')' statement 'else' statement | 'if' '(' predicate ')' statement | 'each' '(' IDCON ':' expression ')' statement | 'let' ( assignment )+ 'in' ( statement )* 'end' | '{' ( statement )* '}' | 'comment' STRCON ';' | 'echo' expression ';' | 'echo' embedding ';' | 'cdata' expression ';' | 'yield;' | markup ';' | ( markup )+ expression ';' -> ( markup )+ ':' expression ';' | ( markup )+ statement -> ( markup )+ ':' statement | ( markup )+ embedding ';' | ( markup )+ markup ';' );
     public final WaebricParser.statement_return statement() throws RecognitionException {
         WaebricParser.statement_return retval = new WaebricParser.statement_return();
         retval.start = input.LT(1);
@@ -2140,7 +2140,7 @@ public class WaebricParser extends Parser {
         RewriteRuleSubtreeStream stream_expression=new RewriteRuleSubtreeStream(adaptor,"rule expression");
         RewriteRuleSubtreeStream stream_markup=new RewriteRuleSubtreeStream(adaptor,"rule markup");
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:94:10: ( 'if' '(' predicate ')' statement 'else' statement | 'if' '(' predicate ')' statement | 'each' '(' IDCON ':' expression ')' statement | 'let' ( assignment )+ 'in' ( statement )* 'end' | '{' ( statement )* '}' | 'comment' STRCON ';' | 'echo' expression ';' | 'echo' embedding ';' | 'cdata' expression ';' | 'yield;' | markup ';' | ( markup )+ expression ';' -> ( markup )+ ';' expression ';' | ( markup )+ statement -> ( markup )+ ';' statement | ( markup )+ embedding ';' | ( markup )+ markup ';' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:94:10: ( 'if' '(' predicate ')' statement 'else' statement | 'if' '(' predicate ')' statement | 'each' '(' IDCON ':' expression ')' statement | 'let' ( assignment )+ 'in' ( statement )* 'end' | '{' ( statement )* '}' | 'comment' STRCON ';' | 'echo' expression ';' | 'echo' embedding ';' | 'cdata' expression ';' | 'yield;' | markup ';' | ( markup )+ expression ';' -> ( markup )+ ':' expression ';' | ( markup )+ statement -> ( markup )+ ':' statement | ( markup )+ embedding ';' | ( markup )+ markup ';' )
             int alt27=15;
             alt27 = dfa27.predict(input);
             switch (alt27) {
@@ -2579,7 +2579,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: expression, SEMICOLON, SEMICOLON, markup
+                    // elements: 36, expression, SEMICOLON, markup
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2590,7 +2590,7 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 105:29: -> ( markup )+ ';' expression ';'
+                    // 105:29: -> ( markup )+ ':' expression ';'
                     {
                         if ( !(stream_markup.hasNext()) ) {
                             throw new RewriteEarlyExitException();
@@ -2600,7 +2600,7 @@ public class WaebricParser extends Parser {
 
                         }
                         stream_markup.reset();
-                        adaptor.addChild(root_0, stream_SEMICOLON.nextNode());
+                        adaptor.addChild(root_0, (Object)adaptor.create(36, "36"));
                         adaptor.addChild(root_0, stream_expression.nextTree());
                         adaptor.addChild(root_0, stream_SEMICOLON.nextNode());
 
@@ -2663,7 +2663,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: statement, SEMICOLON, markup
+                    // elements: statement, markup, 36
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2674,7 +2674,7 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 106:24: -> ( markup )+ ';' statement
+                    // 106:24: -> ( markup )+ ':' statement
                     {
                         if ( !(stream_markup.hasNext()) ) {
                             throw new RewriteEarlyExitException();
@@ -2684,7 +2684,7 @@ public class WaebricParser extends Parser {
 
                         }
                         stream_markup.reset();
-                        adaptor.addChild(root_0, (Object)adaptor.create(SEMICOLON, "SEMICOLON"));
+                        adaptor.addChild(root_0, (Object)adaptor.create(36, "36"));
                         adaptor.addChild(root_0, stream_statement.nextTree());
 
                     }
@@ -4274,7 +4274,7 @@ public class WaebricParser extends Parser {
             this.transition = DFA27_transition;
         }
         public String getDescription() {
-            return "94:1: statement : ( 'if' '(' predicate ')' statement 'else' statement | 'if' '(' predicate ')' statement | 'each' '(' IDCON ':' expression ')' statement | 'let' ( assignment )+ 'in' ( statement )* 'end' | '{' ( statement )* '}' | 'comment' STRCON ';' | 'echo' expression ';' | 'echo' embedding ';' | 'cdata' expression ';' | 'yield;' | markup ';' | ( markup )+ expression ';' -> ( markup )+ ';' expression ';' | ( markup )+ statement -> ( markup )+ ';' statement | ( markup )+ embedding ';' | ( markup )+ markup ';' );";
+            return "94:1: statement : ( 'if' '(' predicate ')' statement 'else' statement | 'if' '(' predicate ')' statement | 'each' '(' IDCON ':' expression ')' statement | 'let' ( assignment )+ 'in' ( statement )* 'end' | '{' ( statement )* '}' | 'comment' STRCON ';' | 'echo' expression ';' | 'echo' embedding ';' | 'cdata' expression ';' | 'yield;' | markup ';' | ( markup )+ expression ';' -> ( markup )+ ':' expression ';' | ( markup )+ statement -> ( markup )+ ':' statement | ( markup )+ embedding ';' | ( markup )+ markup ';' );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
