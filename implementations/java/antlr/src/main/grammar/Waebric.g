@@ -38,8 +38,8 @@ options {
 }
 
 // $<Module
-module: 		'module' moduleId ( imprt | site | function )* 'end'
-				-> ^( 'module' moduleId imprt* site* function* 'end' ) ; // Requires root node
+module: 		'module' moduleId ( imprt | site | function )*
+				-> ^( 'module' moduleId imprt* site* function* ) ; // Requires root node
 
 moduleId 
 	returns [String path = ""] // Determine physical path of module identifier
