@@ -16,6 +16,11 @@ Project("{5B268528-5715-3389-943A-D0DF94E66CB6}") = "WaebricGrammar", "..\Waebri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser", "..\Parser\Parser.csproj", "{2ED49A8E-BEB4-47EE-9952-AF9A105327A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter", "..\Interpreter\Interpreter.csproj", "{BDCDE17D-679A-4931-998F-20CC5BF6E845}"
+	ProjectSection(ProjectDependencies) = postProject
+		{00DB670A-DAD2-420C-B2F1-35892494962E} = {00DB670A-DAD2-420C-B2F1-35892494962E}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +47,10 @@ Global
 		{2ED49A8E-BEB4-47EE-9952-AF9A105327A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ED49A8E-BEB4-47EE-9952-AF9A105327A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ED49A8E-BEB4-47EE-9952-AF9A105327A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDCDE17D-679A-4931-998F-20CC5BF6E845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDCDE17D-679A-4931-998F-20CC5BF6E845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDCDE17D-679A-4931-998F-20CC5BF6E845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDCDE17D-679A-4931-998F-20CC5BF6E845}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

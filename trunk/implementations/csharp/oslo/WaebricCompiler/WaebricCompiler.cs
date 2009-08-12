@@ -6,6 +6,7 @@ using Microsoft.M;
 using System.Dataflow;
 using Checker;
 using Common;
+using Interpreter;
 
 namespace WaebricCompiler
 {
@@ -45,6 +46,10 @@ namespace WaebricCompiler
             //Lets check the file
             WaebricChecker checker = new WaebricChecker();
             checker.CheckSyntaxTree(rootNode);
+
+            //Lets interpret the file
+            WaebricInterpreter interpreter = new WaebricInterpreter();
+            interpreter.InterpretAST(rootNode);
 
         }
 
