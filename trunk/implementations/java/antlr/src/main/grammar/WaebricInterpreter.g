@@ -108,9 +108,9 @@ keyValuePair returns [String eval]
 // $>
 // $<Function
 
-function:		'def' IDCON formals? statement* 'end' { 
+function:		'def' IDCON formals? { 
 				System.out.println("Walking function " + $IDCON.getText() + "! WOAAA.." );
-			} ;
+			} statement* 'end' ;
 
 formals:		'(' IDCON* ')' ;
 
