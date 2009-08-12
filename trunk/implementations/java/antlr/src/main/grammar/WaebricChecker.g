@@ -183,7 +183,7 @@ module
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		^( 'module' moduleId imprt* site* function* 'end' );
+	} :		^( 'module' moduleId imprt* site* function* );
 
 moduleId
 	@init { 

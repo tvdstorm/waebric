@@ -7,16 +7,16 @@ options {
 }
 
 scope Environment {
-	HashMap<String,CommonTree> functions;
+	Map<String,CommonTree> functions;
 }
 
 @header {
 	package org.cwi.waebric;
-	import java.util.HashMap;
+	import java.util.Map;
 }
 
 @members {
-	public WaebricInterpreter(TreeNodeStream input, HashMap<String,CommonTree> functions) {
+	public WaebricInterpreter(TreeNodeStream input, Map<String,CommonTree> functions) {
 		super(input);
 		Environment_scope base = new Environment_scope();
 		base.functions = functions;
@@ -30,7 +30,12 @@ scope Environment {
 	
 	public void interpretProgram() throws RecognitionException {
 		CommonTree main = getFunction("main");
-		//if(tree != null) { input = main; this.function(); }
+		if(main != null) {
+			WaebricInterpreter sub = new WaebricInterpreter( 
+				new CommonTreeNodeStream(main),
+				Environment_stack);
+			sub.function();
+		} 
 	}
 	
 	private CommonTree getFunction(String name) {
@@ -40,10 +45,11 @@ scope Environment {
 			}
 		} return null;
 	}
+	
 }
 
 // $<Module
-module: 		^( 'module' moduleId imprt* site* function* 'end' ) ;
+module: 		^( 'module' moduleId imprt* site* function* ) ;
 
 moduleId:		IDCON ( '.' e=IDCON )* ;
 	
@@ -102,7 +108,9 @@ keyValuePair returns [String eval]
 // $>
 // $<Function
 
-function:		'def' id=IDCON formals? statement* 'end' ;
+function:		'def' IDCON formals? statement* 'end' { 
+				System.out.println("Walking function " + $IDCON.getText() + "! WOAAA.." );
+			} ;
 
 formals:		'(' IDCON* ')' ;
 
