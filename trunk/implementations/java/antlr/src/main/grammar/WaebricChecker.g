@@ -50,6 +50,12 @@ scope Environment {
 	class Call { public CommonTree id; public int args; public Stack env; }
 	List<Call> calls = new ArrayList<Call>();
 
+	/**
+	 * Define function
+	 * @param id: Tree representation of functions IDCON
+	 * @param args: Number of arguments in function
+	 * @param depth: Depth in environment stack
+	 */
 	void defineFunction(CommonTree id, int args, int depth) {
 		// Check if function is already defined
 		if(isDefinedFunction(id)) {
@@ -57,6 +63,10 @@ scope Environment {
 		} else { $Environment[depth]::functions.put(id.getText(), args); }
 	}
 
+	/**
+	 * Check if a function is defined
+	 * @param name: Function name
+	 */
 	boolean isDefinedFunction(CommonTree id) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(id.getText())) {
@@ -65,24 +75,36 @@ scope Environment {
 		} return false;
 	}
 	
-	void defineVariable(CommonTree id) {
-		$Environment::variables.add(id.getText());
-	}
-	
-	boolean isDefinedVariable(CommonTree id) {
-		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::variables.contains(id.getText())) { 
-				return true; 
-			}
-		} return false;
-	}
-	
+	/**
+	 * Retrieve excepted function arguments
+	 * @param name: Function name
+	 */
 	int expectedArgs(CommonTree id) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(id.getText())) {
 				return $Environment[i]::functions.get(id.getText()); 
 			}
 		} return -1;
+	}
+	
+	/**
+	 * Define variable
+	 * @param name: Variable name
+	 */
+	void defineVariable(String name) {
+		$Environment::variables.add(name);
+	}
+
+	/**
+	 * Check if variable is defined
+	 * @param name: Variable name
+	 */
+	boolean isDefinedVariable(String name) {
+		for(int i=$Environment.size()-1; i>=0; i--) {
+			if($Environment[i]::variables.contains(name)) { 
+				return true; 
+			}
+		} return false;
 	}
 	
     	public abstract class SemanticException extends Exception { 
@@ -186,19 +208,19 @@ module
 	} :		^( 'module' moduleId imprt* site* function* );
 
 moduleId
-	@init { 
-		String path = "";
-	} :		id=IDCON { path = id.getText(); }
-			( '.' id=IDCON { path += "/" + id.getText(); } )* {
-				path += ".wae"; // Include default extension
-				java.io.File file = new java.io.File(path);
-				if(! file.isFile()) {
-					// Each import reference should be a valid file
-					exceptions.add(new NonExistingModuleException($id));
-				}
-			} ;
+	@init { String path = ""; } 
+	@after { path += ".wae"; } // Include default extension
+	:		id=IDCON { path = $id.getText(); } 
+			( '.' id=IDCON { path += "/" + $id.getText(); } )* ;
+		finally {
+			java.io.File file = new java.io.File(path);
+			if(! file.isFile()) {
+				// Each import reference should be a valid file
+				exceptions.add(new NonExistingModuleException($moduleId.tree));
+			}
+		}
 
-imprt:			'import' id=moduleId ';' ^module ;
+imprt:			'import' moduleId ';' ^ module ;
 
 // $>
 
@@ -210,16 +232,17 @@ mapping	:		PATH ':' markup ;
 
 markup
 	@init { int args = 0; }
-	:		d=designator ( a=arguments { args = $a.args; } )? {
+	:		designator ( arguments { args = $arguments.args; } )? {
 				// Store function call
 				Call call = new Call();
-				call.id = $d.tree;
+				call.id = $designator.tree;
 				call.args = args;
 				call.env = (Stack) $Environment.clone();
 				calls.add(call);
 			} ;
 			
 designator:		IDCON attribute* ;
+
 attribute:		'#' IDCON 
 				| '.' IDCON 
 				| '$' IDCON 
@@ -239,9 +262,9 @@ expression:		( varExpression | NATCON | TEXT | SYMBOLCON
 				| '{' keyValuePair? ( ',' keyValuePair )* '}' 
 			) ( '+' expression | '.' IDCON )* ;
 
-varExpression:		id=IDCON {
-				if(! isDefinedVariable($id)) {
-					exceptions.add(new UndefinedVariableException($id));
+varExpression:		IDCON {
+				if(! isDefinedVariable($IDCON.getText())) {
+					exceptions.add(new UndefinedVariableException($IDCON.tree));
 				}
 			} ;
 			
@@ -254,16 +277,16 @@ function
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		'def' id=IDCON f=formals statement* 'end' { 
-				defineFunction($id, $f.args, 0);
+	} :		'def' IDCON formals statement* 'end' { 
+				defineFunction($IDCON, $formals.args, 0);
 			} ;
 			
 formals	returns [int args = 0] :
-			r=regularFormals { $args = $r.args; } 
+			regularFormals { $args = $regularFormals.args; } 
 			| /* Empty formals */ ;
 			
 regularFormals returns [int args = 0]:
-			'(' ( id=IDCON { defineVariable($id); $args++; } )* ')' ;
+			'(' ( IDCON { defineVariable($IDCON.getText()); $args++; } )* ')' ;
 
 // $<Statements
 
@@ -287,8 +310,8 @@ eachStatement
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		'each' '(' id=IDCON ':' expression ')' { 
-				defineVariable($id); // Define variable before statement is executed
+	} :		'each' '(' IDCON ':' expression ')' { 
+				defineVariable($IDCON.getText()); // Define variable before statement is executed
 			} statement ;
 
 letStatement
@@ -302,8 +325,8 @@ letStatement
 assignment [int depth]:	
 			varBinding | funcBinding[depth] ;
 
-varBinding:		id=IDCON '=' expression ';' { 
-				defineVariable($id); 
+varBinding:		IDCON '=' expression ';' { 
+				defineVariable($IDCON.getText()); 
 			} ;
 			
 funcBinding [int depth]
@@ -311,7 +334,7 @@ funcBinding [int depth]
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		id=IDCON f=regularFormals statement { defineFunction($id, $f.args, depth); } ;
+	} :		IDCON regularFormals statement { defineFunction($IDCON, $regularFormals.args, depth); } ;
 
 // $<Predicate
 
