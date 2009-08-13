@@ -30,6 +30,8 @@ public class WaebricProcessor {
 			} else {
 				is = new ANTLRInputStream(System.in);
 			}
+			
+			System.out.println("Processing...");
 
 	        long curr = System.currentTimeMillis();
 	        WaebricLexer lexer = new WaebricLexer(is);

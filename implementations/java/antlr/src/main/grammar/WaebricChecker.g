@@ -290,27 +290,28 @@ regularFormals returns [int args = 0]:
 
 // $<Statements
 
-statement:		'if' '(' predicate ')' statement 'else' statement
-			| 'if' '(' predicate ')' statement
-			| eachStatement
-			| letStatement
-			| '{' statement* '}'
-			| 'comment' STRCON ';'
-			| 'echo' expression ';'
-			| 'echo' embedding ';'
-			| 'cdata' expression ';'
-			| 'yield;'
-			| markup+ ',' expression ';'
-			| markup+ ',' statement
-			| markup+ embedding ';'
-			| markup+ ';' ;
+statement:		^( 'if' predicate statement 'else' statement )
+			| ^( 'if' predicate statement )
+			| ^( 'each' IDCON expression statement )
+			| ^( 'let' assignment+ 'in' statement* 'end' )
+			| ^( '{' statement* '}' )
+			| ^( 'comment' STRCON )
+			| ^( 'echo' expression )
+			| ^( 'echo' embedding )
+			| ^( 'cdata' expression )
+			| 'yield'
+			| markup
+			| ^( markup markup* ',' expression ';' )
+			| ^( markup markup* ',' statement )
+			| ^( markup markup* embedding ';' )
+			| ^( markup markup* ';' ) ;
 
 eachStatement
 	scope Environment;
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		'each' '(' IDCON ':' expression ')' { 
+	} :		'each' IDCON expression ^ { 
 				defineVariable($IDCON.getText()); // Define variable before statement is executed
 			} statement ;
 

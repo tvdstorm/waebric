@@ -6,6 +6,6 @@ def main
 	}
 end
 
-def callme
-	title "It works!";
+def callme(expr)
+	if(expr) title "It works!";
 end
