@@ -234,7 +234,7 @@ statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 			| ^( 'cdata' expression ';' )
 			| 'yield;'
 			| ^( markup ';' )
-			| ^( markup markup* ',' expression ';' )
+			| ^( markup markup* ',' expression ';' ) { current.setText($expression.eval); }
 			| ^( markup markup* ',' statement )
 			| ^( markup markup* embedding ';' )
 			| ^( markup markup* ';' );
