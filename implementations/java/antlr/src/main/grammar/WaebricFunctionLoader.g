@@ -87,11 +87,10 @@ statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 			| ^( 'echo' embedding ';' )
 			| ^( 'cdata' expression ';' )
 			| 'yield;'
-			| ^( markup ';' )
+			| ^( markup markup* ';' )
 			| ^( markup markup* ',' expression ';' )
 			| ^( markup markup* ',' statement )
-			| ^( markup markup* embedding ';' )
-			| ^( markup markup* ';' );
+			| ^( markup markup* embedding ';' ) ;
 
 // $>
 // $<Assignments

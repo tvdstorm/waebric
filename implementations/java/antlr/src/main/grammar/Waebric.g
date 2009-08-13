@@ -108,8 +108,6 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 			| 'cdata' expression ';' 
 				-> ^( 'cdata' expression ';' )
 			| 'yield;'
-			| markup ';'
-				-> ^( markup ';' )
 			| markup+ expression ';' 
 				-> ^( markup markup* ',' expression ';' )
 			| markup+ statement 

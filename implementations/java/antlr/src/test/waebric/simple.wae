@@ -2,12 +2,10 @@ module simple
 
 def main
 	html {
-		cdata "GOT SKILZ NUB?";
 		title callme("test");
 	}
 end
 
 def callme(expr)
-	comment "OHYEZZ";
-	if(expr) echo "true"; else echo "false";
+	if(!expr) echo "true"; else echo "false";
 end
