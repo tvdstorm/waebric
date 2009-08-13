@@ -58,7 +58,7 @@ public class WaebricProcessor {
 	        	e.printStackTrace();
 	        }
 	        
-	        WaebricFunctionLoader loader = new WaebricFunctionLoader(new CommonTreeNodeStream(tree));
+	        WaebricLoader loader = new WaebricLoader(new CommonTreeNodeStream(tree));
 	        Map<String,CommonTree> functions = loader.getFunctions();
 	        
 	        WaebricInterpreter interpreter = new WaebricInterpreter(new CommonTreeNodeStream(tree), functions);

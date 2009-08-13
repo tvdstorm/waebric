@@ -22,36 +22,28 @@ options {
 
 // $<Module
 module: 		^( 'module' moduleId imprt* site* function* ) ;
-
 moduleId:		IDCON ( '.' e=IDCON )* ;
-	
 imprt:			'import' moduleId ';' ^ module ;
 
 // $>
 // $<Site
 
 site:			'site' mappings 'end' ;
-
 mappings:		mapping? ( ';' mapping )* ;
-
 mapping	:		PATH ':' markup ;
 
 // $>
 // $<Markup
 
 markup:			designator arguments? ;
-
 designator:		IDCON attribute* ;
-
 attribute:		'#' IDCON // ID attribute
 			| '.' IDCON // Class attribute
 			| '$' IDCON // Name attribute
 			| ':' IDCON // Type attribute
 			| '@' NATCON // Width attribute
 			| '@' NATCON '%' NATCON; // Width-height attribute
-			
 arguments:		'(' argument? ( ',' argument )* ')' ;
-
 argument:		expression ;
 
 // $>
@@ -61,7 +53,6 @@ expression:		( IDCON | NATCON | TEXT | SYMBOLCON
 				| '[' expression? ( ',' expression )* ']' // List
 				| '{' keyValuePair? ( ',' keyValuePair )* '}' // Record
 			) ( '+' expression /* Cat */ | '.' IDCON /* Field */ )* ;
-			
 keyValuePair:		IDCON ':' expression ;
 
 // $>
@@ -87,10 +78,10 @@ statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 			| ^( 'echo' embedding ';' )
 			| ^( 'cdata' expression ';' )
 			| 'yield;'
-			| ^( markup markup* ';' )
-			| ^( markup markup* ',' expression ';' )
-			| ^( markup markup* ',' statement )
-			| ^( markup markup* embedding ';' ) ;
+			| ^( MARKUP_STATEMENT markup+ expression ';' )
+			| ^( MARKUP_STATEMENT markup+ statement )
+			| ^( MARKUP_STATEMENT markup+ embedding )
+			| ^( MARKUP_STATEMENT markup+ ';' ) ;
 
 // $>
 // $<Assignments
@@ -105,14 +96,11 @@ predicate:		( '!' predicate
 				| expression // Not null
 				| expression '.' type // Is type 
 			) ( '&&' predicate | '||' predicate )* ;
-			
 type:			'list' | 'record' | 'string' ;
 
 // $>
 // $<Embedding
 
 embedding:		PRETEXT embed textTail ;
-
 embed:			markup* expression | markup* markup ;
-
 textTail:		POSTTEXT | MIDTEXT embed textTail ;

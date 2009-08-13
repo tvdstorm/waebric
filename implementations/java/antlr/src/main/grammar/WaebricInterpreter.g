@@ -256,13 +256,13 @@ statement
 					addContent(cdata);
 				}
 			| 'yield;'
-			| ^( markup markup* ';' )
-			| ^( markup markup* ',' expression ';' ) { 
+			| ^( MARKUP_STATEMENT markup+ expression ';' ) { 
 					Text text = new Text($expression.eval);
 					addContent(text);
 				}
-			| ^( markup markup* ',' statement )
-			| ^( markup markup* embedding ';' ) ;
+			| ^( MARKUP_STATEMENT markup+ statement )
+			| ^( MARKUP_STATEMENT markup+ embedding ';' )
+			| ^( MARKUP_STATEMENT markup+ ';' ) ;
 
 letStatement
 	:		^( 'let' assignment+ 'in' statement* 'end' ) ;

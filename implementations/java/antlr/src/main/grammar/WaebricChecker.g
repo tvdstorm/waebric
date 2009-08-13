@@ -296,10 +296,10 @@ statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 			| ^( 'echo' embedding ';' )
 			| ^( 'cdata' expression ';' )
 			| 'yield;'
-			| ^( markup markup* ';' )
-			| ^( markup markup* ',' expression ';' )
-			| ^( markup markup* ',' statement )
-			| ^( markup markup* ',' embedding ) ;
+			| ^( MARKUP_STATEMENT markup+ expression ';' )
+			| ^( MARKUP_STATEMENT markup+ statement )
+			| ^( MARKUP_STATEMENT markup+ embedding )
+			| ^( MARKUP_STATEMENT markup+ ';' ) ;
 
 eachStatement
 	scope Environment;
