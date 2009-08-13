@@ -1,4 +1,4 @@
-tree grammar WaebricFunctionLoader;
+tree grammar WaebricLoader;
 
 options {
 	tokenVocab = Waebric;
