@@ -105,22 +105,200 @@ namespace Interpreter
             switch (expression.Brand.Text)
             {
                 case "TextExpression":
+                    VisitTextExpression(expression);
                     break;
                 case "SymbolExpression":
+                    VisitSymbolExpression(expression);
                     break;
                 case "VarExpression":
+                    VisitVarExpression(expression);
                     break;
                 case "NatExpression":
+                    VisitNatExpression(expression);
                     break;
                 case "CatExpression":
+                    VisitCatExpression(expression);
                     break;
                 case "FieldExpression":
+                    VisitFieldExpression(expression);
                     break;
                 case "ListExpression":
+                    VisitListExpression(expression);
                     break;
                 case "RecordExpression":
+                    VisitRecordExpression(expression);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Interpret TextExpression
+        /// </summary>
+        /// <param name="textExpression">TextExpression to interpret</param>
+        public void VisitTextExpression(Node textExpression)
+        {
+            Node value = textExpression.ViewAllNodes().ElementAt(0);
+            TextValue = value.AtomicValue.ToString();
+        }
+
+        /// <summary>
+        /// Interpret SymbolExpression
+        /// </summary>
+        /// <param name="symbolExpression">SymbolExpression to interpret</param>
+        public void VisitSymbolExpression(Node symbolExpression)
+        {
+            Node value = symbolExpression.ViewAllNodes().ElementAt(0);
+            TextValue = value.AtomicValue.ToString();
+        }
+
+        /// <summary>
+        /// Interpret VarExpression
+        /// </summary>
+        /// <param name="varExpression">VarExpression to interpret</param>
+        public void VisitVarExpression(Node varExpression)
+        {
+            Node varIdentifier = varExpression.ViewAllNodes().ElementAt(0);
+            Node expression = SymbolTable.GetVariableDefinition(varIdentifier.AtomicValue.ToString());
+
+            //Check references to parent functions with same identifier
+            if (expression == varExpression && SymbolTable.GetParentSymbolTable() != null)
+            {
+                expression = SymbolTable.GetParentSymbolTable().GetVariableDefinition(varIdentifier.AtomicValue.ToString());
+            }
+
+            if (expression != null)
+            {   //Get expression value
+                VisitExpression(expression);
+            }
+            else
+            {   //Variable doesn't have an allocated expressionvalue
+                TextValue = "undef";
+            }
+
+        }
+
+        /// <summary>
+        /// Interpret NatExpression
+        /// </summary>
+        /// <param name="natExpression">NatExpression to interpret</param>
+        public void VisitNatExpression(Node natExpression)
+        {
+            Node value = natExpression.ViewAllNodes().ElementAt(0);
+            TextValue = value.AtomicValue.ToString();
+        }
+
+        /// <summary>
+        /// Interpret CatExpression
+        /// </summary>
+        /// <param name="catExpression">CatExpression to interpret</param>
+        public void VisitCatExpression(Node catExpression)
+        {
+            Node leftExpression = catExpression.ViewAllNodes().ElementAt(0);
+            Node rightExpression = catExpression.ViewAllNodes().ElementAt(1);
+
+            //Concatenate expressions
+            String catValue = "";
+            
+            //Visit left
+            VisitExpression(leftExpression);
+            catValue += TextValue;
+
+            //Visit right
+            VisitExpression(rightExpression);
+            catValue += TextValue;
+
+            //Store concatenation value
+            TextValue = catValue;
+        }
+
+        /// <summary>
+        /// Interpret FieldExpression
+        /// </summary>
+        /// <param name="fieldExpression">FieldExpression to interpret</param>
+        public void VisitFieldExpression(Node fieldExpression)
+        {
+            //Retrieve expression
+            Node expression = GetExpression(fieldExpression);
+            if (expression != null)
+            {   //Get expression value
+                VisitExpression(expression);
+            }
+            else
+            {   //No expression value found
+                TextValue = "undef";
+            }
+        }
+
+        /// <summary>
+        /// Interpret ListExpression
+        /// </summary>
+        /// <param name="listExpression">ListExpression to interpret</param>
+        public void VisitListExpression(Node listExpression)
+        {
+            //Convert list to textvalue
+            String tempList = "[";
+            
+            //Convert each expression in list
+            NodeCollection expressionList = listExpression.ViewAllNodes();
+            for (int i = 0; i <= (expressionList.Count - 1); i++)
+            {
+                Node currentExpression = expressionList.ElementAt(i);
+
+                //Store Text and SymbolExpression between " to recognize , seperator
+                if (currentExpression.Brand.Text == "TextExpression" || currentExpression.Brand.Text == "SymbolExpression")
+                {
+                    tempList += "\"";
+                }
+
+                //Store expression value in tempList
+                VisitExpression(currentExpression);
+                tempList += TextValue;
+
+                if (currentExpression.Brand.Text == "TextExpression" || currentExpression.Brand.Text == "SymbolExpression")
+                {
+                    tempList += "\"";
+                }
+
+                //Add , seperator
+                if (i != (expressionList.Count - 1))
+                {
+                    tempList += ",";
+                }
+            }
+
+            tempList += "]";
+            TextValue = tempList;
+        }
+
+        /// <summary>
+        /// Interpret RecordExpression
+        /// </summary>
+        /// <param name="recordExpression">RecordExpression to interpret</param>
+        public void VisitRecordExpression(Node recordExpression)
+        {
+            //Convert record to textvalue
+            String tempRecord = "{";
+            NodeCollection pairList = recordExpression.ViewAllNodes();
+            for (int i = 0; i <= (pairList.Count - 1); i++)
+            {
+                Node pair = pairList.ElementAt(i);
+
+                //Convert pair
+                Node key = pair.ViewAllNodes().ElementAt(0);
+                Node value = pair.ViewAllNodes().ElementAt(1);
+                tempRecord += key.AtomicValue.ToString() + ":";
+                VisitExpression(value);
+                tempRecord += TextValue;
+
+                //Add seperator
+                if (i != (pairList.Count - 1))
+                {
+                    tempRecord += ",";
+                }
+            }
+
+            tempRecord += "}";
+            TextValue = tempRecord;
         }
 
         /// <summary>
