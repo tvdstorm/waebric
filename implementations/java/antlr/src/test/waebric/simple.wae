@@ -1,8 +1,10 @@
 module simple
 
 def main
-	cdata "GOT SKILZ NUB?";
-	html callme("test");
+	html {
+		cdata "GOT SKILZ NUB?";
+		title callme("test");
+	}
 end
 
 def callme(expr)
