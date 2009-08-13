@@ -392,7 +392,7 @@ module Waebric
             | ":" i:IdCon
                 => TypeAttribute[i]
             | "@" w:NatCon "%" h:NatCon
-                => WidthHeigthAttribute[w,h]
+                => WidthHeightAttribute[w,h]
             | "@" w:NatCon
                 => WidthAttribute[w];
                 
