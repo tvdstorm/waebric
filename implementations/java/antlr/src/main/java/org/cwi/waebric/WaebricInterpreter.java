@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-13 13:39:24
+// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-13 13:42:13
 
 	package org.cwi.waebric;
 	
@@ -118,23 +118,25 @@ public class WaebricInterpreter extends TreeParser {
     public String getGrammarFileName() { return "/ufs/schagen/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g"; }
 
 
-    	private Document document;
-    	private Element current;
+    	public static Document document;
+    	public static Element current;
 
     	public WaebricInterpreter(TreeNodeStream input, Map<String,CommonTree> functions) {
     		super(input);
+    		document = new Document();
+    		
+    		// Attach function definitions to environment
     		Environment_scope base = new Environment_scope();
     		base.functions = functions;
     		base.variables = new HashMap<String,String>();
     		Environment_stack.push(base);
-    		document = new Document();
     	}
     	
-    	private WaebricInterpreter(TreeNodeStream input, Stack environment, Document document, Element current) {
+    	private WaebricInterpreter(TreeNodeStream input, Stack environment) {
     		super(input);
+    		
+    		// Clone first element of environment stack for function definitions
     		this.Environment_stack = environment;
-    		this.document = document;
-    		this.current = current;
     	}
     	
     	/**
@@ -157,9 +159,7 @@ public class WaebricInterpreter extends TreeParser {
     	private void interpretFunction(CommonTree function) throws RecognitionException {
     		WaebricInterpreter instance = new WaebricInterpreter(
     			new CommonTreeNodeStream(function),
-    			Environment_stack,
-    			document,
-    			current);
+    			Environment_stack);
     		instance.function();
     	}
     	
