@@ -1,9 +1,9 @@
 module simple
 
 def main
-	html {
-		title callme("test");
-	}
+    html {
+        title "Hello world";
+    }
 end
 
 def callme(expr)

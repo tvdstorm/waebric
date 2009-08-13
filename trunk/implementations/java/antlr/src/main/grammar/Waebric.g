@@ -115,7 +115,7 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 			| markup+ embedding ';' 
 				-> ^( markup markup* embedding ';' )
 			| markup+ ';' 
-				-> ^( markup markup* ';' );
+				-> ^( markup markup* ';' ) ;
 
 // $>
 // $<Assignments
