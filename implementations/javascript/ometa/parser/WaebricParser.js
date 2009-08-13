@@ -158,6 +158,6 @@ WaebricParser.parseAll = function(path){
 			throw "Waebric program doesn't exists";
 		}
 	}catch(exception){
-		throw new WaebricParserException(exception);
+		throw new WaebricParserException(exception.message, null, path, exception);
 	}
 }
