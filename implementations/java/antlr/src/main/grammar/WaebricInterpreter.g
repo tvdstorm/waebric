@@ -103,8 +103,9 @@ scope Environment {
 			if(content instanceof Element) {
 				document.setRootElement((Element) content);
 			} else {
-				document.setRootElement(createXHTMLTag());
-				document.addContent(content);
+				Element XHTML = createXHTMLTag();
+    				document.setRootElement(XHTML);
+    				XHTML.addContent(content);
 			}	
     			
 			current = document.getRootElement();
@@ -239,22 +240,33 @@ statement
 					}
 				}
 			| ^( 'each' '(' IDCON ':' expression ')' statement )
-			| ^( 'let' assignment+ 'in' statement* 'end' )
+			| letStatement
 			| ^( '{' statement* '}' )
-			| ^( 'comment' STRCON ';' )
-			| ^( 'echo' expression ';' ) { 
-					current.setText($expression.eval);
+			| ^( 'comment' STRCON ';' ) {
+					Comment comment = new Comment($STRCON.getText());
+					addContent(comment);
+				}
+			| ^( 'echo' expression ';' ) {
+					Text text = new Text($expression.eval);
+					addContent(text);
 				}
 			| ^( 'echo' embedding ';' )
-			| ^( 'cdata' expression ';' )
+			| ^( 'cdata' expression ';' ) {
+					CDATA cdata = new CDATA($expression.eval);
+					addContent(cdata);
+				}
 			| 'yield;'
 			| ^( markup ';' )
 			| ^( markup markup* ',' expression ';' ) { 
-					current.setText($expression.eval);
+					Text text = new Text($expression.eval);
+					addContent(text);
 				}
 			| ^( markup markup* ',' statement )
 			| ^( markup markup* embedding ';' )
 			| ^( markup markup* ';' );
+
+letStatement
+	:		^( 'let' assignment+ 'in' statement* 'end' ) ;
 
 // $>
 // $<Assignments
@@ -267,8 +279,8 @@ assignment:		IDCON '=' expression ';' // Variable binding
 
 predicate returns [boolean eval]
 	:		( '!' p=predicate { $eval = ! $p.eval; }
-				| expression // Not null
-				| expression '.' type // Is type 
+				| e=expression { $eval = getVariable($e.eval) != null; } // Not null
+				| e=expression '.' type // Is type 
 			) ( '&&' p=predicate { $eval = $eval && $p.eval; } | '||' p=predicate { $eval = $eval || $p.eval; } )* ;
 			
 type:			'list' | 'record' | 'string' ;
@@ -278,6 +290,10 @@ type:			'list' | 'record' | 'string' ;
 
 embedding:		PRETEXT embed textTail ;
 
-embed:			markup* expression | markup* markup ;
+embed:			markup* expression { 
+					Text text = new Text($expression.eval);
+					addContent(text); 
+				} 
+			| markup* markup ;
 
 textTail:		POSTTEXT | MIDTEXT embed textTail ;
