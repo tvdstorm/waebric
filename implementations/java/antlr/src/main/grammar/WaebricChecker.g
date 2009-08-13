@@ -282,15 +282,14 @@ function
 			} ;
 			
 formals	returns [int args = 0] :
-			regularFormals { $args = $regularFormals.args; } 
-			| /* Empty formals */ ;
+			regularFormals { $args = $regularFormals.args; } | ;
 			
 regularFormals returns [int args = 0]:
 			'(' ( IDCON { defineVariable($IDCON.getText()); $args++; } )* ')' ;
 
 // $<Statements
 
-statement:		^( 'if' '(' predicate ')' ^ statement ( 'else' ^ statement )? )
+statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 			| eachStatement
 			| letStatement
 			| ^( '{' statement* '}' )
@@ -310,7 +309,7 @@ eachStatement
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		^( 'each' '(' IDCON ':' expression ')' ^ { 
+	} :		^( 'each' '(' IDCON ':' expression ')' { 
 				defineVariable($IDCON.getText()); // Define variable before statement is executed
 			} statement ) ;
 
@@ -319,7 +318,7 @@ letStatement
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		^( 'let' assignment+ 'in' ^statement* 'end' ) ;
+	} :		^( 'let' assignment+ 'in' statement* 'end' ) ;
 
 assignment:		IDCON '=' expression ';' { 
 				defineVariable($IDCON.getText()); 

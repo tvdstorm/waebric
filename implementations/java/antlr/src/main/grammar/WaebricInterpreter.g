@@ -208,7 +208,7 @@ expression returns [String eval]
 				| SYMBOLCON { $eval = $SYMBOLCON.getText(); }
 				| '[' ( e=expression { $eval = $e.eval; } )? ( ',' e=expression { $eval += ", " + $e.eval ; } )* ']'
 				| '{' ( p=keyValuePair { $eval = $p.eval; } )? ( ',' p=keyValuePair { $eval += ", " + $p.eval ; } )* '}' 
-			) ( '+' e=expression { $eval += $e.eval; } | '.' IDCON /* Field */ )* 	;
+			) ( '+' e=expression { $eval += $e.eval; } | '.' IDCON /* Field */ )* ;
 			
 keyValuePair returns [String eval]
 	:		IDCON ':' e=expression { $eval = $IDCON.getText() + ":" + $e.eval; } ;
@@ -224,22 +224,21 @@ formals:		'(' IDCON* ')' ;
 
 // $<Statements
 
-statement:		^( 'if' predicate statement 'else' statement )
-			| ^( 'if' predicate statement )
-			| ^( 'each' IDCON expression statement )
+statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
+			| ^( 'each' '(' IDCON ':' expression ')' statement )
 			| ^( 'let' assignment+ 'in' statement* 'end' )
 			| ^( '{' statement* '}' )
-			| ^( 'comment' STRCON )
-			| ^( 'echo' expression )
-			| ^( 'echo' embedding )
-			| ^( 'cdata' expression )
-			| 'yield'
-			| markup
-			| ^( markup markup* ',' expression ';' ) { current.setText($expression.eval); }
+			| ^( 'comment' STRCON ';' )
+			| ^( 'echo' expression ';' )
+			| ^( 'echo' embedding ';' )
+			| ^( 'cdata' expression ';' )
+			| 'yield;'
+			| ^( markup ';' )
+			| ^( markup markup* ',' expression ';' )
 			| ^( markup markup* ',' statement )
 			| ^( markup markup* embedding ';' )
-			| ^( markup markup* ';' ) ;
-			
+			| ^( markup markup* ';' );
+
 // $>
 // $<Assignments
 
