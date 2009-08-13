@@ -232,17 +232,15 @@ mapping	:		PATH ':' markup ;
 
 markup
 	@init { int args = 0; }
-	:		designator ( arguments { args = $arguments.args; } )? {
+	:		IDCON attribute* ( arguments { args = $arguments.args; } )? {
 				// Store function call
 				Call call = new Call();
-				call.id = $designator.tree;
+				call.id = $IDCON.tree;
 				call.args = args;
 				call.env = (Stack) $Environment.clone();
 				calls.add(call);
 			} ;
-			
-designator:		IDCON attribute* ;
-
+		
 attribute:		'#' IDCON 
 			| '.' IDCON 
 			| '$' IDCON 
@@ -301,7 +299,7 @@ statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 			| ^( markup markup* ';' )
 			| ^( markup markup* ',' expression ';' )
 			| ^( markup markup* ',' statement )
-			| ^( markup markup* embedding ';' ) ;
+			| ^( markup markup* ',' embedding ) ;
 
 eachStatement
 	scope Environment;
