@@ -2,7 +2,7 @@ module simple
 
 def main
     html {
-        title "Hello world";
+        title#id callme$lol("Hello world");
     }
 end
 

@@ -5,6 +5,10 @@ options {
 	output = AST ;
 }
 
+tokens {
+	MARKUP_STATEMENT = 'ms';
+}
+
 @parser::header {
 	package org.cwi.waebric;
 	import java.util.ArrayList;
@@ -60,7 +64,8 @@ mapping	:		PATH ':' markup ;
 // $>
 // $<Markup
 
-markup:			IDCON^ attribute* arguments? ;
+markup:			designator arguments? ;
+designator:		IDCON attribute* ;
 attribute:		'#' IDCON // ID attribute
 			| '.' IDCON // Class attribute
 			| '$' IDCON // Name attribute
@@ -108,13 +113,13 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'cdata' expression ';' )
 			| 'yield;'
 			| markup+ expression ';' 
-				-> ^( markup markup* ',' expression ';' )
+				-> ^( MARKUP_STATEMENT markup+ expression ';' )
 			| markup+ statement 
-				-> ^( markup markup* ',' statement )
+				-> ^( MARKUP_STATEMENT markup+ statement )
 			| markup+ embedding ';' 
-				-> ^( markup markup* ',' embedding ';' )
+				-> ^( MARKUP_STATEMENT markup+ embedding ';' )
 			| markup+ ';' 
-				-> ^( markup markup* ';' ) ;
+				-> ^( MARKUP_STATEMENT markup+ ';' ) ;
 
 // $>
 // $<Assignments

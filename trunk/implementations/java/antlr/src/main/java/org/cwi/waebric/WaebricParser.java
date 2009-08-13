@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-13 15:43:17
+// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-13 16:07:11
 
 	package org.cwi.waebric;
 	import java.util.ArrayList;
@@ -15,39 +15,41 @@ import org.antlr.runtime.tree.*;
 
 public class WaebricParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "IDCON", "PATH", "NATCON", "TEXT", "SYMBOLCON", "STRCON", "PRETEXT", "POSTTEXT", "MIDTEXT", "COMMENT", "SITE", "END", "SEMICOLON", "LETTER", "DIGIT", "HEXADECIMAL", "PATHELEMENT", "FILEEXT", "STRCHAR", "ESCLAYOUT", "DECIMAL", "TEXTCHAR", "ESCQUOTE", "AMP", "CHARREF", "ENTREF", "SYMBOLCHAR", "COMMENTS", "LAYOUT", "'module'", "'.'", "'import'", "':'", "'#'", "'$'", "'@'", "'%'", "'('", "','", "')'", "'['", "']'", "'{'", "'}'", "'+'", "'def'", "'if'", "'else'", "'each'", "'let'", "'in'", "'echo'", "'cdata'", "'yield;'", "'='", "'!'", "'&&'", "'||'", "'list'", "'record'", "'string'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "MARKUP_STATEMENT", "IDCON", "PATH", "NATCON", "TEXT", "SYMBOLCON", "STRCON", "PRETEXT", "POSTTEXT", "MIDTEXT", "COMMENT", "SITE", "END", "SEMICOLON", "LETTER", "DIGIT", "HEXADECIMAL", "PATHELEMENT", "FILEEXT", "STRCHAR", "ESCLAYOUT", "DECIMAL", "TEXTCHAR", "ESCQUOTE", "AMP", "CHARREF", "ENTREF", "SYMBOLCHAR", "COMMENTS", "LAYOUT", "'module'", "'.'", "'import'", "':'", "'#'", "'$'", "'@'", "'%'", "'('", "','", "')'", "'['", "']'", "'{'", "'}'", "'+'", "'def'", "'if'", "'else'", "'each'", "'let'", "'in'", "'echo'", "'cdata'", "'yield;'", "'='", "'!'", "'&&'", "'||'", "'list'", "'record'", "'string'"
     };
     public static final int T__64=64;
+    public static final int T__65=65;
     public static final int T__62=62;
     public static final int T__63=63;
-    public static final int AMP=27;
-    public static final int LETTER=17;
-    public static final int ESCLAYOUT=23;
-    public static final int PATHELEMENT=20;
-    public static final int TEXTCHAR=25;
-    public static final int STRCON=9;
-    public static final int PRETEXT=10;
+    public static final int AMP=28;
+    public static final int LETTER=18;
+    public static final int ESCLAYOUT=24;
+    public static final int PATHELEMENT=21;
+    public static final int TEXTCHAR=26;
+    public static final int STRCON=10;
+    public static final int PRETEXT=11;
     public static final int T__61=61;
+    public static final int POSTTEXT=12;
     public static final int EOF=-1;
     public static final int T__60=60;
-    public static final int POSTTEXT=11;
+    public static final int MARKUP_STATEMENT=4;
     public static final int T__55=55;
     public static final int T__56=56;
     public static final int T__57=57;
     public static final int T__58=58;
     public static final int T__51=51;
-    public static final int FILEEXT=21;
+    public static final int FILEEXT=22;
     public static final int T__52=52;
-    public static final int COMMENTS=31;
-    public static final int CHARREF=28;
+    public static final int COMMENTS=32;
+    public static final int CHARREF=29;
     public static final int T__53=53;
     public static final int T__54=54;
-    public static final int IDCON=4;
-    public static final int PATH=5;
+    public static final int IDCON=5;
+    public static final int PATH=6;
     public static final int T__59=59;
-    public static final int STRCHAR=22;
-    public static final int DIGIT=18;
-    public static final int COMMENT=13;
+    public static final int STRCHAR=23;
+    public static final int DIGIT=19;
+    public static final int COMMENT=14;
     public static final int T__50=50;
     public static final int T__42=42;
     public static final int T__43=43;
@@ -57,28 +59,27 @@ public class WaebricParser extends Parser {
     public static final int T__47=47;
     public static final int T__44=44;
     public static final int T__45=45;
-    public static final int MIDTEXT=12;
+    public static final int MIDTEXT=13;
     public static final int T__48=48;
     public static final int T__49=49;
-    public static final int SITE=14;
-    public static final int SYMBOLCON=8;
-    public static final int HEXADECIMAL=19;
-    public static final int SEMICOLON=16;
-    public static final int SYMBOLCHAR=30;
-    public static final int TEXT=7;
-    public static final int LAYOUT=32;
-    public static final int NATCON=6;
-    public static final int T__33=33;
+    public static final int SITE=15;
+    public static final int SYMBOLCON=9;
+    public static final int HEXADECIMAL=20;
+    public static final int SEMICOLON=17;
+    public static final int SYMBOLCHAR=31;
+    public static final int TEXT=8;
+    public static final int LAYOUT=33;
+    public static final int NATCON=7;
     public static final int T__34=34;
     public static final int T__35=35;
-    public static final int DECIMAL=24;
+    public static final int DECIMAL=25;
     public static final int T__36=36;
     public static final int T__37=37;
     public static final int T__38=38;
     public static final int T__39=39;
-    public static final int ENTREF=29;
-    public static final int ESCQUOTE=26;
-    public static final int END=15;
+    public static final int ENTREF=30;
+    public static final int ESCQUOTE=27;
+    public static final int END=16;
 
     // delegates
     // delegators
@@ -126,7 +127,7 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "module"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:41:1: module : 'module' moduleId ( imprt | site | function )* -> ^( 'module' moduleId ( imprt )* ( site )* ( function )* ) ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:45:1: module : 'module' moduleId ( imprt | site | function )* -> ^( 'module' moduleId ( imprt )* ( site )* ( function )* ) ;
     public final WaebricParser.module_return module() throws RecognitionException {
         WaebricParser.module_return retval = new WaebricParser.module_return();
         retval.start = input.LT(1);
@@ -144,30 +145,30 @@ public class WaebricParser extends Parser {
 
 
         Object string_literal1_tree=null;
-        RewriteRuleTokenStream stream_33=new RewriteRuleTokenStream(adaptor,"token 33");
+        RewriteRuleTokenStream stream_34=new RewriteRuleTokenStream(adaptor,"token 34");
         RewriteRuleSubtreeStream stream_site=new RewriteRuleSubtreeStream(adaptor,"rule site");
         RewriteRuleSubtreeStream stream_moduleId=new RewriteRuleSubtreeStream(adaptor,"rule moduleId");
         RewriteRuleSubtreeStream stream_imprt=new RewriteRuleSubtreeStream(adaptor,"rule imprt");
         RewriteRuleSubtreeStream stream_function=new RewriteRuleSubtreeStream(adaptor,"rule function");
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:41:7: ( 'module' moduleId ( imprt | site | function )* -> ^( 'module' moduleId ( imprt )* ( site )* ( function )* ) )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:41:11: 'module' moduleId ( imprt | site | function )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:45:7: ( 'module' moduleId ( imprt | site | function )* -> ^( 'module' moduleId ( imprt )* ( site )* ( function )* ) )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:45:11: 'module' moduleId ( imprt | site | function )*
             {
-            string_literal1=(Token)match(input,33,FOLLOW_33_in_module72); if (state.failed) return retval; 
-            if ( state.backtracking==0 ) stream_33.add(string_literal1);
+            string_literal1=(Token)match(input,34,FOLLOW_34_in_module85); if (state.failed) return retval; 
+            if ( state.backtracking==0 ) stream_34.add(string_literal1);
 
-            pushFollow(FOLLOW_moduleId_in_module74);
+            pushFollow(FOLLOW_moduleId_in_module87);
             moduleId2=moduleId();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) stream_moduleId.add(moduleId2.getTree());
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:41:29: ( imprt | site | function )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:45:29: ( imprt | site | function )*
             loop1:
             do {
                 int alt1=4;
                 switch ( input.LA(1) ) {
-                case 35:
+                case 36:
                     {
                     alt1=1;
                     }
@@ -177,7 +178,7 @@ public class WaebricParser extends Parser {
                     alt1=2;
                     }
                     break;
-                case 49:
+                case 50:
                     {
                     alt1=3;
                     }
@@ -187,9 +188,9 @@ public class WaebricParser extends Parser {
 
                 switch (alt1) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:41:31: imprt
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:45:31: imprt
             	    {
-            	    pushFollow(FOLLOW_imprt_in_module78);
+            	    pushFollow(FOLLOW_imprt_in_module91);
             	    imprt3=imprt();
 
             	    state._fsp--;
@@ -199,9 +200,9 @@ public class WaebricParser extends Parser {
             	    }
             	    break;
             	case 2 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:41:39: site
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:45:39: site
             	    {
-            	    pushFollow(FOLLOW_site_in_module82);
+            	    pushFollow(FOLLOW_site_in_module95);
             	    site4=site();
 
             	    state._fsp--;
@@ -211,9 +212,9 @@ public class WaebricParser extends Parser {
             	    }
             	    break;
             	case 3 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:41:46: function
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:45:46: function
             	    {
-            	    pushFollow(FOLLOW_function_in_module86);
+            	    pushFollow(FOLLOW_function_in_module99);
             	    function5=function();
 
             	    state._fsp--;
@@ -231,7 +232,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: function, 33, site, imprt, moduleId
+            // elements: moduleId, function, 34, site, imprt
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -242,27 +243,27 @@ public class WaebricParser extends Parser {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (Object)adaptor.nil();
-            // 42:5: -> ^( 'module' moduleId ( imprt )* ( site )* ( function )* )
+            // 46:5: -> ^( 'module' moduleId ( imprt )* ( site )* ( function )* )
             {
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:42:8: ^( 'module' moduleId ( imprt )* ( site )* ( function )* )
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:46:8: ^( 'module' moduleId ( imprt )* ( site )* ( function )* )
                 {
                 Object root_1 = (Object)adaptor.nil();
-                root_1 = (Object)adaptor.becomeRoot(stream_33.nextNode(), root_1);
+                root_1 = (Object)adaptor.becomeRoot(stream_34.nextNode(), root_1);
 
                 adaptor.addChild(root_1, stream_moduleId.nextTree());
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:42:29: ( imprt )*
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:46:29: ( imprt )*
                 while ( stream_imprt.hasNext() ) {
                     adaptor.addChild(root_1, stream_imprt.nextTree());
 
                 }
                 stream_imprt.reset();
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:42:36: ( site )*
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:46:36: ( site )*
                 while ( stream_site.hasNext() ) {
                     adaptor.addChild(root_1, stream_site.nextTree());
 
                 }
                 stream_site.reset();
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:42:42: ( function )*
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:46:42: ( function )*
                 while ( stream_function.hasNext() ) {
                     adaptor.addChild(root_1, stream_function.nextTree());
 
@@ -304,7 +305,7 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "moduleId"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:44:1: moduleId returns [String path = \"\"] : e= IDCON ( '.' e= IDCON )* ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:48:1: moduleId returns [String path = \"\"] : e= IDCON ( '.' e= IDCON )* ;
     public final WaebricParser.moduleId_return moduleId() throws RecognitionException {
         WaebricParser.moduleId_return retval = new WaebricParser.moduleId_return();
         retval.start = input.LT(1);
@@ -318,12 +319,12 @@ public class WaebricParser extends Parser {
         Object char_literal6_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:47:2: (e= IDCON ( '.' e= IDCON )* )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:47:5: e= IDCON ( '.' e= IDCON )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:51:2: (e= IDCON ( '.' e= IDCON )* )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:51:5: e= IDCON ( '.' e= IDCON )*
             {
             root_0 = (Object)adaptor.nil();
 
-            e=(Token)match(input,IDCON,FOLLOW_IDCON_in_moduleId140); if (state.failed) return retval;
+            e=(Token)match(input,IDCON,FOLLOW_IDCON_in_moduleId153); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             e_tree = (Object)adaptor.create(e);
             adaptor.addChild(root_0, e_tree);
@@ -331,27 +332,27 @@ public class WaebricParser extends Parser {
             if ( state.backtracking==0 ) {
                retval.path += e.getText(); 
             }
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:48:4: ( '.' e= IDCON )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:52:4: ( '.' e= IDCON )*
             loop2:
             do {
                 int alt2=2;
                 int LA2_0 = input.LA(1);
 
-                if ( (LA2_0==34) ) {
+                if ( (LA2_0==35) ) {
                     alt2=1;
                 }
 
 
                 switch (alt2) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:48:6: '.' e= IDCON
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:52:6: '.' e= IDCON
             	    {
-            	    char_literal6=(Token)match(input,34,FOLLOW_34_in_moduleId150); if (state.failed) return retval;
+            	    char_literal6=(Token)match(input,35,FOLLOW_35_in_moduleId163); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
             	    char_literal6_tree = (Object)adaptor.create(char_literal6);
             	    adaptor.addChild(root_0, char_literal6_tree);
             	    }
-            	    e=(Token)match(input,IDCON,FOLLOW_IDCON_in_moduleId154); if (state.failed) return retval;
+            	    e=(Token)match(input,IDCON,FOLLOW_IDCON_in_moduleId167); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
             	    e_tree = (Object)adaptor.create(e);
             	    adaptor.addChild(root_0, e_tree);
@@ -400,7 +401,7 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "imprt"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:50:1: imprt : 'import' id= moduleId ';' -> 'import' moduleId ';' ^() ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:54:1: imprt : 'import' id= moduleId ';' -> 'import' moduleId ';' ^() ;
     public final WaebricParser.imprt_return imprt() throws RecognitionException {
         WaebricParser.imprt_return retval = new WaebricParser.imprt_return();
         retval.start = input.LT(1);
@@ -415,28 +416,28 @@ public class WaebricParser extends Parser {
         Object string_literal7_tree=null;
         Object char_literal8_tree=null;
         RewriteRuleTokenStream stream_SEMICOLON=new RewriteRuleTokenStream(adaptor,"token SEMICOLON");
-        RewriteRuleTokenStream stream_35=new RewriteRuleTokenStream(adaptor,"token 35");
+        RewriteRuleTokenStream stream_36=new RewriteRuleTokenStream(adaptor,"token 36");
         RewriteRuleSubtreeStream stream_moduleId=new RewriteRuleSubtreeStream(adaptor,"rule moduleId");
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:50:6: ( 'import' id= moduleId ';' -> 'import' moduleId ';' ^() )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:50:10: 'import' id= moduleId ';'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:54:6: ( 'import' id= moduleId ';' -> 'import' moduleId ';' ^() )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:54:10: 'import' id= moduleId ';'
             {
-            string_literal7=(Token)match(input,35,FOLLOW_35_in_imprt170); if (state.failed) return retval; 
-            if ( state.backtracking==0 ) stream_35.add(string_literal7);
+            string_literal7=(Token)match(input,36,FOLLOW_36_in_imprt183); if (state.failed) return retval; 
+            if ( state.backtracking==0 ) stream_36.add(string_literal7);
 
-            pushFollow(FOLLOW_moduleId_in_imprt174);
+            pushFollow(FOLLOW_moduleId_in_imprt187);
             id=moduleId();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) stream_moduleId.add(id.getTree());
-            char_literal8=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_imprt176); if (state.failed) return retval; 
+            char_literal8=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_imprt189); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal8);
 
 
 
             // AST REWRITE
-            // elements: SEMICOLON, moduleId, 35
+            // elements: moduleId, 36, SEMICOLON
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -447,12 +448,12 @@ public class WaebricParser extends Parser {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (Object)adaptor.nil();
-            // 51:5: -> 'import' moduleId ';' ^()
+            // 55:5: -> 'import' moduleId ';' ^()
             {
-                adaptor.addChild(root_0, stream_35.nextNode());
+                adaptor.addChild(root_0, stream_36.nextNode());
                 adaptor.addChild(root_0, stream_moduleId.nextTree());
                 adaptor.addChild(root_0, stream_SEMICOLON.nextNode());
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:51:30: ^()
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:55:30: ^()
                 {
                 Object root_1 = (Object)adaptor.nil();
                 root_1 = (Object)adaptor.becomeRoot( parseFile((id!=null?id.path:null)) , root_1);
@@ -491,7 +492,7 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "site"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:56:1: site : 'site' mappings 'end' ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:60:1: site : 'site' mappings 'end' ;
     public final WaebricParser.site_return site() throws RecognitionException {
         WaebricParser.site_return retval = new WaebricParser.site_return();
         retval.start = input.LT(1);
@@ -507,23 +508,23 @@ public class WaebricParser extends Parser {
         Object string_literal11_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:56:5: ( 'site' mappings 'end' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:56:9: 'site' mappings 'end'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:60:5: ( 'site' mappings 'end' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:60:9: 'site' mappings 'end'
             {
             root_0 = (Object)adaptor.nil();
 
-            string_literal9=(Token)match(input,SITE,FOLLOW_SITE_in_site208); if (state.failed) return retval;
+            string_literal9=(Token)match(input,SITE,FOLLOW_SITE_in_site221); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             string_literal9_tree = (Object)adaptor.create(string_literal9);
             adaptor.addChild(root_0, string_literal9_tree);
             }
-            pushFollow(FOLLOW_mappings_in_site210);
+            pushFollow(FOLLOW_mappings_in_site223);
             mappings10=mappings();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, mappings10.getTree());
-            string_literal11=(Token)match(input,END,FOLLOW_END_in_site212); if (state.failed) return retval;
+            string_literal11=(Token)match(input,END,FOLLOW_END_in_site225); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             string_literal11_tree = (Object)adaptor.create(string_literal11);
             adaptor.addChild(root_0, string_literal11_tree);
@@ -557,7 +558,7 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "mappings"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:57:1: mappings : ( mapping )? ( ';' mapping )* ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:61:1: mappings : ( mapping )? ( ';' mapping )* ;
     public final WaebricParser.mappings_return mappings() throws RecognitionException {
         WaebricParser.mappings_return retval = new WaebricParser.mappings_return();
         retval.start = input.LT(1);
@@ -573,12 +574,12 @@ public class WaebricParser extends Parser {
         Object char_literal13_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:57:9: ( ( mapping )? ( ';' mapping )* )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:57:12: ( mapping )? ( ';' mapping )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:61:9: ( ( mapping )? ( ';' mapping )* )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:61:12: ( mapping )? ( ';' mapping )*
             {
             root_0 = (Object)adaptor.nil();
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:57:12: ( mapping )?
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:61:12: ( mapping )?
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -589,7 +590,7 @@ public class WaebricParser extends Parser {
                 case 1 :
                     // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: mapping
                     {
-                    pushFollow(FOLLOW_mapping_in_mappings220);
+                    pushFollow(FOLLOW_mapping_in_mappings233);
                     mapping12=mapping();
 
                     state._fsp--;
@@ -601,7 +602,7 @@ public class WaebricParser extends Parser {
 
             }
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:57:21: ( ';' mapping )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:61:21: ( ';' mapping )*
             loop4:
             do {
                 int alt4=2;
@@ -614,14 +615,14 @@ public class WaebricParser extends Parser {
 
                 switch (alt4) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:57:23: ';' mapping
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:61:23: ';' mapping
             	    {
-            	    char_literal13=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_mappings225); if (state.failed) return retval;
+            	    char_literal13=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_mappings238); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
             	    char_literal13_tree = (Object)adaptor.create(char_literal13);
             	    adaptor.addChild(root_0, char_literal13_tree);
             	    }
-            	    pushFollow(FOLLOW_mapping_in_mappings227);
+            	    pushFollow(FOLLOW_mapping_in_mappings240);
             	    mapping14=mapping();
 
             	    state._fsp--;
@@ -665,7 +666,7 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "mapping"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:58:1: mapping : PATH ':' markup ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:62:1: mapping : PATH ':' markup ;
     public final WaebricParser.mapping_return mapping() throws RecognitionException {
         WaebricParser.mapping_return retval = new WaebricParser.mapping_return();
         retval.start = input.LT(1);
@@ -681,22 +682,22 @@ public class WaebricParser extends Parser {
         Object char_literal16_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:58:9: ( PATH ':' markup )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:58:12: PATH ':' markup
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:62:9: ( PATH ':' markup )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:62:12: PATH ':' markup
             {
             root_0 = (Object)adaptor.nil();
 
-            PATH15=(Token)match(input,PATH,FOLLOW_PATH_in_mapping239); if (state.failed) return retval;
+            PATH15=(Token)match(input,PATH,FOLLOW_PATH_in_mapping252); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             PATH15_tree = (Object)adaptor.create(PATH15);
             adaptor.addChild(root_0, PATH15_tree);
             }
-            char_literal16=(Token)match(input,36,FOLLOW_36_in_mapping241); if (state.failed) return retval;
+            char_literal16=(Token)match(input,37,FOLLOW_37_in_mapping254); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal16_tree = (Object)adaptor.create(char_literal16);
             adaptor.addChild(root_0, char_literal16_tree);
             }
-            pushFollow(FOLLOW_markup_in_mapping243);
+            pushFollow(FOLLOW_markup_in_mapping256);
             markup17=markup();
 
             state._fsp--;
@@ -731,79 +732,48 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "markup"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:63:1: markup : IDCON ( attribute )* ( arguments )? ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:67:1: markup : designator ( arguments )? ;
     public final WaebricParser.markup_return markup() throws RecognitionException {
         WaebricParser.markup_return retval = new WaebricParser.markup_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token IDCON18=null;
-        WaebricParser.attribute_return attribute19 = null;
+        WaebricParser.designator_return designator18 = null;
 
-        WaebricParser.arguments_return arguments20 = null;
+        WaebricParser.arguments_return arguments19 = null;
 
 
-        Object IDCON18_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:63:7: ( IDCON ( attribute )* ( arguments )? )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:63:11: IDCON ( attribute )* ( arguments )?
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:67:7: ( designator ( arguments )? )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:67:11: designator ( arguments )?
             {
             root_0 = (Object)adaptor.nil();
 
-            IDCON18=(Token)match(input,IDCON,FOLLOW_IDCON_in_markup256); if (state.failed) return retval;
-            if ( state.backtracking==0 ) {
-            IDCON18_tree = (Object)adaptor.create(IDCON18);
-            root_0 = (Object)adaptor.becomeRoot(IDCON18_tree, root_0);
+            pushFollow(FOLLOW_designator_in_markup269);
+            designator18=designator();
+
+            state._fsp--;
+            if (state.failed) return retval;
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, designator18.getTree());
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:67:22: ( arguments )?
+            int alt5=2;
+            int LA5_0 = input.LA(1);
+
+            if ( (LA5_0==42) ) {
+                alt5=1;
             }
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:63:18: ( attribute )*
-            loop5:
-            do {
-                int alt5=2;
-                int LA5_0 = input.LA(1);
-
-                if ( (LA5_0==34||(LA5_0>=36 && LA5_0<=39)) ) {
-                    alt5=1;
-                }
-
-
-                switch (alt5) {
-            	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: attribute
-            	    {
-            	    pushFollow(FOLLOW_attribute_in_markup259);
-            	    attribute19=attribute();
-
-            	    state._fsp--;
-            	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, attribute19.getTree());
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop5;
-                }
-            } while (true);
-
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:63:29: ( arguments )?
-            int alt6=2;
-            int LA6_0 = input.LA(1);
-
-            if ( (LA6_0==41) ) {
-                alt6=1;
-            }
-            switch (alt6) {
+            switch (alt5) {
                 case 1 :
                     // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: arguments
                     {
-                    pushFollow(FOLLOW_arguments_in_markup262);
-                    arguments20=arguments();
+                    pushFollow(FOLLOW_arguments_in_markup271);
+                    arguments19=arguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments20.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments19.getTree());
 
                     }
                     break;
@@ -833,84 +803,167 @@ public class WaebricParser extends Parser {
     }
     // $ANTLR end "markup"
 
+    public static class designator_return extends ParserRuleReturnScope {
+        Object tree;
+        public Object getTree() { return tree; }
+    };
+
+    // $ANTLR start "designator"
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:68:1: designator : IDCON ( attribute )* ;
+    public final WaebricParser.designator_return designator() throws RecognitionException {
+        WaebricParser.designator_return retval = new WaebricParser.designator_return();
+        retval.start = input.LT(1);
+
+        Object root_0 = null;
+
+        Token IDCON20=null;
+        WaebricParser.attribute_return attribute21 = null;
+
+
+        Object IDCON20_tree=null;
+
+        try {
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:68:11: ( IDCON ( attribute )* )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:68:14: IDCON ( attribute )*
+            {
+            root_0 = (Object)adaptor.nil();
+
+            IDCON20=(Token)match(input,IDCON,FOLLOW_IDCON_in_designator280); if (state.failed) return retval;
+            if ( state.backtracking==0 ) {
+            IDCON20_tree = (Object)adaptor.create(IDCON20);
+            adaptor.addChild(root_0, IDCON20_tree);
+            }
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:68:20: ( attribute )*
+            loop6:
+            do {
+                int alt6=2;
+                int LA6_0 = input.LA(1);
+
+                if ( (LA6_0==35||(LA6_0>=37 && LA6_0<=40)) ) {
+                    alt6=1;
+                }
+
+
+                switch (alt6) {
+            	case 1 :
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: attribute
+            	    {
+            	    pushFollow(FOLLOW_attribute_in_designator282);
+            	    attribute21=attribute();
+
+            	    state._fsp--;
+            	    if (state.failed) return retval;
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, attribute21.getTree());
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop6;
+                }
+            } while (true);
+
+
+            }
+
+            retval.stop = input.LT(-1);
+
+            if ( state.backtracking==0 ) {
+
+            retval.tree = (Object)adaptor.rulePostProcessing(root_0);
+            adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+            }
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+    	retval.tree = (Object)adaptor.errorNode(input, retval.start, input.LT(-1), re);
+
+        }
+        finally {
+        }
+        return retval;
+    }
+    // $ANTLR end "designator"
+
     public static class attribute_return extends ParserRuleReturnScope {
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "attribute"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:64:1: attribute : ( '#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | '@' NATCON | '@' NATCON '%' NATCON );
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:69:1: attribute : ( '#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | '@' NATCON | '@' NATCON '%' NATCON );
     public final WaebricParser.attribute_return attribute() throws RecognitionException {
         WaebricParser.attribute_return retval = new WaebricParser.attribute_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token char_literal21=null;
-        Token IDCON22=null;
-        Token char_literal23=null;
-        Token IDCON24=null;
-        Token char_literal25=null;
-        Token IDCON26=null;
-        Token char_literal27=null;
-        Token IDCON28=null;
-        Token char_literal29=null;
-        Token NATCON30=null;
-        Token char_literal31=null;
-        Token NATCON32=null;
-        Token char_literal33=null;
-        Token NATCON34=null;
+        Token char_literal22=null;
+        Token IDCON23=null;
+        Token char_literal24=null;
+        Token IDCON25=null;
+        Token char_literal26=null;
+        Token IDCON27=null;
+        Token char_literal28=null;
+        Token IDCON29=null;
+        Token char_literal30=null;
+        Token NATCON31=null;
+        Token char_literal32=null;
+        Token NATCON33=null;
+        Token char_literal34=null;
+        Token NATCON35=null;
 
-        Object char_literal21_tree=null;
-        Object IDCON22_tree=null;
-        Object char_literal23_tree=null;
-        Object IDCON24_tree=null;
-        Object char_literal25_tree=null;
-        Object IDCON26_tree=null;
-        Object char_literal27_tree=null;
-        Object IDCON28_tree=null;
-        Object char_literal29_tree=null;
-        Object NATCON30_tree=null;
-        Object char_literal31_tree=null;
-        Object NATCON32_tree=null;
-        Object char_literal33_tree=null;
-        Object NATCON34_tree=null;
+        Object char_literal22_tree=null;
+        Object IDCON23_tree=null;
+        Object char_literal24_tree=null;
+        Object IDCON25_tree=null;
+        Object char_literal26_tree=null;
+        Object IDCON27_tree=null;
+        Object char_literal28_tree=null;
+        Object IDCON29_tree=null;
+        Object char_literal30_tree=null;
+        Object NATCON31_tree=null;
+        Object char_literal32_tree=null;
+        Object NATCON33_tree=null;
+        Object char_literal34_tree=null;
+        Object NATCON35_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:64:10: ( '#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | '@' NATCON | '@' NATCON '%' NATCON )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:69:10: ( '#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | '@' NATCON | '@' NATCON '%' NATCON )
             int alt7=6;
             switch ( input.LA(1) ) {
-            case 37:
+            case 38:
                 {
                 alt7=1;
                 }
                 break;
-            case 34:
+            case 35:
                 {
                 alt7=2;
                 }
                 break;
-            case 38:
+            case 39:
                 {
                 alt7=3;
                 }
                 break;
-            case 36:
+            case 37:
                 {
                 alt7=4;
                 }
                 break;
-            case 39:
+            case 40:
                 {
                 int LA7_5 = input.LA(2);
 
                 if ( (LA7_5==NATCON) ) {
                     int LA7_6 = input.LA(3);
 
-                    if ( (LA7_6==40) ) {
+                    if ( (LA7_6==41) ) {
                         alt7=6;
                     }
-                    else if ( (LA7_6==EOF||LA7_6==IDCON||(LA7_6>=NATCON && LA7_6<=SYMBOLCON)||(LA7_6>=PRETEXT && LA7_6<=COMMENT)||(LA7_6>=END && LA7_6<=SEMICOLON)||LA7_6==34||(LA7_6>=36 && LA7_6<=39)||LA7_6==41||LA7_6==44||LA7_6==46||LA7_6==50||(LA7_6>=52 && LA7_6<=53)||(LA7_6>=55 && LA7_6<=57)) ) {
+                    else if ( (LA7_6==EOF||LA7_6==IDCON||(LA7_6>=NATCON && LA7_6<=SYMBOLCON)||(LA7_6>=PRETEXT && LA7_6<=COMMENT)||(LA7_6>=END && LA7_6<=SEMICOLON)||LA7_6==35||(LA7_6>=37 && LA7_6<=40)||LA7_6==42||LA7_6==45||LA7_6==47||LA7_6==51||(LA7_6>=53 && LA7_6<=54)||(LA7_6>=56 && LA7_6<=58)) ) {
                         alt7=5;
                     }
                     else {
@@ -940,119 +993,119 @@ public class WaebricParser extends Parser {
 
             switch (alt7) {
                 case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:64:13: '#' IDCON
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:69:13: '#' IDCON
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal21=(Token)match(input,37,FOLLOW_37_in_attribute271); if (state.failed) return retval;
+                    char_literal22=(Token)match(input,38,FOLLOW_38_in_attribute291); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal21_tree = (Object)adaptor.create(char_literal21);
-                    adaptor.addChild(root_0, char_literal21_tree);
+                    char_literal22_tree = (Object)adaptor.create(char_literal22);
+                    adaptor.addChild(root_0, char_literal22_tree);
                     }
-                    IDCON22=(Token)match(input,IDCON,FOLLOW_IDCON_in_attribute273); if (state.failed) return retval;
+                    IDCON23=(Token)match(input,IDCON,FOLLOW_IDCON_in_attribute293); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    IDCON22_tree = (Object)adaptor.create(IDCON22);
-                    adaptor.addChild(root_0, IDCON22_tree);
+                    IDCON23_tree = (Object)adaptor.create(IDCON23);
+                    adaptor.addChild(root_0, IDCON23_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:65:6: '.' IDCON
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:70:6: '.' IDCON
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal23=(Token)match(input,34,FOLLOW_34_in_attribute281); if (state.failed) return retval;
+                    char_literal24=(Token)match(input,35,FOLLOW_35_in_attribute301); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal23_tree = (Object)adaptor.create(char_literal23);
-                    adaptor.addChild(root_0, char_literal23_tree);
+                    char_literal24_tree = (Object)adaptor.create(char_literal24);
+                    adaptor.addChild(root_0, char_literal24_tree);
                     }
-                    IDCON24=(Token)match(input,IDCON,FOLLOW_IDCON_in_attribute283); if (state.failed) return retval;
+                    IDCON25=(Token)match(input,IDCON,FOLLOW_IDCON_in_attribute303); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    IDCON24_tree = (Object)adaptor.create(IDCON24);
-                    adaptor.addChild(root_0, IDCON24_tree);
+                    IDCON25_tree = (Object)adaptor.create(IDCON25);
+                    adaptor.addChild(root_0, IDCON25_tree);
                     }
 
                     }
                     break;
                 case 3 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:66:6: '$' IDCON
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:6: '$' IDCON
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal25=(Token)match(input,38,FOLLOW_38_in_attribute291); if (state.failed) return retval;
+                    char_literal26=(Token)match(input,39,FOLLOW_39_in_attribute311); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal25_tree = (Object)adaptor.create(char_literal25);
-                    adaptor.addChild(root_0, char_literal25_tree);
+                    char_literal26_tree = (Object)adaptor.create(char_literal26);
+                    adaptor.addChild(root_0, char_literal26_tree);
                     }
-                    IDCON26=(Token)match(input,IDCON,FOLLOW_IDCON_in_attribute293); if (state.failed) return retval;
+                    IDCON27=(Token)match(input,IDCON,FOLLOW_IDCON_in_attribute313); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    IDCON26_tree = (Object)adaptor.create(IDCON26);
-                    adaptor.addChild(root_0, IDCON26_tree);
+                    IDCON27_tree = (Object)adaptor.create(IDCON27);
+                    adaptor.addChild(root_0, IDCON27_tree);
                     }
 
                     }
                     break;
                 case 4 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:67:6: ':' IDCON
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:72:6: ':' IDCON
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal27=(Token)match(input,36,FOLLOW_36_in_attribute301); if (state.failed) return retval;
+                    char_literal28=(Token)match(input,37,FOLLOW_37_in_attribute321); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal27_tree = (Object)adaptor.create(char_literal27);
-                    adaptor.addChild(root_0, char_literal27_tree);
+                    char_literal28_tree = (Object)adaptor.create(char_literal28);
+                    adaptor.addChild(root_0, char_literal28_tree);
                     }
-                    IDCON28=(Token)match(input,IDCON,FOLLOW_IDCON_in_attribute303); if (state.failed) return retval;
+                    IDCON29=(Token)match(input,IDCON,FOLLOW_IDCON_in_attribute323); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    IDCON28_tree = (Object)adaptor.create(IDCON28);
-                    adaptor.addChild(root_0, IDCON28_tree);
+                    IDCON29_tree = (Object)adaptor.create(IDCON29);
+                    adaptor.addChild(root_0, IDCON29_tree);
                     }
 
                     }
                     break;
                 case 5 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:68:6: '@' NATCON
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:73:6: '@' NATCON
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal29=(Token)match(input,39,FOLLOW_39_in_attribute311); if (state.failed) return retval;
+                    char_literal30=(Token)match(input,40,FOLLOW_40_in_attribute331); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal29_tree = (Object)adaptor.create(char_literal29);
-                    adaptor.addChild(root_0, char_literal29_tree);
+                    char_literal30_tree = (Object)adaptor.create(char_literal30);
+                    adaptor.addChild(root_0, char_literal30_tree);
                     }
-                    NATCON30=(Token)match(input,NATCON,FOLLOW_NATCON_in_attribute313); if (state.failed) return retval;
+                    NATCON31=(Token)match(input,NATCON,FOLLOW_NATCON_in_attribute333); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    NATCON30_tree = (Object)adaptor.create(NATCON30);
-                    adaptor.addChild(root_0, NATCON30_tree);
+                    NATCON31_tree = (Object)adaptor.create(NATCON31);
+                    adaptor.addChild(root_0, NATCON31_tree);
                     }
 
                     }
                     break;
                 case 6 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:69:6: '@' NATCON '%' NATCON
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:74:6: '@' NATCON '%' NATCON
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal31=(Token)match(input,39,FOLLOW_39_in_attribute321); if (state.failed) return retval;
+                    char_literal32=(Token)match(input,40,FOLLOW_40_in_attribute341); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal31_tree = (Object)adaptor.create(char_literal31);
-                    adaptor.addChild(root_0, char_literal31_tree);
+                    char_literal32_tree = (Object)adaptor.create(char_literal32);
+                    adaptor.addChild(root_0, char_literal32_tree);
                     }
-                    NATCON32=(Token)match(input,NATCON,FOLLOW_NATCON_in_attribute323); if (state.failed) return retval;
+                    NATCON33=(Token)match(input,NATCON,FOLLOW_NATCON_in_attribute343); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    NATCON32_tree = (Object)adaptor.create(NATCON32);
-                    adaptor.addChild(root_0, NATCON32_tree);
+                    NATCON33_tree = (Object)adaptor.create(NATCON33);
+                    adaptor.addChild(root_0, NATCON33_tree);
                     }
-                    char_literal33=(Token)match(input,40,FOLLOW_40_in_attribute325); if (state.failed) return retval;
+                    char_literal34=(Token)match(input,41,FOLLOW_41_in_attribute345); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal33_tree = (Object)adaptor.create(char_literal33);
-                    adaptor.addChild(root_0, char_literal33_tree);
+                    char_literal34_tree = (Object)adaptor.create(char_literal34);
+                    adaptor.addChild(root_0, char_literal34_tree);
                     }
-                    NATCON34=(Token)match(input,NATCON,FOLLOW_NATCON_in_attribute327); if (state.failed) return retval;
+                    NATCON35=(Token)match(input,NATCON,FOLLOW_NATCON_in_attribute347); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    NATCON34_tree = (Object)adaptor.create(NATCON34);
-                    adaptor.addChild(root_0, NATCON34_tree);
+                    NATCON35_tree = (Object)adaptor.create(NATCON35);
+                    adaptor.addChild(root_0, NATCON35_tree);
                     }
 
                     }
@@ -1085,85 +1138,85 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "arguments"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:70:1: arguments : '(' ( argument )? ( ',' argument )* ')' ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:75:1: arguments : '(' ( argument )? ( ',' argument )* ')' ;
     public final WaebricParser.arguments_return arguments() throws RecognitionException {
         WaebricParser.arguments_return retval = new WaebricParser.arguments_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token char_literal35=null;
-        Token char_literal37=null;
-        Token char_literal39=null;
-        WaebricParser.argument_return argument36 = null;
+        Token char_literal36=null;
+        Token char_literal38=null;
+        Token char_literal40=null;
+        WaebricParser.argument_return argument37 = null;
 
-        WaebricParser.argument_return argument38 = null;
+        WaebricParser.argument_return argument39 = null;
 
 
-        Object char_literal35_tree=null;
-        Object char_literal37_tree=null;
-        Object char_literal39_tree=null;
+        Object char_literal36_tree=null;
+        Object char_literal38_tree=null;
+        Object char_literal40_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:70:10: ( '(' ( argument )? ( ',' argument )* ')' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:70:13: '(' ( argument )? ( ',' argument )* ')'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:75:10: ( '(' ( argument )? ( ',' argument )* ')' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:75:13: '(' ( argument )? ( ',' argument )* ')'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal35=(Token)match(input,41,FOLLOW_41_in_arguments335); if (state.failed) return retval;
+            char_literal36=(Token)match(input,42,FOLLOW_42_in_arguments355); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal35_tree = (Object)adaptor.create(char_literal35);
-            adaptor.addChild(root_0, char_literal35_tree);
+            char_literal36_tree = (Object)adaptor.create(char_literal36);
+            adaptor.addChild(root_0, char_literal36_tree);
             }
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:70:17: ( argument )?
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:75:17: ( argument )?
             int alt8=2;
             int LA8_0 = input.LA(1);
 
-            if ( (LA8_0==IDCON||(LA8_0>=NATCON && LA8_0<=SYMBOLCON)||LA8_0==44||LA8_0==46) ) {
+            if ( (LA8_0==IDCON||(LA8_0>=NATCON && LA8_0<=SYMBOLCON)||LA8_0==45||LA8_0==47) ) {
                 alt8=1;
             }
             switch (alt8) {
                 case 1 :
                     // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: argument
                     {
-                    pushFollow(FOLLOW_argument_in_arguments337);
-                    argument36=argument();
+                    pushFollow(FOLLOW_argument_in_arguments357);
+                    argument37=argument();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, argument36.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, argument37.getTree());
 
                     }
                     break;
 
             }
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:70:27: ( ',' argument )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:75:27: ( ',' argument )*
             loop9:
             do {
                 int alt9=2;
                 int LA9_0 = input.LA(1);
 
-                if ( (LA9_0==42) ) {
+                if ( (LA9_0==43) ) {
                     alt9=1;
                 }
 
 
                 switch (alt9) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:70:29: ',' argument
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:75:29: ',' argument
             	    {
-            	    char_literal37=(Token)match(input,42,FOLLOW_42_in_arguments342); if (state.failed) return retval;
+            	    char_literal38=(Token)match(input,43,FOLLOW_43_in_arguments362); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal37_tree = (Object)adaptor.create(char_literal37);
-            	    adaptor.addChild(root_0, char_literal37_tree);
+            	    char_literal38_tree = (Object)adaptor.create(char_literal38);
+            	    adaptor.addChild(root_0, char_literal38_tree);
             	    }
-            	    pushFollow(FOLLOW_argument_in_arguments344);
-            	    argument38=argument();
+            	    pushFollow(FOLLOW_argument_in_arguments364);
+            	    argument39=argument();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, argument38.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, argument39.getTree());
 
             	    }
             	    break;
@@ -1173,10 +1226,10 @@ public class WaebricParser extends Parser {
                 }
             } while (true);
 
-            char_literal39=(Token)match(input,43,FOLLOW_43_in_arguments349); if (state.failed) return retval;
+            char_literal40=(Token)match(input,44,FOLLOW_44_in_arguments369); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal39_tree = (Object)adaptor.create(char_literal39);
-            adaptor.addChild(root_0, char_literal39_tree);
+            char_literal40_tree = (Object)adaptor.create(char_literal40);
+            adaptor.addChild(root_0, char_literal40_tree);
             }
 
             }
@@ -1207,29 +1260,29 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "argument"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:1: argument : expression ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:1: argument : expression ;
     public final WaebricParser.argument_return argument() throws RecognitionException {
         WaebricParser.argument_return retval = new WaebricParser.argument_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        WaebricParser.expression_return expression40 = null;
+        WaebricParser.expression_return expression41 = null;
 
 
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:9: ( expression )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:71:12: expression
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:9: ( expression )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:12: expression
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_expression_in_argument357);
-            expression40=expression();
+            pushFollow(FOLLOW_expression_in_argument377);
+            expression41=expression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression40.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression41.getTree());
 
             }
 
@@ -1259,58 +1312,58 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "expression"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:1: expression : ( IDCON | NATCON | TEXT | SYMBOLCON | '[' ( expression )? ( ',' expression )* ']' | '{' ( keyValuePair )? ( ',' keyValuePair )* '}' ) ( '+' expression | '.' IDCON )* ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:81:1: expression : ( IDCON | NATCON | TEXT | SYMBOLCON | '[' ( expression )? ( ',' expression )* ']' | '{' ( keyValuePair )? ( ',' keyValuePair )* '}' ) ( '+' expression | '.' IDCON )* ;
     public final WaebricParser.expression_return expression() throws RecognitionException {
         WaebricParser.expression_return retval = new WaebricParser.expression_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token IDCON41=null;
-        Token NATCON42=null;
-        Token TEXT43=null;
-        Token SYMBOLCON44=null;
-        Token char_literal45=null;
-        Token char_literal47=null;
-        Token char_literal49=null;
+        Token IDCON42=null;
+        Token NATCON43=null;
+        Token TEXT44=null;
+        Token SYMBOLCON45=null;
+        Token char_literal46=null;
+        Token char_literal48=null;
         Token char_literal50=null;
-        Token char_literal52=null;
-        Token char_literal54=null;
+        Token char_literal51=null;
+        Token char_literal53=null;
         Token char_literal55=null;
-        Token char_literal57=null;
-        Token IDCON58=null;
-        WaebricParser.expression_return expression46 = null;
+        Token char_literal56=null;
+        Token char_literal58=null;
+        Token IDCON59=null;
+        WaebricParser.expression_return expression47 = null;
 
-        WaebricParser.expression_return expression48 = null;
+        WaebricParser.expression_return expression49 = null;
 
-        WaebricParser.keyValuePair_return keyValuePair51 = null;
+        WaebricParser.keyValuePair_return keyValuePair52 = null;
 
-        WaebricParser.keyValuePair_return keyValuePair53 = null;
+        WaebricParser.keyValuePair_return keyValuePair54 = null;
 
-        WaebricParser.expression_return expression56 = null;
+        WaebricParser.expression_return expression57 = null;
 
 
-        Object IDCON41_tree=null;
-        Object NATCON42_tree=null;
-        Object TEXT43_tree=null;
-        Object SYMBOLCON44_tree=null;
-        Object char_literal45_tree=null;
-        Object char_literal47_tree=null;
-        Object char_literal49_tree=null;
+        Object IDCON42_tree=null;
+        Object NATCON43_tree=null;
+        Object TEXT44_tree=null;
+        Object SYMBOLCON45_tree=null;
+        Object char_literal46_tree=null;
+        Object char_literal48_tree=null;
         Object char_literal50_tree=null;
-        Object char_literal52_tree=null;
-        Object char_literal54_tree=null;
+        Object char_literal51_tree=null;
+        Object char_literal53_tree=null;
         Object char_literal55_tree=null;
-        Object char_literal57_tree=null;
-        Object IDCON58_tree=null;
+        Object char_literal56_tree=null;
+        Object char_literal58_tree=null;
+        Object IDCON59_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:11: ( ( IDCON | NATCON | TEXT | SYMBOLCON | '[' ( expression )? ( ',' expression )* ']' | '{' ( keyValuePair )? ( ',' keyValuePair )* '}' ) ( '+' expression | '.' IDCON )* )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:14: ( IDCON | NATCON | TEXT | SYMBOLCON | '[' ( expression )? ( ',' expression )* ']' | '{' ( keyValuePair )? ( ',' keyValuePair )* '}' ) ( '+' expression | '.' IDCON )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:81:11: ( ( IDCON | NATCON | TEXT | SYMBOLCON | '[' ( expression )? ( ',' expression )* ']' | '{' ( keyValuePair )? ( ',' keyValuePair )* '}' ) ( '+' expression | '.' IDCON )* )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:81:14: ( IDCON | NATCON | TEXT | SYMBOLCON | '[' ( expression )? ( ',' expression )* ']' | '{' ( keyValuePair )? ( ',' keyValuePair )* '}' ) ( '+' expression | '.' IDCON )*
             {
             root_0 = (Object)adaptor.nil();
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:14: ( IDCON | NATCON | TEXT | SYMBOLCON | '[' ( expression )? ( ',' expression )* ']' | '{' ( keyValuePair )? ( ',' keyValuePair )* '}' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:81:14: ( IDCON | NATCON | TEXT | SYMBOLCON | '[' ( expression )? ( ',' expression )* ']' | '{' ( keyValuePair )? ( ',' keyValuePair )* '}' )
             int alt14=6;
             switch ( input.LA(1) ) {
             case IDCON:
@@ -1333,12 +1386,12 @@ public class WaebricParser extends Parser {
                 alt14=4;
                 }
                 break;
-            case 44:
+            case 45:
                 {
                 alt14=5;
                 }
                 break;
-            case 46:
+            case 47:
                 {
                 alt14=6;
                 }
@@ -1353,106 +1406,106 @@ public class WaebricParser extends Parser {
 
             switch (alt14) {
                 case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:16: IDCON
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:81:16: IDCON
                     {
-                    IDCON41=(Token)match(input,IDCON,FOLLOW_IDCON_in_expression371); if (state.failed) return retval;
+                    IDCON42=(Token)match(input,IDCON,FOLLOW_IDCON_in_expression391); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    IDCON41_tree = (Object)adaptor.create(IDCON41);
-                    adaptor.addChild(root_0, IDCON41_tree);
+                    IDCON42_tree = (Object)adaptor.create(IDCON42);
+                    adaptor.addChild(root_0, IDCON42_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:24: NATCON
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:81:24: NATCON
                     {
-                    NATCON42=(Token)match(input,NATCON,FOLLOW_NATCON_in_expression375); if (state.failed) return retval;
+                    NATCON43=(Token)match(input,NATCON,FOLLOW_NATCON_in_expression395); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    NATCON42_tree = (Object)adaptor.create(NATCON42);
-                    adaptor.addChild(root_0, NATCON42_tree);
+                    NATCON43_tree = (Object)adaptor.create(NATCON43);
+                    adaptor.addChild(root_0, NATCON43_tree);
                     }
 
                     }
                     break;
                 case 3 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:33: TEXT
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:81:33: TEXT
                     {
-                    TEXT43=(Token)match(input,TEXT,FOLLOW_TEXT_in_expression379); if (state.failed) return retval;
+                    TEXT44=(Token)match(input,TEXT,FOLLOW_TEXT_in_expression399); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    TEXT43_tree = (Object)adaptor.create(TEXT43);
-                    adaptor.addChild(root_0, TEXT43_tree);
+                    TEXT44_tree = (Object)adaptor.create(TEXT44);
+                    adaptor.addChild(root_0, TEXT44_tree);
                     }
 
                     }
                     break;
                 case 4 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:76:40: SYMBOLCON
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:81:40: SYMBOLCON
                     {
-                    SYMBOLCON44=(Token)match(input,SYMBOLCON,FOLLOW_SYMBOLCON_in_expression383); if (state.failed) return retval;
+                    SYMBOLCON45=(Token)match(input,SYMBOLCON,FOLLOW_SYMBOLCON_in_expression403); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    SYMBOLCON44_tree = (Object)adaptor.create(SYMBOLCON44);
-                    adaptor.addChild(root_0, SYMBOLCON44_tree);
+                    SYMBOLCON45_tree = (Object)adaptor.create(SYMBOLCON45);
+                    adaptor.addChild(root_0, SYMBOLCON45_tree);
                     }
 
                     }
                     break;
                 case 5 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:77:7: '[' ( expression )? ( ',' expression )* ']'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:82:7: '[' ( expression )? ( ',' expression )* ']'
                     {
-                    char_literal45=(Token)match(input,44,FOLLOW_44_in_expression392); if (state.failed) return retval;
+                    char_literal46=(Token)match(input,45,FOLLOW_45_in_expression412); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal45_tree = (Object)adaptor.create(char_literal45);
-                    adaptor.addChild(root_0, char_literal45_tree);
+                    char_literal46_tree = (Object)adaptor.create(char_literal46);
+                    adaptor.addChild(root_0, char_literal46_tree);
                     }
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:77:11: ( expression )?
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:82:11: ( expression )?
                     int alt10=2;
                     int LA10_0 = input.LA(1);
 
-                    if ( (LA10_0==IDCON||(LA10_0>=NATCON && LA10_0<=SYMBOLCON)||LA10_0==44||LA10_0==46) ) {
+                    if ( (LA10_0==IDCON||(LA10_0>=NATCON && LA10_0<=SYMBOLCON)||LA10_0==45||LA10_0==47) ) {
                         alt10=1;
                     }
                     switch (alt10) {
                         case 1 :
                             // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: expression
                             {
-                            pushFollow(FOLLOW_expression_in_expression394);
-                            expression46=expression();
+                            pushFollow(FOLLOW_expression_in_expression414);
+                            expression47=expression();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression46.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression47.getTree());
 
                             }
                             break;
 
                     }
 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:77:23: ( ',' expression )*
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:82:23: ( ',' expression )*
                     loop11:
                     do {
                         int alt11=2;
                         int LA11_0 = input.LA(1);
 
-                        if ( (LA11_0==42) ) {
+                        if ( (LA11_0==43) ) {
                             alt11=1;
                         }
 
 
                         switch (alt11) {
                     	case 1 :
-                    	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:77:25: ',' expression
+                    	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:82:25: ',' expression
                     	    {
-                    	    char_literal47=(Token)match(input,42,FOLLOW_42_in_expression399); if (state.failed) return retval;
+                    	    char_literal48=(Token)match(input,43,FOLLOW_43_in_expression419); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal47_tree = (Object)adaptor.create(char_literal47);
-                    	    adaptor.addChild(root_0, char_literal47_tree);
+                    	    char_literal48_tree = (Object)adaptor.create(char_literal48);
+                    	    adaptor.addChild(root_0, char_literal48_tree);
                     	    }
-                    	    pushFollow(FOLLOW_expression_in_expression401);
-                    	    expression48=expression();
+                    	    pushFollow(FOLLOW_expression_in_expression421);
+                    	    expression49=expression();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression48.getTree());
+                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression49.getTree());
 
                     	    }
                     	    break;
@@ -1462,23 +1515,23 @@ public class WaebricParser extends Parser {
                         }
                     } while (true);
 
-                    char_literal49=(Token)match(input,45,FOLLOW_45_in_expression406); if (state.failed) return retval;
+                    char_literal50=(Token)match(input,46,FOLLOW_46_in_expression426); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal49_tree = (Object)adaptor.create(char_literal49);
-                    adaptor.addChild(root_0, char_literal49_tree);
+                    char_literal50_tree = (Object)adaptor.create(char_literal50);
+                    adaptor.addChild(root_0, char_literal50_tree);
                     }
 
                     }
                     break;
                 case 6 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:78:7: '{' ( keyValuePair )? ( ',' keyValuePair )* '}'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:83:7: '{' ( keyValuePair )? ( ',' keyValuePair )* '}'
                     {
-                    char_literal50=(Token)match(input,46,FOLLOW_46_in_expression415); if (state.failed) return retval;
+                    char_literal51=(Token)match(input,47,FOLLOW_47_in_expression435); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal50_tree = (Object)adaptor.create(char_literal50);
-                    adaptor.addChild(root_0, char_literal50_tree);
+                    char_literal51_tree = (Object)adaptor.create(char_literal51);
+                    adaptor.addChild(root_0, char_literal51_tree);
                     }
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:78:11: ( keyValuePair )?
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:83:11: ( keyValuePair )?
                     int alt12=2;
                     int LA12_0 = input.LA(1);
 
@@ -1489,44 +1542,44 @@ public class WaebricParser extends Parser {
                         case 1 :
                             // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: keyValuePair
                             {
-                            pushFollow(FOLLOW_keyValuePair_in_expression417);
-                            keyValuePair51=keyValuePair();
+                            pushFollow(FOLLOW_keyValuePair_in_expression437);
+                            keyValuePair52=keyValuePair();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, keyValuePair51.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, keyValuePair52.getTree());
 
                             }
                             break;
 
                     }
 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:78:25: ( ',' keyValuePair )*
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:83:25: ( ',' keyValuePair )*
                     loop13:
                     do {
                         int alt13=2;
                         int LA13_0 = input.LA(1);
 
-                        if ( (LA13_0==42) ) {
+                        if ( (LA13_0==43) ) {
                             alt13=1;
                         }
 
 
                         switch (alt13) {
                     	case 1 :
-                    	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:78:27: ',' keyValuePair
+                    	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:83:27: ',' keyValuePair
                     	    {
-                    	    char_literal52=(Token)match(input,42,FOLLOW_42_in_expression422); if (state.failed) return retval;
+                    	    char_literal53=(Token)match(input,43,FOLLOW_43_in_expression442); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal52_tree = (Object)adaptor.create(char_literal52);
-                    	    adaptor.addChild(root_0, char_literal52_tree);
+                    	    char_literal53_tree = (Object)adaptor.create(char_literal53);
+                    	    adaptor.addChild(root_0, char_literal53_tree);
                     	    }
-                    	    pushFollow(FOLLOW_keyValuePair_in_expression424);
-                    	    keyValuePair53=keyValuePair();
+                    	    pushFollow(FOLLOW_keyValuePair_in_expression444);
+                    	    keyValuePair54=keyValuePair();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, keyValuePair53.getTree());
+                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, keyValuePair54.getTree());
 
                     	    }
                     	    break;
@@ -1536,10 +1589,10 @@ public class WaebricParser extends Parser {
                         }
                     } while (true);
 
-                    char_literal54=(Token)match(input,47,FOLLOW_47_in_expression429); if (state.failed) return retval;
+                    char_literal55=(Token)match(input,48,FOLLOW_48_in_expression449); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal54_tree = (Object)adaptor.create(char_literal54);
-                    adaptor.addChild(root_0, char_literal54_tree);
+                    char_literal55_tree = (Object)adaptor.create(char_literal55);
+                    adaptor.addChild(root_0, char_literal55_tree);
                     }
 
                     }
@@ -1547,13 +1600,13 @@ public class WaebricParser extends Parser {
 
             }
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:6: ( '+' expression | '.' IDCON )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:84:6: ( '+' expression | '.' IDCON )*
             loop15:
             do {
                 int alt15=3;
                 int LA15_0 = input.LA(1);
 
-                if ( (LA15_0==48) ) {
+                if ( (LA15_0==49) ) {
                     int LA15_2 = input.LA(2);
 
                     if ( (synpred25_Waebric()) ) {
@@ -1562,7 +1615,7 @@ public class WaebricParser extends Parser {
 
 
                 }
-                else if ( (LA15_0==34) ) {
+                else if ( (LA15_0==35) ) {
                     int LA15_3 = input.LA(2);
 
                     if ( (synpred26_Waebric()) ) {
@@ -1575,34 +1628,34 @@ public class WaebricParser extends Parser {
 
                 switch (alt15) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:8: '+' expression
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:84:8: '+' expression
             	    {
-            	    char_literal55=(Token)match(input,48,FOLLOW_48_in_expression439); if (state.failed) return retval;
+            	    char_literal56=(Token)match(input,49,FOLLOW_49_in_expression459); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal55_tree = (Object)adaptor.create(char_literal55);
-            	    adaptor.addChild(root_0, char_literal55_tree);
+            	    char_literal56_tree = (Object)adaptor.create(char_literal56);
+            	    adaptor.addChild(root_0, char_literal56_tree);
             	    }
-            	    pushFollow(FOLLOW_expression_in_expression441);
-            	    expression56=expression();
+            	    pushFollow(FOLLOW_expression_in_expression461);
+            	    expression57=expression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression56.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression57.getTree());
 
             	    }
             	    break;
             	case 2 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:35: '.' IDCON
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:84:35: '.' IDCON
             	    {
-            	    char_literal57=(Token)match(input,34,FOLLOW_34_in_expression447); if (state.failed) return retval;
+            	    char_literal58=(Token)match(input,35,FOLLOW_35_in_expression467); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal57_tree = (Object)adaptor.create(char_literal57);
-            	    adaptor.addChild(root_0, char_literal57_tree);
+            	    char_literal58_tree = (Object)adaptor.create(char_literal58);
+            	    adaptor.addChild(root_0, char_literal58_tree);
             	    }
-            	    IDCON58=(Token)match(input,IDCON,FOLLOW_IDCON_in_expression449); if (state.failed) return retval;
+            	    IDCON59=(Token)match(input,IDCON,FOLLOW_IDCON_in_expression469); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    IDCON58_tree = (Object)adaptor.create(IDCON58);
-            	    adaptor.addChild(root_0, IDCON58_tree);
+            	    IDCON59_tree = (Object)adaptor.create(IDCON59);
+            	    adaptor.addChild(root_0, IDCON59_tree);
             	    }
 
             	    }
@@ -1642,43 +1695,43 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "keyValuePair"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:80:1: keyValuePair : IDCON ':' expression ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:85:1: keyValuePair : IDCON ':' expression ;
     public final WaebricParser.keyValuePair_return keyValuePair() throws RecognitionException {
         WaebricParser.keyValuePair_return retval = new WaebricParser.keyValuePair_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token IDCON59=null;
-        Token char_literal60=null;
-        WaebricParser.expression_return expression61 = null;
+        Token IDCON60=null;
+        Token char_literal61=null;
+        WaebricParser.expression_return expression62 = null;
 
 
-        Object IDCON59_tree=null;
-        Object char_literal60_tree=null;
+        Object IDCON60_tree=null;
+        Object char_literal61_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:80:13: ( IDCON ':' expression )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:80:16: IDCON ':' expression
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:85:13: ( IDCON ':' expression )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:85:16: IDCON ':' expression
             {
             root_0 = (Object)adaptor.nil();
 
-            IDCON59=(Token)match(input,IDCON,FOLLOW_IDCON_in_keyValuePair462); if (state.failed) return retval;
+            IDCON60=(Token)match(input,IDCON,FOLLOW_IDCON_in_keyValuePair482); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            IDCON59_tree = (Object)adaptor.create(IDCON59);
-            adaptor.addChild(root_0, IDCON59_tree);
+            IDCON60_tree = (Object)adaptor.create(IDCON60);
+            adaptor.addChild(root_0, IDCON60_tree);
             }
-            char_literal60=(Token)match(input,36,FOLLOW_36_in_keyValuePair464); if (state.failed) return retval;
+            char_literal61=(Token)match(input,37,FOLLOW_37_in_keyValuePair484); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal60_tree = (Object)adaptor.create(char_literal60);
-            adaptor.addChild(root_0, char_literal60_tree);
+            char_literal61_tree = (Object)adaptor.create(char_literal61);
+            adaptor.addChild(root_0, char_literal61_tree);
             }
-            pushFollow(FOLLOW_expression_in_keyValuePair466);
-            expression61=expression();
+            pushFollow(FOLLOW_expression_in_keyValuePair486);
+            expression62=expression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression61.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression62.getTree());
 
             }
 
@@ -1708,71 +1761,71 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "function"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:85:1: function : 'def' IDCON ( formals )? ( statement )* 'end' ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:90:1: function : 'def' IDCON ( formals )? ( statement )* 'end' ;
     public final WaebricParser.function_return function() throws RecognitionException {
         WaebricParser.function_return retval = new WaebricParser.function_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token string_literal62=null;
-        Token IDCON63=null;
-        Token string_literal66=null;
-        WaebricParser.formals_return formals64 = null;
+        Token string_literal63=null;
+        Token IDCON64=null;
+        Token string_literal67=null;
+        WaebricParser.formals_return formals65 = null;
 
-        WaebricParser.statement_return statement65 = null;
+        WaebricParser.statement_return statement66 = null;
 
 
-        Object string_literal62_tree=null;
-        Object IDCON63_tree=null;
-        Object string_literal66_tree=null;
+        Object string_literal63_tree=null;
+        Object IDCON64_tree=null;
+        Object string_literal67_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:85:9: ( 'def' IDCON ( formals )? ( statement )* 'end' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:85:12: 'def' IDCON ( formals )? ( statement )* 'end'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:90:9: ( 'def' IDCON ( formals )? ( statement )* 'end' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:90:12: 'def' IDCON ( formals )? ( statement )* 'end'
             {
             root_0 = (Object)adaptor.nil();
 
-            string_literal62=(Token)match(input,49,FOLLOW_49_in_function478); if (state.failed) return retval;
+            string_literal63=(Token)match(input,50,FOLLOW_50_in_function498); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            string_literal62_tree = (Object)adaptor.create(string_literal62);
-            adaptor.addChild(root_0, string_literal62_tree);
+            string_literal63_tree = (Object)adaptor.create(string_literal63);
+            adaptor.addChild(root_0, string_literal63_tree);
             }
-            IDCON63=(Token)match(input,IDCON,FOLLOW_IDCON_in_function480); if (state.failed) return retval;
+            IDCON64=(Token)match(input,IDCON,FOLLOW_IDCON_in_function500); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            IDCON63_tree = (Object)adaptor.create(IDCON63);
-            adaptor.addChild(root_0, IDCON63_tree);
+            IDCON64_tree = (Object)adaptor.create(IDCON64);
+            adaptor.addChild(root_0, IDCON64_tree);
             }
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:85:24: ( formals )?
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:90:24: ( formals )?
             int alt16=2;
             int LA16_0 = input.LA(1);
 
-            if ( (LA16_0==41) ) {
+            if ( (LA16_0==42) ) {
                 alt16=1;
             }
             switch (alt16) {
                 case 1 :
                     // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: formals
                     {
-                    pushFollow(FOLLOW_formals_in_function482);
-                    formals64=formals();
+                    pushFollow(FOLLOW_formals_in_function502);
+                    formals65=formals();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, formals64.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, formals65.getTree());
 
                     }
                     break;
 
             }
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:85:33: ( statement )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:90:33: ( statement )*
             loop17:
             do {
                 int alt17=2;
                 int LA17_0 = input.LA(1);
 
-                if ( (LA17_0==IDCON||LA17_0==COMMENT||LA17_0==46||LA17_0==50||(LA17_0>=52 && LA17_0<=53)||(LA17_0>=55 && LA17_0<=57)) ) {
+                if ( (LA17_0==IDCON||LA17_0==COMMENT||LA17_0==47||LA17_0==51||(LA17_0>=53 && LA17_0<=54)||(LA17_0>=56 && LA17_0<=58)) ) {
                     alt17=1;
                 }
 
@@ -1781,12 +1834,12 @@ public class WaebricParser extends Parser {
             	case 1 :
             	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: statement
             	    {
-            	    pushFollow(FOLLOW_statement_in_function485);
-            	    statement65=statement();
+            	    pushFollow(FOLLOW_statement_in_function505);
+            	    statement66=statement();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement65.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement66.getTree());
 
             	    }
             	    break;
@@ -1796,10 +1849,10 @@ public class WaebricParser extends Parser {
                 }
             } while (true);
 
-            string_literal66=(Token)match(input,END,FOLLOW_END_in_function488); if (state.failed) return retval;
+            string_literal67=(Token)match(input,END,FOLLOW_END_in_function508); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            string_literal66_tree = (Object)adaptor.create(string_literal66);
-            adaptor.addChild(root_0, string_literal66_tree);
+            string_literal67_tree = (Object)adaptor.create(string_literal67);
+            adaptor.addChild(root_0, string_literal67_tree);
             }
 
             }
@@ -1830,37 +1883,37 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "formals"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:86:1: formals : '(' ( IDCON )? ( ',' IDCON )* ')' -> '(' ( IDCON )* ')' ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:1: formals : '(' ( IDCON )? ( ',' IDCON )* ')' -> '(' ( IDCON )* ')' ;
     public final WaebricParser.formals_return formals() throws RecognitionException {
         WaebricParser.formals_return retval = new WaebricParser.formals_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token char_literal67=null;
-        Token IDCON68=null;
-        Token char_literal69=null;
-        Token IDCON70=null;
-        Token char_literal71=null;
+        Token char_literal68=null;
+        Token IDCON69=null;
+        Token char_literal70=null;
+        Token IDCON71=null;
+        Token char_literal72=null;
 
-        Object char_literal67_tree=null;
-        Object IDCON68_tree=null;
-        Object char_literal69_tree=null;
-        Object IDCON70_tree=null;
-        Object char_literal71_tree=null;
+        Object char_literal68_tree=null;
+        Object IDCON69_tree=null;
+        Object char_literal70_tree=null;
+        Object IDCON71_tree=null;
+        Object char_literal72_tree=null;
         RewriteRuleTokenStream stream_43=new RewriteRuleTokenStream(adaptor,"token 43");
+        RewriteRuleTokenStream stream_44=new RewriteRuleTokenStream(adaptor,"token 44");
         RewriteRuleTokenStream stream_42=new RewriteRuleTokenStream(adaptor,"token 42");
-        RewriteRuleTokenStream stream_41=new RewriteRuleTokenStream(adaptor,"token 41");
         RewriteRuleTokenStream stream_IDCON=new RewriteRuleTokenStream(adaptor,"token IDCON");
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:86:8: ( '(' ( IDCON )? ( ',' IDCON )* ')' -> '(' ( IDCON )* ')' )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:86:11: '(' ( IDCON )? ( ',' IDCON )* ')'
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:8: ( '(' ( IDCON )? ( ',' IDCON )* ')' -> '(' ( IDCON )* ')' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:11: '(' ( IDCON )? ( ',' IDCON )* ')'
             {
-            char_literal67=(Token)match(input,41,FOLLOW_41_in_formals496); if (state.failed) return retval; 
-            if ( state.backtracking==0 ) stream_41.add(char_literal67);
+            char_literal68=(Token)match(input,42,FOLLOW_42_in_formals516); if (state.failed) return retval; 
+            if ( state.backtracking==0 ) stream_42.add(char_literal68);
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:86:15: ( IDCON )?
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:15: ( IDCON )?
             int alt18=2;
             int LA18_0 = input.LA(1);
 
@@ -1871,8 +1924,8 @@ public class WaebricParser extends Parser {
                 case 1 :
                     // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: IDCON
                     {
-                    IDCON68=(Token)match(input,IDCON,FOLLOW_IDCON_in_formals498); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_IDCON.add(IDCON68);
+                    IDCON69=(Token)match(input,IDCON,FOLLOW_IDCON_in_formals518); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_IDCON.add(IDCON69);
 
 
                     }
@@ -1880,26 +1933,26 @@ public class WaebricParser extends Parser {
 
             }
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:86:22: ( ',' IDCON )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:22: ( ',' IDCON )*
             loop19:
             do {
                 int alt19=2;
                 int LA19_0 = input.LA(1);
 
-                if ( (LA19_0==42) ) {
+                if ( (LA19_0==43) ) {
                     alt19=1;
                 }
 
 
                 switch (alt19) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:86:24: ',' IDCON
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:91:24: ',' IDCON
             	    {
-            	    char_literal69=(Token)match(input,42,FOLLOW_42_in_formals503); if (state.failed) return retval; 
-            	    if ( state.backtracking==0 ) stream_42.add(char_literal69);
+            	    char_literal70=(Token)match(input,43,FOLLOW_43_in_formals523); if (state.failed) return retval; 
+            	    if ( state.backtracking==0 ) stream_43.add(char_literal70);
 
-            	    IDCON70=(Token)match(input,IDCON,FOLLOW_IDCON_in_formals505); if (state.failed) return retval; 
-            	    if ( state.backtracking==0 ) stream_IDCON.add(IDCON70);
+            	    IDCON71=(Token)match(input,IDCON,FOLLOW_IDCON_in_formals525); if (state.failed) return retval; 
+            	    if ( state.backtracking==0 ) stream_IDCON.add(IDCON71);
 
 
             	    }
@@ -1910,13 +1963,13 @@ public class WaebricParser extends Parser {
                 }
             } while (true);
 
-            char_literal71=(Token)match(input,43,FOLLOW_43_in_formals510); if (state.failed) return retval; 
-            if ( state.backtracking==0 ) stream_43.add(char_literal71);
+            char_literal72=(Token)match(input,44,FOLLOW_44_in_formals530); if (state.failed) return retval; 
+            if ( state.backtracking==0 ) stream_44.add(char_literal72);
 
 
 
             // AST REWRITE
-            // elements: IDCON, 43, 41
+            // elements: IDCON, 44, 42
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1927,16 +1980,16 @@ public class WaebricParser extends Parser {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (Object)adaptor.nil();
-            // 87:5: -> '(' ( IDCON )* ')'
+            // 92:5: -> '(' ( IDCON )* ')'
             {
-                adaptor.addChild(root_0, stream_41.nextNode());
-                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:87:12: ( IDCON )*
+                adaptor.addChild(root_0, stream_42.nextNode());
+                // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:92:12: ( IDCON )*
                 while ( stream_IDCON.hasNext() ) {
                     adaptor.addChild(root_0, stream_IDCON.nextNode());
 
                 }
                 stream_IDCON.reset();
-                adaptor.addChild(root_0, stream_43.nextNode());
+                adaptor.addChild(root_0, stream_44.nextNode());
 
             }
 
@@ -1969,121 +2022,121 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "statement"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:93:1: statement : ( 'if' '(' predicate ')' statement ( 'else' statement )? -> ^( 'if' '(' predicate ')' statement ( 'else' statement )? ) | 'each' '(' IDCON ':' expression ')' statement -> ^( 'each' '(' IDCON ':' expression ')' statement ) | 'let' ( assignment )+ 'in' ( statement )* 'end' -> ^( 'let' ( assignment )+ 'in' ( statement )* 'end' ) | '{' ( statement )* '}' -> ^( '{' ( statement )* '}' ) | 'comment' STRCON ';' -> ^( 'comment' STRCON ';' ) | 'echo' expression ';' -> ^( 'echo' expression ';' ) | 'echo' embedding ';' -> ^( 'echo' embedding ';' ) | 'cdata' expression ';' -> ^( 'cdata' expression ';' ) | 'yield;' | ( markup )+ expression ';' -> ^( markup ( markup )* ',' expression ';' ) | ( markup )+ statement -> ^( markup ( markup )* ',' statement ) | ( markup )+ embedding ';' -> ^( markup ( markup )* ',' embedding ';' ) | ( markup )+ ';' -> ^( markup ( markup )* ';' ) );
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:98:1: statement : ( 'if' '(' predicate ')' statement ( 'else' statement )? -> ^( 'if' '(' predicate ')' statement ( 'else' statement )? ) | 'each' '(' IDCON ':' expression ')' statement -> ^( 'each' '(' IDCON ':' expression ')' statement ) | 'let' ( assignment )+ 'in' ( statement )* 'end' -> ^( 'let' ( assignment )+ 'in' ( statement )* 'end' ) | '{' ( statement )* '}' -> ^( '{' ( statement )* '}' ) | 'comment' STRCON ';' -> ^( 'comment' STRCON ';' ) | 'echo' expression ';' -> ^( 'echo' expression ';' ) | 'echo' embedding ';' -> ^( 'echo' embedding ';' ) | 'cdata' expression ';' -> ^( 'cdata' expression ';' ) | 'yield;' | ( markup )+ expression ';' -> ^( MARKUP_STATEMENT ( markup )+ expression ';' ) | ( markup )+ statement -> ^( MARKUP_STATEMENT ( markup )+ statement ) | ( markup )+ embedding ';' -> ^( MARKUP_STATEMENT ( markup )+ embedding ';' ) | ( markup )+ ';' -> ^( MARKUP_STATEMENT ( markup )+ ';' ) );
     public final WaebricParser.statement_return statement() throws RecognitionException {
         WaebricParser.statement_return retval = new WaebricParser.statement_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token string_literal72=null;
-        Token char_literal73=null;
-        Token char_literal75=null;
-        Token string_literal77=null;
-        Token string_literal79=null;
-        Token char_literal80=null;
-        Token IDCON81=null;
-        Token char_literal82=null;
-        Token char_literal84=null;
-        Token string_literal86=null;
-        Token string_literal88=null;
-        Token string_literal90=null;
-        Token char_literal91=null;
-        Token char_literal93=null;
-        Token string_literal94=null;
-        Token STRCON95=null;
-        Token char_literal96=null;
-        Token string_literal97=null;
-        Token char_literal99=null;
-        Token string_literal100=null;
-        Token char_literal102=null;
-        Token string_literal103=null;
-        Token char_literal105=null;
-        Token string_literal106=null;
-        Token char_literal109=null;
-        Token char_literal114=null;
-        Token char_literal116=null;
-        WaebricParser.predicate_return predicate74 = null;
+        Token string_literal73=null;
+        Token char_literal74=null;
+        Token char_literal76=null;
+        Token string_literal78=null;
+        Token string_literal80=null;
+        Token char_literal81=null;
+        Token IDCON82=null;
+        Token char_literal83=null;
+        Token char_literal85=null;
+        Token string_literal87=null;
+        Token string_literal89=null;
+        Token string_literal91=null;
+        Token char_literal92=null;
+        Token char_literal94=null;
+        Token string_literal95=null;
+        Token STRCON96=null;
+        Token char_literal97=null;
+        Token string_literal98=null;
+        Token char_literal100=null;
+        Token string_literal101=null;
+        Token char_literal103=null;
+        Token string_literal104=null;
+        Token char_literal106=null;
+        Token string_literal107=null;
+        Token char_literal110=null;
+        Token char_literal115=null;
+        Token char_literal117=null;
+        WaebricParser.predicate_return predicate75 = null;
 
-        WaebricParser.statement_return statement76 = null;
+        WaebricParser.statement_return statement77 = null;
 
-        WaebricParser.statement_return statement78 = null;
+        WaebricParser.statement_return statement79 = null;
 
-        WaebricParser.expression_return expression83 = null;
+        WaebricParser.expression_return expression84 = null;
 
-        WaebricParser.statement_return statement85 = null;
+        WaebricParser.statement_return statement86 = null;
 
-        WaebricParser.assignment_return assignment87 = null;
+        WaebricParser.assignment_return assignment88 = null;
 
-        WaebricParser.statement_return statement89 = null;
+        WaebricParser.statement_return statement90 = null;
 
-        WaebricParser.statement_return statement92 = null;
+        WaebricParser.statement_return statement93 = null;
 
-        WaebricParser.expression_return expression98 = null;
+        WaebricParser.expression_return expression99 = null;
 
-        WaebricParser.embedding_return embedding101 = null;
+        WaebricParser.embedding_return embedding102 = null;
 
-        WaebricParser.expression_return expression104 = null;
+        WaebricParser.expression_return expression105 = null;
 
-        WaebricParser.markup_return markup107 = null;
+        WaebricParser.markup_return markup108 = null;
 
-        WaebricParser.expression_return expression108 = null;
+        WaebricParser.expression_return expression109 = null;
 
-        WaebricParser.markup_return markup110 = null;
+        WaebricParser.markup_return markup111 = null;
 
-        WaebricParser.statement_return statement111 = null;
+        WaebricParser.statement_return statement112 = null;
 
-        WaebricParser.markup_return markup112 = null;
+        WaebricParser.markup_return markup113 = null;
 
-        WaebricParser.embedding_return embedding113 = null;
+        WaebricParser.embedding_return embedding114 = null;
 
-        WaebricParser.markup_return markup115 = null;
+        WaebricParser.markup_return markup116 = null;
 
 
-        Object string_literal72_tree=null;
-        Object char_literal73_tree=null;
-        Object char_literal75_tree=null;
-        Object string_literal77_tree=null;
-        Object string_literal79_tree=null;
-        Object char_literal80_tree=null;
-        Object IDCON81_tree=null;
-        Object char_literal82_tree=null;
-        Object char_literal84_tree=null;
-        Object string_literal86_tree=null;
-        Object string_literal88_tree=null;
-        Object string_literal90_tree=null;
-        Object char_literal91_tree=null;
-        Object char_literal93_tree=null;
-        Object string_literal94_tree=null;
-        Object STRCON95_tree=null;
-        Object char_literal96_tree=null;
-        Object string_literal97_tree=null;
-        Object char_literal99_tree=null;
-        Object string_literal100_tree=null;
-        Object char_literal102_tree=null;
-        Object string_literal103_tree=null;
-        Object char_literal105_tree=null;
-        Object string_literal106_tree=null;
-        Object char_literal109_tree=null;
-        Object char_literal114_tree=null;
-        Object char_literal116_tree=null;
+        Object string_literal73_tree=null;
+        Object char_literal74_tree=null;
+        Object char_literal76_tree=null;
+        Object string_literal78_tree=null;
+        Object string_literal80_tree=null;
+        Object char_literal81_tree=null;
+        Object IDCON82_tree=null;
+        Object char_literal83_tree=null;
+        Object char_literal85_tree=null;
+        Object string_literal87_tree=null;
+        Object string_literal89_tree=null;
+        Object string_literal91_tree=null;
+        Object char_literal92_tree=null;
+        Object char_literal94_tree=null;
+        Object string_literal95_tree=null;
+        Object STRCON96_tree=null;
+        Object char_literal97_tree=null;
+        Object string_literal98_tree=null;
+        Object char_literal100_tree=null;
+        Object string_literal101_tree=null;
+        Object char_literal103_tree=null;
+        Object string_literal104_tree=null;
+        Object char_literal106_tree=null;
+        Object string_literal107_tree=null;
+        Object char_literal110_tree=null;
+        Object char_literal115_tree=null;
+        Object char_literal117_tree=null;
+        RewriteRuleTokenStream stream_48=new RewriteRuleTokenStream(adaptor,"token 48");
+        RewriteRuleTokenStream stream_57=new RewriteRuleTokenStream(adaptor,"token 57");
+        RewriteRuleTokenStream stream_44=new RewriteRuleTokenStream(adaptor,"token 44");
         RewriteRuleTokenStream stream_56=new RewriteRuleTokenStream(adaptor,"token 56");
         RewriteRuleTokenStream stream_47=new RewriteRuleTokenStream(adaptor,"token 47");
         RewriteRuleTokenStream stream_55=new RewriteRuleTokenStream(adaptor,"token 55");
-        RewriteRuleTokenStream stream_46=new RewriteRuleTokenStream(adaptor,"token 46");
-        RewriteRuleTokenStream stream_36=new RewriteRuleTokenStream(adaptor,"token 36");
         RewriteRuleTokenStream stream_IDCON=new RewriteRuleTokenStream(adaptor,"token IDCON");
+        RewriteRuleTokenStream stream_37=new RewriteRuleTokenStream(adaptor,"token 37");
         RewriteRuleTokenStream stream_STRCON=new RewriteRuleTokenStream(adaptor,"token STRCON");
         RewriteRuleTokenStream stream_SEMICOLON=new RewriteRuleTokenStream(adaptor,"token SEMICOLON");
-        RewriteRuleTokenStream stream_43=new RewriteRuleTokenStream(adaptor,"token 43");
-        RewriteRuleTokenStream stream_41=new RewriteRuleTokenStream(adaptor,"token 41");
+        RewriteRuleTokenStream stream_42=new RewriteRuleTokenStream(adaptor,"token 42");
         RewriteRuleTokenStream stream_COMMENT=new RewriteRuleTokenStream(adaptor,"token COMMENT");
         RewriteRuleTokenStream stream_51=new RewriteRuleTokenStream(adaptor,"token 51");
         RewriteRuleTokenStream stream_END=new RewriteRuleTokenStream(adaptor,"token END");
         RewriteRuleTokenStream stream_52=new RewriteRuleTokenStream(adaptor,"token 52");
         RewriteRuleTokenStream stream_53=new RewriteRuleTokenStream(adaptor,"token 53");
         RewriteRuleTokenStream stream_54=new RewriteRuleTokenStream(adaptor,"token 54");
-        RewriteRuleTokenStream stream_50=new RewriteRuleTokenStream(adaptor,"token 50");
         RewriteRuleSubtreeStream stream_expression=new RewriteRuleSubtreeStream(adaptor,"rule expression");
         RewriteRuleSubtreeStream stream_statement=new RewriteRuleSubtreeStream(adaptor,"rule statement");
         RewriteRuleSubtreeStream stream_markup=new RewriteRuleSubtreeStream(adaptor,"rule markup");
@@ -2091,39 +2144,39 @@ public class WaebricParser extends Parser {
         RewriteRuleSubtreeStream stream_predicate=new RewriteRuleSubtreeStream(adaptor,"rule predicate");
         RewriteRuleSubtreeStream stream_embedding=new RewriteRuleSubtreeStream(adaptor,"rule embedding");
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:93:10: ( 'if' '(' predicate ')' statement ( 'else' statement )? -> ^( 'if' '(' predicate ')' statement ( 'else' statement )? ) | 'each' '(' IDCON ':' expression ')' statement -> ^( 'each' '(' IDCON ':' expression ')' statement ) | 'let' ( assignment )+ 'in' ( statement )* 'end' -> ^( 'let' ( assignment )+ 'in' ( statement )* 'end' ) | '{' ( statement )* '}' -> ^( '{' ( statement )* '}' ) | 'comment' STRCON ';' -> ^( 'comment' STRCON ';' ) | 'echo' expression ';' -> ^( 'echo' expression ';' ) | 'echo' embedding ';' -> ^( 'echo' embedding ';' ) | 'cdata' expression ';' -> ^( 'cdata' expression ';' ) | 'yield;' | ( markup )+ expression ';' -> ^( markup ( markup )* ',' expression ';' ) | ( markup )+ statement -> ^( markup ( markup )* ',' statement ) | ( markup )+ embedding ';' -> ^( markup ( markup )* ',' embedding ';' ) | ( markup )+ ';' -> ^( markup ( markup )* ';' ) )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:98:10: ( 'if' '(' predicate ')' statement ( 'else' statement )? -> ^( 'if' '(' predicate ')' statement ( 'else' statement )? ) | 'each' '(' IDCON ':' expression ')' statement -> ^( 'each' '(' IDCON ':' expression ')' statement ) | 'let' ( assignment )+ 'in' ( statement )* 'end' -> ^( 'let' ( assignment )+ 'in' ( statement )* 'end' ) | '{' ( statement )* '}' -> ^( '{' ( statement )* '}' ) | 'comment' STRCON ';' -> ^( 'comment' STRCON ';' ) | 'echo' expression ';' -> ^( 'echo' expression ';' ) | 'echo' embedding ';' -> ^( 'echo' embedding ';' ) | 'cdata' expression ';' -> ^( 'cdata' expression ';' ) | 'yield;' | ( markup )+ expression ';' -> ^( MARKUP_STATEMENT ( markup )+ expression ';' ) | ( markup )+ statement -> ^( MARKUP_STATEMENT ( markup )+ statement ) | ( markup )+ embedding ';' -> ^( MARKUP_STATEMENT ( markup )+ embedding ';' ) | ( markup )+ ';' -> ^( MARKUP_STATEMENT ( markup )+ ';' ) )
             int alt28=13;
             alt28 = dfa28.predict(input);
             switch (alt28) {
                 case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:93:13: 'if' '(' predicate ')' statement ( 'else' statement )?
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:98:13: 'if' '(' predicate ')' statement ( 'else' statement )?
                     {
-                    string_literal72=(Token)match(input,50,FOLLOW_50_in_statement538); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_50.add(string_literal72);
+                    string_literal73=(Token)match(input,51,FOLLOW_51_in_statement558); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_51.add(string_literal73);
 
-                    char_literal73=(Token)match(input,41,FOLLOW_41_in_statement540); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_41.add(char_literal73);
+                    char_literal74=(Token)match(input,42,FOLLOW_42_in_statement560); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_42.add(char_literal74);
 
-                    pushFollow(FOLLOW_predicate_in_statement542);
-                    predicate74=predicate();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_predicate.add(predicate74.getTree());
-                    char_literal75=(Token)match(input,43,FOLLOW_43_in_statement544); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_43.add(char_literal75);
-
-                    pushFollow(FOLLOW_statement_in_statement546);
-                    statement76=statement();
+                    pushFollow(FOLLOW_predicate_in_statement562);
+                    predicate75=predicate();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_statement.add(statement76.getTree());
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:93:46: ( 'else' statement )?
+                    if ( state.backtracking==0 ) stream_predicate.add(predicate75.getTree());
+                    char_literal76=(Token)match(input,44,FOLLOW_44_in_statement564); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_44.add(char_literal76);
+
+                    pushFollow(FOLLOW_statement_in_statement566);
+                    statement77=statement();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_statement.add(statement77.getTree());
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:98:46: ( 'else' statement )?
                     int alt20=2;
                     int LA20_0 = input.LA(1);
 
-                    if ( (LA20_0==51) ) {
+                    if ( (LA20_0==52) ) {
                         int LA20_1 = input.LA(2);
 
                         if ( (synpred31_Waebric()) ) {
@@ -2132,17 +2185,17 @@ public class WaebricParser extends Parser {
                     }
                     switch (alt20) {
                         case 1 :
-                            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:93:48: 'else' statement
+                            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:98:48: 'else' statement
                             {
-                            string_literal77=(Token)match(input,51,FOLLOW_51_in_statement550); if (state.failed) return retval; 
-                            if ( state.backtracking==0 ) stream_51.add(string_literal77);
+                            string_literal78=(Token)match(input,52,FOLLOW_52_in_statement570); if (state.failed) return retval; 
+                            if ( state.backtracking==0 ) stream_52.add(string_literal78);
 
-                            pushFollow(FOLLOW_statement_in_statement552);
-                            statement78=statement();
+                            pushFollow(FOLLOW_statement_in_statement572);
+                            statement79=statement();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) stream_statement.add(statement78.getTree());
+                            if ( state.backtracking==0 ) stream_statement.add(statement79.getTree());
 
                             }
                             break;
@@ -2152,7 +2205,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 50, 43, 51, 41, predicate, statement, statement
+                    // elements: statement, statement, 44, predicate, 42, 52, 51
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2163,25 +2216,25 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 94:5: -> ^( 'if' '(' predicate ')' statement ( 'else' statement )? )
+                    // 99:5: -> ^( 'if' '(' predicate ')' statement ( 'else' statement )? )
                     {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:94:8: ^( 'if' '(' predicate ')' statement ( 'else' statement )? )
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:99:8: ^( 'if' '(' predicate ')' statement ( 'else' statement )? )
                         {
                         Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot(stream_50.nextNode(), root_1);
+                        root_1 = (Object)adaptor.becomeRoot(stream_51.nextNode(), root_1);
 
-                        adaptor.addChild(root_1, stream_41.nextNode());
+                        adaptor.addChild(root_1, stream_42.nextNode());
                         adaptor.addChild(root_1, stream_predicate.nextTree());
-                        adaptor.addChild(root_1, stream_43.nextNode());
+                        adaptor.addChild(root_1, stream_44.nextNode());
                         adaptor.addChild(root_1, stream_statement.nextTree());
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:94:44: ( 'else' statement )?
-                        if ( stream_51.hasNext()||stream_statement.hasNext() ) {
-                            adaptor.addChild(root_1, stream_51.nextNode());
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:99:44: ( 'else' statement )?
+                        if ( stream_statement.hasNext()||stream_52.hasNext() ) {
+                            adaptor.addChild(root_1, stream_52.nextNode());
                             adaptor.addChild(root_1, stream_statement.nextTree());
 
                         }
-                        stream_51.reset();
                         stream_statement.reset();
+                        stream_52.reset();
 
                         adaptor.addChild(root_0, root_1);
                         }
@@ -2192,39 +2245,39 @@ public class WaebricParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:95:6: 'each' '(' IDCON ':' expression ')' statement
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:100:6: 'each' '(' IDCON ':' expression ')' statement
                     {
-                    string_literal79=(Token)match(input,52,FOLLOW_52_in_statement591); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_52.add(string_literal79);
+                    string_literal80=(Token)match(input,53,FOLLOW_53_in_statement611); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_53.add(string_literal80);
 
-                    char_literal80=(Token)match(input,41,FOLLOW_41_in_statement593); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_41.add(char_literal80);
+                    char_literal81=(Token)match(input,42,FOLLOW_42_in_statement613); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_42.add(char_literal81);
 
-                    IDCON81=(Token)match(input,IDCON,FOLLOW_IDCON_in_statement595); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_IDCON.add(IDCON81);
+                    IDCON82=(Token)match(input,IDCON,FOLLOW_IDCON_in_statement615); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_IDCON.add(IDCON82);
 
-                    char_literal82=(Token)match(input,36,FOLLOW_36_in_statement597); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_36.add(char_literal82);
+                    char_literal83=(Token)match(input,37,FOLLOW_37_in_statement617); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_37.add(char_literal83);
 
-                    pushFollow(FOLLOW_expression_in_statement599);
-                    expression83=expression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_expression.add(expression83.getTree());
-                    char_literal84=(Token)match(input,43,FOLLOW_43_in_statement601); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_43.add(char_literal84);
-
-                    pushFollow(FOLLOW_statement_in_statement603);
-                    statement85=statement();
+                    pushFollow(FOLLOW_expression_in_statement619);
+                    expression84=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_statement.add(statement85.getTree());
+                    if ( state.backtracking==0 ) stream_expression.add(expression84.getTree());
+                    char_literal85=(Token)match(input,44,FOLLOW_44_in_statement621); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_44.add(char_literal85);
+
+                    pushFollow(FOLLOW_statement_in_statement623);
+                    statement86=statement();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_statement.add(statement86.getTree());
 
 
                     // AST REWRITE
-                    // elements: statement, 36, expression, IDCON, 52, 43, 41
+                    // elements: IDCON, expression, 53, 44, statement, 37, 42
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2235,18 +2288,18 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 96:5: -> ^( 'each' '(' IDCON ':' expression ')' statement )
+                    // 101:5: -> ^( 'each' '(' IDCON ':' expression ')' statement )
                     {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:96:8: ^( 'each' '(' IDCON ':' expression ')' statement )
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:101:8: ^( 'each' '(' IDCON ':' expression ')' statement )
                         {
                         Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot(stream_52.nextNode(), root_1);
+                        root_1 = (Object)adaptor.becomeRoot(stream_53.nextNode(), root_1);
 
-                        adaptor.addChild(root_1, stream_41.nextNode());
+                        adaptor.addChild(root_1, stream_42.nextNode());
                         adaptor.addChild(root_1, stream_IDCON.nextNode());
-                        adaptor.addChild(root_1, stream_36.nextNode());
+                        adaptor.addChild(root_1, stream_37.nextNode());
                         adaptor.addChild(root_1, stream_expression.nextTree());
-                        adaptor.addChild(root_1, stream_43.nextNode());
+                        adaptor.addChild(root_1, stream_44.nextNode());
                         adaptor.addChild(root_1, stream_statement.nextTree());
 
                         adaptor.addChild(root_0, root_1);
@@ -2258,12 +2311,12 @@ public class WaebricParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:97:6: 'let' ( assignment )+ 'in' ( statement )* 'end'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:102:6: 'let' ( assignment )+ 'in' ( statement )* 'end'
                     {
-                    string_literal86=(Token)match(input,53,FOLLOW_53_in_statement635); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_53.add(string_literal86);
+                    string_literal87=(Token)match(input,54,FOLLOW_54_in_statement655); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_54.add(string_literal87);
 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:97:12: ( assignment )+
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:102:12: ( assignment )+
                     int cnt21=0;
                     loop21:
                     do {
@@ -2279,12 +2332,12 @@ public class WaebricParser extends Parser {
                     	case 1 :
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: assignment
                     	    {
-                    	    pushFollow(FOLLOW_assignment_in_statement637);
-                    	    assignment87=assignment();
+                    	    pushFollow(FOLLOW_assignment_in_statement657);
+                    	    assignment88=assignment();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) stream_assignment.add(assignment87.getTree());
+                    	    if ( state.backtracking==0 ) stream_assignment.add(assignment88.getTree());
 
                     	    }
                     	    break;
@@ -2299,16 +2352,16 @@ public class WaebricParser extends Parser {
                         cnt21++;
                     } while (true);
 
-                    string_literal88=(Token)match(input,54,FOLLOW_54_in_statement640); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_54.add(string_literal88);
+                    string_literal89=(Token)match(input,55,FOLLOW_55_in_statement660); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_55.add(string_literal89);
 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:97:29: ( statement )*
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:102:29: ( statement )*
                     loop22:
                     do {
                         int alt22=2;
                         int LA22_0 = input.LA(1);
 
-                        if ( (LA22_0==IDCON||LA22_0==COMMENT||LA22_0==46||LA22_0==50||(LA22_0>=52 && LA22_0<=53)||(LA22_0>=55 && LA22_0<=57)) ) {
+                        if ( (LA22_0==IDCON||LA22_0==COMMENT||LA22_0==47||LA22_0==51||(LA22_0>=53 && LA22_0<=54)||(LA22_0>=56 && LA22_0<=58)) ) {
                             alt22=1;
                         }
 
@@ -2317,12 +2370,12 @@ public class WaebricParser extends Parser {
                     	case 1 :
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: statement
                     	    {
-                    	    pushFollow(FOLLOW_statement_in_statement642);
-                    	    statement89=statement();
+                    	    pushFollow(FOLLOW_statement_in_statement662);
+                    	    statement90=statement();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) stream_statement.add(statement89.getTree());
+                    	    if ( state.backtracking==0 ) stream_statement.add(statement90.getTree());
 
                     	    }
                     	    break;
@@ -2332,13 +2385,13 @@ public class WaebricParser extends Parser {
                         }
                     } while (true);
 
-                    string_literal90=(Token)match(input,END,FOLLOW_END_in_statement645); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_END.add(string_literal90);
+                    string_literal91=(Token)match(input,END,FOLLOW_END_in_statement665); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_END.add(string_literal91);
 
 
 
                     // AST REWRITE
-                    // elements: 54, statement, 53, assignment, END
+                    // elements: END, 54, 55, assignment, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2349,12 +2402,12 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 98:5: -> ^( 'let' ( assignment )+ 'in' ( statement )* 'end' )
+                    // 103:5: -> ^( 'let' ( assignment )+ 'in' ( statement )* 'end' )
                     {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:98:8: ^( 'let' ( assignment )+ 'in' ( statement )* 'end' )
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:103:8: ^( 'let' ( assignment )+ 'in' ( statement )* 'end' )
                         {
                         Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot(stream_53.nextNode(), root_1);
+                        root_1 = (Object)adaptor.becomeRoot(stream_54.nextNode(), root_1);
 
                         if ( !(stream_assignment.hasNext()) ) {
                             throw new RewriteEarlyExitException();
@@ -2364,8 +2417,8 @@ public class WaebricParser extends Parser {
 
                         }
                         stream_assignment.reset();
-                        adaptor.addChild(root_1, stream_54.nextNode());
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:98:34: ( statement )*
+                        adaptor.addChild(root_1, stream_55.nextNode());
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:103:34: ( statement )*
                         while ( stream_statement.hasNext() ) {
                             adaptor.addChild(root_1, stream_statement.nextTree());
 
@@ -2382,18 +2435,18 @@ public class WaebricParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:99:6: '{' ( statement )* '}'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:104:6: '{' ( statement )* '}'
                     {
-                    char_literal91=(Token)match(input,46,FOLLOW_46_in_statement674); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_46.add(char_literal91);
+                    char_literal92=(Token)match(input,47,FOLLOW_47_in_statement694); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_47.add(char_literal92);
 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:99:10: ( statement )*
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:104:10: ( statement )*
                     loop23:
                     do {
                         int alt23=2;
                         int LA23_0 = input.LA(1);
 
-                        if ( (LA23_0==IDCON||LA23_0==COMMENT||LA23_0==46||LA23_0==50||(LA23_0>=52 && LA23_0<=53)||(LA23_0>=55 && LA23_0<=57)) ) {
+                        if ( (LA23_0==IDCON||LA23_0==COMMENT||LA23_0==47||LA23_0==51||(LA23_0>=53 && LA23_0<=54)||(LA23_0>=56 && LA23_0<=58)) ) {
                             alt23=1;
                         }
 
@@ -2402,12 +2455,12 @@ public class WaebricParser extends Parser {
                     	case 1 :
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: statement
                     	    {
-                    	    pushFollow(FOLLOW_statement_in_statement676);
-                    	    statement92=statement();
+                    	    pushFollow(FOLLOW_statement_in_statement696);
+                    	    statement93=statement();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) stream_statement.add(statement92.getTree());
+                    	    if ( state.backtracking==0 ) stream_statement.add(statement93.getTree());
 
                     	    }
                     	    break;
@@ -2417,13 +2470,13 @@ public class WaebricParser extends Parser {
                         }
                     } while (true);
 
-                    char_literal93=(Token)match(input,47,FOLLOW_47_in_statement679); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_47.add(char_literal93);
+                    char_literal94=(Token)match(input,48,FOLLOW_48_in_statement699); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_48.add(char_literal94);
 
 
 
                     // AST REWRITE
-                    // elements: 47, 46, statement
+                    // elements: 48, statement, 47
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2434,20 +2487,20 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 100:5: -> ^( '{' ( statement )* '}' )
+                    // 105:5: -> ^( '{' ( statement )* '}' )
                     {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:100:8: ^( '{' ( statement )* '}' )
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:105:8: ^( '{' ( statement )* '}' )
                         {
                         Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot(stream_46.nextNode(), root_1);
+                        root_1 = (Object)adaptor.becomeRoot(stream_47.nextNode(), root_1);
 
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:100:15: ( statement )*
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:105:15: ( statement )*
                         while ( stream_statement.hasNext() ) {
                             adaptor.addChild(root_1, stream_statement.nextTree());
 
                         }
                         stream_statement.reset();
-                        adaptor.addChild(root_1, stream_47.nextNode());
+                        adaptor.addChild(root_1, stream_48.nextNode());
 
                         adaptor.addChild(root_0, root_1);
                         }
@@ -2458,21 +2511,21 @@ public class WaebricParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:101:6: 'comment' STRCON ';'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:106:6: 'comment' STRCON ';'
                     {
-                    string_literal94=(Token)match(input,COMMENT,FOLLOW_COMMENT_in_statement703); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_COMMENT.add(string_literal94);
+                    string_literal95=(Token)match(input,COMMENT,FOLLOW_COMMENT_in_statement723); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_COMMENT.add(string_literal95);
 
-                    STRCON95=(Token)match(input,STRCON,FOLLOW_STRCON_in_statement705); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_STRCON.add(STRCON95);
+                    STRCON96=(Token)match(input,STRCON,FOLLOW_STRCON_in_statement725); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_STRCON.add(STRCON96);
 
-                    char_literal96=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement707); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal96);
+                    char_literal97=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement727); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal97);
 
 
 
                     // AST REWRITE
-                    // elements: STRCON, COMMENT, SEMICOLON
+                    // elements: STRCON, SEMICOLON, COMMENT
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2483,9 +2536,9 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 102:5: -> ^( 'comment' STRCON ';' )
+                    // 107:5: -> ^( 'comment' STRCON ';' )
                     {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:102:8: ^( 'comment' STRCON ';' )
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:107:8: ^( 'comment' STRCON ';' )
                         {
                         Object root_1 = (Object)adaptor.nil();
                         root_1 = (Object)adaptor.becomeRoot(stream_COMMENT.nextNode(), root_1);
@@ -2502,24 +2555,24 @@ public class WaebricParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:103:6: 'echo' expression ';'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:108:6: 'echo' expression ';'
                     {
-                    string_literal97=(Token)match(input,55,FOLLOW_55_in_statement730); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_55.add(string_literal97);
+                    string_literal98=(Token)match(input,56,FOLLOW_56_in_statement750); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_56.add(string_literal98);
 
-                    pushFollow(FOLLOW_expression_in_statement732);
-                    expression98=expression();
+                    pushFollow(FOLLOW_expression_in_statement752);
+                    expression99=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_expression.add(expression98.getTree());
-                    char_literal99=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement734); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal99);
+                    if ( state.backtracking==0 ) stream_expression.add(expression99.getTree());
+                    char_literal100=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement754); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal100);
 
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, 55, expression
+                    // elements: expression, 56, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2530,103 +2583,9 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 104:5: -> ^( 'echo' expression ';' )
+                    // 109:5: -> ^( 'echo' expression ';' )
                     {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:104:8: ^( 'echo' expression ';' )
-                        {
-                        Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot(stream_55.nextNode(), root_1);
-
-                        adaptor.addChild(root_1, stream_expression.nextTree());
-                        adaptor.addChild(root_1, stream_SEMICOLON.nextNode());
-
-                        adaptor.addChild(root_0, root_1);
-                        }
-
-                    }
-
-                    retval.tree = root_0;}
-                    }
-                    break;
-                case 7 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:105:6: 'echo' embedding ';'
-                    {
-                    string_literal100=(Token)match(input,55,FOLLOW_55_in_statement757); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_55.add(string_literal100);
-
-                    pushFollow(FOLLOW_embedding_in_statement759);
-                    embedding101=embedding();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_embedding.add(embedding101.getTree());
-                    char_literal102=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement761); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal102);
-
-
-
-                    // AST REWRITE
-                    // elements: embedding, SEMICOLON, 55
-                    // token labels: 
-                    // rule labels: retval
-                    // token list labels: 
-                    // rule list labels: 
-                    // wildcard labels: 
-                    if ( state.backtracking==0 ) {
-                    retval.tree = root_0;
-                    RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
-
-                    root_0 = (Object)adaptor.nil();
-                    // 106:5: -> ^( 'echo' embedding ';' )
-                    {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:106:8: ^( 'echo' embedding ';' )
-                        {
-                        Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot(stream_55.nextNode(), root_1);
-
-                        adaptor.addChild(root_1, stream_embedding.nextTree());
-                        adaptor.addChild(root_1, stream_SEMICOLON.nextNode());
-
-                        adaptor.addChild(root_0, root_1);
-                        }
-
-                    }
-
-                    retval.tree = root_0;}
-                    }
-                    break;
-                case 8 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:107:6: 'cdata' expression ';'
-                    {
-                    string_literal103=(Token)match(input,56,FOLLOW_56_in_statement784); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_56.add(string_literal103);
-
-                    pushFollow(FOLLOW_expression_in_statement786);
-                    expression104=expression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_expression.add(expression104.getTree());
-                    char_literal105=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement788); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal105);
-
-
-
-                    // AST REWRITE
-                    // elements: SEMICOLON, 56, expression
-                    // token labels: 
-                    // rule labels: retval
-                    // token list labels: 
-                    // rule list labels: 
-                    // wildcard labels: 
-                    if ( state.backtracking==0 ) {
-                    retval.tree = root_0;
-                    RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
-
-                    root_0 = (Object)adaptor.nil();
-                    // 108:5: -> ^( 'cdata' expression ';' )
-                    {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:108:8: ^( 'cdata' expression ';' )
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:109:8: ^( 'echo' expression ';' )
                         {
                         Object root_1 = (Object)adaptor.nil();
                         root_1 = (Object)adaptor.becomeRoot(stream_56.nextNode(), root_1);
@@ -2642,23 +2601,117 @@ public class WaebricParser extends Parser {
                     retval.tree = root_0;}
                     }
                     break;
+                case 7 :
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:110:6: 'echo' embedding ';'
+                    {
+                    string_literal101=(Token)match(input,56,FOLLOW_56_in_statement777); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_56.add(string_literal101);
+
+                    pushFollow(FOLLOW_embedding_in_statement779);
+                    embedding102=embedding();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_embedding.add(embedding102.getTree());
+                    char_literal103=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement781); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal103);
+
+
+
+                    // AST REWRITE
+                    // elements: SEMICOLON, embedding, 56
+                    // token labels: 
+                    // rule labels: retval
+                    // token list labels: 
+                    // rule list labels: 
+                    // wildcard labels: 
+                    if ( state.backtracking==0 ) {
+                    retval.tree = root_0;
+                    RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
+
+                    root_0 = (Object)adaptor.nil();
+                    // 111:5: -> ^( 'echo' embedding ';' )
+                    {
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:111:8: ^( 'echo' embedding ';' )
+                        {
+                        Object root_1 = (Object)adaptor.nil();
+                        root_1 = (Object)adaptor.becomeRoot(stream_56.nextNode(), root_1);
+
+                        adaptor.addChild(root_1, stream_embedding.nextTree());
+                        adaptor.addChild(root_1, stream_SEMICOLON.nextNode());
+
+                        adaptor.addChild(root_0, root_1);
+                        }
+
+                    }
+
+                    retval.tree = root_0;}
+                    }
+                    break;
+                case 8 :
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:112:6: 'cdata' expression ';'
+                    {
+                    string_literal104=(Token)match(input,57,FOLLOW_57_in_statement804); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_57.add(string_literal104);
+
+                    pushFollow(FOLLOW_expression_in_statement806);
+                    expression105=expression();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_expression.add(expression105.getTree());
+                    char_literal106=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement808); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal106);
+
+
+
+                    // AST REWRITE
+                    // elements: 57, expression, SEMICOLON
+                    // token labels: 
+                    // rule labels: retval
+                    // token list labels: 
+                    // rule list labels: 
+                    // wildcard labels: 
+                    if ( state.backtracking==0 ) {
+                    retval.tree = root_0;
+                    RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
+
+                    root_0 = (Object)adaptor.nil();
+                    // 113:5: -> ^( 'cdata' expression ';' )
+                    {
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:113:8: ^( 'cdata' expression ';' )
+                        {
+                        Object root_1 = (Object)adaptor.nil();
+                        root_1 = (Object)adaptor.becomeRoot(stream_57.nextNode(), root_1);
+
+                        adaptor.addChild(root_1, stream_expression.nextTree());
+                        adaptor.addChild(root_1, stream_SEMICOLON.nextNode());
+
+                        adaptor.addChild(root_0, root_1);
+                        }
+
+                    }
+
+                    retval.tree = root_0;}
+                    }
+                    break;
                 case 9 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:109:6: 'yield;'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:6: 'yield;'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal106=(Token)match(input,57,FOLLOW_57_in_statement812); if (state.failed) return retval;
+                    string_literal107=(Token)match(input,58,FOLLOW_58_in_statement832); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal106_tree = (Object)adaptor.create(string_literal106);
-                    adaptor.addChild(root_0, string_literal106_tree);
+                    string_literal107_tree = (Object)adaptor.create(string_literal107);
+                    adaptor.addChild(root_0, string_literal107_tree);
                     }
 
                     }
                     break;
                 case 10 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:110:6: ( markup )+ expression ';'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:115:6: ( markup )+ expression ';'
                     {
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:110:6: ( markup )+
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:115:6: ( markup )+
                     int cnt24=0;
                     loop24:
                     do {
@@ -2668,12 +2721,12 @@ public class WaebricParser extends Parser {
                     	case 1 :
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: markup
                     	    {
-                    	    pushFollow(FOLLOW_markup_in_statement819);
-                    	    markup107=markup();
+                    	    pushFollow(FOLLOW_markup_in_statement839);
+                    	    markup108=markup();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) stream_markup.add(markup107.getTree());
+                    	    if ( state.backtracking==0 ) stream_markup.add(markup108.getTree());
 
                     	    }
                     	    break;
@@ -2688,19 +2741,19 @@ public class WaebricParser extends Parser {
                         cnt24++;
                     } while (true);
 
-                    pushFollow(FOLLOW_expression_in_statement822);
-                    expression108=expression();
+                    pushFollow(FOLLOW_expression_in_statement842);
+                    expression109=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_expression.add(expression108.getTree());
-                    char_literal109=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement824); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal109);
+                    if ( state.backtracking==0 ) stream_expression.add(expression109.getTree());
+                    char_literal110=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement844); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal110);
 
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, markup, expression, 42, markup
+                    // elements: expression, SEMICOLON, markup
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2711,20 +2764,21 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 111:5: -> ^( markup ( markup )* ',' expression ';' )
+                    // 116:5: -> ^( MARKUP_STATEMENT ( markup )+ expression ';' )
                     {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:111:8: ^( markup ( markup )* ',' expression ';' )
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:116:8: ^( MARKUP_STATEMENT ( markup )+ expression ';' )
                         {
                         Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot(stream_markup.nextNode(), root_1);
+                        root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(MARKUP_STATEMENT, "MARKUP_STATEMENT"), root_1);
 
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:111:18: ( markup )*
+                        if ( !(stream_markup.hasNext()) ) {
+                            throw new RewriteEarlyExitException();
+                        }
                         while ( stream_markup.hasNext() ) {
                             adaptor.addChild(root_1, stream_markup.nextTree());
 
                         }
                         stream_markup.reset();
-                        adaptor.addChild(root_1, (Object)adaptor.create(42, "42"));
                         adaptor.addChild(root_1, stream_expression.nextTree());
                         adaptor.addChild(root_1, stream_SEMICOLON.nextNode());
 
@@ -2737,9 +2791,9 @@ public class WaebricParser extends Parser {
                     }
                     break;
                 case 11 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:112:6: ( markup )+ statement
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:117:6: ( markup )+ statement
                     {
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:112:6: ( markup )+
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:117:6: ( markup )+
                     int cnt25=0;
                     loop25:
                     do {
@@ -2761,12 +2815,12 @@ public class WaebricParser extends Parser {
                     	case 1 :
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: markup
                     	    {
-                    	    pushFollow(FOLLOW_markup_in_statement853);
-                    	    markup110=markup();
+                    	    pushFollow(FOLLOW_markup_in_statement871);
+                    	    markup111=markup();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) stream_markup.add(markup110.getTree());
+                    	    if ( state.backtracking==0 ) stream_markup.add(markup111.getTree());
 
                     	    }
                     	    break;
@@ -2781,16 +2835,16 @@ public class WaebricParser extends Parser {
                         cnt25++;
                     } while (true);
 
-                    pushFollow(FOLLOW_statement_in_statement856);
-                    statement111=statement();
+                    pushFollow(FOLLOW_statement_in_statement874);
+                    statement112=statement();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_statement.add(statement111.getTree());
+                    if ( state.backtracking==0 ) stream_statement.add(statement112.getTree());
 
 
                     // AST REWRITE
-                    // elements: 42, markup, statement, markup
+                    // elements: markup, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2801,20 +2855,21 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 113:5: -> ^( markup ( markup )* ',' statement )
+                    // 118:5: -> ^( MARKUP_STATEMENT ( markup )+ statement )
                     {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:113:8: ^( markup ( markup )* ',' statement )
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:118:8: ^( MARKUP_STATEMENT ( markup )+ statement )
                         {
                         Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot(stream_markup.nextNode(), root_1);
+                        root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(MARKUP_STATEMENT, "MARKUP_STATEMENT"), root_1);
 
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:113:18: ( markup )*
+                        if ( !(stream_markup.hasNext()) ) {
+                            throw new RewriteEarlyExitException();
+                        }
                         while ( stream_markup.hasNext() ) {
                             adaptor.addChild(root_1, stream_markup.nextTree());
 
                         }
                         stream_markup.reset();
-                        adaptor.addChild(root_1, (Object)adaptor.create(42, "42"));
                         adaptor.addChild(root_1, stream_statement.nextTree());
 
                         adaptor.addChild(root_0, root_1);
@@ -2826,9 +2881,9 @@ public class WaebricParser extends Parser {
                     }
                     break;
                 case 12 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:6: ( markup )+ embedding ';'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:119:6: ( markup )+ embedding ';'
                     {
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:6: ( markup )+
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:119:6: ( markup )+
                     int cnt26=0;
                     loop26:
                     do {
@@ -2844,12 +2899,12 @@ public class WaebricParser extends Parser {
                     	case 1 :
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: markup
                     	    {
-                    	    pushFollow(FOLLOW_markup_in_statement883);
-                    	    markup112=markup();
+                    	    pushFollow(FOLLOW_markup_in_statement899);
+                    	    markup113=markup();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) stream_markup.add(markup112.getTree());
+                    	    if ( state.backtracking==0 ) stream_markup.add(markup113.getTree());
 
                     	    }
                     	    break;
@@ -2864,19 +2919,19 @@ public class WaebricParser extends Parser {
                         cnt26++;
                     } while (true);
 
-                    pushFollow(FOLLOW_embedding_in_statement886);
-                    embedding113=embedding();
+                    pushFollow(FOLLOW_embedding_in_statement902);
+                    embedding114=embedding();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_embedding.add(embedding113.getTree());
-                    char_literal114=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement888); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal114);
+                    if ( state.backtracking==0 ) stream_embedding.add(embedding114.getTree());
+                    char_literal115=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement904); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal115);
 
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, markup, 42, markup, embedding
+                    // elements: SEMICOLON, markup, embedding
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2887,20 +2942,21 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 115:5: -> ^( markup ( markup )* ',' embedding ';' )
+                    // 120:5: -> ^( MARKUP_STATEMENT ( markup )+ embedding ';' )
                     {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:115:8: ^( markup ( markup )* ',' embedding ';' )
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:120:8: ^( MARKUP_STATEMENT ( markup )+ embedding ';' )
                         {
                         Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot(stream_markup.nextNode(), root_1);
+                        root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(MARKUP_STATEMENT, "MARKUP_STATEMENT"), root_1);
 
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:115:18: ( markup )*
+                        if ( !(stream_markup.hasNext()) ) {
+                            throw new RewriteEarlyExitException();
+                        }
                         while ( stream_markup.hasNext() ) {
                             adaptor.addChild(root_1, stream_markup.nextTree());
 
                         }
                         stream_markup.reset();
-                        adaptor.addChild(root_1, (Object)adaptor.create(42, "42"));
                         adaptor.addChild(root_1, stream_embedding.nextTree());
                         adaptor.addChild(root_1, stream_SEMICOLON.nextNode());
 
@@ -2913,9 +2969,9 @@ public class WaebricParser extends Parser {
                     }
                     break;
                 case 13 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:116:6: ( markup )+ ';'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:121:6: ( markup )+ ';'
                     {
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:116:6: ( markup )+
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:121:6: ( markup )+
                     int cnt27=0;
                     loop27:
                     do {
@@ -2931,12 +2987,12 @@ public class WaebricParser extends Parser {
                     	case 1 :
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: markup
                     	    {
-                    	    pushFollow(FOLLOW_markup_in_statement917);
-                    	    markup115=markup();
+                    	    pushFollow(FOLLOW_markup_in_statement931);
+                    	    markup116=markup();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) stream_markup.add(markup115.getTree());
+                    	    if ( state.backtracking==0 ) stream_markup.add(markup116.getTree());
 
                     	    }
                     	    break;
@@ -2951,13 +3007,13 @@ public class WaebricParser extends Parser {
                         cnt27++;
                     } while (true);
 
-                    char_literal116=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement920); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal116);
+                    char_literal117=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_statement934); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal117);
 
 
 
                     // AST REWRITE
-                    // elements: markup, markup, SEMICOLON
+                    // elements: markup, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2968,14 +3024,16 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 117:5: -> ^( markup ( markup )* ';' )
+                    // 122:5: -> ^( MARKUP_STATEMENT ( markup )+ ';' )
                     {
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:117:8: ^( markup ( markup )* ';' )
+                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:122:8: ^( MARKUP_STATEMENT ( markup )+ ';' )
                         {
                         Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot(stream_markup.nextNode(), root_1);
+                        root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(MARKUP_STATEMENT, "MARKUP_STATEMENT"), root_1);
 
-                        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:117:18: ( markup )*
+                        if ( !(stream_markup.hasNext()) ) {
+                            throw new RewriteEarlyExitException();
+                        }
                         while ( stream_markup.hasNext() ) {
                             adaptor.addChild(root_1, stream_markup.nextTree());
 
@@ -3019,41 +3077,41 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "assignment"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:122:1: assignment : ( IDCON '=' expression ';' | IDCON formals statement );
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:127:1: assignment : ( IDCON '=' expression ';' | IDCON formals statement );
     public final WaebricParser.assignment_return assignment() throws RecognitionException {
         WaebricParser.assignment_return retval = new WaebricParser.assignment_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token IDCON117=null;
-        Token char_literal118=null;
-        Token char_literal120=null;
-        Token IDCON121=null;
-        WaebricParser.expression_return expression119 = null;
+        Token IDCON118=null;
+        Token char_literal119=null;
+        Token char_literal121=null;
+        Token IDCON122=null;
+        WaebricParser.expression_return expression120 = null;
 
-        WaebricParser.formals_return formals122 = null;
+        WaebricParser.formals_return formals123 = null;
 
-        WaebricParser.statement_return statement123 = null;
+        WaebricParser.statement_return statement124 = null;
 
 
-        Object IDCON117_tree=null;
-        Object char_literal118_tree=null;
-        Object char_literal120_tree=null;
-        Object IDCON121_tree=null;
+        Object IDCON118_tree=null;
+        Object char_literal119_tree=null;
+        Object char_literal121_tree=null;
+        Object IDCON122_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:122:11: ( IDCON '=' expression ';' | IDCON formals statement )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:127:11: ( IDCON '=' expression ';' | IDCON formals statement )
             int alt29=2;
             int LA29_0 = input.LA(1);
 
             if ( (LA29_0==IDCON) ) {
                 int LA29_1 = input.LA(2);
 
-                if ( (LA29_1==58) ) {
+                if ( (LA29_1==59) ) {
                     alt29=1;
                 }
-                else if ( (LA29_1==41) ) {
+                else if ( (LA29_1==42) ) {
                     alt29=2;
                 }
                 else {
@@ -3073,56 +3131,56 @@ public class WaebricParser extends Parser {
             }
             switch (alt29) {
                 case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:122:14: IDCON '=' expression ';'
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:127:14: IDCON '=' expression ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    IDCON117=(Token)match(input,IDCON,FOLLOW_IDCON_in_assignment950); if (state.failed) return retval;
+                    IDCON118=(Token)match(input,IDCON,FOLLOW_IDCON_in_assignment964); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    IDCON117_tree = (Object)adaptor.create(IDCON117);
-                    adaptor.addChild(root_0, IDCON117_tree);
+                    IDCON118_tree = (Object)adaptor.create(IDCON118);
+                    adaptor.addChild(root_0, IDCON118_tree);
                     }
-                    char_literal118=(Token)match(input,58,FOLLOW_58_in_assignment952); if (state.failed) return retval;
+                    char_literal119=(Token)match(input,59,FOLLOW_59_in_assignment966); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal118_tree = (Object)adaptor.create(char_literal118);
-                    adaptor.addChild(root_0, char_literal118_tree);
+                    char_literal119_tree = (Object)adaptor.create(char_literal119);
+                    adaptor.addChild(root_0, char_literal119_tree);
                     }
-                    pushFollow(FOLLOW_expression_in_assignment954);
-                    expression119=expression();
+                    pushFollow(FOLLOW_expression_in_assignment968);
+                    expression120=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression119.getTree());
-                    char_literal120=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_assignment956); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression120.getTree());
+                    char_literal121=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_assignment970); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal120_tree = (Object)adaptor.create(char_literal120);
-                    adaptor.addChild(root_0, char_literal120_tree);
+                    char_literal121_tree = (Object)adaptor.create(char_literal121);
+                    adaptor.addChild(root_0, char_literal121_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:123:6: IDCON formals statement
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:128:6: IDCON formals statement
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    IDCON121=(Token)match(input,IDCON,FOLLOW_IDCON_in_assignment964); if (state.failed) return retval;
+                    IDCON122=(Token)match(input,IDCON,FOLLOW_IDCON_in_assignment978); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    IDCON121_tree = (Object)adaptor.create(IDCON121);
-                    adaptor.addChild(root_0, IDCON121_tree);
+                    IDCON122_tree = (Object)adaptor.create(IDCON122);
+                    adaptor.addChild(root_0, IDCON122_tree);
                     }
-                    pushFollow(FOLLOW_formals_in_assignment966);
-                    formals122=formals();
+                    pushFollow(FOLLOW_formals_in_assignment980);
+                    formals123=formals();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, formals122.getTree());
-                    pushFollow(FOLLOW_statement_in_assignment968);
-                    statement123=statement();
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, formals123.getTree());
+                    pushFollow(FOLLOW_statement_in_assignment982);
+                    statement124=statement();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement123.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement124.getTree());
 
                     }
                     break;
@@ -3154,107 +3212,107 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "predicate"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:128:1: predicate : ( '!' predicate | expression | expression '.' type ) ( '&&' predicate | '||' predicate )* ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:133:1: predicate : ( '!' predicate | expression | expression '.' type ) ( '&&' predicate | '||' predicate )* ;
     public final WaebricParser.predicate_return predicate() throws RecognitionException {
         WaebricParser.predicate_return retval = new WaebricParser.predicate_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token char_literal124=null;
-        Token char_literal128=null;
-        Token string_literal130=null;
-        Token string_literal132=null;
-        WaebricParser.predicate_return predicate125 = null;
-
-        WaebricParser.expression_return expression126 = null;
+        Token char_literal125=null;
+        Token char_literal129=null;
+        Token string_literal131=null;
+        Token string_literal133=null;
+        WaebricParser.predicate_return predicate126 = null;
 
         WaebricParser.expression_return expression127 = null;
 
-        WaebricParser.type_return type129 = null;
+        WaebricParser.expression_return expression128 = null;
 
-        WaebricParser.predicate_return predicate131 = null;
+        WaebricParser.type_return type130 = null;
 
-        WaebricParser.predicate_return predicate133 = null;
+        WaebricParser.predicate_return predicate132 = null;
+
+        WaebricParser.predicate_return predicate134 = null;
 
 
-        Object char_literal124_tree=null;
-        Object char_literal128_tree=null;
-        Object string_literal130_tree=null;
-        Object string_literal132_tree=null;
+        Object char_literal125_tree=null;
+        Object char_literal129_tree=null;
+        Object string_literal131_tree=null;
+        Object string_literal133_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:128:10: ( ( '!' predicate | expression | expression '.' type ) ( '&&' predicate | '||' predicate )* )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:128:13: ( '!' predicate | expression | expression '.' type ) ( '&&' predicate | '||' predicate )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:133:10: ( ( '!' predicate | expression | expression '.' type ) ( '&&' predicate | '||' predicate )* )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:133:13: ( '!' predicate | expression | expression '.' type ) ( '&&' predicate | '||' predicate )*
             {
             root_0 = (Object)adaptor.nil();
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:128:13: ( '!' predicate | expression | expression '.' type )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:133:13: ( '!' predicate | expression | expression '.' type )
             int alt30=3;
             alt30 = dfa30.predict(input);
             switch (alt30) {
                 case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:128:15: '!' predicate
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:133:15: '!' predicate
                     {
-                    char_literal124=(Token)match(input,59,FOLLOW_59_in_predicate983); if (state.failed) return retval;
+                    char_literal125=(Token)match(input,60,FOLLOW_60_in_predicate997); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal124_tree = (Object)adaptor.create(char_literal124);
-                    adaptor.addChild(root_0, char_literal124_tree);
+                    char_literal125_tree = (Object)adaptor.create(char_literal125);
+                    adaptor.addChild(root_0, char_literal125_tree);
                     }
-                    pushFollow(FOLLOW_predicate_in_predicate985);
-                    predicate125=predicate();
+                    pushFollow(FOLLOW_predicate_in_predicate999);
+                    predicate126=predicate();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, predicate125.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, predicate126.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:129:7: expression
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:7: expression
                     {
-                    pushFollow(FOLLOW_expression_in_predicate994);
-                    expression126=expression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression126.getTree());
-
-                    }
-                    break;
-                case 3 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:130:7: expression '.' type
-                    {
-                    pushFollow(FOLLOW_expression_in_predicate1003);
+                    pushFollow(FOLLOW_expression_in_predicate1008);
                     expression127=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, expression127.getTree());
-                    char_literal128=(Token)match(input,34,FOLLOW_34_in_predicate1005); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal128_tree = (Object)adaptor.create(char_literal128);
-                    adaptor.addChild(root_0, char_literal128_tree);
+
                     }
-                    pushFollow(FOLLOW_type_in_predicate1007);
-                    type129=type();
+                    break;
+                case 3 :
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:135:7: expression '.' type
+                    {
+                    pushFollow(FOLLOW_expression_in_predicate1017);
+                    expression128=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, type129.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression128.getTree());
+                    char_literal129=(Token)match(input,35,FOLLOW_35_in_predicate1019); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    char_literal129_tree = (Object)adaptor.create(char_literal129);
+                    adaptor.addChild(root_0, char_literal129_tree);
+                    }
+                    pushFollow(FOLLOW_type_in_predicate1021);
+                    type130=type();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, type130.getTree());
 
                     }
                     break;
 
             }
 
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:131:6: ( '&&' predicate | '||' predicate )*
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:6: ( '&&' predicate | '||' predicate )*
             loop31:
             do {
                 int alt31=3;
                 int LA31_0 = input.LA(1);
 
-                if ( (LA31_0==60) ) {
+                if ( (LA31_0==61) ) {
                     int LA31_2 = input.LA(2);
 
                     if ( (synpred54_Waebric()) ) {
@@ -3263,7 +3321,7 @@ public class WaebricParser extends Parser {
 
 
                 }
-                else if ( (LA31_0==61) ) {
+                else if ( (LA31_0==62) ) {
                     int LA31_3 = input.LA(2);
 
                     if ( (synpred55_Waebric()) ) {
@@ -3276,36 +3334,36 @@ public class WaebricParser extends Parser {
 
                 switch (alt31) {
             	case 1 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:131:8: '&&' predicate
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:8: '&&' predicate
             	    {
-            	    string_literal130=(Token)match(input,60,FOLLOW_60_in_predicate1017); if (state.failed) return retval;
+            	    string_literal131=(Token)match(input,61,FOLLOW_61_in_predicate1031); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    string_literal130_tree = (Object)adaptor.create(string_literal130);
-            	    adaptor.addChild(root_0, string_literal130_tree);
+            	    string_literal131_tree = (Object)adaptor.create(string_literal131);
+            	    adaptor.addChild(root_0, string_literal131_tree);
             	    }
-            	    pushFollow(FOLLOW_predicate_in_predicate1019);
-            	    predicate131=predicate();
+            	    pushFollow(FOLLOW_predicate_in_predicate1033);
+            	    predicate132=predicate();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, predicate131.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, predicate132.getTree());
 
             	    }
             	    break;
             	case 2 :
-            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:131:25: '||' predicate
+            	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:25: '||' predicate
             	    {
-            	    string_literal132=(Token)match(input,61,FOLLOW_61_in_predicate1023); if (state.failed) return retval;
+            	    string_literal133=(Token)match(input,62,FOLLOW_62_in_predicate1037); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    string_literal132_tree = (Object)adaptor.create(string_literal132);
-            	    adaptor.addChild(root_0, string_literal132_tree);
+            	    string_literal133_tree = (Object)adaptor.create(string_literal133);
+            	    adaptor.addChild(root_0, string_literal133_tree);
             	    }
-            	    pushFollow(FOLLOW_predicate_in_predicate1025);
-            	    predicate133=predicate();
+            	    pushFollow(FOLLOW_predicate_in_predicate1039);
+            	    predicate134=predicate();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, predicate133.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, predicate134.getTree());
 
             	    }
             	    break;
@@ -3344,27 +3402,27 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "type"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:132:1: type : ( 'list' | 'record' | 'string' );
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:137:1: type : ( 'list' | 'record' | 'string' );
     public final WaebricParser.type_return type() throws RecognitionException {
         WaebricParser.type_return retval = new WaebricParser.type_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token set134=null;
+        Token set135=null;
 
-        Object set134_tree=null;
+        Object set135_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:132:5: ( 'list' | 'record' | 'string' )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:137:5: ( 'list' | 'record' | 'string' )
             // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
             {
             root_0 = (Object)adaptor.nil();
 
-            set134=(Token)input.LT(1);
-            if ( (input.LA(1)>=62 && input.LA(1)<=64) ) {
+            set135=(Token)input.LT(1);
+            if ( (input.LA(1)>=63 && input.LA(1)<=65) ) {
                 input.consume();
-                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set134));
+                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set135));
                 state.errorRecovery=false;state.failed=false;
             }
             else {
@@ -3402,44 +3460,44 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "embedding"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:137:1: embedding : PRETEXT embed textTail ;
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:142:1: embedding : PRETEXT embed textTail ;
     public final WaebricParser.embedding_return embedding() throws RecognitionException {
         WaebricParser.embedding_return retval = new WaebricParser.embedding_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token PRETEXT135=null;
-        WaebricParser.embed_return embed136 = null;
+        Token PRETEXT136=null;
+        WaebricParser.embed_return embed137 = null;
 
-        WaebricParser.textTail_return textTail137 = null;
+        WaebricParser.textTail_return textTail138 = null;
 
 
-        Object PRETEXT135_tree=null;
+        Object PRETEXT136_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:137:10: ( PRETEXT embed textTail )
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:137:13: PRETEXT embed textTail
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:142:10: ( PRETEXT embed textTail )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:142:13: PRETEXT embed textTail
             {
             root_0 = (Object)adaptor.nil();
 
-            PRETEXT135=(Token)match(input,PRETEXT,FOLLOW_PRETEXT_in_embedding1058); if (state.failed) return retval;
+            PRETEXT136=(Token)match(input,PRETEXT,FOLLOW_PRETEXT_in_embedding1072); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            PRETEXT135_tree = (Object)adaptor.create(PRETEXT135);
-            adaptor.addChild(root_0, PRETEXT135_tree);
+            PRETEXT136_tree = (Object)adaptor.create(PRETEXT136);
+            adaptor.addChild(root_0, PRETEXT136_tree);
             }
-            pushFollow(FOLLOW_embed_in_embedding1060);
-            embed136=embed();
+            pushFollow(FOLLOW_embed_in_embedding1074);
+            embed137=embed();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, embed136.getTree());
-            pushFollow(FOLLOW_textTail_in_embedding1062);
-            textTail137=textTail();
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, embed137.getTree());
+            pushFollow(FOLLOW_textTail_in_embedding1076);
+            textTail138=textTail();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, textTail137.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, textTail138.getTree());
 
             }
 
@@ -3469,25 +3527,25 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "embed"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:1: embed : ( ( markup )* expression | ( markup )* markup );
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:1: embed : ( ( markup )* expression | ( markup )* markup );
     public final WaebricParser.embed_return embed() throws RecognitionException {
         WaebricParser.embed_return retval = new WaebricParser.embed_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        WaebricParser.markup_return markup138 = null;
+        WaebricParser.markup_return markup139 = null;
 
-        WaebricParser.expression_return expression139 = null;
-
-        WaebricParser.markup_return markup140 = null;
+        WaebricParser.expression_return expression140 = null;
 
         WaebricParser.markup_return markup141 = null;
+
+        WaebricParser.markup_return markup142 = null;
 
 
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:6: ( ( markup )* expression | ( markup )* markup )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:6: ( ( markup )* expression | ( markup )* markup )
             int alt34=2;
             int LA34_0 = input.LA(1);
 
@@ -3508,7 +3566,7 @@ public class WaebricParser extends Parser {
                     throw nvae;
                 }
             }
-            else if ( ((LA34_0>=NATCON && LA34_0<=SYMBOLCON)||LA34_0==44||LA34_0==46) ) {
+            else if ( ((LA34_0>=NATCON && LA34_0<=SYMBOLCON)||LA34_0==45||LA34_0==47) ) {
                 alt34=1;
             }
             else {
@@ -3520,11 +3578,11 @@ public class WaebricParser extends Parser {
             }
             switch (alt34) {
                 case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:10: ( markup )* expression
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:10: ( markup )* expression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:10: ( markup )*
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:10: ( markup )*
                     loop32:
                     do {
                         int alt32=2;
@@ -3533,12 +3591,12 @@ public class WaebricParser extends Parser {
                     	case 1 :
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: markup
                     	    {
-                    	    pushFollow(FOLLOW_markup_in_embed1071);
-                    	    markup138=markup();
+                    	    pushFollow(FOLLOW_markup_in_embed1085);
+                    	    markup139=markup();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, markup138.getTree());
+                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, markup139.getTree());
 
                     	    }
                     	    break;
@@ -3548,21 +3606,21 @@ public class WaebricParser extends Parser {
                         }
                     } while (true);
 
-                    pushFollow(FOLLOW_expression_in_embed1074);
-                    expression139=expression();
+                    pushFollow(FOLLOW_expression_in_embed1088);
+                    expression140=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression139.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression140.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:31: ( markup )* markup
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:31: ( markup )* markup
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:31: ( markup )*
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:31: ( markup )*
                     loop33:
                     do {
                         int alt33=2;
@@ -3583,12 +3641,12 @@ public class WaebricParser extends Parser {
                     	case 1 :
                     	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: markup
                     	    {
-                    	    pushFollow(FOLLOW_markup_in_embed1078);
-                    	    markup140=markup();
+                    	    pushFollow(FOLLOW_markup_in_embed1092);
+                    	    markup141=markup();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, markup140.getTree());
+                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, markup141.getTree());
 
                     	    }
                     	    break;
@@ -3598,12 +3656,12 @@ public class WaebricParser extends Parser {
                         }
                     } while (true);
 
-                    pushFollow(FOLLOW_markup_in_embed1081);
-                    markup141=markup();
+                    pushFollow(FOLLOW_markup_in_embed1095);
+                    markup142=markup();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, markup141.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, markup142.getTree());
 
                     }
                     break;
@@ -3635,25 +3693,25 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "textTail"
-    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:139:1: textTail : ( POSTTEXT | MIDTEXT embed textTail );
+    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:144:1: textTail : ( POSTTEXT | MIDTEXT embed textTail );
     public final WaebricParser.textTail_return textTail() throws RecognitionException {
         WaebricParser.textTail_return retval = new WaebricParser.textTail_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token POSTTEXT142=null;
-        Token MIDTEXT143=null;
-        WaebricParser.embed_return embed144 = null;
+        Token POSTTEXT143=null;
+        Token MIDTEXT144=null;
+        WaebricParser.embed_return embed145 = null;
 
-        WaebricParser.textTail_return textTail145 = null;
+        WaebricParser.textTail_return textTail146 = null;
 
 
-        Object POSTTEXT142_tree=null;
-        Object MIDTEXT143_tree=null;
+        Object POSTTEXT143_tree=null;
+        Object MIDTEXT144_tree=null;
 
         try {
-            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:139:9: ( POSTTEXT | MIDTEXT embed textTail )
+            // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:144:9: ( POSTTEXT | MIDTEXT embed textTail )
             int alt35=2;
             int LA35_0 = input.LA(1);
 
@@ -3672,40 +3730,40 @@ public class WaebricParser extends Parser {
             }
             switch (alt35) {
                 case 1 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:139:12: POSTTEXT
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:144:12: POSTTEXT
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    POSTTEXT142=(Token)match(input,POSTTEXT,FOLLOW_POSTTEXT_in_textTail1089); if (state.failed) return retval;
+                    POSTTEXT143=(Token)match(input,POSTTEXT,FOLLOW_POSTTEXT_in_textTail1103); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    POSTTEXT142_tree = (Object)adaptor.create(POSTTEXT142);
-                    adaptor.addChild(root_0, POSTTEXT142_tree);
+                    POSTTEXT143_tree = (Object)adaptor.create(POSTTEXT143);
+                    adaptor.addChild(root_0, POSTTEXT143_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:139:23: MIDTEXT embed textTail
+                    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:144:23: MIDTEXT embed textTail
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    MIDTEXT143=(Token)match(input,MIDTEXT,FOLLOW_MIDTEXT_in_textTail1093); if (state.failed) return retval;
+                    MIDTEXT144=(Token)match(input,MIDTEXT,FOLLOW_MIDTEXT_in_textTail1107); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    MIDTEXT143_tree = (Object)adaptor.create(MIDTEXT143);
-                    adaptor.addChild(root_0, MIDTEXT143_tree);
+                    MIDTEXT144_tree = (Object)adaptor.create(MIDTEXT144);
+                    adaptor.addChild(root_0, MIDTEXT144_tree);
                     }
-                    pushFollow(FOLLOW_embed_in_textTail1095);
-                    embed144=embed();
+                    pushFollow(FOLLOW_embed_in_textTail1109);
+                    embed145=embed();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, embed144.getTree());
-                    pushFollow(FOLLOW_textTail_in_textTail1097);
-                    textTail145=textTail();
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, embed145.getTree());
+                    pushFollow(FOLLOW_textTail_in_textTail1111);
+                    textTail146=textTail();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, textTail145.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, textTail146.getTree());
 
                     }
                     break;
@@ -3733,11 +3791,11 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred25_Waebric
     public final void synpred25_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:8: ( '+' expression )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:8: '+' expression
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:84:8: ( '+' expression )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:84:8: '+' expression
         {
-        match(input,48,FOLLOW_48_in_synpred25_Waebric439); if (state.failed) return ;
-        pushFollow(FOLLOW_expression_in_synpred25_Waebric441);
+        match(input,49,FOLLOW_49_in_synpred25_Waebric459); if (state.failed) return ;
+        pushFollow(FOLLOW_expression_in_synpred25_Waebric461);
         expression();
 
         state._fsp--;
@@ -3749,11 +3807,11 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred26_Waebric
     public final void synpred26_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:35: ( '.' IDCON )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:79:35: '.' IDCON
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:84:35: ( '.' IDCON )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:84:35: '.' IDCON
         {
-        match(input,34,FOLLOW_34_in_synpred26_Waebric447); if (state.failed) return ;
-        match(input,IDCON,FOLLOW_IDCON_in_synpred26_Waebric449); if (state.failed) return ;
+        match(input,35,FOLLOW_35_in_synpred26_Waebric467); if (state.failed) return ;
+        match(input,IDCON,FOLLOW_IDCON_in_synpred26_Waebric469); if (state.failed) return ;
 
         }
     }
@@ -3761,11 +3819,11 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred31_Waebric
     public final void synpred31_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:93:48: ( 'else' statement )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:93:48: 'else' statement
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:98:48: ( 'else' statement )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:98:48: 'else' statement
         {
-        match(input,51,FOLLOW_51_in_synpred31_Waebric550); if (state.failed) return ;
-        pushFollow(FOLLOW_statement_in_synpred31_Waebric552);
+        match(input,52,FOLLOW_52_in_synpred31_Waebric570); if (state.failed) return ;
+        pushFollow(FOLLOW_statement_in_synpred31_Waebric572);
         statement();
 
         state._fsp--;
@@ -3777,10 +3835,10 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred45_Waebric
     public final void synpred45_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:110:6: ( ( markup )+ expression ';' )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:110:6: ( markup )+ expression ';'
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:115:6: ( ( markup )+ expression ';' )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:115:6: ( markup )+ expression ';'
         {
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:110:6: ( markup )+
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:115:6: ( markup )+
         int cnt42=0;
         loop42:
         do {
@@ -3790,7 +3848,7 @@ public class WaebricParser extends Parser {
         	case 1 :
         	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: markup
         	    {
-        	    pushFollow(FOLLOW_markup_in_synpred45_Waebric819);
+        	    pushFollow(FOLLOW_markup_in_synpred45_Waebric839);
         	    markup();
 
         	    state._fsp--;
@@ -3809,12 +3867,12 @@ public class WaebricParser extends Parser {
             cnt42++;
         } while (true);
 
-        pushFollow(FOLLOW_expression_in_synpred45_Waebric822);
+        pushFollow(FOLLOW_expression_in_synpred45_Waebric842);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
-        match(input,SEMICOLON,FOLLOW_SEMICOLON_in_synpred45_Waebric824); if (state.failed) return ;
+        match(input,SEMICOLON,FOLLOW_SEMICOLON_in_synpred45_Waebric844); if (state.failed) return ;
 
         }
     }
@@ -3822,10 +3880,10 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred46_Waebric
     public final void synpred46_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:112:6: ( markup )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:112:6: markup
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:117:6: ( markup )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:117:6: markup
         {
-        pushFollow(FOLLOW_markup_in_synpred46_Waebric853);
+        pushFollow(FOLLOW_markup_in_synpred46_Waebric871);
         markup();
 
         state._fsp--;
@@ -3837,10 +3895,10 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred47_Waebric
     public final void synpred47_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:112:6: ( ( markup )+ statement )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:112:6: ( markup )+ statement
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:117:6: ( ( markup )+ statement )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:117:6: ( markup )+ statement
         {
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:112:6: ( markup )+
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:117:6: ( markup )+
         int cnt43=0;
         loop43:
         do {
@@ -3862,7 +3920,7 @@ public class WaebricParser extends Parser {
         	case 1 :
         	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: markup
         	    {
-        	    pushFollow(FOLLOW_markup_in_synpred47_Waebric853);
+        	    pushFollow(FOLLOW_markup_in_synpred47_Waebric871);
         	    markup();
 
         	    state._fsp--;
@@ -3881,7 +3939,7 @@ public class WaebricParser extends Parser {
             cnt43++;
         } while (true);
 
-        pushFollow(FOLLOW_statement_in_synpred47_Waebric856);
+        pushFollow(FOLLOW_statement_in_synpred47_Waebric874);
         statement();
 
         state._fsp--;
@@ -3893,10 +3951,10 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred49_Waebric
     public final void synpred49_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:6: ( ( markup )+ embedding ';' )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:6: ( markup )+ embedding ';'
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:119:6: ( ( markup )+ embedding ';' )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:119:6: ( markup )+ embedding ';'
         {
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:6: ( markup )+
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:119:6: ( markup )+
         int cnt44=0;
         loop44:
         do {
@@ -3912,7 +3970,7 @@ public class WaebricParser extends Parser {
         	case 1 :
         	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: markup
         	    {
-        	    pushFollow(FOLLOW_markup_in_synpred49_Waebric883);
+        	    pushFollow(FOLLOW_markup_in_synpred49_Waebric899);
         	    markup();
 
         	    state._fsp--;
@@ -3931,12 +3989,12 @@ public class WaebricParser extends Parser {
             cnt44++;
         } while (true);
 
-        pushFollow(FOLLOW_embedding_in_synpred49_Waebric886);
+        pushFollow(FOLLOW_embedding_in_synpred49_Waebric902);
         embedding();
 
         state._fsp--;
         if (state.failed) return ;
-        match(input,SEMICOLON,FOLLOW_SEMICOLON_in_synpred49_Waebric888); if (state.failed) return ;
+        match(input,SEMICOLON,FOLLOW_SEMICOLON_in_synpred49_Waebric904); if (state.failed) return ;
 
         }
     }
@@ -3944,10 +4002,10 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred53_Waebric
     public final void synpred53_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:129:7: ( expression )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:129:7: expression
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:7: ( expression )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:7: expression
         {
-        pushFollow(FOLLOW_expression_in_synpred53_Waebric994);
+        pushFollow(FOLLOW_expression_in_synpred53_Waebric1008);
         expression();
 
         state._fsp--;
@@ -3959,11 +4017,11 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred54_Waebric
     public final void synpred54_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:131:8: ( '&&' predicate )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:131:8: '&&' predicate
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:8: ( '&&' predicate )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:8: '&&' predicate
         {
-        match(input,60,FOLLOW_60_in_synpred54_Waebric1017); if (state.failed) return ;
-        pushFollow(FOLLOW_predicate_in_synpred54_Waebric1019);
+        match(input,61,FOLLOW_61_in_synpred54_Waebric1031); if (state.failed) return ;
+        pushFollow(FOLLOW_predicate_in_synpred54_Waebric1033);
         predicate();
 
         state._fsp--;
@@ -3975,11 +4033,11 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred55_Waebric
     public final void synpred55_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:131:25: ( '||' predicate )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:131:25: '||' predicate
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:25: ( '||' predicate )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:25: '||' predicate
         {
-        match(input,61,FOLLOW_61_in_synpred55_Waebric1023); if (state.failed) return ;
-        pushFollow(FOLLOW_predicate_in_synpred55_Waebric1025);
+        match(input,62,FOLLOW_62_in_synpred55_Waebric1037); if (state.failed) return ;
+        pushFollow(FOLLOW_predicate_in_synpred55_Waebric1039);
         predicate();
 
         state._fsp--;
@@ -3991,10 +4049,10 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred59_Waebric
     public final void synpred59_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:10: ( ( markup )* expression )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:10: ( markup )* expression
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:10: ( ( markup )* expression )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:10: ( markup )* expression
         {
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:10: ( markup )*
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:10: ( markup )*
         loop45:
         do {
             int alt45=2;
@@ -4003,7 +4061,7 @@ public class WaebricParser extends Parser {
         	case 1 :
         	    // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:0:0: markup
         	    {
-        	    pushFollow(FOLLOW_markup_in_synpred59_Waebric1071);
+        	    pushFollow(FOLLOW_markup_in_synpred59_Waebric1085);
         	    markup();
 
         	    state._fsp--;
@@ -4017,7 +4075,7 @@ public class WaebricParser extends Parser {
             }
         } while (true);
 
-        pushFollow(FOLLOW_expression_in_synpred59_Waebric1074);
+        pushFollow(FOLLOW_expression_in_synpred59_Waebric1088);
         expression();
 
         state._fsp--;
@@ -4029,10 +4087,10 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred60_Waebric
     public final void synpred60_Waebric_fragment() throws RecognitionException {   
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:31: ( markup )
-        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:31: markup
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:31: ( markup )
+        // /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g:143:31: markup
         {
-        pushFollow(FOLLOW_markup_in_synpred60_Waebric1078);
+        pushFollow(FOLLOW_markup_in_synpred60_Waebric1092);
         markup();
 
         state._fsp--;
@@ -4225,11 +4283,11 @@ public class WaebricParser extends Parser {
     static final String DFA28_eofS =
         "\20\uffff";
     static final String DFA28_minS =
-        "\1\4\5\uffff\1\4\2\uffff\1\0\6\uffff";
+        "\1\5\5\uffff\1\5\2\uffff\1\0\6\uffff";
     static final String DFA28_maxS =
-        "\1\71\5\uffff\1\56\2\uffff\1\0\6\uffff";
+        "\1\72\5\uffff\1\57\2\uffff\1\0\6\uffff";
     static final String DFA28_acceptS =
-        "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\uffff\1\10\1\11\1\uffff\1\7\1\6\1"+
+        "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\uffff\1\10\1\11\1\uffff\1\6\1\7\1"+
         "\12\1\13\1\14\1\15";
     static final String DFA28_specialS =
         "\11\uffff\1\0\6\uffff}>";
@@ -4241,7 +4299,7 @@ public class WaebricParser extends Parser {
             "",
             "",
             "",
-            "\1\13\1\uffff\3\13\1\uffff\1\12\41\uffff\1\13\1\uffff\1\13",
+            "\1\12\1\uffff\3\12\1\uffff\1\13\41\uffff\1\12\1\uffff\1\12",
             "",
             "",
             "\1\uffff",
@@ -4283,7 +4341,7 @@ public class WaebricParser extends Parser {
             this.transition = DFA28_transition;
         }
         public String getDescription() {
-            return "93:1: statement : ( 'if' '(' predicate ')' statement ( 'else' statement )? -> ^( 'if' '(' predicate ')' statement ( 'else' statement )? ) | 'each' '(' IDCON ':' expression ')' statement -> ^( 'each' '(' IDCON ':' expression ')' statement ) | 'let' ( assignment )+ 'in' ( statement )* 'end' -> ^( 'let' ( assignment )+ 'in' ( statement )* 'end' ) | '{' ( statement )* '}' -> ^( '{' ( statement )* '}' ) | 'comment' STRCON ';' -> ^( 'comment' STRCON ';' ) | 'echo' expression ';' -> ^( 'echo' expression ';' ) | 'echo' embedding ';' -> ^( 'echo' embedding ';' ) | 'cdata' expression ';' -> ^( 'cdata' expression ';' ) | 'yield;' | ( markup )+ expression ';' -> ^( markup ( markup )* ',' expression ';' ) | ( markup )+ statement -> ^( markup ( markup )* ',' statement ) | ( markup )+ embedding ';' -> ^( markup ( markup )* ',' embedding ';' ) | ( markup )+ ';' -> ^( markup ( markup )* ';' ) );";
+            return "98:1: statement : ( 'if' '(' predicate ')' statement ( 'else' statement )? -> ^( 'if' '(' predicate ')' statement ( 'else' statement )? ) | 'each' '(' IDCON ':' expression ')' statement -> ^( 'each' '(' IDCON ':' expression ')' statement ) | 'let' ( assignment )+ 'in' ( statement )* 'end' -> ^( 'let' ( assignment )+ 'in' ( statement )* 'end' ) | '{' ( statement )* '}' -> ^( '{' ( statement )* '}' ) | 'comment' STRCON ';' -> ^( 'comment' STRCON ';' ) | 'echo' expression ';' -> ^( 'echo' expression ';' ) | 'echo' embedding ';' -> ^( 'echo' embedding ';' ) | 'cdata' expression ';' -> ^( 'cdata' expression ';' ) | 'yield;' | ( markup )+ expression ';' -> ^( MARKUP_STATEMENT ( markup )+ expression ';' ) | ( markup )+ statement -> ^( MARKUP_STATEMENT ( markup )+ statement ) | ( markup )+ embedding ';' -> ^( MARKUP_STATEMENT ( markup )+ embedding ';' ) | ( markup )+ ';' -> ^( MARKUP_STATEMENT ( markup )+ ';' ) );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -4321,22 +4379,22 @@ public class WaebricParser extends Parser {
     static final String DFA24_eofS =
         "\6\uffff";
     static final String DFA24_minS =
-        "\2\4\2\uffff\2\4";
+        "\2\5\1\uffff\1\5\1\uffff\1\5";
     static final String DFA24_maxS =
-        "\1\56\1\60\2\uffff\1\4\1\60";
+        "\1\57\1\61\1\uffff\1\5\1\uffff\1\61";
     static final String DFA24_acceptS =
-        "\2\uffff\1\2\1\1\2\uffff";
+        "\2\uffff\1\2\1\uffff\1\1\1\uffff";
     static final String DFA24_specialS =
         "\6\uffff}>";
     static final String[] DFA24_transitionS = {
             "\1\1\1\uffff\3\2\43\uffff\1\2\1\uffff\1\2",
-            "\1\3\1\uffff\3\3\7\uffff\1\2\21\uffff\1\4\1\uffff\4\3\1\uffff"+
-            "\1\3\2\uffff\1\3\1\uffff\1\3\1\uffff\1\2",
-            "",
+            "\1\4\1\uffff\3\4\7\uffff\1\2\21\uffff\1\3\1\uffff\4\4\1\uffff"+
+            "\1\4\2\uffff\1\4\1\uffff\1\4\1\uffff\1\2",
             "",
             "\1\5",
-            "\1\3\1\uffff\3\3\7\uffff\1\2\21\uffff\1\4\1\uffff\4\3\1\uffff"+
-            "\1\3\2\uffff\1\3\1\uffff\1\3\1\uffff\1\2"
+            "",
+            "\1\4\1\uffff\3\4\7\uffff\1\2\21\uffff\1\3\1\uffff\4\4\1\uffff"+
+            "\1\4\2\uffff\1\4\1\uffff\1\4\1\uffff\1\2"
     };
 
     static final short[] DFA24_eot = DFA.unpackEncodedString(DFA24_eotS);
@@ -4369,7 +4427,7 @@ public class WaebricParser extends Parser {
             this.transition = DFA24_transition;
         }
         public String getDescription() {
-            return "()+ loopback of 110:6: ( markup )+";
+            return "()+ loopback of 115:6: ( markup )+";
         }
     }
     static final String DFA30_eotS =
@@ -4377,9 +4435,9 @@ public class WaebricParser extends Parser {
     static final String DFA30_eofS =
         "\12\uffff";
     static final String DFA30_minS =
-        "\1\4\1\uffff\6\0\2\uffff";
+        "\1\5\1\uffff\6\0\2\uffff";
     static final String DFA30_maxS =
-        "\1\73\1\uffff\6\0\2\uffff";
+        "\1\74\1\uffff\6\0\2\uffff";
     static final String DFA30_acceptS =
         "\1\uffff\1\1\6\uffff\1\2\1\3";
     static final String DFA30_specialS =
@@ -4428,7 +4486,7 @@ public class WaebricParser extends Parser {
             this.transition = DFA30_transition;
         }
         public String getDescription() {
-            return "128:13: ( '!' predicate | expression | expression '.' type )";
+            return "133:13: ( '!' predicate | expression | expression '.' type )";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -4537,9 +4595,9 @@ public class WaebricParser extends Parser {
     static final String DFA32_eofS =
         "\6\uffff";
     static final String DFA32_minS =
-        "\2\4\2\uffff\2\4";
+        "\2\5\2\uffff\2\5";
     static final String DFA32_maxS =
-        "\1\56\1\60\2\uffff\1\4\1\60";
+        "\1\57\1\61\2\uffff\1\5\1\61";
     static final String DFA32_acceptS =
         "\2\uffff\1\2\1\1\2\uffff";
     static final String DFA32_specialS =
@@ -4585,7 +4643,7 @@ public class WaebricParser extends Parser {
             this.transition = DFA32_transition;
         }
         public String getDescription() {
-            return "()* loopback of 138:10: ( markup )*";
+            return "()* loopback of 143:10: ( markup )*";
         }
     }
     static final String DFA42_eotS =
@@ -4593,9 +4651,9 @@ public class WaebricParser extends Parser {
     static final String DFA42_eofS =
         "\6\uffff";
     static final String DFA42_minS =
-        "\2\4\1\uffff\1\4\1\uffff\1\4";
+        "\2\5\1\uffff\1\5\1\uffff\1\5";
     static final String DFA42_maxS =
-        "\1\56\1\60\1\uffff\1\4\1\uffff\1\60";
+        "\1\57\1\61\1\uffff\1\5\1\uffff\1\61";
     static final String DFA42_acceptS =
         "\2\uffff\1\2\1\uffff\1\1\1\uffff";
     static final String DFA42_specialS =
@@ -4641,7 +4699,7 @@ public class WaebricParser extends Parser {
             this.transition = DFA42_transition;
         }
         public String getDescription() {
-            return "()+ loopback of 110:6: ( markup )+";
+            return "()+ loopback of 115:6: ( markup )+";
         }
     }
     static final String DFA45_eotS =
@@ -4649,9 +4707,9 @@ public class WaebricParser extends Parser {
     static final String DFA45_eofS =
         "\1\uffff\1\2\3\uffff\1\2";
     static final String DFA45_minS =
-        "\2\4\1\uffff\1\4\1\uffff\1\4";
+        "\2\5\1\uffff\1\5\1\uffff\1\5";
     static final String DFA45_maxS =
-        "\1\56\1\60\1\uffff\1\4\1\uffff\1\60";
+        "\1\57\1\61\1\uffff\1\5\1\uffff\1\61";
     static final String DFA45_acceptS =
         "\2\uffff\1\2\1\uffff\1\1\1\uffff";
     static final String DFA45_specialS =
@@ -4697,181 +4755,182 @@ public class WaebricParser extends Parser {
             this.transition = DFA45_transition;
         }
         public String getDescription() {
-            return "()* loopback of 138:10: ( markup )*";
+            return "()* loopback of 143:10: ( markup )*";
         }
     }
  
 
-    public static final BitSet FOLLOW_33_in_module72 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_moduleId_in_module74 = new BitSet(new long[]{0x0002000800004002L});
-    public static final BitSet FOLLOW_imprt_in_module78 = new BitSet(new long[]{0x0002000800004002L});
-    public static final BitSet FOLLOW_site_in_module82 = new BitSet(new long[]{0x0002000800004002L});
-    public static final BitSet FOLLOW_function_in_module86 = new BitSet(new long[]{0x0002000800004002L});
-    public static final BitSet FOLLOW_IDCON_in_moduleId140 = new BitSet(new long[]{0x0000000400000002L});
-    public static final BitSet FOLLOW_34_in_moduleId150 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_IDCON_in_moduleId154 = new BitSet(new long[]{0x0000000400000002L});
-    public static final BitSet FOLLOW_35_in_imprt170 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_moduleId_in_imprt174 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_imprt176 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SITE_in_site208 = new BitSet(new long[]{0x0000000000018020L});
-    public static final BitSet FOLLOW_mappings_in_site210 = new BitSet(new long[]{0x0000000000008000L});
-    public static final BitSet FOLLOW_END_in_site212 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_mapping_in_mappings220 = new BitSet(new long[]{0x0000000000010002L});
-    public static final BitSet FOLLOW_SEMICOLON_in_mappings225 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_mapping_in_mappings227 = new BitSet(new long[]{0x0000000000010002L});
-    public static final BitSet FOLLOW_PATH_in_mapping239 = new BitSet(new long[]{0x0000001000000000L});
-    public static final BitSet FOLLOW_36_in_mapping241 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_markup_in_mapping243 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDCON_in_markup256 = new BitSet(new long[]{0x000002F400000002L});
-    public static final BitSet FOLLOW_attribute_in_markup259 = new BitSet(new long[]{0x000002F400000002L});
-    public static final BitSet FOLLOW_arguments_in_markup262 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_37_in_attribute271 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_IDCON_in_attribute273 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_34_in_attribute281 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_IDCON_in_attribute283 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_38_in_attribute291 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_34_in_module85 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_moduleId_in_module87 = new BitSet(new long[]{0x0004001000008002L});
+    public static final BitSet FOLLOW_imprt_in_module91 = new BitSet(new long[]{0x0004001000008002L});
+    public static final BitSet FOLLOW_site_in_module95 = new BitSet(new long[]{0x0004001000008002L});
+    public static final BitSet FOLLOW_function_in_module99 = new BitSet(new long[]{0x0004001000008002L});
+    public static final BitSet FOLLOW_IDCON_in_moduleId153 = new BitSet(new long[]{0x0000000800000002L});
+    public static final BitSet FOLLOW_35_in_moduleId163 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_IDCON_in_moduleId167 = new BitSet(new long[]{0x0000000800000002L});
+    public static final BitSet FOLLOW_36_in_imprt183 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_moduleId_in_imprt187 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_imprt189 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SITE_in_site221 = new BitSet(new long[]{0x0000000000030040L});
+    public static final BitSet FOLLOW_mappings_in_site223 = new BitSet(new long[]{0x0000000000010000L});
+    public static final BitSet FOLLOW_END_in_site225 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_mapping_in_mappings233 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_SEMICOLON_in_mappings238 = new BitSet(new long[]{0x0000000000000040L});
+    public static final BitSet FOLLOW_mapping_in_mappings240 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_PATH_in_mapping252 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_37_in_mapping254 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_markup_in_mapping256 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_designator_in_markup269 = new BitSet(new long[]{0x0000040000000002L});
+    public static final BitSet FOLLOW_arguments_in_markup271 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDCON_in_designator280 = new BitSet(new long[]{0x000001E800000002L});
+    public static final BitSet FOLLOW_attribute_in_designator282 = new BitSet(new long[]{0x000001E800000002L});
+    public static final BitSet FOLLOW_38_in_attribute291 = new BitSet(new long[]{0x0000000000000020L});
     public static final BitSet FOLLOW_IDCON_in_attribute293 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_36_in_attribute301 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_35_in_attribute301 = new BitSet(new long[]{0x0000000000000020L});
     public static final BitSet FOLLOW_IDCON_in_attribute303 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_39_in_attribute311 = new BitSet(new long[]{0x0000000000000040L});
-    public static final BitSet FOLLOW_NATCON_in_attribute313 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_39_in_attribute321 = new BitSet(new long[]{0x0000000000000040L});
-    public static final BitSet FOLLOW_NATCON_in_attribute323 = new BitSet(new long[]{0x0000010000000000L});
-    public static final BitSet FOLLOW_40_in_attribute325 = new BitSet(new long[]{0x0000000000000040L});
-    public static final BitSet FOLLOW_NATCON_in_attribute327 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_41_in_arguments335 = new BitSet(new long[]{0x00005C00000001D0L});
-    public static final BitSet FOLLOW_argument_in_arguments337 = new BitSet(new long[]{0x00000C0000000000L});
-    public static final BitSet FOLLOW_42_in_arguments342 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_argument_in_arguments344 = new BitSet(new long[]{0x00000C0000000000L});
-    public static final BitSet FOLLOW_43_in_arguments349 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_argument357 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDCON_in_expression371 = new BitSet(new long[]{0x0001000400000002L});
-    public static final BitSet FOLLOW_NATCON_in_expression375 = new BitSet(new long[]{0x0001000400000002L});
-    public static final BitSet FOLLOW_TEXT_in_expression379 = new BitSet(new long[]{0x0001000400000002L});
-    public static final BitSet FOLLOW_SYMBOLCON_in_expression383 = new BitSet(new long[]{0x0001000400000002L});
-    public static final BitSet FOLLOW_44_in_expression392 = new BitSet(new long[]{0x00007400000001D0L});
-    public static final BitSet FOLLOW_expression_in_expression394 = new BitSet(new long[]{0x0000240000000000L});
-    public static final BitSet FOLLOW_42_in_expression399 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_expression401 = new BitSet(new long[]{0x0000240000000000L});
-    public static final BitSet FOLLOW_45_in_expression406 = new BitSet(new long[]{0x0001000400000002L});
-    public static final BitSet FOLLOW_46_in_expression415 = new BitSet(new long[]{0x0000840000000010L});
-    public static final BitSet FOLLOW_keyValuePair_in_expression417 = new BitSet(new long[]{0x0000840000000000L});
-    public static final BitSet FOLLOW_42_in_expression422 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_keyValuePair_in_expression424 = new BitSet(new long[]{0x0000840000000000L});
-    public static final BitSet FOLLOW_47_in_expression429 = new BitSet(new long[]{0x0001000400000002L});
-    public static final BitSet FOLLOW_48_in_expression439 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_expression441 = new BitSet(new long[]{0x0001000400000002L});
-    public static final BitSet FOLLOW_34_in_expression447 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_IDCON_in_expression449 = new BitSet(new long[]{0x0001000400000002L});
-    public static final BitSet FOLLOW_IDCON_in_keyValuePair462 = new BitSet(new long[]{0x0000001000000000L});
-    public static final BitSet FOLLOW_36_in_keyValuePair464 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_keyValuePair466 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_49_in_function478 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_IDCON_in_function480 = new BitSet(new long[]{0x03B442000000A010L});
-    public static final BitSet FOLLOW_formals_in_function482 = new BitSet(new long[]{0x03B440000000A010L});
-    public static final BitSet FOLLOW_statement_in_function485 = new BitSet(new long[]{0x03B440000000A010L});
-    public static final BitSet FOLLOW_END_in_function488 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_41_in_formals496 = new BitSet(new long[]{0x00000C0000000010L});
-    public static final BitSet FOLLOW_IDCON_in_formals498 = new BitSet(new long[]{0x00000C0000000000L});
-    public static final BitSet FOLLOW_42_in_formals503 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_IDCON_in_formals505 = new BitSet(new long[]{0x00000C0000000000L});
-    public static final BitSet FOLLOW_43_in_formals510 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_50_in_statement538 = new BitSet(new long[]{0x0000020000000000L});
-    public static final BitSet FOLLOW_41_in_statement540 = new BitSet(new long[]{0x08005000000001D0L});
-    public static final BitSet FOLLOW_predicate_in_statement542 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_43_in_statement544 = new BitSet(new long[]{0x03B4400000002010L});
-    public static final BitSet FOLLOW_statement_in_statement546 = new BitSet(new long[]{0x0008000000000002L});
-    public static final BitSet FOLLOW_51_in_statement550 = new BitSet(new long[]{0x03B4400000002010L});
-    public static final BitSet FOLLOW_statement_in_statement552 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_52_in_statement591 = new BitSet(new long[]{0x0000020000000000L});
-    public static final BitSet FOLLOW_41_in_statement593 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_IDCON_in_statement595 = new BitSet(new long[]{0x0000001000000000L});
-    public static final BitSet FOLLOW_36_in_statement597 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_statement599 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_43_in_statement601 = new BitSet(new long[]{0x03B4400000002010L});
-    public static final BitSet FOLLOW_statement_in_statement603 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_53_in_statement635 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_assignment_in_statement637 = new BitSet(new long[]{0x0040000000000010L});
-    public static final BitSet FOLLOW_54_in_statement640 = new BitSet(new long[]{0x03B440000000A010L});
-    public static final BitSet FOLLOW_statement_in_statement642 = new BitSet(new long[]{0x03B440000000A010L});
-    public static final BitSet FOLLOW_END_in_statement645 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_46_in_statement674 = new BitSet(new long[]{0x03B4C00000002010L});
-    public static final BitSet FOLLOW_statement_in_statement676 = new BitSet(new long[]{0x03B4C00000002010L});
-    public static final BitSet FOLLOW_47_in_statement679 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COMMENT_in_statement703 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_STRCON_in_statement705 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_statement707 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_55_in_statement730 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_statement732 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_statement734 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_55_in_statement757 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_embedding_in_statement759 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_statement761 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_56_in_statement784 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_statement786 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_statement788 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_57_in_statement812 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_statement819 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_statement822 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_statement824 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_statement853 = new BitSet(new long[]{0x03B4400000002010L});
-    public static final BitSet FOLLOW_statement_in_statement856 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_statement883 = new BitSet(new long[]{0x0000000000000410L});
-    public static final BitSet FOLLOW_embedding_in_statement886 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_statement888 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_statement917 = new BitSet(new long[]{0x0000000000010010L});
-    public static final BitSet FOLLOW_SEMICOLON_in_statement920 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDCON_in_assignment950 = new BitSet(new long[]{0x0400000000000000L});
-    public static final BitSet FOLLOW_58_in_assignment952 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_assignment954 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_assignment956 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDCON_in_assignment964 = new BitSet(new long[]{0x0000020000000000L});
-    public static final BitSet FOLLOW_formals_in_assignment966 = new BitSet(new long[]{0x03B4400000002010L});
-    public static final BitSet FOLLOW_statement_in_assignment968 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_59_in_predicate983 = new BitSet(new long[]{0x08005000000001D0L});
-    public static final BitSet FOLLOW_predicate_in_predicate985 = new BitSet(new long[]{0x3000000000000002L});
-    public static final BitSet FOLLOW_expression_in_predicate994 = new BitSet(new long[]{0x3000000000000002L});
-    public static final BitSet FOLLOW_expression_in_predicate1003 = new BitSet(new long[]{0x0000000400000000L});
-    public static final BitSet FOLLOW_34_in_predicate1005 = new BitSet(new long[]{0xC000000000000000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_type_in_predicate1007 = new BitSet(new long[]{0x3000000000000002L});
-    public static final BitSet FOLLOW_60_in_predicate1017 = new BitSet(new long[]{0x08005000000001D0L});
-    public static final BitSet FOLLOW_predicate_in_predicate1019 = new BitSet(new long[]{0x3000000000000002L});
-    public static final BitSet FOLLOW_61_in_predicate1023 = new BitSet(new long[]{0x08005000000001D0L});
-    public static final BitSet FOLLOW_predicate_in_predicate1025 = new BitSet(new long[]{0x3000000000000002L});
+    public static final BitSet FOLLOW_39_in_attribute311 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_IDCON_in_attribute313 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_37_in_attribute321 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_IDCON_in_attribute323 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_40_in_attribute331 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_NATCON_in_attribute333 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_40_in_attribute341 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_NATCON_in_attribute343 = new BitSet(new long[]{0x0000020000000000L});
+    public static final BitSet FOLLOW_41_in_attribute345 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_NATCON_in_attribute347 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_arguments355 = new BitSet(new long[]{0x0000B800000003A0L});
+    public static final BitSet FOLLOW_argument_in_arguments357 = new BitSet(new long[]{0x0000180000000000L});
+    public static final BitSet FOLLOW_43_in_arguments362 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_argument_in_arguments364 = new BitSet(new long[]{0x0000180000000000L});
+    public static final BitSet FOLLOW_44_in_arguments369 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_argument377 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDCON_in_expression391 = new BitSet(new long[]{0x0002000800000002L});
+    public static final BitSet FOLLOW_NATCON_in_expression395 = new BitSet(new long[]{0x0002000800000002L});
+    public static final BitSet FOLLOW_TEXT_in_expression399 = new BitSet(new long[]{0x0002000800000002L});
+    public static final BitSet FOLLOW_SYMBOLCON_in_expression403 = new BitSet(new long[]{0x0002000800000002L});
+    public static final BitSet FOLLOW_45_in_expression412 = new BitSet(new long[]{0x0000E800000003A0L});
+    public static final BitSet FOLLOW_expression_in_expression414 = new BitSet(new long[]{0x0000480000000000L});
+    public static final BitSet FOLLOW_43_in_expression419 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_expression421 = new BitSet(new long[]{0x0000480000000000L});
+    public static final BitSet FOLLOW_46_in_expression426 = new BitSet(new long[]{0x0002000800000002L});
+    public static final BitSet FOLLOW_47_in_expression435 = new BitSet(new long[]{0x0001080000000020L});
+    public static final BitSet FOLLOW_keyValuePair_in_expression437 = new BitSet(new long[]{0x0001080000000000L});
+    public static final BitSet FOLLOW_43_in_expression442 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_keyValuePair_in_expression444 = new BitSet(new long[]{0x0001080000000000L});
+    public static final BitSet FOLLOW_48_in_expression449 = new BitSet(new long[]{0x0002000800000002L});
+    public static final BitSet FOLLOW_49_in_expression459 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_expression461 = new BitSet(new long[]{0x0002000800000002L});
+    public static final BitSet FOLLOW_35_in_expression467 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_IDCON_in_expression469 = new BitSet(new long[]{0x0002000800000002L});
+    public static final BitSet FOLLOW_IDCON_in_keyValuePair482 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_37_in_keyValuePair484 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_keyValuePair486 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_50_in_function498 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_IDCON_in_function500 = new BitSet(new long[]{0x0768840000014020L});
+    public static final BitSet FOLLOW_formals_in_function502 = new BitSet(new long[]{0x0768800000014020L});
+    public static final BitSet FOLLOW_statement_in_function505 = new BitSet(new long[]{0x0768800000014020L});
+    public static final BitSet FOLLOW_END_in_function508 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_formals516 = new BitSet(new long[]{0x0000180000000020L});
+    public static final BitSet FOLLOW_IDCON_in_formals518 = new BitSet(new long[]{0x0000180000000000L});
+    public static final BitSet FOLLOW_43_in_formals523 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_IDCON_in_formals525 = new BitSet(new long[]{0x0000180000000000L});
+    public static final BitSet FOLLOW_44_in_formals530 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_statement558 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_statement560 = new BitSet(new long[]{0x1000A000000003A0L});
+    public static final BitSet FOLLOW_predicate_in_statement562 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_44_in_statement564 = new BitSet(new long[]{0x0768800000004020L});
+    public static final BitSet FOLLOW_statement_in_statement566 = new BitSet(new long[]{0x0010000000000002L});
+    public static final BitSet FOLLOW_52_in_statement570 = new BitSet(new long[]{0x0768800000004020L});
+    public static final BitSet FOLLOW_statement_in_statement572 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_53_in_statement611 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_statement613 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_IDCON_in_statement615 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_37_in_statement617 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_statement619 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_44_in_statement621 = new BitSet(new long[]{0x0768800000004020L});
+    public static final BitSet FOLLOW_statement_in_statement623 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_54_in_statement655 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_assignment_in_statement657 = new BitSet(new long[]{0x0080000000000020L});
+    public static final BitSet FOLLOW_55_in_statement660 = new BitSet(new long[]{0x0768800000014020L});
+    public static final BitSet FOLLOW_statement_in_statement662 = new BitSet(new long[]{0x0768800000014020L});
+    public static final BitSet FOLLOW_END_in_statement665 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_47_in_statement694 = new BitSet(new long[]{0x0769800000004020L});
+    public static final BitSet FOLLOW_statement_in_statement696 = new BitSet(new long[]{0x0769800000004020L});
+    public static final BitSet FOLLOW_48_in_statement699 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_COMMENT_in_statement723 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_STRCON_in_statement725 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_statement727 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_56_in_statement750 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_statement752 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_statement754 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_56_in_statement777 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_embedding_in_statement779 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_statement781 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_57_in_statement804 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_statement806 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_statement808 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_58_in_statement832 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_statement839 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_statement842 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_statement844 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_statement871 = new BitSet(new long[]{0x0768800000004020L});
+    public static final BitSet FOLLOW_statement_in_statement874 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_statement899 = new BitSet(new long[]{0x0000000000000820L});
+    public static final BitSet FOLLOW_embedding_in_statement902 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_statement904 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_statement931 = new BitSet(new long[]{0x0000000000020020L});
+    public static final BitSet FOLLOW_SEMICOLON_in_statement934 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDCON_in_assignment964 = new BitSet(new long[]{0x0800000000000000L});
+    public static final BitSet FOLLOW_59_in_assignment966 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_assignment968 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_assignment970 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDCON_in_assignment978 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_formals_in_assignment980 = new BitSet(new long[]{0x0768800000004020L});
+    public static final BitSet FOLLOW_statement_in_assignment982 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_60_in_predicate997 = new BitSet(new long[]{0x1000A000000003A0L});
+    public static final BitSet FOLLOW_predicate_in_predicate999 = new BitSet(new long[]{0x6000000000000002L});
+    public static final BitSet FOLLOW_expression_in_predicate1008 = new BitSet(new long[]{0x6000000000000002L});
+    public static final BitSet FOLLOW_expression_in_predicate1017 = new BitSet(new long[]{0x0000000800000000L});
+    public static final BitSet FOLLOW_35_in_predicate1019 = new BitSet(new long[]{0x8000000000000000L,0x0000000000000003L});
+    public static final BitSet FOLLOW_type_in_predicate1021 = new BitSet(new long[]{0x6000000000000002L});
+    public static final BitSet FOLLOW_61_in_predicate1031 = new BitSet(new long[]{0x1000A000000003A0L});
+    public static final BitSet FOLLOW_predicate_in_predicate1033 = new BitSet(new long[]{0x6000000000000002L});
+    public static final BitSet FOLLOW_62_in_predicate1037 = new BitSet(new long[]{0x1000A000000003A0L});
+    public static final BitSet FOLLOW_predicate_in_predicate1039 = new BitSet(new long[]{0x6000000000000002L});
     public static final BitSet FOLLOW_set_in_type0 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PRETEXT_in_embedding1058 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_embed_in_embedding1060 = new BitSet(new long[]{0x0000000000001800L});
-    public static final BitSet FOLLOW_textTail_in_embedding1062 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_embed1071 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_embed1074 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_embed1078 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_markup_in_embed1081 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_POSTTEXT_in_textTail1089 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MIDTEXT_in_textTail1093 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_embed_in_textTail1095 = new BitSet(new long[]{0x0000000000001800L});
-    public static final BitSet FOLLOW_textTail_in_textTail1097 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_48_in_synpred25_Waebric439 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_synpred25_Waebric441 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_34_in_synpred26_Waebric447 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_IDCON_in_synpred26_Waebric449 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred31_Waebric550 = new BitSet(new long[]{0x03B4400000002010L});
-    public static final BitSet FOLLOW_statement_in_synpred31_Waebric552 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_synpred45_Waebric819 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_synpred45_Waebric822 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_synpred45_Waebric824 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_synpred46_Waebric853 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_synpred47_Waebric853 = new BitSet(new long[]{0x03B4400000002010L});
-    public static final BitSet FOLLOW_statement_in_synpred47_Waebric856 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_synpred49_Waebric883 = new BitSet(new long[]{0x0000000000000410L});
-    public static final BitSet FOLLOW_embedding_in_synpred49_Waebric886 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_synpred49_Waebric888 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_synpred53_Waebric994 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_60_in_synpred54_Waebric1017 = new BitSet(new long[]{0x08005000000001D0L});
-    public static final BitSet FOLLOW_predicate_in_synpred54_Waebric1019 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_61_in_synpred55_Waebric1023 = new BitSet(new long[]{0x08005000000001D0L});
-    public static final BitSet FOLLOW_predicate_in_synpred55_Waebric1025 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_synpred59_Waebric1071 = new BitSet(new long[]{0x00005000000001D0L});
-    public static final BitSet FOLLOW_expression_in_synpred59_Waebric1074 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_synpred60_Waebric1078 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PRETEXT_in_embedding1072 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_embed_in_embedding1074 = new BitSet(new long[]{0x0000000000003000L});
+    public static final BitSet FOLLOW_textTail_in_embedding1076 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_embed1085 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_embed1088 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_embed1092 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_markup_in_embed1095 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_POSTTEXT_in_textTail1103 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MIDTEXT_in_textTail1107 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_embed_in_textTail1109 = new BitSet(new long[]{0x0000000000003000L});
+    public static final BitSet FOLLOW_textTail_in_textTail1111 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_49_in_synpred25_Waebric459 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_synpred25_Waebric461 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_35_in_synpred26_Waebric467 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_IDCON_in_synpred26_Waebric469 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_52_in_synpred31_Waebric570 = new BitSet(new long[]{0x0768800000004020L});
+    public static final BitSet FOLLOW_statement_in_synpred31_Waebric572 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_synpred45_Waebric839 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_synpred45_Waebric842 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_synpred45_Waebric844 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_synpred46_Waebric871 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_synpred47_Waebric871 = new BitSet(new long[]{0x0768800000004020L});
+    public static final BitSet FOLLOW_statement_in_synpred47_Waebric874 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_synpred49_Waebric899 = new BitSet(new long[]{0x0000000000000820L});
+    public static final BitSet FOLLOW_embedding_in_synpred49_Waebric902 = new BitSet(new long[]{0x0000000000020000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_synpred49_Waebric904 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_synpred53_Waebric1008 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_61_in_synpred54_Waebric1031 = new BitSet(new long[]{0x1000A000000003A0L});
+    public static final BitSet FOLLOW_predicate_in_synpred54_Waebric1033 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_62_in_synpred55_Waebric1037 = new BitSet(new long[]{0x1000A000000003A0L});
+    public static final BitSet FOLLOW_predicate_in_synpred55_Waebric1039 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_synpred59_Waebric1085 = new BitSet(new long[]{0x0000A000000003A0L});
+    public static final BitSet FOLLOW_expression_in_synpred59_Waebric1088 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_synpred60_Waebric1092 = new BitSet(new long[]{0x0000000000000002L});
 
 }
