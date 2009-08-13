@@ -47,8 +47,7 @@ moduleId
 	:		e=IDCON { $path += e.getText(); } 
 			( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
 	
-imprt:			'import' id=moduleId ';'
-				// Attach dependant module to AST
+imprt:			'import' id=moduleId ';' 
 				-> 'import' moduleId ';' ^( { parseFile($id.path) } ) ;
 
 // $>
@@ -85,53 +84,40 @@ keyValuePair:		IDCON ':' expression ;
 // $<Function
 
 function:		'def' IDCON formals? statement* 'end' ;
-
-
 formals:		'(' IDCON? ( ',' IDCON )* ')' 
-				// Removed redundant ',' seperator
-				-> '(' IDCON* ')' ;
+				-> '(' IDCON* ')' ; // Removed redundant ',' seperator
 
 // $>
 
 // $<Statements
 
-statement:		'if' '(' predicate ')' statement 'else' statement
-				// Create sub-tree for statement
-				-> ^( 'if' predicate statement 'else' statement )
-				// Create sub-tree for statement
-			| 'if' '(' predicate ')' statement
-				-> ^( 'if' predicate statement )
-				// Create sub-tree for statement
-			| 'each' '(' IDCON ':' expression ')' statement
-				-> ^( 'each' IDCON expression statement )
+statement:		'if' '(' predicate ')' statement ( 'else' statement )?
+				-> ^( 'if' '(' predicate ')' statement ( 'else' statement )? )
+			| 'each' '(' IDCON ':' expression ')' statement 
+				-> ^( 'each' '(' IDCON ':' expression ')' statement )
 			| 'let' assignment+ 'in' statement* 'end'
 				-> ^( 'let' assignment+ 'in' statement* 'end' )
 			| '{' statement* '}'
 				-> ^( '{' statement* '}' )
 			| 'comment' STRCON ';'
-				-> ^( 'comment' STRCON )
+				-> ^( 'comment' STRCON ';' )
 			| 'echo' expression ';'
-				-> ^( 'echo' expression )
+				-> ^( 'echo' expression ';' )
 			| 'echo' embedding ';'
-				-> ^( 'echo' embedding )
-			| 'cdata' expression ';'
-				-> ^( 'cdata' expression )
-			| 'yield' ';' 
-				-> 'yield'
-			| markup ';' 
-				-> markup
-			| markup+ expression ';'
-				// Attach separator
+				-> ^( 'echo' embedding ';' )
+			| 'cdata' expression ';' 
+				-> ^( 'cdata' expression ';' )
+			| 'yield;'
+			| markup ';'
+				-> ^( markup ';' )
+			| markup+ expression ';' 
 				-> ^( markup markup* ',' expression ';' )
 			| markup+ statement 
-				// Attach separator
 				-> ^( markup markup* ',' statement )
-			| markup+ embedding ';'
-				// Cannot have markup+ as root element
+			| markup+ embedding ';' 
 				-> ^( markup markup* embedding ';' )
-			| markup+ markup ';'
-				// Cannot have markup+ as root element
-				-> ^( markup markup* ';' ) ;
+			| markup+ ';' 
+				-> ^( markup markup* ';' );
 
 // $>
 // $<Assignments
@@ -162,15 +148,7 @@ COMMENT	:		'comment' { inString = true; } ;
 SITE:			'site' { inSite = true; inPath = true; } ; // Site constructor
 END:			'end' { inSite = false; inPath = false; } ; // Site destructor
 SEMICOLON:		';' { inPath = inSite; } ; // Mapping separator
-
-TEXT:			'\"' TEXTCHAR* '\"' ;
-
-PRETEXT:		'"' TEXTCHAR* '<' ;
-POSTTEXT:		'>' TEXTCHAR* '"' ;
-MIDTEXT:		'>' TEXTCHAR* '<' ;
-
-STRCON:			{ inString }? => '\"' STRCHAR* '\"' { inString = false; } ;
-
+ 
 fragment LETTER:	'a'..'z' | 'A'..'Z' ;
 fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
@@ -179,19 +157,25 @@ PATH:			{ inPath }? => ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT { inPath = f
 fragment PATHELEMENT:	( LETTER | DIGIT | '%' )+ ; // ~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' | '!'..'+' )+ ; // '!'..'+' causes java heap exception
 fragment FILEEXT:	( LETTER | DIGIT )+ ;
 
-SYMBOLCON:		'\'' SYMBOLCHAR* ;
-fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') ;
-
+STRCON:			{ inString }? => '\"' STRCHAR* '\"' { inString = false; } ;
 fragment STRCHAR:	~( '\u0000'..'\u001F' | '"' | '\\' ) | ESCLAYOUT | DECIMAL ;
 fragment ESCLAYOUT:	'\\\\n' | '\\\\t' | '\\\\"' | '\\\\\\\\' ;
 fragment DECIMAL:	'\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT ;
 
+PRETEXT:		'"' TEXTCHAR* '<' ;
+POSTTEXT:		'>' TEXTCHAR* '"' ;
+MIDTEXT:		'>' TEXTCHAR* '<' ;				
+
+TEXT:			'\"' TEXTCHAR* '\"' ;
 fragment TEXTCHAR:	~( '\u0000'..'\u001F' | '&' | '"' | '<' | '\u0080'..'\uFFFF' ) |
 			 '\n' | '\r' | '\t' | ESCQUOTE | AMP | CHARREF | ENTREF ;
 fragment ESCQUOTE:	'\\\\' | '\\"' ;		
 fragment AMP:		'\&' ~('#' | '0'..'9' | 'a'..'z' | 'A'..'Z' | '_' | ':')+ ;
 fragment CHARREF:	'&#' DIGIT+ ';' | '&#x' HEXADECIMAL ';' ;
 fragment ENTREF:	'&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':')* ';' ;
+
+SYMBOLCON:		'\'' SYMBOLCHAR* ;
+fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') ;
 
 NATCON:			DIGIT+ ;
 IDCON:			LETTER ( LETTER | DIGIT | '-' )+ ;
@@ -200,3 +184,4 @@ COMMENTS:		'//' ( options { greedy=false; } : . )*  '\n' |
 			'/*' ( options { greedy=false; } : . )*  '*/' 
 			{ skip(); } ; // Skip comments to optimze performance
 LAYOUT: 		( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ { $channel = HIDDEN; } ;
+
