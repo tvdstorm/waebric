@@ -311,18 +311,86 @@ namespace Interpreter
             switch (attribute.Brand.Text)
             {
                 case "IdAttribute":
+                    VisitIdAttribute(attribute);
                     break;
                 case "ClassAttribute":
+                    VisitClassAttribute(attribute);
                     break;
                 case "NameAttribute":
+                    VisitNameAttribute(attribute);
                     break;
                 case "TypeAttribute":
+                    VisitTypeAttribute(attribute);
                     break;
-                case "Width_HeightAttribute":
+                case "WidthHeightAttribute":
+                    VisitWidthHeightAttribute(attribute);
                     break;
                 case "WidthAttribute":
+                    VisitWidthAttribute(attribute);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Interpret IdAttribute
+        /// </summary>
+        /// <param name="idAttribute">IdAttribute to interpret</param>
+        public void VisitIdAttribute(Node idAttribute)
+        {   //Add id attribute
+            Node id = idAttribute.ViewAllNodes().ElementAt(0);
+            Current.AddAttribute("id", id.AtomicValue.ToString());
+        }
+
+        /// <summary>
+        /// Interpret ClassAttribute
+        /// </summary>
+        /// <param name="classAttribute">ClassAttribute to interpret</param>
+        public void VisitClassAttribute(Node classAttribute)
+        {   //Add class attribute
+            Node classId = classAttribute.ViewAllNodes().ElementAt(0);
+            Current.AddAttribute("class", classId.AtomicValue.ToString());
+        }
+
+        /// <summary>
+        /// Interpret NameAttribute
+        /// </summary>
+        /// <param name="nameAttribute">NameAttribute to interpret</param>
+        public void VisitNameAttribute(Node nameAttribute)
+        {   //Add name attribute
+            Node name = nameAttribute.ViewAllNodes().ElementAt(0);
+            Current.AddAttribute("name", name.AtomicValue.ToString());
+        }
+
+        /// <summary>
+        /// Interpret TypeAttribute
+        /// </summary>
+        /// <param name="typeAttribute">TypeAttribute to interpret</param>
+        public void VisitTypeAttribute(Node typeAttribute)
+        {   //Add TypeAttribute
+            Node type = typeAttribute.ViewAllNodes().ElementAt(0);
+            Current.AddAttribute("type", type.AtomicValue.ToString());
+        }
+
+        /// <summary>
+        /// Interpret WidthHeightAttribute
+        /// </summary>
+        /// <param name="widthHeightAttribute">WidthHeightAttribute to interpret</param>
+        public void VisitWidthHeightAttribute(Node widthHeightAttribute)
+        {   //Add WidthHeightAttribute
+            Node width = widthHeightAttribute.ViewAllNodes().ElementAt(0);
+            Node height = widthHeightAttribute.ViewAllNodes().ElementAt(1);
+            Current.AddAttribute("width", width.AtomicValue.ToString());
+            Current.AddAttribute("height", height.AtomicValue.ToString());
+        }
+
+        /// <summary>
+        /// Interpret WidthAttribute
+        /// </summary>
+        /// <param name="widthAttribute">WidthAttribute to interpret</param>
+        public void VisitWidthAttribute(Node widthAttribute)
+        {   //Add WidthAttribute
+            Node width = widthAttribute.ViewAllNodes().ElementAt(0);
+            Current.AddAttribute("width", width.AtomicValue.ToString();
         }
 
         /// <summary>
