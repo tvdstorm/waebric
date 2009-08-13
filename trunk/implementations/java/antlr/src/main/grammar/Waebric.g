@@ -60,8 +60,7 @@ mapping	:		PATH ':' markup ;
 // $>
 // $<Markup
 
-markup:			designator arguments? ;
-designator:		IDCON attribute* ;
+markup:			IDCON^ attribute* arguments? ;
 attribute:		'#' IDCON // ID attribute
 			| '.' IDCON // Class attribute
 			| '$' IDCON // Name attribute
@@ -113,7 +112,7 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 			| markup+ statement 
 				-> ^( markup markup* ',' statement )
 			| markup+ embedding ';' 
-				-> ^( markup markup* embedding ';' )
+				-> ^( markup markup* ',' embedding ';' )
 			| markup+ ';' 
 				-> ^( markup markup* ';' ) ;
 
@@ -152,7 +151,7 @@ fragment DIGIT:		'0'..'9' ;
 fragment HEXADECIMAL:	( 'a'..'f' | 'A'..'F' | DIGIT )+ ;
 
 PATH:			{ inPath }? => ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT { inPath = false; } ; 
-fragment PATHELEMENT:	( LETTER | DIGIT | '%' )+ ; // ~( ' ' | '\t' | '\n' | '\r' | '.' | '/' | '\\' | '!'..'+' )+ ; // '!'..'+' causes java heap exception
+fragment PATHELEMENT:	( LETTER | DIGIT | '%' )+ ; // '!'..'+' causes java heap exception
 fragment FILEEXT:	( LETTER | DIGIT )+ ;
 
 STRCON:			{ inString }? => '\"' STRCHAR* '\"' { inString = false; } ;
