@@ -188,12 +188,12 @@ markup:			IDCON attribute* arguments? { // Designator lifted as it complicated a
 				}
 			} ;
 
-attribute:		'#' IDCON // ID attribute
-			| '.' IDCON // Class attribute
-			| '$' IDCON // Name attribute
-			| ':' IDCON // Type attribute
-			| '@' NATCON // Width attribute
-			| '@' NATCON '%' NATCON; // Width-height attribute
+attribute:		'#' IDCON { current.setAttribute("id", $IDCON.getText()); } // ID attribute
+			| '.' IDCON { current.setAttribute("class", $IDCON.getText()); } // Class attribute
+			| '$' IDCON { current.setAttribute("name", $IDCON.getText()); } // Name attribute
+			| ':' IDCON { current.setAttribute("type", $IDCON.getText()); } // Type attribute
+			| '@' w=NATCON { current.setAttribute("width", $w.getText()); } // Width attribute
+				( '%' h=NATCON{ current.setAttribute("height", $h.getText()); } )? ; // Height attribute
 			
 arguments:		'(' argument? ( ',' argument )* ')' ;
 
@@ -256,14 +256,13 @@ statement
 					addContent(cdata);
 				}
 			| 'yield;'
-			| ^( markup ';' )
+			| ^( markup markup* ';' )
 			| ^( markup markup* ',' expression ';' ) { 
 					Text text = new Text($expression.eval);
 					addContent(text);
 				}
 			| ^( markup markup* ',' statement )
-			| ^( markup markup* embedding ';' )
-			| ^( markup markup* ';' );
+			| ^( markup markup* embedding ';' ) ;
 
 letStatement
 	:		^( 'let' assignment+ 'in' statement* 'end' ) ;
