@@ -224,17 +224,34 @@ formals:		'(' IDCON* ')' ;
 
 // $<Statements
 
-statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
+statement
+	@init{ int ti = 0; int fi = 0; } // Initialize local variables
+	:		^( 'if' '(' predicate ')' { ti = input.index(); } t=.  ( 'else' { fi = input.index(); } f=. )? ) {
+					int curr = input.index();
+				 	if($predicate.eval) {
+						input.seek(ti);
+						statement();
+						input.seek(curr);
+					} else if(f != null) {
+						input.seek(fi);
+						statement();
+						input.seek(curr);
+					}
+				}
 			| ^( 'each' '(' IDCON ':' expression ')' statement )
 			| ^( 'let' assignment+ 'in' statement* 'end' )
 			| ^( '{' statement* '}' )
 			| ^( 'comment' STRCON ';' )
-			| ^( 'echo' expression ';' )
+			| ^( 'echo' expression ';' ) { 
+					current.setText($expression.eval);
+				}
 			| ^( 'echo' embedding ';' )
 			| ^( 'cdata' expression ';' )
 			| 'yield;'
 			| ^( markup ';' )
-			| ^( markup markup* ',' expression ';' ) { current.setText($expression.eval); }
+			| ^( markup markup* ',' expression ';' ) { 
+					current.setText($expression.eval);
+				}
 			| ^( markup markup* ',' statement )
 			| ^( markup markup* embedding ';' )
 			| ^( markup markup* ';' );
