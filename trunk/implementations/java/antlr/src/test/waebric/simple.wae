@@ -1,9 +1,11 @@
 module simple
 
 def main
+	cdata "GOT SKILZ NUB?";
 	html callme("test");
 end
 
 def callme(expr)
+	comment "OHYEZZ";
 	if(expr) echo "true"; else echo "false";
 end
