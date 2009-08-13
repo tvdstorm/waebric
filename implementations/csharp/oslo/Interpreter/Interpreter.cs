@@ -493,8 +493,13 @@ namespace Interpreter
             }
         }
 
+        /// <summary>
+        /// Interpret Assignment
+        /// </summary>
+        /// <param name="assignment">Assignment to interpret</param>
         public void VisitAssignment(Node assignment)
-        {
+        {   
+            //Detect assignment type
             switch (assignment.Brand.Text)
             {
                 case "VarBindAssignment":
@@ -505,15 +510,48 @@ namespace Interpreter
                     break;
             }
         }
-
+        
+        /// <summary>
+        /// Interpret VarBindAssignment
+        /// </summary>
+        /// <param name="varBindAssignment">VarBindAssignment to interpret</param>
         public void VisitVarBindAssignment(Node varBindAssignment)
         {
-
+            Node varIdentifier = varBindAssignment.ViewAllNodes().ElementAt(0);
+            Node expression = varBindAssignment.ViewAllNodes().ElementAt(1);
+            SymbolTable.AddVariableDefinition(varIdentifier.AtomicValue.ToString(), expression);
         }
 
+        /// <summary>
+        /// Interpret FuncBindAssignment
+        /// </summary>
+        /// <param name="funcBindAssignment">FuncBindAssignment to interpret</param>
         public void VisitFuncBindAssignment(Node funcBindAssignment)
         {
+            //Convert FuncBind in a FunctionDef node
+            NodeGraphBuilder graphBuilder = new NodeGraphBuilder();
 
+            //Create functionDef node
+            Node functionDef = (Node)graphBuilder.DefineNode("FunctionDef");
+
+            //Add identifier of function
+            functionDef.Add(funcBindAssignment.ViewAllNodes().ElementAt(0));
+
+            //Add formals
+            functionDef.Add(funcBindAssignment.ViewAllNodes().ElementAt(1));
+
+            //Create StatementList to store the single statement in
+            Node statementList = (Node)graphBuilder.DefineNode("StatementList");
+            statementList.Add(funcBindAssignment.ViewAllNodes().ElementAt(2));
+            functionDef.Add(statementList);
+
+            Node identifier = funcBindAssignment.ViewAllNodes().ElementAt(0);
+
+            //Create new SymbolTable for function
+            FunctionSymbolTable.Add(functionDef, (SymbolTable)SymbolTable.Clone());
+
+            //Add function to SymbolTable
+            SymbolTable.AddFunctionDefinition(identifier.AtomicValue.ToString(), functionDef);
         }
 
         /// <summary>
