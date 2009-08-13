@@ -390,7 +390,7 @@ namespace Interpreter
         public void VisitWidthAttribute(Node widthAttribute)
         {   //Add WidthAttribute
             Node width = widthAttribute.ViewAllNodes().ElementAt(0);
-            Current.AddAttribute("width", width.AtomicValue.ToString();
+            Current.AddAttribute("width", width.AtomicValue.ToString());
         }
 
         /// <summary>
@@ -408,12 +408,110 @@ namespace Interpreter
             }
         }
 
+        /// <summary>
+        /// Interpret EachStatement
+        /// </summary>
+        /// <param name="eachStatement">EachStatement to interpret</param>
         public void VisitEachStatement(Node eachStatement)
+        {
+            Node expression = eachStatement.ViewAllNodes().ElementAt(1);
+            Node varId = eachStatement.ViewAllNodes().ElementAt(0);
+            Node statement = eachStatement.ViewAllNodes().ElementAt(2);
+            if (expression.Brand.Text == "ListExpression")
+            {
+                //Walk through list expression
+                XHTMLElement temp = Current;
+                foreach (Node expr in expression.ViewAllNodes())
+                {
+                    Current = temp;
+
+                    //New scope
+                    SymbolTable = new SymbolTable(SymbolTable);
+
+                    //Fill variable and then interpret statement in current context
+                    SymbolTable.AddVariableDefinition(varId.AtomicValue.ToString(), expr);
+                    VisitStatement(statement);
+
+                    //Go to parent scope
+                    SymbolTable = SymbolTable.GetParentSymbolTable();
+                }
+            }
+            else if(expression.Brand.Text == "FieldExpression")
+            {   //Get expression in referenced record
+                Node expr = GetExpression(expression);
+
+                //Create new EachStatement with new expression
+                NodeGraphBuilder nodeBuilder = new NodeGraphBuilder();
+
+                Node newEachStatement = (Node) nodeBuilder.DefineNode("EachStatement");
+                newEachStatement.Add(varId);
+                newEachStatement.Add(expr);
+                newEachStatement.Add(statement);
+                VisitEachStatement(newEachStatement);
+            }
+            else if(expression.Brand.Text == "VarExpression")
+            {   //Get expression in referenced record
+                Node expr = SymbolTable.GetVariableDefinition(varId.AtomicValue.ToString());
+
+                //Create new EachStatement with new expression
+                NodeGraphBuilder nodeBuilder = new NodeGraphBuilder();
+
+                Node newEachStatement = (Node)nodeBuilder.DefineNode("EachStatement");
+                newEachStatement.Add(varId);
+                newEachStatement.Add(expr);
+                newEachStatement.Add(statement);
+                VisitEachStatement(newEachStatement);
+            }
+        }
+
+        /// <summary>
+        /// Interpret LetStatement
+        /// </summary>
+        /// <param name="letStatement">LetStatement to interpret</param>
+        public void VisitLetStatement(Node letStatement)
+        {
+            //Store assignments into SymbolTable
+            Node Assignments = letStatement.ViewAllNodes().ElementAt(0);
+            foreach (Node Assignment in Assignments.ViewAllNodes())
+            {
+                //Create new scope for every assignment
+                SymbolTable = new SymbolTable(SymbolTable);
+                VisitAssignment(Assignment);
+            }
+
+            //Interpret statements
+            Node Statements = letStatement.ViewAllNodes().ElementAt(1);
+            foreach (Node statement in Statements.ViewAllNodes())
+            {
+                VisitStatement(statement);
+            }
+
+            //Restore scoping on end of LetStatement
+            foreach (Node Assignment in Assignments.ViewAllNodes())
+            {
+                SymbolTable = SymbolTable.GetParentSymbolTable();
+            }
+        }
+
+        public void VisitAssignment(Node assignment)
+        {
+            switch (assignment.Brand.Text)
+            {
+                case "VarBindAssignment":
+                    VisitVarBindAssignment(assignment);
+                    break;
+                case "FuncBindAssignment":
+                    VisitFuncBindAssignment(assignment);
+                    break;
+            }
+        }
+
+        public void VisitVarBindAssignment(Node varBindAssignment)
         {
 
         }
 
-        public void VisitLetStatement(Node letStatement)
+        public void VisitFuncBindAssignment(Node funcBindAssignment)
         {
 
         }
