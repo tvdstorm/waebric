@@ -116,6 +116,10 @@ namespace Interpreter
                     break;
                 case "FieldExpression":
                     break;
+                case "ListExpression":
+                    break;
+                case "RecordExpression":
+                    break;
             }
         }
 
@@ -168,16 +172,43 @@ namespace Interpreter
 
         }
 
+        /// <summary>
+        /// Interpret IfStatement
+        /// </summary>
+        /// <param name="ifStatement">IfStatement to interpret</param>
         public void VisitIfStatement(Node ifStatement)
         {
-
+            Node predicate = ifStatement.ViewAllNodes().ElementAt(0);
+            Node trueStatement = ifStatement.ViewAllNodes().ElementAt(1);
+            if (EvaluatePredicate(predicate))
+            {
+                VisitStatement(trueStatement);
+            }
         }
 
+        /// <summary>
+        /// Interpret IfElseStatement
+        /// </summary>
+        /// <param name="ifElseStatement">IfElseStatement to interpret</param>
         public void VisitIfElseStatement(Node ifElseStatement)
         {
-
+            Node predicate = ifElseStatement.ViewAllNodes().ElementAt(0);
+            Node trueStatement = ifElseStatement.ViewAllNodes().ElementAt(1);
+            Node falseStatement = ifElseStatement.ViewAllNodes().ElementAt(2);
+            if (EvaluatePredicate(predicate))
+            {
+                VisitStatement(trueStatement);
+            }
+            else
+            {
+                VisitStatement(falseStatement);
+            }
         }
 
+        /// <summary>
+        /// Interpret CommentStatement
+        /// </summary>
+        /// <param name="commentStatement">CommentStatement to interpret</param>
         public void VisitCommentStatement(Node commentStatement)
         {
             AddElement(new XHTMLElement("comment", Current));
@@ -185,9 +216,14 @@ namespace Interpreter
             Current.AddContent(comment.AtomicValue.ToString());
         }
 
+        /// <summary>
+        /// Interpret EchoExpressionStatement
+        /// </summary>
+        /// <param name="echoExpressionStatement">EchoExpressionStatement to interpret</param>
         public void VisitEchoExpressionStatement(Node echoExpressionStatement)
         {
-
+            Node expression = echoExpressionStatement.ViewAllNodes().ElementAt(0);
+            VisitExpression(expression);
         }
 
         public void VisitEchoEmbeddingStatement(Node echoEmbeddingStatement)
@@ -195,9 +231,16 @@ namespace Interpreter
 
         }
 
+        /// <summary>
+        /// Interpret CDataStatement
+        /// </summary>
+        /// <param name="cDataStatement">CDataStatement to interpret</param>
         public void VisitCDataStatement(Node cDataStatement)
         {
-
+            Node expression = cDataStatement.ViewAllNodes().ElementAt(0);
+            VisitExpression(expression);
+            AddElement(new XHTMLElement("cdata", Current));
+            Current.AddContent(TextValue);
         }
 
         public void VisitYieldStatement(Node yieldStatement)
@@ -229,9 +272,108 @@ namespace Interpreter
             Current = element;
         }
 
+        /// <summary>
+        /// Get scoped SymbolTable of specific function
+        /// </summary>
+        /// <param name="function">FunctionDefinition</param>
+        /// <returns>SymbolTable of specific function</returns>
+        private SymbolTable GetSymbolTableOfFunction(Node function)
+        {
+            if (FunctionSymbolTable.ContainsKey(function))
+            {
+                return FunctionSymbolTable[function];
+            }
+            return SymbolTable;
+        }
+
+        /// <summary>
+        /// Retrieve concrete expression of an fieldexpression
+        /// </summary>
+        /// <param name="expression">FieldExpression</param>
+        /// <returns>Concrete expression</returns>
         private Node GetExpression(Node expression)
         {
+            Node expr = expression.ViewAllNodes().ElementAt(0);
+            //Get real expression, not reference
+            while (expr.Brand.Text == "VarExpression")
+            {
+                Node identifier = expr.ViewAllNodes().ElementAt(0);
+                expr = SymbolTable.GetVariableDefinition(identifier.AtomicValue.ToString());
+            }
+
+            //When dealing with RecordExpression, get specific record
+            if (expr.Brand.Text == "RecordExpression")
+            {
+                Node expressionIdentifier = expression.ViewAllNodes().ElementAt(1);
+                foreach (Node pair in expr.ViewAllNodes())
+                {
+                    Node key = pair.ViewAllNodes().ElementAt(0);
+                    Node value = pair.ViewAllNodes().ElementAt(1);
+                    if (key.AtomicValue.ToString() == expressionIdentifier.AtomicValue.ToString())
+                    {
+                        return value;
+                    }
+                }
+            }
             return null;
+        }
+
+        private bool EvaluatePredicate(Node predicate)
+        {
+            if (predicate.Brand.Text == "IsAPredicate")
+            {   //Evaluate IsAPredicate
+                Node expression = predicate.ViewAllNodes().ElementAt(0);
+                Node type = predicate.ViewAllNodes().ElementAt(1);
+
+                //Evaluate type
+                if (type.AtomicValue.ToString() == "string")
+                {
+                    return expression.Brand.Text == "TextExpression";
+                }
+                else if (type.AtomicValue.ToString() == "list")
+                {
+                    return expression.Brand.Text == "ListExpression";
+                }
+                else if (type.AtomicValue.ToString() == "record")
+                {
+                    return expression.Brand.Text == "RecordExpression";
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (predicate.Brand.Text == "ExpressionPredicate")
+            {   //Evaluate ExpressionPredicate
+                Node expression = predicate.ViewAllNodes().ElementAt(0);
+                if (expression.Brand.Text == "FieldExpression")
+                {   //Check if field exists in record
+                    Node expr = GetExpression(expression);
+                    return expr != null;
+                }
+                else if (expression.Brand.Text == "VarExpression")
+                {   //Check if variable is defined
+                    Node varIdentifier = expression.ViewAllNodes().ElementAt(0);
+                    return SymbolTable.ContainsVariable(varIdentifier.AtomicValue.ToString());
+                }
+                else
+                {   //Other expressions are always true, they don't refer to data
+                    return true;
+                }
+            }
+            else if (predicate.Brand.Text == "AndPredicate")
+            {   //Evaluate AndPredicate
+                return EvaluatePredicate(predicate.ViewAllNodes().ElementAt(0)) && EvaluatePredicate(predicate.ViewAllNodes().ElementAt(1));
+            }
+            else if (predicate.Brand.Text == "OrPredicate")
+            {   //Evaluate OrPredicate
+                return EvaluatePredicate(predicate.ViewAllNodes().ElementAt(0)) || EvaluatePredicate(predicate.ViewAllNodes().ElementAt(1));
+            }
+            else if (predicate.Brand.Text == "NotPredicate")
+            {   //Evaluate NotPredicate
+                return !EvaluatePredicate(predicate.ViewAllNodes().ElementAt(0));
+            }
+            return false;
         }
 
         #endregion
