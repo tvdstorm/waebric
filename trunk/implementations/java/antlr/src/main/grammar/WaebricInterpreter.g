@@ -224,21 +224,22 @@ formals:		'(' IDCON* ')' ;
 
 // $<Statements
 
-statement:		'if' '(' predicate ')' statement 'else' statement 
-			| 'if' '(' predicate ')' statement 
-			| 'each' '(' IDCON ':' expression ')' statement 
-			| 'let' assignment+ 'in' statement* 'end' 
-			| '{' statement* '}' 
-			| 'comment' STRCON ';' 
-			| 'echo' expression ';' 
-			| 'echo' embedding ';'
-			| 'cdata' expression ';' 
-			| 'yield;' 
-			| markup+ ',' expression ';' { current.setText($expression.eval); }
-			| markup+ ',' statement
-			| markup+ embedding ';' 
-			| markup+ ';' ;
-
+statement:		^( 'if' predicate statement 'else' statement )
+			| ^( 'if' predicate statement )
+			| ^( 'each' IDCON expression statement )
+			| ^( 'let' assignment+ 'in' statement* 'end' )
+			| ^( '{' statement* '}' )
+			| ^( 'comment' STRCON )
+			| ^( 'echo' expression )
+			| ^( 'echo' embedding )
+			| ^( 'cdata' expression )
+			| 'yield'
+			| markup
+			| ^( markup markup* ',' expression ';' ) { current.setText($expression.eval); }
+			| ^( markup markup* ',' statement )
+			| ^( markup markup* embedding ';' )
+			| ^( markup markup* ';' ) ;
+			
 // $>
 // $<Assignments
 
