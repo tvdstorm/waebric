@@ -102,22 +102,22 @@ scope Environment {
 		} catch(IOException e) { e.printStackTrace(); }
 	}
 	
-	private void addContent(Content content) {
-		if(current == null) { // Construct root element
-    			if(content instanceof Element && ((Element) content).getName().equals("html")) {
-    				document.setRootElement((Element) content);
-    				current = document.getRootElement();
-    			} else {
-    				Element XHTML = createXHTMLTag();
-        			document.setRootElement(XHTML);
-        			XHTML.addContent(content);
-        			current = (Element) content;
-    			}	
-    		} else { // Add content to current element
-			current.addContent(content); // Attach content
-			if(content instanceof Element) { current = (Element) content; } // Update current
-		}
-	}
+    	private void addContent(Content content) {
+    		if(current == null) { // Construct root element
+        		if(content instanceof Element && ((Element) content).getName().equals("html")) {
+        			document.setRootElement((Element) content);
+        			current = document.getRootElement();
+        		} else {
+        			Element XHTML = createXHTMLTag();
+            		document.setRootElement(XHTML);
+            		XHTML.addContent(content);
+            		if(content instanceof Element) { current = (Element) content; }
+        		}	
+        	} else {
+    			current.addContent(content); // Attach content
+    			if(content instanceof Element) { current = (Element) content; }
+    		}
+    	}
 	
 	private Element createXHTMLTag() {
 		Namespace XHTML = Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml");
@@ -169,15 +169,6 @@ scope Environment {
 		$Environment::variables.put(name, input);
 	}
 	
-	/**
-	 * Create new environment with cloned base
-	 */
-	private Stack newEnvironment() {
-		Stack env = new Stack();
-		env.push(Environment_stack.elementAt(0));
-		return env;
-	}
-	
 }
 
 // $<Site
@@ -212,12 +203,13 @@ argument:		expression
 // $>
 // $<Expressions
 
-expression 
-	returns [
-		String eval = "undef", 
-		Map<String, expression_return> map = new HashMap<String, expression_return>(), 
-		Collection<String> collection = new ArrayList()
-	] : 			(
+expression returns [
+		int index; // Used for interpreting a referenced variable
+		String eval = "undef", // Evaluation value for printing
+		Map<String, expression_return> map = new HashMap<String, expression_return>(), // Map structure for fields
+		Collection<expression_return> collection = new ArrayList() // List structure for iterations
+	] @init{ retval.index = input.index(); }
+	: 			(
 					var=IDCON { 
 						int curr = input.index();
 						int next = getVariable($var.getText());
@@ -227,32 +219,28 @@ expression
 							input.seek(curr);
 						} 
 					}
-					| NATCON {
-						$eval = $NATCON.getText();
-						$collection.add($eval);
-					}
-					| TEXT {
-						$eval = $TEXT.getText();
-						$collection.add($eval);
-					}
-					| SYMBOLCON { 
-						$eval = $SYMBOLCON.getText();
-						$collection.add($eval);
-					}
-					| '[' ( e=expression { $collection.add($e.eval); } )? 
-					  ( ',' e=expression { $collection.add($e.eval); } )* ']' {
-						$eval = $collection.toString();
+					| NATCON { $eval = $NATCON.getText(); }
+					| TEXT { $eval = $TEXT.getText(); }
+					| SYMBOLCON { $eval = $SYMBOLCON.getText(); }
+					| '[' ( e=expression { $collection.add(e); } )? 
+					  ( ',' e=expression { $collection.add(e); } )* ']' {
+						$eval += "[";
+						for(expression_return eret:$collection) { $eval += eret.eval + ","; }
+						$eval = $eval.substring(0,$eval.length()); // Clip last character
+						$eval += "]";
 					}
 					| '{' ( id=IDCON ':' e=expression { $map.put($id.getText(), e); } )? 
 					  ( ',' id=IDCON ':' e=expression { $map.put($id.getText(), e); } )* '}' {
-						$collection = $map.keySet();
-						$eval = $map.toString();
+						$collection = $map.values();
+						$eval += "{";
+						for(String key:$map.keySet()) { $eval += key + ":" + $map.get(key) + ","; }
+						$eval = $eval.substring(0,$eval.length()); // Clip last character
+						$eval += "}";
 					}
 				) ( 
 					'+' e=expression { 
 						$eval += $e.eval;
 						$collection.clear();
-						$collection.add($eval);
 						$map.clear();
 					} 
 					| '.' id=IDCON {
@@ -261,7 +249,6 @@ expression
 						} else {
 							$eval = "undef";
 							$collection.clear();
-							$collection.add($eval);
 							$map.clear();
 						}
 					} 
@@ -326,13 +313,12 @@ eachStatement
 	@init {
 		$Environment::variables = new HashMap<String, Integer>();
 		$Environment::functions = new HashMap<String, Integer>();
-		int stm = 0; int id = 0;
-	} :		^( 'each' '(' { id = input.index(); } IDCON ':' 
-			( e=expression ) ')' { stm = input.index(); } . ) {
+		int stm = 0;
+	} :		^( 'each' '(' IDCON ':' e=expression ')' { stm = input.index(); } . ) {
 				int actualIndex = input.index();
               			Element actualElement = this.current;
-              			for(String value: e.collection) {
-              				$Environment::variables.put($IDCON.getText(), id);
+              			for(expression_return value: e.collection) {
+              				$Environment::variables.put($IDCON.getText(), value.index);
               				input.seek(stm);
               				statement();
               				input.seek(actualIndex);	
