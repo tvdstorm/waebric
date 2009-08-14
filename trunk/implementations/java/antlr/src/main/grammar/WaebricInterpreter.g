@@ -22,6 +22,7 @@ scope Environment {
 	import java.util.Date;
 	import java.util.HashMap;
 	import java.util.Map;
+	import java.util.Collection;
 		
 	import org.jdom.CDATA;
 	import org.jdom.Comment;
@@ -212,8 +213,11 @@ argument:		expression
 // $<Expressions
 
 expression 
-	returns [String eval = "undef", Map<String, String> map]
-	: 			(
+	returns [
+		String eval = "undef", 
+		Map<String, expression_return> map = new HashMap<String, expression_return>(), 
+		Collection<String> collection = new ArrayList()
+	] : 			(
 					var=IDCON { 
 						int curr = input.index();
 						int next = getVariable($var.getText());
@@ -225,43 +229,44 @@ expression
 					}
 					| NATCON {
 						$eval = $NATCON.getText();
+						$collection.add($eval);
 					}
 					| TEXT {
 						$eval = $TEXT.getText();
+						$collection.add($eval);
 					}
 					| SYMBOLCON { 
 						$eval = $SYMBOLCON.getText();
+						$collection.add($eval);
 					}
-					| listExpression { 
-						$eval = $listExpression.data.toString();
+					| '[' ( e=expression { $collection.add($e.eval); } )? 
+					  ( ',' e=expression { $collection.add($e.eval); } )* ']' {
+						$eval = $collection.toString();
 					}
-					| recordExpression { 
-						$eval = $recordExpression.data.toString(); 
-						$map = $recordExpression.data; 
+					| '{' ( id=IDCON ':' e=expression { $map.put($id.getText(), e); } )? 
+					  ( ',' id=IDCON ':' e=expression { $map.put($id.getText(), e); } )* '}' {
+						$collection = $map.keySet();
+						$eval = $map.toString();
 					}
 				) ( 
 					'+' e=expression { 
 						$eval += $e.eval;
+						$collection.clear();
+						$collection.add($eval);
+						$map.clear();
 					} 
 					| '.' id=IDCON {
 						if($map.containsKey($id.getText())) {
-							$eval = $map.get($id.getText()); 
+							retval = $map.get($id.getText()); 
 						} else {
 							$eval = "undef";
+							$collection.clear();
+							$collection.add($eval);
+							$map.clear();
 						}
 					} 
 				)* ;
-			
-listExpression 
-	returns [List<String> data = new ArrayList<String>()]
-	:			'[' ( e=expression { $data.add($e.eval); } )? 
-				( ',' e=expression { $data.add($e.eval); } )* ']' ;
-				
-recordExpression
-	returns [Map<String, String> data = new HashMap<String, String>()]
-	:			'{' ( id=IDCON ':' e=expression { $data.put($id.getText(), $e.eval); } )? 
-				( ',' id=IDCON ':' e=expression { $data.put($id.getText(), $e.eval); } )* '}' ;
-
+	
 // $>
 // $<Function
 
@@ -323,19 +328,17 @@ eachStatement
 		$Environment::functions = new HashMap<String, Integer>();
 		int stm = 0; int id = 0;
 	} :		^( 'each' '(' { id = input.index(); } IDCON ':' 
-			( l=listExpression | expression ) ')' { stm = input.index(); } . ) {
-				if(l != null) {
-					int actualIndex = input.index();
-              				Element actualElement = this.current;
-              				for(String value: l.data) {
-              					$Environment::variables.put($IDCON.getText(), id);
-              					input.seek(stm);
-              					statement();
-              					input.seek(actualIndex);	
-              					if(actualElement == null) { actualElement = document.getRootElement(); }
-              					this.current = actualElement;
-              				}
-				}
+			( e=expression ) ')' { stm = input.index(); } . ) {
+				int actualIndex = input.index();
+              			Element actualElement = this.current;
+              			for(String value: e.collection) {
+              				$Environment::variables.put($IDCON.getText(), id);
+              				input.seek(stm);
+              				statement();
+              				input.seek(actualIndex);	
+              				if(actualElement == null) { actualElement = document.getRootElement(); }
+              				this.current = actualElement;
+              			}
 			};
 
 blockStatement
