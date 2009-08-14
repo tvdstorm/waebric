@@ -13,6 +13,7 @@ scope Environment {
 
 @header {
 	package org.cwi.waebric;
+	import antlr.SemanticException;
 	import java.util.HashMap;
 	import java.util.HashSet;
 	import java.util.List;
@@ -21,10 +22,14 @@ scope Environment {
 
 @members {
 	List<SemanticException> exceptions;
-	public List<SemanticException> checkAST() throws RecognitionException {
-		exceptions = new ArrayList<SemanticException>();
-		module(); // Start checking
-		return exceptions; // Return results
+	
+	public WaebricChecker(TreeNodeStream input, List<SemanticException> exceptions) {
+		super(input);
+		this.exceptions = exceptions;
+	}
+	
+	public void checkAST() throws RecognitionException {
+		module();
 	}
 
 	/**
@@ -33,7 +38,7 @@ scope Environment {
 	 * @param args: Number of arguments in function
 	 * @param depth: Depth in environment stack
 	 */
-	void defineFunction(CommonTree id, int args, int depth) {
+	private void defineFunction(CommonTree id, int args, int depth) {
 		// Check if function is already defined
 		if(isDefinedFunction(id.getText())) {
 			exceptions.add(new DuplicateFunctionException(id));
@@ -44,7 +49,7 @@ scope Environment {
 	 * Check if a function is defined
 	 * @param name: Function name
 	 */
-	boolean isDefinedFunction(String name) {
+	private boolean isDefinedFunction(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(name)) {
 				return true; 
@@ -56,7 +61,7 @@ scope Environment {
 	 * Retrieve excepted function arguments
 	 * @param name: Function name
 	 */
-	int getFunctionArgs(String name) {
+	private int getFunctionArgs(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(name)) {
 				return $Environment[i]::functions.get(name); 
@@ -68,7 +73,7 @@ scope Environment {
 	 * Define variable
 	 * @param name: Variable name
 	 */
-	void defineVariable(String name) {
+	private void defineVariable(String name) {
 		$Environment::variables.add(name);
 	}
 
@@ -76,7 +81,7 @@ scope Environment {
 	 * Check if variable is defined
 	 * @param name: Variable name
 	 */
-	boolean isDefinedVariable(String name) {
+	private boolean isDefinedVariable(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::variables.contains(name)) { 
 				return true; 
@@ -84,11 +89,6 @@ scope Environment {
 		} return false;
 	}
 	
-    	public abstract class SemanticException extends Exception { 
-			private static final long serialVersionUID = 9032805899029042730L;
-			public SemanticException(String message) { super(message); }
-    	}
-    	
         /**
          * If for an import directive import m no corresponding file m.wae 
          * can be found, this a an error. [The import directive is skipped]
@@ -158,21 +158,6 @@ scope Environment {
 		
 	}
 	
-	/**
-	 * Multiple function definitions with the same name are disallowed.
-	 * 
-	 * @author Jeroen van Schagen
-	 * @date 09-06-2009
-	 */
-	class DuplicateFunctionException extends SemanticException {
-		private static final long serialVersionUID = -8833578229100261366L;
-		public DuplicateFunctionException(CommonTree id) {
-			super("Duplicate definition of function \"" + id.getText() 
-					+ "\" at line " + id.getLine() 
-        				+ " and character " + id.getCharPositionInLine() + ".");
-		}
-		
-	}
 }
 
 // $<Modules
