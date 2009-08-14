@@ -727,6 +727,10 @@ namespace Interpreter
             }
         }
 
+        /// <summary>
+        /// Interpret MarkupStatStatement
+        /// </summary>
+        /// <param name="markupStatStatement">MarkupStatStatement to interpret</param>
         public void VisitMarkupStatStatement(Node markupStatStatement)
         {
             Node markupList = markupStatStatement.ViewAllNodes().ElementAt(0);
@@ -806,8 +810,7 @@ namespace Interpreter
                         if (argument.Brand.Text == "ExpressionArgument")
                         {
                             Node parameter = formals.ViewAllNodes().ElementAt(parameterNr);
-                            Node paramIdentifier = parameter.ViewAllNodes().ElementAt(0);
-                            SymbolTable.AddVariableDefinition(paramIdentifier.AtomicValue.ToString(), argument.ViewAllNodes().ElementAt(0));
+                            SymbolTable.AddVariableDefinition(parameter.AtomicValue.ToString(), argument.ViewAllNodes().ElementAt(0));
                             parameterNr++;
                         }
                     }
