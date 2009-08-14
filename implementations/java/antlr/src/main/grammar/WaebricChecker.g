@@ -24,31 +24,8 @@ scope Environment {
 	public List<SemanticException> checkAST() throws RecognitionException {
 		exceptions = new ArrayList<SemanticException>();
 		module(); // Start checking
-		
-		// Process calls after retrieving all function definitions
-		for(Call call: calls) {
-			// Restore call environment
-			Stack actual = $Environment;
-			$Environment = call.env;
-			
-			if(isDefinedFunction(call.id.getText())) {
-				int args = getFunctionArgs(call.id.getText());
-				if(call.args != args) {
-					exceptions.add(new ArityMismatchException(call.id, args));
-				}
-			} else if(! XHTMLTag.isXHTMLTag(call.id.getText())) {
-				exceptions.add(new UndefinedFunctionException(call.id));
-			}
-			
-			// Return to actual environment
-			$Environment = actual;
-		}
-		
 		return exceptions; // Return results
 	}
-	
-	class Call { public CommonTree id; public int args; public Stack env; }
-	List<Call> calls = new ArrayList<Call>();
 
 	/**
 	 * Define function
@@ -233,12 +210,14 @@ mapping	:		PATH ':' markup ;
 markup
 	@init { int args = 0; }
 	:		IDCON attribute* ( arguments { args = $arguments.args; } )? {
-				// Store function call
-				Call call = new Call();
-				call.id = $IDCON.tree;
-				call.args = args;
-				call.env = (Stack) $Environment.clone();
-				calls.add(call);
+				if(isDefinedFunction($IDCON.getText())) {
+					int actual = getFunctionArgs($IDCON.getText());
+					if(args != actual) {
+						exceptions.add(new ArityMismatchException($IDCON, args));
+					}
+				} else if(! XHTMLTag.isXHTMLTag($IDCON.getText())) {
+					exceptions.add(new UndefinedFunctionException($IDCON));
+				}
 			} ;
 		
 attribute:		'#' IDCON 
