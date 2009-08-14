@@ -62,9 +62,9 @@ scope Environment {
 	 * @param function: Function AST
 	 */
 	private boolean interpretFunction(String name) throws RecognitionException {
-		CommonTree function = getFunction(name).tree;
+		WaebricLoader.function_return function = getFunction(name);
 		if(function != null) {
-			WaebricInterpreter instance = new WaebricInterpreter(new CommonTreeNodeStream(function));
+			WaebricInterpreter instance = new WaebricInterpreter(new CommonTreeNodeStream(function.tree));
 			instance.function();
 			return true;
 		}
