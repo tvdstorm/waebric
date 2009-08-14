@@ -138,7 +138,6 @@ scope Environment {
 	 * @param name: Function name
 	 */
 	private CommonTree getFunction(String name) {
-		// Check local environments
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(name)) {
 				return $Environment[i]::functions.get(name); 
