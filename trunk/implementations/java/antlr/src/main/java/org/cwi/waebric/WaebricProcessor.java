@@ -9,7 +9,8 @@ import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
-import org.cwi.waebric.WaebricChecker.SemanticException;
+
+import antlr.SemanticException;
 
 /**
  * Waebric compiler
@@ -47,20 +48,28 @@ public class WaebricProcessor {
 	        CommonTree tree = (CommonTree) result.getTree();
 	        System.out.println(tree.toStringTree());
 	        
-	        WaebricChecker checker = new WaebricChecker(new CommonTreeNodeStream(tree));
+	        WaebricLoader loader = new WaebricLoader(new CommonTreeNodeStream(tree));
 	        curr = System.currentTimeMillis();
-	        List<SemanticException> se = checker.checkAST();
+	        List<SemanticException> se = loader.loadModule();
+	        long load_time = System.currentTimeMillis() - curr;
+	        System.out.println("Loaded in " + load_time + "ms.");
+	        System.out.println(loader.getFunctions().toString());
+	        
+	        WaebricChecker checker = new WaebricChecker(
+	        			new CommonTreeNodeStream(tree), // Input tokens
+	        			se, // Caught exceptions while loading functions
+	        			loader.getFunctions() // Detected base functions
+	        		);
+	        curr = System.currentTimeMillis();
+	        checker.checkAST();
 	        long check_time = System.currentTimeMillis() - curr;
 	        System.out.println("Checked in " + check_time + "ms, with " + se.size() + " semantic exceptions");
 	        
 	        for(SemanticException e: se) {
 	        	e.printStackTrace();
 	        }
-	        
+	     
 	        /**
-	        WaebricLoader loader = new WaebricLoader(new CommonTreeNodeStream(tree));
-	        Map<String,CommonTree> functions = loader.getFunctions();
-	        
 	        WaebricInterpreter interpreter = new WaebricInterpreter(new CommonTreeNodeStream(tree), functions);
 	        curr = System.currentTimeMillis();
 	        interpreter.interpretProgram(System.out);

@@ -21,11 +21,20 @@ scope Environment {
 }
 
 @members {
-	List<SemanticException> exceptions;
+	private List<SemanticException> exceptions;
 	
-	public WaebricChecker(TreeNodeStream input, List<SemanticException> exceptions) {
+	public WaebricChecker(TreeNodeStream input, List<SemanticException> exceptions, Map<String, WaebricLoader.function_return> functions) {
 		super(input);
 		this.exceptions = exceptions;
+		
+		// Store function definitions to allow lazy function binding
+		Environment_scope base = new Environment_scope();
+		base.functions = new HashMap<String, Integer>();
+		base.variables = new HashSet<String>();
+		for(String function: functions.keySet()) {
+			base.functions.put(function, functions.get(function).args);
+		}
+		Environment_stack.push(base);
 	}
 	
 	public void checkAST() throws RecognitionException {
@@ -89,6 +98,22 @@ scope Environment {
 		} return false;
 	}
 	
+		/**
+	 * Multiple function definitions with the same name are disallowed.
+	 * 
+	 * @author Jeroen van Schagen
+	 * @date 09-06-2009
+	 */
+	public static class DuplicateFunctionException extends SemanticException {
+		private static final long serialVersionUID = -8833578229100261366L;
+		public DuplicateFunctionException(CommonTree id) {
+			super("Duplicate definition of function \"" + id.getText() 
+					+ "\" at line " + id.getLine() 
+        				+ " and character " + id.getCharPositionInLine() + ".");
+		}
+		
+	}
+	
         /**
          * If for an import directive import m no corresponding file m.wae 
          * can be found, this a an error. [The import directive is skipped]
@@ -96,7 +121,7 @@ scope Environment {
          * @author Jeroen van Schagen
          * @date 09-06-2009
          */
-        class NonExistingModuleException extends SemanticException {
+        public static class NonExistingModuleException extends SemanticException {
         	private static final long serialVersionUID = -4503945323554024642L;
         	public NonExistingModuleException(CommonTree id) {
         		super("Module identifier \"" + id.getText() + "\" at line " + id.getLine() 
@@ -113,7 +138,7 @@ scope Environment {
 	 * @author Jeroen van Schagen
 	 * @date 09-06-2009
 	 */
-       	class UndefinedVariableException extends SemanticException {
+       	public static class UndefinedVariableException extends SemanticException {
        		private static final long serialVersionUID = -4479175462744485497L;
         	public UndefinedVariableException(CommonTree id) {
         		super("Undefined variable \"" + id.getText() + "\" at line " + id.getLine() 
@@ -131,7 +156,7 @@ scope Environment {
 	 * @author Jeroen van Schagen
 	 * @date 09-06-2009
 	 */
-       	class UndefinedFunctionException extends SemanticException {
+       	public static class UndefinedFunctionException extends SemanticException {
        		private static final long serialVersionUID = -4569708425419653397L;
         	public UndefinedFunctionException(CommonTree id) {
         		super("Function call \"" + id.getText() + "\" at line " + id.getLine() 
@@ -147,7 +172,7 @@ scope Environment {
 	 * @author Jeroen van Schagen
 	 * @date 09-06-2009
 	 */
-	class ArityMismatchException extends SemanticException {
+	public static class ArityMismatchException extends SemanticException {
 		private static final long serialVersionUID = -954167103131401047L;
 		public ArityMismatchException(CommonTree id, int args) {
 			super("Arity mismatch at function call \"" + id.getText() 
@@ -242,15 +267,10 @@ function
 	@init {
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		'def' IDCON formals statement* 'end' { 
-				defineFunction($IDCON, $formals.args, 0);
-			} ;
+	} :		'def' IDCON formals? statement* 'end' ;
 			
-formals	returns [int args = 0] :
-			regularFormals { $args = $regularFormals.args; } | ;
-			
-regularFormals returns [int args = 0]:
-			'(' ( IDCON { defineVariable($IDCON.getText()); $args++; } )* ')' ;
+formals returns [int args = 0] 
+	:		'(' ( IDCON { defineVariable($IDCON.getText()); $args++; } )* ')' ;
 
 // $<Statements
 
@@ -294,8 +314,8 @@ funcBinding // Separated because only function bindings have local scopes
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
 		int parent = $Environment.size()-1;
-	} : 		IDCON regularFormals '=' statement {
-				defineFunction($IDCON, $regularFormals.args, parent);
+	} : 		IDCON formals '=' statement {
+				defineFunction($IDCON, $formals.args, parent);
 			} ;
 		
 			

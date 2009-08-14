@@ -16,19 +16,16 @@ options {
 }
 
 @members {
-	private List<SemanticException> exceptions;
+	private List<SemanticException> exceptions = new ArrayList<SemanticException>();
 	private Map<String, function_return> functions = new HashMap<String, function_return>();
 	private List<mapping_return> mappings = new ArrayList<mapping_return>();
 	
-	public WaebricLoader(TreeNodeStream input, List<SemanticException> exceptions) {
-		super(input);
-		this.exceptions = exceptions;
-	}
-	
-	public void loadModule() throws RecognitionException {
+	public List<SemanticException> loadModule() throws RecognitionException {
+		exceptions.clear();
 		functions.clear();
 		mappings.clear();
 		this.module();
+		return exceptions;
 	}
 	
 	public Map<String, function_return> getFunctions() {
@@ -37,22 +34,6 @@ options {
 	
 	public List<mapping_return> getMappings() {
 		return mappings;
-	}
-	
-	/**
-	 * Multiple function definitions with the same name are disallowed.
-	 * 
-	 * @author Jeroen van Schagen
-	 * @date 09-06-2009
-	 */
-	class DuplicateFunctionException extends SemanticException {
-		private static final long serialVersionUID = -8833578229100261366L;
-		public DuplicateFunctionException(CommonTree id) {
-			super("Duplicate definition of function \"" + id.getText() 
-					+ "\" at line " + id.getLine() 
-        				+ " and character " + id.getCharPositionInLine() + ".");
-		}
-		
 	}
 	
 }
@@ -99,17 +80,22 @@ keyValuePair:		IDCON ':' expression ;
 // $>
 // $<Function
 
-function returns [int args = 0]
-	:		'def' id=IDCON formals statement* 'end' ;
+function 
+	returns [int args = 0, boolean yield = false]
+	:		'def' id=IDCON 
+			( formals { $args = $formals.args; } )?
+			( 'yield;' { $yield = true; } | statement )* 
+			'end' ;
 	finally {
 		if(functions.containsKey($id.getText())) {
-			exceptions.add(new DuplicateFunctionException($id.tree));
+			exceptions.add(new WaebricChecker.DuplicateFunctionException($id.tree));
 		} else {
 			functions.put($id.getText(), retval); 
 		}
 	}
 
-formals:		( '(' IDCON* ')' )? ;
+formals returns [int args = 0] 
+	:		'(' ( IDCON { $args++; } )* ')' ;
 
 // $>
 
