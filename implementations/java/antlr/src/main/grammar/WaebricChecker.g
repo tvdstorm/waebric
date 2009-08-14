@@ -301,7 +301,7 @@ statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 			| 'yield;'
 			| ^( MARKUP_STATEMENT markup+ expression ';' )
 			| ^( MARKUP_STATEMENT markup+ statement )
-			| ^( MARKUP_STATEMENT markup+ embedding )
+			| ^( MARKUP_STATEMENT markup+ embedding ';' )
 			| ^( MARKUP_STATEMENT markup+ ';' ) ;
 
 eachStatement

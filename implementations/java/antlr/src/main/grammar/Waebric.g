@@ -163,11 +163,7 @@ fragment FILEEXT:	( LETTER | DIGIT )+ ;
 STRCON:			{ inString }? => '\"' STRCHAR* '\"' { inString = false; } ;
 fragment STRCHAR:	~( '\u0000'..'\u001F' | '"' | '\\' ) | ESCLAYOUT | DECIMAL ;
 fragment ESCLAYOUT:	'\\n' | '\\t' | '\\"' | '\\\\' ;
-fragment DECIMAL:	'\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT ;
-
-PRETEXT:		'"' TEXTCHAR* '<' ;
-POSTTEXT:		'>' TEXTCHAR* '"' ;
-MIDTEXT:		'>' TEXTCHAR* '<' ;				
+fragment DECIMAL:	'\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT ;				
 
 TEXT:			{ ! inString }? => '\"' TEXTCHAR* '\"' ;
 fragment TEXTCHAR:	~( '\u0000'..'\u001F' | '&' | '"' | '<' | '\u0080'..'\uFFFF' ) |
@@ -176,6 +172,10 @@ fragment ESCQUOTE:	'\\\\' | '\\"' ;
 fragment AMP:		'\&' ~('#' | '0'..'9' | 'a'..'z' | 'A'..'Z' | '_' | ':')+ ;
 fragment CHARREF:	'&#' DIGIT+ ';' | '&#x' HEXADECIMAL ';' ;
 fragment ENTREF:	'&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':')* ';' ;
+
+PRETEXT:		'"' TEXTCHAR* '<' ;
+POSTTEXT:		'>' TEXTCHAR* '"' ;
+MIDTEXT:		'>' TEXTCHAR* '<' ;
 
 SYMBOLCON:		'\'' SYMBOLCHAR* ;
 fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') ;
