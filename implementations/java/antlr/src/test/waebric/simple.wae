@@ -2,14 +2,12 @@ module simple
 
 def main
  call-me();
- //let expr=[1,2,3]; in
- //each( e:expr ) p e;
- //end
 end
 
 def call-me
 	let var = [1,2,3]; in
-		each (e:var) echo e;
+		let var2 = var; in
+			echo var2;
+		end
 	end
-
 end
