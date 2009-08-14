@@ -235,7 +235,7 @@ expression returns [
 					  ( ',' id=IDCON ':' e=expression { $map.put($id.getText(), e); } )* '}' {
 						$collection = $map.values();
 						$eval = "{";
-						for(String key:$map.keySet()) { $eval += key + ":" + $map.get(key) + ","; }
+						for(String key:$map.keySet()) { $eval += key + ":" + $map.get(key).eval + ","; }
 						$eval = $eval.substring(0,$eval.length()); // Clip last character
 						$eval += "}";
 					}

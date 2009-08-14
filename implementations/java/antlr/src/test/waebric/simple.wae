@@ -5,9 +5,9 @@ def main
 end
 
 def call-me
-	let var = [1,2,3]; in
-		let var2 = var; in
-			echo var2;
+	let var = {een:1,twee:2,drie:3}; in
+		let var2 = var.twee; in
+			echo var2 + var.een;
 		end
 	end
 end
