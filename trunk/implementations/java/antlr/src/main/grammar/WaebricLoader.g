@@ -84,7 +84,7 @@ function
 	returns [int args = 0, boolean yield = false]
 	:		'def' id=IDCON 
 			( formals { $args = $formals.args; } )?
-			( 'yield;' { $yield = true; } | statement )* 
+			( statement { if($statement.yield) { $yield = true; } } )* 
 			'end' ;
 	finally {
 		if(functions.containsKey($id.getText())) {
@@ -101,17 +101,21 @@ formals returns [int args = 0]
 
 // $<Statements
 
-statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
-			| ^( 'each' '(' IDCON ':' expression ')' statement )
-			| ^( 'let' assignment+ 'in' statement* 'end' )
-			| ^( '{' statement* '}' )
+statement
+	returns [boolean yield = false;]
+	:		^( 'if' '(' predicate ')' 
+				t=statement { if($t.yield) { $yield = true; } } 
+				( 'else' f=statement )? { if($f.yield) { $yield = true; } } )
+			| ^( 'each' '(' IDCON ':' expression ')' s=statement { if($s.yield) { $yield = true; } } )
+			| ^( 'let' assignment+ 'in' ( s=statement { if($s.yield) { $yield = true; } } )* 'end' )
+			| ^( '{' ( s=statement { if($s.yield) { $yield = true; } } )* '}' )
 			| ^( 'comment' STRCON ';' )
 			| ^( 'echo' expression ';' )
 			| ^( 'echo' embedding ';' )
 			| ^( 'cdata' expression ';' )
-			| 'yield;'
+			| 'yield;' { $yield = true; }
 			| ^( MARKUP_STATEMENT markup+ expression ';' )
-			| ^( MARKUP_STATEMENT markup+ statement )
+			| ^( MARKUP_STATEMENT markup+ s=statement { if($s.yield) { $yield = true; } } )
 			| ^( MARKUP_STATEMENT markup+ embedding ';' )
 			| ^( MARKUP_STATEMENT markup+ ';' ) ;
 
