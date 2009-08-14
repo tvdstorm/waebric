@@ -1,7 +1,15 @@
 module simple
 
 def main
- let expr=[1,2,3]; in
- each( e:expr ) p e;
- end
+ call-me();
+ //let expr=[1,2,3]; in
+ //each( e:expr ) p e;
+ //end
+end
+
+def call-me
+	let var = {een:1,twee:2,drie:3}; in
+		html var.een;
+	end
+
 end

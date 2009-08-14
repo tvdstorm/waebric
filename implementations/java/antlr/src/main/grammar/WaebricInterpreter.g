@@ -8,8 +8,8 @@ options {
 }
 
 scope Environment {
-	Map<String, CommonTree> functions;
-	Map<String, String> variables;
+	Map<String, Integer> functions;
+	Map<String, Integer> variables;
 }
 
 @header {
@@ -57,6 +57,7 @@ scope Environment {
 		}
 		
 		for(WaebricLoader.mapping_return mapping: loader.getMappings()) {
+			this.document = new Document();
 			// TODO : Evaluate function and store in file
 		}
 	}
@@ -65,15 +66,22 @@ scope Environment {
 	 * Interpret function
 	 * @param function: Function AST
 	 */
-	private boolean interpretFunction(String name) throws RecognitionException {
-		CommonTree function = getFunction(name);
-		if(function != null) {
-			WaebricInterpreter instance = new WaebricInterpreter(new CommonTreeNodeStream(function));
-			instance.function();
-			return true;
-		}
-		return false;
-	}
+    	private boolean interpretFunction(String name) throws RecognitionException {
+    		Integer index = getFunction(name);
+    		if(index != -1) {
+    			int curr = input.index();
+    			input.seek(index);
+    			function();
+    			input.seek(curr);
+    			return true;
+    		} else if(functions.containsKey(name)) {
+    			CommonTree function = functions.get(name).tree;
+    			WaebricInterpreter instance = new WaebricInterpreter(new CommonTreeNodeStream(function));
+    			instance.function();
+    			return true;
+    		}
+    		return false;
+    	}
 	
 	/**
 	 * Write document to output stream
@@ -121,16 +129,13 @@ scope Environment {
 	 * Retrieve function
 	 * @param name: Function name
 	 */
-	private CommonTree getFunction(String name) {
+	private Integer getFunction(String name) {
 		// Check local environments
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(name)) {
 				return $Environment[i]::functions.get(name); 
 			}
-		} 
-		
-		// Check base environment
-		return functions.containsKey(name) ? functions.get(name).tree : null ;
+		} return -1 ;
 	}
 	
 	/**
@@ -138,20 +143,20 @@ scope Environment {
 	 * @param name: Function name
 	 * @param tree: Function AST
 	 */
-	private void defineFunction(String name, CommonTree tree) {
-		$Environment::functions.put(name, tree);
+	private void defineFunction(String name, Integer input) {
+		$Environment::functions.put(name, input);
 	}
 	
 	/**
 	 * Retrieve variable
 	 * @param name: Variable name
 	 */
-	private String getVariable(String name) {
+	private Integer getVariable(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::variables.containsKey(name)) {
 				return $Environment[i]::variables.get(name); 
 			}
-		} return "undef";
+		} return -1;
 	}
 	
 	/**
@@ -159,8 +164,8 @@ scope Environment {
 	 * @param name: Variable name
 	 * @param eval: Variable evaluation
 	 */
-	private void defineVariable(String name, String eval) {
-		$Environment::variables.put(name, eval);
+	private void defineVariable(String name, Integer input) {
+		$Environment::variables.put(name, input);
 	}
 	
 	/**
@@ -207,14 +212,45 @@ argument:		expression
 // $<Expressions
 
 expression 
-	returns [String eval]
-	: 		( var=IDCON { $eval = getVariable($var.getText()); }
-				| NATCON { $eval = $NATCON.getText(); }
-				| TEXT { $eval = $TEXT.getText(); }
-				| SYMBOLCON { $eval = $SYMBOLCON.getText(); }
-				| listExpression { $eval = $listExpression.data.toString(); }
-				| recordExpression { $eval = $recordExpression.data.toString(); }
-			) ( '+' e=expression { $eval += $e.eval; } | '.' IDCON { /* TODO: Field */ } )* ;
+	returns [String eval = "undef", Map<String, String> map]
+	: 			(
+					var=IDCON { 
+						int curr = input.index();
+						int next = getVariable($var.getText());
+						if(next != -1) {
+							input.seek(next);
+							retval = expression();
+							input.seek(curr);
+						} 
+					}
+					| NATCON {
+						$eval = $NATCON.getText();
+					}
+					| TEXT {
+						$eval = $TEXT.getText();
+					}
+					| SYMBOLCON { 
+						$eval = $SYMBOLCON.getText();
+					}
+					| listExpression { 
+						$eval = $listExpression.data.toString();
+					}
+					| recordExpression { 
+						$eval = $recordExpression.data.toString(); 
+						$map = $recordExpression.data; 
+					}
+				) ( 
+					'+' e=expression { 
+						$eval += $e.eval;
+					} 
+					| '.' id=IDCON {
+						if($map.containsKey($id.getText())) {
+							$eval = $map.get($id.getText()); 
+						} else {
+							$eval = "undef";
+						}
+					} 
+				)* ;
 			
 listExpression 
 	returns [List<String> data = new ArrayList<String>()]
@@ -283,16 +319,17 @@ ifStatement
 eachStatement
 	scope Environment;
 	@init {
-		$Environment::variables = new HashMap<String, String>();
-		$Environment::functions = new HashMap<String, CommonTree>();
-		int start = 0;
-	} :		^( 'each' '(' IDCON ':' ( l=listExpression | expression ) ')' { start = input.index(); } . ) {
+		$Environment::variables = new HashMap<String, Integer>();
+		$Environment::functions = new HashMap<String, Integer>();
+		int stm = 0; int id = 0;
+	} :		^( 'each' '(' { id = input.index(); } IDCON ':' 
+			( l=listExpression | expression ) ')' { stm = input.index(); } . ) {
 				if(l != null) {
 					int actualIndex = input.index();
               				Element actualElement = this.current;
               				for(String value: l.data) {
-              					$Environment::variables.put($IDCON.getText(), value);
-              					input.seek(start);
+              					$Environment::variables.put($IDCON.getText(), id);
+              					input.seek(stm);
               					statement();
               					input.seek(actualIndex);	
               					if(actualElement == null) { actualElement = document.getRootElement(); }
@@ -308,21 +345,27 @@ blockStatement
 letStatement
 	scope Environment;
 	@init {
-		$Environment::variables = new HashMap<String, String>();
-		$Environment::functions = new HashMap<String, CommonTree>();
+		$Environment::variables = new HashMap<String, Integer>();
+		$Environment::functions = new HashMap<String, Integer>();
 	} :		^( 'let' assignment+ 'in' ( s=statement )* 'end' ) ;
 
 // $>
 // $<Assignments
 
-assignment:		IDCON '=' expression ';' // Variable binding
+assignment:		varBinding
 			| funcBinding ;
+		
+varBinding
+	@init{ int index = 0; }
+	:		IDCON '=' { index = input.index(); } expression ';' {
+				defineVariable($IDCON.getText(), index);
+			} ;
 			
 funcBinding
-	:		'def' id=IDCON formals . 'end' ;
-	finally {
-		defineFunction($id.getText(), $funcBinding.tree);
-	} 
+	@init{ int index = input.index(); }
+	:		'def' IDCON formals . 'end' {
+				defineFunction($IDCON.getText(), index);
+			} ;
 
 // $>
 // $<Predicates
