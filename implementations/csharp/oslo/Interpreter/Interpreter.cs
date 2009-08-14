@@ -624,10 +624,117 @@ namespace Interpreter
             Current.AddChild(echoElement);
         }
 
+        /// <summary>
+        /// Interpret EchoEmbeddingStatement
+        /// </summary>
+        /// <param name="echoEmbeddingStatement">EchoEmbeddingStatement to interpret</param>
         public void VisitEchoEmbeddingStatement(Node echoEmbeddingStatement)
         {
-
+            Node embedding = echoEmbeddingStatement.ViewAllNodes().ElementAt(0);
+            VisitEmbedding(embedding);
         }
+
+        /// <summary>
+        /// Interpret Embedding
+        /// </summary>
+        /// <param name="embedding">Embedding to interpret</param>
+        public void VisitEmbedding(Node embedding)
+        {
+            Node preText = embedding.ViewAllNodes().ElementAt(0);
+            Node preTextValue = preText.ViewAllNodes().ElementAt(0);
+            Node embed = embedding.ViewAllNodes().ElementAt(1);
+            Node textTail = embedding.ViewAllNodes().ElementAt(2);
+
+            //Add content of pretext
+            String preTextString = "";
+            if (preTextValue.AtomicValue != null)
+            {
+                preTextString = preTextValue.AtomicValue.ToString();
+            }
+            XHTMLElement element = new XHTMLElement(preTextString, Current);
+            element.SetTagState(false);
+            Current.AddChild(element);
+
+            //Interpret Embed and TextTail
+            VisitEmbed(embed);
+            VisitTextTail(textTail);
+        }
+
+        /// <summary>
+        /// Interpret Embed
+        /// </summary>
+        /// <param name="embed">Embed to interpret</param>
+        public void VisitEmbed(Node embed)
+        {
+            //Convert to MarkupsStatement
+            NodeGraphBuilder nodeBuilder = new NodeGraphBuilder();
+
+            Node markupsStatement = (Node)nodeBuilder.DefineNode("MarkupsStatement");
+            
+            //Check if there's an MarkupList, otherwise add empty markuplist
+            Node markupList = embed.ViewAllNodes().ElementAt(0);
+            if (markupList.Brand.Text == "")
+            {   //Empty list, so create an new empty MarkupList node
+                markupList = (Node)nodeBuilder.DefineNode("MarkupList");
+            }
+
+            markupsStatement.Add(markupList);
+            markupsStatement.Add(embed.ViewAllNodes().ElementAt(1));
+            
+            //Interpret markupsStatement
+            VisitMarkupsStatement(markupsStatement);
+        }
+
+        /// <summary>
+        /// Interpret TextTail
+        /// </summary>
+        /// <param name="textTail">TextTail to interpret</param>
+        public void VisitTextTail(Node textTail)
+        {
+            //Determine type of texttail
+            if (textTail.Brand.Text == "MidTextTail")
+            {
+                Node midText = textTail.ViewAllNodes().ElementAt(0);
+                Node midTextValue = midText.ViewAllNodes().ElementAt(0);
+
+                //Check if there's an midText string and interpret it
+                String midTextString = "";
+                if(midTextValue.AtomicValue != null)
+                {
+                    midTextString = midTextValue.AtomicValue.ToString();
+                }
+                XHTMLElement element = new XHTMLElement(midTextString, Current);
+                element.SetTagState(false);
+                Current.AddChild(element);
+
+                //Interpret embed
+                XHTMLElement temp = Current;
+                Node embed = textTail.ViewAllNodes().ElementAt(1);
+                VisitEmbed(embed);
+                Current = temp;
+
+                //Interpret texttail
+                Node tail = textTail.ViewAllNodes().ElementAt(2);
+                VisitTextTail(tail);
+            }
+            else if (textTail.Brand.Text == "PostTextTail")
+            {
+                Node postText = textTail.ViewAllNodes().ElementAt(0);
+                Node postTextValue = postText.ViewAllNodes().ElementAt(0);
+
+                //Check if there's an postText string and interpret it
+                String postTextString = "";
+                if (postTextValue.AtomicValue != null)
+                {
+                    postTextString = postTextValue.AtomicValue.ToString();
+                }
+
+                XHTMLElement element = new XHTMLElement(postTextString, Current);
+                element.SetTagState(false);
+                Current.AddChild(element);
+            }
+        }
+
 
         /// <summary>
         /// Interpret CDataStatement
