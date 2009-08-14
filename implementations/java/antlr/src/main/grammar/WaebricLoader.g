@@ -119,7 +119,7 @@ statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 // $<Assignments
 
 assignment:		IDCON '=' expression ';' // Variable binding
-			| IDCON formals statement ; // Function binding
+			| IDCON formals '=' statement ; // Function binding
 
 // $>
 // $<Predicates
