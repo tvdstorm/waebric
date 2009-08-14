@@ -4,6 +4,7 @@ options {
 	tokenVocab = Waebric;
 	ASTLabelType = CommonTree;
 	backtrack = true;
+	output = AST;
 }
 
 @header {
@@ -16,10 +17,29 @@ options {
 }
 
 @members {
+	/**
+	 * Semantic exceptions
+	 */
 	private List<SemanticException> exceptions = new ArrayList<SemanticException>();
+	
+	/**
+	 * Checked modules
+	 */
+	private List<String> checked = new ArrayList<String>();
+	
+	/**
+	 * Collected function definitions
+	 */
 	private Map<String, function_return> functions = new HashMap<String, function_return>();
+	
+	/**
+	 * Collected mappings
+	 */
 	private List<mapping_return> mappings = new ArrayList<mapping_return>();
 	
+	/**
+	 * Walk module to retrieve function definitions and mappings
+	 */
 	public List<SemanticException> loadModule() throws RecognitionException {
 		exceptions.clear();
 		functions.clear();
@@ -28,10 +48,16 @@ options {
 		return exceptions;
 	}
 	
+	/**
+	 * Retrieve function definitions
+	 */
 	public Map<String, function_return> getFunctions() {
 		return functions;
 	}
 	
+	/**
+	 * Retrieve mappings
+	 */
 	public List<mapping_return> getMappings() {
 		return mappings;
 	}
@@ -39,18 +65,34 @@ options {
 }
 
 // $<Module
-module: 		^( 'module' moduleId imprt* site* function* ) ;
-moduleId:		IDCON ( '.' e=IDCON )* ;
-imprt:			'import' moduleId ^ module ;
+module: 		^( 'module' moduleId imprt* site* function* ) {
+				checked.add($moduleId.name);
+			} ;
+			
+moduleId
+	returns [String name = ""]
+	:		id=IDCON { $name += $id.getText(); } ( '.' id=IDCON { $name += "." + $id.getText(); } )* ;
+
+imprt
+	@init { int start = 0; }
+	:			'import' moduleId { start = input.index(); } dependancy=. {
+				if(! checked.contains($moduleId.name)) {
+					int curr = input.index();
+					input.seek(start);
+					module();
+					input.seek(curr);
+				}
+			} ;
 
 // $>
 // $<Site
 
 site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
-mapping	:		PATH ':' markup ;
+
+mapping:		PATH ':' markup ;
 	finally {
-		mappings.add(retval); 
+		mappings.add(retval);
 	}
 
 // $>
@@ -88,7 +130,7 @@ function
 			'end' ;
 	finally {
 		if(functions.containsKey($id.getText())) {
-			exceptions.add(new WaebricChecker.DuplicateFunctionException($id.tree));
+			exceptions.add(new WaebricChecker.DuplicateFunctionException($id));
 		} else {
 			functions.put($id.getText(), retval); 
 		}
