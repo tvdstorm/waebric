@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-14 13:12:49
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-14 13:18:50
 
 	package org.cwi.waebric;
 	
@@ -146,9 +146,9 @@ public class WaebricInterpreter extends TreeParser {
     	 * @param function: Function AST
     	 */
     	private boolean interpretFunction(String name) throws RecognitionException {
-    		CommonTree function = getFunction(name).tree;
+    		WaebricLoader.function_return function = getFunction(name);
     		if(function != null) {
-    			WaebricInterpreter instance = new WaebricInterpreter(new CommonTreeNodeStream(function));
+    			WaebricInterpreter instance = new WaebricInterpreter(new CommonTreeNodeStream(function.tree));
     			instance.function();
     			return true;
     		}
