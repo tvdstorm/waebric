@@ -1,5 +1,18 @@
 module simple
 
+def main
+	html {
+		head {
+			title "Jeroen ownz";
+		}
+		
+		body {
+			p "Jeroen 4 teh whizzle";
+			//workshop(2009,"Amsterdam");
+		}
+	}
+end
+
 def workshop(year,location)
-  html "<year> <location>";
+  p "<year> <location>";
 end
