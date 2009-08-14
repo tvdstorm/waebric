@@ -1,11 +1,5 @@
 module simple
 
-def main
-    html {
-        title#id callme$lol("Hello world");
-    }
-end
-
-def callme(expr)
-	if(!expr) echo "true"; else echo "false";
+def workshop(year,location)
+  html "<year> <location>";
 end

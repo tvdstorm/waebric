@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-14 09:24:29
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-14 09:35:48
 
 	package org.cwi.waebric;
 
@@ -1337,16 +1337,19 @@ public class WaebricLexer extends Lexer {
     }
     // $ANTLR end "DECIMAL"
 
-    // $ANTLR start "PRETEXT"
-    public final void mPRETEXT() throws RecognitionException {
+    // $ANTLR start "TEXT"
+    public final void mTEXT() throws RecognitionException {
         try {
-            int _type = PRETEXT;
+            int _type = TEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:168:8: ( '\"' ( TEXTCHAR )* '<' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:168:11: '\"' ( TEXTCHAR )* '<'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:168:5: ({...}? => '\\\"' ( TEXTCHAR )* '\\\"' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:168:9: {...}? => '\\\"' ( TEXTCHAR )* '\\\"'
             {
+            if ( !(( ! inString )) ) {
+                throw new FailedPredicateException(input, "TEXT", " ! inString ");
+            }
             match('\"'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:168:15: ( TEXTCHAR )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:168:33: ( TEXTCHAR )*
             loop8:
             do {
                 int alt8=2;
@@ -1359,7 +1362,7 @@ public class WaebricLexer extends Lexer {
 
                 switch (alt8) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:168:15: TEXTCHAR
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:168:33: TEXTCHAR
             	    {
             	    mTEXTCHAR(); 
 
@@ -1368,6 +1371,395 @@ public class WaebricLexer extends Lexer {
 
             	default :
             	    break loop8;
+                }
+            } while (true);
+
+            match('\"'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "TEXT"
+
+    // $ANTLR start "TEXTCHAR"
+    public final void mTEXTCHAR() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:169:18: (~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' ) | '\\n' | '\\r' | '\\t' | ESCQUOTE | AMP | CHARREF | ENTREF )
+            int alt9=8;
+            alt9 = dfa9.predict(input);
+            switch (alt9) {
+                case 1 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:169:20: ~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' )
+                    {
+                    if ( (input.LA(1)>=' ' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='%')||(input.LA(1)>='\'' && input.LA(1)<=';')||(input.LA(1)>='=' && input.LA(1)<='\u007F') ) {
+                        input.consume();
+
+                    }
+                    else {
+                        MismatchedSetException mse = new MismatchedSetException(null,input);
+                        recover(mse);
+                        throw mse;}
+
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:5: '\\n'
+                    {
+                    match('\n'); 
+
+                    }
+                    break;
+                case 3 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:12: '\\r'
+                    {
+                    match('\r'); 
+
+                    }
+                    break;
+                case 4 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:19: '\\t'
+                    {
+                    match('\t'); 
+
+                    }
+                    break;
+                case 5 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:26: ESCQUOTE
+                    {
+                    mESCQUOTE(); 
+
+                    }
+                    break;
+                case 6 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:37: AMP
+                    {
+                    mAMP(); 
+
+                    }
+                    break;
+                case 7 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:43: CHARREF
+                    {
+                    mCHARREF(); 
+
+                    }
+                    break;
+                case 8 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:53: ENTREF
+                    {
+                    mENTREF(); 
+
+                    }
+                    break;
+
+            }
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "TEXTCHAR"
+
+    // $ANTLR start "ESCQUOTE"
+    public final void mESCQUOTE() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:171:18: ( '\\\\\\\\' | '\\\\\"' )
+            int alt10=2;
+            int LA10_0 = input.LA(1);
+
+            if ( (LA10_0=='\\') ) {
+                int LA10_1 = input.LA(2);
+
+                if ( (LA10_1=='\\') ) {
+                    alt10=1;
+                }
+                else if ( (LA10_1=='\"') ) {
+                    alt10=2;
+                }
+                else {
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 10, 1, input);
+
+                    throw nvae;
+                }
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 10, 0, input);
+
+                throw nvae;
+            }
+            switch (alt10) {
+                case 1 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:171:20: '\\\\\\\\'
+                    {
+                    match("\\\\"); 
+
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:171:29: '\\\\\"'
+                    {
+                    match("\\\""); 
+
+
+                    }
+                    break;
+
+            }
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "ESCQUOTE"
+
+    // $ANTLR start "AMP"
+    public final void mAMP() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:172:13: ( '\\&' (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:172:16: '\\&' (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+
+            {
+            match('&'); 
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:172:21: (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+
+            int cnt11=0;
+            loop11:
+            do {
+                int alt11=2;
+                int LA11_0 = input.LA(1);
+
+                if ( ((LA11_0>='\u0000' && LA11_0<='\"')||(LA11_0>='$' && LA11_0<='/')||(LA11_0>=';' && LA11_0<='@')||(LA11_0>='[' && LA11_0<='^')||LA11_0=='`'||(LA11_0>='{' && LA11_0<='\uFFFF')) ) {
+                    alt11=1;
+                }
+
+
+                switch (alt11) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:172:21: ~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' )
+            	    {
+            	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\"')||(input.LA(1)>='$' && input.LA(1)<='/')||(input.LA(1)>=';' && input.LA(1)<='@')||(input.LA(1)>='[' && input.LA(1)<='^')||input.LA(1)=='`'||(input.LA(1)>='{' && input.LA(1)<='\uFFFF') ) {
+            	        input.consume();
+
+            	    }
+            	    else {
+            	        MismatchedSetException mse = new MismatchedSetException(null,input);
+            	        recover(mse);
+            	        throw mse;}
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt11 >= 1 ) break loop11;
+                        EarlyExitException eee =
+                            new EarlyExitException(11, input);
+                        throw eee;
+                }
+                cnt11++;
+            } while (true);
+
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "AMP"
+
+    // $ANTLR start "CHARREF"
+    public final void mCHARREF() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:173:17: ( '&#' ( DIGIT )+ ';' | '&#x' HEXADECIMAL ';' )
+            int alt13=2;
+            int LA13_0 = input.LA(1);
+
+            if ( (LA13_0=='&') ) {
+                int LA13_1 = input.LA(2);
+
+                if ( (LA13_1=='#') ) {
+                    int LA13_2 = input.LA(3);
+
+                    if ( (LA13_2=='x') ) {
+                        alt13=2;
+                    }
+                    else if ( ((LA13_2>='0' && LA13_2<='9')) ) {
+                        alt13=1;
+                    }
+                    else {
+                        NoViableAltException nvae =
+                            new NoViableAltException("", 13, 2, input);
+
+                        throw nvae;
+                    }
+                }
+                else {
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 13, 1, input);
+
+                    throw nvae;
+                }
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 13, 0, input);
+
+                throw nvae;
+            }
+            switch (alt13) {
+                case 1 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:173:19: '&#' ( DIGIT )+ ';'
+                    {
+                    match("&#"); 
+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:173:24: ( DIGIT )+
+                    int cnt12=0;
+                    loop12:
+                    do {
+                        int alt12=2;
+                        int LA12_0 = input.LA(1);
+
+                        if ( ((LA12_0>='0' && LA12_0<='9')) ) {
+                            alt12=1;
+                        }
+
+
+                        switch (alt12) {
+                    	case 1 :
+                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:173:24: DIGIT
+                    	    {
+                    	    mDIGIT(); 
+
+                    	    }
+                    	    break;
+
+                    	default :
+                    	    if ( cnt12 >= 1 ) break loop12;
+                                EarlyExitException eee =
+                                    new EarlyExitException(12, input);
+                                throw eee;
+                        }
+                        cnt12++;
+                    } while (true);
+
+                    match(';'); 
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:173:37: '&#x' HEXADECIMAL ';'
+                    {
+                    match("&#x"); 
+
+                    mHEXADECIMAL(); 
+                    match(';'); 
+
+                    }
+                    break;
+
+            }
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "CHARREF"
+
+    // $ANTLR start "ENTREF"
+    public final void mENTREF() throws RecognitionException {
+        try {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:174:16: ( '&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':' )* ';' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:174:18: '&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':' )* ';'
+            {
+            match('&'); 
+            if ( input.LA(1)==':'||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
+                input.consume();
+
+            }
+            else {
+                MismatchedSetException mse = new MismatchedSetException(null,input);
+                recover(mse);
+                throw mse;}
+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:174:45: ( LETTER | DIGIT | '.' | '-' | '_' | ':' )*
+            loop14:
+            do {
+                int alt14=2;
+                int LA14_0 = input.LA(1);
+
+                if ( ((LA14_0>='-' && LA14_0<='.')||(LA14_0>='0' && LA14_0<=':')||(LA14_0>='A' && LA14_0<='Z')||LA14_0=='_'||(LA14_0>='a' && LA14_0<='z')) ) {
+                    alt14=1;
+                }
+
+
+                switch (alt14) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
+            	    {
+            	    if ( (input.LA(1)>='-' && input.LA(1)<='.')||(input.LA(1)>='0' && input.LA(1)<=':')||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
+            	        input.consume();
+
+            	    }
+            	    else {
+            	        MismatchedSetException mse = new MismatchedSetException(null,input);
+            	        recover(mse);
+            	        throw mse;}
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop14;
+                }
+            } while (true);
+
+            match(';'); 
+
+            }
+
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "ENTREF"
+
+    // $ANTLR start "PRETEXT"
+    public final void mPRETEXT() throws RecognitionException {
+        try {
+            int _type = PRETEXT;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:176:8: ( '\"' ( TEXTCHAR )* '<' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:176:11: '\"' ( TEXTCHAR )* '<'
+            {
+            match('\"'); 
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:176:15: ( TEXTCHAR )*
+            loop15:
+            do {
+                int alt15=2;
+                int LA15_0 = input.LA(1);
+
+                if ( ((LA15_0>='\t' && LA15_0<='\n')||LA15_0=='\r'||(LA15_0>=' ' && LA15_0<='!')||(LA15_0>='#' && LA15_0<=';')||(LA15_0>='=' && LA15_0<='\u007F')) ) {
+                    alt15=1;
+                }
+
+
+                switch (alt15) {
+            	case 1 :
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:176:15: TEXTCHAR
+            	    {
+            	    mTEXTCHAR(); 
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop15;
                 }
             } while (true);
 
@@ -1388,24 +1780,24 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = POSTTEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:169:9: ( '>' ( TEXTCHAR )* '\"' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:169:12: '>' ( TEXTCHAR )* '\"'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:177:9: ( '>' ( TEXTCHAR )* '\"' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:177:12: '>' ( TEXTCHAR )* '\"'
             {
             match('>'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:169:16: ( TEXTCHAR )*
-            loop9:
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:177:16: ( TEXTCHAR )*
+            loop16:
             do {
-                int alt9=2;
-                int LA9_0 = input.LA(1);
+                int alt16=2;
+                int LA16_0 = input.LA(1);
 
-                if ( ((LA9_0>='\t' && LA9_0<='\n')||LA9_0=='\r'||(LA9_0>=' ' && LA9_0<='!')||(LA9_0>='#' && LA9_0<=';')||(LA9_0>='=' && LA9_0<='\u007F')) ) {
-                    alt9=1;
+                if ( ((LA16_0>='\t' && LA16_0<='\n')||LA16_0=='\r'||(LA16_0>=' ' && LA16_0<='!')||(LA16_0>='#' && LA16_0<=';')||(LA16_0>='=' && LA16_0<='\u007F')) ) {
+                    alt16=1;
                 }
 
 
-                switch (alt9) {
+                switch (alt16) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:169:16: TEXTCHAR
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:177:16: TEXTCHAR
             	    {
             	    mTEXTCHAR(); 
 
@@ -1413,7 +1805,7 @@ public class WaebricLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop9;
+            	    break loop16;
                 }
             } while (true);
 
@@ -1434,24 +1826,24 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = MIDTEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:8: ( '>' ( TEXTCHAR )* '<' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:11: '>' ( TEXTCHAR )* '<'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:178:8: ( '>' ( TEXTCHAR )* '<' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:178:11: '>' ( TEXTCHAR )* '<'
             {
             match('>'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:15: ( TEXTCHAR )*
-            loop10:
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:178:15: ( TEXTCHAR )*
+            loop17:
             do {
-                int alt10=2;
-                int LA10_0 = input.LA(1);
+                int alt17=2;
+                int LA17_0 = input.LA(1);
 
-                if ( ((LA10_0>='\t' && LA10_0<='\n')||LA10_0=='\r'||(LA10_0>=' ' && LA10_0<='!')||(LA10_0>='#' && LA10_0<=';')||(LA10_0>='=' && LA10_0<='\u007F')) ) {
-                    alt10=1;
+                if ( ((LA17_0>='\t' && LA17_0<='\n')||LA17_0=='\r'||(LA17_0>=' ' && LA17_0<='!')||(LA17_0>='#' && LA17_0<=';')||(LA17_0>='=' && LA17_0<='\u007F')) ) {
+                    alt17=1;
                 }
 
 
-                switch (alt10) {
+                switch (alt17) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:170:15: TEXTCHAR
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:178:15: TEXTCHAR
             	    {
             	    mTEXTCHAR(); 
 
@@ -1459,7 +1851,7 @@ public class WaebricLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop10;
+            	    break loop17;
                 }
             } while (true);
 
@@ -1474,398 +1866,6 @@ public class WaebricLexer extends Lexer {
         }
     }
     // $ANTLR end "MIDTEXT"
-
-    // $ANTLR start "TEXT"
-    public final void mTEXT() throws RecognitionException {
-        try {
-            int _type = TEXT;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:172:5: ({...}? => '\\\"' ( TEXTCHAR )* '\\\"' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:172:9: {...}? => '\\\"' ( TEXTCHAR )* '\\\"'
-            {
-            if ( !(( ! inString )) ) {
-                throw new FailedPredicateException(input, "TEXT", " ! inString ");
-            }
-            match('\"'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:172:33: ( TEXTCHAR )*
-            loop11:
-            do {
-                int alt11=2;
-                int LA11_0 = input.LA(1);
-
-                if ( ((LA11_0>='\t' && LA11_0<='\n')||LA11_0=='\r'||(LA11_0>=' ' && LA11_0<='!')||(LA11_0>='#' && LA11_0<=';')||(LA11_0>='=' && LA11_0<='\u007F')) ) {
-                    alt11=1;
-                }
-
-
-                switch (alt11) {
-            	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:172:33: TEXTCHAR
-            	    {
-            	    mTEXTCHAR(); 
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop11;
-                }
-            } while (true);
-
-            match('\"'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "TEXT"
-
-    // $ANTLR start "TEXTCHAR"
-    public final void mTEXTCHAR() throws RecognitionException {
-        try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:173:18: (~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' ) | '\\n' | '\\r' | '\\t' | ESCQUOTE | AMP | CHARREF | ENTREF )
-            int alt12=8;
-            alt12 = dfa12.predict(input);
-            switch (alt12) {
-                case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:173:20: ~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' )
-                    {
-                    if ( (input.LA(1)>=' ' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='%')||(input.LA(1)>='\'' && input.LA(1)<=';')||(input.LA(1)>='=' && input.LA(1)<='\u007F') ) {
-                        input.consume();
-
-                    }
-                    else {
-                        MismatchedSetException mse = new MismatchedSetException(null,input);
-                        recover(mse);
-                        throw mse;}
-
-
-                    }
-                    break;
-                case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:174:5: '\\n'
-                    {
-                    match('\n'); 
-
-                    }
-                    break;
-                case 3 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:174:12: '\\r'
-                    {
-                    match('\r'); 
-
-                    }
-                    break;
-                case 4 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:174:19: '\\t'
-                    {
-                    match('\t'); 
-
-                    }
-                    break;
-                case 5 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:174:26: ESCQUOTE
-                    {
-                    mESCQUOTE(); 
-
-                    }
-                    break;
-                case 6 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:174:37: AMP
-                    {
-                    mAMP(); 
-
-                    }
-                    break;
-                case 7 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:174:43: CHARREF
-                    {
-                    mCHARREF(); 
-
-                    }
-                    break;
-                case 8 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:174:53: ENTREF
-                    {
-                    mENTREF(); 
-
-                    }
-                    break;
-
-            }
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "TEXTCHAR"
-
-    // $ANTLR start "ESCQUOTE"
-    public final void mESCQUOTE() throws RecognitionException {
-        try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:175:18: ( '\\\\\\\\' | '\\\\\"' )
-            int alt13=2;
-            int LA13_0 = input.LA(1);
-
-            if ( (LA13_0=='\\') ) {
-                int LA13_1 = input.LA(2);
-
-                if ( (LA13_1=='\\') ) {
-                    alt13=1;
-                }
-                else if ( (LA13_1=='\"') ) {
-                    alt13=2;
-                }
-                else {
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 13, 1, input);
-
-                    throw nvae;
-                }
-            }
-            else {
-                NoViableAltException nvae =
-                    new NoViableAltException("", 13, 0, input);
-
-                throw nvae;
-            }
-            switch (alt13) {
-                case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:175:20: '\\\\\\\\'
-                    {
-                    match("\\\\"); 
-
-
-                    }
-                    break;
-                case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:175:29: '\\\\\"'
-                    {
-                    match("\\\""); 
-
-
-                    }
-                    break;
-
-            }
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "ESCQUOTE"
-
-    // $ANTLR start "AMP"
-    public final void mAMP() throws RecognitionException {
-        try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:176:13: ( '\\&' (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+ )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:176:16: '\\&' (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+
-            {
-            match('&'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:176:21: (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+
-            int cnt14=0;
-            loop14:
-            do {
-                int alt14=2;
-                int LA14_0 = input.LA(1);
-
-                if ( ((LA14_0>='\u0000' && LA14_0<='\"')||(LA14_0>='$' && LA14_0<='/')||(LA14_0>=';' && LA14_0<='@')||(LA14_0>='[' && LA14_0<='^')||LA14_0=='`'||(LA14_0>='{' && LA14_0<='\uFFFF')) ) {
-                    alt14=1;
-                }
-
-
-                switch (alt14) {
-            	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:176:21: ~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' )
-            	    {
-            	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\"')||(input.LA(1)>='$' && input.LA(1)<='/')||(input.LA(1)>=';' && input.LA(1)<='@')||(input.LA(1)>='[' && input.LA(1)<='^')||input.LA(1)=='`'||(input.LA(1)>='{' && input.LA(1)<='\uFFFF') ) {
-            	        input.consume();
-
-            	    }
-            	    else {
-            	        MismatchedSetException mse = new MismatchedSetException(null,input);
-            	        recover(mse);
-            	        throw mse;}
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    if ( cnt14 >= 1 ) break loop14;
-                        EarlyExitException eee =
-                            new EarlyExitException(14, input);
-                        throw eee;
-                }
-                cnt14++;
-            } while (true);
-
-
-            }
-
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "AMP"
-
-    // $ANTLR start "CHARREF"
-    public final void mCHARREF() throws RecognitionException {
-        try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:177:17: ( '&#' ( DIGIT )+ ';' | '&#x' HEXADECIMAL ';' )
-            int alt16=2;
-            int LA16_0 = input.LA(1);
-
-            if ( (LA16_0=='&') ) {
-                int LA16_1 = input.LA(2);
-
-                if ( (LA16_1=='#') ) {
-                    int LA16_2 = input.LA(3);
-
-                    if ( (LA16_2=='x') ) {
-                        alt16=2;
-                    }
-                    else if ( ((LA16_2>='0' && LA16_2<='9')) ) {
-                        alt16=1;
-                    }
-                    else {
-                        NoViableAltException nvae =
-                            new NoViableAltException("", 16, 2, input);
-
-                        throw nvae;
-                    }
-                }
-                else {
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 16, 1, input);
-
-                    throw nvae;
-                }
-            }
-            else {
-                NoViableAltException nvae =
-                    new NoViableAltException("", 16, 0, input);
-
-                throw nvae;
-            }
-            switch (alt16) {
-                case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:177:19: '&#' ( DIGIT )+ ';'
-                    {
-                    match("&#"); 
-
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:177:24: ( DIGIT )+
-                    int cnt15=0;
-                    loop15:
-                    do {
-                        int alt15=2;
-                        int LA15_0 = input.LA(1);
-
-                        if ( ((LA15_0>='0' && LA15_0<='9')) ) {
-                            alt15=1;
-                        }
-
-
-                        switch (alt15) {
-                    	case 1 :
-                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:177:24: DIGIT
-                    	    {
-                    	    mDIGIT(); 
-
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    if ( cnt15 >= 1 ) break loop15;
-                                EarlyExitException eee =
-                                    new EarlyExitException(15, input);
-                                throw eee;
-                        }
-                        cnt15++;
-                    } while (true);
-
-                    match(';'); 
-
-                    }
-                    break;
-                case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:177:37: '&#x' HEXADECIMAL ';'
-                    {
-                    match("&#x"); 
-
-                    mHEXADECIMAL(); 
-                    match(';'); 
-
-                    }
-                    break;
-
-            }
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "CHARREF"
-
-    // $ANTLR start "ENTREF"
-    public final void mENTREF() throws RecognitionException {
-        try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:178:16: ( '&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':' )* ';' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:178:18: '&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':' )* ';'
-            {
-            match('&'); 
-            if ( input.LA(1)==':'||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
-                input.consume();
-
-            }
-            else {
-                MismatchedSetException mse = new MismatchedSetException(null,input);
-                recover(mse);
-                throw mse;}
-
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:178:45: ( LETTER | DIGIT | '.' | '-' | '_' | ':' )*
-            loop17:
-            do {
-                int alt17=2;
-                int LA17_0 = input.LA(1);
-
-                if ( ((LA17_0>='-' && LA17_0<='.')||(LA17_0>='0' && LA17_0<=':')||(LA17_0>='A' && LA17_0<='Z')||LA17_0=='_'||(LA17_0>='a' && LA17_0<='z')) ) {
-                    alt17=1;
-                }
-
-
-                switch (alt17) {
-            	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
-            	    {
-            	    if ( (input.LA(1)>='-' && input.LA(1)<='.')||(input.LA(1)>='0' && input.LA(1)<=':')||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
-            	        input.consume();
-
-            	    }
-            	    else {
-            	        MismatchedSetException mse = new MismatchedSetException(null,input);
-            	        recover(mse);
-            	        throw mse;}
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop17;
-                }
-            } while (true);
-
-            match(';'); 
-
-            }
-
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "ENTREF"
 
     // $ANTLR start "SYMBOLCON"
     public final void mSYMBOLCON() throws RecognitionException {
@@ -2231,7 +2231,7 @@ public class WaebricLexer extends Lexer {
     // $ANTLR end "LAYOUT"
 
     public void mTokens() throws RecognitionException {
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:8: ( MARKUP_STATEMENT | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | COMMENT | SITE | END | SEMICOLON | PATH | STRCON | PRETEXT | POSTTEXT | MIDTEXT | TEXT | SYMBOLCON | NATCON | IDCON | COMMENTS | LAYOUT )
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:8: ( MARKUP_STATEMENT | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | COMMENT | SITE | END | SEMICOLON | PATH | STRCON | TEXT | PRETEXT | POSTTEXT | MIDTEXT | SYMBOLCON | NATCON | IDCON | COMMENTS | LAYOUT )
         int alt25=48;
         alt25 = dfa25.predict(input);
         switch (alt25) {
@@ -2509,30 +2509,30 @@ public class WaebricLexer extends Lexer {
                 }
                 break;
             case 40 :
-                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:258: PRETEXT
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:258: TEXT
+                {
+                mTEXT(); 
+
+                }
+                break;
+            case 41 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:263: PRETEXT
                 {
                 mPRETEXT(); 
 
                 }
                 break;
-            case 41 :
-                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:266: POSTTEXT
+            case 42 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:271: POSTTEXT
                 {
                 mPOSTTEXT(); 
 
                 }
                 break;
-            case 42 :
-                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:275: MIDTEXT
+            case 43 :
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:280: MIDTEXT
                 {
                 mMIDTEXT(); 
-
-                }
-                break;
-            case 43 :
-                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:1:283: TEXT
-                {
-                mTEXT(); 
 
                 }
                 break;
@@ -2578,7 +2578,7 @@ public class WaebricLexer extends Lexer {
 
 
     protected DFA2 dfa2 = new DFA2(this);
-    protected DFA12 dfa12 = new DFA12(this);
+    protected DFA9 dfa9 = new DFA9(this);
     protected DFA25 dfa25 = new DFA25(this);
     static final String DFA2_eotS =
         "\4\uffff";
@@ -2632,19 +2632,19 @@ public class WaebricLexer extends Lexer {
             return "()* loopback of 159:24: ( PATHELEMENT '/' )*";
         }
     }
-    static final String DFA12_eotS =
+    static final String DFA9_eotS =
         "\1\uffff\1\5\11\uffff";
-    static final String DFA12_eofS =
+    static final String DFA9_eofS =
         "\13\uffff";
-    static final String DFA12_minS =
+    static final String DFA9_minS =
         "\1\11\1\42\4\uffff\1\0\4\uffff";
-    static final String DFA12_maxS =
+    static final String DFA9_maxS =
         "\1\177\1\134\4\uffff\1\uffff\4\uffff";
-    static final String DFA12_acceptS =
+    static final String DFA9_acceptS =
         "\2\uffff\1\2\1\3\1\4\1\1\1\uffff\1\5\1\7\1\10\1\6";
-    static final String DFA12_specialS =
+    static final String DFA9_specialS =
         "\6\uffff\1\0\4\uffff}>";
-    static final String[] DFA12_transitionS = {
+    static final String[] DFA9_transitionS = {
             "\1\4\1\2\2\uffff\1\3\22\uffff\2\5\1\uffff\3\5\1\6\25\5\1\uffff"+
             "\37\5\1\1\43\5",
             "\1\7\71\uffff\1\7",
@@ -2660,57 +2660,57 @@ public class WaebricLexer extends Lexer {
             ""
     };
 
-    static final short[] DFA12_eot = DFA.unpackEncodedString(DFA12_eotS);
-    static final short[] DFA12_eof = DFA.unpackEncodedString(DFA12_eofS);
-    static final char[] DFA12_min = DFA.unpackEncodedStringToUnsignedChars(DFA12_minS);
-    static final char[] DFA12_max = DFA.unpackEncodedStringToUnsignedChars(DFA12_maxS);
-    static final short[] DFA12_accept = DFA.unpackEncodedString(DFA12_acceptS);
-    static final short[] DFA12_special = DFA.unpackEncodedString(DFA12_specialS);
-    static final short[][] DFA12_transition;
+    static final short[] DFA9_eot = DFA.unpackEncodedString(DFA9_eotS);
+    static final short[] DFA9_eof = DFA.unpackEncodedString(DFA9_eofS);
+    static final char[] DFA9_min = DFA.unpackEncodedStringToUnsignedChars(DFA9_minS);
+    static final char[] DFA9_max = DFA.unpackEncodedStringToUnsignedChars(DFA9_maxS);
+    static final short[] DFA9_accept = DFA.unpackEncodedString(DFA9_acceptS);
+    static final short[] DFA9_special = DFA.unpackEncodedString(DFA9_specialS);
+    static final short[][] DFA9_transition;
 
     static {
-        int numStates = DFA12_transitionS.length;
-        DFA12_transition = new short[numStates][];
+        int numStates = DFA9_transitionS.length;
+        DFA9_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA12_transition[i] = DFA.unpackEncodedString(DFA12_transitionS[i]);
+            DFA9_transition[i] = DFA.unpackEncodedString(DFA9_transitionS[i]);
         }
     }
 
-    class DFA12 extends DFA {
+    class DFA9 extends DFA {
 
-        public DFA12(BaseRecognizer recognizer) {
+        public DFA9(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 12;
-            this.eot = DFA12_eot;
-            this.eof = DFA12_eof;
-            this.min = DFA12_min;
-            this.max = DFA12_max;
-            this.accept = DFA12_accept;
-            this.special = DFA12_special;
-            this.transition = DFA12_transition;
+            this.decisionNumber = 9;
+            this.eot = DFA9_eot;
+            this.eof = DFA9_eof;
+            this.min = DFA9_min;
+            this.max = DFA9_max;
+            this.accept = DFA9_accept;
+            this.special = DFA9_special;
+            this.transition = DFA9_transition;
         }
         public String getDescription() {
-            return "173:10: fragment TEXTCHAR : (~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' ) | '\\n' | '\\r' | '\\t' | ESCQUOTE | AMP | CHARREF | ENTREF );";
+            return "169:10: fragment TEXTCHAR : (~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' ) | '\\n' | '\\r' | '\\t' | ESCQUOTE | AMP | CHARREF | ENTREF );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA12_6 = input.LA(1);
+                        int LA9_6 = input.LA(1);
 
                         s = -1;
-                        if ( (LA12_6=='#') ) {s = 8;}
+                        if ( (LA9_6=='#') ) {s = 8;}
 
-                        else if ( (LA12_6==':'||(LA12_6>='A' && LA12_6<='Z')||LA12_6=='_'||(LA12_6>='a' && LA12_6<='z')) ) {s = 9;}
+                        else if ( (LA9_6==':'||(LA9_6>='A' && LA9_6<='Z')||LA9_6=='_'||(LA9_6>='a' && LA9_6<='z')) ) {s = 9;}
 
-                        else if ( ((LA12_6>='\u0000' && LA12_6<='\"')||(LA12_6>='$' && LA12_6<='/')||(LA12_6>=';' && LA12_6<='@')||(LA12_6>='[' && LA12_6<='^')||LA12_6=='`'||(LA12_6>='{' && LA12_6<='\uFFFF')) ) {s = 10;}
+                        else if ( ((LA9_6>='\u0000' && LA9_6<='\"')||(LA9_6>='$' && LA9_6<='/')||(LA9_6>=';' && LA9_6<='@')||(LA9_6>='[' && LA9_6<='^')||LA9_6=='`'||(LA9_6>='{' && LA9_6<='\uFFFF')) ) {s = 10;}
 
                         if ( s>=0 ) return s;
                         break;
             }
             NoViableAltException nvae =
-                new NoViableAltException(getDescription(), 12, _s, input);
+                new NoViableAltException(getDescription(), 9, _s, input);
             error(nvae);
             throw nvae;
         }
@@ -2718,67 +2718,68 @@ public class WaebricLexer extends Lexer {
     static final String DFA25_eotS =
         "\1\uffff\1\46\1\uffff\1\46\4\uffff\1\54\11\uffff\5\46\3\uffff\2"+
         "\46\1\uffff\1\72\3\uffff\1\46\2\uffff\1\114\1\46\2\uffff\2\46\1"+
-        "\117\1\120\1\uffff\15\46\7\uffff\1\142\1\uffff\1\155\11\uffff\2"+
-        "\46\2\uffff\1\165\3\46\1\171\1\172\7\46\1\uffff\1\146\11\uffff\1"+
-        "\102\5\uffff\1\113\3\uffff\2\46\1\uffff\1\u00aa\1\u00ab\1\u00ac"+
-        "\2\uffff\1\u00ad\5\46\1\u00b3\2\uffff\1\155\3\uffff\1\146\4\uffff"+
-        "\1\146\6\uffff\1\142\1\155\3\uffff\1\142\1\146\5\uffff\1\112\6\uffff"+
-        "\1\113\2\46\4\uffff\1\u00cd\4\46\11\uffff\1\146\3\uffff\1\146\3"+
-        "\uffff\1\155\3\uffff\1\113\2\uffff\1\u00e3\1\u00e4\1\uffff\1\46"+
+        "\117\1\120\1\uffff\15\46\3\uffff\1\145\4\uffff\1\144\12\uffff\2"+
+        "\46\2\uffff\1\165\3\46\1\171\1\172\7\46\2\uffff\1\154\7\uffff\1"+
+        "\103\6\uffff\1\113\3\uffff\2\46\1\uffff\1\u00aa\1\u00ab\1\u00ac"+
+        "\2\uffff\1\u00ad\5\46\1\u00b3\2\uffff\1\145\6\uffff\1\154\6\uffff"+
+        "\1\144\1\145\3\uffff\1\144\1\154\2\uffff\1\154\4\uffff\1\113\6\uffff"+
+        "\1\112\2\46\4\uffff\1\u00cd\4\46\11\uffff\1\154\3\uffff\1\154\3"+
+        "\uffff\1\145\3\uffff\1\113\2\uffff\1\u00e3\1\u00e4\1\uffff\1\46"+
         "\1\uffff\1\u00e6\1\u00e7\23\uffff\1\u00f0\23\uffff";
     static final String DFA25_eofS =
         "\u00f9\uffff";
     static final String DFA25_minS =
         "\1\11\1\45\1\uffff\1\45\4\uffff\1\45\11\uffff\5\45\3\uffff\2\45"+
         "\1\uffff\1\45\2\11\1\uffff\1\45\2\uffff\2\45\2\uffff\4\45\1\uffff"+
-        "\15\45\1\uffff\5\11\1\0\1\40\1\uffff\1\0\5\11\1\0\3\uffff\2\45\2"+
-        "\uffff\15\45\4\11\1\uffff\1\11\1\0\1\11\1\uffff\2\40\5\0\2\11\1"+
-        "\60\1\55\1\0\2\45\1\uffff\3\45\2\uffff\7\45\3\11\1\60\1\55\2\11"+
-        "\3\40\1\11\17\0\2\60\1\55\1\11\10\0\2\45\4\uffff\5\45\1\uffff\1"+
-        "\11\2\60\1\55\1\11\1\40\1\11\2\0\2\11\2\0\2\11\2\0\1\60\1\11\2\0"+
-        "\2\11\2\45\1\uffff\1\45\1\uffff\2\45\1\11\1\60\17\11\2\uffff\1\45"+
-        "\2\uffff\10\11\1\uffff\10\11";
+        "\15\45\1\uffff\2\11\2\0\3\11\1\40\1\uffff\5\11\1\0\3\uffff\2\45"+
+        "\2\uffff\15\45\5\11\1\0\1\uffff\1\0\2\40\4\0\1\uffff\3\11\1\60\1"+
+        "\55\1\0\2\45\1\uffff\3\45\2\uffff\7\45\3\11\1\60\1\55\3\40\1\11"+
+        "\17\0\2\11\2\60\1\55\1\11\10\0\2\45\4\uffff\5\45\1\uffff\1\11\2"+
+        "\60\1\55\1\11\1\40\1\11\2\0\2\11\2\0\2\11\2\0\1\60\1\11\2\0\2\11"+
+        "\2\45\1\uffff\1\45\1\uffff\2\45\1\11\1\60\17\11\2\uffff\1\45\2\uffff"+
+        "\10\11\1\uffff\10\11";
     static final String DFA25_maxS =
         "\1\175\1\172\1\uffff\1\172\4\uffff\1\172\11\uffff\5\172\3\uffff"+
         "\2\172\1\uffff\1\172\1\uffff\1\177\1\uffff\1\172\2\uffff\2\172\2"+
-        "\uffff\4\172\1\uffff\15\172\1\uffff\4\177\3\uffff\1\uffff\1\0\5"+
-        "\177\1\uffff\3\uffff\2\172\2\uffff\15\172\4\uffff\1\uffff\1\177"+
-        "\1\uffff\1\177\1\uffff\6\uffff\1\0\2\177\1\170\1\172\1\uffff\2\172"+
-        "\1\uffff\3\172\2\uffff\7\172\1\uffff\2\177\1\170\1\172\2\177\23"+
-        "\uffff\1\146\1\73\1\172\1\177\10\uffff\2\172\4\uffff\5\172\1\uffff"+
-        "\1\uffff\1\146\1\73\1\172\1\177\4\uffff\2\177\6\uffff\1\146\1\177"+
-        "\2\uffff\2\177\2\172\1\uffff\1\172\1\uffff\2\172\1\uffff\1\146\1"+
-        "\177\1\uffff\4\177\4\uffff\5\177\2\uffff\1\172\2\uffff\1\uffff\3"+
-        "\177\2\uffff\2\177\1\uffff\1\uffff\1\177\1\uffff\1\177\4\uffff";
+        "\uffff\4\172\1\uffff\15\172\1\uffff\1\uffff\1\177\1\0\1\uffff\3"+
+        "\177\1\uffff\1\uffff\5\177\1\uffff\3\uffff\2\172\2\uffff\15\172"+
+        "\4\uffff\1\177\1\uffff\1\uffff\1\0\6\uffff\1\uffff\3\177\1\170\1"+
+        "\172\1\uffff\2\172\1\uffff\3\172\2\uffff\7\172\1\uffff\2\177\1\170"+
+        "\1\172\23\uffff\2\177\1\146\1\73\1\172\1\177\10\uffff\2\172\4\uffff"+
+        "\5\172\1\uffff\1\uffff\1\146\1\73\1\172\1\177\4\uffff\2\177\6\uffff"+
+        "\1\146\1\177\2\uffff\2\177\2\172\1\uffff\1\172\1\uffff\2\172\1\uffff"+
+        "\1\146\1\177\1\uffff\4\177\4\uffff\5\177\2\uffff\1\172\2\uffff\1"+
+        "\uffff\3\177\2\uffff\2\177\1\uffff\1\uffff\1\177\1\uffff\1\177\4"+
+        "\uffff";
     static final String DFA25_acceptS =
         "\2\uffff\1\3\1\uffff\1\5\1\6\1\7\1\10\1\uffff\1\12\1\13\1\14\1\15"+
         "\1\16\1\17\1\20\1\21\1\22\5\uffff\1\34\1\35\1\36\2\uffff\1\45\3"+
         "\uffff\1\54\1\uffff\1\57\1\60\2\uffff\1\56\1\46\4\uffff\1\11\15"+
-        "\uffff\1\55\7\uffff\1\47\7\uffff\1\52\1\51\1\1\2\uffff\1\24\1\30"+
-        "\21\uffff\1\50\3\uffff\1\53\16\uffff\1\23\3\uffff\1\44\1\27\57\uffff"+
+        "\uffff\1\55\10\uffff\1\47\6\uffff\1\53\1\52\1\1\2\uffff\1\24\1\30"+
+        "\23\uffff\1\51\7\uffff\1\50\10\uffff\1\23\3\uffff\1\44\1\27\57\uffff"+
         "\1\25\1\26\1\31\1\37\5\uffff\1\43\31\uffff\1\32\1\uffff\1\33\23"+
         "\uffff\1\2\1\4\1\uffff\1\40\1\41\10\uffff\1\42\10\uffff";
     static final String DFA25_specialS =
-        "\1\uffff\1\72\1\uffff\1\145\4\uffff\1\63\11\uffff\1\5\1\144\1\u0098"+
-        "\1\142\1\67\3\uffff\1\177\1\104\1\uffff\1\61\1\u00a0\2\uffff\1\105"+
-        "\2\uffff\1\106\1\156\2\uffff\1\2\1\u0094\1\u009c\1\170\1\uffff\1"+
-        "\u0082\1\175\1\27\1\77\1\152\1\111\1\u00a2\1\3\1\151\1\162\1\u008f"+
-        "\1\54\1\34\2\uffff\1\37\1\47\1\64\1\4\1\31\1\40\1\uffff\1\124\5"+
-        "\uffff\1\173\3\uffff\1\153\1\123\2\uffff\1\14\1\u008d\1\41\1\150"+
-        "\1\u008e\1\164\1\132\1\0\1\131\1\57\1\25\1\167\1\46\1\76\1\1\1\u008b"+
-        "\1\50\1\uffff\1\101\1\174\2\uffff\1\16\1\65\1\30\1\7\1\36\1\24\1"+
-        "\73\4\uffff\1\133\1\56\1\120\1\uffff\1\u009b\1\u0080\1\23\2\uffff"+
-        "\1\51\1\122\1\147\1\100\1\15\1\u0099\1\115\1\107\1\uffff\1\u0085"+
-        "\3\uffff\1\u0095\1\102\1\13\1\62\1\165\1\44\1\u009f\1\20\1\6\1\126"+
-        "\1\157\1\u0090\1\u009d\1\53\1\155\1\146\1\u008c\1\32\1\75\1\52\4"+
-        "\uffff\1\55\1\u0084\1\u00a3\1\160\1\21\1\70\1\116\1\114\1\74\1\66"+
-        "\4\uffff\1\u00a1\1\163\1\121\1\u0081\1\u0096\1\uffff\1\12\3\uffff"+
-        "\1\43\1\103\1\171\1\33\1\140\1\166\1\u0097\1\26\1\176\1\u0093\1"+
-        "\17\1\130\1\u0088\2\uffff\1\112\1\110\2\uffff\1\42\1\113\1\uffff"+
-        "\1\143\1\uffff\1\u009a\1\141\1\127\1\uffff\1\172\1\u009e\1\u008a"+
-        "\1\60\1\154\1\136\1\u0087\1\135\1\45\1\11\7\uffff\1\161\2\uffff"+
-        "\1\u0091\1\117\1\u0089\1\u0083\1\u0086\1\u0092\3\uffff\1\71\1\134"+
-        "\1\35\1\uffff\1\125\1\22\1\137\1\10}>";
+        "\1\uffff\1\100\1\uffff\1\144\4\uffff\1\72\11\uffff\1\12\1\142\1"+
+        "\u0094\1\140\1\75\3\uffff\1\177\1\111\1\uffff\1\66\1\u00a1\2\uffff"+
+        "\1\112\2\uffff\1\114\1\157\2\uffff\1\5\1\u0091\1\u009c\1\173\1\uffff"+
+        "\1\u0083\1\175\1\33\1\104\1\154\1\116\1\u00a3\1\7\1\152\1\161\1"+
+        "\u0090\1\61\1\43\1\uffff\1\47\1\uffff\1\37\1\u0087\1\u0084\1\6\1"+
+        "\u0088\1\153\6\uffff\1\u009f\3\uffff\1\155\1\130\2\uffff\1\22\1"+
+        "\u0089\1\50\1\147\1\u008f\1\163\1\134\1\0\1\133\1\65\1\31\1\172"+
+        "\1\56\1\36\1\150\1\u0099\1\135\1\u0092\1\145\1\uffff\1\123\1\76"+
+        "\1\1\1\30\1\106\1\115\1\113\6\uffff\1\3\1\64\1\124\1\uffff\1\u009a"+
+        "\1\u0080\1\26\2\uffff\1\60\1\127\1\146\1\105\1\23\1\u0095\1\121"+
+        "\1\45\1\uffff\1\21\2\uffff\1\u008d\1\13\1\131\1\73\1\11\1\32\1\14"+
+        "\1\u0081\1\42\1\103\1\40\1\27\1\166\1\u00a2\1\35\1\u009b\1\151\1"+
+        "\176\1\53\1\uffff\1\63\4\uffff\1\24\1\126\1\107\1\20\1\2\1\171\1"+
+        "\52\1\110\1\101\1\74\4\uffff\1\u009d\1\162\1\125\1\u0082\1\u0093"+
+        "\1\uffff\1\4\3\uffff\1\143\1\u008e\1\57\1\u0086\1\122\1\u0098\1"+
+        "\16\1\174\1\117\1\25\1\167\1\71\1\170\2\uffff\1\u008c\1\46\2\uffff"+
+        "\1\51\1\120\1\uffff\1\141\1\uffff\1\u0096\1\137\1\54\1\uffff\1\62"+
+        "\1\164\1\u008b\1\17\1\u009e\1\55\1\70\1\156\1\u0097\1\41\7\uffff"+
+        "\1\160\2\uffff\1\u00a0\1\34\1\u008a\1\10\1\67\1\15\3\uffff\1\165"+
+        "\1\132\1\u0085\1\uffff\1\44\1\136\1\102\1\77}>";
     static final String[] DFA25_transitionS = {
             "\2\43\1\uffff\2\43\22\uffff\1\43\1\27\1\36\1\5\1\6\1\10\1\30"+
             "\1\40\1\11\1\13\1\uffff\1\21\1\12\1\uffff\1\2\1\42\12\35\1\4"+
@@ -2823,8 +2824,8 @@ public class WaebricLexer extends Lexer {
             "\12\50\1\70\6\50",
             "",
             "\1\47\10\uffff\2\47\12\35\7\uffff\32\47\6\uffff\32\47",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\113\3\110\1\111"+
             "\25\110\1\112\37\110\1\104\43\110",
             "",
@@ -2868,21 +2869,21 @@ public class WaebricLexer extends Lexer {
             "\1\47\10\uffff\2\47\12\50\7\uffff\32\50\6\uffff\23\50\1\135"+
             "\6\50",
             "",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\137\3\143\1\144\25"+
-            "\143\1\142\37\143\1\136\21\143\1\140\5\143\1\141\13\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
-            "\40\154\2\152\1\151\1\147\14\152\12\102\1\150\6\152\32\150"+
-            "\1\152\1\153\2\152\1\150\1\152\32\150\uff85\152",
-            "\uffe0\102",
-            "",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\140\3\142\1\143"+
+            "\25\142\1\144\37\142\1\141\21\142\1\136\5\142\1\137\13\142",
             "\1\uffff",
+            "\40\153\2\151\1\150\1\146\14\151\12\103\1\147\6\151\32\147"+
+            "\1\151\1\152\2\151\1\147\1\151\32\147\uff85\151",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
+            "\uffe0\103",
+            "",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\157\3\110\1\111"+
             "\25\110\1\112\37\110\1\156\43\110",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\113\3\110\1\111"+
@@ -2927,42 +2928,42 @@ public class WaebricLexer extends Lexer {
             "\21\50",
             "\1\47\10\uffff\2\47\12\50\7\uffff\32\50\6\uffff\4\50\1\u0081"+
             "\25\50",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\u0084\3\77\1\100\25"+
-            "\77\1\101\37\77\1\u0083\4\77\1\u0082\36\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\u0084\3\73\1\76\25"+
+            "\73\1\102\37\73\1\u0083\4\73\1\u0082\36\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
+            "\43\153\1\u0085\14\153\12\uffff\1\u0086\6\153\32\u0086\4\153"+
+            "\1\u0086\1\153\32\u0086\uff85\153",
             "",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
-            "\43\154\1\u0085\14\154\12\uffff\1\u0086\6\154\32\u0086\4\154"+
-            "\1\u0086\1\154\32\u0086\uff85\154",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\u0088\3\143\1\144"+
-            "\25\143\1\142\37\143\1\u0087\43\143",
-            "",
-            "\20\102\12\u008a\76\102\1\u0089\uff87\102",
-            "\15\102\2\u008b\1\102\13\u008b\1\u008c\5\102\32\u008b\4\102"+
-            "\1\u008b\1\102\32\u008b\uff85\102",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0097\1\u0095"+
-            "\1\77\2\u0097\1\u0098\11\u0097\13\77\1\u0097\1\u0099\4\u0097"+
-            "\32\77\1\u0097\1\u0096\2\u0097\1\77\1\u0097\32\77\5\u0097\uff80"+
-            "\152",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u009a"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u009b\2\u0092\1\143\1\u0092\15\143\1\140\5"+
-            "\143\1\141\6\143\5\u0092\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
             "\1\uffff",
+            "\20\103\12\u0088\76\103\1\u0087\uff87\103",
+            "\15\103\2\u0089\1\103\13\u0089\1\u008a\5\103\32\u0089\4\103"+
+            "\1\u0089\1\103\32\u0089\uff85\103",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0095\1\u0093"+
+            "\1\73\2\u0095\1\u0096\11\u0095\13\73\1\u0095\1\u0097\4\u0095"+
+            "\32\73\1\u0095\1\u0094\2\u0095\1\73\1\u0095\32\73\5\u0095\uff80"+
+            "\151",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u0098"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u0099\2\u0090\1\142\1\u0090\15\142\1\136\5"+
+            "\142\1\137\6\142\5\u0090\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\u009b\3\142\1\143"+
+            "\25\142\1\144\37\142\1\u009a\43\142",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\157\3\110\1\111"+
             "\25\110\1\112\37\110\1\156\43\110",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\uffff\3\110\1\111"+
@@ -2970,8 +2971,8 @@ public class WaebricLexer extends Lexer {
             "\12\u009d\76\uffff\1\u009c",
             "\2\u009e\1\uffff\13\u009e\1\u009f\5\uffff\32\u009e\4\uffff"+
             "\1\u009e\1\uffff\32\u009e",
-            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a7"+
-            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a0\4\u00a5"+
+            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a0"+
+            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a7\4\u00a5"+
             "\32\110\1\u00a5\1\u00a1\2\u00a5\1\110\1\u00a5\32\110\5\u00a5"+
             "\uff80\162",
             "\1\47\10\uffff\2\47\12\50\7\uffff\32\50\6\uffff\13\50\1\u00a8"+
@@ -2996,121 +2997,121 @@ public class WaebricLexer extends Lexer {
             "\1\47\10\uffff\2\47\12\50\7\uffff\32\50\6\uffff\15\50\1\u00b2"+
             "\14\50",
             "\1\47\7\uffff\1\46\2\47\12\50\7\uffff\32\50\6\uffff\32\50",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\23\77"+
-            "\1\u00b4\1\77\1\101\37\77\1\73\43\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\137\3\143\1\144\25"+
-            "\143\1\142\37\143\1\136\21\143\1\140\5\143\1\141\13\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\23\73"+
+            "\1\u00b4\1\73\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\140\3\142\1\143"+
+            "\25\142\1\144\37\142\1\141\21\142\1\136\5\142\1\137\13\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
             "\12\u00b6\76\uffff\1\u00b5",
             "\2\u00b7\1\uffff\13\u00b7\1\u00b8\5\uffff\32\u00b7\4\uffff"+
             "\1\u00b7\1\uffff\32\u00b7",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\u0088\3\143\1\144"+
-            "\25\143\1\142\37\143\1\u0087\43\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\uffff\3\143\1\144"+
-            "\25\143\1\142\37\143\1\145\43\143",
-            "\20\102\12\u00b9\7\102\6\u00b9\32\102\6\u00b9\uff99\102",
-            "\20\102\12\u008a\1\102\1\u00ba\uffc4\102",
-            "\15\102\2\u008b\1\102\13\u008b\1\u008c\5\102\32\u008b\4\102"+
-            "\1\u008b\1\102\32\u008b\uff85\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u00bc"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u00bb\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\u00bd\2\u0092\1\u0093\11\u0092\12\143\1\u00be\1\u0092\1\u0094"+
-            "\4\u0092\32\u00be\1\u0092\1\u008e\2\u0092\1\u00be\1\u0092\32"+
-            "\u00be\5\u0092\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u00c0"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u00bf\2\u0092\1\143\1\u0092\15\143\1\140\5"+
-            "\143\1\141\6\143\5\u0092\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0097\1\u0095"+
-            "\1\77\2\u0097\1\u0098\11\u0097\13\77\1\u0097\1\u0099\4\u0097"+
-            "\32\77\1\u0097\1\u0096\2\u0097\1\77\1\u0097\32\77\5\u0097\uff80"+
-            "\152",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0097\1\u0095"+
-            "\1\u00c1\2\u0097\1\u0098\11\u0097\12\77\1\u00c2\1\u0097\1\u0099"+
-            "\4\u0097\32\u00c2\1\u0097\1\u0096\2\u0097\1\u00c2\1\u0097\32"+
-            "\u00c2\5\u0097\uff80\152",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0097\1\u0095"+
-            "\1\77\2\u0097\1\u0098\11\u0097\13\77\1\u0097\1\u0099\4\u0097"+
-            "\32\77\1\u0097\1\u0096\2\u0097\1\77\1\u0097\32\77\5\u0097\uff80"+
-            "\152",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0097\1\u0095"+
-            "\1\77\2\u0097\1\u0098\11\u0097\13\77\1\u0097\1\u0099\4\u0097"+
-            "\32\77\1\u0097\1\u0096\2\u0097\1\77\1\u0097\32\77\5\u0097\uff80"+
-            "\152",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0097\1\u00c4"+
-            "\1\77\2\u0097\1\u0098\11\u0097\13\77\1\u0097\1\u0099\4\u0097"+
-            "\32\77\1\u0097\1\u00c3\2\u0097\1\77\1\u0097\1\u0082\31\77\5"+
-            "\u0097\uff80\152",
+            "\20\103\12\u00b9\7\103\6\u00b9\32\103\6\u00b9\uff99\103",
+            "\20\103\12\u0088\1\103\1\u00ba\uffc4\103",
+            "\15\103\2\u0089\1\103\13\u0089\1\u008a\5\103\32\u0089\4\103"+
+            "\1\u0089\1\103\32\u0089\uff85\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u00bc"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u00bb\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\u00bd\2\u0090\1\u0091\11\u0090\12\142\1\u00be\1\u0090\1\u0092"+
+            "\4\u0090\32\u00be\1\u0090\1\u008c\2\u0090\1\u00be\1\u0090\32"+
+            "\u00be\5\u0090\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u00c0"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u00bf\2\u0090\1\142\1\u0090\15\142\1\136\5"+
+            "\142\1\137\6\142\5\u0090\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0095\1\u0093"+
+            "\1\73\2\u0095\1\u0096\11\u0095\13\73\1\u0095\1\u0097\4\u0095"+
+            "\32\73\1\u0095\1\u0094\2\u0095\1\73\1\u0095\32\73\5\u0095\uff80"+
+            "\151",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0095\1\u0093"+
+            "\1\u00c1\2\u0095\1\u0096\11\u0095\12\73\1\u00c2\1\u0095\1\u0097"+
+            "\4\u0095\32\u00c2\1\u0095\1\u0094\2\u0095\1\u00c2\1\u0095\32"+
+            "\u00c2\5\u0095\uff80\151",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0095\1\u0093"+
+            "\1\73\2\u0095\1\u0096\11\u0095\13\73\1\u0095\1\u0097\4\u0095"+
+            "\32\73\1\u0095\1\u0094\2\u0095\1\73\1\u0095\32\73\5\u0095\uff80"+
+            "\151",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0095\1\u0093"+
+            "\1\73\2\u0095\1\u0096\11\u0095\13\73\1\u0095\1\u0097\4\u0095"+
+            "\32\73\1\u0095\1\u0094\2\u0095\1\73\1\u0095\32\73\5\u0095\uff80"+
+            "\151",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0095\1\u00c4"+
+            "\1\73\2\u0095\1\u0096\11\u0095\13\73\1\u0095\1\u0097\4\u0095"+
+            "\32\73\1\u0095\1\u00c3\2\u0095\1\73\1\u0095\1\u0082\31\73\5"+
+            "\u0095\uff80\151",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\u009b\3\142\1\143"+
+            "\25\142\1\144\37\142\1\u009a\43\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\uffff\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
             "\12\u00c5\7\uffff\6\u00c5\32\uffff\6\u00c5",
             "\12\u009d\1\uffff\1\u00c6",
             "\2\u009e\1\uffff\13\u009e\1\u009f\5\uffff\32\u009e\4\uffff"+
             "\1\u009e\1\uffff\32\u009e",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\113\3\110\1\111"+
             "\25\110\1\112\37\110\1\104\43\110",
-            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a7"+
-            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a0\4\u00a5"+
+            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a0"+
+            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a7\4\u00a5"+
             "\32\110\1\u00a5\1\u00a1\2\u00a5\1\110\1\u00a5\32\110\5\u00a5"+
             "\uff80\162",
             "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00c8"+
-            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a0\4\u00a5"+
+            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a7\4\u00a5"+
             "\32\110\1\u00a5\1\u00c7\2\u00a5\1\110\1\u00a5\32\110\5\u00a5"+
             "\uff80\162",
-            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a7"+
-            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a0\4\u00a5"+
+            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a0"+
+            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a7\4\u00a5"+
             "\32\110\1\u00a5\1\u00a1\2\u00a5\1\110\1\u00a5\32\110\5\u00a5"+
             "\uff80\162",
-            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a7"+
-            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a0\4\u00a5"+
+            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a0"+
+            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a7\4\u00a5"+
             "\32\110\1\u00a5\1\u00a1\2\u00a5\1\110\1\u00a5\32\110\5\u00a5"+
             "\uff80\162",
-            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a7"+
-            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a0\4\u00a5"+
+            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a0"+
+            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a7\4\u00a5"+
             "\32\110\1\u00a5\1\u00a1\2\u00a5\1\110\1\u00a5\32\110\5\u00a5"+
             "\uff80\162",
-            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a7"+
-            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a0\4\u00a5"+
+            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a0"+
+            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a7\4\u00a5"+
             "\32\110\1\u00a5\1\u00a1\2\u00a5\1\110\1\u00a5\32\110\5\u00a5"+
             "\uff80\162",
-            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a7"+
-            "\1\u00c9\2\u00a5\1\u00a6\11\u00a5\12\110\1\u00ca\1\u00a5\1\u00a0"+
+            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a0"+
+            "\1\u00c9\2\u00a5\1\u00a6\11\u00a5\12\110\1\u00ca\1\u00a5\1\u00a7"+
             "\4\u00a5\32\u00ca\1\u00a5\1\u00a1\2\u00a5\1\u00ca\1\u00a5\32"+
             "\u00ca\5\u00a5\uff80\162",
-            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a7"+
-            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a0\4\u00a5"+
+            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a0"+
+            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a7\4\u00a5"+
             "\32\110\1\u00a5\1\u00a1\2\u00a5\1\110\1\u00a5\32\110\5\u00a5"+
             "\uff80\162",
             "\1\47\10\uffff\2\47\12\50\7\uffff\32\50\6\uffff\4\50\1\u00cb"+
@@ -3131,61 +3132,61 @@ public class WaebricLexer extends Lexer {
             "\1\47\10\uffff\2\47\12\50\7\uffff\32\50\6\uffff\6\50\1\u00d1"+
             "\23\50",
             "",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\11\77"+
-            "\12\u00d2\2\77\1\101\37\77\1\73\43\77\uff80\102",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\11\73"+
+            "\12\u00d2\2\73\1\102\37\73\1\74\43\73\uff80\103",
             "\12\u00d3\7\uffff\6\u00d3\32\uffff\6\u00d3",
             "\12\u00b6\1\uffff\1\u00d4",
             "\2\u00b7\1\uffff\13\u00b7\1\u00b8\5\uffff\32\u00b7\4\uffff"+
             "\1\u00b7\1\uffff\32\u00b7",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
-            "\20\102\12\u00b9\1\102\1\u00d5\5\102\6\u00b9\32\102\6\u00b9"+
-            "\uff99\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u00bc"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u00bb\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\11"+
-            "\143\12\u00d7\2\143\1\142\37\143\1\145\33\143\1\u00d6\7\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\6"+
-            "\143\2\u00d8\1\143\13\u00d8\1\u00d9\1\142\4\143\32\u00d8\1\143"+
-            "\1\145\2\143\1\u00d8\1\143\32\u00d8\5\143",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0097\1\u00c4"+
-            "\1\77\2\u0097\1\u0098\11\u0097\13\77\1\u0097\1\u0099\4\u0097"+
-            "\32\77\1\u0097\1\u00c3\2\u0097\1\77\1\u0097\1\u0082\31\77\5"+
-            "\u0097\uff80\152",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0097\1\u0095"+
-            "\1\77\2\u0097\1\u0098\11\u0097\13\77\1\u0097\1\u0099\4\u0097"+
-            "\32\77\1\u0097\1\u0096\2\u0097\1\77\1\u0097\32\77\5\u0097\uff80"+
-            "\152",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\11\77"+
-            "\12\u00db\2\77\1\101\37\77\1\73\33\77\1\u00da\7\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\6\77"+
-            "\2\u00dc\1\77\13\u00dc\1\u00dd\1\101\4\77\32\u00dc\1\77\1\73"+
-            "\2\77\1\u00dc\1\77\32\u00dc\5\77\uff80\102",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u00c0"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u00bf\2\u0092\1\143\1\u0092\15\143\1\140\5"+
-            "\143\1\141\6\143\5\u0092\uff80\154",
-            "\11\154\1\u0091\1\u008f\2\154\1\u0090\22\154\2\u0092\1\u008d"+
-            "\1\143\2\u0092\1\u0093\11\u0092\13\143\1\u0092\1\u0094\4\u0092"+
-            "\32\143\1\u0092\1\u008e\2\u0092\1\143\1\u0092\32\143\5\u0092"+
-            "\uff80\154",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
+            "\20\103\12\u00b9\1\103\1\u00d5\5\103\6\u00b9\32\103\6\u00b9"+
+            "\uff99\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u00bc"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u00bb\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\11\142\12\u00d7\2\142\1\144\37\142\1\155\33\142\1\u00d6\7\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\6\142\2\u00d8\1\142\13\u00d8\1\u00d9\1\144\4\142\32\u00d8\1"+
+            "\142\1\155\2\142\1\u00d8\1\142\32\u00d8\5\142",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0095\1\u00c4"+
+            "\1\73\2\u0095\1\u0096\11\u0095\13\73\1\u0095\1\u0097\4\u0095"+
+            "\32\73\1\u0095\1\u00c3\2\u0095\1\73\1\u0095\1\u0082\31\73\5"+
+            "\u0095\uff80\151",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0095\1\u0093"+
+            "\1\73\2\u0095\1\u0096\11\u0095\13\73\1\u0095\1\u0097\4\u0095"+
+            "\32\73\1\u0095\1\u0094\2\u0095\1\73\1\u0095\32\73\5\u0095\uff80"+
+            "\151",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\11\73"+
+            "\12\u00db\2\73\1\102\37\73\1\74\33\73\1\u00da\7\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\6\73"+
+            "\2\u00dc\1\73\13\u00dc\1\u00dd\1\102\4\73\32\u00dc\1\73\1\74"+
+            "\2\73\1\u00dc\1\73\32\u00dc\5\73\uff80\103",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u00c0"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u00bf\2\u0090\1\142\1\u0090\15\142\1\136\5"+
+            "\142\1\137\6\142\5\u0090\uff80\153",
+            "\11\153\1\u008f\1\u008d\2\153\1\u008e\22\153\2\u0090\1\u008b"+
+            "\1\142\2\u0090\1\u0091\11\u0090\13\142\1\u0090\1\u0092\4\u0090"+
+            "\32\142\1\u0090\1\u008c\2\u0090\1\142\1\u0090\32\142\5\u0090"+
+            "\uff80\153",
             "\12\u00c5\1\uffff\1\u00de\5\uffff\6\u00c5\32\uffff\6\u00c5",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\113\3\110\1\111"+
             "\25\110\1\112\37\110\1\104\43\110",
             "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00c8"+
-            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a0\4\u00a5"+
+            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a7\4\u00a5"+
             "\32\110\1\u00a5\1\u00c7\2\u00a5\1\110\1\u00a5\32\110\5\u00a5"+
             "\uff80\162",
-            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a7"+
-            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a0\4\u00a5"+
+            "\11\162\1\u00a4\1\u00a2\2\162\1\u00a3\22\162\2\u00a5\1\u00a0"+
+            "\1\110\2\u00a5\1\u00a6\11\u00a5\13\110\1\u00a5\1\u00a7\4\u00a5"+
             "\32\110\1\u00a5\1\u00a1\2\u00a5\1\110\1\u00a5\32\110\5\u00a5"+
             "\uff80\162",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\113\3\110\1\111"+
@@ -3201,33 +3202,33 @@ public class WaebricLexer extends Lexer {
             "",
             "\1\47\7\uffff\1\46\2\47\12\50\7\uffff\32\50\6\uffff\32\50",
             "\1\47\7\uffff\1\46\2\47\12\50\7\uffff\32\50\6\uffff\32\50",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\5\77\1\u00e8\35\77\uff80\102",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\5\73\1\u00e8\35\73\uff80\103",
             "\12\u00d3\1\uffff\1\u00e9\5\uffff\6\u00d3\32\uffff\6\u00d3",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\11"+
-            "\143\12\u00ea\2\143\1\142\4\143\6\u00ea\25\143\1\145\4\143\6"+
-            "\u00ea\31\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\11"+
-            "\143\12\u00d7\1\143\1\u00eb\1\142\37\143\1\145\43\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\6"+
-            "\143\2\u00d8\1\143\13\u00d8\1\u00d9\1\142\4\143\32\u00d8\1\143"+
-            "\1\145\2\143\1\u00d8\1\143\32\u00d8\5\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\11\77"+
-            "\12\u00ec\2\77\1\101\4\77\6\u00ec\25\77\1\73\4\77\6\u00ec\31"+
-            "\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\11\77"+
-            "\12\u00db\1\77\1\u00ed\1\101\37\77\1\73\43\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\6\77"+
-            "\2\u00dc\1\77\13\u00dc\1\u00dd\1\101\4\77\32\u00dc\1\77\1\73"+
-            "\2\77\1\u00dc\1\77\32\u00dc\5\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\11\142\12\u00ea\2\142\1\144\4\142\6\u00ea\25\142\1\155\4\142"+
+            "\6\u00ea\31\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\11\142\12\u00d7\1\142\1\u00eb\1\144\37\142\1\155\43\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\6\142\2\u00d8\1\142\13\u00d8\1\u00d9\1\144\4\142\32\u00d8\1"+
+            "\142\1\155\2\142\1\u00d8\1\142\32\u00d8\5\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\11\73"+
+            "\12\u00ec\2\73\1\102\4\73\6\u00ec\25\73\1\74\4\73\6\u00ec\31"+
+            "\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\11\73"+
+            "\12\u00db\1\73\1\u00ed\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\6\73"+
+            "\2\u00dc\1\73\13\u00dc\1\u00dd\1\102\4\73\32\u00dc\1\73\1\74"+
+            "\2\73\1\u00dc\1\73\32\u00dc\5\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\113\3\110\1\111"+
             "\25\110\1\112\37\110\1\104\43\110",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\113\3\110\1\111"+
@@ -3245,42 +3246,42 @@ public class WaebricLexer extends Lexer {
             "\1\47\7\uffff\1\46\2\47\12\50\7\uffff\32\50\6\uffff\32\50",
             "",
             "",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\23\77"+
-            "\1\u00f1\1\77\1\101\37\77\1\73\43\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\11"+
-            "\143\12\u00ea\1\143\1\u00f2\1\142\4\143\6\u00ea\25\143\1\145"+
-            "\4\143\6\u00ea\31\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\11\77"+
-            "\12\u00ec\1\77\1\u00f3\1\101\4\77\6\u00ec\25\77\1\73\4\77\6"+
-            "\u00ec\31\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\23\73"+
+            "\1\u00f1\1\73\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\11\142\12\u00ea\1\142\1\u00f2\1\144\4\142\6\u00ea\25\142\1"+
+            "\155\4\142\6\u00ea\31\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\11\73"+
+            "\12\u00ec\1\73\1\u00f3\1\102\4\73\6\u00ec\25\73\1\74\4\73\6"+
+            "\u00ec\31\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\113\3\110\1\111"+
             "\11\110\12\u00ee\1\110\1\u00f4\1\112\4\110\6\u00ee\25\110\1"+
             "\104\4\110\6\u00ee\31\110",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\113\3\110\1\111"+
             "\25\110\1\112\37\110\1\104\43\110",
             "",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\11\77"+
-            "\12\u00f5\2\77\1\101\37\77\1\73\43\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\143\1\146\3\143\1\144\25"+
-            "\143\1\142\37\143\1\145\43\143",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\11\73"+
+            "\12\u00f5\2\73\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\142\1\154\3\142\1\143"+
+            "\25\142\1\144\37\142\1\155\43\142",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103",
             "\1\107\1\105\2\uffff\1\106\22\uffff\2\110\1\113\3\110\1\111"+
             "\25\110\1\112\37\110\1\104\43\110",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\6\77\1\u00f6\34\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\23\77"+
-            "\1\u00f7\1\77\1\101\37\77\1\73\43\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\11\77"+
-            "\12\u00f8\2\77\1\101\37\77\1\73\43\77\uff80\102",
-            "\1\76\1\74\2\uffff\1\75\22\uffff\2\77\1\103\3\77\1\100\25\77"+
-            "\1\101\37\77\1\73\43\77\uff80\102"
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\6\73\1\u00f6\34\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\23\73"+
+            "\1\u00f7\1\73\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\11\73"+
+            "\12\u00f8\2\73\1\102\37\73\1\74\43\73\uff80\103",
+            "\1\101\1\77\2\uffff\1\100\22\uffff\2\73\1\75\3\73\1\76\25\73"+
+            "\1\102\37\73\1\74\43\73\uff80\103"
     };
 
     static final short[] DFA25_eot = DFA.unpackEncodedString(DFA25_eotS);
@@ -3313,7 +3314,7 @@ public class WaebricLexer extends Lexer {
             this.transition = DFA25_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( MARKUP_STATEMENT | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | COMMENT | SITE | END | SEMICOLON | PATH | STRCON | PRETEXT | POSTTEXT | MIDTEXT | TEXT | SYMBOLCON | NATCON | IDCON | COMMENTS | LAYOUT );";
+            return "1:1: Tokens : ( MARKUP_STATEMENT | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | COMMENT | SITE | END | SEMICOLON | PATH | STRCON | TEXT | PRETEXT | POSTTEXT | MIDTEXT | SYMBOLCON | NATCON | IDCON | COMMENTS | LAYOUT );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;
@@ -3339,37 +3340,106 @@ public class WaebricLexer extends Lexer {
                         if ( s>=0 ) return s;
                         break;
                     case 1 : 
-                        int LA25_95 = input.LA(1);
+                        int LA25_103 = input.LA(1);
 
                          
-                        int index25_95 = input.index();
+                        int index25_103 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_95=='\"') && ((( ! inString )||( inString )))) {s = 67;}
+                        if ( ((LA25_103>='-' && LA25_103<='.')||(LA25_103>='0' && LA25_103<=':')||(LA25_103>='A' && LA25_103<='Z')||LA25_103=='_'||(LA25_103>='a' && LA25_103<='z')) ) {s = 137;}
 
-                        else if ( (LA25_95=='\\') ) {s = 59;}
+                        else if ( (LA25_103==';') ) {s = 138;}
 
-                        else if ( (LA25_95=='\n') ) {s = 60;}
-
-                        else if ( (LA25_95=='\r') ) {s = 61;}
-
-                        else if ( (LA25_95=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_95>=' ' && LA25_95<='!')||(LA25_95>='#' && LA25_95<='%')||(LA25_95>='\'' && LA25_95<=';')||(LA25_95>='=' && LA25_95<='[')||(LA25_95>=']' && LA25_95<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_95=='&') ) {s = 64;}
-
-                        else if ( (LA25_95=='<') ) {s = 65;}
-
-                        else if ( ((LA25_95>='\u0080' && LA25_95<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                        else s = 102;
+                        else if ( ((LA25_103>=' ' && LA25_103<=',')||LA25_103=='/'||(LA25_103>='<' && LA25_103<='@')||(LA25_103>='[' && LA25_103<='^')||LA25_103=='`'||(LA25_103>='{' && LA25_103<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_95);
+                        input.seek(index25_103);
                         if ( s>=0 ) return s;
                         break;
                     case 2 : 
+                        int LA25_164 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_164=='\"') ) {s = 160;}
+
+                        else if ( (LA25_164=='\\') ) {s = 161;}
+
+                        else if ( (LA25_164=='\n') ) {s = 162;}
+
+                        else if ( (LA25_164=='\r') ) {s = 163;}
+
+                        else if ( (LA25_164=='\t') ) {s = 164;}
+
+                        else if ( ((LA25_164>=' ' && LA25_164<='!')||(LA25_164>='$' && LA25_164<='%')||(LA25_164>='\'' && LA25_164<='/')||LA25_164==';'||(LA25_164>='=' && LA25_164<='@')||LA25_164=='['||(LA25_164>=']' && LA25_164<='^')||LA25_164=='`'||(LA25_164>='{' && LA25_164<='\u007F')) ) {s = 165;}
+
+                        else if ( (LA25_164=='&') ) {s = 166;}
+
+                        else if ( (LA25_164=='#'||(LA25_164>='0' && LA25_164<=':')||(LA25_164>='A' && LA25_164<='Z')||LA25_164=='_'||(LA25_164>='a' && LA25_164<='z')) ) {s = 72;}
+
+                        else if ( (LA25_164=='<') ) {s = 167;}
+
+                        else if ( ((LA25_164>='\u0000' && LA25_164<='\b')||(LA25_164>='\u000B' && LA25_164<='\f')||(LA25_164>='\u000E' && LA25_164<='\u001F')||(LA25_164>='\u0080' && LA25_164<='\uFFFF')) ) {s = 114;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 3 : 
+                        int LA25_114 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_114=='\"') ) {s = 160;}
+
+                        else if ( (LA25_114=='\\') ) {s = 161;}
+
+                        else if ( (LA25_114=='\n') ) {s = 162;}
+
+                        else if ( (LA25_114=='\r') ) {s = 163;}
+
+                        else if ( (LA25_114=='\t') ) {s = 164;}
+
+                        else if ( ((LA25_114>=' ' && LA25_114<='!')||(LA25_114>='$' && LA25_114<='%')||(LA25_114>='\'' && LA25_114<='/')||LA25_114==';'||(LA25_114>='=' && LA25_114<='@')||LA25_114=='['||(LA25_114>=']' && LA25_114<='^')||LA25_114=='`'||(LA25_114>='{' && LA25_114<='\u007F')) ) {s = 165;}
+
+                        else if ( (LA25_114=='&') ) {s = 166;}
+
+                        else if ( (LA25_114=='#'||(LA25_114>='0' && LA25_114<=':')||(LA25_114>='A' && LA25_114<='Z')||LA25_114=='_'||(LA25_114>='a' && LA25_114<='z')) ) {s = 72;}
+
+                        else if ( (LA25_114=='<') ) {s = 167;}
+
+                        else if ( ((LA25_114>='\u0000' && LA25_114<='\b')||(LA25_114>='\u000B' && LA25_114<='\f')||(LA25_114>='\u000E' && LA25_114<='\u001F')||(LA25_114>='\u0080' && LA25_114<='\uFFFF')) ) {s = 114;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 4 : 
+                        int LA25_180 = input.LA(1);
+
+                         
+                        int index25_180 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_180=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_180=='\\') ) {s = 60;}
+
+                        else if ( (LA25_180=='\n') ) {s = 63;}
+
+                        else if ( (LA25_180=='\r') ) {s = 64;}
+
+                        else if ( (LA25_180=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_180>='0' && LA25_180<='9')) ) {s = 210;}
+
+                        else if ( (LA25_180=='&') ) {s = 62;}
+
+                        else if ( (LA25_180=='<') ) {s = 66;}
+
+                        else if ( ((LA25_180>='\u0080' && LA25_180<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                        else if ( ((LA25_180>=' ' && LA25_180<='!')||(LA25_180>='#' && LA25_180<='%')||(LA25_180>='\'' && LA25_180<='/')||(LA25_180>=':' && LA25_180<=';')||(LA25_180>='=' && LA25_180<='[')||(LA25_180>=']' && LA25_180<='\u007F')) ) {s = 59;}
+
+                         
+                        input.seek(index25_180);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 5 : 
                         int LA25_40 = input.LA(1);
 
                          
@@ -3386,7 +3456,34 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_40);
                         if ( s>=0 ) return s;
                         break;
-                    case 3 : 
+                    case 6 : 
+                        int LA25_64 = input.LA(1);
+
+                         
+                        int index25_64 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_64=='\"') && (( ! inString ))) {s = 108;}
+
+                        else if ( (LA25_64=='\\') ) {s = 109;}
+
+                        else if ( (LA25_64=='\n') ) {s = 63;}
+
+                        else if ( (LA25_64=='\r') ) {s = 64;}
+
+                        else if ( (LA25_64=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_64>=' ' && LA25_64<='!')||(LA25_64>='#' && LA25_64<='%')||(LA25_64>='\'' && LA25_64<=';')||(LA25_64>='=' && LA25_64<='[')||(LA25_64>=']' && LA25_64<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_64=='&') ) {s = 99;}
+
+                        else if ( (LA25_64=='<') ) {s = 100;}
+
+                         
+                        input.seek(index25_64);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 7 : 
                         int LA25_52 = input.LA(1);
 
                          
@@ -3405,36 +3502,67 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_52);
                         if ( s>=0 ) return s;
                         break;
-                    case 4 : 
-                        int LA25_63 = input.LA(1);
+                    case 8 : 
+                        int LA25_235 = input.LA(1);
 
                          
-                        int index25_63 = input.index();
+                        int index25_235 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_63=='<') ) {s = 65;}
+                        if ( (LA25_235=='\"') && (( ! inString ))) {s = 108;}
 
-                        else if ( (LA25_63=='\\') ) {s = 59;}
+                        else if ( (LA25_235=='\\') ) {s = 109;}
 
-                        else if ( (LA25_63=='\n') ) {s = 60;}
+                        else if ( (LA25_235=='\n') ) {s = 63;}
 
-                        else if ( (LA25_63=='\r') ) {s = 61;}
+                        else if ( (LA25_235=='\r') ) {s = 64;}
 
-                        else if ( (LA25_63=='\t') ) {s = 62;}
+                        else if ( (LA25_235=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_63>=' ' && LA25_63<='!')||(LA25_63>='#' && LA25_63<='%')||(LA25_63>='\'' && LA25_63<=';')||(LA25_63>='=' && LA25_63<='[')||(LA25_63>=']' && LA25_63<='\u007F')) ) {s = 63;}
+                        else if ( ((LA25_235>=' ' && LA25_235<='!')||(LA25_235>='#' && LA25_235<='%')||(LA25_235>='\'' && LA25_235<=';')||(LA25_235>='=' && LA25_235<='[')||(LA25_235>=']' && LA25_235<='\u007F')) ) {s = 98;}
 
-                        else if ( (LA25_63=='&') ) {s = 64;}
+                        else if ( (LA25_235=='&') ) {s = 99;}
 
-                        else if ( (LA25_63=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_63>='\u0080' && LA25_63<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( (LA25_235=='<') ) {s = 100;}
 
                          
-                        input.seek(index25_63);
+                        input.seek(index25_235);
                         if ( s>=0 ) return s;
                         break;
-                    case 5 : 
+                    case 9 : 
+                        int LA25_139 = input.LA(1);
+
+                         
+                        int index25_139 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_139=='\"') ) {s = 139;}
+
+                        else if ( (LA25_139=='\\') ) {s = 140;}
+
+                        else if ( (LA25_139=='\n') ) {s = 141;}
+
+                        else if ( (LA25_139=='\r') ) {s = 142;}
+
+                        else if ( (LA25_139=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_139>=' ' && LA25_139<='!')||(LA25_139>='$' && LA25_139<='%')||(LA25_139>='\'' && LA25_139<='/')||LA25_139==';'||(LA25_139>='=' && LA25_139<='@')||LA25_139=='['||(LA25_139>=']' && LA25_139<='^')||LA25_139=='`'||(LA25_139>='{' && LA25_139<='\u007F')) ) {s = 144;}
+
+                        else if ( (LA25_139=='&') ) {s = 145;}
+
+                        else if ( (LA25_139=='#'||(LA25_139>='0' && LA25_139<=':')||(LA25_139>='A' && LA25_139<='Z')||LA25_139=='_'||(LA25_139>='a' && LA25_139<='z')) ) {s = 98;}
+
+                        else if ( (LA25_139=='<') ) {s = 146;}
+
+                        else if ( ((LA25_139>='\u0000' && LA25_139<='\b')||(LA25_139>='\u000B' && LA25_139<='\f')||(LA25_139>='\u000E' && LA25_139<='\u001F')||(LA25_139>='\u0080' && LA25_139<='\uFFFF')) ) {s = 107;}
+
+                        else s = 108;
+
+                         
+                        input.seek(index25_139);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 10 : 
                         int LA25_18 = input.LA(1);
 
                          
@@ -3453,167 +3581,196 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_18);
                         if ( s>=0 ) return s;
                         break;
-                    case 6 : 
-                        int LA25_144 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_144=='\"') ) {s = 141;}
-
-                        else if ( (LA25_144=='\\') ) {s = 142;}
-
-                        else if ( (LA25_144=='\n') ) {s = 143;}
-
-                        else if ( (LA25_144=='\r') ) {s = 144;}
-
-                        else if ( (LA25_144=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_144>=' ' && LA25_144<='!')||(LA25_144>='$' && LA25_144<='%')||(LA25_144>='\'' && LA25_144<='/')||LA25_144==';'||(LA25_144>='=' && LA25_144<='@')||LA25_144=='['||(LA25_144>=']' && LA25_144<='^')||LA25_144=='`'||(LA25_144>='{' && LA25_144<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_144=='&') ) {s = 147;}
-
-                        else if ( (LA25_144=='#'||(LA25_144>='0' && LA25_144<=':')||(LA25_144>='A' && LA25_144<='Z')||LA25_144=='_'||(LA25_144>='a' && LA25_144<='z')) ) {s = 99;}
-
-                        else if ( (LA25_144=='<') ) {s = 148;}
-
-                        else if ( ((LA25_144>='\u0000' && LA25_144<='\b')||(LA25_144>='\u000B' && LA25_144<='\f')||(LA25_144>='\u000E' && LA25_144<='\u001F')||(LA25_144>='\u0080' && LA25_144<='\uFFFF')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 7 : 
-                        int LA25_106 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_106=='\"') ) {s = 149;}
-
-                        else if ( (LA25_106=='\\') ) {s = 150;}
-
-                        else if ( (LA25_106=='\n') ) {s = 143;}
-
-                        else if ( (LA25_106=='\r') ) {s = 144;}
-
-                        else if ( (LA25_106=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_106>=' ' && LA25_106<='!')||(LA25_106>='$' && LA25_106<='%')||(LA25_106>='\'' && LA25_106<='/')||LA25_106==';'||(LA25_106>='=' && LA25_106<='@')||LA25_106=='['||(LA25_106>=']' && LA25_106<='^')||LA25_106=='`'||(LA25_106>='{' && LA25_106<='\u007F')) ) {s = 151;}
-
-                        else if ( (LA25_106=='&') ) {s = 152;}
-
-                        else if ( (LA25_106=='#'||(LA25_106>='0' && LA25_106<=':')||(LA25_106>='A' && LA25_106<='Z')||LA25_106=='_'||(LA25_106>='a' && LA25_106<='z')) ) {s = 63;}
-
-                        else if ( (LA25_106=='<') ) {s = 153;}
-
-                        else if ( ((LA25_106>='\u0080' && LA25_106<='\uFFFF')) ) {s = 106;}
-
-                        else if ( ((LA25_106>='\u0000' && LA25_106<='\b')||(LA25_106>='\u000B' && LA25_106<='\f')||(LA25_106>='\u000E' && LA25_106<='\u001F')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 8 : 
-                        int LA25_248 = input.LA(1);
-
-                         
-                        int index25_248 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_248=='<') ) {s = 65;}
-
-                        else if ( (LA25_248=='\\') ) {s = 59;}
-
-                        else if ( (LA25_248=='\n') ) {s = 60;}
-
-                        else if ( (LA25_248=='\r') ) {s = 61;}
-
-                        else if ( (LA25_248=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_248>=' ' && LA25_248<='!')||(LA25_248>='#' && LA25_248<='%')||(LA25_248>='\'' && LA25_248<=';')||(LA25_248>='=' && LA25_248<='[')||(LA25_248>=']' && LA25_248<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_248=='&') ) {s = 64;}
-
-                        else if ( (LA25_248=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_248>='\u0080' && LA25_248<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_248);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 9 : 
-                        int LA25_221 = input.LA(1);
-
-                         
-                        int index25_221 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_221=='<') ) {s = 65;}
-
-                        else if ( (LA25_221=='\\') ) {s = 59;}
-
-                        else if ( (LA25_221=='\n') ) {s = 60;}
-
-                        else if ( (LA25_221=='\r') ) {s = 61;}
-
-                        else if ( (LA25_221=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_221>=' ' && LA25_221<='!')||(LA25_221>='#' && LA25_221<='%')||(LA25_221>='\'' && LA25_221<=';')||(LA25_221>='=' && LA25_221<='[')||(LA25_221>=']' && LA25_221<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_221=='&') ) {s = 64;}
-
-                        else if ( (LA25_221=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_221>='\u0080' && LA25_221<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_221);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 10 : 
-                        int LA25_180 = input.LA(1);
-
-                         
-                        int index25_180 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_180=='<') ) {s = 65;}
-
-                        else if ( (LA25_180=='\\') ) {s = 59;}
-
-                        else if ( (LA25_180=='\n') ) {s = 60;}
-
-                        else if ( (LA25_180=='\r') ) {s = 61;}
-
-                        else if ( (LA25_180=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_180>='0' && LA25_180<='9')) ) {s = 210;}
-
-                        else if ( (LA25_180=='&') ) {s = 64;}
-
-                        else if ( (LA25_180=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_180>='\u0080' && LA25_180<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                        else if ( ((LA25_180>=' ' && LA25_180<='!')||(LA25_180>='#' && LA25_180<='%')||(LA25_180>='\'' && LA25_180<='/')||(LA25_180>=':' && LA25_180<=';')||(LA25_180>='=' && LA25_180<='[')||(LA25_180>=']' && LA25_180<='\u007F')) ) {s = 63;}
-
-                         
-                        input.seek(index25_180);
-                        if ( s>=0 ) return s;
-                        break;
                     case 11 : 
-                        int LA25_138 = input.LA(1);
+                        int LA25_136 = input.LA(1);
 
                          
-                        int index25_138 = input.index();
+                        int index25_136 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_138==';') ) {s = 186;}
+                        if ( (LA25_136==';') ) {s = 186;}
 
-                        else if ( ((LA25_138>='0' && LA25_138<='9')) ) {s = 138;}
+                        else if ( ((LA25_136>='0' && LA25_136<='9')) ) {s = 136;}
 
-                        else if ( ((LA25_138>=' ' && LA25_138<='/')||LA25_138==':'||(LA25_138>='<' && LA25_138<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( ((LA25_136>=' ' && LA25_136<='/')||LA25_136==':'||(LA25_136>='<' && LA25_136<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_138);
+                        input.seek(index25_136);
                         if ( s>=0 ) return s;
                         break;
                     case 12 : 
+                        int LA25_141 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_141=='\"') ) {s = 139;}
+
+                        else if ( (LA25_141=='\\') ) {s = 140;}
+
+                        else if ( (LA25_141=='\n') ) {s = 141;}
+
+                        else if ( (LA25_141=='\r') ) {s = 142;}
+
+                        else if ( (LA25_141=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_141>=' ' && LA25_141<='!')||(LA25_141>='$' && LA25_141<='%')||(LA25_141>='\'' && LA25_141<='/')||LA25_141==';'||(LA25_141>='=' && LA25_141<='@')||LA25_141=='['||(LA25_141>=']' && LA25_141<='^')||LA25_141=='`'||(LA25_141>='{' && LA25_141<='\u007F')) ) {s = 144;}
+
+                        else if ( (LA25_141=='&') ) {s = 145;}
+
+                        else if ( (LA25_141=='#'||(LA25_141>='0' && LA25_141<=':')||(LA25_141>='A' && LA25_141<='Z')||LA25_141=='_'||(LA25_141>='a' && LA25_141<='z')) ) {s = 98;}
+
+                        else if ( (LA25_141=='<') ) {s = 146;}
+
+                        else if ( ((LA25_141>='\u0000' && LA25_141<='\b')||(LA25_141>='\u000B' && LA25_141<='\f')||(LA25_141>='\u000E' && LA25_141<='\u001F')||(LA25_141>='\u0080' && LA25_141<='\uFFFF')) ) {s = 107;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 13 : 
+                        int LA25_237 = input.LA(1);
+
+                         
+                        int index25_237 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_237=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_237=='\\') ) {s = 60;}
+
+                        else if ( (LA25_237=='\n') ) {s = 63;}
+
+                        else if ( (LA25_237=='\r') ) {s = 64;}
+
+                        else if ( (LA25_237=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_237>=' ' && LA25_237<='!')||(LA25_237>='#' && LA25_237<='%')||(LA25_237>='\'' && LA25_237<=';')||(LA25_237>='=' && LA25_237<='[')||(LA25_237>=']' && LA25_237<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_237=='&') ) {s = 62;}
+
+                        else if ( (LA25_237=='<') ) {s = 66;}
+
+                        else if ( ((LA25_237>='\u0080' && LA25_237<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_237);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 14 : 
+                        int LA25_190 = input.LA(1);
+
+                         
+                        int index25_190 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( ((LA25_190>='-' && LA25_190<='.')||(LA25_190>='0' && LA25_190<=':')||(LA25_190>='A' && LA25_190<='Z')||LA25_190=='_'||(LA25_190>='a' && LA25_190<='z')) ) {s = 216;}
+
+                        else if ( (LA25_190==';') ) {s = 217;}
+
+                        else if ( (LA25_190=='\"') && (( ! inString ))) {s = 108;}
+
+                        else if ( (LA25_190=='\\') ) {s = 109;}
+
+                        else if ( (LA25_190=='\n') ) {s = 63;}
+
+                        else if ( (LA25_190=='\r') ) {s = 64;}
+
+                        else if ( (LA25_190=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_190>=' ' && LA25_190<='!')||(LA25_190>='#' && LA25_190<='%')||(LA25_190>='\'' && LA25_190<=',')||LA25_190=='/'||(LA25_190>='=' && LA25_190<='@')||LA25_190=='['||(LA25_190>=']' && LA25_190<='^')||LA25_190=='`'||(LA25_190>='{' && LA25_190<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_190=='&') ) {s = 99;}
+
+                        else if ( (LA25_190=='<') ) {s = 100;}
+
+                         
+                        input.seek(index25_190);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 15 : 
+                        int LA25_215 = input.LA(1);
+
+                         
+                        int index25_215 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_215==';') ) {s = 235;}
+
+                        else if ( ((LA25_215>='0' && LA25_215<='9')) ) {s = 215;}
+
+                        else if ( (LA25_215=='\"') && (( ! inString ))) {s = 108;}
+
+                        else if ( (LA25_215=='\\') ) {s = 109;}
+
+                        else if ( (LA25_215=='\n') ) {s = 63;}
+
+                        else if ( (LA25_215=='\r') ) {s = 64;}
+
+                        else if ( (LA25_215=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_215>=' ' && LA25_215<='!')||(LA25_215>='#' && LA25_215<='%')||(LA25_215>='\'' && LA25_215<='/')||LA25_215==':'||(LA25_215>='=' && LA25_215<='[')||(LA25_215>=']' && LA25_215<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_215=='&') ) {s = 99;}
+
+                        else if ( (LA25_215=='<') ) {s = 100;}
+
+                         
+                        input.seek(index25_215);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 16 : 
+                        int LA25_163 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_163=='\"') ) {s = 160;}
+
+                        else if ( (LA25_163=='\\') ) {s = 161;}
+
+                        else if ( (LA25_163=='\n') ) {s = 162;}
+
+                        else if ( (LA25_163=='\r') ) {s = 163;}
+
+                        else if ( (LA25_163=='\t') ) {s = 164;}
+
+                        else if ( ((LA25_163>=' ' && LA25_163<='!')||(LA25_163>='$' && LA25_163<='%')||(LA25_163>='\'' && LA25_163<='/')||LA25_163==';'||(LA25_163>='=' && LA25_163<='@')||LA25_163=='['||(LA25_163>=']' && LA25_163<='^')||LA25_163=='`'||(LA25_163>='{' && LA25_163<='\u007F')) ) {s = 165;}
+
+                        else if ( (LA25_163=='&') ) {s = 166;}
+
+                        else if ( (LA25_163=='#'||(LA25_163>='0' && LA25_163<=':')||(LA25_163>='A' && LA25_163<='Z')||LA25_163=='_'||(LA25_163>='a' && LA25_163<='z')) ) {s = 72;}
+
+                        else if ( (LA25_163=='<') ) {s = 167;}
+
+                        else if ( ((LA25_163>='\u0000' && LA25_163<='\b')||(LA25_163>='\u000B' && LA25_163<='\f')||(LA25_163>='\u000E' && LA25_163<='\u001F')||(LA25_163>='\u0080' && LA25_163<='\uFFFF')) ) {s = 114;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 17 : 
+                        int LA25_132 = input.LA(1);
+
+                         
+                        int index25_132 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_132=='\"') && (( ! inString ))) {s = 108;}
+
+                        else if ( (LA25_132=='\\') ) {s = 109;}
+
+                        else if ( (LA25_132=='\n') ) {s = 63;}
+
+                        else if ( (LA25_132=='\r') ) {s = 64;}
+
+                        else if ( (LA25_132=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_132>=' ' && LA25_132<='!')||(LA25_132>='#' && LA25_132<='%')||(LA25_132>='\'' && LA25_132<=';')||(LA25_132>='=' && LA25_132<='[')||(LA25_132>=']' && LA25_132<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_132=='&') ) {s = 99;}
+
+                        else if ( (LA25_132=='<') ) {s = 100;}
+
+                        else s = 101;
+
+                         
+                        input.seek(index25_132);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 18 : 
                         int LA25_81 = input.LA(1);
 
                          
@@ -3632,7 +3789,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_81);
                         if ( s>=0 ) return s;
                         break;
-                    case 13 : 
+                    case 19 : 
                         int LA25_127 = input.LA(1);
 
                          
@@ -3651,140 +3808,68 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_127);
                         if ( s>=0 ) return s;
                         break;
-                    case 14 : 
-                        int LA25_103 = input.LA(1);
+                    case 20 : 
+                        int LA25_160 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_160=='\"') ) {s = 160;}
+
+                        else if ( (LA25_160=='\\') ) {s = 161;}
+
+                        else if ( (LA25_160=='\n') ) {s = 162;}
+
+                        else if ( (LA25_160=='\r') ) {s = 163;}
+
+                        else if ( (LA25_160=='\t') ) {s = 164;}
+
+                        else if ( ((LA25_160>=' ' && LA25_160<='!')||(LA25_160>='$' && LA25_160<='%')||(LA25_160>='\'' && LA25_160<='/')||LA25_160==';'||(LA25_160>='=' && LA25_160<='@')||LA25_160=='['||(LA25_160>=']' && LA25_160<='^')||LA25_160=='`'||(LA25_160>='{' && LA25_160<='\u007F')) ) {s = 165;}
+
+                        else if ( (LA25_160=='&') ) {s = 166;}
+
+                        else if ( (LA25_160=='#'||(LA25_160>='0' && LA25_160<=':')||(LA25_160>='A' && LA25_160<='Z')||LA25_160=='_'||(LA25_160>='a' && LA25_160<='z')) ) {s = 72;}
+
+                        else if ( (LA25_160=='<') ) {s = 167;}
+
+                        else if ( ((LA25_160>='\u0000' && LA25_160<='\b')||(LA25_160>='\u000B' && LA25_160<='\f')||(LA25_160>='\u000E' && LA25_160<='\u001F')||(LA25_160>='\u0080' && LA25_160<='\uFFFF')) ) {s = 114;}
+
+                        else s = 75;
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 21 : 
+                        int LA25_193 = input.LA(1);
 
                          
-                        int index25_103 = input.index();
+                        int index25_193 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_103=='x') ) {s = 137;}
+                        if ( (LA25_193=='x') ) {s = 218;}
 
-                        else if ( ((LA25_103>='0' && LA25_103<='9')) ) {s = 138;}
+                        else if ( ((LA25_193>='0' && LA25_193<='9')) ) {s = 219;}
 
-                        else if ( ((LA25_103>=' ' && LA25_103<='/')||(LA25_103>=':' && LA25_103<='w')||(LA25_103>='y' && LA25_103<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( (LA25_193=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                         
-                        input.seek(index25_103);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 15 : 
-                        int LA25_194 = input.LA(1);
+                        else if ( (LA25_193=='\\') ) {s = 60;}
 
-                         
-                        int index25_194 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_194=='<') ) {s = 65;}
+                        else if ( (LA25_193=='\n') ) {s = 63;}
 
-                        else if ( (LA25_194=='\\') ) {s = 59;}
+                        else if ( (LA25_193=='\r') ) {s = 64;}
 
-                        else if ( (LA25_194=='\n') ) {s = 60;}
+                        else if ( (LA25_193=='\t') ) {s = 65;}
 
-                        else if ( (LA25_194=='\r') ) {s = 61;}
+                        else if ( ((LA25_193>=' ' && LA25_193<='!')||(LA25_193>='#' && LA25_193<='%')||(LA25_193>='\'' && LA25_193<='/')||(LA25_193>=':' && LA25_193<=';')||(LA25_193>='=' && LA25_193<='[')||(LA25_193>=']' && LA25_193<='w')||(LA25_193>='y' && LA25_193<='\u007F')) ) {s = 59;}
 
-                        else if ( (LA25_194=='\t') ) {s = 62;}
+                        else if ( (LA25_193=='&') ) {s = 62;}
 
-                        else if ( ((LA25_194>='-' && LA25_194<='.')||(LA25_194>='0' && LA25_194<=':')||(LA25_194>='A' && LA25_194<='Z')||LA25_194=='_'||(LA25_194>='a' && LA25_194<='z')) ) {s = 220;}
+                        else if ( (LA25_193=='<') ) {s = 66;}
 
-                        else if ( (LA25_194=='&') ) {s = 64;}
-
-                        else if ( (LA25_194==';') ) {s = 221;}
-
-                        else if ( ((LA25_194>=' ' && LA25_194<='!')||(LA25_194>='#' && LA25_194<='%')||(LA25_194>='\'' && LA25_194<=',')||LA25_194=='/'||(LA25_194>='=' && LA25_194<='@')||LA25_194=='['||(LA25_194>=']' && LA25_194<='^')||LA25_194=='`'||(LA25_194>='{' && LA25_194<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_194=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_194>='\u0080' && LA25_194<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( ((LA25_193>='\u0080' && LA25_193<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_194);
+                        input.seek(index25_193);
                         if ( s>=0 ) return s;
                         break;
-                    case 16 : 
-                        int LA25_143 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_143=='\"') ) {s = 141;}
-
-                        else if ( (LA25_143=='\\') ) {s = 142;}
-
-                        else if ( (LA25_143=='\n') ) {s = 143;}
-
-                        else if ( (LA25_143=='\r') ) {s = 144;}
-
-                        else if ( (LA25_143=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_143>=' ' && LA25_143<='!')||(LA25_143>='$' && LA25_143<='%')||(LA25_143>='\'' && LA25_143<='/')||LA25_143==';'||(LA25_143>='=' && LA25_143<='@')||LA25_143=='['||(LA25_143>=']' && LA25_143<='^')||LA25_143=='`'||(LA25_143>='{' && LA25_143<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_143=='&') ) {s = 147;}
-
-                        else if ( (LA25_143=='#'||(LA25_143>='0' && LA25_143<=':')||(LA25_143>='A' && LA25_143<='Z')||LA25_143=='_'||(LA25_143>='a' && LA25_143<='z')) ) {s = 99;}
-
-                        else if ( (LA25_143=='<') ) {s = 148;}
-
-                        else if ( ((LA25_143>='\u0000' && LA25_143<='\b')||(LA25_143>='\u000B' && LA25_143<='\f')||(LA25_143>='\u000E' && LA25_143<='\u001F')||(LA25_143>='\u0080' && LA25_143<='\uFFFF')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 17 : 
-                        int LA25_164 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_164=='<') ) {s = 160;}
-
-                        else if ( (LA25_164=='\\') ) {s = 161;}
-
-                        else if ( (LA25_164=='\n') ) {s = 162;}
-
-                        else if ( (LA25_164=='\r') ) {s = 163;}
-
-                        else if ( (LA25_164=='\t') ) {s = 164;}
-
-                        else if ( ((LA25_164>=' ' && LA25_164<='!')||(LA25_164>='$' && LA25_164<='%')||(LA25_164>='\'' && LA25_164<='/')||LA25_164==';'||(LA25_164>='=' && LA25_164<='@')||LA25_164=='['||(LA25_164>=']' && LA25_164<='^')||LA25_164=='`'||(LA25_164>='{' && LA25_164<='\u007F')) ) {s = 165;}
-
-                        else if ( (LA25_164=='&') ) {s = 166;}
-
-                        else if ( (LA25_164=='#'||(LA25_164>='0' && LA25_164<=':')||(LA25_164>='A' && LA25_164<='Z')||LA25_164=='_'||(LA25_164>='a' && LA25_164<='z')) ) {s = 72;}
-
-                        else if ( (LA25_164=='\"') ) {s = 167;}
-
-                        else if ( ((LA25_164>='\u0000' && LA25_164<='\b')||(LA25_164>='\u000B' && LA25_164<='\f')||(LA25_164>='\u000E' && LA25_164<='\u001F')||(LA25_164>='\u0080' && LA25_164<='\uFFFF')) ) {s = 114;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 18 : 
-                        int LA25_246 = input.LA(1);
-
-                         
-                        int index25_246 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_246==':') ) {s = 247;}
-
-                        else if ( (LA25_246=='<') ) {s = 65;}
-
-                        else if ( (LA25_246=='\\') ) {s = 59;}
-
-                        else if ( (LA25_246=='\n') ) {s = 60;}
-
-                        else if ( (LA25_246=='\r') ) {s = 61;}
-
-                        else if ( (LA25_246=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_246>=' ' && LA25_246<='!')||(LA25_246>='#' && LA25_246<='%')||(LA25_246>='\'' && LA25_246<='9')||LA25_246==';'||(LA25_246>='=' && LA25_246<='[')||(LA25_246>=']' && LA25_246<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_246=='&') ) {s = 64;}
-
-                        else if ( (LA25_246=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_246>='\u0080' && LA25_246<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_246);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 19 : 
+                    case 22 : 
                         int LA25_120 = input.LA(1);
 
                          
@@ -3803,33 +3888,68 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_120);
                         if ( s>=0 ) return s;
                         break;
-                    case 20 : 
-                        int LA25_108 = input.LA(1);
+                    case 23 : 
+                        int LA25_146 = input.LA(1);
 
                         s = -1;
-                        if ( (LA25_108=='\"') ) {s = 141;}
+                        if ( (LA25_146=='\"') ) {s = 139;}
 
-                        else if ( (LA25_108=='\\') ) {s = 142;}
+                        else if ( (LA25_146=='\\') ) {s = 140;}
 
-                        else if ( (LA25_108=='\n') ) {s = 143;}
+                        else if ( (LA25_146=='\n') ) {s = 141;}
 
-                        else if ( (LA25_108=='\r') ) {s = 144;}
+                        else if ( (LA25_146=='\r') ) {s = 142;}
 
-                        else if ( (LA25_108=='\t') ) {s = 145;}
+                        else if ( (LA25_146=='\t') ) {s = 143;}
 
-                        else if ( ((LA25_108>=' ' && LA25_108<='!')||(LA25_108>='$' && LA25_108<='%')||(LA25_108>='\'' && LA25_108<='/')||LA25_108==';'||(LA25_108>='=' && LA25_108<='@')||LA25_108=='['||(LA25_108>=']' && LA25_108<='^')||LA25_108=='`'||(LA25_108>='{' && LA25_108<='\u007F')) ) {s = 146;}
+                        else if ( ((LA25_146>=' ' && LA25_146<='!')||(LA25_146>='$' && LA25_146<='%')||(LA25_146>='\'' && LA25_146<='/')||LA25_146==';'||(LA25_146>='=' && LA25_146<='@')||LA25_146=='['||(LA25_146>=']' && LA25_146<='^')||LA25_146=='`'||(LA25_146>='{' && LA25_146<='\u007F')) ) {s = 144;}
 
-                        else if ( (LA25_108=='&') ) {s = 147;}
+                        else if ( (LA25_146=='&') ) {s = 145;}
 
-                        else if ( (LA25_108=='#'||(LA25_108>='0' && LA25_108<=':')||(LA25_108>='A' && LA25_108<='Z')||LA25_108=='_'||(LA25_108>='a' && LA25_108<='z')) ) {s = 99;}
+                        else if ( (LA25_146=='#'||(LA25_146>='0' && LA25_146<=':')||(LA25_146>='A' && LA25_146<='Z')||LA25_146=='_'||(LA25_146>='a' && LA25_146<='z')) ) {s = 98;}
 
-                        else if ( (LA25_108=='<') ) {s = 148;}
+                        else if ( (LA25_146=='<') ) {s = 146;}
 
-                        else if ( ((LA25_108>='\u0000' && LA25_108<='\b')||(LA25_108>='\u000B' && LA25_108<='\f')||(LA25_108>='\u000E' && LA25_108<='\u001F')||(LA25_108>='\u0080' && LA25_108<='\uFFFF')) ) {s = 108;}
+                        else if ( ((LA25_146>='\u0000' && LA25_146<='\b')||(LA25_146>='\u000B' && LA25_146<='\f')||(LA25_146>='\u000E' && LA25_146<='\u001F')||(LA25_146>='\u0080' && LA25_146<='\uFFFF')) ) {s = 107;}
+
+                        else s = 100;
 
                         if ( s>=0 ) return s;
                         break;
-                    case 21 : 
+                    case 24 : 
+                        int LA25_104 = input.LA(1);
+
+                         
+                        int index25_104 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_104=='\"') ) {s = 139;}
+
+                        else if ( (LA25_104=='\\') ) {s = 140;}
+
+                        else if ( (LA25_104=='\n') ) {s = 141;}
+
+                        else if ( (LA25_104=='\r') ) {s = 142;}
+
+                        else if ( (LA25_104=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_104>=' ' && LA25_104<='!')||(LA25_104>='$' && LA25_104<='%')||(LA25_104>='\'' && LA25_104<='/')||LA25_104==';'||(LA25_104>='=' && LA25_104<='@')||LA25_104=='['||(LA25_104>=']' && LA25_104<='^')||LA25_104=='`'||(LA25_104>='{' && LA25_104<='\u007F')) ) {s = 144;}
+
+                        else if ( (LA25_104=='&') ) {s = 145;}
+
+                        else if ( (LA25_104=='#'||(LA25_104>='0' && LA25_104<=':')||(LA25_104>='A' && LA25_104<='Z')||LA25_104=='_'||(LA25_104>='a' && LA25_104<='z')) ) {s = 98;}
+
+                        else if ( (LA25_104=='<') ) {s = 146;}
+
+                        else if ( ((LA25_104>='\u0000' && LA25_104<='\b')||(LA25_104>='\u000B' && LA25_104<='\f')||(LA25_104>='\u000E' && LA25_104<='\u001F')||(LA25_104>='\u0080' && LA25_104<='\uFFFF')) ) {s = 107;}
+
+                        else s = 67;
+
+                         
+                        input.seek(index25_104);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 25 : 
                         int LA25_91 = input.LA(1);
 
                          
@@ -3848,37 +3968,33 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_91);
                         if ( s>=0 ) return s;
                         break;
-                    case 22 : 
-                        int LA25_191 = input.LA(1);
+                    case 26 : 
+                        int LA25_140 = input.LA(1);
 
                         s = -1;
-                        if ( (LA25_191=='a') ) {s = 130;}
+                        if ( (LA25_140=='\\') ) {s = 187;}
 
-                        else if ( (LA25_191=='\\') ) {s = 195;}
+                        else if ( (LA25_140=='\"') ) {s = 188;}
 
-                        else if ( (LA25_191=='\"') ) {s = 196;}
+                        else if ( ((LA25_140>=' ' && LA25_140<='!')||(LA25_140>='$' && LA25_140<='%')||(LA25_140>='\'' && LA25_140<='/')||LA25_140==';'||(LA25_140>='=' && LA25_140<='@')||LA25_140=='['||(LA25_140>=']' && LA25_140<='^')||LA25_140=='`'||(LA25_140>='{' && LA25_140<='\u007F')) ) {s = 144;}
 
-                        else if ( ((LA25_191>=' ' && LA25_191<='!')||(LA25_191>='$' && LA25_191<='%')||(LA25_191>='\'' && LA25_191<='/')||LA25_191==';'||(LA25_191>='=' && LA25_191<='@')||LA25_191=='['||(LA25_191>=']' && LA25_191<='^')||LA25_191=='`'||(LA25_191>='{' && LA25_191<='\u007F')) ) {s = 151;}
+                        else if ( (LA25_140=='\n') ) {s = 141;}
 
-                        else if ( (LA25_191=='\n') ) {s = 143;}
+                        else if ( (LA25_140=='\r') ) {s = 142;}
 
-                        else if ( (LA25_191=='\r') ) {s = 144;}
+                        else if ( (LA25_140=='\t') ) {s = 143;}
 
-                        else if ( (LA25_191=='\t') ) {s = 145;}
+                        else if ( (LA25_140=='&') ) {s = 145;}
 
-                        else if ( (LA25_191=='&') ) {s = 152;}
+                        else if ( (LA25_140=='#'||(LA25_140>='0' && LA25_140<=':')||(LA25_140>='A' && LA25_140<='Z')||LA25_140=='_'||(LA25_140>='a' && LA25_140<='z')) ) {s = 98;}
 
-                        else if ( (LA25_191=='#'||(LA25_191>='0' && LA25_191<=':')||(LA25_191>='A' && LA25_191<='Z')||LA25_191=='_'||(LA25_191>='b' && LA25_191<='z')) ) {s = 63;}
+                        else if ( (LA25_140=='<') ) {s = 146;}
 
-                        else if ( (LA25_191=='<') ) {s = 153;}
-
-                        else if ( ((LA25_191>='\u0080' && LA25_191<='\uFFFF')) ) {s = 106;}
-
-                        else if ( ((LA25_191>='\u0000' && LA25_191<='\b')||(LA25_191>='\u000B' && LA25_191<='\f')||(LA25_191>='\u000E' && LA25_191<='\u001F')) ) {s = 108;}
+                        else if ( ((LA25_140>='\u0000' && LA25_140<='\b')||(LA25_140>='\u000B' && LA25_140<='\f')||(LA25_140>='\u000E' && LA25_140<='\u001F')||(LA25_140>='\u0080' && LA25_140<='\uFFFF')) ) {s = 107;}
 
                         if ( s>=0 ) return s;
                         break;
-                    case 23 : 
+                    case 27 : 
                         int LA25_47 = input.LA(1);
 
                          
@@ -3897,121 +4013,189 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_47);
                         if ( s>=0 ) return s;
                         break;
-                    case 24 : 
-                        int LA25_105 = input.LA(1);
-
-                         
-                        int index25_105 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_105=='\"') ) {s = 141;}
-
-                        else if ( (LA25_105=='\\') ) {s = 142;}
-
-                        else if ( (LA25_105=='\n') ) {s = 143;}
-
-                        else if ( (LA25_105=='\r') ) {s = 144;}
-
-                        else if ( (LA25_105=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_105>=' ' && LA25_105<='!')||(LA25_105>='$' && LA25_105<='%')||(LA25_105>='\'' && LA25_105<='/')||LA25_105==';'||(LA25_105>='=' && LA25_105<='@')||LA25_105=='['||(LA25_105>=']' && LA25_105<='^')||LA25_105=='`'||(LA25_105>='{' && LA25_105<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_105=='&') ) {s = 147;}
-
-                        else if ( (LA25_105=='#'||(LA25_105>='0' && LA25_105<=':')||(LA25_105>='A' && LA25_105<='Z')||LA25_105=='_'||(LA25_105>='a' && LA25_105<='z')) ) {s = 99;}
-
-                        else if ( (LA25_105=='<') ) {s = 148;}
-
-                        else if ( ((LA25_105>='\u0000' && LA25_105<='\b')||(LA25_105>='\u000B' && LA25_105<='\f')||(LA25_105>='\u000E' && LA25_105<='\u001F')||(LA25_105>='\u0080' && LA25_105<='\uFFFF')) ) {s = 108;}
-
-                        else s = 66;
-
-                         
-                        input.seek(index25_105);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 25 : 
-                        int LA25_64 = input.LA(1);
-
-                         
-                        int index25_64 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_64=='#') ) {s = 103;}
-
-                        else if ( (LA25_64==':'||(LA25_64>='A' && LA25_64<='Z')||LA25_64=='_'||(LA25_64>='a' && LA25_64<='z')) ) {s = 104;}
-
-                        else if ( (LA25_64=='\"') ) {s = 105;}
-
-                        else if ( ((LA25_64>=' ' && LA25_64<='!')||(LA25_64>='$' && LA25_64<='/')||(LA25_64>=';' && LA25_64<='@')||LA25_64=='['||(LA25_64>=']' && LA25_64<='^')||LA25_64=='`'||(LA25_64>='{' && LA25_64<='\uFFFF')) ) {s = 106;}
-
-                        else if ( (LA25_64=='\\') ) {s = 107;}
-
-                        else if ( ((LA25_64>='0' && LA25_64<='9')) && (( inString ))) {s = 66;}
-
-                        else if ( ((LA25_64>='\u0000' && LA25_64<='\u001F')) ) {s = 108;}
-
-                         
-                        input.seek(index25_64);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 26 : 
-                        int LA25_153 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_153=='\"') ) {s = 149;}
-
-                        else if ( (LA25_153=='\\') ) {s = 150;}
-
-                        else if ( (LA25_153=='\n') ) {s = 143;}
-
-                        else if ( (LA25_153=='\r') ) {s = 144;}
-
-                        else if ( (LA25_153=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_153>=' ' && LA25_153<='!')||(LA25_153>='$' && LA25_153<='%')||(LA25_153>='\'' && LA25_153<='/')||LA25_153==';'||(LA25_153>='=' && LA25_153<='@')||LA25_153=='['||(LA25_153>=']' && LA25_153<='^')||LA25_153=='`'||(LA25_153>='{' && LA25_153<='\u007F')) ) {s = 151;}
-
-                        else if ( (LA25_153=='&') ) {s = 152;}
-
-                        else if ( (LA25_153=='#'||(LA25_153>='0' && LA25_153<=':')||(LA25_153>='A' && LA25_153<='Z')||LA25_153=='_'||(LA25_153>='a' && LA25_153<='z')) ) {s = 63;}
-
-                        else if ( (LA25_153=='<') ) {s = 153;}
-
-                        else if ( ((LA25_153>='\u0080' && LA25_153<='\uFFFF')) ) {s = 106;}
-
-                        else if ( ((LA25_153>='\u0000' && LA25_153<='\b')||(LA25_153>='\u000B' && LA25_153<='\f')||(LA25_153>='\u000E' && LA25_153<='\u001F')) ) {s = 108;}
-
-                        else s = 98;
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 27 : 
-                        int LA25_187 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_187=='\\') ) {s = 187;}
-
-                        else if ( (LA25_187=='\"') ) {s = 188;}
-
-                        else if ( ((LA25_187>=' ' && LA25_187<='!')||(LA25_187>='$' && LA25_187<='%')||(LA25_187>='\'' && LA25_187<='/')||LA25_187==';'||(LA25_187>='=' && LA25_187<='@')||LA25_187=='['||(LA25_187>=']' && LA25_187<='^')||LA25_187=='`'||(LA25_187>='{' && LA25_187<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_187=='\n') ) {s = 143;}
-
-                        else if ( (LA25_187=='\r') ) {s = 144;}
-
-                        else if ( (LA25_187=='\t') ) {s = 145;}
-
-                        else if ( (LA25_187=='&') ) {s = 147;}
-
-                        else if ( (LA25_187=='#'||(LA25_187>='0' && LA25_187<=':')||(LA25_187>='A' && LA25_187<='Z')||LA25_187=='_'||(LA25_187>='a' && LA25_187<='z')) ) {s = 99;}
-
-                        else if ( (LA25_187=='<') ) {s = 148;}
-
-                        else if ( ((LA25_187>='\u0000' && LA25_187<='\b')||(LA25_187>='\u000B' && LA25_187<='\f')||(LA25_187>='\u000E' && LA25_187<='\u001F')||(LA25_187>='\u0080' && LA25_187<='\uFFFF')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
                     case 28 : 
+                        int LA25_233 = input.LA(1);
+
+                         
+                        int index25_233 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_233=='<') ) {s = 100;}
+
+                        else if ( (LA25_233=='\\') ) {s = 109;}
+
+                        else if ( (LA25_233=='\n') ) {s = 63;}
+
+                        else if ( (LA25_233=='\r') ) {s = 64;}
+
+                        else if ( (LA25_233=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_233>=' ' && LA25_233<='!')||(LA25_233>='#' && LA25_233<='%')||(LA25_233>='\'' && LA25_233<=';')||(LA25_233>='=' && LA25_233<='[')||(LA25_233>=']' && LA25_233<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_233=='&') ) {s = 99;}
+
+                        else if ( (LA25_233=='\"') && (( ! inString ))) {s = 108;}
+
+                         
+                        input.seek(index25_233);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 29 : 
+                        int LA25_149 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_149=='\"') ) {s = 147;}
+
+                        else if ( (LA25_149=='\\') ) {s = 148;}
+
+                        else if ( (LA25_149=='\n') ) {s = 141;}
+
+                        else if ( (LA25_149=='\r') ) {s = 142;}
+
+                        else if ( (LA25_149=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_149>=' ' && LA25_149<='!')||(LA25_149>='$' && LA25_149<='%')||(LA25_149>='\'' && LA25_149<='/')||LA25_149==';'||(LA25_149>='=' && LA25_149<='@')||LA25_149=='['||(LA25_149>=']' && LA25_149<='^')||LA25_149=='`'||(LA25_149>='{' && LA25_149<='\u007F')) ) {s = 149;}
+
+                        else if ( (LA25_149=='&') ) {s = 150;}
+
+                        else if ( (LA25_149=='#'||(LA25_149>='0' && LA25_149<=':')||(LA25_149>='A' && LA25_149<='Z')||LA25_149=='_'||(LA25_149>='a' && LA25_149<='z')) ) {s = 59;}
+
+                        else if ( (LA25_149=='<') ) {s = 151;}
+
+                        else if ( ((LA25_149>='\u0080' && LA25_149<='\uFFFF')) ) {s = 105;}
+
+                        else if ( ((LA25_149>='\u0000' && LA25_149<='\b')||(LA25_149>='\u000B' && LA25_149<='\f')||(LA25_149>='\u000E' && LA25_149<='\u001F')) ) {s = 107;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 30 : 
+                        int LA25_94 = input.LA(1);
+
+                         
+                        int index25_94 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_94=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_94=='\\') ) {s = 60;}
+
+                        else if ( (LA25_94=='\n') ) {s = 63;}
+
+                        else if ( (LA25_94=='\r') ) {s = 64;}
+
+                        else if ( (LA25_94=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_94>=' ' && LA25_94<='!')||(LA25_94>='#' && LA25_94<='%')||(LA25_94>='\'' && LA25_94<=';')||(LA25_94>='=' && LA25_94<='[')||(LA25_94>=']' && LA25_94<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_94=='&') ) {s = 62;}
+
+                        else if ( (LA25_94=='<') ) {s = 66;}
+
+                        else if ( ((LA25_94>='\u0080' && LA25_94<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_94);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 31 : 
+                        int LA25_61 = input.LA(1);
+
+                         
+                        int index25_61 = input.index();
+                        input.rewind();
+                        s = -1;
+                        s = 101;
+
+                         
+                        input.seek(index25_61);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 32 : 
+                        int LA25_145 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_145=='#') ) {s = 189;}
+
+                        else if ( (LA25_145==':'||(LA25_145>='A' && LA25_145<='Z')||LA25_145=='_'||(LA25_145>='a' && LA25_145<='z')) ) {s = 190;}
+
+                        else if ( (LA25_145=='\"') ) {s = 139;}
+
+                        else if ( (LA25_145=='\\') ) {s = 140;}
+
+                        else if ( (LA25_145=='\n') ) {s = 141;}
+
+                        else if ( (LA25_145=='\r') ) {s = 142;}
+
+                        else if ( (LA25_145=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_145>=' ' && LA25_145<='!')||(LA25_145>='$' && LA25_145<='%')||(LA25_145>='\'' && LA25_145<='/')||LA25_145==';'||(LA25_145>='=' && LA25_145<='@')||LA25_145=='['||(LA25_145>=']' && LA25_145<='^')||LA25_145=='`'||(LA25_145>='{' && LA25_145<='\u007F')) ) {s = 144;}
+
+                        else if ( (LA25_145=='&') ) {s = 145;}
+
+                        else if ( ((LA25_145>='0' && LA25_145<='9')) ) {s = 98;}
+
+                        else if ( (LA25_145=='<') ) {s = 146;}
+
+                        else if ( ((LA25_145>='\u0000' && LA25_145<='\b')||(LA25_145>='\u000B' && LA25_145<='\f')||(LA25_145>='\u000E' && LA25_145<='\u001F')||(LA25_145>='\u0080' && LA25_145<='\uFFFF')) ) {s = 107;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 33 : 
+                        int LA25_221 = input.LA(1);
+
+                         
+                        int index25_221 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_221=='<') ) {s = 66;}
+
+                        else if ( (LA25_221=='\\') ) {s = 60;}
+
+                        else if ( (LA25_221=='\n') ) {s = 63;}
+
+                        else if ( (LA25_221=='\r') ) {s = 64;}
+
+                        else if ( (LA25_221=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_221>=' ' && LA25_221<='!')||(LA25_221>='#' && LA25_221<='%')||(LA25_221>='\'' && LA25_221<=';')||(LA25_221>='=' && LA25_221<='[')||(LA25_221>=']' && LA25_221<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_221=='&') ) {s = 62;}
+
+                        else if ( (LA25_221=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( ((LA25_221>='\u0080' && LA25_221<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_221);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 34 : 
+                        int LA25_143 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_143=='\"') ) {s = 139;}
+
+                        else if ( (LA25_143=='\\') ) {s = 140;}
+
+                        else if ( (LA25_143=='\n') ) {s = 141;}
+
+                        else if ( (LA25_143=='\r') ) {s = 142;}
+
+                        else if ( (LA25_143=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_143>=' ' && LA25_143<='!')||(LA25_143>='$' && LA25_143<='%')||(LA25_143>='\'' && LA25_143<='/')||LA25_143==';'||(LA25_143>='=' && LA25_143<='@')||LA25_143=='['||(LA25_143>=']' && LA25_143<='^')||LA25_143=='`'||(LA25_143>='{' && LA25_143<='\u007F')) ) {s = 144;}
+
+                        else if ( (LA25_143=='&') ) {s = 145;}
+
+                        else if ( (LA25_143=='#'||(LA25_143>='0' && LA25_143<=':')||(LA25_143>='A' && LA25_143<='Z')||LA25_143=='_'||(LA25_143>='a' && LA25_143<='z')) ) {s = 98;}
+
+                        else if ( (LA25_143=='<') ) {s = 146;}
+
+                        else if ( ((LA25_143>='\u0000' && LA25_143<='\b')||(LA25_143>='\u000B' && LA25_143<='\f')||(LA25_143>='\u000E' && LA25_143<='\u001F')||(LA25_143>='\u0080' && LA25_143<='\uFFFF')) ) {s = 107;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 35 : 
                         int LA25_57 = input.LA(1);
 
                          
@@ -4030,108 +4214,126 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_57);
                         if ( s>=0 ) return s;
                         break;
-                    case 29 : 
-                        int LA25_243 = input.LA(1);
+                    case 36 : 
+                        int LA25_245 = input.LA(1);
 
                          
-                        int index25_243 = input.index();
+                        int index25_245 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_243=='<') ) {s = 65;}
+                        if ( (LA25_245=='c') ) {s = 246;}
 
-                        else if ( (LA25_243=='\\') ) {s = 59;}
+                        else if ( (LA25_245=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                        else if ( (LA25_243=='\n') ) {s = 60;}
+                        else if ( (LA25_245=='\\') ) {s = 60;}
 
-                        else if ( (LA25_243=='\r') ) {s = 61;}
+                        else if ( (LA25_245=='\n') ) {s = 63;}
 
-                        else if ( (LA25_243=='\t') ) {s = 62;}
+                        else if ( (LA25_245=='\r') ) {s = 64;}
 
-                        else if ( ((LA25_243>=' ' && LA25_243<='!')||(LA25_243>='#' && LA25_243<='%')||(LA25_243>='\'' && LA25_243<=';')||(LA25_243>='=' && LA25_243<='[')||(LA25_243>=']' && LA25_243<='\u007F')) ) {s = 63;}
+                        else if ( (LA25_245=='\t') ) {s = 65;}
 
-                        else if ( (LA25_243=='&') ) {s = 64;}
+                        else if ( ((LA25_245>=' ' && LA25_245<='!')||(LA25_245>='#' && LA25_245<='%')||(LA25_245>='\'' && LA25_245<=';')||(LA25_245>='=' && LA25_245<='[')||(LA25_245>=']' && LA25_245<='b')||(LA25_245>='d' && LA25_245<='\u007F')) ) {s = 59;}
 
-                        else if ( (LA25_243=='\"') && ((( ! inString )||( inString )))) {s = 67;}
+                        else if ( (LA25_245=='&') ) {s = 62;}
 
-                        else if ( ((LA25_243>='\u0080' && LA25_243<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( (LA25_245=='<') ) {s = 66;}
 
-                         
-                        input.seek(index25_243);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 30 : 
-                        int LA25_107 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_107=='n') ) {s = 96;}
-
-                        else if ( (LA25_107=='t') ) {s = 97;}
-
-                        else if ( (LA25_107=='\"') ) {s = 154;}
-
-                        else if ( (LA25_107=='\\') ) {s = 155;}
-
-                        else if ( ((LA25_107>=' ' && LA25_107<='!')||(LA25_107>='$' && LA25_107<='%')||(LA25_107>='\'' && LA25_107<='/')||LA25_107==';'||(LA25_107>='=' && LA25_107<='@')||LA25_107=='['||(LA25_107>=']' && LA25_107<='^')||LA25_107=='`'||(LA25_107>='{' && LA25_107<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_107=='\n') ) {s = 143;}
-
-                        else if ( (LA25_107=='\r') ) {s = 144;}
-
-                        else if ( (LA25_107=='\t') ) {s = 145;}
-
-                        else if ( (LA25_107=='&') ) {s = 147;}
-
-                        else if ( (LA25_107=='#'||(LA25_107>='0' && LA25_107<=':')||(LA25_107>='A' && LA25_107<='Z')||LA25_107=='_'||(LA25_107>='a' && LA25_107<='m')||(LA25_107>='o' && LA25_107<='s')||(LA25_107>='u' && LA25_107<='z')) ) {s = 99;}
-
-                        else if ( (LA25_107=='<') ) {s = 148;}
-
-                        else if ( ((LA25_107>='\u0000' && LA25_107<='\b')||(LA25_107>='\u000B' && LA25_107<='\f')||(LA25_107>='\u000E' && LA25_107<='\u001F')||(LA25_107>='\u0080' && LA25_107<='\uFFFF')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 31 : 
-                        int LA25_60 = input.LA(1);
+                        else if ( ((LA25_245>='\u0080' && LA25_245<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        int index25_60 = input.index();
+                        input.seek(index25_245);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 37 : 
+                        int LA25_130 = input.LA(1);
+
+                         
+                        int index25_130 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_60=='<') ) {s = 98;}
+                        if ( (LA25_130==':') ) {s = 180;}
 
-                        else if ( (LA25_60=='\\') ) {s = 101;}
+                        else if ( (LA25_130=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                        else if ( (LA25_60=='\n') ) {s = 60;}
+                        else if ( (LA25_130=='\\') ) {s = 60;}
 
-                        else if ( (LA25_60=='\r') ) {s = 61;}
+                        else if ( (LA25_130=='\n') ) {s = 63;}
 
-                        else if ( (LA25_60=='\t') ) {s = 62;}
+                        else if ( (LA25_130=='\r') ) {s = 64;}
 
-                        else if ( ((LA25_60>=' ' && LA25_60<='!')||(LA25_60>='#' && LA25_60<='%')||(LA25_60>='\'' && LA25_60<=';')||(LA25_60>='=' && LA25_60<='[')||(LA25_60>=']' && LA25_60<='\u007F')) ) {s = 99;}
+                        else if ( (LA25_130=='\t') ) {s = 65;}
 
-                        else if ( (LA25_60=='&') ) {s = 100;}
+                        else if ( ((LA25_130>=' ' && LA25_130<='!')||(LA25_130>='#' && LA25_130<='%')||(LA25_130>='\'' && LA25_130<='9')||LA25_130==';'||(LA25_130>='=' && LA25_130<='[')||(LA25_130>=']' && LA25_130<='\u007F')) ) {s = 59;}
 
-                        else if ( (LA25_60=='\"') && (( ! inString ))) {s = 102;}
+                        else if ( (LA25_130=='&') ) {s = 62;}
+
+                        else if ( (LA25_130=='<') ) {s = 66;}
+
+                        else if ( ((LA25_130>='\u0080' && LA25_130<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_60);
+                        input.seek(index25_130);
                         if ( s>=0 ) return s;
                         break;
-                    case 32 : 
-                        int LA25_65 = input.LA(1);
+                    case 38 : 
+                        int LA25_200 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_200=='\"') ) {s = 160;}
+
+                        else if ( (LA25_200=='\\') ) {s = 161;}
+
+                        else if ( (LA25_200=='\n') ) {s = 162;}
+
+                        else if ( (LA25_200=='\r') ) {s = 163;}
+
+                        else if ( (LA25_200=='\t') ) {s = 164;}
+
+                        else if ( ((LA25_200>=' ' && LA25_200<='!')||(LA25_200>='$' && LA25_200<='%')||(LA25_200>='\'' && LA25_200<='/')||LA25_200==';'||(LA25_200>='=' && LA25_200<='@')||LA25_200=='['||(LA25_200>=']' && LA25_200<='^')||LA25_200=='`'||(LA25_200>='{' && LA25_200<='\u007F')) ) {s = 165;}
+
+                        else if ( (LA25_200=='&') ) {s = 166;}
+
+                        else if ( (LA25_200=='#'||(LA25_200>='0' && LA25_200<=':')||(LA25_200>='A' && LA25_200<='Z')||LA25_200=='_'||(LA25_200>='a' && LA25_200<='z')) ) {s = 72;}
+
+                        else if ( (LA25_200=='<') ) {s = 167;}
+
+                        else if ( ((LA25_200>='\u0000' && LA25_200<='\b')||(LA25_200>='\u000B' && LA25_200<='\f')||(LA25_200>='\u000E' && LA25_200<='\u001F')||(LA25_200>='\u0080' && LA25_200<='\uFFFF')) ) {s = 114;}
+
+                        else s = 75;
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 39 : 
+                        int LA25_59 = input.LA(1);
 
                          
-                        int index25_65 = input.index();
+                        int index25_59 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( ((LA25_65>=' ' && LA25_65<='\uFFFF')) && (( inString ))) {s = 66;}
+                        if ( (LA25_59=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                        else s = 98;
+                        else if ( (LA25_59=='\\') ) {s = 60;}
+
+                        else if ( (LA25_59=='\n') ) {s = 63;}
+
+                        else if ( (LA25_59=='\r') ) {s = 64;}
+
+                        else if ( (LA25_59=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_59>=' ' && LA25_59<='!')||(LA25_59>='#' && LA25_59<='%')||(LA25_59>='\'' && LA25_59<=';')||(LA25_59>='=' && LA25_59<='[')||(LA25_59>=']' && LA25_59<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_59=='&') ) {s = 62;}
+
+                        else if ( (LA25_59=='<') ) {s = 66;}
+
+                        else if ( ((LA25_59>='\u0080' && LA25_59<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_65);
+                        input.seek(index25_59);
                         if ( s>=0 ) return s;
                         break;
-                    case 33 : 
+                    case 40 : 
                         int LA25_83 = input.LA(1);
 
                          
@@ -4150,7 +4352,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_83);
                         if ( s>=0 ) return s;
                         break;
-                    case 34 : 
+                    case 41 : 
                         int LA25_203 = input.LA(1);
 
                          
@@ -4169,100 +4371,125 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_203);
                         if ( s>=0 ) return s;
                         break;
-                    case 35 : 
-                        int LA25_184 = input.LA(1);
+                    case 42 : 
+                        int LA25_166 = input.LA(1);
 
-                         
-                        int index25_184 = input.index();
-                        input.rewind();
                         s = -1;
-                        if ( (LA25_184=='\"') && (( ! inString ))) {s = 102;}
+                        if ( (LA25_166=='#') ) {s = 201;}
 
-                        else if ( (LA25_184=='\\') ) {s = 101;}
+                        else if ( (LA25_166==':'||(LA25_166>='A' && LA25_166<='Z')||LA25_166=='_'||(LA25_166>='a' && LA25_166<='z')) ) {s = 202;}
 
-                        else if ( (LA25_184=='\n') ) {s = 60;}
+                        else if ( (LA25_166=='\"') ) {s = 160;}
 
-                        else if ( (LA25_184=='\r') ) {s = 61;}
+                        else if ( (LA25_166=='\\') ) {s = 161;}
 
-                        else if ( (LA25_184=='\t') ) {s = 62;}
+                        else if ( (LA25_166=='\n') ) {s = 162;}
 
-                        else if ( ((LA25_184>=' ' && LA25_184<='!')||(LA25_184>='#' && LA25_184<='%')||(LA25_184>='\'' && LA25_184<=';')||(LA25_184>='=' && LA25_184<='[')||(LA25_184>=']' && LA25_184<='\u007F')) ) {s = 99;}
+                        else if ( (LA25_166=='\r') ) {s = 163;}
 
-                        else if ( (LA25_184=='&') ) {s = 100;}
+                        else if ( (LA25_166=='\t') ) {s = 164;}
 
-                        else if ( (LA25_184=='<') ) {s = 98;}
+                        else if ( ((LA25_166>=' ' && LA25_166<='!')||(LA25_166>='$' && LA25_166<='%')||(LA25_166>='\'' && LA25_166<='/')||LA25_166==';'||(LA25_166>='=' && LA25_166<='@')||LA25_166=='['||(LA25_166>=']' && LA25_166<='^')||LA25_166=='`'||(LA25_166>='{' && LA25_166<='\u007F')) ) {s = 165;}
 
-                         
-                        input.seek(index25_184);
+                        else if ( (LA25_166=='&') ) {s = 166;}
+
+                        else if ( ((LA25_166>='0' && LA25_166<='9')) ) {s = 72;}
+
+                        else if ( (LA25_166=='<') ) {s = 167;}
+
+                        else if ( ((LA25_166>='\u0000' && LA25_166<='\b')||(LA25_166>='\u000B' && LA25_166<='\f')||(LA25_166>='\u000E' && LA25_166<='\u001F')||(LA25_166>='\u0080' && LA25_166<='\uFFFF')) ) {s = 114;}
+
                         if ( s>=0 ) return s;
                         break;
-                    case 36 : 
-                        int LA25_141 = input.LA(1);
+                    case 43 : 
+                        int LA25_153 = input.LA(1);
 
-                         
-                        int index25_141 = input.index();
-                        input.rewind();
                         s = -1;
-                        if ( (LA25_141=='\"') ) {s = 141;}
+                        if ( (LA25_153=='a') ) {s = 130;}
 
-                        else if ( (LA25_141=='\\') ) {s = 142;}
+                        else if ( (LA25_153=='\\') ) {s = 195;}
 
-                        else if ( (LA25_141=='\n') ) {s = 143;}
+                        else if ( (LA25_153=='\"') ) {s = 196;}
 
-                        else if ( (LA25_141=='\r') ) {s = 144;}
+                        else if ( ((LA25_153>=' ' && LA25_153<='!')||(LA25_153>='$' && LA25_153<='%')||(LA25_153>='\'' && LA25_153<='/')||LA25_153==';'||(LA25_153>='=' && LA25_153<='@')||LA25_153=='['||(LA25_153>=']' && LA25_153<='^')||LA25_153=='`'||(LA25_153>='{' && LA25_153<='\u007F')) ) {s = 149;}
 
-                        else if ( (LA25_141=='\t') ) {s = 145;}
+                        else if ( (LA25_153=='&') ) {s = 150;}
 
-                        else if ( ((LA25_141>=' ' && LA25_141<='!')||(LA25_141>='$' && LA25_141<='%')||(LA25_141>='\'' && LA25_141<='/')||LA25_141==';'||(LA25_141>='=' && LA25_141<='@')||LA25_141=='['||(LA25_141>=']' && LA25_141<='^')||LA25_141=='`'||(LA25_141>='{' && LA25_141<='\u007F')) ) {s = 146;}
+                        else if ( (LA25_153=='\n') ) {s = 141;}
 
-                        else if ( (LA25_141=='&') ) {s = 147;}
+                        else if ( (LA25_153=='\r') ) {s = 142;}
 
-                        else if ( (LA25_141=='#'||(LA25_141>='0' && LA25_141<=':')||(LA25_141>='A' && LA25_141<='Z')||LA25_141=='_'||(LA25_141>='a' && LA25_141<='z')) ) {s = 99;}
+                        else if ( (LA25_153=='\t') ) {s = 143;}
 
-                        else if ( (LA25_141=='<') ) {s = 148;}
+                        else if ( (LA25_153=='<') ) {s = 151;}
 
-                        else if ( ((LA25_141>='\u0000' && LA25_141<='\b')||(LA25_141>='\u000B' && LA25_141<='\f')||(LA25_141>='\u000E' && LA25_141<='\u001F')||(LA25_141>='\u0080' && LA25_141<='\uFFFF')) ) {s = 108;}
+                        else if ( (LA25_153=='#'||(LA25_153>='0' && LA25_153<=':')||(LA25_153>='A' && LA25_153<='Z')||LA25_153=='_'||(LA25_153>='b' && LA25_153<='z')) ) {s = 59;}
 
-                        else s = 102;
+                        else if ( ((LA25_153>='\u0000' && LA25_153<='\b')||(LA25_153>='\u000B' && LA25_153<='\f')||(LA25_153>='\u000E' && LA25_153<='\u001F')) ) {s = 107;}
 
-                         
-                        input.seek(index25_141);
+                        else if ( ((LA25_153>='\u0080' && LA25_153<='\uFFFF')) ) {s = 105;}
+
                         if ( s>=0 ) return s;
                         break;
-                    case 37 : 
-                        int LA25_220 = input.LA(1);
+                    case 44 : 
+                        int LA25_210 = input.LA(1);
 
                          
-                        int index25_220 = input.index();
+                        int index25_210 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_220=='<') ) {s = 65;}
+                        if ( (LA25_210=='b') ) {s = 232;}
 
-                        else if ( (LA25_220=='\\') ) {s = 59;}
+                        else if ( (LA25_210=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                        else if ( (LA25_220=='\n') ) {s = 60;}
+                        else if ( (LA25_210=='\\') ) {s = 60;}
 
-                        else if ( (LA25_220=='\r') ) {s = 61;}
+                        else if ( (LA25_210=='\n') ) {s = 63;}
 
-                        else if ( (LA25_220=='\t') ) {s = 62;}
+                        else if ( (LA25_210=='\r') ) {s = 64;}
 
-                        else if ( (LA25_220==';') ) {s = 221;}
+                        else if ( (LA25_210=='\t') ) {s = 65;}
 
-                        else if ( (LA25_220=='&') ) {s = 64;}
+                        else if ( ((LA25_210>=' ' && LA25_210<='!')||(LA25_210>='#' && LA25_210<='%')||(LA25_210>='\'' && LA25_210<=';')||(LA25_210>='=' && LA25_210<='[')||(LA25_210>=']' && LA25_210<='a')||(LA25_210>='c' && LA25_210<='\u007F')) ) {s = 59;}
 
-                        else if ( ((LA25_220>='-' && LA25_220<='.')||(LA25_220>='0' && LA25_220<=':')||(LA25_220>='A' && LA25_220<='Z')||LA25_220=='_'||(LA25_220>='a' && LA25_220<='z')) ) {s = 220;}
+                        else if ( (LA25_210=='&') ) {s = 62;}
 
-                        else if ( ((LA25_220>=' ' && LA25_220<='!')||(LA25_220>='#' && LA25_220<='%')||(LA25_220>='\'' && LA25_220<=',')||LA25_220=='/'||(LA25_220>='=' && LA25_220<='@')||LA25_220=='['||(LA25_220>=']' && LA25_220<='^')||LA25_220=='`'||(LA25_220>='{' && LA25_220<='\u007F')) ) {s = 63;}
+                        else if ( (LA25_210=='<') ) {s = 66;}
 
-                        else if ( (LA25_220=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_220>='\u0080' && LA25_220<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( ((LA25_210>='\u0080' && LA25_210<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_220);
+                        input.seek(index25_210);
                         if ( s>=0 ) return s;
                         break;
-                    case 38 : 
+                    case 45 : 
+                        int LA25_217 = input.LA(1);
+
+                         
+                        int index25_217 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_217=='<') ) {s = 100;}
+
+                        else if ( (LA25_217=='\\') ) {s = 109;}
+
+                        else if ( (LA25_217=='\n') ) {s = 63;}
+
+                        else if ( (LA25_217=='\r') ) {s = 64;}
+
+                        else if ( (LA25_217=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_217>=' ' && LA25_217<='!')||(LA25_217>='#' && LA25_217<='%')||(LA25_217>='\'' && LA25_217<=';')||(LA25_217>='=' && LA25_217<='[')||(LA25_217>=']' && LA25_217<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_217=='&') ) {s = 99;}
+
+                        else if ( (LA25_217=='\"') && (( ! inString ))) {s = 108;}
+
+                         
+                        input.seek(index25_217);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 46 : 
                         int LA25_93 = input.LA(1);
 
                          
@@ -4281,63 +4508,36 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_93);
                         if ( s>=0 ) return s;
                         break;
-                    case 39 : 
-                        int LA25_61 = input.LA(1);
+                    case 47 : 
+                        int LA25_186 = input.LA(1);
 
                          
-                        int index25_61 = input.index();
+                        int index25_186 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_61=='\"') && (( ! inString ))) {s = 102;}
+                        if ( (LA25_186=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                        else if ( (LA25_61=='\\') ) {s = 101;}
+                        else if ( (LA25_186=='\\') ) {s = 60;}
 
-                        else if ( (LA25_61=='\n') ) {s = 60;}
+                        else if ( (LA25_186=='\n') ) {s = 63;}
 
-                        else if ( (LA25_61=='\r') ) {s = 61;}
+                        else if ( (LA25_186=='\r') ) {s = 64;}
 
-                        else if ( (LA25_61=='\t') ) {s = 62;}
+                        else if ( (LA25_186=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_61>=' ' && LA25_61<='!')||(LA25_61>='#' && LA25_61<='%')||(LA25_61>='\'' && LA25_61<=';')||(LA25_61>='=' && LA25_61<='[')||(LA25_61>=']' && LA25_61<='\u007F')) ) {s = 99;}
+                        else if ( ((LA25_186>=' ' && LA25_186<='!')||(LA25_186>='#' && LA25_186<='%')||(LA25_186>='\'' && LA25_186<=';')||(LA25_186>='=' && LA25_186<='[')||(LA25_186>=']' && LA25_186<='\u007F')) ) {s = 59;}
 
-                        else if ( (LA25_61=='&') ) {s = 100;}
+                        else if ( (LA25_186=='&') ) {s = 62;}
 
-                        else if ( (LA25_61=='<') ) {s = 98;}
+                        else if ( (LA25_186=='<') ) {s = 66;}
+
+                        else if ( ((LA25_186>='\u0080' && LA25_186<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_61);
+                        input.seek(index25_186);
                         if ( s>=0 ) return s;
                         break;
-                    case 40 : 
-                        int LA25_97 = input.LA(1);
-
-                         
-                        int index25_97 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_97=='<') ) {s = 65;}
-
-                        else if ( (LA25_97=='\\') ) {s = 59;}
-
-                        else if ( (LA25_97=='\n') ) {s = 60;}
-
-                        else if ( (LA25_97=='\r') ) {s = 61;}
-
-                        else if ( (LA25_97=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_97>=' ' && LA25_97<='!')||(LA25_97>='#' && LA25_97<='%')||(LA25_97>='\'' && LA25_97<=';')||(LA25_97>='=' && LA25_97<='[')||(LA25_97>=']' && LA25_97<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_97=='&') ) {s = 64;}
-
-                        else if ( (LA25_97=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_97>='\u0080' && LA25_97<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_97);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 41 : 
+                    case 48 : 
                         int LA25_123 = input.LA(1);
 
                          
@@ -4356,70 +4556,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_123);
                         if ( s>=0 ) return s;
                         break;
-                    case 42 : 
-                        int LA25_155 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_155=='a') ) {s = 130;}
-
-                        else if ( (LA25_155=='\\') ) {s = 195;}
-
-                        else if ( (LA25_155=='\"') ) {s = 196;}
-
-                        else if ( ((LA25_155>=' ' && LA25_155<='!')||(LA25_155>='$' && LA25_155<='%')||(LA25_155>='\'' && LA25_155<='/')||LA25_155==';'||(LA25_155>='=' && LA25_155<='@')||LA25_155=='['||(LA25_155>=']' && LA25_155<='^')||LA25_155=='`'||(LA25_155>='{' && LA25_155<='\u007F')) ) {s = 151;}
-
-                        else if ( (LA25_155=='\n') ) {s = 143;}
-
-                        else if ( (LA25_155=='\r') ) {s = 144;}
-
-                        else if ( (LA25_155=='\t') ) {s = 145;}
-
-                        else if ( (LA25_155=='&') ) {s = 152;}
-
-                        else if ( (LA25_155=='#'||(LA25_155>='0' && LA25_155<=':')||(LA25_155>='A' && LA25_155<='Z')||LA25_155=='_'||(LA25_155>='b' && LA25_155<='z')) ) {s = 63;}
-
-                        else if ( (LA25_155=='<') ) {s = 153;}
-
-                        else if ( ((LA25_155>='\u0080' && LA25_155<='\uFFFF')) ) {s = 106;}
-
-                        else if ( ((LA25_155>='\u0000' && LA25_155<='\b')||(LA25_155>='\u000B' && LA25_155<='\f')||(LA25_155>='\u000E' && LA25_155<='\u001F')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 43 : 
-                        int LA25_149 = input.LA(1);
-
-                         
-                        int index25_149 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_149=='\"') ) {s = 141;}
-
-                        else if ( (LA25_149=='\\') ) {s = 142;}
-
-                        else if ( (LA25_149=='\n') ) {s = 143;}
-
-                        else if ( (LA25_149=='\r') ) {s = 144;}
-
-                        else if ( (LA25_149=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_149>=' ' && LA25_149<='!')||(LA25_149>='$' && LA25_149<='%')||(LA25_149>='\'' && LA25_149<='/')||LA25_149==';'||(LA25_149>='=' && LA25_149<='@')||LA25_149=='['||(LA25_149>=']' && LA25_149<='^')||LA25_149=='`'||(LA25_149>='{' && LA25_149<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_149=='&') ) {s = 147;}
-
-                        else if ( (LA25_149=='#'||(LA25_149>='0' && LA25_149<=':')||(LA25_149>='A' && LA25_149<='Z')||LA25_149=='_'||(LA25_149>='a' && LA25_149<='z')) ) {s = 99;}
-
-                        else if ( (LA25_149=='<') ) {s = 148;}
-
-                        else if ( ((LA25_149>='\u0000' && LA25_149<='\b')||(LA25_149>='\u000B' && LA25_149<='\f')||(LA25_149>='\u000E' && LA25_149<='\u001F')||(LA25_149>='\u0080' && LA25_149<='\uFFFF')) ) {s = 108;}
-
-                        else s = 109;
-
-                         
-                        input.seek(index25_149);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 44 : 
+                    case 49 : 
                         int LA25_56 = input.LA(1);
 
                          
@@ -4438,35 +4575,61 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_56);
                         if ( s>=0 ) return s;
                         break;
-                    case 45 : 
-                        int LA25_160 = input.LA(1);
+                    case 50 : 
+                        int LA25_212 = input.LA(1);
 
+                         
+                        int index25_212 = input.index();
+                        input.rewind();
                         s = -1;
-                        if ( (LA25_160=='<') ) {s = 160;}
+                        if ( (LA25_212=='\"') && (( ! inString ))) {s = 108;}
 
-                        else if ( (LA25_160=='\\') ) {s = 161;}
+                        else if ( (LA25_212=='\\') ) {s = 109;}
 
-                        else if ( (LA25_160=='\n') ) {s = 162;}
+                        else if ( (LA25_212=='\n') ) {s = 63;}
 
-                        else if ( (LA25_160=='\r') ) {s = 163;}
+                        else if ( (LA25_212=='\r') ) {s = 64;}
 
-                        else if ( (LA25_160=='\t') ) {s = 164;}
+                        else if ( (LA25_212=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_160>=' ' && LA25_160<='!')||(LA25_160>='$' && LA25_160<='%')||(LA25_160>='\'' && LA25_160<='/')||LA25_160==';'||(LA25_160>='=' && LA25_160<='@')||LA25_160=='['||(LA25_160>=']' && LA25_160<='^')||LA25_160=='`'||(LA25_160>='{' && LA25_160<='\u007F')) ) {s = 165;}
+                        else if ( ((LA25_212>=' ' && LA25_212<='!')||(LA25_212>='#' && LA25_212<='%')||(LA25_212>='\'' && LA25_212<=';')||(LA25_212>='=' && LA25_212<='[')||(LA25_212>=']' && LA25_212<='\u007F')) ) {s = 98;}
 
-                        else if ( (LA25_160=='&') ) {s = 166;}
+                        else if ( (LA25_212=='&') ) {s = 99;}
 
-                        else if ( (LA25_160=='#'||(LA25_160>='0' && LA25_160<=':')||(LA25_160>='A' && LA25_160<='Z')||LA25_160=='_'||(LA25_160>='a' && LA25_160<='z')) ) {s = 72;}
+                        else if ( (LA25_212=='<') ) {s = 100;}
 
-                        else if ( (LA25_160=='\"') ) {s = 167;}
-
-                        else if ( ((LA25_160>='\u0000' && LA25_160<='\b')||(LA25_160>='\u000B' && LA25_160<='\f')||(LA25_160>='\u000E' && LA25_160<='\u001F')||(LA25_160>='\u0080' && LA25_160<='\uFFFF')) ) {s = 114;}
-
-                        else s = 74;
-
+                         
+                        input.seek(index25_212);
                         if ( s>=0 ) return s;
                         break;
-                    case 46 : 
+                    case 51 : 
+                        int LA25_155 = input.LA(1);
+
+                         
+                        int index25_155 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_155=='\\') ) {s = 109;}
+
+                        else if ( (LA25_155=='\n') ) {s = 63;}
+
+                        else if ( (LA25_155=='\r') ) {s = 64;}
+
+                        else if ( (LA25_155=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_155>=' ' && LA25_155<='!')||(LA25_155>='#' && LA25_155<='%')||(LA25_155>='\'' && LA25_155<=';')||(LA25_155>='=' && LA25_155<='[')||(LA25_155>=']' && LA25_155<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_155=='&') ) {s = 99;}
+
+                        else if ( (LA25_155=='<') ) {s = 100;}
+
+                        else s = 108;
+
+                         
+                        input.seek(index25_155);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 52 : 
                         int LA25_115 = input.LA(1);
 
                          
@@ -4485,7 +4648,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_115);
                         if ( s>=0 ) return s;
                         break;
-                    case 47 : 
+                    case 53 : 
                         int LA25_90 = input.LA(1);
 
                          
@@ -4504,38 +4667,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_90);
                         if ( s>=0 ) return s;
                         break;
-                    case 48 : 
-                        int LA25_215 = input.LA(1);
-
-                         
-                        int index25_215 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_215=='<') ) {s = 98;}
-
-                        else if ( (LA25_215=='\\') ) {s = 101;}
-
-                        else if ( (LA25_215=='\n') ) {s = 60;}
-
-                        else if ( (LA25_215=='\r') ) {s = 61;}
-
-                        else if ( (LA25_215=='\t') ) {s = 62;}
-
-                        else if ( (LA25_215==';') ) {s = 235;}
-
-                        else if ( (LA25_215=='&') ) {s = 100;}
-
-                        else if ( ((LA25_215>='0' && LA25_215<='9')) ) {s = 215;}
-
-                        else if ( ((LA25_215>=' ' && LA25_215<='!')||(LA25_215>='#' && LA25_215<='%')||(LA25_215>='\'' && LA25_215<='/')||LA25_215==':'||(LA25_215>='=' && LA25_215<='[')||(LA25_215>=']' && LA25_215<='\u007F')) ) {s = 99;}
-
-                        else if ( (LA25_215=='\"') && (( ! inString ))) {s = 102;}
-
-                         
-                        input.seek(index25_215);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 49 : 
+                    case 54 : 
                         int LA25_29 = input.LA(1);
 
                          
@@ -4552,24 +4684,101 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_29);
                         if ( s>=0 ) return s;
                         break;
-                    case 50 : 
-                        int LA25_139 = input.LA(1);
+                    case 55 : 
+                        int LA25_236 = input.LA(1);
 
                          
-                        int index25_139 = input.index();
+                        int index25_236 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_139==';') ) {s = 140;}
+                        if ( (LA25_236==';') ) {s = 243;}
 
-                        else if ( ((LA25_139>='-' && LA25_139<='.')||(LA25_139>='0' && LA25_139<=':')||(LA25_139>='A' && LA25_139<='Z')||LA25_139=='_'||(LA25_139>='a' && LA25_139<='z')) ) {s = 139;}
+                        else if ( ((LA25_236>='0' && LA25_236<='9')||(LA25_236>='A' && LA25_236<='F')||(LA25_236>='a' && LA25_236<='f')) ) {s = 236;}
 
-                        else if ( ((LA25_139>=' ' && LA25_139<=',')||LA25_139=='/'||(LA25_139>='<' && LA25_139<='@')||(LA25_139>='[' && LA25_139<='^')||LA25_139=='`'||(LA25_139>='{' && LA25_139<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( (LA25_236=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_236=='\\') ) {s = 60;}
+
+                        else if ( (LA25_236=='\n') ) {s = 63;}
+
+                        else if ( (LA25_236=='\r') ) {s = 64;}
+
+                        else if ( (LA25_236=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_236>=' ' && LA25_236<='!')||(LA25_236>='#' && LA25_236<='%')||(LA25_236>='\'' && LA25_236<='/')||LA25_236==':'||(LA25_236>='=' && LA25_236<='@')||(LA25_236>='G' && LA25_236<='[')||(LA25_236>=']' && LA25_236<='`')||(LA25_236>='g' && LA25_236<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_236=='&') ) {s = 62;}
+
+                        else if ( (LA25_236=='<') ) {s = 66;}
+
+                        else if ( ((LA25_236>='\u0080' && LA25_236<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_139);
+                        input.seek(index25_236);
                         if ( s>=0 ) return s;
                         break;
-                    case 51 : 
+                    case 56 : 
+                        int LA25_218 = input.LA(1);
+
+                         
+                        int index25_218 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( ((LA25_218>='0' && LA25_218<='9')||(LA25_218>='A' && LA25_218<='F')||(LA25_218>='a' && LA25_218<='f')) ) {s = 236;}
+
+                        else if ( (LA25_218=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_218=='\\') ) {s = 60;}
+
+                        else if ( (LA25_218=='\n') ) {s = 63;}
+
+                        else if ( (LA25_218=='\r') ) {s = 64;}
+
+                        else if ( (LA25_218=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_218>=' ' && LA25_218<='!')||(LA25_218>='#' && LA25_218<='%')||(LA25_218>='\'' && LA25_218<='/')||(LA25_218>=':' && LA25_218<=';')||(LA25_218>='=' && LA25_218<='@')||(LA25_218>='G' && LA25_218<='[')||(LA25_218>=']' && LA25_218<='`')||(LA25_218>='g' && LA25_218<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_218=='&') ) {s = 62;}
+
+                        else if ( (LA25_218=='<') ) {s = 66;}
+
+                        else if ( ((LA25_218>='\u0080' && LA25_218<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_218);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 57 : 
+                        int LA25_195 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_195=='n') ) {s = 94;}
+
+                        else if ( (LA25_195=='t') ) {s = 95;}
+
+                        else if ( (LA25_195=='\"') ) {s = 192;}
+
+                        else if ( (LA25_195=='\\') ) {s = 191;}
+
+                        else if ( ((LA25_195>=' ' && LA25_195<='!')||(LA25_195>='$' && LA25_195<='%')||(LA25_195>='\'' && LA25_195<='/')||LA25_195==';'||(LA25_195>='=' && LA25_195<='@')||LA25_195=='['||(LA25_195>=']' && LA25_195<='^')||LA25_195=='`'||(LA25_195>='{' && LA25_195<='\u007F')) ) {s = 144;}
+
+                        else if ( (LA25_195=='\n') ) {s = 141;}
+
+                        else if ( (LA25_195=='\r') ) {s = 142;}
+
+                        else if ( (LA25_195=='\t') ) {s = 143;}
+
+                        else if ( (LA25_195=='&') ) {s = 145;}
+
+                        else if ( (LA25_195=='#'||(LA25_195>='0' && LA25_195<=':')||(LA25_195>='A' && LA25_195<='Z')||LA25_195=='_'||(LA25_195>='a' && LA25_195<='m')||(LA25_195>='o' && LA25_195<='s')||(LA25_195>='u' && LA25_195<='z')) ) {s = 98;}
+
+                        else if ( (LA25_195=='<') ) {s = 146;}
+
+                        else if ( ((LA25_195>='\u0000' && LA25_195<='\b')||(LA25_195>='\u000B' && LA25_195<='\f')||(LA25_195>='\u000E' && LA25_195<='\u001F')||(LA25_195>='\u0080' && LA25_195<='\uFFFF')) ) {s = 107;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 58 : 
                         int LA25_8 = input.LA(1);
 
                          
@@ -4584,51 +4793,36 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_8);
                         if ( s>=0 ) return s;
                         break;
-                    case 52 : 
-                        int LA25_62 = input.LA(1);
+                    case 59 : 
+                        int LA25_138 = input.LA(1);
 
                          
-                        int index25_62 = input.index();
+                        int index25_138 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_62=='\"') && (( ! inString ))) {s = 102;}
+                        if ( (LA25_138=='<') ) {s = 66;}
 
-                        else if ( (LA25_62=='\\') ) {s = 101;}
+                        else if ( (LA25_138=='\\') ) {s = 60;}
 
-                        else if ( (LA25_62=='\n') ) {s = 60;}
+                        else if ( (LA25_138=='\n') ) {s = 63;}
 
-                        else if ( (LA25_62=='\r') ) {s = 61;}
+                        else if ( (LA25_138=='\r') ) {s = 64;}
 
-                        else if ( (LA25_62=='\t') ) {s = 62;}
+                        else if ( (LA25_138=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_62>=' ' && LA25_62<='!')||(LA25_62>='#' && LA25_62<='%')||(LA25_62>='\'' && LA25_62<=';')||(LA25_62>='=' && LA25_62<='[')||(LA25_62>=']' && LA25_62<='\u007F')) ) {s = 99;}
+                        else if ( ((LA25_138>=' ' && LA25_138<='!')||(LA25_138>='#' && LA25_138<='%')||(LA25_138>='\'' && LA25_138<=';')||(LA25_138>='=' && LA25_138<='[')||(LA25_138>=']' && LA25_138<='\u007F')) ) {s = 59;}
 
-                        else if ( (LA25_62=='&') ) {s = 100;}
+                        else if ( (LA25_138=='&') ) {s = 62;}
 
-                        else if ( (LA25_62=='<') ) {s = 98;}
+                        else if ( (LA25_138=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( ((LA25_138>='\u0080' && LA25_138<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_62);
+                        input.seek(index25_138);
                         if ( s>=0 ) return s;
                         break;
-                    case 53 : 
-                        int LA25_104 = input.LA(1);
-
-                         
-                        int index25_104 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( ((LA25_104>='-' && LA25_104<='.')||(LA25_104>='0' && LA25_104<=':')||(LA25_104>='A' && LA25_104<='Z')||LA25_104=='_'||(LA25_104>='a' && LA25_104<='z')) ) {s = 139;}
-
-                        else if ( (LA25_104==';') ) {s = 140;}
-
-                        else if ( ((LA25_104>=' ' && LA25_104<=',')||LA25_104=='/'||(LA25_104>='<' && LA25_104<='@')||(LA25_104>='[' && LA25_104<='^')||LA25_104=='`'||(LA25_104>='{' && LA25_104<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_104);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 54 : 
+                    case 60 : 
                         int LA25_169 = input.LA(1);
 
                          
@@ -4647,7 +4841,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_169);
                         if ( s>=0 ) return s;
                         break;
-                    case 55 : 
+                    case 61 : 
                         int LA25_22 = input.LA(1);
 
                          
@@ -4666,64 +4860,53 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_22);
                         if ( s>=0 ) return s;
                         break;
-                    case 56 : 
-                        int LA25_165 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_165=='<') ) {s = 160;}
-
-                        else if ( (LA25_165=='\\') ) {s = 161;}
-
-                        else if ( (LA25_165=='\n') ) {s = 162;}
-
-                        else if ( (LA25_165=='\r') ) {s = 163;}
-
-                        else if ( (LA25_165=='\t') ) {s = 164;}
-
-                        else if ( ((LA25_165>=' ' && LA25_165<='!')||(LA25_165>='$' && LA25_165<='%')||(LA25_165>='\'' && LA25_165<='/')||LA25_165==';'||(LA25_165>='=' && LA25_165<='@')||LA25_165=='['||(LA25_165>=']' && LA25_165<='^')||LA25_165=='`'||(LA25_165>='{' && LA25_165<='\u007F')) ) {s = 165;}
-
-                        else if ( (LA25_165=='&') ) {s = 166;}
-
-                        else if ( (LA25_165=='#'||(LA25_165>='0' && LA25_165<=':')||(LA25_165>='A' && LA25_165<='Z')||LA25_165=='_'||(LA25_165>='a' && LA25_165<='z')) ) {s = 72;}
-
-                        else if ( (LA25_165=='\"') ) {s = 167;}
-
-                        else if ( ((LA25_165>='\u0000' && LA25_165<='\b')||(LA25_165>='\u000B' && LA25_165<='\f')||(LA25_165>='\u000E' && LA25_165<='\u001F')||(LA25_165>='\u0080' && LA25_165<='\uFFFF')) ) {s = 114;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 57 : 
-                        int LA25_241 = input.LA(1);
+                    case 62 : 
+                        int LA25_102 = input.LA(1);
 
                          
-                        int index25_241 = input.index();
+                        int index25_102 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_241=='<') ) {s = 65;}
+                        if ( (LA25_102=='x') ) {s = 135;}
 
-                        else if ( (LA25_241=='\\') ) {s = 59;}
+                        else if ( ((LA25_102>='0' && LA25_102<='9')) ) {s = 136;}
 
-                        else if ( (LA25_241=='\n') ) {s = 60;}
-
-                        else if ( (LA25_241=='\r') ) {s = 61;}
-
-                        else if ( (LA25_241=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_241>='0' && LA25_241<='9')) ) {s = 245;}
-
-                        else if ( (LA25_241=='&') ) {s = 64;}
-
-                        else if ( ((LA25_241>=' ' && LA25_241<='!')||(LA25_241>='#' && LA25_241<='%')||(LA25_241>='\'' && LA25_241<='/')||(LA25_241>=':' && LA25_241<=';')||(LA25_241>='=' && LA25_241<='[')||(LA25_241>=']' && LA25_241<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_241=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_241>='\u0080' && LA25_241<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( ((LA25_102>=' ' && LA25_102<='/')||(LA25_102>=':' && LA25_102<='w')||(LA25_102>='y' && LA25_102<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_241);
+                        input.seek(index25_102);
                         if ( s>=0 ) return s;
                         break;
-                    case 58 : 
+                    case 63 : 
+                        int LA25_248 = input.LA(1);
+
+                         
+                        int index25_248 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_248=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( ((LA25_248>=' ' && LA25_248<='!')||(LA25_248>='#' && LA25_248<='%')||(LA25_248>='\'' && LA25_248<=';')||(LA25_248>='=' && LA25_248<='[')||(LA25_248>=']' && LA25_248<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_248=='\\') ) {s = 60;}
+
+                        else if ( (LA25_248=='&') ) {s = 62;}
+
+                        else if ( (LA25_248=='\n') ) {s = 63;}
+
+                        else if ( (LA25_248=='\r') ) {s = 64;}
+
+                        else if ( (LA25_248=='\t') ) {s = 65;}
+
+                        else if ( (LA25_248=='<') ) {s = 66;}
+
+                        else if ( ((LA25_248>='\u0080' && LA25_248<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_248);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 64 : 
                         int LA25_1 = input.LA(1);
 
                          
@@ -4744,22 +4927,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_1);
                         if ( s>=0 ) return s;
                         break;
-                    case 59 : 
-                        int LA25_109 = input.LA(1);
-
-                         
-                        int index25_109 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (( inString )) ) {s = 66;}
-
-                        else if ( (( ! inString )) ) {s = 102;}
-
-                         
-                        input.seek(index25_109);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 60 : 
+                    case 65 : 
                         int LA25_168 = input.LA(1);
 
                          
@@ -4778,73 +4946,64 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_168);
                         if ( s>=0 ) return s;
                         break;
-                    case 61 : 
-                        int LA25_154 = input.LA(1);
+                    case 66 : 
+                        int LA25_247 = input.LA(1);
 
                          
-                        int index25_154 = input.index();
+                        int index25_247 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_154=='\"') ) {s = 149;}
+                        if ( (LA25_247=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                        else if ( (LA25_154=='\\') ) {s = 150;}
+                        else if ( (LA25_247=='\\') ) {s = 60;}
 
-                        else if ( (LA25_154=='\n') ) {s = 143;}
+                        else if ( (LA25_247=='\n') ) {s = 63;}
 
-                        else if ( (LA25_154=='\r') ) {s = 144;}
+                        else if ( (LA25_247=='\r') ) {s = 64;}
 
-                        else if ( (LA25_154=='\t') ) {s = 145;}
+                        else if ( (LA25_247=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_154>=' ' && LA25_154<='!')||(LA25_154>='$' && LA25_154<='%')||(LA25_154>='\'' && LA25_154<='/')||LA25_154==';'||(LA25_154>='=' && LA25_154<='@')||LA25_154=='['||(LA25_154>=']' && LA25_154<='^')||LA25_154=='`'||(LA25_154>='{' && LA25_154<='\u007F')) ) {s = 151;}
+                        else if ( ((LA25_247>='0' && LA25_247<='9')) ) {s = 248;}
 
-                        else if ( (LA25_154=='&') ) {s = 152;}
+                        else if ( (LA25_247=='&') ) {s = 62;}
 
-                        else if ( (LA25_154=='#'||(LA25_154>='0' && LA25_154<=':')||(LA25_154>='A' && LA25_154<='Z')||LA25_154=='_'||(LA25_154>='a' && LA25_154<='z')) ) {s = 63;}
+                        else if ( (LA25_247=='<') ) {s = 66;}
 
-                        else if ( (LA25_154=='<') ) {s = 153;}
+                        else if ( ((LA25_247>='\u0080' && LA25_247<='\uFFFF')) && (( inString ))) {s = 67;}
 
-                        else if ( ((LA25_154>='\u0000' && LA25_154<='\b')||(LA25_154>='\u000B' && LA25_154<='\f')||(LA25_154>='\u000E' && LA25_154<='\u001F')) ) {s = 108;}
-
-                        else if ( ((LA25_154>='\u0080' && LA25_154<='\uFFFF')) ) {s = 106;}
-
-                        else s = 102;
+                        else if ( ((LA25_247>=' ' && LA25_247<='!')||(LA25_247>='#' && LA25_247<='%')||(LA25_247>='\'' && LA25_247<='/')||(LA25_247>=':' && LA25_247<=';')||(LA25_247>='=' && LA25_247<='[')||(LA25_247>=']' && LA25_247<='\u007F')) ) {s = 59;}
 
                          
-                        input.seek(index25_154);
+                        input.seek(index25_247);
                         if ( s>=0 ) return s;
                         break;
-                    case 62 : 
-                        int LA25_94 = input.LA(1);
+                    case 67 : 
+                        int LA25_144 = input.LA(1);
 
-                         
-                        int index25_94 = input.index();
-                        input.rewind();
                         s = -1;
-                        if ( (LA25_94=='a') ) {s = 130;}
+                        if ( (LA25_144=='\"') ) {s = 139;}
 
-                        else if ( (LA25_94=='\\') ) {s = 131;}
+                        else if ( (LA25_144=='\\') ) {s = 140;}
 
-                        else if ( (LA25_94=='\"') ) {s = 132;}
+                        else if ( (LA25_144=='\n') ) {s = 141;}
 
-                        else if ( (LA25_94=='<') ) {s = 65;}
+                        else if ( (LA25_144=='\r') ) {s = 142;}
 
-                        else if ( ((LA25_94>=' ' && LA25_94<='!')||(LA25_94>='#' && LA25_94<='%')||(LA25_94>='\'' && LA25_94<=';')||(LA25_94>='=' && LA25_94<='[')||(LA25_94>=']' && LA25_94<='`')||(LA25_94>='b' && LA25_94<='\u007F')) ) {s = 63;}
+                        else if ( (LA25_144=='\t') ) {s = 143;}
 
-                        else if ( (LA25_94=='\n') ) {s = 60;}
+                        else if ( ((LA25_144>=' ' && LA25_144<='!')||(LA25_144>='$' && LA25_144<='%')||(LA25_144>='\'' && LA25_144<='/')||LA25_144==';'||(LA25_144>='=' && LA25_144<='@')||LA25_144=='['||(LA25_144>=']' && LA25_144<='^')||LA25_144=='`'||(LA25_144>='{' && LA25_144<='\u007F')) ) {s = 144;}
 
-                        else if ( (LA25_94=='\r') ) {s = 61;}
+                        else if ( (LA25_144=='&') ) {s = 145;}
 
-                        else if ( (LA25_94=='\t') ) {s = 62;}
+                        else if ( (LA25_144=='#'||(LA25_144>='0' && LA25_144<=':')||(LA25_144>='A' && LA25_144<='Z')||LA25_144=='_'||(LA25_144>='a' && LA25_144<='z')) ) {s = 98;}
 
-                        else if ( (LA25_94=='&') ) {s = 64;}
+                        else if ( (LA25_144=='<') ) {s = 146;}
 
-                        else if ( ((LA25_94>='\u0080' && LA25_94<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( ((LA25_144>='\u0000' && LA25_144<='\b')||(LA25_144>='\u000B' && LA25_144<='\f')||(LA25_144>='\u000E' && LA25_144<='\u001F')||(LA25_144>='\u0080' && LA25_144<='\uFFFF')) ) {s = 107;}
 
-                         
-                        input.seek(index25_94);
                         if ( s>=0 ) return s;
                         break;
-                    case 63 : 
+                    case 68 : 
                         int LA25_48 = input.LA(1);
 
                          
@@ -4863,7 +5022,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_48);
                         if ( s>=0 ) return s;
                         break;
-                    case 64 : 
+                    case 69 : 
                         int LA25_126 = input.LA(1);
 
                          
@@ -4882,66 +5041,89 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_126);
                         if ( s>=0 ) return s;
                         break;
-                    case 65 : 
-                        int LA25_99 = input.LA(1);
+                    case 70 : 
+                        int LA25_105 = input.LA(1);
 
-                         
-                        int index25_99 = input.index();
-                        input.rewind();
                         s = -1;
-                        if ( (LA25_99=='<') ) {s = 98;}
+                        if ( (LA25_105=='\"') ) {s = 147;}
 
-                        else if ( (LA25_99=='\\') ) {s = 101;}
+                        else if ( (LA25_105=='\\') ) {s = 148;}
 
-                        else if ( (LA25_99=='\n') ) {s = 60;}
+                        else if ( (LA25_105=='\n') ) {s = 141;}
 
-                        else if ( (LA25_99=='\r') ) {s = 61;}
+                        else if ( (LA25_105=='\r') ) {s = 142;}
 
-                        else if ( (LA25_99=='\t') ) {s = 62;}
+                        else if ( (LA25_105=='\t') ) {s = 143;}
 
-                        else if ( ((LA25_99>=' ' && LA25_99<='!')||(LA25_99>='#' && LA25_99<='%')||(LA25_99>='\'' && LA25_99<=';')||(LA25_99>='=' && LA25_99<='[')||(LA25_99>=']' && LA25_99<='\u007F')) ) {s = 99;}
+                        else if ( ((LA25_105>=' ' && LA25_105<='!')||(LA25_105>='$' && LA25_105<='%')||(LA25_105>='\'' && LA25_105<='/')||LA25_105==';'||(LA25_105>='=' && LA25_105<='@')||LA25_105=='['||(LA25_105>=']' && LA25_105<='^')||LA25_105=='`'||(LA25_105>='{' && LA25_105<='\u007F')) ) {s = 149;}
 
-                        else if ( (LA25_99=='&') ) {s = 100;}
+                        else if ( (LA25_105=='&') ) {s = 150;}
 
-                        else if ( (LA25_99=='\"') && (( ! inString ))) {s = 102;}
+                        else if ( (LA25_105=='#'||(LA25_105>='0' && LA25_105<=':')||(LA25_105>='A' && LA25_105<='Z')||LA25_105=='_'||(LA25_105>='a' && LA25_105<='z')) ) {s = 59;}
 
-                         
-                        input.seek(index25_99);
+                        else if ( (LA25_105=='<') ) {s = 151;}
+
+                        else if ( ((LA25_105>='\u0080' && LA25_105<='\uFFFF')) ) {s = 105;}
+
+                        else if ( ((LA25_105>='\u0000' && LA25_105<='\b')||(LA25_105>='\u000B' && LA25_105<='\f')||(LA25_105>='\u000E' && LA25_105<='\u001F')) ) {s = 107;}
+
                         if ( s>=0 ) return s;
                         break;
-                    case 66 : 
-                        int LA25_137 = input.LA(1);
+                    case 71 : 
+                        int LA25_162 = input.LA(1);
 
-                         
-                        int index25_137 = input.index();
-                        input.rewind();
                         s = -1;
-                        if ( ((LA25_137>='0' && LA25_137<='9')||(LA25_137>='A' && LA25_137<='F')||(LA25_137>='a' && LA25_137<='f')) ) {s = 185;}
+                        if ( (LA25_162=='\"') ) {s = 160;}
 
-                        else if ( ((LA25_137>=' ' && LA25_137<='/')||(LA25_137>=':' && LA25_137<='@')||(LA25_137>='G' && LA25_137<='`')||(LA25_137>='g' && LA25_137<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( (LA25_162=='\\') ) {s = 161;}
 
-                         
-                        input.seek(index25_137);
+                        else if ( (LA25_162=='\n') ) {s = 162;}
+
+                        else if ( (LA25_162=='\r') ) {s = 163;}
+
+                        else if ( (LA25_162=='\t') ) {s = 164;}
+
+                        else if ( ((LA25_162>=' ' && LA25_162<='!')||(LA25_162>='$' && LA25_162<='%')||(LA25_162>='\'' && LA25_162<='/')||LA25_162==';'||(LA25_162>='=' && LA25_162<='@')||LA25_162=='['||(LA25_162>=']' && LA25_162<='^')||LA25_162=='`'||(LA25_162>='{' && LA25_162<='\u007F')) ) {s = 165;}
+
+                        else if ( (LA25_162=='&') ) {s = 166;}
+
+                        else if ( (LA25_162=='#'||(LA25_162>='0' && LA25_162<=':')||(LA25_162>='A' && LA25_162<='Z')||LA25_162=='_'||(LA25_162>='a' && LA25_162<='z')) ) {s = 72;}
+
+                        else if ( (LA25_162=='<') ) {s = 167;}
+
+                        else if ( ((LA25_162>='\u0000' && LA25_162<='\b')||(LA25_162>='\u000B' && LA25_162<='\f')||(LA25_162>='\u000E' && LA25_162<='\u001F')||(LA25_162>='\u0080' && LA25_162<='\uFFFF')) ) {s = 114;}
+
                         if ( s>=0 ) return s;
                         break;
-                    case 67 : 
-                        int LA25_185 = input.LA(1);
+                    case 72 : 
+                        int LA25_167 = input.LA(1);
 
-                         
-                        int index25_185 = input.index();
-                        input.rewind();
                         s = -1;
-                        if ( (LA25_185==';') ) {s = 213;}
+                        if ( (LA25_167=='\"') ) {s = 160;}
 
-                        else if ( ((LA25_185>='0' && LA25_185<='9')||(LA25_185>='A' && LA25_185<='F')||(LA25_185>='a' && LA25_185<='f')) ) {s = 185;}
+                        else if ( (LA25_167=='\\') ) {s = 161;}
 
-                        else if ( ((LA25_185>=' ' && LA25_185<='/')||LA25_185==':'||(LA25_185>='<' && LA25_185<='@')||(LA25_185>='G' && LA25_185<='`')||(LA25_185>='g' && LA25_185<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( (LA25_167=='\n') ) {s = 162;}
 
-                         
-                        input.seek(index25_185);
+                        else if ( (LA25_167=='\r') ) {s = 163;}
+
+                        else if ( (LA25_167=='\t') ) {s = 164;}
+
+                        else if ( ((LA25_167>=' ' && LA25_167<='!')||(LA25_167>='$' && LA25_167<='%')||(LA25_167>='\'' && LA25_167<='/')||LA25_167==';'||(LA25_167>='=' && LA25_167<='@')||LA25_167=='['||(LA25_167>=']' && LA25_167<='^')||LA25_167=='`'||(LA25_167>='{' && LA25_167<='\u007F')) ) {s = 165;}
+
+                        else if ( (LA25_167=='&') ) {s = 166;}
+
+                        else if ( (LA25_167=='#'||(LA25_167>='0' && LA25_167<=':')||(LA25_167>='A' && LA25_167<='Z')||LA25_167=='_'||(LA25_167>='a' && LA25_167<='z')) ) {s = 72;}
+
+                        else if ( (LA25_167=='<') ) {s = 167;}
+
+                        else if ( ((LA25_167>='\u0000' && LA25_167<='\b')||(LA25_167>='\u000B' && LA25_167<='\f')||(LA25_167>='\u000E' && LA25_167<='\u001F')||(LA25_167>='\u0080' && LA25_167<='\uFFFF')) ) {s = 114;}
+
+                        else s = 74;
+
                         if ( s>=0 ) return s;
                         break;
-                    case 68 : 
+                    case 73 : 
                         int LA25_27 = input.LA(1);
 
                          
@@ -4962,7 +5144,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_27);
                         if ( s>=0 ) return s;
                         break;
-                    case 69 : 
+                    case 74 : 
                         int LA25_33 = input.LA(1);
 
                          
@@ -4979,7 +5161,33 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_33);
                         if ( s>=0 ) return s;
                         break;
-                    case 70 : 
+                    case 75 : 
+                        int LA25_107 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_107=='\"') ) {s = 139;}
+
+                        else if ( (LA25_107=='\\') ) {s = 140;}
+
+                        else if ( (LA25_107=='\n') ) {s = 141;}
+
+                        else if ( (LA25_107=='\r') ) {s = 142;}
+
+                        else if ( (LA25_107=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_107>=' ' && LA25_107<='!')||(LA25_107>='$' && LA25_107<='%')||(LA25_107>='\'' && LA25_107<='/')||LA25_107==';'||(LA25_107>='=' && LA25_107<='@')||LA25_107=='['||(LA25_107>=']' && LA25_107<='^')||LA25_107=='`'||(LA25_107>='{' && LA25_107<='\u007F')) ) {s = 144;}
+
+                        else if ( (LA25_107=='&') ) {s = 145;}
+
+                        else if ( (LA25_107=='#'||(LA25_107>='0' && LA25_107<=':')||(LA25_107>='A' && LA25_107<='Z')||LA25_107=='_'||(LA25_107>='a' && LA25_107<='z')) ) {s = 98;}
+
+                        else if ( (LA25_107=='<') ) {s = 146;}
+
+                        else if ( ((LA25_107>='\u0000' && LA25_107<='\b')||(LA25_107>='\u000B' && LA25_107<='\f')||(LA25_107>='\u000E' && LA25_107<='\u001F')||(LA25_107>='\u0080' && LA25_107<='\uFFFF')) ) {s = 107;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 76 : 
                         int LA25_36 = input.LA(1);
 
                          
@@ -4998,66 +5206,37 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_36);
                         if ( s>=0 ) return s;
                         break;
-                    case 71 : 
-                        int LA25_130 = input.LA(1);
-
-                         
-                        int index25_130 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_130==':') ) {s = 180;}
-
-                        else if ( (LA25_130=='<') ) {s = 65;}
-
-                        else if ( (LA25_130=='\\') ) {s = 59;}
-
-                        else if ( (LA25_130=='\n') ) {s = 60;}
-
-                        else if ( (LA25_130=='\r') ) {s = 61;}
-
-                        else if ( (LA25_130=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_130>=' ' && LA25_130<='!')||(LA25_130>='#' && LA25_130<='%')||(LA25_130>='\'' && LA25_130<='9')||LA25_130==';'||(LA25_130>='=' && LA25_130<='[')||(LA25_130>=']' && LA25_130<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_130=='&') ) {s = 64;}
-
-                        else if ( (LA25_130=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_130>='\u0080' && LA25_130<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_130);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 72 : 
-                        int LA25_200 = input.LA(1);
+                    case 77 : 
+                        int LA25_106 = input.LA(1);
 
                         s = -1;
-                        if ( (LA25_200=='\"') ) {s = 167;}
+                        if ( (LA25_106=='n') ) {s = 94;}
 
-                        else if ( (LA25_200=='\\') ) {s = 161;}
+                        else if ( (LA25_106=='t') ) {s = 95;}
 
-                        else if ( (LA25_200=='\n') ) {s = 162;}
+                        else if ( (LA25_106=='\"') ) {s = 152;}
 
-                        else if ( (LA25_200=='\r') ) {s = 163;}
+                        else if ( (LA25_106=='\\') ) {s = 153;}
 
-                        else if ( (LA25_200=='\t') ) {s = 164;}
+                        else if ( ((LA25_106>=' ' && LA25_106<='!')||(LA25_106>='$' && LA25_106<='%')||(LA25_106>='\'' && LA25_106<='/')||LA25_106==';'||(LA25_106>='=' && LA25_106<='@')||LA25_106=='['||(LA25_106>=']' && LA25_106<='^')||LA25_106=='`'||(LA25_106>='{' && LA25_106<='\u007F')) ) {s = 144;}
 
-                        else if ( ((LA25_200>=' ' && LA25_200<='!')||(LA25_200>='$' && LA25_200<='%')||(LA25_200>='\'' && LA25_200<='/')||LA25_200==';'||(LA25_200>='=' && LA25_200<='@')||LA25_200=='['||(LA25_200>=']' && LA25_200<='^')||LA25_200=='`'||(LA25_200>='{' && LA25_200<='\u007F')) ) {s = 165;}
+                        else if ( (LA25_106=='\n') ) {s = 141;}
 
-                        else if ( (LA25_200=='&') ) {s = 166;}
+                        else if ( (LA25_106=='\r') ) {s = 142;}
 
-                        else if ( (LA25_200=='<') ) {s = 160;}
+                        else if ( (LA25_106=='\t') ) {s = 143;}
 
-                        else if ( (LA25_200=='#'||(LA25_200>='0' && LA25_200<=':')||(LA25_200>='A' && LA25_200<='Z')||LA25_200=='_'||(LA25_200>='a' && LA25_200<='z')) ) {s = 72;}
+                        else if ( (LA25_106=='&') ) {s = 145;}
 
-                        else if ( ((LA25_200>='\u0000' && LA25_200<='\b')||(LA25_200>='\u000B' && LA25_200<='\f')||(LA25_200>='\u000E' && LA25_200<='\u001F')||(LA25_200>='\u0080' && LA25_200<='\uFFFF')) ) {s = 114;}
+                        else if ( (LA25_106=='#'||(LA25_106>='0' && LA25_106<=':')||(LA25_106>='A' && LA25_106<='Z')||LA25_106=='_'||(LA25_106>='a' && LA25_106<='m')||(LA25_106>='o' && LA25_106<='s')||(LA25_106>='u' && LA25_106<='z')) ) {s = 98;}
 
-                        else s = 75;
+                        else if ( (LA25_106=='<') ) {s = 146;}
+
+                        else if ( ((LA25_106>='\u0000' && LA25_106<='\b')||(LA25_106>='\u000B' && LA25_106<='\f')||(LA25_106>='\u000E' && LA25_106<='\u001F')||(LA25_106>='\u0080' && LA25_106<='\uFFFF')) ) {s = 107;}
 
                         if ( s>=0 ) return s;
                         break;
-                    case 73 : 
+                    case 78 : 
                         int LA25_50 = input.LA(1);
 
                          
@@ -5076,33 +5255,42 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_50);
                         if ( s>=0 ) return s;
                         break;
-                    case 74 : 
-                        int LA25_199 = input.LA(1);
+                    case 79 : 
+                        int LA25_192 = input.LA(1);
 
+                         
+                        int index25_192 = input.index();
+                        input.rewind();
                         s = -1;
-                        if ( (LA25_199=='\\') ) {s = 199;}
+                        if ( (LA25_192=='\"') ) {s = 147;}
 
-                        else if ( (LA25_199=='\"') ) {s = 200;}
+                        else if ( (LA25_192=='\\') ) {s = 148;}
 
-                        else if ( (LA25_199=='<') ) {s = 160;}
+                        else if ( (LA25_192=='\n') ) {s = 141;}
 
-                        else if ( ((LA25_199>=' ' && LA25_199<='!')||(LA25_199>='$' && LA25_199<='%')||(LA25_199>='\'' && LA25_199<='/')||LA25_199==';'||(LA25_199>='=' && LA25_199<='@')||LA25_199=='['||(LA25_199>=']' && LA25_199<='^')||LA25_199=='`'||(LA25_199>='{' && LA25_199<='\u007F')) ) {s = 165;}
+                        else if ( (LA25_192=='\r') ) {s = 142;}
 
-                        else if ( (LA25_199=='\n') ) {s = 162;}
+                        else if ( (LA25_192=='\t') ) {s = 143;}
 
-                        else if ( (LA25_199=='\r') ) {s = 163;}
+                        else if ( ((LA25_192>=' ' && LA25_192<='!')||(LA25_192>='$' && LA25_192<='%')||(LA25_192>='\'' && LA25_192<='/')||LA25_192==';'||(LA25_192>='=' && LA25_192<='@')||LA25_192=='['||(LA25_192>=']' && LA25_192<='^')||LA25_192=='`'||(LA25_192>='{' && LA25_192<='\u007F')) ) {s = 149;}
 
-                        else if ( (LA25_199=='\t') ) {s = 164;}
+                        else if ( (LA25_192=='&') ) {s = 150;}
 
-                        else if ( (LA25_199=='&') ) {s = 166;}
+                        else if ( (LA25_192=='#'||(LA25_192>='0' && LA25_192<=':')||(LA25_192>='A' && LA25_192<='Z')||LA25_192=='_'||(LA25_192>='a' && LA25_192<='z')) ) {s = 59;}
 
-                        else if ( (LA25_199=='#'||(LA25_199>='0' && LA25_199<=':')||(LA25_199>='A' && LA25_199<='Z')||LA25_199=='_'||(LA25_199>='a' && LA25_199<='z')) ) {s = 72;}
+                        else if ( (LA25_192=='<') ) {s = 151;}
 
-                        else if ( ((LA25_199>='\u0000' && LA25_199<='\b')||(LA25_199>='\u000B' && LA25_199<='\f')||(LA25_199>='\u000E' && LA25_199<='\u001F')||(LA25_199>='\u0080' && LA25_199<='\uFFFF')) ) {s = 114;}
+                        else if ( ((LA25_192>='\u0080' && LA25_192<='\uFFFF')) ) {s = 105;}
 
+                        else if ( ((LA25_192>='\u0000' && LA25_192<='\b')||(LA25_192>='\u000B' && LA25_192<='\f')||(LA25_192>='\u000E' && LA25_192<='\u001F')) ) {s = 107;}
+
+                        else s = 108;
+
+                         
+                        input.seek(index25_192);
                         if ( s>=0 ) return s;
                         break;
-                    case 75 : 
+                    case 80 : 
                         int LA25_204 = input.LA(1);
 
                          
@@ -5121,35 +5309,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_204);
                         if ( s>=0 ) return s;
                         break;
-                    case 76 : 
-                        int LA25_167 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_167=='<') ) {s = 160;}
-
-                        else if ( (LA25_167=='\\') ) {s = 161;}
-
-                        else if ( (LA25_167=='\n') ) {s = 162;}
-
-                        else if ( (LA25_167=='\r') ) {s = 163;}
-
-                        else if ( (LA25_167=='\t') ) {s = 164;}
-
-                        else if ( ((LA25_167>=' ' && LA25_167<='!')||(LA25_167>='$' && LA25_167<='%')||(LA25_167>='\'' && LA25_167<='/')||LA25_167==';'||(LA25_167>='=' && LA25_167<='@')||LA25_167=='['||(LA25_167>=']' && LA25_167<='^')||LA25_167=='`'||(LA25_167>='{' && LA25_167<='\u007F')) ) {s = 165;}
-
-                        else if ( (LA25_167=='&') ) {s = 166;}
-
-                        else if ( (LA25_167=='#'||(LA25_167>='0' && LA25_167<=':')||(LA25_167>='A' && LA25_167<='Z')||LA25_167=='_'||(LA25_167>='a' && LA25_167<='z')) ) {s = 72;}
-
-                        else if ( (LA25_167=='\"') ) {s = 167;}
-
-                        else if ( ((LA25_167>='\u0000' && LA25_167<='\b')||(LA25_167>='\u000B' && LA25_167<='\f')||(LA25_167>='\u000E' && LA25_167<='\u001F')||(LA25_167>='\u0080' && LA25_167<='\uFFFF')) ) {s = 114;}
-
-                        else s = 75;
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 77 : 
+                    case 81 : 
                         int LA25_129 = input.LA(1);
 
                          
@@ -5168,64 +5328,55 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_129);
                         if ( s>=0 ) return s;
                         break;
-                    case 78 : 
-                        int LA25_166 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_166=='#') ) {s = 201;}
-
-                        else if ( (LA25_166==':'||(LA25_166>='A' && LA25_166<='Z')||LA25_166=='_'||(LA25_166>='a' && LA25_166<='z')) ) {s = 202;}
-
-                        else if ( (LA25_166=='<') ) {s = 160;}
-
-                        else if ( (LA25_166=='\\') ) {s = 161;}
-
-                        else if ( (LA25_166=='\n') ) {s = 162;}
-
-                        else if ( ((LA25_166>='0' && LA25_166<='9')) ) {s = 72;}
-
-                        else if ( (LA25_166=='\r') ) {s = 163;}
-
-                        else if ( (LA25_166=='\t') ) {s = 164;}
-
-                        else if ( (LA25_166=='&') ) {s = 166;}
-
-                        else if ( ((LA25_166>=' ' && LA25_166<='!')||(LA25_166>='$' && LA25_166<='%')||(LA25_166>='\'' && LA25_166<='/')||LA25_166==';'||(LA25_166>='=' && LA25_166<='@')||LA25_166=='['||(LA25_166>=']' && LA25_166<='^')||LA25_166=='`'||(LA25_166>='{' && LA25_166<='\u007F')) ) {s = 165;}
-
-                        else if ( (LA25_166=='\"') ) {s = 167;}
-
-                        else if ( ((LA25_166>='\u0000' && LA25_166<='\b')||(LA25_166>='\u000B' && LA25_166<='\f')||(LA25_166>='\u000E' && LA25_166<='\u001F')||(LA25_166>='\u0080' && LA25_166<='\uFFFF')) ) {s = 114;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 79 : 
-                        int LA25_233 = input.LA(1);
+                    case 82 : 
+                        int LA25_188 = input.LA(1);
 
                          
-                        int index25_233 = input.index();
+                        int index25_188 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_233=='\"') && (( ! inString ))) {s = 102;}
+                        if ( (LA25_188=='\"') ) {s = 139;}
 
-                        else if ( (LA25_233=='\\') ) {s = 101;}
+                        else if ( (LA25_188=='\\') ) {s = 140;}
 
-                        else if ( (LA25_233=='\n') ) {s = 60;}
+                        else if ( (LA25_188=='\n') ) {s = 141;}
 
-                        else if ( (LA25_233=='\r') ) {s = 61;}
+                        else if ( (LA25_188=='\r') ) {s = 142;}
 
-                        else if ( (LA25_233=='\t') ) {s = 62;}
+                        else if ( (LA25_188=='\t') ) {s = 143;}
 
-                        else if ( ((LA25_233>=' ' && LA25_233<='!')||(LA25_233>='#' && LA25_233<='%')||(LA25_233>='\'' && LA25_233<=';')||(LA25_233>='=' && LA25_233<='[')||(LA25_233>=']' && LA25_233<='\u007F')) ) {s = 99;}
+                        else if ( ((LA25_188>=' ' && LA25_188<='!')||(LA25_188>='$' && LA25_188<='%')||(LA25_188>='\'' && LA25_188<='/')||LA25_188==';'||(LA25_188>='=' && LA25_188<='@')||LA25_188=='['||(LA25_188>=']' && LA25_188<='^')||LA25_188=='`'||(LA25_188>='{' && LA25_188<='\u007F')) ) {s = 144;}
 
-                        else if ( (LA25_233=='&') ) {s = 100;}
+                        else if ( (LA25_188=='&') ) {s = 145;}
 
-                        else if ( (LA25_233=='<') ) {s = 98;}
+                        else if ( (LA25_188=='#'||(LA25_188>='0' && LA25_188<=':')||(LA25_188>='A' && LA25_188<='Z')||LA25_188=='_'||(LA25_188>='a' && LA25_188<='z')) ) {s = 98;}
+
+                        else if ( (LA25_188=='<') ) {s = 146;}
+
+                        else if ( ((LA25_188>='\u0000' && LA25_188<='\b')||(LA25_188>='\u000B' && LA25_188<='\f')||(LA25_188>='\u000E' && LA25_188<='\u001F')||(LA25_188>='\u0080' && LA25_188<='\uFFFF')) ) {s = 107;}
+
+                        else s = 108;
 
                          
-                        input.seek(index25_233);
+                        input.seek(index25_188);
                         if ( s>=0 ) return s;
                         break;
-                    case 80 : 
+                    case 83 : 
+                        int LA25_101 = input.LA(1);
+
+                         
+                        int index25_101 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (( inString )) ) {s = 67;}
+
+                        else if ( (( ! inString )) ) {s = 108;}
+
+                         
+                        input.seek(index25_101);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 84 : 
                         int LA25_116 = input.LA(1);
 
                          
@@ -5244,7 +5395,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_116);
                         if ( s>=0 ) return s;
                         break;
-                    case 81 : 
+                    case 85 : 
                         int LA25_176 = input.LA(1);
 
                          
@@ -5263,7 +5414,33 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_176);
                         if ( s>=0 ) return s;
                         break;
-                    case 82 : 
+                    case 86 : 
+                        int LA25_161 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_161=='\\') ) {s = 199;}
+
+                        else if ( (LA25_161=='\"') ) {s = 200;}
+
+                        else if ( ((LA25_161>=' ' && LA25_161<='!')||(LA25_161>='$' && LA25_161<='%')||(LA25_161>='\'' && LA25_161<='/')||LA25_161==';'||(LA25_161>='=' && LA25_161<='@')||LA25_161=='['||(LA25_161>=']' && LA25_161<='^')||LA25_161=='`'||(LA25_161>='{' && LA25_161<='\u007F')) ) {s = 165;}
+
+                        else if ( (LA25_161=='\n') ) {s = 162;}
+
+                        else if ( (LA25_161=='\r') ) {s = 163;}
+
+                        else if ( (LA25_161=='\t') ) {s = 164;}
+
+                        else if ( (LA25_161=='&') ) {s = 166;}
+
+                        else if ( (LA25_161=='#'||(LA25_161>='0' && LA25_161<=':')||(LA25_161>='A' && LA25_161<='Z')||LA25_161=='_'||(LA25_161>='a' && LA25_161<='z')) ) {s = 72;}
+
+                        else if ( (LA25_161=='<') ) {s = 167;}
+
+                        else if ( ((LA25_161>='\u0000' && LA25_161<='\b')||(LA25_161>='\u000B' && LA25_161<='\f')||(LA25_161>='\u000E' && LA25_161<='\u001F')||(LA25_161>='\u0080' && LA25_161<='\uFFFF')) ) {s = 114;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 87 : 
                         int LA25_124 = input.LA(1);
 
                          
@@ -5282,7 +5459,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_124);
                         if ( s>=0 ) return s;
                         break;
-                    case 83 : 
+                    case 88 : 
                         int LA25_78 = input.LA(1);
 
                          
@@ -5301,138 +5478,51 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_78);
                         if ( s>=0 ) return s;
                         break;
-                    case 84 : 
-                        int LA25_67 = input.LA(1);
-
-                         
-                        int index25_67 = input.index();
-                        input.rewind();
-                        s = -1;
-                        s = 109;
-
-                         
-                        input.seek(index25_67);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 85 : 
-                        int LA25_245 = input.LA(1);
-
-                         
-                        int index25_245 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_245=='<') ) {s = 65;}
-
-                        else if ( (LA25_245=='\\') ) {s = 59;}
-
-                        else if ( (LA25_245=='\n') ) {s = 60;}
-
-                        else if ( (LA25_245=='\r') ) {s = 61;}
-
-                        else if ( (LA25_245=='\t') ) {s = 62;}
-
-                        else if ( (LA25_245=='c') ) {s = 246;}
-
-                        else if ( (LA25_245=='&') ) {s = 64;}
-
-                        else if ( ((LA25_245>=' ' && LA25_245<='!')||(LA25_245>='#' && LA25_245<='%')||(LA25_245>='\'' && LA25_245<=';')||(LA25_245>='=' && LA25_245<='[')||(LA25_245>=']' && LA25_245<='b')||(LA25_245>='d' && LA25_245<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_245=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_245>='\u0080' && LA25_245<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_245);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 86 : 
-                        int LA25_145 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_145=='\"') ) {s = 141;}
-
-                        else if ( (LA25_145=='\\') ) {s = 142;}
-
-                        else if ( (LA25_145=='\n') ) {s = 143;}
-
-                        else if ( (LA25_145=='\r') ) {s = 144;}
-
-                        else if ( (LA25_145=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_145>=' ' && LA25_145<='!')||(LA25_145>='$' && LA25_145<='%')||(LA25_145>='\'' && LA25_145<='/')||LA25_145==';'||(LA25_145>='=' && LA25_145<='@')||LA25_145=='['||(LA25_145>=']' && LA25_145<='^')||LA25_145=='`'||(LA25_145>='{' && LA25_145<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_145=='&') ) {s = 147;}
-
-                        else if ( (LA25_145=='#'||(LA25_145>='0' && LA25_145<=':')||(LA25_145>='A' && LA25_145<='Z')||LA25_145=='_'||(LA25_145>='a' && LA25_145<='z')) ) {s = 99;}
-
-                        else if ( (LA25_145=='<') ) {s = 148;}
-
-                        else if ( ((LA25_145>='\u0000' && LA25_145<='\b')||(LA25_145>='\u000B' && LA25_145<='\f')||(LA25_145>='\u000E' && LA25_145<='\u001F')||(LA25_145>='\u0080' && LA25_145<='\uFFFF')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 87 : 
-                        int LA25_210 = input.LA(1);
-
-                         
-                        int index25_210 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_210=='<') ) {s = 65;}
-
-                        else if ( (LA25_210=='\\') ) {s = 59;}
-
-                        else if ( (LA25_210=='\n') ) {s = 60;}
-
-                        else if ( (LA25_210=='\r') ) {s = 61;}
-
-                        else if ( (LA25_210=='\t') ) {s = 62;}
-
-                        else if ( (LA25_210=='b') ) {s = 232;}
-
-                        else if ( (LA25_210=='&') ) {s = 64;}
-
-                        else if ( ((LA25_210>=' ' && LA25_210<='!')||(LA25_210>='#' && LA25_210<='%')||(LA25_210>='\'' && LA25_210<=';')||(LA25_210>='=' && LA25_210<='[')||(LA25_210>=']' && LA25_210<='a')||(LA25_210>='c' && LA25_210<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_210=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_210>='\u0080' && LA25_210<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_210);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 88 : 
-                        int LA25_195 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_195=='\\') ) {s = 191;}
-
-                        else if ( (LA25_195=='\"') ) {s = 192;}
-
-                        else if ( (LA25_195=='n') ) {s = 96;}
-
-                        else if ( (LA25_195=='t') ) {s = 97;}
-
-                        else if ( (LA25_195=='<') ) {s = 148;}
-
-                        else if ( ((LA25_195>=' ' && LA25_195<='!')||(LA25_195>='$' && LA25_195<='%')||(LA25_195>='\'' && LA25_195<='/')||LA25_195==';'||(LA25_195>='=' && LA25_195<='@')||LA25_195=='['||(LA25_195>=']' && LA25_195<='^')||LA25_195=='`'||(LA25_195>='{' && LA25_195<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_195=='\n') ) {s = 143;}
-
-                        else if ( (LA25_195=='\r') ) {s = 144;}
-
-                        else if ( (LA25_195=='\t') ) {s = 145;}
-
-                        else if ( (LA25_195=='&') ) {s = 147;}
-
-                        else if ( (LA25_195=='#'||(LA25_195>='0' && LA25_195<=':')||(LA25_195>='A' && LA25_195<='Z')||LA25_195=='_'||(LA25_195>='a' && LA25_195<='m')||(LA25_195>='o' && LA25_195<='s')||(LA25_195>='u' && LA25_195<='z')) ) {s = 99;}
-
-                        else if ( ((LA25_195>='\u0000' && LA25_195<='\b')||(LA25_195>='\u000B' && LA25_195<='\f')||(LA25_195>='\u000E' && LA25_195<='\u001F')||(LA25_195>='\u0080' && LA25_195<='\uFFFF')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
                     case 89 : 
+                        int LA25_137 = input.LA(1);
+
+                         
+                        int index25_137 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_137==';') ) {s = 138;}
+
+                        else if ( ((LA25_137>='-' && LA25_137<='.')||(LA25_137>='0' && LA25_137<=':')||(LA25_137>='A' && LA25_137<='Z')||LA25_137=='_'||(LA25_137>='a' && LA25_137<='z')) ) {s = 137;}
+
+                        else if ( ((LA25_137>=' ' && LA25_137<=',')||LA25_137=='/'||(LA25_137>='<' && LA25_137<='@')||(LA25_137>='[' && LA25_137<='^')||LA25_137=='`'||(LA25_137>='{' && LA25_137<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_137);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 90 : 
+                        int LA25_242 = input.LA(1);
+
+                         
+                        int index25_242 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_242=='<') ) {s = 100;}
+
+                        else if ( (LA25_242=='\\') ) {s = 109;}
+
+                        else if ( (LA25_242=='\n') ) {s = 63;}
+
+                        else if ( (LA25_242=='\r') ) {s = 64;}
+
+                        else if ( (LA25_242=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_242>=' ' && LA25_242<='!')||(LA25_242>='#' && LA25_242<='%')||(LA25_242>='\'' && LA25_242<=';')||(LA25_242>='=' && LA25_242<='[')||(LA25_242>=']' && LA25_242<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_242=='&') ) {s = 99;}
+
+                        else if ( (LA25_242=='\"') && (( ! inString ))) {s = 108;}
+
+                         
+                        input.seek(index25_242);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 91 : 
                         int LA25_89 = input.LA(1);
 
                          
@@ -5451,7 +5541,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_89);
                         if ( s>=0 ) return s;
                         break;
-                    case 90 : 
+                    case 92 : 
                         int LA25_87 = input.LA(1);
 
                          
@@ -5470,184 +5560,69 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_87);
                         if ( s>=0 ) return s;
                         break;
-                    case 91 : 
-                        int LA25_114 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_114=='<') ) {s = 160;}
-
-                        else if ( (LA25_114=='\\') ) {s = 161;}
-
-                        else if ( (LA25_114=='\n') ) {s = 162;}
-
-                        else if ( (LA25_114=='\r') ) {s = 163;}
-
-                        else if ( (LA25_114=='\t') ) {s = 164;}
-
-                        else if ( ((LA25_114>=' ' && LA25_114<='!')||(LA25_114>='$' && LA25_114<='%')||(LA25_114>='\'' && LA25_114<='/')||LA25_114==';'||(LA25_114>='=' && LA25_114<='@')||LA25_114=='['||(LA25_114>=']' && LA25_114<='^')||LA25_114=='`'||(LA25_114>='{' && LA25_114<='\u007F')) ) {s = 165;}
-
-                        else if ( (LA25_114=='&') ) {s = 166;}
-
-                        else if ( (LA25_114=='#'||(LA25_114>='0' && LA25_114<=':')||(LA25_114>='A' && LA25_114<='Z')||LA25_114=='_'||(LA25_114>='a' && LA25_114<='z')) ) {s = 72;}
-
-                        else if ( (LA25_114=='\"') ) {s = 167;}
-
-                        else if ( ((LA25_114>='\u0000' && LA25_114<='\b')||(LA25_114>='\u000B' && LA25_114<='\f')||(LA25_114>='\u000E' && LA25_114<='\u001F')||(LA25_114>='\u0080' && LA25_114<='\uFFFF')) ) {s = 114;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 92 : 
-                        int LA25_242 = input.LA(1);
-
-                         
-                        int index25_242 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_242=='<') ) {s = 98;}
-
-                        else if ( (LA25_242=='\\') ) {s = 101;}
-
-                        else if ( (LA25_242=='\n') ) {s = 60;}
-
-                        else if ( (LA25_242=='\r') ) {s = 61;}
-
-                        else if ( (LA25_242=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_242>=' ' && LA25_242<='!')||(LA25_242>='#' && LA25_242<='%')||(LA25_242>='\'' && LA25_242<=';')||(LA25_242>='=' && LA25_242<='[')||(LA25_242>=']' && LA25_242<='\u007F')) ) {s = 99;}
-
-                        else if ( (LA25_242=='&') ) {s = 100;}
-
-                        else if ( (LA25_242=='\"') && (( ! inString ))) {s = 102;}
-
-                         
-                        input.seek(index25_242);
-                        if ( s>=0 ) return s;
-                        break;
                     case 93 : 
-                        int LA25_219 = input.LA(1);
+                        int LA25_97 = input.LA(1);
 
                          
-                        int index25_219 = input.index();
+                        int index25_97 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_219=='<') ) {s = 65;}
+                        if ( (LA25_97=='a') ) {s = 130;}
 
-                        else if ( (LA25_219=='\\') ) {s = 59;}
+                        else if ( (LA25_97=='\\') ) {s = 131;}
 
-                        else if ( (LA25_219=='\n') ) {s = 60;}
+                        else if ( (LA25_97=='\"') ) {s = 132;}
 
-                        else if ( (LA25_219=='\r') ) {s = 61;}
+                        else if ( (LA25_97=='<') ) {s = 66;}
 
-                        else if ( (LA25_219=='\t') ) {s = 62;}
+                        else if ( ((LA25_97>=' ' && LA25_97<='!')||(LA25_97>='#' && LA25_97<='%')||(LA25_97>='\'' && LA25_97<=';')||(LA25_97>='=' && LA25_97<='[')||(LA25_97>=']' && LA25_97<='`')||(LA25_97>='b' && LA25_97<='\u007F')) ) {s = 59;}
 
-                        else if ( (LA25_219==';') ) {s = 237;}
+                        else if ( (LA25_97=='\n') ) {s = 63;}
 
-                        else if ( (LA25_219=='&') ) {s = 64;}
+                        else if ( (LA25_97=='\r') ) {s = 64;}
 
-                        else if ( ((LA25_219>='0' && LA25_219<='9')) ) {s = 219;}
+                        else if ( (LA25_97=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_219>=' ' && LA25_219<='!')||(LA25_219>='#' && LA25_219<='%')||(LA25_219>='\'' && LA25_219<='/')||LA25_219==':'||(LA25_219>='=' && LA25_219<='[')||(LA25_219>=']' && LA25_219<='\u007F')) ) {s = 63;}
+                        else if ( (LA25_97=='&') ) {s = 62;}
 
-                        else if ( (LA25_219=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_219>='\u0080' && LA25_219<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( ((LA25_97>='\u0080' && LA25_97<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_219);
+                        input.seek(index25_97);
                         if ( s>=0 ) return s;
                         break;
                     case 94 : 
-                        int LA25_217 = input.LA(1);
+                        int LA25_246 = input.LA(1);
 
                          
-                        int index25_217 = input.index();
+                        int index25_246 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_217=='<') ) {s = 98;}
+                        if ( (LA25_246==':') ) {s = 247;}
 
-                        else if ( (LA25_217=='\\') ) {s = 101;}
+                        else if ( (LA25_246=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                        else if ( (LA25_217=='\n') ) {s = 60;}
+                        else if ( (LA25_246=='\\') ) {s = 60;}
 
-                        else if ( (LA25_217=='\r') ) {s = 61;}
+                        else if ( (LA25_246=='\n') ) {s = 63;}
 
-                        else if ( (LA25_217=='\t') ) {s = 62;}
+                        else if ( (LA25_246=='\r') ) {s = 64;}
 
-                        else if ( ((LA25_217>=' ' && LA25_217<='!')||(LA25_217>='#' && LA25_217<='%')||(LA25_217>='\'' && LA25_217<=';')||(LA25_217>='=' && LA25_217<='[')||(LA25_217>=']' && LA25_217<='\u007F')) ) {s = 99;}
+                        else if ( (LA25_246=='\t') ) {s = 65;}
 
-                        else if ( (LA25_217=='&') ) {s = 100;}
+                        else if ( ((LA25_246>=' ' && LA25_246<='!')||(LA25_246>='#' && LA25_246<='%')||(LA25_246>='\'' && LA25_246<='9')||LA25_246==';'||(LA25_246>='=' && LA25_246<='[')||(LA25_246>=']' && LA25_246<='\u007F')) ) {s = 59;}
 
-                        else if ( (LA25_217=='\"') && (( ! inString ))) {s = 102;}
+                        else if ( (LA25_246=='&') ) {s = 62;}
+
+                        else if ( (LA25_246=='<') ) {s = 66;}
+
+                        else if ( ((LA25_246>='\u0080' && LA25_246<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_217);
+                        input.seek(index25_246);
                         if ( s>=0 ) return s;
                         break;
                     case 95 : 
-                        int LA25_247 = input.LA(1);
-
-                         
-                        int index25_247 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_247=='<') ) {s = 65;}
-
-                        else if ( (LA25_247=='\\') ) {s = 59;}
-
-                        else if ( (LA25_247=='\n') ) {s = 60;}
-
-                        else if ( (LA25_247=='\r') ) {s = 61;}
-
-                        else if ( (LA25_247=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_247>='0' && LA25_247<='9')) ) {s = 248;}
-
-                        else if ( (LA25_247=='&') ) {s = 64;}
-
-                        else if ( (LA25_247=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_247>='\u0080' && LA25_247<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                        else if ( ((LA25_247>=' ' && LA25_247<='!')||(LA25_247>='#' && LA25_247<='%')||(LA25_247>='\'' && LA25_247<='/')||(LA25_247>=':' && LA25_247<=';')||(LA25_247>='=' && LA25_247<='[')||(LA25_247>=']' && LA25_247<='\u007F')) ) {s = 63;}
-
-                         
-                        input.seek(index25_247);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 96 : 
-                        int LA25_188 = input.LA(1);
-
-                         
-                        int index25_188 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_188=='\"') ) {s = 141;}
-
-                        else if ( (LA25_188=='\\') ) {s = 142;}
-
-                        else if ( (LA25_188=='\n') ) {s = 143;}
-
-                        else if ( (LA25_188=='\r') ) {s = 144;}
-
-                        else if ( (LA25_188=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_188>=' ' && LA25_188<='!')||(LA25_188>='$' && LA25_188<='%')||(LA25_188>='\'' && LA25_188<='/')||LA25_188==';'||(LA25_188>='=' && LA25_188<='@')||LA25_188=='['||(LA25_188>=']' && LA25_188<='^')||LA25_188=='`'||(LA25_188>='{' && LA25_188<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_188=='&') ) {s = 147;}
-
-                        else if ( (LA25_188=='#'||(LA25_188>='0' && LA25_188<=':')||(LA25_188>='A' && LA25_188<='Z')||LA25_188=='_'||(LA25_188>='a' && LA25_188<='z')) ) {s = 99;}
-
-                        else if ( (LA25_188=='<') ) {s = 148;}
-
-                        else if ( ((LA25_188>='\u0000' && LA25_188<='\b')||(LA25_188>='\u000B' && LA25_188<='\f')||(LA25_188>='\u000E' && LA25_188<='\u001F')||(LA25_188>='\u0080' && LA25_188<='\uFFFF')) ) {s = 108;}
-
-                        else s = 102;
-
-                         
-                        input.seek(index25_188);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 97 : 
                         int LA25_209 = input.LA(1);
 
                          
@@ -5666,7 +5641,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_209);
                         if ( s>=0 ) return s;
                         break;
-                    case 98 : 
+                    case 96 : 
                         int LA25_21 = input.LA(1);
 
                          
@@ -5687,7 +5662,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_21);
                         if ( s>=0 ) return s;
                         break;
-                    case 99 : 
+                    case 97 : 
                         int LA25_206 = input.LA(1);
 
                          
@@ -5706,7 +5681,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_206);
                         if ( s>=0 ) return s;
                         break;
-                    case 100 : 
+                    case 98 : 
                         int LA25_19 = input.LA(1);
 
                          
@@ -5731,7 +5706,34 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_19);
                         if ( s>=0 ) return s;
                         break;
-                    case 101 : 
+                    case 99 : 
+                        int LA25_184 = input.LA(1);
+
+                         
+                        int index25_184 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_184=='<') ) {s = 100;}
+
+                        else if ( (LA25_184=='\\') ) {s = 109;}
+
+                        else if ( (LA25_184=='\n') ) {s = 63;}
+
+                        else if ( (LA25_184=='\r') ) {s = 64;}
+
+                        else if ( (LA25_184=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_184>=' ' && LA25_184<='!')||(LA25_184>='#' && LA25_184<='%')||(LA25_184>='\'' && LA25_184<=';')||(LA25_184>='=' && LA25_184<='[')||(LA25_184>=']' && LA25_184<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_184=='&') ) {s = 99;}
+
+                        else if ( (LA25_184=='\"') && (( ! inString ))) {s = 108;}
+
+                         
+                        input.seek(index25_184);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 100 : 
                         int LA25_3 = input.LA(1);
 
                          
@@ -5754,35 +5756,19 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_3);
                         if ( s>=0 ) return s;
                         break;
-                    case 102 : 
-                        int LA25_151 = input.LA(1);
+                    case 101 : 
+                        int LA25_99 = input.LA(1);
 
                         s = -1;
-                        if ( (LA25_151=='\"') ) {s = 149;}
+                        if ( (LA25_99=='#') ) {s = 133;}
 
-                        else if ( (LA25_151=='\\') ) {s = 150;}
+                        else if ( (LA25_99==':'||(LA25_99>='A' && LA25_99<='Z')||LA25_99=='_'||(LA25_99>='a' && LA25_99<='z')) ) {s = 134;}
 
-                        else if ( (LA25_151=='\n') ) {s = 143;}
-
-                        else if ( (LA25_151=='\r') ) {s = 144;}
-
-                        else if ( (LA25_151=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_151>=' ' && LA25_151<='!')||(LA25_151>='$' && LA25_151<='%')||(LA25_151>='\'' && LA25_151<='/')||LA25_151==';'||(LA25_151>='=' && LA25_151<='@')||LA25_151=='['||(LA25_151>=']' && LA25_151<='^')||LA25_151=='`'||(LA25_151>='{' && LA25_151<='\u007F')) ) {s = 151;}
-
-                        else if ( (LA25_151=='&') ) {s = 152;}
-
-                        else if ( (LA25_151=='#'||(LA25_151>='0' && LA25_151<=':')||(LA25_151>='A' && LA25_151<='Z')||LA25_151=='_'||(LA25_151>='a' && LA25_151<='z')) ) {s = 63;}
-
-                        else if ( (LA25_151=='<') ) {s = 153;}
-
-                        else if ( ((LA25_151>='\u0080' && LA25_151<='\uFFFF')) ) {s = 106;}
-
-                        else if ( ((LA25_151>='\u0000' && LA25_151<='\b')||(LA25_151>='\u000B' && LA25_151<='\f')||(LA25_151>='\u000E' && LA25_151<='\u001F')) ) {s = 108;}
+                        else if ( ((LA25_99>='\u0000' && LA25_99<='\"')||(LA25_99>='$' && LA25_99<='/')||(LA25_99>=';' && LA25_99<='@')||(LA25_99>='[' && LA25_99<='^')||LA25_99=='`'||(LA25_99>='{' && LA25_99<='\uFFFF')) ) {s = 107;}
 
                         if ( s>=0 ) return s;
                         break;
-                    case 103 : 
+                    case 102 : 
                         int LA25_125 = input.LA(1);
 
                          
@@ -5801,7 +5787,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_125);
                         if ( s>=0 ) return s;
                         break;
-                    case 104 : 
+                    case 103 : 
                         int LA25_84 = input.LA(1);
 
                          
@@ -5820,7 +5806,66 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_84);
                         if ( s>=0 ) return s;
                         break;
+                    case 104 : 
+                        int LA25_95 = input.LA(1);
+
+                         
+                        int index25_95 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_95=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_95=='\\') ) {s = 60;}
+
+                        else if ( (LA25_95=='\n') ) {s = 63;}
+
+                        else if ( (LA25_95=='\r') ) {s = 64;}
+
+                        else if ( (LA25_95=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_95>=' ' && LA25_95<='!')||(LA25_95>='#' && LA25_95<='%')||(LA25_95>='\'' && LA25_95<=';')||(LA25_95>='=' && LA25_95<='[')||(LA25_95>=']' && LA25_95<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_95=='&') ) {s = 62;}
+
+                        else if ( (LA25_95=='<') ) {s = 66;}
+
+                        else if ( ((LA25_95>='\u0080' && LA25_95<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_95);
+                        if ( s>=0 ) return s;
+                        break;
                     case 105 : 
+                        int LA25_151 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_151=='\"') ) {s = 147;}
+
+                        else if ( (LA25_151=='\\') ) {s = 148;}
+
+                        else if ( (LA25_151=='\n') ) {s = 141;}
+
+                        else if ( (LA25_151=='\r') ) {s = 142;}
+
+                        else if ( (LA25_151=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_151>=' ' && LA25_151<='!')||(LA25_151>='$' && LA25_151<='%')||(LA25_151>='\'' && LA25_151<='/')||LA25_151==';'||(LA25_151>='=' && LA25_151<='@')||LA25_151=='['||(LA25_151>=']' && LA25_151<='^')||LA25_151=='`'||(LA25_151>='{' && LA25_151<='\u007F')) ) {s = 149;}
+
+                        else if ( (LA25_151=='&') ) {s = 150;}
+
+                        else if ( (LA25_151=='#'||(LA25_151>='0' && LA25_151<=':')||(LA25_151>='A' && LA25_151<='Z')||LA25_151=='_'||(LA25_151>='a' && LA25_151<='z')) ) {s = 59;}
+
+                        else if ( (LA25_151=='<') ) {s = 151;}
+
+                        else if ( ((LA25_151>='\u0080' && LA25_151<='\uFFFF')) ) {s = 105;}
+
+                        else if ( ((LA25_151>='\u0000' && LA25_151<='\b')||(LA25_151>='\u000B' && LA25_151<='\f')||(LA25_151>='\u000E' && LA25_151<='\u001F')) ) {s = 107;}
+
+                        else s = 100;
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 106 : 
                         int LA25_53 = input.LA(1);
 
                          
@@ -5839,7 +5884,22 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_53);
                         if ( s>=0 ) return s;
                         break;
-                    case 106 : 
+                    case 107 : 
+                        int LA25_66 = input.LA(1);
+
+                         
+                        int index25_66 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( ((LA25_66>=' ' && LA25_66<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                        else s = 100;
+
+                         
+                        input.seek(index25_66);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 108 : 
                         int LA25_49 = input.LA(1);
 
                          
@@ -5858,7 +5918,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_49);
                         if ( s>=0 ) return s;
                         break;
-                    case 107 : 
+                    case 109 : 
                         int LA25_77 = input.LA(1);
 
                          
@@ -5877,68 +5937,40 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_77);
                         if ( s>=0 ) return s;
                         break;
-                    case 108 : 
-                        int LA25_216 = input.LA(1);
+                    case 110 : 
+                        int LA25_219 = input.LA(1);
 
                          
-                        int index25_216 = input.index();
+                        int index25_219 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_216=='<') ) {s = 98;}
+                        if ( (LA25_219==';') ) {s = 237;}
 
-                        else if ( (LA25_216=='\\') ) {s = 101;}
+                        else if ( ((LA25_219>='0' && LA25_219<='9')) ) {s = 219;}
 
-                        else if ( (LA25_216=='\n') ) {s = 60;}
+                        else if ( (LA25_219=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                        else if ( (LA25_216=='\r') ) {s = 61;}
+                        else if ( (LA25_219=='\\') ) {s = 60;}
 
-                        else if ( (LA25_216=='\t') ) {s = 62;}
+                        else if ( (LA25_219=='\n') ) {s = 63;}
 
-                        else if ( (LA25_216==';') ) {s = 217;}
+                        else if ( (LA25_219=='\r') ) {s = 64;}
 
-                        else if ( (LA25_216=='&') ) {s = 100;}
+                        else if ( (LA25_219=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_216>='-' && LA25_216<='.')||(LA25_216>='0' && LA25_216<=':')||(LA25_216>='A' && LA25_216<='Z')||LA25_216=='_'||(LA25_216>='a' && LA25_216<='z')) ) {s = 216;}
+                        else if ( ((LA25_219>=' ' && LA25_219<='!')||(LA25_219>='#' && LA25_219<='%')||(LA25_219>='\'' && LA25_219<='/')||LA25_219==':'||(LA25_219>='=' && LA25_219<='[')||(LA25_219>=']' && LA25_219<='\u007F')) ) {s = 59;}
 
-                        else if ( ((LA25_216>=' ' && LA25_216<='!')||(LA25_216>='#' && LA25_216<='%')||(LA25_216>='\'' && LA25_216<=',')||LA25_216=='/'||(LA25_216>='=' && LA25_216<='@')||LA25_216=='['||(LA25_216>=']' && LA25_216<='^')||LA25_216=='`'||(LA25_216>='{' && LA25_216<='\u007F')) ) {s = 99;}
+                        else if ( (LA25_219=='&') ) {s = 62;}
 
-                        else if ( (LA25_216=='\"') && (( ! inString ))) {s = 102;}
+                        else if ( (LA25_219=='<') ) {s = 66;}
+
+                        else if ( ((LA25_219>='\u0080' && LA25_219<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_216);
+                        input.seek(index25_219);
                         if ( s>=0 ) return s;
                         break;
-                    case 109 : 
-                        int LA25_150 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_150=='\\') ) {s = 191;}
-
-                        else if ( (LA25_150=='\"') ) {s = 192;}
-
-                        else if ( (LA25_150=='n') ) {s = 96;}
-
-                        else if ( (LA25_150=='t') ) {s = 97;}
-
-                        else if ( (LA25_150=='<') ) {s = 148;}
-
-                        else if ( ((LA25_150>=' ' && LA25_150<='!')||(LA25_150>='$' && LA25_150<='%')||(LA25_150>='\'' && LA25_150<='/')||LA25_150==';'||(LA25_150>='=' && LA25_150<='@')||LA25_150=='['||(LA25_150>=']' && LA25_150<='^')||LA25_150=='`'||(LA25_150>='{' && LA25_150<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_150=='\n') ) {s = 143;}
-
-                        else if ( (LA25_150=='\r') ) {s = 144;}
-
-                        else if ( (LA25_150=='\t') ) {s = 145;}
-
-                        else if ( (LA25_150=='&') ) {s = 147;}
-
-                        else if ( (LA25_150=='#'||(LA25_150>='0' && LA25_150<=':')||(LA25_150>='A' && LA25_150<='Z')||LA25_150=='_'||(LA25_150>='a' && LA25_150<='m')||(LA25_150>='o' && LA25_150<='s')||(LA25_150>='u' && LA25_150<='z')) ) {s = 99;}
-
-                        else if ( ((LA25_150>='\u0000' && LA25_150<='\b')||(LA25_150>='\u000B' && LA25_150<='\f')||(LA25_150>='\u000E' && LA25_150<='\u001F')||(LA25_150>='\u0080' && LA25_150<='\uFFFF')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 110 : 
+                    case 111 : 
                         int LA25_37 = input.LA(1);
 
                          
@@ -5957,59 +5989,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_37);
                         if ( s>=0 ) return s;
                         break;
-                    case 111 : 
-                        int LA25_146 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_146=='\"') ) {s = 141;}
-
-                        else if ( (LA25_146=='\\') ) {s = 142;}
-
-                        else if ( (LA25_146=='\n') ) {s = 143;}
-
-                        else if ( (LA25_146=='\r') ) {s = 144;}
-
-                        else if ( (LA25_146=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_146>=' ' && LA25_146<='!')||(LA25_146>='$' && LA25_146<='%')||(LA25_146>='\'' && LA25_146<='/')||LA25_146==';'||(LA25_146>='=' && LA25_146<='@')||LA25_146=='['||(LA25_146>=']' && LA25_146<='^')||LA25_146=='`'||(LA25_146>='{' && LA25_146<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_146=='&') ) {s = 147;}
-
-                        else if ( (LA25_146=='#'||(LA25_146>='0' && LA25_146<=':')||(LA25_146>='A' && LA25_146<='Z')||LA25_146=='_'||(LA25_146>='a' && LA25_146<='z')) ) {s = 99;}
-
-                        else if ( (LA25_146=='<') ) {s = 148;}
-
-                        else if ( ((LA25_146>='\u0000' && LA25_146<='\b')||(LA25_146>='\u000B' && LA25_146<='\f')||(LA25_146>='\u000E' && LA25_146<='\u001F')||(LA25_146>='\u0080' && LA25_146<='\uFFFF')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
                     case 112 : 
-                        int LA25_163 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_163=='<') ) {s = 160;}
-
-                        else if ( (LA25_163=='\\') ) {s = 161;}
-
-                        else if ( (LA25_163=='\n') ) {s = 162;}
-
-                        else if ( (LA25_163=='\r') ) {s = 163;}
-
-                        else if ( (LA25_163=='\t') ) {s = 164;}
-
-                        else if ( ((LA25_163>=' ' && LA25_163<='!')||(LA25_163>='$' && LA25_163<='%')||(LA25_163>='\'' && LA25_163<='/')||LA25_163==';'||(LA25_163>='=' && LA25_163<='@')||LA25_163=='['||(LA25_163>=']' && LA25_163<='^')||LA25_163=='`'||(LA25_163>='{' && LA25_163<='\u007F')) ) {s = 165;}
-
-                        else if ( (LA25_163=='&') ) {s = 166;}
-
-                        else if ( (LA25_163=='#'||(LA25_163>='0' && LA25_163<=':')||(LA25_163>='A' && LA25_163<='Z')||LA25_163=='_'||(LA25_163>='a' && LA25_163<='z')) ) {s = 72;}
-
-                        else if ( (LA25_163=='\"') ) {s = 167;}
-
-                        else if ( ((LA25_163>='\u0000' && LA25_163<='\b')||(LA25_163>='\u000B' && LA25_163<='\f')||(LA25_163>='\u000E' && LA25_163<='\u001F')||(LA25_163>='\u0080' && LA25_163<='\uFFFF')) ) {s = 114;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 113 : 
                         int LA25_229 = input.LA(1);
 
                          
@@ -6028,7 +6008,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_229);
                         if ( s>=0 ) return s;
                         break;
-                    case 114 : 
+                    case 113 : 
                         int LA25_54 = input.LA(1);
 
                          
@@ -6047,7 +6027,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_54);
                         if ( s>=0 ) return s;
                         break;
-                    case 115 : 
+                    case 114 : 
                         int LA25_175 = input.LA(1);
 
                          
@@ -6066,7 +6046,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_175);
                         if ( s>=0 ) return s;
                         break;
-                    case 116 : 
+                    case 115 : 
                         int LA25_86 = input.LA(1);
 
                          
@@ -6085,67 +6065,192 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_86);
                         if ( s>=0 ) return s;
                         break;
-                    case 117 : 
-                        int LA25_140 = input.LA(1);
+                    case 116 : 
+                        int LA25_213 = input.LA(1);
 
                          
-                        int index25_140 = input.index();
+                        int index25_213 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_140=='\"') && ((( ! inString )||( inString )))) {s = 67;}
+                        if ( (LA25_213=='<') ) {s = 66;}
 
-                        else if ( (LA25_140=='\\') ) {s = 59;}
+                        else if ( (LA25_213=='\\') ) {s = 60;}
 
-                        else if ( (LA25_140=='\n') ) {s = 60;}
+                        else if ( (LA25_213=='\n') ) {s = 63;}
 
-                        else if ( (LA25_140=='\r') ) {s = 61;}
+                        else if ( (LA25_213=='\r') ) {s = 64;}
 
-                        else if ( (LA25_140=='\t') ) {s = 62;}
+                        else if ( (LA25_213=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_140>=' ' && LA25_140<='!')||(LA25_140>='#' && LA25_140<='%')||(LA25_140>='\'' && LA25_140<=';')||(LA25_140>='=' && LA25_140<='[')||(LA25_140>=']' && LA25_140<='\u007F')) ) {s = 63;}
+                        else if ( ((LA25_213>=' ' && LA25_213<='!')||(LA25_213>='#' && LA25_213<='%')||(LA25_213>='\'' && LA25_213<=';')||(LA25_213>='=' && LA25_213<='[')||(LA25_213>=']' && LA25_213<='\u007F')) ) {s = 59;}
 
-                        else if ( (LA25_140=='&') ) {s = 64;}
+                        else if ( (LA25_213=='&') ) {s = 62;}
 
-                        else if ( (LA25_140=='<') ) {s = 65;}
+                        else if ( (LA25_213=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                        else if ( ((LA25_140>='\u0080' && LA25_140<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( ((LA25_213>='\u0080' && LA25_213<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_140);
+                        input.seek(index25_213);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 117 : 
+                        int LA25_241 = input.LA(1);
+
+                         
+                        int index25_241 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_241=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_241=='\\') ) {s = 60;}
+
+                        else if ( (LA25_241=='\n') ) {s = 63;}
+
+                        else if ( (LA25_241=='\r') ) {s = 64;}
+
+                        else if ( (LA25_241=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_241>='0' && LA25_241<='9')) ) {s = 245;}
+
+                        else if ( (LA25_241=='&') ) {s = 62;}
+
+                        else if ( ((LA25_241>=' ' && LA25_241<='!')||(LA25_241>='#' && LA25_241<='%')||(LA25_241>='\'' && LA25_241<='/')||(LA25_241>=':' && LA25_241<=';')||(LA25_241>='=' && LA25_241<='[')||(LA25_241>=']' && LA25_241<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_241=='<') ) {s = 66;}
+
+                        else if ( ((LA25_241>='\u0080' && LA25_241<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_241);
                         if ( s>=0 ) return s;
                         break;
                     case 118 : 
-                        int LA25_189 = input.LA(1);
+                        int LA25_147 = input.LA(1);
 
                          
-                        int index25_189 = input.index();
+                        int index25_147 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_189=='x') ) {s = 214;}
+                        if ( (LA25_147=='\"') ) {s = 139;}
 
-                        else if ( (LA25_189=='<') ) {s = 98;}
+                        else if ( (LA25_147=='\\') ) {s = 140;}
 
-                        else if ( (LA25_189=='\\') ) {s = 101;}
+                        else if ( (LA25_147=='\n') ) {s = 141;}
 
-                        else if ( (LA25_189=='\n') ) {s = 60;}
+                        else if ( (LA25_147=='\r') ) {s = 142;}
 
-                        else if ( (LA25_189=='\r') ) {s = 61;}
+                        else if ( (LA25_147=='\t') ) {s = 143;}
 
-                        else if ( (LA25_189=='\t') ) {s = 62;}
+                        else if ( ((LA25_147>=' ' && LA25_147<='!')||(LA25_147>='$' && LA25_147<='%')||(LA25_147>='\'' && LA25_147<='/')||LA25_147==';'||(LA25_147>='=' && LA25_147<='@')||LA25_147=='['||(LA25_147>=']' && LA25_147<='^')||LA25_147=='`'||(LA25_147>='{' && LA25_147<='\u007F')) ) {s = 144;}
 
-                        else if ( ((LA25_189>='0' && LA25_189<='9')) ) {s = 215;}
+                        else if ( (LA25_147=='&') ) {s = 145;}
 
-                        else if ( (LA25_189=='&') ) {s = 100;}
+                        else if ( (LA25_147=='#'||(LA25_147>='0' && LA25_147<=':')||(LA25_147>='A' && LA25_147<='Z')||LA25_147=='_'||(LA25_147>='a' && LA25_147<='z')) ) {s = 98;}
 
-                        else if ( (LA25_189=='\"') && (( ! inString ))) {s = 102;}
+                        else if ( (LA25_147=='<') ) {s = 146;}
 
-                        else if ( ((LA25_189>=' ' && LA25_189<='!')||(LA25_189>='#' && LA25_189<='%')||(LA25_189>='\'' && LA25_189<='/')||(LA25_189>=':' && LA25_189<=';')||(LA25_189>='=' && LA25_189<='[')||(LA25_189>=']' && LA25_189<='w')||(LA25_189>='y' && LA25_189<='\u007F')) ) {s = 99;}
+                        else if ( ((LA25_147>='\u0000' && LA25_147<='\b')||(LA25_147>='\u000B' && LA25_147<='\f')||(LA25_147>='\u000E' && LA25_147<='\u001F')||(LA25_147>='\u0080' && LA25_147<='\uFFFF')) ) {s = 107;}
+
+                        else s = 101;
 
                          
-                        input.seek(index25_189);
+                        input.seek(index25_147);
                         if ( s>=0 ) return s;
                         break;
                     case 119 : 
+                        int LA25_194 = input.LA(1);
+
+                         
+                        int index25_194 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( ((LA25_194>='-' && LA25_194<='.')||(LA25_194>='0' && LA25_194<=':')||(LA25_194>='A' && LA25_194<='Z')||LA25_194=='_'||(LA25_194>='a' && LA25_194<='z')) ) {s = 220;}
+
+                        else if ( (LA25_194==';') ) {s = 221;}
+
+                        else if ( (LA25_194=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_194=='\\') ) {s = 60;}
+
+                        else if ( (LA25_194=='\n') ) {s = 63;}
+
+                        else if ( (LA25_194=='\r') ) {s = 64;}
+
+                        else if ( (LA25_194=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_194>=' ' && LA25_194<='!')||(LA25_194>='#' && LA25_194<='%')||(LA25_194>='\'' && LA25_194<=',')||LA25_194=='/'||(LA25_194>='=' && LA25_194<='@')||LA25_194=='['||(LA25_194>=']' && LA25_194<='^')||LA25_194=='`'||(LA25_194>='{' && LA25_194<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_194=='&') ) {s = 62;}
+
+                        else if ( (LA25_194=='<') ) {s = 66;}
+
+                        else if ( ((LA25_194>='\u0080' && LA25_194<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_194);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 120 : 
+                        int LA25_196 = input.LA(1);
+
+                         
+                        int index25_196 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_196=='\"') ) {s = 139;}
+
+                        else if ( (LA25_196=='\\') ) {s = 140;}
+
+                        else if ( (LA25_196=='\n') ) {s = 141;}
+
+                        else if ( (LA25_196=='\r') ) {s = 142;}
+
+                        else if ( (LA25_196=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_196>=' ' && LA25_196<='!')||(LA25_196>='$' && LA25_196<='%')||(LA25_196>='\'' && LA25_196<='/')||LA25_196==';'||(LA25_196>='=' && LA25_196<='@')||LA25_196=='['||(LA25_196>=']' && LA25_196<='^')||LA25_196=='`'||(LA25_196>='{' && LA25_196<='\u007F')) ) {s = 144;}
+
+                        else if ( (LA25_196=='&') ) {s = 145;}
+
+                        else if ( (LA25_196=='#'||(LA25_196>='0' && LA25_196<=':')||(LA25_196>='A' && LA25_196<='Z')||LA25_196=='_'||(LA25_196>='a' && LA25_196<='z')) ) {s = 98;}
+
+                        else if ( (LA25_196=='<') ) {s = 146;}
+
+                        else if ( ((LA25_196>='\u0000' && LA25_196<='\b')||(LA25_196>='\u000B' && LA25_196<='\f')||(LA25_196>='\u000E' && LA25_196<='\u001F')||(LA25_196>='\u0080' && LA25_196<='\uFFFF')) ) {s = 107;}
+
+                        else s = 101;
+
+                         
+                        input.seek(index25_196);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 121 : 
+                        int LA25_165 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_165=='\"') ) {s = 160;}
+
+                        else if ( (LA25_165=='\\') ) {s = 161;}
+
+                        else if ( (LA25_165=='\n') ) {s = 162;}
+
+                        else if ( (LA25_165=='\r') ) {s = 163;}
+
+                        else if ( (LA25_165=='\t') ) {s = 164;}
+
+                        else if ( ((LA25_165>=' ' && LA25_165<='!')||(LA25_165>='$' && LA25_165<='%')||(LA25_165>='\'' && LA25_165<='/')||LA25_165==';'||(LA25_165>='=' && LA25_165<='@')||LA25_165=='['||(LA25_165>=']' && LA25_165<='^')||LA25_165=='`'||(LA25_165>='{' && LA25_165<='\u007F')) ) {s = 165;}
+
+                        else if ( (LA25_165=='&') ) {s = 166;}
+
+                        else if ( (LA25_165=='#'||(LA25_165>='0' && LA25_165<=':')||(LA25_165>='A' && LA25_165<='Z')||LA25_165=='_'||(LA25_165>='a' && LA25_165<='z')) ) {s = 72;}
+
+                        else if ( (LA25_165=='<') ) {s = 167;}
+
+                        else if ( ((LA25_165>='\u0000' && LA25_165<='\b')||(LA25_165>='\u000B' && LA25_165<='\f')||(LA25_165>='\u000E' && LA25_165<='\u001F')||(LA25_165>='\u0080' && LA25_165<='\uFFFF')) ) {s = 114;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 122 : 
                         int LA25_92 = input.LA(1);
 
                          
@@ -6164,7 +6269,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_92);
                         if ( s>=0 ) return s;
                         break;
-                    case 120 : 
+                    case 123 : 
                         int LA25_43 = input.LA(1);
 
                          
@@ -6183,83 +6288,33 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_43);
                         if ( s>=0 ) return s;
                         break;
-                    case 121 : 
-                        int LA25_186 = input.LA(1);
-
-                         
-                        int index25_186 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_186=='<') ) {s = 65;}
-
-                        else if ( (LA25_186=='\\') ) {s = 59;}
-
-                        else if ( (LA25_186=='\n') ) {s = 60;}
-
-                        else if ( (LA25_186=='\r') ) {s = 61;}
-
-                        else if ( (LA25_186=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_186>=' ' && LA25_186<='!')||(LA25_186>='#' && LA25_186<='%')||(LA25_186>='\'' && LA25_186<=';')||(LA25_186>='=' && LA25_186<='[')||(LA25_186>=']' && LA25_186<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_186=='&') ) {s = 64;}
-
-                        else if ( (LA25_186=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_186>='\u0080' && LA25_186<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_186);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 122 : 
-                        int LA25_212 = input.LA(1);
-
-                         
-                        int index25_212 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_212=='<') ) {s = 98;}
-
-                        else if ( (LA25_212=='\\') ) {s = 101;}
-
-                        else if ( (LA25_212=='\n') ) {s = 60;}
-
-                        else if ( (LA25_212=='\r') ) {s = 61;}
-
-                        else if ( (LA25_212=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_212>=' ' && LA25_212<='!')||(LA25_212>='#' && LA25_212<='%')||(LA25_212>='\'' && LA25_212<=';')||(LA25_212>='=' && LA25_212<='[')||(LA25_212>=']' && LA25_212<='\u007F')) ) {s = 99;}
-
-                        else if ( (LA25_212=='&') ) {s = 100;}
-
-                        else if ( (LA25_212=='\"') && (( ! inString ))) {s = 102;}
-
-                         
-                        input.seek(index25_212);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 123 : 
-                        int LA25_73 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_73=='#') ) {s = 112;}
-
-                        else if ( (LA25_73==':'||(LA25_73>='A' && LA25_73<='Z')||LA25_73=='_'||(LA25_73>='a' && LA25_73<='z')) ) {s = 113;}
-
-                        else if ( ((LA25_73>='\u0000' && LA25_73<='\"')||(LA25_73>='$' && LA25_73<='/')||(LA25_73>=';' && LA25_73<='@')||(LA25_73>='[' && LA25_73<='^')||LA25_73=='`'||(LA25_73>='{' && LA25_73<='\uFFFF')) ) {s = 114;}
-
-                        if ( s>=0 ) return s;
-                        break;
                     case 124 : 
-                        int LA25_100 = input.LA(1);
+                        int LA25_191 = input.LA(1);
 
                         s = -1;
-                        if ( (LA25_100=='#') ) {s = 133;}
+                        if ( (LA25_191=='a') ) {s = 130;}
 
-                        else if ( (LA25_100==':'||(LA25_100>='A' && LA25_100<='Z')||LA25_100=='_'||(LA25_100>='a' && LA25_100<='z')) ) {s = 134;}
+                        else if ( (LA25_191=='\\') ) {s = 195;}
 
-                        else if ( ((LA25_100>='\u0000' && LA25_100<='\"')||(LA25_100>='$' && LA25_100<='/')||(LA25_100>=';' && LA25_100<='@')||(LA25_100>='[' && LA25_100<='^')||LA25_100=='`'||(LA25_100>='{' && LA25_100<='\uFFFF')) ) {s = 108;}
+                        else if ( (LA25_191=='\"') ) {s = 196;}
+
+                        else if ( (LA25_191=='<') ) {s = 151;}
+
+                        else if ( ((LA25_191>=' ' && LA25_191<='!')||(LA25_191>='$' && LA25_191<='%')||(LA25_191>='\'' && LA25_191<='/')||LA25_191==';'||(LA25_191>='=' && LA25_191<='@')||LA25_191=='['||(LA25_191>=']' && LA25_191<='^')||LA25_191=='`'||(LA25_191>='{' && LA25_191<='\u007F')) ) {s = 149;}
+
+                        else if ( (LA25_191=='\n') ) {s = 141;}
+
+                        else if ( (LA25_191=='\r') ) {s = 142;}
+
+                        else if ( (LA25_191=='\t') ) {s = 143;}
+
+                        else if ( (LA25_191=='&') ) {s = 150;}
+
+                        else if ( ((LA25_191>='\u0080' && LA25_191<='\uFFFF')) ) {s = 105;}
+
+                        else if ( (LA25_191=='#'||(LA25_191>='0' && LA25_191<=':')||(LA25_191>='A' && LA25_191<='Z')||LA25_191=='_'||(LA25_191>='b' && LA25_191<='z')) ) {s = 59;}
+
+                        else if ( ((LA25_191>='\u0000' && LA25_191<='\b')||(LA25_191>='\u000B' && LA25_191<='\f')||(LA25_191>='\u000E' && LA25_191<='\u001F')) ) {s = 107;}
 
                         if ( s>=0 ) return s;
                         break;
@@ -6283,38 +6338,38 @@ public class WaebricLexer extends Lexer {
                         if ( s>=0 ) return s;
                         break;
                     case 126 : 
-                        int LA25_192 = input.LA(1);
+                        int LA25_152 = input.LA(1);
 
                          
-                        int index25_192 = input.index();
+                        int index25_152 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_192=='\"') ) {s = 149;}
+                        if ( (LA25_152=='\"') ) {s = 147;}
 
-                        else if ( (LA25_192=='\\') ) {s = 150;}
+                        else if ( (LA25_152=='\\') ) {s = 148;}
 
-                        else if ( (LA25_192=='\n') ) {s = 143;}
+                        else if ( (LA25_152=='\n') ) {s = 141;}
 
-                        else if ( (LA25_192=='\r') ) {s = 144;}
+                        else if ( (LA25_152=='\r') ) {s = 142;}
 
-                        else if ( (LA25_192=='\t') ) {s = 145;}
+                        else if ( (LA25_152=='\t') ) {s = 143;}
 
-                        else if ( ((LA25_192>=' ' && LA25_192<='!')||(LA25_192>='$' && LA25_192<='%')||(LA25_192>='\'' && LA25_192<='/')||LA25_192==';'||(LA25_192>='=' && LA25_192<='@')||LA25_192=='['||(LA25_192>=']' && LA25_192<='^')||LA25_192=='`'||(LA25_192>='{' && LA25_192<='\u007F')) ) {s = 151;}
+                        else if ( ((LA25_152>=' ' && LA25_152<='!')||(LA25_152>='$' && LA25_152<='%')||(LA25_152>='\'' && LA25_152<='/')||LA25_152==';'||(LA25_152>='=' && LA25_152<='@')||LA25_152=='['||(LA25_152>=']' && LA25_152<='^')||LA25_152=='`'||(LA25_152>='{' && LA25_152<='\u007F')) ) {s = 149;}
 
-                        else if ( (LA25_192=='&') ) {s = 152;}
+                        else if ( (LA25_152=='&') ) {s = 150;}
 
-                        else if ( (LA25_192=='#'||(LA25_192>='0' && LA25_192<=':')||(LA25_192>='A' && LA25_192<='Z')||LA25_192=='_'||(LA25_192>='a' && LA25_192<='z')) ) {s = 63;}
+                        else if ( (LA25_152=='#'||(LA25_152>='0' && LA25_152<=':')||(LA25_152>='A' && LA25_152<='Z')||LA25_152=='_'||(LA25_152>='a' && LA25_152<='z')) ) {s = 59;}
 
-                        else if ( (LA25_192=='<') ) {s = 153;}
+                        else if ( (LA25_152=='<') ) {s = 151;}
 
-                        else if ( ((LA25_192>='\u0000' && LA25_192<='\b')||(LA25_192>='\u000B' && LA25_192<='\f')||(LA25_192>='\u000E' && LA25_192<='\u001F')) ) {s = 108;}
+                        else if ( ((LA25_152>='\u0080' && LA25_152<='\uFFFF')) ) {s = 105;}
 
-                        else if ( ((LA25_192>='\u0080' && LA25_192<='\uFFFF')) ) {s = 106;}
+                        else if ( ((LA25_152>='\u0000' && LA25_152<='\b')||(LA25_152>='\u000B' && LA25_152<='\f')||(LA25_152>='\u000E' && LA25_152<='\u001F')) ) {s = 107;}
 
-                        else s = 102;
+                        else s = 108;
 
                          
-                        input.seek(index25_192);
+                        input.seek(index25_152);
                         if ( s>=0 ) return s;
                         break;
                     case 127 : 
@@ -6356,6 +6411,32 @@ public class WaebricLexer extends Lexer {
                         if ( s>=0 ) return s;
                         break;
                     case 129 : 
+                        int LA25_142 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_142=='\"') ) {s = 139;}
+
+                        else if ( (LA25_142=='\\') ) {s = 140;}
+
+                        else if ( (LA25_142=='\n') ) {s = 141;}
+
+                        else if ( (LA25_142=='\r') ) {s = 142;}
+
+                        else if ( (LA25_142=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_142>=' ' && LA25_142<='!')||(LA25_142>='$' && LA25_142<='%')||(LA25_142>='\'' && LA25_142<='/')||LA25_142==';'||(LA25_142>='=' && LA25_142<='@')||LA25_142=='['||(LA25_142>=']' && LA25_142<='^')||LA25_142=='`'||(LA25_142>='{' && LA25_142<='\u007F')) ) {s = 144;}
+
+                        else if ( (LA25_142=='&') ) {s = 145;}
+
+                        else if ( (LA25_142=='#'||(LA25_142>='0' && LA25_142<=':')||(LA25_142>='A' && LA25_142<='Z')||LA25_142=='_'||(LA25_142>='a' && LA25_142<='z')) ) {s = 98;}
+
+                        else if ( (LA25_142=='<') ) {s = 146;}
+
+                        else if ( ((LA25_142>='\u0000' && LA25_142<='\b')||(LA25_142>='\u000B' && LA25_142<='\f')||(LA25_142>='\u000E' && LA25_142<='\u001F')||(LA25_142>='\u0080' && LA25_142<='\uFFFF')) ) {s = 107;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 130 : 
                         int LA25_177 = input.LA(1);
 
                          
@@ -6374,7 +6455,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_177);
                         if ( s>=0 ) return s;
                         break;
-                    case 130 : 
+                    case 131 : 
                         int LA25_45 = input.LA(1);
 
                          
@@ -6393,307 +6474,141 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_45);
                         if ( s>=0 ) return s;
                         break;
-                    case 131 : 
-                        int LA25_235 = input.LA(1);
+                    case 132 : 
+                        int LA25_63 = input.LA(1);
 
                          
-                        int index25_235 = input.index();
+                        int index25_63 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_235=='<') ) {s = 98;}
+                        if ( (LA25_63=='\"') && (( ! inString ))) {s = 108;}
 
-                        else if ( (LA25_235=='\\') ) {s = 101;}
+                        else if ( (LA25_63=='\\') ) {s = 109;}
 
-                        else if ( (LA25_235=='\n') ) {s = 60;}
+                        else if ( (LA25_63=='\n') ) {s = 63;}
 
-                        else if ( (LA25_235=='\r') ) {s = 61;}
+                        else if ( (LA25_63=='\r') ) {s = 64;}
 
-                        else if ( (LA25_235=='\t') ) {s = 62;}
+                        else if ( (LA25_63=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_235>=' ' && LA25_235<='!')||(LA25_235>='#' && LA25_235<='%')||(LA25_235>='\'' && LA25_235<=';')||(LA25_235>='=' && LA25_235<='[')||(LA25_235>=']' && LA25_235<='\u007F')) ) {s = 99;}
+                        else if ( ((LA25_63>=' ' && LA25_63<='!')||(LA25_63>='#' && LA25_63<='%')||(LA25_63>='\'' && LA25_63<=';')||(LA25_63>='=' && LA25_63<='[')||(LA25_63>=']' && LA25_63<='\u007F')) ) {s = 98;}
 
-                        else if ( (LA25_235=='&') ) {s = 100;}
+                        else if ( (LA25_63=='&') ) {s = 99;}
 
-                        else if ( (LA25_235=='\"') && (( ! inString ))) {s = 102;}
+                        else if ( (LA25_63=='<') ) {s = 100;}
 
                          
-                        input.seek(index25_235);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 132 : 
-                        int LA25_161 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_161=='\\') ) {s = 199;}
-
-                        else if ( (LA25_161=='\"') ) {s = 200;}
-
-                        else if ( (LA25_161=='<') ) {s = 160;}
-
-                        else if ( ((LA25_161>=' ' && LA25_161<='!')||(LA25_161>='$' && LA25_161<='%')||(LA25_161>='\'' && LA25_161<='/')||LA25_161==';'||(LA25_161>='=' && LA25_161<='@')||LA25_161=='['||(LA25_161>=']' && LA25_161<='^')||LA25_161=='`'||(LA25_161>='{' && LA25_161<='\u007F')) ) {s = 165;}
-
-                        else if ( (LA25_161=='\n') ) {s = 162;}
-
-                        else if ( (LA25_161=='\r') ) {s = 163;}
-
-                        else if ( (LA25_161=='\t') ) {s = 164;}
-
-                        else if ( (LA25_161=='&') ) {s = 166;}
-
-                        else if ( (LA25_161=='#'||(LA25_161>='0' && LA25_161<=':')||(LA25_161>='A' && LA25_161<='Z')||LA25_161=='_'||(LA25_161>='a' && LA25_161<='z')) ) {s = 72;}
-
-                        else if ( ((LA25_161>='\u0000' && LA25_161<='\b')||(LA25_161>='\u000B' && LA25_161<='\f')||(LA25_161>='\u000E' && LA25_161<='\u001F')||(LA25_161>='\u0080' && LA25_161<='\uFFFF')) ) {s = 114;}
-
+                        input.seek(index25_63);
                         if ( s>=0 ) return s;
                         break;
                     case 133 : 
-                        int LA25_132 = input.LA(1);
+                        int LA25_243 = input.LA(1);
 
                          
-                        int index25_132 = input.index();
+                        int index25_243 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_132=='\"') && (( ! inString ))) {s = 102;}
+                        if ( (LA25_243=='<') ) {s = 66;}
 
-                        else if ( (LA25_132=='\\') ) {s = 101;}
+                        else if ( (LA25_243=='\\') ) {s = 60;}
 
-                        else if ( (LA25_132=='\n') ) {s = 60;}
+                        else if ( (LA25_243=='\n') ) {s = 63;}
 
-                        else if ( (LA25_132=='\r') ) {s = 61;}
+                        else if ( (LA25_243=='\r') ) {s = 64;}
 
-                        else if ( (LA25_132=='\t') ) {s = 62;}
+                        else if ( (LA25_243=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_132>=' ' && LA25_132<='!')||(LA25_132>='#' && LA25_132<='%')||(LA25_132>='\'' && LA25_132<=';')||(LA25_132>='=' && LA25_132<='[')||(LA25_132>=']' && LA25_132<='\u007F')) ) {s = 99;}
+                        else if ( ((LA25_243>=' ' && LA25_243<='!')||(LA25_243>='#' && LA25_243<='%')||(LA25_243>='\'' && LA25_243<=';')||(LA25_243>='=' && LA25_243<='[')||(LA25_243>=']' && LA25_243<='\u007F')) ) {s = 59;}
 
-                        else if ( (LA25_132=='&') ) {s = 100;}
+                        else if ( (LA25_243=='&') ) {s = 62;}
 
-                        else if ( (LA25_132=='<') ) {s = 98;}
+                        else if ( (LA25_243=='\"') && ((( ! inString )||( inString )))) {s = 61;}
 
-                        else s = 109;
+                        else if ( ((LA25_243>='\u0080' && LA25_243<='\uFFFF')) && (( inString ))) {s = 67;}
 
                          
-                        input.seek(index25_132);
+                        input.seek(index25_243);
                         if ( s>=0 ) return s;
                         break;
                     case 134 : 
-                        int LA25_236 = input.LA(1);
+                        int LA25_187 = input.LA(1);
 
-                         
-                        int index25_236 = input.index();
-                        input.rewind();
                         s = -1;
-                        if ( (LA25_236==';') ) {s = 243;}
+                        if ( (LA25_187=='\\') ) {s = 187;}
 
-                        else if ( ((LA25_236>='0' && LA25_236<='9')||(LA25_236>='A' && LA25_236<='F')||(LA25_236>='a' && LA25_236<='f')) ) {s = 236;}
+                        else if ( (LA25_187=='\"') ) {s = 188;}
 
-                        else if ( (LA25_236=='<') ) {s = 65;}
+                        else if ( (LA25_187=='<') ) {s = 146;}
 
-                        else if ( (LA25_236=='\\') ) {s = 59;}
+                        else if ( ((LA25_187>=' ' && LA25_187<='!')||(LA25_187>='$' && LA25_187<='%')||(LA25_187>='\'' && LA25_187<='/')||LA25_187==';'||(LA25_187>='=' && LA25_187<='@')||LA25_187=='['||(LA25_187>=']' && LA25_187<='^')||LA25_187=='`'||(LA25_187>='{' && LA25_187<='\u007F')) ) {s = 144;}
 
-                        else if ( (LA25_236=='\n') ) {s = 60;}
+                        else if ( (LA25_187=='\n') ) {s = 141;}
 
-                        else if ( (LA25_236=='\r') ) {s = 61;}
+                        else if ( (LA25_187=='\r') ) {s = 142;}
 
-                        else if ( (LA25_236=='\t') ) {s = 62;}
+                        else if ( (LA25_187=='\t') ) {s = 143;}
 
-                        else if ( ((LA25_236>=' ' && LA25_236<='!')||(LA25_236>='#' && LA25_236<='%')||(LA25_236>='\'' && LA25_236<='/')||LA25_236==':'||(LA25_236>='=' && LA25_236<='@')||(LA25_236>='G' && LA25_236<='[')||(LA25_236>=']' && LA25_236<='`')||(LA25_236>='g' && LA25_236<='\u007F')) ) {s = 63;}
+                        else if ( (LA25_187=='&') ) {s = 145;}
 
-                        else if ( (LA25_236=='&') ) {s = 64;}
+                        else if ( (LA25_187=='#'||(LA25_187>='0' && LA25_187<=':')||(LA25_187>='A' && LA25_187<='Z')||LA25_187=='_'||(LA25_187>='a' && LA25_187<='z')) ) {s = 98;}
 
-                        else if ( (LA25_236=='\"') && ((( ! inString )||( inString )))) {s = 67;}
+                        else if ( ((LA25_187>='\u0000' && LA25_187<='\b')||(LA25_187>='\u000B' && LA25_187<='\f')||(LA25_187>='\u000E' && LA25_187<='\u001F')||(LA25_187>='\u0080' && LA25_187<='\uFFFF')) ) {s = 107;}
 
-                        else if ( ((LA25_236>='\u0080' && LA25_236<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_236);
                         if ( s>=0 ) return s;
                         break;
                     case 135 : 
-                        int LA25_218 = input.LA(1);
+                        int LA25_62 = input.LA(1);
 
                          
-                        int index25_218 = input.index();
+                        int index25_62 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_218=='<') ) {s = 65;}
+                        if ( (LA25_62=='#') ) {s = 102;}
 
-                        else if ( (LA25_218=='\\') ) {s = 59;}
+                        else if ( (LA25_62==':'||(LA25_62>='A' && LA25_62<='Z')||LA25_62=='_'||(LA25_62>='a' && LA25_62<='z')) ) {s = 103;}
 
-                        else if ( (LA25_218=='\n') ) {s = 60;}
+                        else if ( (LA25_62=='\"') ) {s = 104;}
 
-                        else if ( (LA25_218=='\r') ) {s = 61;}
+                        else if ( ((LA25_62>=' ' && LA25_62<='!')||(LA25_62>='$' && LA25_62<='/')||(LA25_62>=';' && LA25_62<='@')||LA25_62=='['||(LA25_62>=']' && LA25_62<='^')||LA25_62=='`'||(LA25_62>='{' && LA25_62<='\uFFFF')) ) {s = 105;}
 
-                        else if ( (LA25_218=='\t') ) {s = 62;}
+                        else if ( (LA25_62=='\\') ) {s = 106;}
 
-                        else if ( ((LA25_218>='0' && LA25_218<='9')||(LA25_218>='A' && LA25_218<='F')||(LA25_218>='a' && LA25_218<='f')) ) {s = 236;}
+                        else if ( ((LA25_62>='0' && LA25_62<='9')) && (( inString ))) {s = 67;}
 
-                        else if ( (LA25_218=='&') ) {s = 64;}
-
-                        else if ( ((LA25_218>=' ' && LA25_218<='!')||(LA25_218>='#' && LA25_218<='%')||(LA25_218>='\'' && LA25_218<='/')||(LA25_218>=':' && LA25_218<=';')||(LA25_218>='=' && LA25_218<='@')||(LA25_218>='G' && LA25_218<='[')||(LA25_218>=']' && LA25_218<='`')||(LA25_218>='g' && LA25_218<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_218=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_218>='\u0080' && LA25_218<='\uFFFF')) && (( inString ))) {s = 66;}
+                        else if ( ((LA25_62>='\u0000' && LA25_62<='\u001F')) ) {s = 107;}
 
                          
-                        input.seek(index25_218);
+                        input.seek(index25_62);
                         if ( s>=0 ) return s;
                         break;
                     case 136 : 
-                        int LA25_196 = input.LA(1);
+                        int LA25_65 = input.LA(1);
 
                          
-                        int index25_196 = input.index();
+                        int index25_65 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_196=='\"') ) {s = 141;}
+                        if ( (LA25_65=='<') ) {s = 100;}
 
-                        else if ( (LA25_196=='\\') ) {s = 142;}
+                        else if ( (LA25_65=='\\') ) {s = 109;}
 
-                        else if ( (LA25_196=='\n') ) {s = 143;}
+                        else if ( (LA25_65=='\n') ) {s = 63;}
 
-                        else if ( (LA25_196=='\r') ) {s = 144;}
+                        else if ( (LA25_65=='\r') ) {s = 64;}
 
-                        else if ( (LA25_196=='\t') ) {s = 145;}
+                        else if ( (LA25_65=='\t') ) {s = 65;}
 
-                        else if ( ((LA25_196>=' ' && LA25_196<='!')||(LA25_196>='$' && LA25_196<='%')||(LA25_196>='\'' && LA25_196<='/')||LA25_196==';'||(LA25_196>='=' && LA25_196<='@')||LA25_196=='['||(LA25_196>=']' && LA25_196<='^')||LA25_196=='`'||(LA25_196>='{' && LA25_196<='\u007F')) ) {s = 146;}
+                        else if ( ((LA25_65>=' ' && LA25_65<='!')||(LA25_65>='#' && LA25_65<='%')||(LA25_65>='\'' && LA25_65<=';')||(LA25_65>='=' && LA25_65<='[')||(LA25_65>=']' && LA25_65<='\u007F')) ) {s = 98;}
 
-                        else if ( (LA25_196=='&') ) {s = 147;}
+                        else if ( (LA25_65=='&') ) {s = 99;}
 
-                        else if ( (LA25_196=='#'||(LA25_196>='0' && LA25_196<=':')||(LA25_196>='A' && LA25_196<='Z')||LA25_196=='_'||(LA25_196>='a' && LA25_196<='z')) ) {s = 99;}
-
-                        else if ( (LA25_196=='<') ) {s = 148;}
-
-                        else if ( ((LA25_196>='\u0000' && LA25_196<='\b')||(LA25_196>='\u000B' && LA25_196<='\f')||(LA25_196>='\u000E' && LA25_196<='\u001F')||(LA25_196>='\u0080' && LA25_196<='\uFFFF')) ) {s = 108;}
-
-                        else s = 109;
+                        else if ( (LA25_65=='\"') && (( ! inString ))) {s = 108;}
 
                          
-                        input.seek(index25_196);
+                        input.seek(index25_65);
                         if ( s>=0 ) return s;
                         break;
                     case 137 : 
-                        int LA25_234 = input.LA(1);
-
-                         
-                        int index25_234 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_234==';') ) {s = 242;}
-
-                        else if ( ((LA25_234>='0' && LA25_234<='9')||(LA25_234>='A' && LA25_234<='F')||(LA25_234>='a' && LA25_234<='f')) ) {s = 234;}
-
-                        else if ( (LA25_234=='<') ) {s = 98;}
-
-                        else if ( (LA25_234=='\\') ) {s = 101;}
-
-                        else if ( (LA25_234=='\n') ) {s = 60;}
-
-                        else if ( (LA25_234=='\r') ) {s = 61;}
-
-                        else if ( (LA25_234=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_234>=' ' && LA25_234<='!')||(LA25_234>='#' && LA25_234<='%')||(LA25_234>='\'' && LA25_234<='/')||LA25_234==':'||(LA25_234>='=' && LA25_234<='@')||(LA25_234>='G' && LA25_234<='[')||(LA25_234>=']' && LA25_234<='`')||(LA25_234>='g' && LA25_234<='\u007F')) ) {s = 99;}
-
-                        else if ( (LA25_234=='&') ) {s = 100;}
-
-                        else if ( (LA25_234=='\"') && (( ! inString ))) {s = 102;}
-
-                         
-                        input.seek(index25_234);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 138 : 
-                        int LA25_214 = input.LA(1);
-
-                         
-                        int index25_214 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_214=='<') ) {s = 98;}
-
-                        else if ( (LA25_214=='\\') ) {s = 101;}
-
-                        else if ( (LA25_214=='\n') ) {s = 60;}
-
-                        else if ( (LA25_214=='\r') ) {s = 61;}
-
-                        else if ( (LA25_214=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_214>='0' && LA25_214<='9')||(LA25_214>='A' && LA25_214<='F')||(LA25_214>='a' && LA25_214<='f')) ) {s = 234;}
-
-                        else if ( (LA25_214=='&') ) {s = 100;}
-
-                        else if ( ((LA25_214>=' ' && LA25_214<='!')||(LA25_214>='#' && LA25_214<='%')||(LA25_214>='\'' && LA25_214<='/')||(LA25_214>=':' && LA25_214<=';')||(LA25_214>='=' && LA25_214<='@')||(LA25_214>='G' && LA25_214<='[')||(LA25_214>=']' && LA25_214<='`')||(LA25_214>='g' && LA25_214<='\u007F')) ) {s = 99;}
-
-                        else if ( (LA25_214=='\"') && (( ! inString ))) {s = 102;}
-
-                         
-                        input.seek(index25_214);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 139 : 
-                        int LA25_96 = input.LA(1);
-
-                         
-                        int index25_96 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_96=='<') ) {s = 65;}
-
-                        else if ( (LA25_96=='\\') ) {s = 59;}
-
-                        else if ( (LA25_96=='\n') ) {s = 60;}
-
-                        else if ( (LA25_96=='\r') ) {s = 61;}
-
-                        else if ( (LA25_96=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_96>=' ' && LA25_96<='!')||(LA25_96>='#' && LA25_96<='%')||(LA25_96>='\'' && LA25_96<=';')||(LA25_96>='=' && LA25_96<='[')||(LA25_96>=']' && LA25_96<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_96=='&') ) {s = 64;}
-
-                        else if ( (LA25_96=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_96>='\u0080' && LA25_96<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_96);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 140 : 
-                        int LA25_152 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_152=='#') ) {s = 193;}
-
-                        else if ( (LA25_152==':'||(LA25_152>='A' && LA25_152<='Z')||LA25_152=='_'||(LA25_152>='a' && LA25_152<='z')) ) {s = 194;}
-
-                        else if ( (LA25_152=='\"') ) {s = 149;}
-
-                        else if ( (LA25_152=='\\') ) {s = 150;}
-
-                        else if ( (LA25_152=='\n') ) {s = 143;}
-
-                        else if ( (LA25_152=='\r') ) {s = 144;}
-
-                        else if ( (LA25_152=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_152>=' ' && LA25_152<='!')||(LA25_152>='$' && LA25_152<='%')||(LA25_152>='\'' && LA25_152<='/')||LA25_152==';'||(LA25_152>='=' && LA25_152<='@')||LA25_152=='['||(LA25_152>=']' && LA25_152<='^')||LA25_152=='`'||(LA25_152>='{' && LA25_152<='\u007F')) ) {s = 151;}
-
-                        else if ( (LA25_152=='&') ) {s = 152;}
-
-                        else if ( ((LA25_152>='0' && LA25_152<='9')) ) {s = 63;}
-
-                        else if ( (LA25_152=='<') ) {s = 153;}
-
-                        else if ( ((LA25_152>='\u0080' && LA25_152<='\uFFFF')) ) {s = 106;}
-
-                        else if ( ((LA25_152>='\u0000' && LA25_152<='\b')||(LA25_152>='\u000B' && LA25_152<='\f')||(LA25_152>='\u000E' && LA25_152<='\u001F')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 141 : 
                         int LA25_82 = input.LA(1);
 
                          
@@ -6712,7 +6627,125 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_82);
                         if ( s>=0 ) return s;
                         break;
+                    case 138 : 
+                        int LA25_234 = input.LA(1);
+
+                         
+                        int index25_234 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_234==';') ) {s = 242;}
+
+                        else if ( ((LA25_234>='0' && LA25_234<='9')||(LA25_234>='A' && LA25_234<='F')||(LA25_234>='a' && LA25_234<='f')) ) {s = 234;}
+
+                        else if ( (LA25_234=='\"') && (( ! inString ))) {s = 108;}
+
+                        else if ( (LA25_234=='\\') ) {s = 109;}
+
+                        else if ( (LA25_234=='\n') ) {s = 63;}
+
+                        else if ( (LA25_234=='\r') ) {s = 64;}
+
+                        else if ( (LA25_234=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_234>=' ' && LA25_234<='!')||(LA25_234>='#' && LA25_234<='%')||(LA25_234>='\'' && LA25_234<='/')||LA25_234==':'||(LA25_234>='=' && LA25_234<='@')||(LA25_234>='G' && LA25_234<='[')||(LA25_234>=']' && LA25_234<='`')||(LA25_234>='g' && LA25_234<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_234=='&') ) {s = 99;}
+
+                        else if ( (LA25_234=='<') ) {s = 100;}
+
+                         
+                        input.seek(index25_234);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 139 : 
+                        int LA25_214 = input.LA(1);
+
+                         
+                        int index25_214 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( ((LA25_214>='0' && LA25_214<='9')||(LA25_214>='A' && LA25_214<='F')||(LA25_214>='a' && LA25_214<='f')) ) {s = 234;}
+
+                        else if ( (LA25_214=='\"') && (( ! inString ))) {s = 108;}
+
+                        else if ( (LA25_214=='\\') ) {s = 109;}
+
+                        else if ( (LA25_214=='\n') ) {s = 63;}
+
+                        else if ( (LA25_214=='\r') ) {s = 64;}
+
+                        else if ( (LA25_214=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_214>=' ' && LA25_214<='!')||(LA25_214>='#' && LA25_214<='%')||(LA25_214>='\'' && LA25_214<='/')||(LA25_214>=':' && LA25_214<=';')||(LA25_214>='=' && LA25_214<='@')||(LA25_214>='G' && LA25_214<='[')||(LA25_214>=']' && LA25_214<='`')||(LA25_214>='g' && LA25_214<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_214=='&') ) {s = 99;}
+
+                        else if ( (LA25_214=='<') ) {s = 100;}
+
+                         
+                        input.seek(index25_214);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 140 : 
+                        int LA25_199 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_199=='\\') ) {s = 199;}
+
+                        else if ( (LA25_199=='\"') ) {s = 200;}
+
+                        else if ( ((LA25_199>=' ' && LA25_199<='!')||(LA25_199>='$' && LA25_199<='%')||(LA25_199>='\'' && LA25_199<='/')||LA25_199==';'||(LA25_199>='=' && LA25_199<='@')||LA25_199=='['||(LA25_199>=']' && LA25_199<='^')||LA25_199=='`'||(LA25_199>='{' && LA25_199<='\u007F')) ) {s = 165;}
+
+                        else if ( (LA25_199=='\n') ) {s = 162;}
+
+                        else if ( (LA25_199=='\r') ) {s = 163;}
+
+                        else if ( (LA25_199=='\t') ) {s = 164;}
+
+                        else if ( (LA25_199=='&') ) {s = 166;}
+
+                        else if ( (LA25_199=='#'||(LA25_199>='0' && LA25_199<=':')||(LA25_199>='A' && LA25_199<='Z')||LA25_199=='_'||(LA25_199>='a' && LA25_199<='z')) ) {s = 72;}
+
+                        else if ( (LA25_199=='<') ) {s = 167;}
+
+                        else if ( ((LA25_199>='\u0000' && LA25_199<='\b')||(LA25_199>='\u000B' && LA25_199<='\f')||(LA25_199>='\u000E' && LA25_199<='\u001F')||(LA25_199>='\u0080' && LA25_199<='\uFFFF')) ) {s = 114;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 141 : 
+                        int LA25_135 = input.LA(1);
+
+                         
+                        int index25_135 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( ((LA25_135>='0' && LA25_135<='9')||(LA25_135>='A' && LA25_135<='F')||(LA25_135>='a' && LA25_135<='f')) ) {s = 185;}
+
+                        else if ( ((LA25_135>=' ' && LA25_135<='/')||(LA25_135>=':' && LA25_135<='@')||(LA25_135>='G' && LA25_135<='`')||(LA25_135>='g' && LA25_135<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_135);
+                        if ( s>=0 ) return s;
+                        break;
                     case 142 : 
+                        int LA25_185 = input.LA(1);
+
+                         
+                        int index25_185 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_185==';') ) {s = 213;}
+
+                        else if ( ((LA25_185>='0' && LA25_185<='9')||(LA25_185>='A' && LA25_185<='F')||(LA25_185>='a' && LA25_185<='f')) ) {s = 185;}
+
+                        else if ( ((LA25_185>=' ' && LA25_185<='/')||LA25_185==':'||(LA25_185>='<' && LA25_185<='@')||(LA25_185>='G' && LA25_185<='`')||(LA25_185>='g' && LA25_185<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_185);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 143 : 
                         int LA25_85 = input.LA(1);
 
                          
@@ -6731,7 +6764,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_85);
                         if ( s>=0 ) return s;
                         break;
-                    case 143 : 
+                    case 144 : 
                         int LA25_55 = input.LA(1);
 
                          
@@ -6750,130 +6783,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_55);
                         if ( s>=0 ) return s;
                         break;
-                    case 144 : 
-                        int LA25_147 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_147=='#') ) {s = 189;}
-
-                        else if ( (LA25_147==':'||(LA25_147>='A' && LA25_147<='Z')||LA25_147=='_'||(LA25_147>='a' && LA25_147<='z')) ) {s = 190;}
-
-                        else if ( (LA25_147=='\"') ) {s = 141;}
-
-                        else if ( (LA25_147=='\\') ) {s = 142;}
-
-                        else if ( (LA25_147=='\n') ) {s = 143;}
-
-                        else if ( (LA25_147=='\r') ) {s = 144;}
-
-                        else if ( (LA25_147=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_147>=' ' && LA25_147<='!')||(LA25_147>='$' && LA25_147<='%')||(LA25_147>='\'' && LA25_147<='/')||LA25_147==';'||(LA25_147>='=' && LA25_147<='@')||LA25_147=='['||(LA25_147>=']' && LA25_147<='^')||LA25_147=='`'||(LA25_147>='{' && LA25_147<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_147=='&') ) {s = 147;}
-
-                        else if ( ((LA25_147>='0' && LA25_147<='9')) ) {s = 99;}
-
-                        else if ( (LA25_147=='<') ) {s = 148;}
-
-                        else if ( ((LA25_147>='\u0000' && LA25_147<='\b')||(LA25_147>='\u000B' && LA25_147<='\f')||(LA25_147>='\u000E' && LA25_147<='\u001F')||(LA25_147>='\u0080' && LA25_147<='\uFFFF')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
                     case 145 : 
-                        int LA25_232 = input.LA(1);
-
-                         
-                        int index25_232 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_232==':') ) {s = 241;}
-
-                        else if ( (LA25_232=='<') ) {s = 65;}
-
-                        else if ( (LA25_232=='\\') ) {s = 59;}
-
-                        else if ( (LA25_232=='\n') ) {s = 60;}
-
-                        else if ( (LA25_232=='\r') ) {s = 61;}
-
-                        else if ( (LA25_232=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_232>=' ' && LA25_232<='!')||(LA25_232>='#' && LA25_232<='%')||(LA25_232>='\'' && LA25_232<='9')||LA25_232==';'||(LA25_232>='=' && LA25_232<='[')||(LA25_232>=']' && LA25_232<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_232=='&') ) {s = 64;}
-
-                        else if ( (LA25_232=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_232>='\u0080' && LA25_232<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_232);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 146 : 
-                        int LA25_237 = input.LA(1);
-
-                         
-                        int index25_237 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_237=='<') ) {s = 65;}
-
-                        else if ( (LA25_237=='\\') ) {s = 59;}
-
-                        else if ( (LA25_237=='\n') ) {s = 60;}
-
-                        else if ( (LA25_237=='\r') ) {s = 61;}
-
-                        else if ( (LA25_237=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_237>=' ' && LA25_237<='!')||(LA25_237>='#' && LA25_237<='%')||(LA25_237>='\'' && LA25_237<=';')||(LA25_237>='=' && LA25_237<='[')||(LA25_237>=']' && LA25_237<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_237=='&') ) {s = 64;}
-
-                        else if ( (LA25_237=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_237>='\u0080' && LA25_237<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_237);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 147 : 
-                        int LA25_193 = input.LA(1);
-
-                         
-                        int index25_193 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_193=='x') ) {s = 218;}
-
-                        else if ( (LA25_193=='<') ) {s = 65;}
-
-                        else if ( (LA25_193=='\\') ) {s = 59;}
-
-                        else if ( (LA25_193=='\n') ) {s = 60;}
-
-                        else if ( (LA25_193=='\r') ) {s = 61;}
-
-                        else if ( (LA25_193=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_193>='0' && LA25_193<='9')) ) {s = 219;}
-
-                        else if ( (LA25_193=='&') ) {s = 64;}
-
-                        else if ( (LA25_193=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( ((LA25_193>=' ' && LA25_193<='!')||(LA25_193>='#' && LA25_193<='%')||(LA25_193>='\'' && LA25_193<='/')||(LA25_193>=':' && LA25_193<=';')||(LA25_193>='=' && LA25_193<='[')||(LA25_193>=']' && LA25_193<='w')||(LA25_193>='y' && LA25_193<='\u007F')) ) {s = 63;}
-
-                        else if ( ((LA25_193>='\u0080' && LA25_193<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_193);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 148 : 
                         int LA25_41 = input.LA(1);
 
                          
@@ -6892,34 +6802,34 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_41);
                         if ( s>=0 ) return s;
                         break;
-                    case 149 : 
-                        int LA25_136 = input.LA(1);
+                    case 146 : 
+                        int LA25_98 = input.LA(1);
 
                          
-                        int index25_136 = input.index();
+                        int index25_98 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (LA25_136=='\\') ) {s = 101;}
+                        if ( (LA25_98=='\"') && (( ! inString ))) {s = 108;}
 
-                        else if ( (LA25_136=='\n') ) {s = 60;}
+                        else if ( (LA25_98=='\\') ) {s = 109;}
 
-                        else if ( (LA25_136=='\r') ) {s = 61;}
+                        else if ( (LA25_98=='\n') ) {s = 63;}
 
-                        else if ( (LA25_136=='\t') ) {s = 62;}
+                        else if ( (LA25_98=='\r') ) {s = 64;}
 
-                        else if ( ((LA25_136>=' ' && LA25_136<='!')||(LA25_136>='#' && LA25_136<='%')||(LA25_136>='\'' && LA25_136<=';')||(LA25_136>='=' && LA25_136<='[')||(LA25_136>=']' && LA25_136<='\u007F')) ) {s = 99;}
+                        else if ( (LA25_98=='\t') ) {s = 65;}
 
-                        else if ( (LA25_136=='&') ) {s = 100;}
+                        else if ( ((LA25_98>=' ' && LA25_98<='!')||(LA25_98>='#' && LA25_98<='%')||(LA25_98>='\'' && LA25_98<=';')||(LA25_98>='=' && LA25_98<='[')||(LA25_98>=']' && LA25_98<='\u007F')) ) {s = 98;}
 
-                        else if ( (LA25_136=='<') ) {s = 98;}
+                        else if ( (LA25_98=='&') ) {s = 99;}
 
-                        else s = 102;
+                        else if ( (LA25_98=='<') ) {s = 100;}
 
                          
-                        input.seek(index25_136);
+                        input.seek(index25_98);
                         if ( s>=0 ) return s;
                         break;
-                    case 150 : 
+                    case 147 : 
                         int LA25_178 = input.LA(1);
 
                          
@@ -6938,38 +6848,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_178);
                         if ( s>=0 ) return s;
                         break;
-                    case 151 : 
-                        int LA25_190 = input.LA(1);
-
-                         
-                        int index25_190 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_190=='<') ) {s = 98;}
-
-                        else if ( (LA25_190=='\\') ) {s = 101;}
-
-                        else if ( (LA25_190=='\n') ) {s = 60;}
-
-                        else if ( (LA25_190=='\r') ) {s = 61;}
-
-                        else if ( (LA25_190=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_190>='-' && LA25_190<='.')||(LA25_190>='0' && LA25_190<=':')||(LA25_190>='A' && LA25_190<='Z')||LA25_190=='_'||(LA25_190>='a' && LA25_190<='z')) ) {s = 216;}
-
-                        else if ( (LA25_190=='&') ) {s = 100;}
-
-                        else if ( (LA25_190==';') ) {s = 217;}
-
-                        else if ( ((LA25_190>=' ' && LA25_190<='!')||(LA25_190>='#' && LA25_190<='%')||(LA25_190>='\'' && LA25_190<=',')||LA25_190=='/'||(LA25_190>='=' && LA25_190<='@')||LA25_190=='['||(LA25_190>=']' && LA25_190<='^')||LA25_190=='`'||(LA25_190>='{' && LA25_190<='\u007F')) ) {s = 99;}
-
-                        else if ( (LA25_190=='\"') && (( ! inString ))) {s = 102;}
-
-                         
-                        input.seek(index25_190);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 152 : 
+                    case 148 : 
                         int LA25_20 = input.LA(1);
 
                          
@@ -6990,7 +6869,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_20);
                         if ( s>=0 ) return s;
                         break;
-                    case 153 : 
+                    case 149 : 
                         int LA25_128 = input.LA(1);
 
                          
@@ -7009,7 +6888,7 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_128);
                         if ( s>=0 ) return s;
                         break;
-                    case 154 : 
+                    case 150 : 
                         int LA25_208 = input.LA(1);
 
                          
@@ -7028,7 +6907,102 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_208);
                         if ( s>=0 ) return s;
                         break;
-                    case 155 : 
+                    case 151 : 
+                        int LA25_220 = input.LA(1);
+
+                         
+                        int index25_220 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_220==';') ) {s = 221;}
+
+                        else if ( ((LA25_220>='-' && LA25_220<='.')||(LA25_220>='0' && LA25_220<=':')||(LA25_220>='A' && LA25_220<='Z')||LA25_220=='_'||(LA25_220>='a' && LA25_220<='z')) ) {s = 220;}
+
+                        else if ( (LA25_220=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_220=='\\') ) {s = 60;}
+
+                        else if ( (LA25_220=='\n') ) {s = 63;}
+
+                        else if ( (LA25_220=='\r') ) {s = 64;}
+
+                        else if ( (LA25_220=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_220>=' ' && LA25_220<='!')||(LA25_220>='#' && LA25_220<='%')||(LA25_220>='\'' && LA25_220<=',')||LA25_220=='/'||(LA25_220>='=' && LA25_220<='@')||LA25_220=='['||(LA25_220>=']' && LA25_220<='^')||LA25_220=='`'||(LA25_220>='{' && LA25_220<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_220=='&') ) {s = 62;}
+
+                        else if ( (LA25_220=='<') ) {s = 66;}
+
+                        else if ( ((LA25_220>='\u0080' && LA25_220<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_220);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 152 : 
+                        int LA25_189 = input.LA(1);
+
+                         
+                        int index25_189 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_189=='x') ) {s = 214;}
+
+                        else if ( ((LA25_189>='0' && LA25_189<='9')) ) {s = 215;}
+
+                        else if ( (LA25_189=='\"') && (( ! inString ))) {s = 108;}
+
+                        else if ( (LA25_189=='\\') ) {s = 109;}
+
+                        else if ( (LA25_189=='\n') ) {s = 63;}
+
+                        else if ( (LA25_189=='\r') ) {s = 64;}
+
+                        else if ( (LA25_189=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_189>=' ' && LA25_189<='!')||(LA25_189>='#' && LA25_189<='%')||(LA25_189>='\'' && LA25_189<='/')||(LA25_189>=':' && LA25_189<=';')||(LA25_189>='=' && LA25_189<='[')||(LA25_189>=']' && LA25_189<='w')||(LA25_189>='y' && LA25_189<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_189=='&') ) {s = 99;}
+
+                        else if ( (LA25_189=='<') ) {s = 100;}
+
+                         
+                        input.seek(index25_189);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 153 : 
+                        int LA25_96 = input.LA(1);
+
+                         
+                        int index25_96 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_96=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( ((LA25_96>=' ' && LA25_96<='!')||(LA25_96>='#' && LA25_96<='%')||(LA25_96>='\'' && LA25_96<=';')||(LA25_96>='=' && LA25_96<='[')||(LA25_96>=']' && LA25_96<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_96=='\\') ) {s = 60;}
+
+                        else if ( (LA25_96=='&') ) {s = 62;}
+
+                        else if ( (LA25_96=='\n') ) {s = 63;}
+
+                        else if ( (LA25_96=='\r') ) {s = 64;}
+
+                        else if ( (LA25_96=='\t') ) {s = 65;}
+
+                        else if ( (LA25_96=='<') ) {s = 66;}
+
+                        else if ( ((LA25_96>='\u0080' && LA25_96<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                        else s = 108;
+
+                         
+                        input.seek(index25_96);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 154 : 
                         int LA25_118 = input.LA(1);
 
                          
@@ -7045,6 +7019,38 @@ public class WaebricLexer extends Lexer {
 
                          
                         input.seek(index25_118);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 155 : 
+                        int LA25_150 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_150=='#') ) {s = 193;}
+
+                        else if ( (LA25_150==':'||(LA25_150>='A' && LA25_150<='Z')||LA25_150=='_'||(LA25_150>='a' && LA25_150<='z')) ) {s = 194;}
+
+                        else if ( (LA25_150=='\"') ) {s = 147;}
+
+                        else if ( (LA25_150=='\\') ) {s = 148;}
+
+                        else if ( (LA25_150=='\n') ) {s = 141;}
+
+                        else if ( (LA25_150=='\r') ) {s = 142;}
+
+                        else if ( (LA25_150=='\t') ) {s = 143;}
+
+                        else if ( ((LA25_150>=' ' && LA25_150<='!')||(LA25_150>='$' && LA25_150<='%')||(LA25_150>='\'' && LA25_150<='/')||LA25_150==';'||(LA25_150>='=' && LA25_150<='@')||LA25_150=='['||(LA25_150>=']' && LA25_150<='^')||LA25_150=='`'||(LA25_150>='{' && LA25_150<='\u007F')) ) {s = 149;}
+
+                        else if ( (LA25_150=='&') ) {s = 150;}
+
+                        else if ( ((LA25_150>='0' && LA25_150<='9')) ) {s = 59;}
+
+                        else if ( (LA25_150=='<') ) {s = 151;}
+
+                        else if ( ((LA25_150>='\u0080' && LA25_150<='\uFFFF')) ) {s = 105;}
+
+                        else if ( ((LA25_150>='\u0000' && LA25_150<='\b')||(LA25_150>='\u000B' && LA25_150<='\f')||(LA25_150>='\u000E' && LA25_150<='\u001F')) ) {s = 107;}
+
                         if ( s>=0 ) return s;
                         break;
                     case 156 : 
@@ -7067,118 +7073,6 @@ public class WaebricLexer extends Lexer {
                         if ( s>=0 ) return s;
                         break;
                     case 157 : 
-                        int LA25_148 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_148=='\"') ) {s = 141;}
-
-                        else if ( (LA25_148=='\\') ) {s = 142;}
-
-                        else if ( (LA25_148=='\n') ) {s = 143;}
-
-                        else if ( (LA25_148=='\r') ) {s = 144;}
-
-                        else if ( (LA25_148=='\t') ) {s = 145;}
-
-                        else if ( ((LA25_148>=' ' && LA25_148<='!')||(LA25_148>='$' && LA25_148<='%')||(LA25_148>='\'' && LA25_148<='/')||LA25_148==';'||(LA25_148>='=' && LA25_148<='@')||LA25_148=='['||(LA25_148>=']' && LA25_148<='^')||LA25_148=='`'||(LA25_148>='{' && LA25_148<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_148=='&') ) {s = 147;}
-
-                        else if ( (LA25_148=='#'||(LA25_148>='0' && LA25_148<=':')||(LA25_148>='A' && LA25_148<='Z')||LA25_148=='_'||(LA25_148>='a' && LA25_148<='z')) ) {s = 99;}
-
-                        else if ( (LA25_148=='<') ) {s = 148;}
-
-                        else if ( ((LA25_148>='\u0000' && LA25_148<='\b')||(LA25_148>='\u000B' && LA25_148<='\f')||(LA25_148>='\u000E' && LA25_148<='\u001F')||(LA25_148>='\u0080' && LA25_148<='\uFFFF')) ) {s = 108;}
-
-                        else s = 98;
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 158 : 
-                        int LA25_213 = input.LA(1);
-
-                         
-                        int index25_213 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_213=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                        else if ( (LA25_213=='\\') ) {s = 59;}
-
-                        else if ( (LA25_213=='\n') ) {s = 60;}
-
-                        else if ( (LA25_213=='\r') ) {s = 61;}
-
-                        else if ( (LA25_213=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_213>=' ' && LA25_213<='!')||(LA25_213>='#' && LA25_213<='%')||(LA25_213>='\'' && LA25_213<=';')||(LA25_213>='=' && LA25_213<='[')||(LA25_213>=']' && LA25_213<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_213=='&') ) {s = 64;}
-
-                        else if ( (LA25_213=='<') ) {s = 65;}
-
-                        else if ( ((LA25_213>='\u0080' && LA25_213<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                         
-                        input.seek(index25_213);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 159 : 
-                        int LA25_142 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_142=='\\') ) {s = 187;}
-
-                        else if ( (LA25_142=='\"') ) {s = 188;}
-
-                        else if ( ((LA25_142>=' ' && LA25_142<='!')||(LA25_142>='$' && LA25_142<='%')||(LA25_142>='\'' && LA25_142<='/')||LA25_142==';'||(LA25_142>='=' && LA25_142<='@')||LA25_142=='['||(LA25_142>=']' && LA25_142<='^')||LA25_142=='`'||(LA25_142>='{' && LA25_142<='\u007F')) ) {s = 146;}
-
-                        else if ( (LA25_142=='\n') ) {s = 143;}
-
-                        else if ( (LA25_142=='\r') ) {s = 144;}
-
-                        else if ( (LA25_142=='\t') ) {s = 145;}
-
-                        else if ( (LA25_142=='&') ) {s = 147;}
-
-                        else if ( (LA25_142=='#'||(LA25_142>='0' && LA25_142<=':')||(LA25_142>='A' && LA25_142<='Z')||LA25_142=='_'||(LA25_142>='a' && LA25_142<='z')) ) {s = 99;}
-
-                        else if ( (LA25_142=='<') ) {s = 148;}
-
-                        else if ( ((LA25_142>='\u0000' && LA25_142<='\b')||(LA25_142>='\u000B' && LA25_142<='\f')||(LA25_142>='\u000E' && LA25_142<='\u001F')||(LA25_142>='\u0080' && LA25_142<='\uFFFF')) ) {s = 108;}
-
-                        if ( s>=0 ) return s;
-                        break;
-                    case 160 : 
-                        int LA25_30 = input.LA(1);
-
-                         
-                        int index25_30 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA25_30=='\\') ) {s = 59;}
-
-                        else if ( (LA25_30=='\n') ) {s = 60;}
-
-                        else if ( (LA25_30=='\r') ) {s = 61;}
-
-                        else if ( (LA25_30=='\t') ) {s = 62;}
-
-                        else if ( ((LA25_30>=' ' && LA25_30<='!')||(LA25_30>='#' && LA25_30<='%')||(LA25_30>='\'' && LA25_30<=';')||(LA25_30>='=' && LA25_30<='[')||(LA25_30>=']' && LA25_30<='\u007F')) ) {s = 63;}
-
-                        else if ( (LA25_30=='&') ) {s = 64;}
-
-                        else if ( (LA25_30=='<') ) {s = 65;}
-
-                        else if ( ((LA25_30>='\u0080' && LA25_30<='\uFFFF')) && (( inString ))) {s = 66;}
-
-                        else if ( (LA25_30=='\"') && ((( ! inString )||( inString )))) {s = 67;}
-
-                         
-                        input.seek(index25_30);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 161 : 
                         int LA25_174 = input.LA(1);
 
                          
@@ -7197,7 +7091,140 @@ public class WaebricLexer extends Lexer {
                         input.seek(index25_174);
                         if ( s>=0 ) return s;
                         break;
+                    case 158 : 
+                        int LA25_216 = input.LA(1);
+
+                         
+                        int index25_216 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_216==';') ) {s = 217;}
+
+                        else if ( ((LA25_216>='-' && LA25_216<='.')||(LA25_216>='0' && LA25_216<=':')||(LA25_216>='A' && LA25_216<='Z')||LA25_216=='_'||(LA25_216>='a' && LA25_216<='z')) ) {s = 216;}
+
+                        else if ( (LA25_216=='\"') && (( ! inString ))) {s = 108;}
+
+                        else if ( (LA25_216=='\\') ) {s = 109;}
+
+                        else if ( (LA25_216=='\n') ) {s = 63;}
+
+                        else if ( (LA25_216=='\r') ) {s = 64;}
+
+                        else if ( (LA25_216=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_216>=' ' && LA25_216<='!')||(LA25_216>='#' && LA25_216<='%')||(LA25_216>='\'' && LA25_216<=',')||LA25_216=='/'||(LA25_216>='=' && LA25_216<='@')||LA25_216=='['||(LA25_216>=']' && LA25_216<='^')||LA25_216=='`'||(LA25_216>='{' && LA25_216<='\u007F')) ) {s = 98;}
+
+                        else if ( (LA25_216=='&') ) {s = 99;}
+
+                        else if ( (LA25_216=='<') ) {s = 100;}
+
+                         
+                        input.seek(index25_216);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 159 : 
+                        int LA25_73 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_73=='#') ) {s = 112;}
+
+                        else if ( (LA25_73==':'||(LA25_73>='A' && LA25_73<='Z')||LA25_73=='_'||(LA25_73>='a' && LA25_73<='z')) ) {s = 113;}
+
+                        else if ( ((LA25_73>='\u0000' && LA25_73<='\"')||(LA25_73>='$' && LA25_73<='/')||(LA25_73>=';' && LA25_73<='@')||(LA25_73>='[' && LA25_73<='^')||LA25_73=='`'||(LA25_73>='{' && LA25_73<='\uFFFF')) ) {s = 114;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 160 : 
+                        int LA25_232 = input.LA(1);
+
+                         
+                        int index25_232 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA25_232==':') ) {s = 241;}
+
+                        else if ( (LA25_232=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_232=='\\') ) {s = 60;}
+
+                        else if ( (LA25_232=='\n') ) {s = 63;}
+
+                        else if ( (LA25_232=='\r') ) {s = 64;}
+
+                        else if ( (LA25_232=='\t') ) {s = 65;}
+
+                        else if ( ((LA25_232>=' ' && LA25_232<='!')||(LA25_232>='#' && LA25_232<='%')||(LA25_232>='\'' && LA25_232<='9')||LA25_232==';'||(LA25_232>='=' && LA25_232<='[')||(LA25_232>=']' && LA25_232<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_232=='&') ) {s = 62;}
+
+                        else if ( (LA25_232=='<') ) {s = 66;}
+
+                        else if ( ((LA25_232>='\u0080' && LA25_232<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_232);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 161 : 
+                        int LA25_30 = input.LA(1);
+
+                         
+                        int index25_30 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( ((LA25_30>=' ' && LA25_30<='!')||(LA25_30>='#' && LA25_30<='%')||(LA25_30>='\'' && LA25_30<=';')||(LA25_30>='=' && LA25_30<='[')||(LA25_30>=']' && LA25_30<='\u007F')) ) {s = 59;}
+
+                        else if ( (LA25_30=='\\') ) {s = 60;}
+
+                        else if ( (LA25_30=='\"') && ((( ! inString )||( inString )))) {s = 61;}
+
+                        else if ( (LA25_30=='&') ) {s = 62;}
+
+                        else if ( (LA25_30=='\n') ) {s = 63;}
+
+                        else if ( (LA25_30=='\r') ) {s = 64;}
+
+                        else if ( (LA25_30=='\t') ) {s = 65;}
+
+                        else if ( (LA25_30=='<') ) {s = 66;}
+
+                        else if ( ((LA25_30>='\u0080' && LA25_30<='\uFFFF')) && (( inString ))) {s = 67;}
+
+                         
+                        input.seek(index25_30);
+                        if ( s>=0 ) return s;
+                        break;
                     case 162 : 
+                        int LA25_148 = input.LA(1);
+
+                        s = -1;
+                        if ( (LA25_148=='\\') ) {s = 191;}
+
+                        else if ( (LA25_148=='\"') ) {s = 192;}
+
+                        else if ( (LA25_148=='n') ) {s = 94;}
+
+                        else if ( (LA25_148=='t') ) {s = 95;}
+
+                        else if ( ((LA25_148>=' ' && LA25_148<='!')||(LA25_148>='$' && LA25_148<='%')||(LA25_148>='\'' && LA25_148<='/')||LA25_148==';'||(LA25_148>='=' && LA25_148<='@')||LA25_148=='['||(LA25_148>=']' && LA25_148<='^')||LA25_148=='`'||(LA25_148>='{' && LA25_148<='\u007F')) ) {s = 144;}
+
+                        else if ( (LA25_148=='\n') ) {s = 141;}
+
+                        else if ( (LA25_148=='\r') ) {s = 142;}
+
+                        else if ( (LA25_148=='\t') ) {s = 143;}
+
+                        else if ( (LA25_148=='&') ) {s = 145;}
+
+                        else if ( (LA25_148=='#'||(LA25_148>='0' && LA25_148<=':')||(LA25_148>='A' && LA25_148<='Z')||LA25_148=='_'||(LA25_148>='a' && LA25_148<='m')||(LA25_148>='o' && LA25_148<='s')||(LA25_148>='u' && LA25_148<='z')) ) {s = 98;}
+
+                        else if ( (LA25_148=='<') ) {s = 146;}
+
+                        else if ( ((LA25_148>='\u0000' && LA25_148<='\b')||(LA25_148>='\u000B' && LA25_148<='\f')||(LA25_148>='\u000E' && LA25_148<='\u001F')||(LA25_148>='\u0080' && LA25_148<='\uFFFF')) ) {s = 107;}
+
+                        if ( s>=0 ) return s;
+                        break;
+                    case 163 : 
                         int LA25_51 = input.LA(1);
 
                          
@@ -7214,32 +7241,6 @@ public class WaebricLexer extends Lexer {
 
                          
                         input.seek(index25_51);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 163 : 
-                        int LA25_162 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA25_162=='<') ) {s = 160;}
-
-                        else if ( (LA25_162=='\\') ) {s = 161;}
-
-                        else if ( (LA25_162=='\n') ) {s = 162;}
-
-                        else if ( (LA25_162=='\r') ) {s = 163;}
-
-                        else if ( (LA25_162=='\t') ) {s = 164;}
-
-                        else if ( ((LA25_162>=' ' && LA25_162<='!')||(LA25_162>='$' && LA25_162<='%')||(LA25_162>='\'' && LA25_162<='/')||LA25_162==';'||(LA25_162>='=' && LA25_162<='@')||LA25_162=='['||(LA25_162>=']' && LA25_162<='^')||LA25_162=='`'||(LA25_162>='{' && LA25_162<='\u007F')) ) {s = 165;}
-
-                        else if ( (LA25_162=='&') ) {s = 166;}
-
-                        else if ( (LA25_162=='#'||(LA25_162>='0' && LA25_162<=':')||(LA25_162>='A' && LA25_162<='Z')||LA25_162=='_'||(LA25_162>='a' && LA25_162<='z')) ) {s = 72;}
-
-                        else if ( (LA25_162=='\"') ) {s = 167;}
-
-                        else if ( ((LA25_162>='\u0000' && LA25_162<='\b')||(LA25_162>='\u000B' && LA25_162<='\f')||(LA25_162>='\u000E' && LA25_162<='\u001F')||(LA25_162>='\u0080' && LA25_162<='\uFFFF')) ) {s = 114;}
-
                         if ( s>=0 ) return s;
                         break;
             }

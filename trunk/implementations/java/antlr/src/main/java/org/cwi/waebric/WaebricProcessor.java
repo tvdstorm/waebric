@@ -57,6 +57,7 @@ public class WaebricProcessor {
 	        	e.printStackTrace();
 	        }
 	        
+	        /**
 	        WaebricLoader loader = new WaebricLoader(new CommonTreeNodeStream(tree));
 	        Map<String,CommonTree> functions = loader.getFunctions();
 	        
@@ -65,6 +66,7 @@ public class WaebricProcessor {
 	        interpreter.interpretProgram(System.out);
 	        long inter_time = System.currentTimeMillis() - curr;
 	        System.out.println("Interpreted in " + inter_time + "ms");
+	        **/
 	}
 		
 }
