@@ -220,7 +220,7 @@ moduleId
 			}
 		}
 
-imprt:			'import' moduleId ';' ^ module ;
+imprt:			'import' moduleId ^ module ;
 
 // $>
 
@@ -248,8 +248,11 @@ attribute:		'#' IDCON
 			| '@' NATCON ( '%' NATCON )?;
 	
 arguments returns [int args = 0]
-	:		'(' ( expression {$args++;} )? 
-			( ',' expression {$args++;} )* ')' ;
+	:		'(' ( argument {$args++;} )? 
+			( ',' argument {$args++;} )* ')' ;
+			
+argument:		expression
+			| IDCON '=' expression ;
 
 // $>
 
@@ -327,7 +330,7 @@ funcBinding // Separated because only function bindings have local scopes
 		$Environment::variables = new HashSet<String>();
 		$Environment::functions = new HashMap<String, Integer>();
 		int parent = $Environment.size()-1;
-	} : 		IDCON regularFormals statement {
+	} : 		IDCON regularFormals '=' statement {
 				defineFunction($IDCON, $regularFormals.args, parent);
 			} ;
 		
