@@ -8,7 +8,7 @@ options {
 }
 
 scope Environment {
-	Map<String, WaebricLoader.function_return> functions;
+	Map<String, CommonTree> functions;
 	Map<String, String> variables;
 }
 
@@ -66,9 +66,9 @@ scope Environment {
 	 * @param function: Function AST
 	 */
 	private boolean interpretFunction(String name) throws RecognitionException {
-		WaebricLoader.function_return function = getFunction(name);
+		CommonTree function = getFunction(name);
 		if(function != null) {
-			WaebricInterpreter instance = new WaebricInterpreter(new CommonTreeNodeStream(function.tree));
+			WaebricInterpreter instance = new WaebricInterpreter(new CommonTreeNodeStream(function));
 			instance.function();
 			return true;
 		}
@@ -121,7 +121,7 @@ scope Environment {
 	 * Retrieve function
 	 * @param name: Function name
 	 */
-	private WaebricLoader.function_return getFunction(String name) {
+	private CommonTree getFunction(String name) {
 		// Check local environments
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(name)) {
@@ -130,7 +130,7 @@ scope Environment {
 		} 
 		
 		// Check base environment
-		return functions.containsKey(name) ? functions.get(name) : null ;
+		return functions.containsKey(name) ? functions.get(name).tree : null ;
 	}
 	
 	/**
@@ -138,11 +138,8 @@ scope Environment {
 	 * @param name: Function name
 	 * @param tree: Function AST
 	 */
-	private void defineFunction(String name, CommonTree tree, boolean yield) {
-		WaebricLoader.function_return val = new WaebricLoader.function_return();
-		val.tree = tree;
-		val.yield = yield;
-		$Environment::functions.put(name, val);
+	private void defineFunction(String name, CommonTree tree) {
+		$Environment::functions.put(name, tree);
 	}
 	
 	/**
@@ -234,12 +231,10 @@ formals:		'(' IDCON* ')' {
 
 // $<Statements
 
-statement
-	returns [boolean yield = false]
-	:		ifStatement { $yield = $ifStatement.yield; }
-			| eachStatement { $yield = $eachStatement.yield; }
-			| letStatement { $yield = $letStatement.yield; }
-			| blockStatement { $yield = $blockStatement.yield; }
+statement:		ifStatement
+			| eachStatement
+			| letStatement
+			| blockStatement
 			| ^( 'comment' STRCON ';' ) {
 					Comment comment = new Comment($STRCON.getText());
 					addContent(comment);
@@ -253,51 +248,47 @@ statement
 					CDATA cdata = new CDATA($expression.eval);
 					addContent(cdata);
 				}
-			| 'yield;' { $yield = true; }
+			| 'yield;'
 			| ^( MARKUP_STATEMENT markup+ expression ';' ) {
 					Text text = new Text($expression.eval);
 					addContent(text);
 				}
 			| ^( MARKUP_STATEMENT markup+ embedding ';' )
 			| ^( MARKUP_STATEMENT markup+ ';' ) 
-			| ^( MARKUP_STATEMENT markup+ s=statement { if($s.yield) { $yield = true; } } ) ;
+			| ^( MARKUP_STATEMENT markup+ s=statement ) ;
 
 ifStatement
-	returns [boolean yield = false]
 	@init{ int ti = 0; int fi = 0; }
 	:		^( 'if' '(' predicate ')' { ti = input.index(); } t=.  ( 'else' { fi = input.index(); } f=. )? ) {
 				int curr = input.index();
 				if($predicate.eval) {
 					input.seek(ti);
-					if(statement().yield) { $yield = true; }
+					statement();
 					input.seek(curr);
 				} else if(f != null) {
 					input.seek(fi);
-					if(statement().yield) { $yield = true; }
+					statement();
 					input.seek(curr);
 				}
 			} ;
 			
 eachStatement
-	returns [boolean yield = false]
 	scope Environment;
 	@init {
 		$Environment::variables = new HashMap<String, String>();
-		$Environment::functions = new HashMap<String, WaebricLoader.function_return>();
-	} :		^( 'each' '(' IDCON ':' expression ')' statement { $yield = $statement.yield; } ) ;
+		$Environment::functions = new HashMap<String, CommonTree>();
+	} :		^( 'each' '(' IDCON ':' expression ')' statement ) ;
 
 blockStatement
-	returns [boolean yield = false]
 	@init { Element actual = this.current; }
-	:		^( '{' ( s=statement { if($s.yield) { $yield = true; } }  )* { this.current = actual; } '}' ) ;		
+	:		^( '{' ( s=statement )* { this.current = actual; } '}' ) ;		
 
 letStatement
-	returns [boolean yield = false]
 	scope Environment;
 	@init {
 		$Environment::variables = new HashMap<String, String>();
-		$Environment::functions = new HashMap<String, WaebricLoader.function_return>();
-	} :		^( 'let' assignment+ 'in' ( s=statement { if($s.yield) { $yield = true; } }  )* 'end' ) ;
+		$Environment::functions = new HashMap<String, CommonTree>();
+	} :		^( 'let' assignment+ 'in' ( s=statement )* 'end' ) ;
 
 // $>
 // $<Assignments
@@ -308,7 +299,7 @@ assignment:		IDCON '=' expression ';' // Variable binding
 funcBinding
 	:		'def' id=IDCON formals . 'end' ;
 	finally {
-		defineFunction($id.getText(), $funcBinding.tree, false);
+		defineFunction($id.getText(), $funcBinding.tree);
 	} 
 
 // $>
