@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-14 15:37:38
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-14 16:15:44
 
 	package org.cwi.waebric;
 	
@@ -145,7 +145,7 @@ public class WaebricInterpreter extends TreeParser {
     		
     		this.document = new Document();
     		if(interpretFunction("main")) {
-    			outputDocument(document, os);
+    			if(current != null) { outputDocument(document, os); }
     		}
     		
     		for(WaebricLoader.mapping_return mapping: loader.getMappings()) {
@@ -3072,19 +3072,19 @@ public class WaebricInterpreter extends TreeParser {
 
             if ( state.backtracking==0 ) {
 
-              					if(l != null) {
-              						int actualIndex = input.index();
-                            					Element actualElement = this.current;
-                            					for(String value: l.data) {
-                            						((Environment_scope)Environment_stack.peek()).variables.put(IDCON93.getText(), value);
-                            						input.seek(start);
-                            						statement();
-                            						input.seek(actualIndex);	
-                            						if(actualElement == null) { actualElement = document.getRootElement(); }
-                            						this.current = actualElement;
-                            					}
-              					}
-              				
+              				if(l != null) {
+              					int actualIndex = input.index();
+                            				Element actualElement = this.current;
+                            				for(String value: l.data) {
+                            					((Environment_scope)Environment_stack.peek()).variables.put(IDCON93.getText(), value);
+                            					input.seek(start);
+                            					statement();
+                            					input.seek(actualIndex);	
+                            					if(actualElement == null) { actualElement = document.getRootElement(); }
+                            					this.current = actualElement;
+                            				}
+              				}
+              			
             }
 
             if ( state.backtracking==0 ) {

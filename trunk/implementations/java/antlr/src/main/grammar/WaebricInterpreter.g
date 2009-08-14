@@ -53,7 +53,7 @@ scope Environment {
 		
 		this.document = new Document();
 		if(interpretFunction("main")) {
-			outputDocument(document, os);
+			if(current != null) { outputDocument(document, os); }
 		}
 		
 		for(WaebricLoader.mapping_return mapping: loader.getMappings()) {
@@ -287,19 +287,19 @@ eachStatement
 		$Environment::functions = new HashMap<String, CommonTree>();
 		int start = 0;
 	} :		^( 'each' '(' IDCON ':' ( l=listExpression | expression ) ')' { start = input.index(); } . ) {
-					if(l != null) {
-						int actualIndex = input.index();
-              					Element actualElement = this.current;
-              					for(String value: l.data) {
-              						$Environment::variables.put($IDCON.getText(), value);
-              						input.seek(start);
-              						statement();
-              						input.seek(actualIndex);	
-              						if(actualElement == null) { actualElement = document.getRootElement(); }
-              						this.current = actualElement;
-              					}
-					}
-				};
+				if(l != null) {
+					int actualIndex = input.index();
+              				Element actualElement = this.current;
+              				for(String value: l.data) {
+              					$Environment::variables.put($IDCON.getText(), value);
+              					input.seek(start);
+              					statement();
+              					input.seek(actualIndex);	
+              					if(actualElement == null) { actualElement = document.getRootElement(); }
+              					this.current = actualElement;
+              				}
+				}
+			};
 
 blockStatement
 	@init { Element actual = this.current; }

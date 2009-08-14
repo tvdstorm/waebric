@@ -1,5 +1,7 @@
 module simple
 
 def main
-	each( e:[1,2,3,4,5] ) p e;
+ let expr=[1,2,3]; in
+ each( e:expr ) p e;
+ end
 end
