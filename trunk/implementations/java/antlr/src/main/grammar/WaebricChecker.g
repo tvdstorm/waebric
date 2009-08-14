@@ -4,20 +4,17 @@ options {
 	tokenVocab = Waebric;
 	ASTLabelType = CommonTree;
 	backtrack = true;
+	output = AST;
 }
 
 scope Environment {
-	HashSet<String> variables;
+	ArrayList<String> variables;
 	HashMap<String, Integer> functions;
 }
 
 @header {
 	package org.cwi.waebric;
 	import antlr.SemanticException;
-	import java.util.HashMap;
-	import java.util.HashSet;
-	import java.util.List;
-	import java.util.ArrayList;	
 }
 
 @members {
@@ -30,7 +27,7 @@ scope Environment {
 		// Store function definitions to allow lazy function binding
 		Environment_scope base = new Environment_scope();
 		base.functions = new HashMap<String, Integer>();
-		base.variables = new HashSet<String>();
+		base.variables = new ArrayList<String>();
 		for(String function: functions.keySet()) {
 			base.functions.put(function, functions.get(function).args);
 		}
@@ -47,11 +44,11 @@ scope Environment {
 	 * @param args: Number of arguments in function
 	 * @param depth: Depth in environment stack
 	 */
-	private void defineFunction(CommonTree id, int args, int depth) {
+	private void defineFunction(CommonTree id, int args) {
 		// Check if function is already defined
 		if(isDefinedFunction(id.getText())) {
 			exceptions.add(new DuplicateFunctionException(id));
-		} else { $Environment[depth]::functions.put(id.getText(), args); }
+		} else { $Environment::functions.put(id.getText(), args); }
 	}
 
 	/**
@@ -190,7 +187,7 @@ scope Environment {
 module
 	scope Environment;
 	@init {
-		$Environment::variables = new HashSet<String>();
+		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
 	} :		^( 'module' moduleId imprt* site* function* );
 
@@ -265,7 +262,7 @@ keyValuePair:		IDCON ':' expression ;
 function
 	scope Environment;
 	@init {
-		$Environment::variables = new HashSet<String>();
+		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
 	} :		'def' IDCON formals? statement* 'end' ;
 			
@@ -291,7 +288,7 @@ statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 eachStatement
 	scope Environment;
 	@init {
-		$Environment::variables = new HashSet<String>();
+		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
 	} :		^( 'each' '(' IDCON ':' expression ')' { 
 				defineVariable($IDCON.getText()); // Define variable before statement is executed
@@ -300,7 +297,7 @@ eachStatement
 letStatement
 	scope Environment;
 	@init {
-		$Environment::variables = new HashSet<String>();
+		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
 	} :		^( 'let' assignment+ 'in' statement* 'end' ) ;
 
@@ -311,12 +308,13 @@ assignment:		IDCON '=' expression ';' {
 funcBinding // Separated because only function bindings have local scopes
 	scope Environment;
 	@init {
-		$Environment::variables = new HashSet<String>();
+		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-		int parent = $Environment.size()-1;
-	} : 		IDCON formals '=' statement {
-				defineFunction($IDCON, $formals.args, parent);
-			} ;
+	} : 		id=IDCON f=formals '=' statement ;
+	finally {
+		// Define function after poping local stack so the definition stays
+		defineFunction($id, $f.args);
+	}
 		
 			
 // $<Predicate

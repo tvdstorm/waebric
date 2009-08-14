@@ -10,10 +10,6 @@ options {
 @header {
 	package org.cwi.waebric;
 	import antlr.SemanticException;
-	import java.util.Map;
-	import java.util.List;
-	import java.util.HashMap;
-	import java.util.ArrayList;
 }
 
 @members {
