@@ -8,22 +8,59 @@ options {
 
 @header {
 	package org.cwi.waebric;
+	import antlr.SemanticException;
+	import java.util.Map;
+	import java.util.List;
 	import java.util.HashMap;
+	import java.util.ArrayList;
 }
 
 @members {
-	private final HashMap<String,CommonTree> functions = new HashMap<String,CommonTree>();
-	public HashMap<String,CommonTree> getFunctions() throws RecognitionException {
+	private List<SemanticException> exceptions;
+	private Map<String, function_return> functions = new HashMap<String, function_return>();
+	private List<mapping_return> mappings = new ArrayList<mapping_return>();
+	
+	public WaebricLoader(TreeNodeStream input, List<SemanticException> exceptions) {
+		super(input);
+		this.exceptions = exceptions;
+	}
+	
+	public void loadModule() throws RecognitionException {
 		functions.clear();
+		mappings.clear();
 		this.module();
+	}
+	
+	public Map<String, function_return> getFunctions() {
 		return functions;
 	}
+	
+	public List<mapping_return> getMappings() {
+		return mappings;
+	}
+	
+	/**
+	 * Multiple function definitions with the same name are disallowed.
+	 * 
+	 * @author Jeroen van Schagen
+	 * @date 09-06-2009
+	 */
+	class DuplicateFunctionException extends SemanticException {
+		private static final long serialVersionUID = -8833578229100261366L;
+		public DuplicateFunctionException(CommonTree id) {
+			super("Duplicate definition of function \"" + id.getText() 
+					+ "\" at line " + id.getLine() 
+        				+ " and character " + id.getCharPositionInLine() + ".");
+		}
+		
+	}
+	
 }
 
 // $<Module
 module: 		^( 'module' moduleId imprt* site* function* ) ;
 moduleId:		IDCON ( '.' e=IDCON )* ;
-imprt:			'import' moduleId ';' ^ module ;
+imprt:			'import' moduleId ^ module ;
 
 // $>
 // $<Site
@@ -31,6 +68,9 @@ imprt:			'import' moduleId ';' ^ module ;
 site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
+	finally {
+		mappings.add(retval); 
+	}
 
 // $>
 // $<Markup
@@ -44,7 +84,8 @@ attribute:		'#' IDCON // ID attribute
 			| '@' NATCON // Width attribute
 			| '@' NATCON '%' NATCON; // Width-height attribute
 arguments:		'(' argument? ( ',' argument )* ')' ;
-argument:		expression ;
+argument:		expression 
+			| IDCON '=' expression ;
 
 // $>
 // $<Expressions
@@ -58,9 +99,14 @@ keyValuePair:		IDCON ':' expression ;
 // $>
 // $<Function
 
-function:		'def' id=IDCON formals statement* 'end' ;
+function returns [int args = 0]
+	:		'def' id=IDCON formals statement* 'end' ;
 	finally {
-		functions.put($id.getText(), $function.tree); 
+		if(functions.containsKey($id.getText())) {
+			exceptions.add(new DuplicateFunctionException($id.tree));
+		} else {
+			functions.put($id.getText(), retval); 
+		}
 	}
 
 formals:		( '(' IDCON* ')' )? ;
@@ -80,7 +126,7 @@ statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 			| 'yield;'
 			| ^( MARKUP_STATEMENT markup+ expression ';' )
 			| ^( MARKUP_STATEMENT markup+ statement )
-			| ^( MARKUP_STATEMENT markup+ embedding )
+			| ^( MARKUP_STATEMENT markup+ embedding ';' )
 			| ^( MARKUP_STATEMENT markup+ ';' ) ;
 
 // $>
