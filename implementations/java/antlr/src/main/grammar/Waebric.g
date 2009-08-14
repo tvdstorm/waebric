@@ -73,7 +73,8 @@ attribute:		'#' IDCON // ID attribute
 			| '@' NATCON // Width attribute
 			| '@' NATCON '%' NATCON; // Width-height attribute
 arguments:		'(' argument? ( ',' argument )* ')' ;
-argument:		expression ;
+argument:		expression |
+			IDCON '=' expression ;
 
 // $>
 // $<Expressions
@@ -180,7 +181,7 @@ SYMBOLCON:		'\'' SYMBOLCHAR* ;
 fragment SYMBOLCHAR:	~( '\u0000'..'\u001F' | ' ' | ';' | ',' | '>' | '}' | ')') ;
 
 NATCON:			DIGIT+ ;
-IDCON:			LETTER ( LETTER | DIGIT | '-' )+ ;
+IDCON:			LETTER ( LETTER | DIGIT | '-' )* ;
 
 COMMENTS:		'//' ( options { greedy=false; } : . )*  '\n' | 
 			'/*' ( options { greedy=false; } : . )*  '*/' 
