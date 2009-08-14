@@ -161,7 +161,7 @@ statement
 // $<Assignments
 
 assignment:		IDCON '=' expression ';' // Variable binding
-			| IDCON formals '=' statement ; // Function binding
+			| 'def' IDCON formals statement 'end' ; // Function binding
 
 // $>
 // $<Predicates

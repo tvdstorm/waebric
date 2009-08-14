@@ -4,6 +4,7 @@ options {
 	tokenVocab = Waebric;
 	ASTLabelType = CommonTree;
 	backtrack = true;
+	output = AST;
 }
 
 scope Environment {
@@ -225,17 +226,20 @@ keyValuePair returns [String eval]
 
 function:		'def' IDCON formals? statement* 'end' ;
 
-formals:		'(' IDCON* ')' ;
+formals:		'(' IDCON* ')' {
+				// TODO: Store argument + called expression in variable env
+			} ;
 
 // $>
 
 // $<Statements
 
 statement
-	:		ifStatement
-			| eachStatement
-			| letStatement
-			| blockStatement
+	returns [boolean yield = false]
+	:		ifStatement { $yield = $ifStatement.yield; }
+			| eachStatement { $yield = $eachStatement.yield; }
+			| letStatement { $yield = $letStatement.yield; }
+			| blockStatement { $yield = $blockStatement.yield; }
 			| ^( 'comment' STRCON ';' ) {
 					Comment comment = new Comment($STRCON.getText());
 					addContent(comment);
@@ -249,45 +253,63 @@ statement
 					CDATA cdata = new CDATA($expression.eval);
 					addContent(cdata);
 				}
-			| 'yield;'
-			| ^( MARKUP_STATEMENT markup+ expression ';' ) { 
+			| 'yield;' { $yield = true; }
+			| ^( MARKUP_STATEMENT markup+ expression ';' ) {
 					Text text = new Text($expression.eval);
 					addContent(text);
 				}
-			| ^( MARKUP_STATEMENT markup+ statement )
 			| ^( MARKUP_STATEMENT markup+ embedding ';' )
-			| ^( MARKUP_STATEMENT markup+ ';' ) ;
+			| ^( MARKUP_STATEMENT markup+ ';' ) 
+			| ^( MARKUP_STATEMENT markup+ s=statement { if($s.yield) { $yield = true; } } ) ;
 
 ifStatement
+	returns [boolean yield = false]
 	@init{ int ti = 0; int fi = 0; }
 	:		^( 'if' '(' predicate ')' { ti = input.index(); } t=.  ( 'else' { fi = input.index(); } f=. )? ) {
 				int curr = input.index();
 				if($predicate.eval) {
 					input.seek(ti);
-					statement();
+					if(statement().yield) { $yield = true; }
 					input.seek(curr);
 				} else if(f != null) {
 					input.seek(fi);
-					statement();
+					if(statement().yield) { $yield = true; }
 					input.seek(curr);
 				}
 			} ;
 			
 eachStatement
-	:		^( 'each' '(' IDCON ':' expression ')' statement ) ;
+	returns [boolean yield = false]
+	scope Environment;
+	@init {
+		$Environment::variables = new HashMap<String, String>();
+		$Environment::functions = new HashMap<String, WaebricLoader.function_return>();
+	} :		^( 'each' '(' IDCON ':' expression ')' statement { $yield = $statement.yield; } ) ;
 
 blockStatement
+	returns [boolean yield = false]
 	@init { Element actual = this.current; }
-	:		^( '{' statement* { this.current = actual; } '}' ) ;		
+	:		^( '{' ( s=statement { if($s.yield) { $yield = true; } }  )* { this.current = actual; } '}' ) ;		
 
 letStatement
-	:		^( 'let' assignment+ 'in' statement* 'end' ) ;
+	returns [boolean yield = false]
+	scope Environment;
+	@init {
+		$Environment::variables = new HashMap<String, String>();
+		$Environment::functions = new HashMap<String, WaebricLoader.function_return>();
+	} :		^( 'let' assignment+ 'in' ( s=statement { if($s.yield) { $yield = true; } }  )* 'end' ) ;
 
 // $>
 // $<Assignments
 
 assignment:		IDCON '=' expression ';' // Variable binding
-			| IDCON formals '=' statement ; // Function binding
+			| funcBinding ;
+			
+funcBinding
+	:		'def' id=IDCON formals . 'end' ;
+	finally {
+		defineFunction($id.getText(), $funcBinding.tree, false);
+	} 
 
 // $>
 // $<Predicates

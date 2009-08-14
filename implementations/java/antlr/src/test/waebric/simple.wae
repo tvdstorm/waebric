@@ -7,7 +7,9 @@ def main
 		}
 		
 		body {
-			p "Jeroen 4 teh whizzle";
+			let test() = p "Jeroen 4 teh whizzle"; in
+				test();
+			end
 			//workshop(2009,"Amsterdam");
 		}
 	}
