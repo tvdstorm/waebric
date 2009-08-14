@@ -95,16 +95,16 @@ scope Environment {
 	
 	private void addContent(Content content) {
 		if(current == null) { // Construct root element
-			if(content instanceof Element) {
-				document.setRootElement((Element) content);
-			} else {
-				Element XHTML = createXHTMLTag();
-    				document.setRootElement(XHTML);
-    				XHTML.addContent(content);
-			}	
-    			
-			current = document.getRootElement();
-		} else { // Add content to current element
+    			if(content instanceof Element && ((Element) content).getName().equals("html")) {
+    				document.setRootElement((Element) content);
+    				current = document.getRootElement();
+    			} else {
+    				Element XHTML = createXHTMLTag();
+        			document.setRootElement(XHTML);
+        			XHTML.addContent(content);
+        			current = (Element) content;
+    			}	
+    		} else { // Add content to current element
 			current.addContent(content); // Attach content
 			if(content instanceof Element) { current = (Element) content; } // Update current
 		}
@@ -285,7 +285,21 @@ eachStatement
 	@init {
 		$Environment::variables = new HashMap<String, String>();
 		$Environment::functions = new HashMap<String, CommonTree>();
-	} :		^( 'each' '(' IDCON ':' expression ')' statement ) ;
+		int start = 0;
+	} :		^( 'each' '(' IDCON ':' ( l=listExpression | expression ) ')' { start = input.index(); } . ) {
+					if(l != null) {
+						int actualIndex = input.index();
+              					Element actualElement = this.current;
+              					for(String value: l.data) {
+              						$Environment::variables.put($IDCON.getText(), value);
+              						input.seek(start);
+              						statement();
+              						input.seek(actualIndex);	
+              						if(actualElement == null) { actualElement = document.getRootElement(); }
+              						this.current = actualElement;
+              					}
+					}
+				};
 
 blockStatement
 	@init { Element actual = this.current; }
