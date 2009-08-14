@@ -215,50 +215,56 @@ expression returns [
 		Map<String, expression_return> map = new HashMap<String, expression_return>(), // Map structure for fields
 		Collection<expression_return> collection = new ArrayList() // List structure for iterations
 	] @init{ retval.index = input.index(); }
-	: 			(
-					var=IDCON { 
-						int curr = input.index();
-						int next = getVariable($var.getText());
-						if(next != -1) {
-							input.seek(next);
-							retval = expression();
-							input.seek(curr);
-						} 
-					}
-					| NATCON { $eval = $NATCON.getText(); }
-					| TEXT { $eval = $TEXT.getText(); }
-					| SYMBOLCON { $eval = $SYMBOLCON.getText(); }
-					| '[' ( e=expression { $collection.add(e); } )? 
-					  ( ',' e=expression { $collection.add(e); } )* ']' {
-						$eval = "[";
-						for(expression_return eret:$collection) { $eval += eret.eval + ","; }
-						$eval = $eval.substring(0,$eval.length()); // Clip last character
-						$eval += "]";
-					}
-					| '{' ( id=IDCON ':' e=expression { $map.put($id.getText(), e); } )? 
-					  ( ',' id=IDCON ':' e=expression { $map.put($id.getText(), e); } )* '}' {
-						$collection = $map.values();
-						$eval = "{";
-						for(String key:$map.keySet()) { $eval += key + ":" + $map.get(key).eval + ","; }
-						$eval = $eval.substring(0,$eval.length()); // Clip last character
-						$eval += "}";
-					}
-				) ( 
-					'+' e=expression { 
-						$eval += $e.eval;
+	: 		// Non-recursive expressions
+			( var=IDCON {
+					// Reference
+					int curr = input.index();
+					int next = getVariable($var.getText());
+					if(next != -1) {
+						input.seek(next);
+						retval = expression();
+						input.seek(curr);
+					} 
+				}
+			| NATCON { $eval = $NATCON.getText(); }
+			| TEXT { $eval = $TEXT.getText(); }
+			| SYMBOLCON { $eval = $SYMBOLCON.getText(); }
+			| '[' ( e=expression { $collection.add(e); } )? 
+			  ( ',' e=expression { $collection.add(e); } )* ']' {
+			  		// List
+					$eval = "[";
+					for(expression_return eret:$collection) { $eval += eret.eval + ","; }
+					$eval = $eval.substring(0,$eval.length()); // Clip last character
+					$eval += "]";
+				}
+			| '{' ( id=IDCON ':' e=expression { $map.put($id.getText(), e); } )? 
+			  ( ',' id=IDCON ':' e=expression { $map.put($id.getText(), e); } )* '}' {
+			  		// Record
+					$collection = $map.values();
+					$eval = "{";
+					for(String key:$map.keySet()) { $eval += key + ":" + $map.get(key).eval + ","; }
+					$eval = $eval.substring(0,$eval.length()); // Clip last character
+					$eval += "}";
+				}
+			) 
+			
+			// Recursive expressions
+			( '+' e=expression {
+					// Cat
+					$eval += $e.eval;
+					$collection.clear();
+					$map.clear();
+				} 
+			| '.' id=IDCON {
+					// Field
+					if($map.containsKey($id.getText())) { retval = $map.get($id.getText()); } 
+					else {
+						$eval = "undef";
 						$collection.clear();
 						$map.clear();
-					} 
-					| '.' id=IDCON {
-						if($map.containsKey($id.getText())) {
-							retval = $map.get($id.getText()); 
-						} else {
-							$eval = "undef";
-							$collection.clear();
-							$map.clear();
-						}
-					} 
-				)* ;
+					}
+				}
+			)* ;
 	
 // $>
 // $<Function
