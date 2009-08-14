@@ -20,22 +20,22 @@ scope Environment {
 @members {
 	private List<SemanticException> exceptions;
 	
-	public WaebricChecker(TreeNodeStream input, List<SemanticException> exceptions, WaebricLoader loader) {
+	public WaebricChecker(TreeNodeStream input, List<SemanticException> exceptions) {
 		super(input);
 		this.exceptions = exceptions;
-		
+	}
+	
+	public void checkAST(WaebricLoader loader) throws RecognitionException {
 		// Store function definitions to allow lazy function binding
+		Environment_stack.clear();
 		Environment_scope base = new Environment_scope();
 		base.functions = new HashMap<String, Integer>();
 		base.variables = new ArrayList<String>();
-		for(String function: loader.getFunctions().keySet()) {
-			base.functions.put(function, loader.getFunctions().get(function).args);
-		}
+		for(String function: loader.getFunctions().keySet()) 
+		{ base.functions.put(function, loader.getFunctions().get(function).args); }
 		Environment_stack.push(base);
-	}
-	
-	public void checkAST() throws RecognitionException {
-		module();
+		
+		module(); // Check module
 	}
 
 	/**
