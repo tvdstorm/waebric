@@ -1,20 +1,5 @@
 module simple
 
 def main
-	html {
-		head {
-			title "Jeroen ownz";
-		}
-		
-		body {
-			let test() = p "Jeroen 4 teh whizzle"; in
-				test();
-			end
-			//workshop(2009,"Amsterdam");
-		}
-	}
-end
-
-def workshop(year,location)
-  p "<year> <location>";
+	echo {een:1,twee:2,drie:3,vier:4,vijf:5};
 end
