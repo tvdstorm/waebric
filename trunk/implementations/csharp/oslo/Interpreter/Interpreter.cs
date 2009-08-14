@@ -91,7 +91,18 @@ namespace Interpreter
                 case "YieldStatement":
                     VisitYieldStatement(statement);
                     break;
-                //ADD MARKUPS STATEMENTS HERE!!!
+                case "MarkupStatement":
+                    VisitMarkupStatement(statement);
+                    break;
+                case "MarkupsStatement":
+                    VisitMarkupsStatement(statement);
+                    break;
+                case "MarkupStatStatement":
+                    VisitMarkupStatStatement(statement);
+                    break;
+                case "MarkupEmbeddingStatement":
+                    VisitMarkupEmbeddingStatement(statement);
+                    break;
             }
         }
 
@@ -630,9 +641,286 @@ namespace Interpreter
 
         }
 
+        /// <summary>
+        /// Interpret MarkupStatement
+        /// </summary>
+        /// <param name="markupStatement">MarkupStatement interpret</param>
+        public void VisitMarkupStatement(Node markupStatement)
+        {
+            Node markup = markupStatement.ViewAllNodes().ElementAt(0);
+
+            //Determine if markup is a call
+            if (IsCall(markup))
+            {
+                Node designator = markup.ViewAllNodes().ElementAt(0);
+                Node functionIdentifier = designator.ViewAllNodes().ElementAt(0);
+                if (NodeContainsYield(SymbolTable.GetFunctionDefinition(functionIdentifier.AtomicValue.ToString())))
+                {   //Store null element, nothing to yield
+                    YieldStack.Push(null);
+                }
+            }
+
+            //Interpret markup
+            VisitMarkup(markup);
+        }
+
+        /// <summary>
+        /// Interpret MarkupsStatement
+        /// </summary>
+        /// <param name="markupsStatement">MarkupsStatement to interpret</param>
+        public void VisitMarkupsStatement(Node markupsStatement)
+        {
+            //Handle MarkupList first
+            Node markupList = markupsStatement.ViewAllNodes().ElementAt(0);
+            NodeCollection markups = markupList.ViewAllNodes();
+            for (int i = 0; i <= (markups.Count - 1); i++)
+            {
+                Node currentMarkup = markups.ElementAt(i);
+                Node currentDesignator = currentMarkup.ViewAllNodes().ElementAt(0);
+
+                if (IsCall(currentMarkup))
+                {   //Check is called function contains, yield
+                    Node functionIdentifier = currentDesignator.ViewAllNodes().ElementAt(0);
+                    if(NodeContainsYield(SymbolTable.GetFunctionDefinition(functionIdentifier.AtomicValue.ToString())))
+                    {   //Construct new MarkupsStatement to push on yieldstack
+                        NodeGraphBuilder nodeBuilder = new NodeGraphBuilder();
+                        
+                        //Construct new markupList with remaining nodes
+                        Node newMarkupList = (Node)nodeBuilder.DefineNode("MarkupList");
+                        for (int j = i + 1; j <= (markups.Count - 1); j++)
+                        {
+                            newMarkupList.Add(markups.ElementAt(j));
+                        }
+
+                        //Create new statement and fill it with childnodes
+                        Node newMarkupsStatement = (Node)nodeBuilder.DefineNode("MarkupsStatement");
+                        newMarkupsStatement.Add(newMarkupList);
+                        newMarkupsStatement.Add(markupsStatement.ViewAllNodes().ElementAt(1));
+                        
+                        //Push node to yieldstack
+                        YieldStack.Push(newMarkupsStatement);
+                    }
+
+                    //Interpret markup
+                    VisitMarkup(currentMarkup);
+                    return;
+                }
+                else
+                {   //Interpret Tag
+                    VisitMarkup(currentMarkup);
+                }
+            }
+
+
+            Node unknownElement = markupsStatement.ViewAllNodes().ElementAt(1);
+            if (IsExpression(unknownElement))
+            {   //Interpret expression
+                VisitExpression(unknownElement);
+
+                XHTMLElement element = new XHTMLElement(TextValue, Current);
+                element.SetTagState(false);
+                Current.AddChild(element);
+            }
+            else
+            {   //Interpret markup
+                VisitMarkup(unknownElement);
+            }
+        }
+
+        public void VisitMarkupStatStatement(Node markupStatStatement)
+        {
+            Node markupList = markupStatStatement.ViewAllNodes().ElementAt(0);
+            NodeCollection markups = markupList.ViewAllNodes();
+            for (int i = 0; i <= (markups.Count - 1); i++)
+            {
+                Node currentMarkup = markups.ElementAt(i);
+                Node currentDesignator = currentMarkup.ViewAllNodes().ElementAt(0);
+
+                if (IsCall(currentMarkup))
+                {   //Check is called function contains, yield
+                    Node functionIdentifier = currentDesignator.ViewAllNodes().ElementAt(0);
+                    if (NodeContainsYield(SymbolTable.GetFunctionDefinition(functionIdentifier.AtomicValue.ToString())))
+                    {   //Construct new MarkupStatStatement to push on yieldstack
+                        NodeGraphBuilder nodeBuilder = new NodeGraphBuilder();
+
+                        //Construct new markupList with remaining nodes
+                        Node newMarkupList = (Node)nodeBuilder.DefineNode("MarkupList");
+                        for (int j = i + 1; j <= (markups.Count - 1); j++)
+                        {
+                            newMarkupList.Add(markups.ElementAt(j));
+                        }
+
+                        //Create new statement and fill it with childnodes
+                        Node newMarkupStatStatement = (Node)nodeBuilder.DefineNode("MarkupStatStatement");
+                        newMarkupStatStatement.Add(newMarkupList);
+                        newMarkupStatStatement.Add(markupStatStatement.ViewAllNodes().ElementAt(1));
+
+                        //Push node to yieldstack
+                        YieldStack.Push(newMarkupStatStatement);
+                    }
+
+                    //Interpret markup
+                    VisitMarkup(currentMarkup);
+                    return;
+                }
+                else
+                {   //Interpret Tag
+                    VisitMarkup(currentMarkup);
+                }
+            }
+
+            //Interpret statement
+            VisitStatement(markupStatStatement.ViewAllNodes().ElementAt(1));
+        }
+
+        public void VisitMarkupEmbeddingStatement(Node markupEmbeddingStatement)
+        {
+
+        }
+
+        /// <summary>
+        /// Interpret Markup
+        /// </summary>
+        /// <param name="markup">Markup to interpret</param>
+        public void VisitMarkup(Node markup)
+        {
+            Node designator = markup.ViewAllNodes().ElementAt(0);
+            Node tag = designator.ViewAllNodes().ElementAt(0);
+            if (IsCall(markup))
+            {   //Handle function call
+                Node functionDefinition = SymbolTable.GetFunctionDefinition(tag.AtomicValue.ToString());
+
+                //Create SymbolTable for function call
+                SymbolTable tempSymbolTable = SymbolTable;
+                SymbolTable = new SymbolTable(GetSymbolTableOfFunction(functionDefinition));
+
+                //Interpret arguments of function call
+                if (markup.ViewAllNodes().Count == 2)
+                {
+                    Node arguments = markup.ViewAllNodes().ElementAt(1);
+                    Node formals = functionDefinition.ViewAllNodes().ElementAt(1);
+                    int parameterNr = 0;
+                    foreach (Node argument in arguments.ViewAllNodes())
+                    {
+                        //Store arguments in SymbolTable
+                        if (argument.Brand.Text == "ExpressionArgument")
+                        {
+                            Node parameter = formals.ViewAllNodes().ElementAt(parameterNr);
+                            Node paramIdentifier = parameter.ViewAllNodes().ElementAt(0);
+                            SymbolTable.AddVariableDefinition(paramIdentifier.AtomicValue.ToString(), argument.ViewAllNodes().ElementAt(0));
+                            parameterNr++;
+                        }
+                    }
+                }
+
+                //Visit function definition
+                VisitFunctionDefinition(functionDefinition);
+
+                //Restore scope
+                SymbolTable = tempSymbolTable;
+        
+            }
+            else
+            {   //Handle tag
+                
+                //Write tag with attributes
+                AddElement(new XHTMLElement(tag.AtomicValue.ToString(), Current));
+
+                //Visit attributes
+                Node attributes = designator.ViewAllNodes().ElementAt(1);
+                foreach (Node attribute in attributes.ViewAllNodes())
+                {
+                    VisitAttribute(attribute);
+                }
+
+                //Interpret arguments also as attributes if they exist
+                if(markup.ViewAllNodes().Count == 2)
+                {
+                    String attributeValue = "";
+                    Node arguments = markup.ViewAllNodes().ElementAt(1);
+                    foreach (Node argument in arguments.ViewAllNodes())
+                    {
+                        if (argument.Brand.Text == "AttrArgument")
+                        {
+                            //Interpret expression to retrieve value
+                            Node expression = argument.ViewAllNodes().ElementAt(1);
+                            VisitExpression(expression);
+
+                            //Store attribute
+                            Node attrId = argument.ViewAllNodes().ElementAt(0);
+                            Current.AddAttribute(attrId.AtomicValue.ToString(), TextValue);
+                        }
+                        else if (argument.Brand.Text == "ExpressionArgument")
+                        {
+                            //Interpret expression
+                            Node expression = argument.ViewAllNodes().ElementAt(0);
+                            VisitExpression(expression);
+                            if (TextValue == "undef")
+                            {
+                                TextValue = "UNDEFINED";
+                            }
+                            //Store value
+                            if (!(attributeValue == "") && !(TextValue != ""))
+                            {
+                                attributeValue += " ";
+                            }
+                            attributeValue += TextValue;
+                        }
+                    }
+
+                    if (attributeValue != "")
+                    {
+                        Current.AddAttribute("value", attributeValue);
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// Determines if an specific node is an expression
+        /// </summary>
+        /// <param name="node">Node to check</param>
+        /// <returns>IsExpression</returns>
+        private bool IsExpression(Node node)
+        {
+            switch (node.Brand.Text)
+            {
+                case "TextExpression":
+                    return true;
+                case "VarExpression":
+                    return true;
+                case "SymbolExpression":
+                    return true;
+                case "NatExpression":
+                    return true;
+                case "FieldExpression":
+                    return true;
+                case "CatExpression":
+                    return true;
+                case "ListExpression":
+                    return true;
+                case "RecordExpression":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Determine if markup is a call
+        /// </summary>
+        /// <param name="markup">Markup to check</param>
+        /// <returns>IsCall</returns>
+        private bool IsCall(Node markup)
+        {
+            Node designator = markup.ViewAllNodes().ElementAt(0);
+            Node identifier = designator.ViewAllNodes().ElementAt(0);
+            return SymbolTable.ContainsFunction(identifier.AtomicValue.ToString());
+        }
 
         /// <summary>
         /// Add an XHTMLElement to XHTMLTree
@@ -756,6 +1044,31 @@ namespace Interpreter
                 return !EvaluatePredicate(predicate.ViewAllNodes().ElementAt(0));
             }
             return false;
+        }
+
+        /// <summary>
+        /// Check if an node contains an yield
+        /// </summary>
+        /// <param name="node">Node to check</param>
+        /// <returns>True if node contains yield, otherwise false</returns>
+        private bool NodeContainsYield(Node node)
+        {
+            if (node.Brand.Text == "YieldStatement")
+            {   //Node itself is an yield
+                return true;
+            }
+            else
+            {   //Check subnodes
+                foreach (Node subNode in node.ViewAllNodes())
+                {
+                    if (NodeContainsYield(subNode))
+                    {
+                        return true;
+                    }
+                }
+                //No Yields found
+                return false;
+            }
         }
 
         #endregion
