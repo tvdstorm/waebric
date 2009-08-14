@@ -8,7 +8,7 @@ options {
 }
 
 scope Environment {
-	Map<String, Integer> functions;
+	Map<String, CommonTree> functions;
 	Map<String, Integer> variables;
 }
 
@@ -44,13 +44,24 @@ scope Environment {
 	// Base functions
 	public static Map<String, WaebricLoader.function_return> functions;
 
+	public WaebricInterpreter(TreeNodeStream input, Environment_scope base) {
+		super(input);
+		Environment_stack.push(base);
+	}
 	
 	/**
 	 * Interpret program
 	 * @param os: Output stream for interpreting main function
 	 */
 	public void interpretProgram(OutputStream os, WaebricLoader loader) throws RecognitionException {
-		this.functions = loader.getFunctions();
+		// Store function definitions to allow lazy function binding
+		Environment_stack.clear();
+		Environment_scope base = new Environment_scope();
+		base.functions = new HashMap<String, CommonTree>();
+		base.variables = new HashMap<String, Integer>();
+		for(String function: loader.getFunctions().keySet()) 
+		{ base.functions.put(function, loader.getFunctions().get(function).tree); }
+		Environment_stack.push(base);
 		
 		this.document = new Document();
 		if(interpretFunction("main")) {
@@ -65,23 +76,17 @@ scope Environment {
 	
 	/**
 	 * Interpret function
-	 * @param function: Function AST
+	 * @param name: Function name
 	 */
     	private boolean interpretFunction(String name) throws RecognitionException {
-    		Integer index = getFunction(name);
-    		if(index != -1) {
-    			int curr = input.index();
-    			input.seek(index);
-    			function();
-    			input.seek(curr);
+    		CommonTree function = getFunction(name);
+    		if(function != null) {
+    			WaebricInterpreter instance = new WaebricInterpreter(
+    				new CommonTreeNodeStream(function),
+    				(Environment_scope) Environment_stack.elementAt(0));
+    			instance.function(); // Interpret function call in seperate instance, local scope
     			return true;
-    		} else if(functions.containsKey(name)) {
-    			CommonTree function = functions.get(name).tree;
-    			WaebricInterpreter instance = new WaebricInterpreter(new CommonTreeNodeStream(function));
-    			instance.function();
-    			return true;
-    		}
-    		return false;
+    		} return false;
     	}
 	
 	/**
@@ -132,13 +137,13 @@ scope Environment {
 	 * Retrieve function
 	 * @param name: Function name
 	 */
-	private Integer getFunction(String name) {
+	private CommonTree getFunction(String name) {
 		// Check local environments
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(name)) {
 				return $Environment[i]::functions.get(name); 
 			}
-		} return -1 ;
+		} return null ;
 	}
 	
 	/**
@@ -146,8 +151,8 @@ scope Environment {
 	 * @param name: Function name
 	 * @param tree: Function AST
 	 */
-	private void defineFunction(String name, Integer input) {
-		$Environment::functions.put(name, input);
+	private void defineFunction(String name, CommonTree tree) {
+		$Environment::functions.put(name, tree);
 	}
 	
 	/**
@@ -314,7 +319,7 @@ eachStatement
 	scope Environment;
 	@init {
 		$Environment::variables = new HashMap<String, Integer>();
-		$Environment::functions = new HashMap<String, Integer>();
+		$Environment::functions = new HashMap<String, CommonTree>();
 		int stm = 0;
 	} :		^( 'each' '(' IDCON ':' e=expression ')' { stm = input.index(); } . ) {
 				int actualIndex = input.index();
@@ -337,14 +342,13 @@ letStatement
 	scope Environment;
 	@init {
 		$Environment::variables = new HashMap<String, Integer>();
-		$Environment::functions = new HashMap<String, Integer>();
+		$Environment::functions = new HashMap<String, CommonTree>();
 	} :		^( 'let' assignment+ 'in' ( s=statement )* 'end' ) ;
 
 // $>
 // $<Assignments
 
-assignment:		varBinding
-			| funcBinding ;
+assignment:		varBinding | funcBinding ;
 		
 varBinding
 	@init{ int index = 0; }
@@ -352,11 +356,10 @@ varBinding
 				defineVariable($IDCON.getText(), index);
 			} ;
 			
-funcBinding
-	@init{ int index = input.index(); }
-	:		'def' IDCON formals . 'end' {
-				defineFunction($IDCON.getText(), index);
-			} ;
+funcBinding :		'def' id=IDCON formals . 'end' ;
+	finally {
+		defineFunction($id.getText(), $funcBinding.tree);
+	}
 
 // $>
 // $<Predicates
