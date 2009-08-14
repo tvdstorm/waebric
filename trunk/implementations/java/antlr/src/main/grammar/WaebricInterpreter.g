@@ -35,25 +35,28 @@ scope Environment {
 }
 
 @members {
+	// JDOM elements
 	public static Document document;
 	public static Element current;
 	
 	// Base functions
 	public static Map<String, WaebricLoader.function_return> functions;
 
-	public WaebricInterpreter(TreeNodeStream input, WaebricLoader loader) {
-		super(input);
-		this.document = new Document();
-		this.functions = loader.getFunctions();
-	}
 	
 	/**
 	 * Interpret program
 	 * @param os: Output stream for interpreting main function
 	 */
-	public void interpretProgram(OutputStream os) throws RecognitionException {
+	public void interpretProgram(OutputStream os, WaebricLoader loader) throws RecognitionException {
+		this.functions = loader.getFunctions();
+		
+		this.document = new Document();
 		if(interpretFunction("main")) {
 			outputDocument(document, os);
+		}
+		
+		for(WaebricLoader.mapping_return mapping: loader.getMappings()) {
+			// TODO : Evaluate function and store in file
 		}
 	}
 	

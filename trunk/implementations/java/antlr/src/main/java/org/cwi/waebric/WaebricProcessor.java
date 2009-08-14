@@ -57,11 +57,10 @@ public class WaebricProcessor {
 	        
 	        WaebricChecker checker = new WaebricChecker(
 	        			new CommonTreeNodeStream(tree), // Input tokens
-	        			se, // Caught exceptions while loading functions
-	        			loader // Loader instance
+	        			se // Caught exceptions while loading functions
 	        		);
 	        curr = System.currentTimeMillis();
-	        checker.checkAST();
+	        checker.checkAST(loader);
 	        long check_time = System.currentTimeMillis() - curr;
 	        System.out.println("Checked in " + check_time + "ms, with " + se.size() + " semantic exceptions");
 	        
@@ -69,9 +68,9 @@ public class WaebricProcessor {
 	        	e.printStackTrace();
 	        }
 	     
-	        WaebricInterpreter interpreter = new WaebricInterpreter(new CommonTreeNodeStream(tree), loader);
+	        WaebricInterpreter interpreter = new WaebricInterpreter(new CommonTreeNodeStream(tree));
 	        curr = System.currentTimeMillis();
-	        interpreter.interpretProgram(System.out);
+	        interpreter.interpretProgram(System.out, loader);
 	        long inter_time = System.currentTimeMillis() - curr;
 	        System.out.println("Interpreted in " + inter_time + "ms");
 	}
