@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-14 08:22:18
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-14 08:55:18
 
 	package org.cwi.waebric;
 	import java.util.ArrayList;
@@ -232,7 +232,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: function, 34, site, imprt, moduleId
+            // elements: moduleId, imprt, 34, function, site
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -437,7 +437,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: moduleId, 36, SEMICOLON
+            // elements: moduleId, SEMICOLON, 36
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2033,7 +2033,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: IDCON, 44, 42
+            // elements: IDCON, 42, 44
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2269,7 +2269,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: statement, statement, 42, 53, predicate, 52, 44
+                    // elements: 53, 44, predicate, 42, statement, statement, 52
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2292,13 +2292,13 @@ public class WaebricParser extends Parser {
                         adaptor.addChild(root_1, stream_44.nextNode());
                         adaptor.addChild(root_1, stream_statement.nextTree());
                         // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:100:44: ( 'else' statement )?
-                        if ( stream_statement.hasNext()||stream_53.hasNext() ) {
+                        if ( stream_53.hasNext()||stream_statement.hasNext() ) {
                             adaptor.addChild(root_1, stream_53.nextNode());
                             adaptor.addChild(root_1, stream_statement.nextTree());
 
                         }
-                        stream_statement.reset();
                         stream_53.reset();
+                        stream_statement.reset();
 
                         adaptor.addChild(root_0, root_1);
                         }
@@ -2341,7 +2341,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 42, 37, statement, 44, IDCON, expression, 54
+                    // elements: 37, IDCON, 54, expression, 44, 42, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2455,7 +2455,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 55, statement, 56, assignment, END
+                    // elements: statement, 56, assignment, 55, END
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2540,7 +2540,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 49, 48, statement
+                    // elements: statement, 49, 48
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2683,7 +2683,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: embedding, 57, SEMICOLON
+                    // elements: SEMICOLON, 57, embedding
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2730,7 +2730,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: expression, SEMICOLON, 58
+                    // elements: SEMICOLON, expression, 58
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2817,7 +2817,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: expression, SEMICOLON, markup
+                    // elements: expression, markup, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2908,7 +2908,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: markup, statement
+                    // elements: statement, markup
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2995,7 +2995,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: markup, SEMICOLON, embedding
+                    // elements: SEMICOLON, embedding, markup
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 

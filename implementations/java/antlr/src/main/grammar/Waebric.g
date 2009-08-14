@@ -162,14 +162,14 @@ fragment FILEEXT:	( LETTER | DIGIT )+ ;
 
 STRCON:			{ inString }? => '\"' STRCHAR* '\"' { inString = false; } ;
 fragment STRCHAR:	~( '\u0000'..'\u001F' | '"' | '\\' ) | ESCLAYOUT | DECIMAL ;
-fragment ESCLAYOUT:	'\\\\n' | '\\\\t' | '\\\\"' | '\\\\\\\\' ;
+fragment ESCLAYOUT:	'\\n' | '\\t' | '\\"' | '\\\\' ;
 fragment DECIMAL:	'\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT ;
 
 PRETEXT:		'"' TEXTCHAR* '<' ;
 POSTTEXT:		'>' TEXTCHAR* '"' ;
 MIDTEXT:		'>' TEXTCHAR* '<' ;				
 
-TEXT:			'\"' TEXTCHAR* '\"' ;
+TEXT:			{ ! inString }? => '\"' TEXTCHAR* '\"' ;
 fragment TEXTCHAR:	~( '\u0000'..'\u001F' | '&' | '"' | '<' | '\u0080'..'\uFFFF' ) |
 			 '\n' | '\r' | '\t' | ESCQUOTE | AMP | CHARREF | ENTREF ;
 fragment ESCQUOTE:	'\\\\' | '\\"' ;		
