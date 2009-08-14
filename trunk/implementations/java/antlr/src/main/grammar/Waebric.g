@@ -51,8 +51,8 @@ moduleId
 	:		e=IDCON { $path += e.getText(); } 
 			( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
 	
-imprt:			'import' id=moduleId ';' 
-				-> 'import' moduleId ';' ^( { parseFile($id.path) } ) ;
+imprt:			'import' moduleId
+				-> 'import' moduleId ^( { parseFile($moduleId.path) } ) ;
 
 // $>
 // $<Site
