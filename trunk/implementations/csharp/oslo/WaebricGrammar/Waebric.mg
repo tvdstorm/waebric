@@ -405,7 +405,7 @@ module Waebric
             = ml:MarkupList? me:EmbedMarkupExpression 
                 => Embed[ml, valuesof(me)]
             | m:Markup
-                => Embed[m];
+                => Embed[null, m];
                 
         syntax EmbedMarkupExpression 
             = mc:MarkupCall
@@ -415,9 +415,9 @@ module Waebric
             
         syntax TextTail 
             = p:Post_Text
-                => TextTail[p]
+                => PostTextTail[p]
             | m:Mid_Text e:Embed t:TextTail
-                => TextTail[m,e,t];
+                => MidTextTail[m,e,t];
 
     }
 }
