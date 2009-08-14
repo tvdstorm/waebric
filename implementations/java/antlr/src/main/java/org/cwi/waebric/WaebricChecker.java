@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricChecker.g 2009-08-14 12:36:07
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricChecker.g 2009-08-14 13:15:20
 
 	package org.cwi.waebric;
 	import antlr.SemanticException;
@@ -112,7 +112,7 @@ public class WaebricChecker extends TreeParser {
 
     	private List<SemanticException> exceptions;
     	
-    	public WaebricChecker(TreeNodeStream input, List<SemanticException> exceptions, Map<String, WaebricLoader.function_return> functions) {
+    	public WaebricChecker(TreeNodeStream input, List<SemanticException> exceptions, WaebricLoader loader) {
     		super(input);
     		this.exceptions = exceptions;
     		
@@ -120,8 +120,8 @@ public class WaebricChecker extends TreeParser {
     		Environment_scope base = new Environment_scope();
     		base.functions = new HashMap<String, Integer>();
     		base.variables = new ArrayList<String>();
-    		for(String function: functions.keySet()) {
-    			base.functions.put(function, functions.get(function).args);
+    		for(String function: loader.getFunctions().keySet()) {
+    			base.functions.put(function, loader.getFunctions().get(function).args);
     		}
     		Environment_stack.push(base);
     	}

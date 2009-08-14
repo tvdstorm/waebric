@@ -7,8 +7,8 @@ options {
 }
 
 scope Environment {
-	Map<String,CommonTree> functions;
-	Map<String,String> variables;
+	Map<String, WaebricLoader.function_return> functions;
+	Map<String, String> variables;
 }
 
 @header {
@@ -37,23 +37,14 @@ scope Environment {
 @members {
 	public static Document document;
 	public static Element current;
-
-	public WaebricInterpreter(TreeNodeStream input, Map<String,CommonTree> functions) {
-		super(input);
-		document = new Document();
-		
-		// Attach function definitions to environment
-		Environment_scope base = new Environment_scope();
-		base.functions = functions;
-		base.variables = new HashMap<String,String>();
-		Environment_stack.push(base);
-	}
 	
-	private WaebricInterpreter(TreeNodeStream input, Stack environment) {
+	// Base functions
+	public static Map<String, WaebricLoader.function_return> functions;
+
+	public WaebricInterpreter(TreeNodeStream input, WaebricLoader loader) {
 		super(input);
-		
-		// Clone first element of environment stack for function definitions
-		this.Environment_stack = environment;
+		this.document = new Document();
+		this.functions = loader.getFunctions();
 	}
 	
 	/**
@@ -61,10 +52,7 @@ scope Environment {
 	 * @param os: Output stream for interpreting main function
 	 */
 	public void interpretProgram(OutputStream os) throws RecognitionException {
-		// Interpret the main function
-		CommonTree main = getFunction("main");
-		if(main != null) {
-			interpretFunction(main);
+		if(interpretFunction("main")) {
 			outputDocument(document, os);
 		}
 	}
@@ -73,11 +61,14 @@ scope Environment {
 	 * Interpret function
 	 * @param function: Function AST
 	 */
-	private void interpretFunction(CommonTree function) throws RecognitionException {
-		WaebricInterpreter instance = new WaebricInterpreter(
-			new CommonTreeNodeStream(function),
-			Environment_stack);
-		instance.function();
+	private boolean interpretFunction(String name) throws RecognitionException {
+		CommonTree function = getFunction(name).tree;
+		if(function != null) {
+			WaebricInterpreter instance = new WaebricInterpreter(new CommonTreeNodeStream(function));
+			instance.function();
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -126,12 +117,16 @@ scope Environment {
 	 * Retrieve function
 	 * @param name: Function name
 	 */
-	private CommonTree getFunction(String name) {
+	private WaebricLoader.function_return getFunction(String name) {
+		// Check local environments
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(name)) {
 				return $Environment[i]::functions.get(name); 
 			}
-		} return null;
+		} 
+		
+		// Check base environment
+		return functions.containsKey(name) ? functions.get(name) : null ;
 	}
 	
 	/**
@@ -139,8 +134,11 @@ scope Environment {
 	 * @param name: Function name
 	 * @param tree: Function AST
 	 */
-	private void defineFunction(String name, CommonTree tree) {
-		$Environment::functions.put(name, tree);
+	private void defineFunction(String name, CommonTree tree, boolean yield) {
+		WaebricLoader.function_return val = new WaebricLoader.function_return();
+		val.tree = tree;
+		val.yield = yield;
+		$Environment::functions.put(name, val);
 	}
 	
 	/**
@@ -164,6 +162,15 @@ scope Environment {
 		$Environment::variables.put(name, eval);
 	}
 	
+	/**
+	 * Create new environment with cloned base
+	 */
+	private Stack newEnvironment() {
+		Stack env = new Stack();
+		env.push(Environment_stack.elementAt(0));
+		return env;
+	}
+	
 }
 
 // $<Site
@@ -177,13 +184,8 @@ mapping	:		PATH ':' markup ;
 // $>
 // $<Markup
 
-markup:			IDCON attribute* arguments? { // Designator lifted as it complicated argument exchange
-				CommonTree call = getFunction($IDCON.getText());
-				if(call != null) {
-					// Interpret called function
-					interpretFunction(call);
-				} else {
-					// Process markup as XHTML tag
+markup:			IDCON attribute* arguments? {
+				if(! interpretFunction($IDCON.getText())) {
 					addContent(new Element($IDCON.getText())); 
 				}
 			} ;
@@ -197,7 +199,8 @@ attribute:		'#' IDCON { current.setAttribute("id", $IDCON.getText()); } // ID at
 			
 arguments:		'(' argument? ( ',' argument )* ')' ;
 
-argument:		expression ;
+argument:		expression
+			| IDCON '=' expression { current.setAttribute($IDCON.getText(), $expression.eval); } ;
 
 // $>
 // $<Expressions
@@ -226,22 +229,10 @@ formals:		'(' IDCON* ')' ;
 // $<Statements
 
 statement
-	@init{ int ti = 0; int fi = 0; } // Initialize local variables
-	:		^( 'if' '(' predicate ')' { ti = input.index(); } t=.  ( 'else' { fi = input.index(); } f=. )? ) {
-					int curr = input.index();
-				 	if($predicate.eval) {
-						input.seek(ti);
-						statement();
-						input.seek(curr);
-					} else if(f != null) {
-						input.seek(fi);
-						statement();
-						input.seek(curr);
-					}
-				}
-			| ^( 'each' '(' IDCON ':' expression ')' statement )
+	:		ifStatement
+			| eachStatement
 			| letStatement
-			| ^( '{' statement* '}' )
+			| blockStatement
 			| ^( 'comment' STRCON ';' ) {
 					Comment comment = new Comment($STRCON.getText());
 					addContent(comment);
@@ -264,6 +255,28 @@ statement
 			| ^( MARKUP_STATEMENT markup+ embedding ';' )
 			| ^( MARKUP_STATEMENT markup+ ';' ) ;
 
+ifStatement
+	@init{ int ti = 0; int fi = 0; }
+	:		^( 'if' '(' predicate ')' { ti = input.index(); } t=.  ( 'else' { fi = input.index(); } f=. )? ) {
+				int curr = input.index();
+				if($predicate.eval) {
+					input.seek(ti);
+					statement();
+					input.seek(curr);
+				} else if(f != null) {
+					input.seek(fi);
+					statement();
+					input.seek(curr);
+				}
+			} ;
+			
+eachStatement
+	:		^( 'each' '(' IDCON ':' expression ')' statement ) ;
+
+blockStatement
+	@init { Element actual = this.current; }
+	:		^( '{' statement* { this.current = actual; } '}' ) ;		
+
 letStatement
 	:		^( 'let' assignment+ 'in' statement* 'end' ) ;
 
@@ -271,7 +284,7 @@ letStatement
 // $<Assignments
 
 assignment:		IDCON '=' expression ';' // Variable binding
-			| IDCON formals statement ; // Function binding
+			| IDCON formals '=' statement ; // Function binding
 
 // $>
 // $<Predicates
