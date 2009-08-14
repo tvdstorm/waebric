@@ -1,0 +1,13 @@
+module simple
+
+def main
+    html {
+	comment "Design\nFree";
+
+        title#id callme$lol("Hello world");
+    }
+end
+
+def callme(expr)
+	if(!expr) echo "true"; else echo "false";
+end
