@@ -9,7 +9,7 @@ end
 
 def call-me
 	let var = {een:1,twee:2,drie:3}; in
-		html var.een;
+		each (e:var) echo e;
 	end
 
 end
