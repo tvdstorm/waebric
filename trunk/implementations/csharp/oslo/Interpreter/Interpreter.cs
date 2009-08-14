@@ -748,9 +748,122 @@ namespace Interpreter
             Current.AddContent(TextValue);
         }
 
+        /// <summary>
+        /// Interpret YieldStatement
+        /// </summary>
+        /// <param name="yieldStatement">YieldStatement to interpret</param>
         public void VisitYieldStatement(Node yieldStatement)
         {
+            if (YieldStack.Count == 0)
+            {
+                return;
+            }
 
+            //Pop from YieldStack and lets interpet it
+            Node node = YieldStack.Pop();
+
+            if (node != null)
+            {
+                //Let's copy yieldstack, because there are possible yields in the yield. 
+                Stack<Node> tempYieldStack = new Stack<Node>();
+                List<Node> yieldList = YieldStack.ToList();
+                foreach (Node yieldNode in yieldList)
+                {
+                    tempYieldStack.Push(yieldNode);
+                }
+
+                //Lets interpret it
+                VisitYieldNode(node);
+
+                //Add some content when node is an expression or embedding
+                if (IsExpression(node) || node.Brand.Text == "Embedding")
+                {
+                    //TODO, MAYBE TEMP ELEMENT IS NEEDED!!!
+                    XHTMLElement element = new XHTMLElement(TextValue, Current);
+                    element.SetTagState(false);
+                    Current.AddChild(element);
+                }
+
+                //Restore YieldStack in original shape before interpreting
+                YieldStack = tempYieldStack;
+            }
+        }
+
+        /// <summary>
+        /// Special method to visit nodes which are on YieldStack
+        /// </summary>
+        /// <param name="node">Node to visit</param>
+        public void VisitYieldNode(Node node)
+        {
+            switch (node.Brand.Text)
+            {
+                case "BlockStatement":
+                    VisitBlockStatement(node);
+                    break;
+                case "EachStatement":
+                    VisitEachStatement(node);
+                    break;
+                case "LetStatement":
+                    VisitLetStatement(node);
+                    break;
+                case "IfStatement":
+                    VisitIfStatement(node);
+                    break;
+                case "IfElseStatement":
+                    VisitIfElseStatement(node);
+                    break;
+                case "CommentStatement":
+                    VisitCommentStatement(node);
+                    break;
+                case "EchoExpressionStatement":
+                    VisitEchoExpressionStatement(node);
+                    break;
+                case "EchoEmbeddingStatement":
+                    VisitEchoEmbeddingStatement(node);
+                    break;
+                case "CDataStatement":
+                    VisitCDataStatement(node);
+                    break;
+                case "YieldStatement":
+                    VisitYieldStatement(node);
+                    break;
+                case "MarkupStatement":
+                    VisitMarkupStatement(node);
+                    break;
+                case "MarkupsStatement":
+                    VisitMarkupsStatement(node);
+                    break;
+                case "MarkupStatStatement":
+                    VisitMarkupStatStatement(node);
+                    break;
+                case "MarkupEmbeddingStatement":
+                    VisitMarkupEmbeddingStatement(node);
+                    break;
+                case "TextExpression":
+                    VisitTextExpression(node);
+                    break;
+                case "SymbolExpression":
+                    VisitSymbolExpression(node);
+                    break;
+                case "VarExpression":
+                    VisitVarExpression(node);
+                    break;
+                case "NatExpression":
+                    VisitNatExpression(node);
+                    break;
+                case "CatExpression":
+                    VisitCatExpression(node);
+                    break;
+                case "FieldExpression":
+                    VisitFieldExpression(node);
+                    break;
+                case "ListExpression":
+                    VisitListExpression(node);
+                    break;
+                case "RecordExpression":
+                    VisitRecordExpression(node);
+                    break;
+            }
         }
 
         /// <summary>
@@ -889,9 +1002,54 @@ namespace Interpreter
             VisitStatement(markupStatStatement.ViewAllNodes().ElementAt(1));
         }
 
+        /// <summary>
+        /// Interpret MarkupEmbeddingStatement
+        /// </summary>
+        /// <param name="markupEmbeddingStatement">MarkupEmbeddingStatement to interpret</param>
         public void VisitMarkupEmbeddingStatement(Node markupEmbeddingStatement)
         {
+            Node markupList = markupEmbeddingStatement.ViewAllNodes().ElementAt(0);
+            NodeCollection markups = markupList.ViewAllNodes();
+            for (int i = 0; i <= (markups.Count - 1); i++)
+            {
+                Node currentMarkup = markups.ElementAt(i);
+                Node currentDesignator = currentMarkup.ViewAllNodes().ElementAt(0);
 
+                if (IsCall(currentMarkup))
+                {   //Check is called function contains, yield
+                    Node functionIdentifier = currentDesignator.ViewAllNodes().ElementAt(0);
+                    if (NodeContainsYield(SymbolTable.GetFunctionDefinition(functionIdentifier.AtomicValue.ToString())))
+                    {   //Construct new MarkupEmbeddingStatement to push on yieldstack
+                        NodeGraphBuilder nodeBuilder = new NodeGraphBuilder();
+
+                        //Construct new markupList with remaining nodes
+                        Node newMarkupList = (Node)nodeBuilder.DefineNode("MarkupList");
+                        for (int j = i + 1; j <= (markups.Count - 1); j++)
+                        {
+                            newMarkupList.Add(markups.ElementAt(j));
+                        }
+
+                        //Create new statement and fill it with childnodes
+                        Node newMarkupEmbeddingStatement = (Node)nodeBuilder.DefineNode("MarkupEmbeddingStatement");
+                        newMarkupEmbeddingStatement.Add(newMarkupList);
+                        newMarkupEmbeddingStatement.Add(markupEmbeddingStatement.ViewAllNodes().ElementAt(1));
+
+                        //Push node to yieldstack
+                        YieldStack.Push(newMarkupEmbeddingStatement);
+                    }
+
+                    //Interpret markup
+                    VisitMarkup(currentMarkup);
+                    return;
+                }
+                else
+                {   //Interpret Tag
+                    VisitMarkup(currentMarkup);
+                }
+            }
+
+            //Interpret statement
+            VisitEmbedding(markupEmbeddingStatement.ViewAllNodes().ElementAt(1));
         }
 
         /// <summary>
