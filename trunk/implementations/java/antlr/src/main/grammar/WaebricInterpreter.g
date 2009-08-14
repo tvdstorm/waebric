@@ -109,9 +109,11 @@ scope Environment {
         			current = document.getRootElement();
         		} else {
         			Element XHTML = createXHTMLTag();
-            		document.setRootElement(XHTML);
-            		XHTML.addContent(content);
-            		if(content instanceof Element) { current = (Element) content; }
+            			document.setRootElement(XHTML);
+            			XHTML.addContent(content);
+            			
+            			if(content instanceof Element) { current = (Element) content; }
+            			else { current = XHTML; }
         		}	
         	} else {
     			current.addContent(content); // Attach content
@@ -224,7 +226,7 @@ expression returns [
 					| SYMBOLCON { $eval = $SYMBOLCON.getText(); }
 					| '[' ( e=expression { $collection.add(e); } )? 
 					  ( ',' e=expression { $collection.add(e); } )* ']' {
-						$eval += "[";
+						$eval = "[";
 						for(expression_return eret:$collection) { $eval += eret.eval + ","; }
 						$eval = $eval.substring(0,$eval.length()); // Clip last character
 						$eval += "]";
@@ -232,7 +234,7 @@ expression returns [
 					| '{' ( id=IDCON ':' e=expression { $map.put($id.getText(), e); } )? 
 					  ( ',' id=IDCON ':' e=expression { $map.put($id.getText(), e); } )* '}' {
 						$collection = $map.values();
-						$eval += "{";
+						$eval = "{";
 						for(String key:$map.keySet()) { $eval += key + ":" + $map.get(key) + ","; }
 						$eval = $eval.substring(0,$eval.length()); // Clip last character
 						$eval += "}";
