@@ -185,7 +185,6 @@ namespace Interpreter
             {   //Variable doesn't have an allocated expressionvalue
                 TextValue = "undef";
             }
-
         }
 
         /// <summary>
@@ -617,6 +616,12 @@ namespace Interpreter
         {
             Node expression = echoExpressionStatement.ViewAllNodes().ElementAt(0);
             VisitExpression(expression);
+
+            //Add just an tag to current as parent
+            XHTMLElement echoElement = new XHTMLElement(TextValue, Current);
+            echoElement.SetTagState(false);
+
+            Current.AddChild(echoElement);
         }
 
         public void VisitEchoEmbeddingStatement(Node echoEmbeddingStatement)
