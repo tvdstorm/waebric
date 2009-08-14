@@ -206,17 +206,25 @@ argument:		expression
 // $>
 // $<Expressions
 
-expression returns [String eval]
-	: 	( var=IDCON { $eval = getVariable($var.getText()); }
+expression 
+	returns [String eval]
+	: 		( var=IDCON { $eval = getVariable($var.getText()); }
 				| NATCON { $eval = $NATCON.getText(); }
 				| TEXT { $eval = $TEXT.getText(); }
 				| SYMBOLCON { $eval = $SYMBOLCON.getText(); }
-				| '[' ( e=expression { $eval = $e.eval; } )? ( ',' e=expression { $eval += ", " + $e.eval ; } )* ']'
-				| '{' ( p=keyValuePair { $eval = $p.eval; } )? ( ',' p=keyValuePair { $eval += ", " + $p.eval ; } )* '}' 
-			) ( '+' e=expression { $eval += $e.eval; } | '.' IDCON /* Field */ )* ;
+				| listExpression { $eval = $listExpression.data.toString(); }
+				| recordExpression { $eval = $recordExpression.data.toString(); }
+			) ( '+' e=expression { $eval += $e.eval; } | '.' IDCON { /* TODO: Field */ } )* ;
 			
-keyValuePair returns [String eval]
-	:		IDCON ':' e=expression { $eval = $IDCON.getText() + ":" + $e.eval; } ;
+listExpression 
+	returns [List<String> data = new ArrayList<String>()]
+	:			'[' ( e=expression { $data.add($e.eval); } )? 
+				( ',' e=expression { $data.add($e.eval); } )* ']' ;
+				
+recordExpression
+	returns [Map<String, String> data = new HashMap<String, String>()]
+	:			'{' ( id=IDCON ':' e=expression { $data.put($id.getText(), $e.eval); } )? 
+				( ',' id=IDCON ':' e=expression { $data.put($id.getText(), $e.eval); } )* '}' ;
 
 // $>
 // $<Function
