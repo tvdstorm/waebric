@@ -27,11 +27,10 @@ public class WaebricProcessor {
 			CharStream is;
 			if(args.length == 1) {
 				is = new ANTLRFileStream(args[0]);
+				System.out.println("Processing... " + args[0]);
 			} else {
 				is = new ANTLRInputStream(System.in);
 			}
-			
-			System.out.println("Processing...");
 
 	        long curr = System.currentTimeMillis();
 	        WaebricLexer lexer = new WaebricLexer(is);

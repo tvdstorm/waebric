@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-14 09:03:10
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-14 09:17:51
 
 	package org.cwi.waebric;
 	import java.util.ArrayList;
@@ -232,7 +232,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: imprt, function, site, moduleId, 34
+            // elements: site, imprt, moduleId, 34, function
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -431,7 +431,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: moduleId, 36
+            // elements: 36, moduleId
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2026,7 +2026,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: 42, IDCON, 44
+            // elements: 44, 42, IDCON
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2262,7 +2262,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: predicate, 44, statement, 52, statement, 42, 53
+                    // elements: 44, statement, predicate, statement, 42, 53, 52
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2334,7 +2334,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: statement, 37, expression, 54, IDCON, 42, 44
+                    // elements: 42, 44, 54, IDCON, expression, 37, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2448,7 +2448,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: statement, assignment, END, 55, 56
+                    // elements: statement, 55, 56, END, assignment
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2533,7 +2533,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 49, 48, statement
+                    // elements: statement, 48, 49
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2582,7 +2582,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, COMMENT, STRCON
+                    // elements: STRCON, COMMENT, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2629,7 +2629,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, 57, expression
+                    // elements: 57, expression, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2676,7 +2676,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, 57, embedding
+                    // elements: embedding, SEMICOLON, 57
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2723,7 +2723,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, expression, 58
+                    // elements: expression, 58, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2901,7 +2901,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: markup, statement
+                    // elements: statement, markup
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2988,7 +2988,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: embedding, SEMICOLON, markup
+                    // elements: embedding, markup, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
