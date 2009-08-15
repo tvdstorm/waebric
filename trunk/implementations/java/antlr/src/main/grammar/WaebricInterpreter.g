@@ -217,22 +217,22 @@ mapping
 // $>
 // $<Markup
 
-markup:			IDCON attributes arguments? {
+markup:			^( MARKUP IDCON attributes arguments ) {
 				if(! interpretFunction($IDCON.getText())) {
 					addContent(new Element($IDCON.getText())); 
 				}
 			} ;
 			
-attributes:		attribute* ;
+attributes:		^( ATTRIBUTES attribute* ) ;
 
-attribute:		'#' IDCON { current.setAttribute("id", $IDCON.getText()); } // ID attribute
-			| '.' IDCON { current.setAttribute("class", $IDCON.getText()); } // Class attribute
-			| '$' IDCON { current.setAttribute("name", $IDCON.getText()); } // Name attribute
-			| ':' IDCON { current.setAttribute("type", $IDCON.getText()); } // Type attribute
-			| '@' w=NATCON { current.setAttribute("width", $w.getText()); } // Width attribute
-				( '%' h=NATCON{ current.setAttribute("height", $h.getText()); } )? ; // Height attribute
+attribute:		'#' IDCON { current.setAttribute("id", $IDCON.getText()); }
+			| '.' IDCON { current.setAttribute("class", $IDCON.getText()); }
+			| '$' IDCON { current.setAttribute("name", $IDCON.getText()); }
+			| ':' IDCON { current.setAttribute("type", $IDCON.getText()); }
+			| '@' w=NATCON { current.setAttribute("width", $w.getText()); }
+				( '%' h=NATCON{ current.setAttribute("height", $h.getText()); } )? ;
 			
-arguments:		'(' argument? ( ',' argument )* ')' ;
+arguments:		^( ARGUMENTS argument* ) ;
 
 argument:		expression
 			| IDCON '=' expression { current.setAttribute($IDCON.getText(), $expression.eval); } ;
@@ -302,15 +302,15 @@ expression returns [
 
 function
 	@init { Element actual = null; }
-	:		'def' 
-			IDCON 
-			formals? 
-			( statement { 
-				if(actual != null) { this.current = actual; }
-				else { actual = this.current; }
-			} )* 'end' ;
+	:		^( FUNCTION IDCON 
+				formals // TODO: Store formal as variables with called arguments
+				( statement { 
+					if(actual != null) { this.current = actual; } 
+					else { actual = this.current; } 
+				} )* // Reset JDOM element
+			) ;
 
-formals:		 '(' IDCON* ')';
+formals:		^( FORMALS IDCON* ) ;
 
 // $>
 
@@ -389,7 +389,7 @@ varBinding
 				defineVariable($IDCON.getText(), index);
 			} ;
 			
-funcBinding :		'def' id=IDCON formals . 'end' ;
+funcBinding :		^( FUNCTION id=IDCON formals stm=. ) ;
 	finally {
 		defineFunction($id.getText(), $funcBinding.tree);
 	}
