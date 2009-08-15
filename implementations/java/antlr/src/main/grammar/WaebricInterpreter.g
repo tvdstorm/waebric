@@ -167,7 +167,7 @@ scope Environment {
 	 */
 	private Stack getEnvironment(String name) {
 		if(environments.containsKey(name)) {
-			return environments.get(name);
+			return (Stack) environments.get(name).clone();
 		} else {
 			Stack environment = new Stack();
 			environment.push(Environment_stack.elementAt(0));
@@ -232,24 +232,30 @@ mapping
 // $<Markup
 
 markup
-	@init { int attr = 0; }
-	:		^( MARKUP IDCON { attr = input.index(); } . . ) {
+	@init { int attr = 0; int args = 0; }
+	:		^( MARKUP IDCON { attr = input.index(); } . { args = input.index(); } . ) {
 				if(containsFunction($IDCON.getText())) {
 					// Process markup as function call
-					Stack actual = Environment_stack;
+					Stack actualEnvironment = Environment_stack;
 					Environment_stack = getEnvironment($IDCON.getText());
-					// TODO: Process attributes and arguments
-					interpretFunction($IDCON.getText());
-					Environment_stack = actual;
+					
+					//  Process arguments
+					int actualIndex = input.index();
+					input.seek(args);
+					List<Integer> eval = arguments(true).args;
+					input.seek(actualIndex);
+					
+					interpretFunction($IDCON.getText()); // Interpret function
+					Environment_stack = actualEnvironment; // Restore environment
 				} else {
 					// Process markup as tag
 					addContent(new Element($IDCON.getText()));
 					
-					// Attach attributes
+					// Process attributes
 					int actual = input.index();
 					input.seek(attr);
 					attributes();
-					arguments();
+					arguments(false);
 					input.seek(actual);
 				}
 			} ;
@@ -263,14 +269,27 @@ attribute:		'#' IDCON { current.setAttribute("id", $IDCON.getText()); }
 			| '@' w=NATCON { current.setAttribute("width", $w.getText()); }
 				( '%' h=NATCON{ current.setAttribute("height", $h.getText()); } )? ;
 			
-arguments:		^( ARGUMENTS argument* ) ;
+arguments[boolean call]
+	returns [List<Integer> args = new ArrayList<Integer>()]
+	:		^( ARGUMENTS argument[$args, call]* ) ;
 
-argument:		expression { 
-				Attribute attribute = current.getAttribute("value");
-				String value = (attribute == null) ? "" : attribute.getValue() + ", ";
-				value += $expression.eval;
-				current.setAttribute("value",  value); }
-			| IDCON '=' expression { current.setAttribute($IDCON.getText(), $expression.eval); } ;
+argument[List<Integer> args, boolean call]
+	@init { int index = input.index(); }
+	:		expression {
+				if(call) { 
+					args.add(index); // Add expression index to argument collection
+				} else {
+					// Attach argument to value attribute
+					Attribute attribute = current.getAttribute("value");
+					String value = (attribute == null) ? "" : attribute.getValue() + ", ";
+					value += $expression.eval;
+					current.setAttribute("value",  value);
+				}
+			} | IDCON '=' expression {
+				if(call) { 
+					 // TODO: Figure out what to do
+				} else { current.setAttribute($IDCON.getText(), $expression.eval); } 
+			} ;
 
 // $>
 // $<Expressions
