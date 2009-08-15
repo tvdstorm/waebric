@@ -466,7 +466,7 @@ funcBinding
 
 predicate returns [boolean eval]
 	:		( '!' p=predicate { $eval = ! $p.eval; }
-				| e=expression { $eval = getVariable($e.eval) != null; } // Not null
+				| e=expression { $eval = getVariable($e.eval) != -1; } // Not null
 				| e=expression '.' type // Is type 
 			) ( '&&' p=predicate { $eval = $eval && $p.eval; } | '||' p=predicate { $eval = $eval || $p.eval; } )* ;
 			
