@@ -64,9 +64,9 @@ scope Environment {
 		{ base.functions.put(function, loader.getFunctions().get(function).index); }
 		Environment_stack.push(base);
 		
-		// Interpret main function
+		// Interpret main function with zero arguments
 		this.document = new Document();
-		if(interpretFunction("main")) {
+		if(interpretFunction("main", new ArrayList<Integer>())) {
 			if(current != null) { outputDocument(document, os); }
 		}
 		
@@ -80,13 +80,14 @@ scope Environment {
 	/**
 	 * Interpret function
 	 * @param name: Function name
+	 * @param args: Call arguments
 	 */
-    	private boolean interpretFunction(String name) throws RecognitionException {
+    	private boolean interpretFunction(String name, List<Integer> args) throws RecognitionException {
     		int function = getFunction(name);
     		if(function != -1) {
     			int actual = input.index();
     			input.seek(function);
-    			function();
+    			function(args);
     			input.seek(actual);
     			return true;
     		} return false;
@@ -245,7 +246,7 @@ markup
 					List<Integer> eval = arguments(true).args;
 					input.seek(actualIndex);
 					
-					interpretFunction($IDCON.getText()); // Interpret function
+					interpretFunction($IDCON.getText(), eval); // Interpret function
 					Environment_stack = actualEnvironment; // Restore environment
 				} else {
 					// Process markup as tag
@@ -354,14 +355,19 @@ expression returns [
 // $>
 // $<Function
 
-function
-	@init { Element actual = null; }
+function[List<Integer> args]
+	@init { Element actual = null; int curr = 0; }
 	:		^( FUNCTION IDCON 
-				formals // TODO: Store formal as variables with called arguments
+				// Store formals as variable with corresponding argument
+				^( FORMALS ( id=IDCON {	if($args.size() > curr) { 
+					defineVariable($id.getText(), $args.get(curr)); 
+				} } )* )
+				
+				// Execute each statement and reset JDOM element
 				( statement { 
 					if(actual != null) { this.current = actual; } 
 					else { actual = this.current; } 
-				} )* // Reset JDOM element
+				} )*
 			) ;
 
 formals:		^( FORMALS IDCON* ) ;
