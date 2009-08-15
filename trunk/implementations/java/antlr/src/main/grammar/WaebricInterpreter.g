@@ -217,7 +217,7 @@ mapping
 // $>
 // $<Markup
 
-markup:			^( MARKUP IDCON attributes arguments ) {
+markup:			^( MARKUP IDCON . . ) {
 				if(! interpretFunction($IDCON.getText())) {
 					addContent(new Element($IDCON.getText())); 
 				}
