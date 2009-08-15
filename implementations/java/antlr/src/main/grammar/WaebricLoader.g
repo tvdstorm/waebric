@@ -110,10 +110,7 @@ keyValuePair:		IDCON ':' expression ;
 
 function 
 	returns [int args = 0]
-	:		'def' id=IDCON 
-			( formals { $args = $formals.args; } )?
-			statement* 
-			'end' ;
+	:		^( FUNCTION id=IDCON formals { $args = $formals.args; }	statement* ) ;
 	finally {
 		if(functions.containsKey($id.getText())) {
 			exceptions.add(new WaebricChecker.DuplicateFunctionException($id));
@@ -123,7 +120,7 @@ function
 	}
 
 formals returns [int args = 0] 
-	:		'(' ( IDCON { $args++; } )* ')' ;
+	:		^( FORMALS ( IDCON { $args++; } )* ) ;
 
 // $>
 
@@ -148,7 +145,7 @@ statement
 // $<Assignments
 
 assignment:		IDCON '=' expression ';' // Variable binding
-			| 'def' IDCON formals statement 'end' ; // Function binding
+			| ^( FUNCTION IDCON formals statement ) ; // Function binding
 
 // $>
 // $<Predicates
