@@ -214,13 +214,12 @@ mapping	:		PATH ':' markup ;
 
 // $<Markups
 
-markup
-	@init { int args = 0; }
-	:		^( MARKUP IDCON . arguments ) {
+markup:			^( MARKUP IDCON . arguments ) {
 				if(isDefinedFunction($IDCON.getText())) {
-					int actual = getFunctionArgs($IDCON.getText());
-					if(args != actual) {
-						exceptions.add(new ArityMismatchException($IDCON, args));
+					int expected = getFunctionArgs($IDCON.getText());
+					int actual = $arguments.args;
+					if(expected != actual) {
+						exceptions.add(new ArityMismatchException($IDCON, expected));
 					}
 				} else if(! XHTMLTag.isXHTMLTag($IDCON.getText())) {
 					exceptions.add(new UndefinedFunctionException($IDCON));
@@ -256,7 +255,7 @@ function
 	@init {
 		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		'def' IDCON formals statement* 'end' ;
+	} :		^( FUNCTION IDCON formals statement* ) ;
 			
 formals returns [int args = 0] 
 	:		^( FORMALS ( IDCON { defineVariable($IDCON.getText()); $args++; } )* ) ;
@@ -302,7 +301,7 @@ funcBinding // Separated because only function bindings have local scopes
 	@init {
 		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} : 		'def' id=IDCON f=formals statement 'end' ;
+	} : 		^( FUNCTION id=IDCON f=formals statement ) ;
 	finally {
 		// Define function after poping local stack so the definition stays
 		defineFunction($id, $f.args);
