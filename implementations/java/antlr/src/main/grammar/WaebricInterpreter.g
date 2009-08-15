@@ -237,15 +237,13 @@ markup
 	:		^( MARKUP IDCON { attr = input.index(); } . { args = input.index(); } . ) {
 				if(containsFunction($IDCON.getText())) {
 					// Process markup as function call
-					Stack actualEnvironment = Environment_stack;
-					Environment_stack = getEnvironment($IDCON.getText());
-					
-					//  Process arguments
 					int actualIndex = input.index();
 					input.seek(args);
 					List<Integer> eval = arguments(true).args;
 					input.seek(actualIndex);
 					
+					Stack actualEnvironment = Environment_stack;
+					Environment_stack = getEnvironment($IDCON.getText());
 					interpretFunction($IDCON.getText(), eval); // Interpret function
 					Environment_stack = actualEnvironment; // Restore environment
 				} else {
@@ -275,10 +273,9 @@ arguments[boolean call]
 	:		^( ARGUMENTS argument[$args, call]* ) ;
 
 argument[List<Integer> args, boolean call]
-	@init { int index = input.index(); }
 	:		expression {
 				if(call) { 
-					args.add(index); // Add expression index to argument collection
+					args.add($expression.index); // Add expression index to argument collection
 				} else {
 					// Attach argument to value attribute
 					Attribute attribute = current.getAttribute("value");
@@ -296,7 +293,7 @@ argument[List<Integer> args, boolean call]
 // $<Expressions
 
 expression returns [
-		int index; // Used for interpreting a referenced variable
+		int index = 0, // Used for interpreting a referenced variable
 		String eval = "undef", // Evaluation value for printing
 		Map<String, expression_return> map = new HashMap<String, expression_return>(), // Map structure for fields
 		Collection<expression_return> collection = new ArrayList() // List structure for iterations
@@ -360,7 +357,7 @@ function[List<Integer> args]
 	:		^( FUNCTION IDCON 
 				// Store formals as variable with corresponding argument
 				^( FORMALS ( id=IDCON {	if($args.size() > curr) { 
-					defineVariable($id.getText(), $args.get(curr)); 
+					defineVariable($id.getText(), $args.get(curr)); curr++;
 				} } )* )
 				
 				// Execute each statement and reset JDOM element
@@ -387,8 +384,8 @@ statement:		ifStatement
 			| 'yield;'
 			| ^( MARKUP_STATEMENT markup+ expression ';' ) { addContent(new Text($expression.eval)); }
 			| ^( MARKUP_STATEMENT markup+ embedding ';' )
-			| ^( MARKUP_STATEMENT markup+ ';' ) 
-			| ^( MARKUP_STATEMENT markup+ statement ) ;
+			| ^( MARKUP_STATEMENT markup+ statement )
+			| ^( MARKUP_STATEMENT markup+ ';' ) ;
 
 ifStatement
 	@init{ int ti = 0; int fi = 0; }
@@ -415,7 +412,7 @@ eachStatement
 				int actualIndex = input.index();
               			Element actualElement = this.current;
               			for(expression_return value: e.collection) {
-              				$Environment::variables.put($IDCON.getText(), value.index);
+              				defineVariable($IDCON.getText(), value.index);
               				input.seek(stm);
               				statement();
               				input.seek(actualIndex);	
@@ -449,13 +446,13 @@ assignment:		varBinding | funcBinding ;
 		
 varBinding
 	@init{ int index = 0; }
-	:		IDCON '=' { index = input.index(); } expression ';' {
-				defineVariable($IDCON.getText(), index);
+	:		IDCON '=' expression ';' {
+				defineVariable($IDCON.getText(), $expression.index);
 			} ;
 			
 funcBinding
 	@init { int index = input.index(); }
-	:		^( FUNCTION id=IDCON formals stm=. ) ;
+	:		^( FUNCTION id=IDCON formals . ) ;
 	finally {
 		defineFunction($id.getText(), index);
 		environments.put($id.getText(), (Stack) Environment_stack.clone());
