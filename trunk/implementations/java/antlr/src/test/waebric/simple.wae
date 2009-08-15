@@ -5,11 +5,29 @@ def main
 end
 
 def call-me
-	let var = {een:1,twee:2,drie:3}; in
-		let var2 = var.twee; in
-			let func-me() = echo var2 + var.een; in
-				p func-me();
-			end	
-		end
-	end
+	menu({
+  			title: "Menu",
+  			kids: [
+  					{title: "Home", link: "/"}, 
+           			{title: "Misc", kids: 
+           			    [
+           					{title: "Contact", link: "contact.html"}, 
+                   			{title: "Links", link: "links.html"}
+                   		]
+                   	}
+                  ]
+       });
+end
+
+def menu(menu)
+  echo menu.title;
+  ul each (kid: menu.kids) item(kid);
+end
+
+def item(mi)
+  echo mi;
+  if (mi.kids)
+	echo "true";
+  else 
+	echo "false";
 end

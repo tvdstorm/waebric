@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-15 17:35:01
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-15 18:28:45
 
 	package org.cwi.waebric;
 	
@@ -3610,7 +3610,7 @@ public class WaebricInterpreter extends TreeParser {
                     if ( state.backtracking==0 ) 
                     adaptor.addChild(root_0, e.getTree());
                     if ( state.backtracking==0 ) {
-                       retval.eval = getVariable((e!=null?e.eval:null)) != null; 
+                       retval.eval = getVariable((e!=null?e.eval:null)) != -1; 
                     }
 
                     if ( state.backtracking==0 ) {
