@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-15 19:07:29
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-15 19:42:06
 
 	package org.cwi.waebric;
 	
@@ -1139,7 +1139,7 @@ public class WaebricInterpreter extends TreeParser {
     // $ANTLR end "argument"
 
     public static class expression_return extends TreeRuleReturnScope {
-        public int index = 0;
+        public int index = -1;
         public String eval = "undef";
         public Map<String, expression_return> map = new HashMap<String, expression_return>();
         public Collection<expression_return> collection = new ArrayList();
@@ -1148,7 +1148,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "expression"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:295:1: expression returns [\n\t\tint index = 0, // Used for interpreting a referenced variable\n\t\tString eval = \"undef\", // Evaluation value for printing\n\t\tMap<String, expression_return> map = new HashMap<String, expression_return>(), // Map structure for fields\n\t\tCollection<expression_return> collection = new ArrayList() // List structure for iterations\n\t] : (var= IDCON | NATCON | TEXT | SYMBOLCON | '[' (e= expression )? ( ',' e= expression )* ']' | '{' (id= IDCON ':' e= expression )? ( ',' id= IDCON ':' e= expression )* '}' ) ( '+' e= expression | '.' id= IDCON )* ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:295:1: expression returns [\n\t\tint index = -1, // Used for interpreting a referenced variable\n\t\tString eval = \"undef\", // Evaluation value for printing\n\t\tMap<String, expression_return> map = new HashMap<String, expression_return>(), // Map structure for fields\n\t\tCollection<expression_return> collection = new ArrayList() // List structure for iterations\n\t] : (var= IDCON | NATCON | TEXT | SYMBOLCON | '[' (e= expression )? ( ',' e= expression )* ']' | '{' (id= IDCON ':' e= expression )? ( ',' id= IDCON ':' e= expression )* '}' ) ( '+' e= expression | '.' id= IDCON )* ;
     public final WaebricInterpreter.expression_return expression() throws RecognitionException {
         WaebricInterpreter.expression_return retval = new WaebricInterpreter.expression_return();
         retval.start = input.LT(1);
@@ -1644,6 +1644,7 @@ public class WaebricInterpreter extends TreeParser {
             	      					// Record field
             	      					if(retval.map.containsKey(id.getText())) { retval = retval.map.get(id.getText()); } 
             	      					else {
+            	      						retval.index = -1;
             	      						retval.eval = "undef";
             	      						retval.collection.clear();
             	      						retval.map.clear();
@@ -1687,7 +1688,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "function"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:355:1: function[List<Integer> args] : ^( FUNCTION IDCON ^( FORMALS (id= IDCON )* ) ( statement )* ) ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:356:1: function[List<Integer> args] : ^( FUNCTION IDCON ^( FORMALS (id= IDCON )* ) ( statement )* ) ;
     public final WaebricInterpreter.function_return function(List<Integer> args) throws RecognitionException {
         WaebricInterpreter.function_return retval = new WaebricInterpreter.function_return();
         retval.start = input.LT(1);
@@ -1711,8 +1712,8 @@ public class WaebricInterpreter extends TreeParser {
 
          Element actual = null; int curr = 0; 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:357:2: ( ^( FUNCTION IDCON ^( FORMALS (id= IDCON )* ) ( statement )* ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:357:5: ^( FUNCTION IDCON ^( FORMALS (id= IDCON )* ) ( statement )* )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:358:2: ( ^( FUNCTION IDCON ^( FORMALS (id= IDCON )* ) ( statement )* ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:358:5: ^( FUNCTION IDCON ^( FORMALS (id= IDCON )* ) ( statement )* )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1752,7 +1753,7 @@ public class WaebricInterpreter extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); if (state.failed) return retval;
-                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:359:16: (id= IDCON )*
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:360:16: (id= IDCON )*
                 loop12:
                 do {
                     int alt12=2;
@@ -1765,7 +1766,7 @@ public class WaebricInterpreter extends TreeParser {
 
                     switch (alt12) {
                 	case 1 :
-                	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:359:18: id= IDCON
+                	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:360:18: id= IDCON
                 	    {
                 	    _last = (CommonTree)input.LT(1);
                 	    id=(CommonTree)match(input,IDCON,FOLLOW_IDCON_in_function513); if (state.failed) return retval;
@@ -1795,7 +1796,7 @@ public class WaebricInterpreter extends TreeParser {
             }adaptor.addChild(root_1, root_2);_last = _save_last_2;
             }
 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:364:5: ( statement )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:365:5: ( statement )*
             loop13:
             do {
                 int alt13=2;
@@ -1808,7 +1809,7 @@ public class WaebricInterpreter extends TreeParser {
 
                 switch (alt13) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:364:7: statement
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:365:7: statement
             	    {
             	    _last = (CommonTree)input.LT(1);
             	    pushFollow(FOLLOW_statement_in_function538);
@@ -1865,7 +1866,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "formals"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:370:1: formals : ^( FORMALS ( IDCON )* ) ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:371:1: formals : ^( FORMALS ( IDCON )* ) ;
     public final WaebricInterpreter.formals_return formals() throws RecognitionException {
         WaebricInterpreter.formals_return retval = new WaebricInterpreter.formals_return();
         retval.start = input.LT(1);
@@ -1882,8 +1883,8 @@ public class WaebricInterpreter extends TreeParser {
         CommonTree IDCON44_tree=null;
 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:370:8: ( ^( FORMALS ( IDCON )* ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:370:11: ^( FORMALS ( IDCON )* )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:371:8: ( ^( FORMALS ( IDCON )* ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:371:11: ^( FORMALS ( IDCON )* )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1902,7 +1903,7 @@ public class WaebricInterpreter extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); if (state.failed) return retval;
-                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:370:22: ( IDCON )*
+                // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:371:22: ( IDCON )*
                 loop14:
                 do {
                     int alt14=2;
@@ -1966,7 +1967,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "statement"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:376:1: statement : ( ifStatement | eachStatement | letStatement | blockStatement | ^( 'comment' STRCON ';' ) | ^( 'echo' expression ';' ) | ^( 'echo' embedding ';' ) | ^( 'cdata' expression ';' ) | 'yield;' | ^( MARKUP_STATEMENT ( markup )+ expression ';' ) | ^( MARKUP_STATEMENT ( markup )+ embedding ';' ) | ^( MARKUP_STATEMENT ( markup )+ statement ) | ^( MARKUP_STATEMENT ( markup )+ ';' ) );
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:377:1: statement : ( ifStatement | eachStatement | letStatement | blockStatement | ^( 'comment' STRCON ';' ) | ^( 'echo' expression ';' ) | ^( 'echo' embedding ';' ) | ^( 'cdata' expression ';' ) | 'yield;' | ^( MARKUP_STATEMENT ( markup )+ expression ';' ) | ^( MARKUP_STATEMENT ( markup )+ embedding ';' ) | ^( MARKUP_STATEMENT ( markup )+ statement ) | ^( MARKUP_STATEMENT ( markup )+ ';' ) );
     public final WaebricInterpreter.statement_return statement() throws RecognitionException {
         WaebricInterpreter.statement_return retval = new WaebricInterpreter.statement_return();
         retval.start = input.LT(1);
@@ -2041,12 +2042,12 @@ public class WaebricInterpreter extends TreeParser {
         CommonTree char_literal75_tree=null;
 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:376:10: ( ifStatement | eachStatement | letStatement | blockStatement | ^( 'comment' STRCON ';' ) | ^( 'echo' expression ';' ) | ^( 'echo' embedding ';' ) | ^( 'cdata' expression ';' ) | 'yield;' | ^( MARKUP_STATEMENT ( markup )+ expression ';' ) | ^( MARKUP_STATEMENT ( markup )+ embedding ';' ) | ^( MARKUP_STATEMENT ( markup )+ statement ) | ^( MARKUP_STATEMENT ( markup )+ ';' ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:377:10: ( ifStatement | eachStatement | letStatement | blockStatement | ^( 'comment' STRCON ';' ) | ^( 'echo' expression ';' ) | ^( 'echo' embedding ';' ) | ^( 'cdata' expression ';' ) | 'yield;' | ^( MARKUP_STATEMENT ( markup )+ expression ';' ) | ^( MARKUP_STATEMENT ( markup )+ embedding ';' ) | ^( MARKUP_STATEMENT ( markup )+ statement ) | ^( MARKUP_STATEMENT ( markup )+ ';' ) )
             int alt19=13;
             alt19 = dfa19.predict(input);
             switch (alt19) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:376:13: ifStatement
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:377:13: ifStatement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2064,7 +2065,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:377:6: eachStatement
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:378:6: eachStatement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2082,7 +2083,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:378:6: letStatement
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:379:6: letStatement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2100,7 +2101,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:379:6: blockStatement
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:380:6: blockStatement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2118,7 +2119,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 5 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:380:6: ^( 'comment' STRCON ';' )
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:381:6: ^( 'comment' STRCON ';' )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2163,7 +2164,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 6 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:381:6: ^( 'echo' expression ';' )
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:382:6: ^( 'echo' expression ';' )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2209,7 +2210,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 7 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:382:6: ^( 'echo' embedding ';' )
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:383:6: ^( 'echo' embedding ';' )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2252,7 +2253,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 8 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:383:6: ^( 'cdata' expression ';' )
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:384:6: ^( 'cdata' expression ';' )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2298,7 +2299,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 9 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:384:6: 'yield;'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:385:6: 'yield;'
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2315,7 +2316,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 10 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:385:6: ^( MARKUP_STATEMENT ( markup )+ expression ';' )
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:386:6: ^( MARKUP_STATEMENT ( markup )+ expression ';' )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2333,7 +2334,7 @@ public class WaebricInterpreter extends TreeParser {
 
 
                     match(input, Token.DOWN, null); if (state.failed) return retval;
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:385:26: ( markup )+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:386:26: ( markup )+
                     int cnt15=0;
                     loop15:
                     do {
@@ -2401,7 +2402,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 11 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:386:6: ^( MARKUP_STATEMENT ( markup )+ embedding ';' )
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:387:6: ^( MARKUP_STATEMENT ( markup )+ embedding ';' )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2419,7 +2420,7 @@ public class WaebricInterpreter extends TreeParser {
 
 
                     match(input, Token.DOWN, null); if (state.failed) return retval;
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:386:26: ( markup )+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:387:26: ( markup )+
                     int cnt16=0;
                     loop16:
                     do {
@@ -2484,7 +2485,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 12 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:387:6: ^( MARKUP_STATEMENT ( markup )+ statement )
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:388:6: ^( MARKUP_STATEMENT ( markup )+ statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2502,7 +2503,7 @@ public class WaebricInterpreter extends TreeParser {
 
 
                     match(input, Token.DOWN, null); if (state.failed) return retval;
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:387:26: ( markup )+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:388:26: ( markup )+
                     int cnt17=0;
                     loop17:
                     do {
@@ -2560,7 +2561,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 13 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:388:6: ^( MARKUP_STATEMENT ( markup )+ ';' )
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:389:6: ^( MARKUP_STATEMENT ( markup )+ ';' )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2578,7 +2579,7 @@ public class WaebricInterpreter extends TreeParser {
 
 
                     match(input, Token.DOWN, null); if (state.failed) return retval;
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:388:26: ( markup )+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:389:26: ( markup )+
                     int cnt18=0;
                     loop18:
                     do {
@@ -2657,7 +2658,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "ifStatement"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:390:1: ifStatement : ^( 'if' '(' predicate ')' t= . ( 'else' f= . )? ) ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:391:1: ifStatement : ^( 'if' '(' predicate ')' t= . ( 'else' f= . )? ) ;
     public final WaebricInterpreter.ifStatement_return ifStatement() throws RecognitionException {
         WaebricInterpreter.ifStatement_return retval = new WaebricInterpreter.ifStatement_return();
         retval.start = input.LT(1);
@@ -2685,8 +2686,8 @@ public class WaebricInterpreter extends TreeParser {
 
          int ti = 0; int fi = 0; 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:392:2: ( ^( 'if' '(' predicate ')' t= . ( 'else' f= . )? ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:392:5: ^( 'if' '(' predicate ')' t= . ( 'else' f= . )? )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:393:2: ( ^( 'if' '(' predicate ')' t= . ( 'else' f= . )? ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:393:5: ^( 'if' '(' predicate ')' t= . ( 'else' f= . )? )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2736,7 +2737,7 @@ public class WaebricInterpreter extends TreeParser {
             t_tree = (CommonTree)adaptor.dupTree(t);
             adaptor.addChild(root_1, t_tree);
             }
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:392:60: ( 'else' f= . )?
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:393:60: ( 'else' f= . )?
             int alt20=2;
             int LA20_0 = input.LA(1);
 
@@ -2745,7 +2746,7 @@ public class WaebricInterpreter extends TreeParser {
             }
             switch (alt20) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:392:62: 'else' f= .
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:393:62: 'else' f= .
                     {
                     _last = (CommonTree)input.LT(1);
                     string_literal80=(CommonTree)match(input,57,FOLLOW_57_in_ifStatement776); if (state.failed) return retval;
@@ -2816,7 +2817,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "eachStatement"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:405:1: eachStatement : ^( 'each' '(' IDCON ':' e= expression ')' . ) ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:406:1: eachStatement : ^( 'each' '(' IDCON ':' e= expression ')' . ) ;
     public final WaebricInterpreter.eachStatement_return eachStatement() throws RecognitionException {
         Environment_stack.push(new Environment_scope());
 
@@ -2850,8 +2851,8 @@ public class WaebricInterpreter extends TreeParser {
         		int stm = 0;
         	
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:411:4: ( ^( 'each' '(' IDCON ':' e= expression ')' . ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:411:7: ^( 'each' '(' IDCON ':' e= expression ')' . )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:412:4: ( ^( 'each' '(' IDCON ':' e= expression ')' . ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:412:7: ^( 'each' '(' IDCON ':' e= expression ')' . )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2961,7 +2962,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "blockStatement"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:424:1: blockStatement : ^( '{' ( statement )* '}' ) ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:425:1: blockStatement : ^( '{' ( statement )* '}' ) ;
     public final WaebricInterpreter.blockStatement_return blockStatement() throws RecognitionException {
         WaebricInterpreter.blockStatement_return retval = new WaebricInterpreter.blockStatement_return();
         retval.start = input.LT(1);
@@ -2981,8 +2982,8 @@ public class WaebricInterpreter extends TreeParser {
 
          Element actual = this.current; 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:426:2: ( ^( '{' ( statement )* '}' ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:426:5: ^( '{' ( statement )* '}' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:427:2: ( ^( '{' ( statement )* '}' ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:427:5: ^( '{' ( statement )* '}' )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -3000,7 +3001,7 @@ public class WaebricInterpreter extends TreeParser {
 
 
             match(input, Token.DOWN, null); if (state.failed) return retval;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:426:12: ( statement )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:427:12: ( statement )*
             loop21:
             do {
                 int alt21=2;
@@ -3013,7 +3014,7 @@ public class WaebricInterpreter extends TreeParser {
 
                 switch (alt21) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:426:14: statement
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:427:14: statement
             	    {
             	    _last = (CommonTree)input.LT(1);
             	    pushFollow(FOLLOW_statement_in_blockStatement858);
@@ -3077,7 +3078,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "letStatement"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:431:1: letStatement : ^( 'let' ( assignment )+ 'in' ( statement )* 'end' ) ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:432:1: letStatement : ^( 'let' ( assignment )+ 'in' ( statement )* 'end' ) ;
     public final WaebricInterpreter.letStatement_return letStatement() throws RecognitionException {
         Environment_stack.push(new Environment_scope());
 
@@ -3107,8 +3108,8 @@ public class WaebricInterpreter extends TreeParser {
         		Element actual = this.current;
         	
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:437:4: ( ^( 'let' ( assignment )+ 'in' ( statement )* 'end' ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:437:7: ^( 'let' ( assignment )+ 'in' ( statement )* 'end' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:438:4: ( ^( 'let' ( assignment )+ 'in' ( statement )* 'end' ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:438:7: ^( 'let' ( assignment )+ 'in' ( statement )* 'end' )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -3126,7 +3127,7 @@ public class WaebricInterpreter extends TreeParser {
 
 
             match(input, Token.DOWN, null); if (state.failed) return retval;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:437:16: ( assignment )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:438:16: ( assignment )+
             int cnt22=0;
             loop22:
             do {
@@ -3173,7 +3174,7 @@ public class WaebricInterpreter extends TreeParser {
 
             adaptor.addChild(root_1, string_literal92_tree);
             }
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:437:33: ( statement )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:438:33: ( statement )*
             loop23:
             do {
                 int alt23=2;
@@ -3186,7 +3187,7 @@ public class WaebricInterpreter extends TreeParser {
 
                 switch (alt23) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:437:35: statement
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:438:35: statement
             	    {
             	    _last = (CommonTree)input.LT(1);
             	    pushFollow(FOLLOW_statement_in_letStatement902);
@@ -3252,7 +3253,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "assignment"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:445:1: assignment : ( varBinding | funcBinding );
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:446:1: assignment : ( varBinding | funcBinding );
     public final WaebricInterpreter.assignment_return assignment() throws RecognitionException {
         WaebricInterpreter.assignment_return retval = new WaebricInterpreter.assignment_return();
         retval.start = input.LT(1);
@@ -3269,7 +3270,7 @@ public class WaebricInterpreter extends TreeParser {
 
 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:445:11: ( varBinding | funcBinding )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:446:11: ( varBinding | funcBinding )
             int alt24=2;
             int LA24_0 = input.LA(1);
 
@@ -3288,7 +3289,7 @@ public class WaebricInterpreter extends TreeParser {
             }
             switch (alt24) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:445:14: varBinding
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:446:14: varBinding
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3306,7 +3307,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:445:27: funcBinding
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:446:27: funcBinding
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3346,7 +3347,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "varBinding"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:447:1: varBinding : IDCON '=' expression ';' ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:448:1: varBinding : IDCON '=' expression ';' ;
     public final WaebricInterpreter.varBinding_return varBinding() throws RecognitionException {
         WaebricInterpreter.varBinding_return retval = new WaebricInterpreter.varBinding_return();
         retval.start = input.LT(1);
@@ -3367,8 +3368,8 @@ public class WaebricInterpreter extends TreeParser {
         CommonTree char_literal100_tree=null;
 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:447:11: ( IDCON '=' expression ';' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:447:14: IDCON '=' expression ';'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:448:11: ( IDCON '=' expression ';' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:448:14: IDCON '=' expression ';'
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -3432,7 +3433,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "funcBinding"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:451:1: funcBinding : ^( FUNCTION id= IDCON formals . ) ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:452:1: funcBinding : ^( FUNCTION id= IDCON formals . ) ;
     public final WaebricInterpreter.funcBinding_return funcBinding() throws RecognitionException {
         WaebricInterpreter.funcBinding_return retval = new WaebricInterpreter.funcBinding_return();
         retval.start = input.LT(1);
@@ -3454,8 +3455,8 @@ public class WaebricInterpreter extends TreeParser {
 
          int index = input.index(); 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:453:2: ( ^( FUNCTION id= IDCON formals . ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:453:5: ^( FUNCTION id= IDCON formals . )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:454:2: ( ^( FUNCTION id= IDCON formals . ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:454:5: ^( FUNCTION id= IDCON formals . )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -3530,7 +3531,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "predicate"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:462:1: predicate returns [boolean eval] : ( '!' p= predicate | e= expression | e= expression '.' type ) ( '&&' p= predicate | '||' p= predicate )* ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:463:1: predicate returns [boolean eval] : ( '!' p= predicate | e= expression | e= expression '.' ( 'list' | 'record' | 'string' ) ) ( '&&' p= predicate | '||' p= predicate )* ;
     public final WaebricInterpreter.predicate_return predicate() throws RecognitionException {
         WaebricInterpreter.predicate_return retval = new WaebricInterpreter.predicate_return();
         retval.start = input.LT(1);
@@ -3542,32 +3543,36 @@ public class WaebricInterpreter extends TreeParser {
 
         CommonTree char_literal104=null;
         CommonTree char_literal105=null;
+        CommonTree string_literal106=null;
         CommonTree string_literal107=null;
         CommonTree string_literal108=null;
+        CommonTree string_literal109=null;
+        CommonTree string_literal110=null;
         WaebricInterpreter.predicate_return p = null;
 
         WaebricInterpreter.expression_return e = null;
 
-        WaebricInterpreter.type_return type106 = null;
-
 
         CommonTree char_literal104_tree=null;
         CommonTree char_literal105_tree=null;
+        CommonTree string_literal106_tree=null;
         CommonTree string_literal107_tree=null;
         CommonTree string_literal108_tree=null;
+        CommonTree string_literal109_tree=null;
+        CommonTree string_literal110_tree=null;
 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:463:2: ( ( '!' p= predicate | e= expression | e= expression '.' type ) ( '&&' p= predicate | '||' p= predicate )* )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:463:5: ( '!' p= predicate | e= expression | e= expression '.' type ) ( '&&' p= predicate | '||' p= predicate )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:464:2: ( ( '!' p= predicate | e= expression | e= expression '.' ( 'list' | 'record' | 'string' ) ) ( '&&' p= predicate | '||' p= predicate )* )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:464:5: ( '!' p= predicate | e= expression | e= expression '.' ( 'list' | 'record' | 'string' ) ) ( '&&' p= predicate | '||' p= predicate )*
             {
             root_0 = (CommonTree)adaptor.nil();
 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:463:5: ( '!' p= predicate | e= expression | e= expression '.' type )
-            int alt25=3;
-            alt25 = dfa25.predict(input);
-            switch (alt25) {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:464:5: ( '!' p= predicate | e= expression | e= expression '.' ( 'list' | 'record' | 'string' ) )
+            int alt26=3;
+            alt26 = dfa26.predict(input);
+            switch (alt26) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:463:7: '!' p= predicate
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:464:7: '!' p= predicate
                     {
                     _last = (CommonTree)input.LT(1);
                     char_literal104=(CommonTree)match(input,64,FOLLOW_64_in_predicate1003); if (state.failed) return retval;
@@ -3593,7 +3598,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:464:7: e= expression
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:465:7: e= expression
                     {
                     _last = (CommonTree)input.LT(1);
                     pushFollow(FOLLOW_expression_in_predicate1019);
@@ -3604,7 +3609,7 @@ public class WaebricInterpreter extends TreeParser {
                     if ( state.backtracking==0 ) 
                     adaptor.addChild(root_0, e.getTree());
                     if ( state.backtracking==0 ) {
-                       retval.eval = ! (e!=null?e.eval:null).equals("undef"); 
+                       retval.eval = (e!=null?e.index:0) != -1; 
                     }
 
                     if ( state.backtracking==0 ) {
@@ -3612,7 +3617,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:465:7: e= expression '.' type
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:466:7: e= expression '.' ( 'list' | 'record' | 'string' )
                     {
                     _last = (CommonTree)input.LT(1);
                     pushFollow(FOLLOW_expression_in_predicate1032);
@@ -3629,14 +3634,96 @@ public class WaebricInterpreter extends TreeParser {
 
                     adaptor.addChild(root_0, char_literal105_tree);
                     }
-                    _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_type_in_predicate1036);
-                    type106=type();
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:466:24: ( 'list' | 'record' | 'string' )
+                    int alt25=3;
+                    switch ( input.LA(1) ) {
+                    case 67:
+                        {
+                        alt25=1;
+                        }
+                        break;
+                    case 68:
+                        {
+                        alt25=2;
+                        }
+                        break;
+                    case 69:
+                        {
+                        alt25=3;
+                        }
+                        break;
+                    default:
+                        if (state.backtracking>0) {state.failed=true; return retval;}
+                        NoViableAltException nvae =
+                            new NoViableAltException("", 25, 0, input);
 
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) 
-                    adaptor.addChild(root_0, type106.getTree());
+                        throw nvae;
+                    }
+
+                    switch (alt25) {
+                        case 1 :
+                            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:466:26: 'list'
+                            {
+                            _last = (CommonTree)input.LT(1);
+                            string_literal106=(CommonTree)match(input,67,FOLLOW_67_in_predicate1038); if (state.failed) return retval;
+                            if ( state.backtracking==0 ) {
+                            string_literal106_tree = (CommonTree)adaptor.dupNode(string_literal106);
+
+                            adaptor.addChild(root_0, string_literal106_tree);
+                            }
+                            if ( state.backtracking==0 ) {
+
+                              							retval.eval = (e!=null?e.eval:null).startsWith("[");
+                              						 
+                            }
+
+                            if ( state.backtracking==0 ) {
+                            }
+                            }
+                            break;
+                        case 2 :
+                            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:468:12: 'record'
+                            {
+                            _last = (CommonTree)input.LT(1);
+                            string_literal107=(CommonTree)match(input,68,FOLLOW_68_in_predicate1044); if (state.failed) return retval;
+                            if ( state.backtracking==0 ) {
+                            string_literal107_tree = (CommonTree)adaptor.dupNode(string_literal107);
+
+                            adaptor.addChild(root_0, string_literal107_tree);
+                            }
+                            if ( state.backtracking==0 ) {
+                               
+                              						 	retval.eval = (e!=null?e.eval:null).startsWith("{");
+                              						 
+                            }
+
+                            if ( state.backtracking==0 ) {
+                            }
+                            }
+                            break;
+                        case 3 :
+                            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:470:12: 'string'
+                            {
+                            _last = (CommonTree)input.LT(1);
+                            string_literal108=(CommonTree)match(input,69,FOLLOW_69_in_predicate1050); if (state.failed) return retval;
+                            if ( state.backtracking==0 ) {
+                            string_literal108_tree = (CommonTree)adaptor.dupNode(string_literal108);
+
+                            adaptor.addChild(root_0, string_literal108_tree);
+                            }
+                            if ( state.backtracking==0 ) {
+                               
+                              						 	retval.eval = (e!=null?e.index:0) != -1;
+                              						 
+                            }
+
+                            if ( state.backtracking==0 ) {
+                            }
+                            }
+                            break;
+
+                    }
+
 
                     if ( state.backtracking==0 ) {
                     }
@@ -3645,45 +3732,45 @@ public class WaebricInterpreter extends TreeParser {
 
             }
 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:466:6: ( '&&' p= predicate | '||' p= predicate )*
-            loop26:
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:473:6: ( '&&' p= predicate | '||' p= predicate )*
+            loop27:
             do {
-                int alt26=3;
-                int LA26_0 = input.LA(1);
+                int alt27=3;
+                int LA27_0 = input.LA(1);
 
-                if ( (LA26_0==65) ) {
-                    int LA26_2 = input.LA(2);
+                if ( (LA27_0==65) ) {
+                    int LA27_2 = input.LA(2);
 
-                    if ( (synpred46_WaebricInterpreter()) ) {
-                        alt26=1;
+                    if ( (synpred48_WaebricInterpreter()) ) {
+                        alt27=1;
                     }
 
 
                 }
-                else if ( (LA26_0==66) ) {
-                    int LA26_3 = input.LA(2);
+                else if ( (LA27_0==66) ) {
+                    int LA27_3 = input.LA(2);
 
-                    if ( (synpred47_WaebricInterpreter()) ) {
-                        alt26=2;
+                    if ( (synpred49_WaebricInterpreter()) ) {
+                        alt27=2;
                     }
 
 
                 }
 
 
-                switch (alt26) {
+                switch (alt27) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:466:8: '&&' p= predicate
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:473:8: '&&' p= predicate
             	    {
             	    _last = (CommonTree)input.LT(1);
-            	    string_literal107=(CommonTree)match(input,65,FOLLOW_65_in_predicate1046); if (state.failed) return retval;
+            	    string_literal109=(CommonTree)match(input,65,FOLLOW_65_in_predicate1064); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    string_literal107_tree = (CommonTree)adaptor.dupNode(string_literal107);
+            	    string_literal109_tree = (CommonTree)adaptor.dupNode(string_literal109);
 
-            	    adaptor.addChild(root_0, string_literal107_tree);
+            	    adaptor.addChild(root_0, string_literal109_tree);
             	    }
             	    _last = (CommonTree)input.LT(1);
-            	    pushFollow(FOLLOW_predicate_in_predicate1050);
+            	    pushFollow(FOLLOW_predicate_in_predicate1068);
             	    p=predicate();
 
             	    state._fsp--;
@@ -3699,17 +3786,17 @@ public class WaebricInterpreter extends TreeParser {
             	    }
             	    break;
             	case 2 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:466:57: '||' p= predicate
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:473:57: '||' p= predicate
             	    {
             	    _last = (CommonTree)input.LT(1);
-            	    string_literal108=(CommonTree)match(input,66,FOLLOW_66_in_predicate1056); if (state.failed) return retval;
+            	    string_literal110=(CommonTree)match(input,66,FOLLOW_66_in_predicate1074); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    string_literal108_tree = (CommonTree)adaptor.dupNode(string_literal108);
+            	    string_literal110_tree = (CommonTree)adaptor.dupNode(string_literal110);
 
-            	    adaptor.addChild(root_0, string_literal108_tree);
+            	    adaptor.addChild(root_0, string_literal110_tree);
             	    }
             	    _last = (CommonTree)input.LT(1);
-            	    pushFollow(FOLLOW_predicate_in_predicate1060);
+            	    pushFollow(FOLLOW_predicate_in_predicate1078);
             	    p=predicate();
 
             	    state._fsp--;
@@ -3726,7 +3813,7 @@ public class WaebricInterpreter extends TreeParser {
             	    break;
 
             	default :
-            	    break loop26;
+            	    break loop27;
                 }
             } while (true);
 
@@ -3750,77 +3837,13 @@ public class WaebricInterpreter extends TreeParser {
     }
     // $ANTLR end "predicate"
 
-    public static class type_return extends TreeRuleReturnScope {
-        CommonTree tree;
-        public Object getTree() { return tree; }
-    };
-
-    // $ANTLR start "type"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:468:1: type : ( 'list' | 'record' | 'string' );
-    public final WaebricInterpreter.type_return type() throws RecognitionException {
-        WaebricInterpreter.type_return retval = new WaebricInterpreter.type_return();
-        retval.start = input.LT(1);
-
-        CommonTree root_0 = null;
-
-        CommonTree _first_0 = null;
-        CommonTree _last = null;
-
-        CommonTree set109=null;
-
-        CommonTree set109_tree=null;
-
-        try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:468:5: ( 'list' | 'record' | 'string' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:
-            {
-            root_0 = (CommonTree)adaptor.nil();
-
-            _last = (CommonTree)input.LT(1);
-            set109=(CommonTree)input.LT(1);
-            if ( (input.LA(1)>=67 && input.LA(1)<=69) ) {
-                input.consume();
-
-                if ( state.backtracking==0 ) {
-                set109_tree = (CommonTree)adaptor.dupNode(set109);
-
-                adaptor.addChild(root_0, set109_tree);
-                }
-                state.errorRecovery=false;state.failed=false;
-            }
-            else {
-                if (state.backtracking>0) {state.failed=true; return retval;}
-                MismatchedSetException mse = new MismatchedSetException(null,input);
-                throw mse;
-            }
-
-            if ( state.backtracking==0 ) {
-            } 
-
-            }
-
-            if ( state.backtracking==0 ) {
-
-            retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
-            }
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-        }
-        return retval;
-    }
-    // $ANTLR end "type"
-
     public static class embedding_return extends TreeRuleReturnScope {
         CommonTree tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "embedding"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:473:1: embedding : PRETEXT embed textTail ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:478:1: embedding : PRETEXT embed textTail ;
     public final WaebricInterpreter.embedding_return embedding() throws RecognitionException {
         WaebricInterpreter.embedding_return retval = new WaebricInterpreter.embedding_return();
         retval.start = input.LT(1);
@@ -3830,46 +3853,46 @@ public class WaebricInterpreter extends TreeParser {
         CommonTree _first_0 = null;
         CommonTree _last = null;
 
-        CommonTree PRETEXT110=null;
-        WaebricInterpreter.embed_return embed111 = null;
+        CommonTree PRETEXT111=null;
+        WaebricInterpreter.embed_return embed112 = null;
 
-        WaebricInterpreter.textTail_return textTail112 = null;
+        WaebricInterpreter.textTail_return textTail113 = null;
 
 
-        CommonTree PRETEXT110_tree=null;
+        CommonTree PRETEXT111_tree=null;
 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:473:10: ( PRETEXT embed textTail )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:473:13: PRETEXT embed textTail
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:478:10: ( PRETEXT embed textTail )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:478:13: PRETEXT embed textTail
             {
             root_0 = (CommonTree)adaptor.nil();
 
             _last = (CommonTree)input.LT(1);
-            PRETEXT110=(CommonTree)match(input,PRETEXT,FOLLOW_PRETEXT_in_embedding1098); if (state.failed) return retval;
+            PRETEXT111=(CommonTree)match(input,PRETEXT,FOLLOW_PRETEXT_in_embedding1097); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            PRETEXT110_tree = (CommonTree)adaptor.dupNode(PRETEXT110);
+            PRETEXT111_tree = (CommonTree)adaptor.dupNode(PRETEXT111);
 
-            adaptor.addChild(root_0, PRETEXT110_tree);
+            adaptor.addChild(root_0, PRETEXT111_tree);
             }
             if ( state.backtracking==0 ) {
-               addContent(new Text(PRETEXT110.getText())); 
+               addContent(new Text(PRETEXT111.getText())); 
             }
             _last = (CommonTree)input.LT(1);
-            pushFollow(FOLLOW_embed_in_embedding1102);
-            embed111=embed();
+            pushFollow(FOLLOW_embed_in_embedding1101);
+            embed112=embed();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) 
-            adaptor.addChild(root_0, embed111.getTree());
+            adaptor.addChild(root_0, embed112.getTree());
             _last = (CommonTree)input.LT(1);
-            pushFollow(FOLLOW_textTail_in_embedding1104);
-            textTail112=textTail();
+            pushFollow(FOLLOW_textTail_in_embedding1103);
+            textTail113=textTail();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) 
-            adaptor.addChild(root_0, textTail112.getTree());
+            adaptor.addChild(root_0, textTail113.getTree());
 
             if ( state.backtracking==0 ) {
             }
@@ -3896,7 +3919,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "embed"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:475:1: embed : ( ( markup )+ | ( markup )* expression );
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:480:1: embed : ( ( markup )+ | ( markup )* expression );
     public final WaebricInterpreter.embed_return embed() throws RecognitionException {
         WaebricInterpreter.embed_return retval = new WaebricInterpreter.embed_return();
         retval.start = input.LT(1);
@@ -3906,75 +3929,26 @@ public class WaebricInterpreter extends TreeParser {
         CommonTree _first_0 = null;
         CommonTree _last = null;
 
-        WaebricInterpreter.markup_return markup113 = null;
-
         WaebricInterpreter.markup_return markup114 = null;
 
-        WaebricInterpreter.expression_return expression115 = null;
+        WaebricInterpreter.markup_return markup115 = null;
+
+        WaebricInterpreter.expression_return expression116 = null;
 
 
 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:475:6: ( ( markup )+ | ( markup )* expression )
-            int alt29=2;
-            alt29 = dfa29.predict(input);
-            switch (alt29) {
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:480:6: ( ( markup )+ | ( markup )* expression )
+            int alt30=2;
+            alt30 = dfa30.predict(input);
+            switch (alt30) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:475:10: ( markup )+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:480:10: ( markup )+
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:475:10: ( markup )+
-                    int cnt27=0;
-                    loop27:
-                    do {
-                        int alt27=2;
-                        int LA27_0 = input.LA(1);
-
-                        if ( (LA27_0==MARKUP) ) {
-                            alt27=1;
-                        }
-
-
-                        switch (alt27) {
-                    	case 1 :
-                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:0:0: markup
-                    	    {
-                    	    _last = (CommonTree)input.LT(1);
-                    	    pushFollow(FOLLOW_markup_in_embed1114);
-                    	    markup113=markup();
-
-                    	    state._fsp--;
-                    	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) 
-                    	    adaptor.addChild(root_0, markup113.getTree());
-
-                    	    if ( state.backtracking==0 ) {
-                    	    }
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    if ( cnt27 >= 1 ) break loop27;
-                    	    if (state.backtracking>0) {state.failed=true; return retval;}
-                                EarlyExitException eee =
-                                    new EarlyExitException(27, input);
-                                throw eee;
-                        }
-                        cnt27++;
-                    } while (true);
-
-
-                    if ( state.backtracking==0 ) {
-                    }
-                    }
-                    break;
-                case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:475:20: ( markup )* expression
-                    {
-                    root_0 = (CommonTree)adaptor.nil();
-
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:475:20: ( markup )*
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:480:10: ( markup )+
+                    int cnt28=0;
                     loop28:
                     do {
                         int alt28=2;
@@ -3990,7 +3964,7 @@ public class WaebricInterpreter extends TreeParser {
                     	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:0:0: markup
                     	    {
                     	    _last = (CommonTree)input.LT(1);
-                    	    pushFollow(FOLLOW_markup_in_embed1119);
+                    	    pushFollow(FOLLOW_markup_in_embed1113);
                     	    markup114=markup();
 
                     	    state._fsp--;
@@ -4004,20 +3978,69 @@ public class WaebricInterpreter extends TreeParser {
                     	    break;
 
                     	default :
-                    	    break loop28;
+                    	    if ( cnt28 >= 1 ) break loop28;
+                    	    if (state.backtracking>0) {state.failed=true; return retval;}
+                                EarlyExitException eee =
+                                    new EarlyExitException(28, input);
+                                throw eee;
+                        }
+                        cnt28++;
+                    } while (true);
+
+
+                    if ( state.backtracking==0 ) {
+                    }
+                    }
+                    break;
+                case 2 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:480:20: ( markup )* expression
+                    {
+                    root_0 = (CommonTree)adaptor.nil();
+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:480:20: ( markup )*
+                    loop29:
+                    do {
+                        int alt29=2;
+                        int LA29_0 = input.LA(1);
+
+                        if ( (LA29_0==MARKUP) ) {
+                            alt29=1;
+                        }
+
+
+                        switch (alt29) {
+                    	case 1 :
+                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:0:0: markup
+                    	    {
+                    	    _last = (CommonTree)input.LT(1);
+                    	    pushFollow(FOLLOW_markup_in_embed1118);
+                    	    markup115=markup();
+
+                    	    state._fsp--;
+                    	    if (state.failed) return retval;
+                    	    if ( state.backtracking==0 ) 
+                    	    adaptor.addChild(root_0, markup115.getTree());
+
+                    	    if ( state.backtracking==0 ) {
+                    	    }
+                    	    }
+                    	    break;
+
+                    	default :
+                    	    break loop29;
                         }
                     } while (true);
 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_expression_in_embed1122);
-                    expression115=expression();
+                    pushFollow(FOLLOW_expression_in_embed1121);
+                    expression116=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) 
-                    adaptor.addChild(root_0, expression115.getTree());
+                    adaptor.addChild(root_0, expression116.getTree());
                     if ( state.backtracking==0 ) {
-                       addContent(new Text((expression115!=null?expression115.eval:null))); 
+                       addContent(new Text((expression116!=null?expression116.eval:null))); 
                     }
 
                     if ( state.backtracking==0 ) {
@@ -4047,7 +4070,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "textTail"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:477:1: textTail : ( POSTTEXT | MIDTEXT embed textTail );
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:482:1: textTail : ( POSTTEXT | MIDTEXT embed textTail );
     public final WaebricInterpreter.textTail_return textTail() throws RecognitionException {
         WaebricInterpreter.textTail_return retval = new WaebricInterpreter.textTail_return();
         retval.start = input.LT(1);
@@ -4057,49 +4080,49 @@ public class WaebricInterpreter extends TreeParser {
         CommonTree _first_0 = null;
         CommonTree _last = null;
 
-        CommonTree POSTTEXT116=null;
-        CommonTree MIDTEXT117=null;
-        WaebricInterpreter.embed_return embed118 = null;
+        CommonTree POSTTEXT117=null;
+        CommonTree MIDTEXT118=null;
+        WaebricInterpreter.embed_return embed119 = null;
 
-        WaebricInterpreter.textTail_return textTail119 = null;
+        WaebricInterpreter.textTail_return textTail120 = null;
 
 
-        CommonTree POSTTEXT116_tree=null;
-        CommonTree MIDTEXT117_tree=null;
+        CommonTree POSTTEXT117_tree=null;
+        CommonTree MIDTEXT118_tree=null;
 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:477:9: ( POSTTEXT | MIDTEXT embed textTail )
-            int alt30=2;
-            int LA30_0 = input.LA(1);
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:482:9: ( POSTTEXT | MIDTEXT embed textTail )
+            int alt31=2;
+            int LA31_0 = input.LA(1);
 
-            if ( (LA30_0==POSTTEXT) ) {
-                alt30=1;
+            if ( (LA31_0==POSTTEXT) ) {
+                alt31=1;
             }
-            else if ( (LA30_0==MIDTEXT) ) {
-                alt30=2;
+            else if ( (LA31_0==MIDTEXT) ) {
+                alt31=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 30, 0, input);
+                    new NoViableAltException("", 31, 0, input);
 
                 throw nvae;
             }
-            switch (alt30) {
+            switch (alt31) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:477:12: POSTTEXT
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:482:12: POSTTEXT
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    POSTTEXT116=(CommonTree)match(input,POSTTEXT,FOLLOW_POSTTEXT_in_textTail1133); if (state.failed) return retval;
+                    POSTTEXT117=(CommonTree)match(input,POSTTEXT,FOLLOW_POSTTEXT_in_textTail1132); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    POSTTEXT116_tree = (CommonTree)adaptor.dupNode(POSTTEXT116);
+                    POSTTEXT117_tree = (CommonTree)adaptor.dupNode(POSTTEXT117);
 
-                    adaptor.addChild(root_0, POSTTEXT116_tree);
+                    adaptor.addChild(root_0, POSTTEXT117_tree);
                     }
                     if ( state.backtracking==0 ) {
-                       addContent(new Text(POSTTEXT116.getText())); 
+                       addContent(new Text(POSTTEXT117.getText())); 
                     }
 
                     if ( state.backtracking==0 ) {
@@ -4107,36 +4130,36 @@ public class WaebricInterpreter extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:478:6: MIDTEXT embed textTail
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:483:6: MIDTEXT embed textTail
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    MIDTEXT117=(CommonTree)match(input,MIDTEXT,FOLLOW_MIDTEXT_in_textTail1142); if (state.failed) return retval;
+                    MIDTEXT118=(CommonTree)match(input,MIDTEXT,FOLLOW_MIDTEXT_in_textTail1141); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    MIDTEXT117_tree = (CommonTree)adaptor.dupNode(MIDTEXT117);
+                    MIDTEXT118_tree = (CommonTree)adaptor.dupNode(MIDTEXT118);
 
-                    adaptor.addChild(root_0, MIDTEXT117_tree);
+                    adaptor.addChild(root_0, MIDTEXT118_tree);
                     }
                     if ( state.backtracking==0 ) {
-                       addContent(new Text(MIDTEXT117.getText())); 
+                       addContent(new Text(MIDTEXT118.getText())); 
                     }
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_embed_in_textTail1146);
-                    embed118=embed();
+                    pushFollow(FOLLOW_embed_in_textTail1145);
+                    embed119=embed();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) 
-                    adaptor.addChild(root_0, embed118.getTree());
+                    adaptor.addChild(root_0, embed119.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_textTail_in_textTail1148);
-                    textTail119=textTail();
+                    pushFollow(FOLLOW_textTail_in_textTail1147);
+                    textTail120=textTail();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) 
-                    adaptor.addChild(root_0, textTail119.getTree());
+                    adaptor.addChild(root_0, textTail120.getTree());
 
                     if ( state.backtracking==0 ) {
                     }
@@ -4197,8 +4220,8 @@ public class WaebricInterpreter extends TreeParser {
         WaebricInterpreter.expression_return e = null;
 
 
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:464:7: (e= expression )
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:464:7: e= expression
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:465:7: (e= expression )
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:465:7: e= expression
         {
         pushFollow(FOLLOW_expression_in_synpred45_WaebricInterpreter1019);
         e=expression();
@@ -4210,16 +4233,16 @@ public class WaebricInterpreter extends TreeParser {
     }
     // $ANTLR end synpred45_WaebricInterpreter
 
-    // $ANTLR start synpred46_WaebricInterpreter
-    public final void synpred46_WaebricInterpreter_fragment() throws RecognitionException {   
+    // $ANTLR start synpred48_WaebricInterpreter
+    public final void synpred48_WaebricInterpreter_fragment() throws RecognitionException {   
         WaebricInterpreter.predicate_return p = null;
 
 
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:466:8: ( '&&' p= predicate )
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:466:8: '&&' p= predicate
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:473:8: ( '&&' p= predicate )
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:473:8: '&&' p= predicate
         {
-        match(input,65,FOLLOW_65_in_synpred46_WaebricInterpreter1046); if (state.failed) return ;
-        pushFollow(FOLLOW_predicate_in_synpred46_WaebricInterpreter1050);
+        match(input,65,FOLLOW_65_in_synpred48_WaebricInterpreter1064); if (state.failed) return ;
+        pushFollow(FOLLOW_predicate_in_synpred48_WaebricInterpreter1068);
         p=predicate();
 
         state._fsp--;
@@ -4227,18 +4250,18 @@ public class WaebricInterpreter extends TreeParser {
 
         }
     }
-    // $ANTLR end synpred46_WaebricInterpreter
+    // $ANTLR end synpred48_WaebricInterpreter
 
-    // $ANTLR start synpred47_WaebricInterpreter
-    public final void synpred47_WaebricInterpreter_fragment() throws RecognitionException {   
+    // $ANTLR start synpred49_WaebricInterpreter
+    public final void synpred49_WaebricInterpreter_fragment() throws RecognitionException {   
         WaebricInterpreter.predicate_return p = null;
 
 
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:466:57: ( '||' p= predicate )
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:466:57: '||' p= predicate
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:473:57: ( '||' p= predicate )
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:473:57: '||' p= predicate
         {
-        match(input,66,FOLLOW_66_in_synpred47_WaebricInterpreter1056); if (state.failed) return ;
-        pushFollow(FOLLOW_predicate_in_synpred47_WaebricInterpreter1060);
+        match(input,66,FOLLOW_66_in_synpred49_WaebricInterpreter1074); if (state.failed) return ;
+        pushFollow(FOLLOW_predicate_in_synpred49_WaebricInterpreter1078);
         p=predicate();
 
         state._fsp--;
@@ -4246,24 +4269,10 @@ public class WaebricInterpreter extends TreeParser {
 
         }
     }
-    // $ANTLR end synpred47_WaebricInterpreter
+    // $ANTLR end synpred49_WaebricInterpreter
 
     // Delegated rules
 
-    public final boolean synpred46_WaebricInterpreter() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred46_WaebricInterpreter_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
     public final boolean synpred19_WaebricInterpreter() {
         state.backtracking++;
         int start = input.mark();
@@ -4306,11 +4315,25 @@ public class WaebricInterpreter extends TreeParser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred47_WaebricInterpreter() {
+    public final boolean synpred49_WaebricInterpreter() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred47_WaebricInterpreter_fragment(); // can never throw exception
+            synpred49_WaebricInterpreter_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred48_WaebricInterpreter() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred48_WaebricInterpreter_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -4323,21 +4346,21 @@ public class WaebricInterpreter extends TreeParser {
 
 
     protected DFA19 dfa19 = new DFA19(this);
-    protected DFA25 dfa25 = new DFA25(this);
-    protected DFA29 dfa29 = new DFA29(this);
+    protected DFA26 dfa26 = new DFA26(this);
+    protected DFA30 dfa30 = new DFA30(this);
     static final String DFA19_eotS =
         "\37\uffff";
     static final String DFA19_eofS =
         "\37\uffff";
     static final String DFA19_minS =
-        "\1\7\5\uffff\1\2\2\uffff\1\2\1\12\1\6\2\uffff\1\2\1\12\1\4\2\2\2"+
-        "\4\1\6\2\3\1\uffff\1\2\3\uffff\1\4\1\3";
+        "\1\7\5\uffff\1\2\2\uffff\1\2\1\12\1\6\2\uffff\1\2\1\12\1\4\1\2\1"+
+        "\4\1\2\1\3\1\6\2\4\2\uffff\1\2\2\uffff\2\3";
     static final String DFA19_maxS =
-        "\1\77\5\uffff\1\2\2\uffff\1\2\1\65\1\6\2\uffff\1\2\1\12\2\105\1"+
-        "\3\2\105\1\77\2\105\1\uffff\1\66\3\uffff\1\105\1\3";
+        "\1\77\5\uffff\1\2\2\uffff\1\2\1\65\1\6\2\uffff\1\2\1\12\3\105\1"+
+        "\3\1\105\1\77\2\105\2\uffff\1\66\2\uffff\1\105\1\3";
     static final String DFA19_acceptS =
-        "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\uffff\1\10\1\11\3\uffff\1\7\1\6\12"+
-        "\uffff\1\12\1\uffff\1\15\1\13\1\14\2\uffff";
+        "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\uffff\1\10\1\11\3\uffff\1\6\1\7\12"+
+        "\uffff\1\15\1\14\1\uffff\1\13\1\12\2\uffff";
     static final String DFA19_specialS =
         "\37\uffff}>";
     static final String[] DFA19_transitionS = {
@@ -4352,28 +4375,28 @@ public class WaebricInterpreter extends TreeParser {
             "",
             "",
             "\1\13",
-            "\1\15\1\uffff\3\15\1\uffff\1\14\42\uffff\1\15\1\uffff\1\15",
+            "\1\14\1\uffff\3\14\1\uffff\1\15\42\uffff\1\14\1\uffff\1\14",
             "\1\16",
             "",
             "",
             "\1\17",
             "\1\20",
             "\102\21",
-            "\1\23\1\uffff\102\22",
-            "\1\24\1\25",
-            "\102\26",
-            "\102\27",
-            "\1\16\1\34\2\uffff\1\30\1\uffff\3\30\1\uffff\1\33\2\uffff\1"+
-            "\34\2\uffff\1\32\34\uffff\1\30\1\uffff\1\31\2\uffff\1\34\1\uffff"+
-            "\2\34\1\uffff\3\34",
-            "\1\35\102\26",
-            "\1\36\102\27",
-            "",
-            "\1\34\7\uffff\1\30\45\uffff\1\30\5\uffff\1\30",
+            "\1\22\1\uffff\102\23",
+            "\102\24",
+            "\1\26\1\25",
+            "\1\27\102\24",
+            "\1\16\1\31\2\uffff\1\34\1\uffff\3\34\1\uffff\1\33\2\uffff\1"+
+            "\31\2\uffff\1\30\34\uffff\1\34\1\uffff\1\32\2\uffff\1\31\1\uffff"+
+            "\2\31\1\uffff\3\31",
+            "\102\35",
+            "\102\23",
             "",
             "",
+            "\1\31\7\uffff\1\34\45\uffff\1\34\5\uffff\1\34",
             "",
-            "\102\22",
+            "",
+            "\1\36\102\35",
             "\1\25"
     };
 
@@ -4407,22 +4430,22 @@ public class WaebricInterpreter extends TreeParser {
             this.transition = DFA19_transition;
         }
         public String getDescription() {
-            return "376:1: statement : ( ifStatement | eachStatement | letStatement | blockStatement | ^( 'comment' STRCON ';' ) | ^( 'echo' expression ';' ) | ^( 'echo' embedding ';' ) | ^( 'cdata' expression ';' ) | 'yield;' | ^( MARKUP_STATEMENT ( markup )+ expression ';' ) | ^( MARKUP_STATEMENT ( markup )+ embedding ';' ) | ^( MARKUP_STATEMENT ( markup )+ statement ) | ^( MARKUP_STATEMENT ( markup )+ ';' ) );";
+            return "377:1: statement : ( ifStatement | eachStatement | letStatement | blockStatement | ^( 'comment' STRCON ';' ) | ^( 'echo' expression ';' ) | ^( 'echo' embedding ';' ) | ^( 'cdata' expression ';' ) | 'yield;' | ^( MARKUP_STATEMENT ( markup )+ expression ';' ) | ^( MARKUP_STATEMENT ( markup )+ embedding ';' ) | ^( MARKUP_STATEMENT ( markup )+ statement ) | ^( MARKUP_STATEMENT ( markup )+ ';' ) );";
         }
     }
-    static final String DFA25_eotS =
+    static final String DFA26_eotS =
         "\12\uffff";
-    static final String DFA25_eofS =
+    static final String DFA26_eofS =
         "\12\uffff";
-    static final String DFA25_minS =
+    static final String DFA26_minS =
         "\1\12\1\uffff\6\0\2\uffff";
-    static final String DFA25_maxS =
+    static final String DFA26_maxS =
         "\1\100\1\uffff\6\0\2\uffff";
-    static final String DFA25_acceptS =
+    static final String DFA26_acceptS =
         "\1\uffff\1\1\6\uffff\1\2\1\3";
-    static final String DFA25_specialS =
+    static final String DFA26_specialS =
         "\2\uffff\1\0\1\1\1\2\1\3\1\4\1\5\2\uffff}>";
-    static final String[] DFA25_transitionS = {
+    static final String[] DFA26_transitionS = {
             "\1\2\1\uffff\1\3\1\4\1\5\44\uffff\1\6\1\uffff\1\7\12\uffff\1"+
             "\1",
             "",
@@ -4436,47 +4459,47 @@ public class WaebricInterpreter extends TreeParser {
             ""
     };
 
-    static final short[] DFA25_eot = DFA.unpackEncodedString(DFA25_eotS);
-    static final short[] DFA25_eof = DFA.unpackEncodedString(DFA25_eofS);
-    static final char[] DFA25_min = DFA.unpackEncodedStringToUnsignedChars(DFA25_minS);
-    static final char[] DFA25_max = DFA.unpackEncodedStringToUnsignedChars(DFA25_maxS);
-    static final short[] DFA25_accept = DFA.unpackEncodedString(DFA25_acceptS);
-    static final short[] DFA25_special = DFA.unpackEncodedString(DFA25_specialS);
-    static final short[][] DFA25_transition;
+    static final short[] DFA26_eot = DFA.unpackEncodedString(DFA26_eotS);
+    static final short[] DFA26_eof = DFA.unpackEncodedString(DFA26_eofS);
+    static final char[] DFA26_min = DFA.unpackEncodedStringToUnsignedChars(DFA26_minS);
+    static final char[] DFA26_max = DFA.unpackEncodedStringToUnsignedChars(DFA26_maxS);
+    static final short[] DFA26_accept = DFA.unpackEncodedString(DFA26_acceptS);
+    static final short[] DFA26_special = DFA.unpackEncodedString(DFA26_specialS);
+    static final short[][] DFA26_transition;
 
     static {
-        int numStates = DFA25_transitionS.length;
-        DFA25_transition = new short[numStates][];
+        int numStates = DFA26_transitionS.length;
+        DFA26_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA25_transition[i] = DFA.unpackEncodedString(DFA25_transitionS[i]);
+            DFA26_transition[i] = DFA.unpackEncodedString(DFA26_transitionS[i]);
         }
     }
 
-    class DFA25 extends DFA {
+    class DFA26 extends DFA {
 
-        public DFA25(BaseRecognizer recognizer) {
+        public DFA26(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 25;
-            this.eot = DFA25_eot;
-            this.eof = DFA25_eof;
-            this.min = DFA25_min;
-            this.max = DFA25_max;
-            this.accept = DFA25_accept;
-            this.special = DFA25_special;
-            this.transition = DFA25_transition;
+            this.decisionNumber = 26;
+            this.eot = DFA26_eot;
+            this.eof = DFA26_eof;
+            this.min = DFA26_min;
+            this.max = DFA26_max;
+            this.accept = DFA26_accept;
+            this.special = DFA26_special;
+            this.transition = DFA26_transition;
         }
         public String getDescription() {
-            return "463:5: ( '!' p= predicate | e= expression | e= expression '.' type )";
+            return "464:5: ( '!' p= predicate | e= expression | e= expression '.' ( 'list' | 'record' | 'string' ) )";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TreeNodeStream input = (TreeNodeStream)_input;
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA25_2 = input.LA(1);
+                        int LA26_2 = input.LA(1);
 
                          
-                        int index25_2 = input.index();
+                        int index26_2 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred45_WaebricInterpreter()) ) {s = 8;}
@@ -4484,14 +4507,14 @@ public class WaebricInterpreter extends TreeParser {
                         else if ( (true) ) {s = 9;}
 
                          
-                        input.seek(index25_2);
+                        input.seek(index26_2);
                         if ( s>=0 ) return s;
                         break;
                     case 1 : 
-                        int LA25_3 = input.LA(1);
+                        int LA26_3 = input.LA(1);
 
                          
-                        int index25_3 = input.index();
+                        int index26_3 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred45_WaebricInterpreter()) ) {s = 8;}
@@ -4499,14 +4522,14 @@ public class WaebricInterpreter extends TreeParser {
                         else if ( (true) ) {s = 9;}
 
                          
-                        input.seek(index25_3);
+                        input.seek(index26_3);
                         if ( s>=0 ) return s;
                         break;
                     case 2 : 
-                        int LA25_4 = input.LA(1);
+                        int LA26_4 = input.LA(1);
 
                          
-                        int index25_4 = input.index();
+                        int index26_4 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred45_WaebricInterpreter()) ) {s = 8;}
@@ -4514,14 +4537,14 @@ public class WaebricInterpreter extends TreeParser {
                         else if ( (true) ) {s = 9;}
 
                          
-                        input.seek(index25_4);
+                        input.seek(index26_4);
                         if ( s>=0 ) return s;
                         break;
                     case 3 : 
-                        int LA25_5 = input.LA(1);
+                        int LA26_5 = input.LA(1);
 
                          
-                        int index25_5 = input.index();
+                        int index26_5 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred45_WaebricInterpreter()) ) {s = 8;}
@@ -4529,14 +4552,14 @@ public class WaebricInterpreter extends TreeParser {
                         else if ( (true) ) {s = 9;}
 
                          
-                        input.seek(index25_5);
+                        input.seek(index26_5);
                         if ( s>=0 ) return s;
                         break;
                     case 4 : 
-                        int LA25_6 = input.LA(1);
+                        int LA26_6 = input.LA(1);
 
                          
-                        int index25_6 = input.index();
+                        int index26_6 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred45_WaebricInterpreter()) ) {s = 8;}
@@ -4544,14 +4567,14 @@ public class WaebricInterpreter extends TreeParser {
                         else if ( (true) ) {s = 9;}
 
                          
-                        input.seek(index25_6);
+                        input.seek(index26_6);
                         if ( s>=0 ) return s;
                         break;
                     case 5 : 
-                        int LA25_7 = input.LA(1);
+                        int LA26_7 = input.LA(1);
 
                          
-                        int index25_7 = input.index();
+                        int index26_7 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred45_WaebricInterpreter()) ) {s = 8;}
@@ -4559,81 +4582,80 @@ public class WaebricInterpreter extends TreeParser {
                         else if ( (true) ) {s = 9;}
 
                          
-                        input.seek(index25_7);
+                        input.seek(index26_7);
                         if ( s>=0 ) return s;
                         break;
             }
             if (state.backtracking>0) {state.failed=true; return -1;}
             NoViableAltException nvae =
-                new NoViableAltException(getDescription(), 25, _s, input);
+                new NoViableAltException(getDescription(), 26, _s, input);
             error(nvae);
             throw nvae;
         }
     }
-    static final String DFA29_eotS =
+    static final String DFA30_eotS =
         "\17\uffff";
-    static final String DFA29_eofS =
+    static final String DFA30_eofS =
         "\17\uffff";
-    static final String DFA29_minS =
-        "\1\6\1\2\1\uffff\1\12\1\4\2\2\1\4\1\6\1\4\1\3\1\uffff\1\3\1\4\1"+
-        "\3";
-    static final String DFA29_maxS =
-        "\1\65\1\2\1\uffff\1\12\2\105\1\3\1\105\1\65\2\105\1\uffff\2\105"+
+    static final String DFA30_minS =
+        "\1\6\1\2\1\uffff\1\12\1\4\1\2\1\4\1\2\1\3\1\6\2\4\1\uffff\2\3";
+    static final String DFA30_maxS =
+        "\1\65\1\2\1\uffff\1\12\3\105\1\3\1\105\1\65\2\105\1\uffff\1\105"+
         "\1\3";
-    static final String DFA29_acceptS =
-        "\2\uffff\1\2\10\uffff\1\1\3\uffff";
-    static final String DFA29_specialS =
+    static final String DFA30_acceptS =
+        "\2\uffff\1\2\11\uffff\1\1\2\uffff";
+    static final String DFA30_specialS =
         "\17\uffff}>";
-    static final String[] DFA29_transitionS = {
+    static final String[] DFA30_transitionS = {
             "\1\1\3\uffff\1\2\1\uffff\3\2\44\uffff\1\2\1\uffff\1\2",
             "\1\3",
             "",
             "\1\4",
             "\102\5",
-            "\1\7\1\uffff\102\6",
-            "\1\11\1\10",
-            "\102\12",
-            "\1\1\3\uffff\1\2\1\uffff\3\2\2\uffff\2\13\40\uffff\1\2\1\uffff"+
+            "\1\6\1\uffff\102\7",
+            "\102\10",
+            "\1\12\1\11",
+            "\1\13\102\10",
+            "\1\1\3\uffff\1\2\1\uffff\3\2\2\uffff\2\14\40\uffff\1\2\1\uffff"+
             "\1\2",
-            "\102\14",
-            "\1\15\102\12",
+            "\102\15",
+            "\102\7",
             "",
-            "\1\16\102\14",
-            "\102\6",
-            "\1\10"
+            "\1\16\102\15",
+            "\1\11"
     };
 
-    static final short[] DFA29_eot = DFA.unpackEncodedString(DFA29_eotS);
-    static final short[] DFA29_eof = DFA.unpackEncodedString(DFA29_eofS);
-    static final char[] DFA29_min = DFA.unpackEncodedStringToUnsignedChars(DFA29_minS);
-    static final char[] DFA29_max = DFA.unpackEncodedStringToUnsignedChars(DFA29_maxS);
-    static final short[] DFA29_accept = DFA.unpackEncodedString(DFA29_acceptS);
-    static final short[] DFA29_special = DFA.unpackEncodedString(DFA29_specialS);
-    static final short[][] DFA29_transition;
+    static final short[] DFA30_eot = DFA.unpackEncodedString(DFA30_eotS);
+    static final short[] DFA30_eof = DFA.unpackEncodedString(DFA30_eofS);
+    static final char[] DFA30_min = DFA.unpackEncodedStringToUnsignedChars(DFA30_minS);
+    static final char[] DFA30_max = DFA.unpackEncodedStringToUnsignedChars(DFA30_maxS);
+    static final short[] DFA30_accept = DFA.unpackEncodedString(DFA30_acceptS);
+    static final short[] DFA30_special = DFA.unpackEncodedString(DFA30_specialS);
+    static final short[][] DFA30_transition;
 
     static {
-        int numStates = DFA29_transitionS.length;
-        DFA29_transition = new short[numStates][];
+        int numStates = DFA30_transitionS.length;
+        DFA30_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA29_transition[i] = DFA.unpackEncodedString(DFA29_transitionS[i]);
+            DFA30_transition[i] = DFA.unpackEncodedString(DFA30_transitionS[i]);
         }
     }
 
-    class DFA29 extends DFA {
+    class DFA30 extends DFA {
 
-        public DFA29(BaseRecognizer recognizer) {
+        public DFA30(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 29;
-            this.eot = DFA29_eot;
-            this.eof = DFA29_eof;
-            this.min = DFA29_min;
-            this.max = DFA29_max;
-            this.accept = DFA29_accept;
-            this.special = DFA29_special;
-            this.transition = DFA29_transition;
+            this.decisionNumber = 30;
+            this.eot = DFA30_eot;
+            this.eof = DFA30_eof;
+            this.min = DFA30_min;
+            this.max = DFA30_max;
+            this.accept = DFA30_accept;
+            this.special = DFA30_special;
+            this.transition = DFA30_transition;
         }
         public String getDescription() {
-            return "475:1: embed : ( ( markup )+ | ( markup )* expression );";
+            return "480:1: embed : ( ( markup )+ | ( markup )* expression );";
         }
     }
  
@@ -4756,30 +4778,31 @@ public class WaebricInterpreter extends TreeParser {
     public static final BitSet FOLLOW_expression_in_predicate1019 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000006L});
     public static final BitSet FOLLOW_expression_in_predicate1032 = new BitSet(new long[]{0x0000010000000000L});
     public static final BitSet FOLLOW_40_in_predicate1034 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000038L});
-    public static final BitSet FOLLOW_type_in_predicate1036 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000006L});
-    public static final BitSet FOLLOW_65_in_predicate1046 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000001L});
-    public static final BitSet FOLLOW_predicate_in_predicate1050 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000006L});
-    public static final BitSet FOLLOW_66_in_predicate1056 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000001L});
-    public static final BitSet FOLLOW_predicate_in_predicate1060 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000006L});
-    public static final BitSet FOLLOW_set_in_type0 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PRETEXT_in_embedding1098 = new BitSet(new long[]{0x0028000000007440L});
-    public static final BitSet FOLLOW_embed_in_embedding1102 = new BitSet(new long[]{0x0000000000060000L});
-    public static final BitSet FOLLOW_textTail_in_embedding1104 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_embed1114 = new BitSet(new long[]{0x0000000000000042L});
-    public static final BitSet FOLLOW_markup_in_embed1119 = new BitSet(new long[]{0x0028000000007440L});
-    public static final BitSet FOLLOW_expression_in_embed1122 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_POSTTEXT_in_textTail1133 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MIDTEXT_in_textTail1142 = new BitSet(new long[]{0x0028000000007440L});
-    public static final BitSet FOLLOW_embed_in_textTail1146 = new BitSet(new long[]{0x0000000000060000L});
-    public static final BitSet FOLLOW_textTail_in_textTail1148 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_67_in_predicate1038 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000006L});
+    public static final BitSet FOLLOW_68_in_predicate1044 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000006L});
+    public static final BitSet FOLLOW_69_in_predicate1050 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000006L});
+    public static final BitSet FOLLOW_65_in_predicate1064 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000001L});
+    public static final BitSet FOLLOW_predicate_in_predicate1068 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000006L});
+    public static final BitSet FOLLOW_66_in_predicate1074 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000001L});
+    public static final BitSet FOLLOW_predicate_in_predicate1078 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000006L});
+    public static final BitSet FOLLOW_PRETEXT_in_embedding1097 = new BitSet(new long[]{0x0028000000007440L});
+    public static final BitSet FOLLOW_embed_in_embedding1101 = new BitSet(new long[]{0x0000000000060000L});
+    public static final BitSet FOLLOW_textTail_in_embedding1103 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_embed1113 = new BitSet(new long[]{0x0000000000000042L});
+    public static final BitSet FOLLOW_markup_in_embed1118 = new BitSet(new long[]{0x0028000000007440L});
+    public static final BitSet FOLLOW_expression_in_embed1121 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_POSTTEXT_in_textTail1132 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MIDTEXT_in_textTail1141 = new BitSet(new long[]{0x0028000000007440L});
+    public static final BitSet FOLLOW_embed_in_textTail1145 = new BitSet(new long[]{0x0000000000060000L});
+    public static final BitSet FOLLOW_textTail_in_textTail1147 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_55_in_synpred18_WaebricInterpreter441 = new BitSet(new long[]{0x0028000000007400L});
     public static final BitSet FOLLOW_expression_in_synpred18_WaebricInterpreter445 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_40_in_synpred19_WaebricInterpreter455 = new BitSet(new long[]{0x0000000000000400L});
     public static final BitSet FOLLOW_IDCON_in_synpred19_WaebricInterpreter459 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_expression_in_synpred45_WaebricInterpreter1019 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_65_in_synpred46_WaebricInterpreter1046 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000001L});
-    public static final BitSet FOLLOW_predicate_in_synpred46_WaebricInterpreter1050 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_66_in_synpred47_WaebricInterpreter1056 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000001L});
-    public static final BitSet FOLLOW_predicate_in_synpred47_WaebricInterpreter1060 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_65_in_synpred48_WaebricInterpreter1064 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000001L});
+    public static final BitSet FOLLOW_predicate_in_synpred48_WaebricInterpreter1068 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_66_in_synpred49_WaebricInterpreter1074 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000001L});
+    public static final BitSet FOLLOW_predicate_in_synpred49_WaebricInterpreter1078 = new BitSet(new long[]{0x0000000000000002L});
 
 }

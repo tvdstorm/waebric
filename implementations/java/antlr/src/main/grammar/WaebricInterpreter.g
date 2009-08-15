@@ -293,7 +293,7 @@ argument[List<Integer> args, boolean call]
 // $<Expressions
 
 expression returns [
-		int index = 0, // Used for interpreting a referenced variable
+		int index = -1, // Used for interpreting a referenced variable
 		String eval = "undef", // Evaluation value for printing
 		Map<String, expression_return> map = new HashMap<String, expression_return>(), // Map structure for fields
 		Collection<expression_return> collection = new ArrayList() // List structure for iterations
@@ -342,6 +342,7 @@ expression returns [
 					// Record field
 					if($map.containsKey($id.getText())) { retval = $map.get($id.getText()); } 
 					else {
+						$index = -1;
 						$eval = "undef";
 						$collection.clear();
 						$map.clear();
@@ -461,12 +462,16 @@ funcBinding
 
 predicate returns [boolean eval]
 	:		( '!' p=predicate { $eval = ! $p.eval; }
-				| e=expression { $eval = ! $e.eval.equals("undef"); } // Not null
-				| e=expression '.' type // Is type 
+				| e=expression { $eval = $e.index != -1; } // Is defined
+				| e=expression '.' ( 'list' {
+							$eval = $e.eval.startsWith("[");
+						 } | 'record' { 
+						 	$eval = $e.eval.startsWith("{");
+						 } | 'string' { 
+						 	$eval = $e.index != -1;
+						 } ) // Is type 
 			) ( '&&' p=predicate { $eval = $eval && $p.eval; } | '||' p=predicate { $eval = $eval || $p.eval; } )* ;
-			
-type:			'list' | 'record' | 'string' ;
-
+		
 // $>
 // $<Embedding
 
