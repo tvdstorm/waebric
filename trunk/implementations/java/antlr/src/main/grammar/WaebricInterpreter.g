@@ -26,6 +26,7 @@ scope Environment {
 	import java.util.Map;
 	import java.util.Collection;
 		
+	import org.jdom.Attribute;
 	import org.jdom.CDATA;
 	import org.jdom.Comment;
 	import org.jdom.Content;
@@ -217,9 +218,19 @@ mapping
 // $>
 // $<Markup
 
-markup:			^( MARKUP IDCON . . ) {
+markup
+	@init { int attr = 0; }
+	:		^( MARKUP IDCON { attr = input.index(); } . . ) {
 				if(! interpretFunction($IDCON.getText())) {
-					addContent(new Element($IDCON.getText())); 
+					// Markup tag
+					addContent(new Element($IDCON.getText()));
+					
+					// Attach attributes
+					int actual = input.index();
+					input.seek(attr);
+					attributes();
+					arguments();
+					input.seek(actual);
 				}
 			} ;
 			
@@ -234,7 +245,11 @@ attribute:		'#' IDCON { current.setAttribute("id", $IDCON.getText()); }
 			
 arguments:		^( ARGUMENTS argument* ) ;
 
-argument:		expression
+argument:		expression { 
+				Attribute attribute = current.getAttribute("value");
+				String value = (attribute == null) ? "" : attribute.getValue() + ", ";
+				value += $expression.eval;
+				current.setAttribute("value",  value); }
 			| IDCON '=' expression { current.setAttribute($IDCON.getText(), $expression.eval); } ;
 
 // $>
@@ -262,7 +277,7 @@ expression returns [
 			| SYMBOLCON { $eval = $SYMBOLCON.getText(); $eval = $eval.substring(1, $eval.length()); }
 			| '[' ( e=expression { $collection.add(e); } )? 
 			  ( ',' e=expression { $collection.add(e); } )* ']' {
-			  		// List
+			  		// Build list type string evaluation
 					$eval = "[";
 					for(expression_return eret:$collection) { $eval += eret.eval + ","; }
 					$eval = $eval.substring(0, $eval.length()); // Clip last character
@@ -270,7 +285,7 @@ expression returns [
 				}
 			| '{' ( id=IDCON ':' e=expression { $map.put($id.getText(), e); } )? 
 			  ( ',' id=IDCON ':' e=expression { $map.put($id.getText(), e); } )* '}' {
-			  		// Record
+			  		// Build record type string evaluation
 					$collection = $map.values();
 					$eval = "{";
 					for(String key:$map.keySet()) { $eval += key + ":" + $map.get(key).eval + ","; }
@@ -281,13 +296,13 @@ expression returns [
 			
 			// Recursive expressions
 			( '+' e=expression {
-					// Cat
+					// Expression combination
 					$eval += $e.eval;
 					$collection.clear();
 					$map.clear();
 				} 
 			| '.' id=IDCON {
-					// Field
+					// Record field
 					if($map.containsKey($id.getText())) { retval = $map.get($id.getText()); } 
 					else {
 						$eval = "undef";
