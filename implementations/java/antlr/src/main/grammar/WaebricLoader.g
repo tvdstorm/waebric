@@ -86,7 +86,10 @@ imprt
 site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
 
-mapping:		PATH ':' markup ;
+mapping
+	returns [int index = 0]
+	@init { $index = input.index(); }
+	:		PATH ':' markup ;
 	finally {
 		mappings.add(retval);
 	}
@@ -109,7 +112,8 @@ keyValuePair:		IDCON ':' expression ;
 // $<Function
 
 function 
-	returns [int args = 0]
+	returns [int args = 0, int index = 0]
+	@init { $index = input.index(); }
 	:		^( FUNCTION id=IDCON formals { $args = $formals.args; }	statement* ) ;
 	finally {
 		if(functions.containsKey($id.getText())) {

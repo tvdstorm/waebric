@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-15 12:07:40
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-15 16:06:02
 
 	package org.cwi.waebric;
 	import java.util.ArrayList;
@@ -236,7 +236,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: imprt, site, function, moduleId, 39
+            // elements: 39, site, imprt, function, moduleId
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -435,7 +435,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: 41, moduleId
+            // elements: moduleId, 41
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -768,7 +768,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: attributes, IDCON, arguments
+            // elements: arguments, attributes, IDCON
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2001,7 +2001,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: formals, statement, IDCON
+            // elements: statement, formals, IDCON
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2395,7 +2395,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 47, 57, statement, 56, 49, statement, predicate
+                    // elements: 49, predicate, statement, 47, 57, statement, 56
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2418,13 +2418,13 @@ public class WaebricParser extends Parser {
                         adaptor.addChild(root_1, stream_49.nextNode());
                         adaptor.addChild(root_1, stream_statement.nextTree());
                         // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:114:44: ( 'else' statement )?
-                        if ( stream_57.hasNext()||stream_statement.hasNext() ) {
+                        if ( stream_statement.hasNext()||stream_57.hasNext() ) {
                             adaptor.addChild(root_1, stream_57.nextNode());
                             adaptor.addChild(root_1, stream_statement.nextTree());
 
                         }
-                        stream_57.reset();
                         stream_statement.reset();
+                        stream_57.reset();
 
                         adaptor.addChild(root_0, root_1);
                         }
@@ -2467,7 +2467,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 58, IDCON, 49, statement, 42, 47, expression
+                    // elements: expression, 47, statement, 42, 58, IDCON, 49
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2581,7 +2581,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: statement, 60, assignment, END, 59
+                    // elements: statement, 60, 59, END, assignment
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2666,7 +2666,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 54, statement, 53
+                    // elements: 54, 53, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2762,7 +2762,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, 61, expression
+                    // elements: expression, 61, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2809,7 +2809,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, embedding, 61
+                    // elements: SEMICOLON, 61, embedding
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2856,7 +2856,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, expression, 62
+                    // elements: expression, 62, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2943,7 +2943,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: markup, SEMICOLON, expression
+                    // elements: expression, SEMICOLON, markup
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -3034,7 +3034,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: statement, markup
+                    // elements: markup, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -3121,7 +3121,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: markup, embedding, SEMICOLON
+                    // elements: embedding, markup, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -3267,7 +3267,7 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "assignment"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:142:1: assignment : ( IDCON '=' expression ';' | IDCON formals '=' statement -> ^( FUNCTION IDCON ^( FORMALS formals ) ( statement )* ) );
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:142:1: assignment : ( IDCON '=' expression ';' | IDCON formals '=' statement -> ^( FUNCTION IDCON ^( FORMALS ( formals )? ) statement ) );
     public final WaebricParser.assignment_return assignment() throws RecognitionException {
         WaebricParser.assignment_return retval = new WaebricParser.assignment_return();
         retval.start = input.LT(1);
@@ -3296,7 +3296,7 @@ public class WaebricParser extends Parser {
         RewriteRuleSubtreeStream stream_formals=new RewriteRuleSubtreeStream(adaptor,"rule formals");
         RewriteRuleSubtreeStream stream_statement=new RewriteRuleSubtreeStream(adaptor,"rule statement");
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:142:11: ( IDCON '=' expression ';' | IDCON formals '=' statement -> ^( FUNCTION IDCON ^( FORMALS formals ) ( statement )* ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:142:11: ( IDCON '=' expression ';' | IDCON formals '=' statement -> ^( FUNCTION IDCON ^( FORMALS ( formals )? ) statement ) )
             int alt30=2;
             int LA30_0 = input.LA(1);
 
@@ -3378,7 +3378,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: IDCON, statement, formals
+                    // elements: formals, statement, IDCON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -3389,29 +3389,29 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 144:5: -> ^( FUNCTION IDCON ^( FORMALS formals ) ( statement )* )
+                    // 144:5: -> ^( FUNCTION IDCON ^( FORMALS ( formals )? ) statement )
                     {
-                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:144:8: ^( FUNCTION IDCON ^( FORMALS formals ) ( statement )* )
+                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:144:8: ^( FUNCTION IDCON ^( FORMALS ( formals )? ) statement )
                         {
                         Object root_1 = (Object)adaptor.nil();
                         root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(FUNCTION, "FUNCTION"), root_1);
 
                         adaptor.addChild(root_1, stream_IDCON.nextNode());
-                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:144:26: ^( FORMALS formals )
+                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:144:26: ^( FORMALS ( formals )? )
                         {
                         Object root_2 = (Object)adaptor.nil();
                         root_2 = (Object)adaptor.becomeRoot((Object)adaptor.create(FORMALS, "FORMALS"), root_2);
 
-                        adaptor.addChild(root_2, stream_formals.nextTree());
+                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:144:37: ( formals )?
+                        if ( stream_formals.hasNext() ) {
+                            adaptor.addChild(root_2, stream_formals.nextTree());
+
+                        }
+                        stream_formals.reset();
 
                         adaptor.addChild(root_1, root_2);
                         }
-                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:144:47: ( statement )*
-                        while ( stream_statement.hasNext() ) {
-                            adaptor.addChild(root_1, stream_statement.nextTree());
-
-                        }
-                        stream_statement.reset();
+                        adaptor.addChild(root_1, stream_statement.nextTree());
 
                         adaptor.addChild(root_0, root_1);
                         }
