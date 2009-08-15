@@ -53,7 +53,6 @@ public class WaebricProcessor {
 	        List<SemanticException> se = loader.loadModule();
 	        long load_time = System.currentTimeMillis() - curr;
 	        System.out.println("Loaded in " + load_time + "ms.");
-	        System.out.println(loader.getFunctions().toString());
 	        
 	        WaebricChecker checker = new WaebricChecker(
 	        			new CommonTreeNodeStream(tree), // Input tokens

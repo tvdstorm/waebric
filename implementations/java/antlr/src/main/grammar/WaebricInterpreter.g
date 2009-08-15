@@ -189,11 +189,13 @@ mapping	:		PATH ':' markup ;
 // $>
 // $<Markup
 
-markup:			IDCON attribute* arguments? {
+markup:			IDCON attributes arguments? {
 				if(! interpretFunction($IDCON.getText())) {
 					addContent(new Element($IDCON.getText())); 
 				}
 			} ;
+			
+attributes:		attribute* ;
 
 attribute:		'#' IDCON { current.setAttribute("id", $IDCON.getText()); } // ID attribute
 			| '.' IDCON { current.setAttribute("class", $IDCON.getText()); } // Class attribute
