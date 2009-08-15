@@ -256,10 +256,10 @@ function
 	@init {
 		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		'def' IDCON formals? statement* 'end' ;
+	} :		'def' IDCON formals statement* 'end' ;
 			
 formals returns [int args = 0] 
-	:		'(' ( IDCON { defineVariable($IDCON.getText()); $args++; } )* ')' ;
+	:		^( FORMALS ( IDCON { defineVariable($IDCON.getText()); $args++; } )* ) ;
 
 // $<Statements
 

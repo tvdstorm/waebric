@@ -8,8 +8,10 @@ options {
 tokens {
 	ATTRIBUTES = 'atts';
 	ARGUMENTS = 'args';
-	MARKUP = 'm';
+	MARKUP = 'mrku';
 	MARKUP_STATEMENT = 'mstm';
+	FORMALS = 'fmls';
+	FUNCTION = 'def';
 }
 
 @parser::header {
@@ -98,9 +100,11 @@ keyValuePair:		IDCON ':' expression ;
 // $>
 // $<Function
 
-function:		'def' IDCON formals? statement* 'end' ;
-formals:		'(' IDCON? ( ',' IDCON )* ')' 
-				-> '(' IDCON* ')' ; // Removed redundant ',' seperator
+function:		'def' IDCON formals? statement* 'end'
+				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement* ) ;
+		
+formals:		'(' IDCON? ( ',' IDCON )* ')'
+				-> IDCON* ;
 
 // $>
 
@@ -137,7 +141,7 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
-				-> 'def' IDCON formals statement 'end' ; // Manipulated to represent a function
+				-> ^( FUNCTION IDCON ^( FORMALS formals ) statement* ) ; // Manipulated to represent a function
 
 // $>
 // $<Predicates
