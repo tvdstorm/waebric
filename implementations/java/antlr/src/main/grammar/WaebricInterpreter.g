@@ -444,9 +444,7 @@ letStatement
 
 assignment:		varBinding | funcBinding ;
 		
-varBinding
-	@init{ int index = 0; }
-	:		IDCON '=' expression ';' {
+varBinding:		IDCON '=' expression ';' {
 				defineVariable($IDCON.getText(), $expression.index);
 			} ;
 			
@@ -474,8 +472,7 @@ type:			'list' | 'record' | 'string' ;
 
 embedding:		PRETEXT { addContent(new Text($PRETEXT.getText())); } embed textTail ;
 
-embed:			markup* expression { addContent(new Text($expression.eval)); } 
-			| markup+ ;
+embed:			markup+ | markup* expression { addContent(new Text($expression.eval)); } ;
 
 textTail:		POSTTEXT { addContent(new Text($POSTTEXT.getText())); }
 			| MIDTEXT { addContent(new Text($MIDTEXT.getText())); } embed textTail ;
