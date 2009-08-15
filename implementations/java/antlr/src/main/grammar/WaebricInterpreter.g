@@ -41,8 +41,9 @@ scope Environment {
 	public static Document document;
 	public static Element current;
 	
-	// Base functions
-	public static Map<String, WaebricLoader.function_return> functions;
+	// Additional fields
+	public static Stack<Integer> yields;
+	public static Map<String, Stack> environments;
 
 	public WaebricInterpreter(TreeNodeStream input, Environment_scope base) {
 		super(input);
@@ -227,14 +228,14 @@ expression returns [
 					} 
 				}
 			| NATCON { $eval = $NATCON.getText(); }
-			| TEXT { $eval = $TEXT.getText(); }
-			| SYMBOLCON { $eval = $SYMBOLCON.getText(); }
+			| TEXT { $eval = $TEXT.getText(); $eval = $eval.substring(1, $eval.length()-1); }
+			| SYMBOLCON { $eval = $SYMBOLCON.getText(); $eval = $eval.substring(1, $eval.length()); }
 			| '[' ( e=expression { $collection.add(e); } )? 
 			  ( ',' e=expression { $collection.add(e); } )* ']' {
 			  		// List
 					$eval = "[";
 					for(expression_return eret:$collection) { $eval += eret.eval + ","; }
-					$eval = $eval.substring(0,$eval.length()); // Clip last character
+					$eval = $eval.substring(0, $eval.length()); // Clip last character
 					$eval += "]";
 				}
 			| '{' ( id=IDCON ':' e=expression { $map.put($id.getText(), e); } )? 
@@ -243,7 +244,7 @@ expression returns [
 					$collection = $map.values();
 					$eval = "{";
 					for(String key:$map.keySet()) { $eval += key + ":" + $map.get(key).eval + ","; }
-					$eval = $eval.substring(0,$eval.length()); // Clip last character
+					$eval = $eval.substring(0, $eval.length()); // Clip last character
 					$eval += "}";
 				}
 			) 
@@ -269,11 +270,17 @@ expression returns [
 // $>
 // $<Function
 
-function:		'def' IDCON formals? statement* 'end' ;
+function
+	@init { Element actual = null; }
+	:		'def' 
+			IDCON 
+			formals? 
+			( statement { 
+				if(actual != null) { this.current = actual; }
+				else { actual = this.current; }
+			} )* 'end' ;
 
-formals:		'(' IDCON* ')' {
-				// TODO: Store argument + called expression in variable env
-			} ;
+formals:		 '(' IDCON* ')';
 
 // $>
 
@@ -283,27 +290,15 @@ statement:		ifStatement
 			| eachStatement
 			| letStatement
 			| blockStatement
-			| ^( 'comment' STRCON ';' ) {
-					Comment comment = new Comment($STRCON.getText());
-					addContent(comment);
-				}
-			| ^( 'echo' expression ';' ) {
-					Text text = new Text($expression.eval);
-					addContent(text);
-				}
+			| ^( 'comment' STRCON ';' ) { addContent(new Comment($STRCON.getText())); }
+			| ^( 'echo' expression ';' ) { addContent(new Text($expression.eval)); }
 			| ^( 'echo' embedding ';' )
-			| ^( 'cdata' expression ';' ) {
-					CDATA cdata = new CDATA($expression.eval);
-					addContent(cdata);
-				}
+			| ^( 'cdata' expression ';' ) {	addContent(new CDATA($expression.eval)); }
 			| 'yield;'
-			| ^( MARKUP_STATEMENT markup+ expression ';' ) {
-					Text text = new Text($expression.eval);
-					addContent(text);
-				}
+			| ^( MARKUP_STATEMENT markup+ expression ';' ) { addContent(new Text($expression.eval)); }
 			| ^( MARKUP_STATEMENT markup+ embedding ';' )
 			| ^( MARKUP_STATEMENT markup+ ';' ) 
-			| ^( MARKUP_STATEMENT markup+ s=statement ) ;
+			| ^( MARKUP_STATEMENT markup+ statement ) ;
 
 ifStatement
 	@init{ int ti = 0; int fi = 0; }
@@ -341,14 +336,17 @@ eachStatement
 
 blockStatement
 	@init { Element actual = this.current; }
-	:		^( '{' ( s=statement )* { this.current = actual; } '}' ) ;		
+	:		^( '{' ( statement { this.current = actual; } )* '}' ) ;		
 
 letStatement
 	scope Environment;
 	@init {
 		$Environment::variables = new HashMap<String, Integer>();
 		$Environment::functions = new HashMap<String, CommonTree>();
-	} :		^( 'let' assignment+ 'in' ( s=statement )* 'end' ) ;
+		Element actual = this.current;
+	} :		^( 'let' assignment+ 'in' 
+			( statement { this.current = actual; } )* 
+			'end' ) ;
 
 // $>
 // $<Assignments
@@ -380,12 +378,10 @@ type:			'list' | 'record' | 'string' ;
 // $>
 // $<Embedding
 
-embedding:		PRETEXT embed textTail ;
+embedding:		PRETEXT { addContent(new Text($PRETEXT.getText())); } embed textTail ;
 
-embed:			markup* expression { 
-					Text text = new Text($expression.eval);
-					addContent(text); 
-				} 
-			| markup* markup ;
+embed:			markup* expression { addContent(new Text($expression.eval)); } 
+			| markup+ ;
 
-textTail:		POSTTEXT | MIDTEXT embed textTail ;
+textTail:		POSTTEXT { addContent(new Text($POSTTEXT.getText())); }
+			| MIDTEXT { addContent(new Text($MIDTEXT.getText())); } embed textTail ;
