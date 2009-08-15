@@ -94,17 +94,7 @@ mapping:		PATH ':' markup ;
 // $>
 // $<Markup
 
-markup:			designator arguments? ;
-designator:		IDCON attribute* ;
-attribute:		'#' IDCON // ID attribute
-			| '.' IDCON // Class attribute
-			| '$' IDCON // Name attribute
-			| ':' IDCON // Type attribute
-			| '@' NATCON // Width attribute
-			| '@' NATCON '%' NATCON; // Width-height attribute
-arguments:		'(' argument? ( ',' argument )* ')' ;
-argument:		expression 
-			| IDCON '=' expression ;
+markup:			^( MARKUP IDCON . . ) ;
 
 // $>
 // $<Expressions
