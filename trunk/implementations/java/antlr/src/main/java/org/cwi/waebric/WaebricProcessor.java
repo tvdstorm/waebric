@@ -46,13 +46,14 @@ public class WaebricProcessor {
 	        System.out.println("Parsed in " + parse_time + "ms.");
 	        
 	        CommonTree tree = (CommonTree) result.getTree();
-	       // System.out.println(tree.toStringTree());
+	        System.out.println(tree.toStringTree());
 	        
 	        WaebricLoader loader = new WaebricLoader(new CommonTreeNodeStream(tree));
 	        curr = System.currentTimeMillis();
 	        List<SemanticException> se = loader.loadModule();
 	        long load_time = System.currentTimeMillis() - curr;
 	        System.out.println("Loaded in " + load_time + "ms.");
+	        System.out.println(loader.getFunctions().keySet().toString());
 	        
 	        WaebricChecker checker = new WaebricChecker(
 	        			new CommonTreeNodeStream(tree), // Input tokens

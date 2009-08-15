@@ -216,7 +216,7 @@ mapping	:		PATH ':' markup ;
 
 markup
 	@init { int args = 0; }
-	:		IDCON attribute* ( arguments { args = $arguments.args; } )? {
+	:		^( MARKUP IDCON . arguments ) {
 				if(isDefinedFunction($IDCON.getText())) {
 					int actual = getFunctionArgs($IDCON.getText());
 					if(args != actual) {
@@ -226,19 +226,11 @@ markup
 					exceptions.add(new UndefinedFunctionException($IDCON));
 				}
 			} ;
-		
-attribute:		'#' IDCON 
-			| '.' IDCON 
-			| '$' IDCON 
-			| ':' IDCON 
-			| '@' NATCON ( '%' NATCON )?;
 	
 arguments returns [int args = 0]
-	:		'(' ( argument {$args++;} )? 
-			( ',' argument {$args++;} )* ')' ;
+	:		^( ARGUMENTS ( argument {$args++;} )* ) ;
 			
-argument:		expression
-			| IDCON '=' expression ;
+argument:		expression | IDCON '=' expression ;
 
 // $>
 

@@ -6,7 +6,10 @@ options {
 }
 
 tokens {
-	MARKUP_STATEMENT = 'ms';
+	ATTRIBUTES = 'atts';
+	ARGUMENTS = 'args';
+	MARKUP = 'm';
+	MARKUP_STATEMENT = 'mstm';
 }
 
 @parser::header {
@@ -64,17 +67,24 @@ mapping	:		PATH ':' markup ;
 // $>
 // $<Markup
 
-markup:			designator arguments? ;
-designator:		IDCON attribute* ;
+markup:			IDCON attributes arguments
+				-> ^( MARKUP IDCON attributes arguments ) ;
+				
+attributes:		attribute* 
+				-> ^( ATTRIBUTES attribute* );	
+
 attribute:		'#' IDCON // ID attribute
 			| '.' IDCON // Class attribute
 			| '$' IDCON // Name attribute
 			| ':' IDCON // Type attribute
 			| '@' NATCON // Width attribute
 			| '@' NATCON '%' NATCON; // Width-height attribute
-arguments:		'(' argument? ( ',' argument )* ')' ;
-argument:		expression |
-			IDCON '=' expression ;
+			
+arguments:		( '(' argument? ( ',' argument )* ')' )?
+				-> ^( ARGUMENTS argument* ) ;
+				
+argument:		expression // Variable definition
+			| IDCON '=' expression ; // Attribute definition
 
 // $>
 // $<Expressions
