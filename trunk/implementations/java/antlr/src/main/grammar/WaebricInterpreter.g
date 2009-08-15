@@ -41,17 +41,14 @@ scope Environment {
 
 @members {
 	// JDOM elements
-	public static Document document;
-	public static Element current;
+	private Document document;
+	private Element current;
 	
-	// Additional fields
-	public static Stack<Integer> yields = new Stack<Integer>();
-	public static Map<String, Stack> environments = new HashMap<String, Stack>();
-
-	public WaebricInterpreter(TreeNodeStream input, Stack environment) {
-		super(input);
-		Environment_stack = environment;
-	}
+	// Location of yield arguments
+	private Stack<Integer> yields = new Stack<Integer>();
+	
+	// Personal environments, due to inherited environments on function bindings
+	private Map<String, Stack> environments = new HashMap<String, Stack>();
 	
 	/**
 	 * Interpret program
