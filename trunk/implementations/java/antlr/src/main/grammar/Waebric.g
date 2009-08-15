@@ -141,7 +141,7 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
-				-> ^( FUNCTION IDCON ^( FORMALS formals ) statement* ) ; // Manipulated to represent a function
+				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement ) ; // Manipulated to represent a function
 
 // $>
 // $<Predicates

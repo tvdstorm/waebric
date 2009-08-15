@@ -7,7 +7,9 @@ end
 def call-me
 	let var = {een:1,twee:2,drie:3}; in
 		let var2 = var.twee; in
-			echo var2 + var.een;
+			let func-me() = echo var2 + var.een; in
+				p func-me();
+			end	
 		end
 	end
 end

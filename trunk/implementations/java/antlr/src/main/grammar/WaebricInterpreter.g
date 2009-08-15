@@ -8,7 +8,7 @@ options {
 }
 
 scope Environment {
-	Map<String, CommonTree> functions;
+	Map<String, Integer> functions;
 	Map<String, Integer> variables;
 }
 
@@ -45,12 +45,12 @@ scope Environment {
 	public static Element current;
 	
 	// Additional fields
-	public static Stack<Integer> yields;
-	public static Map<String, Stack> environments;
+	public static Stack<Integer> yields = new Stack<Integer>();
+	public static Map<String, Stack> environments = new HashMap<String, Stack>();
 
-	public WaebricInterpreter(TreeNodeStream input, Environment_scope base) {
+	public WaebricInterpreter(TreeNodeStream input, Stack environment) {
 		super(input);
-		Environment_stack.push(base);
+		Environment_stack = environment;
 	}
 	
 	/**
@@ -61,10 +61,10 @@ scope Environment {
 		// Store function definitions to allow lazy function binding
 		Environment_stack.clear();
 		Environment_scope base = new Environment_scope();
-		base.functions = new HashMap<String, CommonTree>();
+		base.functions = new HashMap<String, Integer>();
 		base.variables = new HashMap<String, Integer>();
 		for(String function: loader.getFunctions().keySet()) 
-		{ base.functions.put(function, loader.getFunctions().get(function).tree); }
+		{ base.functions.put(function, loader.getFunctions().get(function).index); }
 		Environment_stack.push(base);
 		
 		// Interpret main function
@@ -75,10 +75,8 @@ scope Environment {
 		
 		// Interpret mappings
 		for(WaebricLoader.mapping_return mapping: loader.getMappings()) {
-			WaebricInterpreter instance = new WaebricInterpreter(
-    				new CommonTreeNodeStream(mapping.tree),
-    				(Environment_scope) Environment_stack.elementAt(0));
-    			instance.mapping();
+			input.seek(mapping.index);
+    			mapping();
 		}
 	}
 	
@@ -87,12 +85,12 @@ scope Environment {
 	 * @param name: Function name
 	 */
     	private boolean interpretFunction(String name) throws RecognitionException {
-    		CommonTree function = getFunction(name);
-    		if(function != null) {
-    			WaebricInterpreter instance = new WaebricInterpreter(
-    				new CommonTreeNodeStream(function),
-    				(Environment_scope) Environment_stack.elementAt(0));
-    			instance.function(); // Interpret function call in seperate instance, local scope
+    		int function = getFunction(name);
+    		if(function != -1) {
+    			int actual = input.index();
+    			input.seek(function);
+    			function();
+    			input.seek(actual);
     			return true;
     		} return false;
     	}
@@ -145,21 +143,39 @@ scope Environment {
 	 * Retrieve function
 	 * @param name: Function name
 	 */
-	private CommonTree getFunction(String name) {
+	private Integer getFunction(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
 			if($Environment[i]::functions.containsKey(name)) {
 				return $Environment[i]::functions.get(name); 
 			}
-		} return null ;
+		} return -1 ;
+	}
+	
+	private boolean containsFunction(String name) {
+		return getFunction(name) != -1;
 	}
 	
 	/**
 	 * Define function
 	 * @param name: Function name
-	 * @param tree: Function AST
+	 * @param index: Function index
 	 */
-	private void defineFunction(String name, CommonTree tree) {
-		$Environment::functions.put(name, tree);
+	private void defineFunction(String name, Integer index) {
+		$Environment::functions.put(name, index);
+	}
+	
+	/**
+	 * Retrieve function environment
+	 * @param name: Function name
+	 */
+	private Stack getEnvironment(String name) {
+		if(environments.containsKey(name)) {
+			return environments.get(name);
+		} else {
+			Stack environment = new Stack();
+			environment.push(Environment_stack.elementAt(0));
+			return environment;
+		}
 	}
 	
 	/**
@@ -209,7 +225,7 @@ mapping
 	:		PATH ':' markup { 
 				try {
 					OutputStream os = createOutputStream($PATH.toString());
-					outputDocument(document, os);
+					if(current != null) { outputDocument(document, os); }
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -221,8 +237,15 @@ mapping
 markup
 	@init { int attr = 0; }
 	:		^( MARKUP IDCON { attr = input.index(); } . . ) {
-				if(! interpretFunction($IDCON.getText())) {
-					// Markup tag
+				if(containsFunction($IDCON.getText())) {
+					// Process markup as function call
+					Stack actual = Environment_stack;
+					Environment_stack = getEnvironment($IDCON.getText());
+					// TODO: Process attributes and arguments
+					interpretFunction($IDCON.getText());
+					Environment_stack = actual;
+				} else {
+					// Process markup as tag
 					addContent(new Element($IDCON.getText()));
 					
 					// Attach attributes
@@ -364,7 +387,7 @@ eachStatement
 	scope Environment;
 	@init {
 		$Environment::variables = new HashMap<String, Integer>();
-		$Environment::functions = new HashMap<String, CommonTree>();
+		$Environment::functions = new HashMap<String, Integer>();
 		int stm = 0;
 	} :		^( 'each' '(' IDCON ':' e=expression ')' { stm = input.index(); } . ) {
 				int actualIndex = input.index();
@@ -381,17 +404,21 @@ eachStatement
 
 blockStatement
 	@init { Element actual = this.current; }
-	:		^( '{' ( statement { this.current = actual; } )* '}' ) ;		
+	:		^( '{' ( statement { 
+					if(actual != null) { this.current = actual; } 
+					else { actual = this.current; } 
+				} )* '}' ) ;		
 
 letStatement
 	scope Environment;
 	@init {
 		$Environment::variables = new HashMap<String, Integer>();
-		$Environment::functions = new HashMap<String, CommonTree>();
+		$Environment::functions = new HashMap<String, Integer>();
 		Element actual = this.current;
-	} :		^( 'let' assignment+ 'in' 
-			( statement { this.current = actual; } )* 
-			'end' ) ;
+	} :		^( 'let' assignment+ 'in' ( statement { 
+					if(actual != null) { this.current = actual; } 
+					else { actual = this.current; } 
+				} )* 'end' ) ;
 
 // $>
 // $<Assignments
@@ -404,9 +431,12 @@ varBinding
 				defineVariable($IDCON.getText(), index);
 			} ;
 			
-funcBinding :		^( FUNCTION id=IDCON formals stm=. ) ;
+funcBinding
+	@init { int index = input.index(); }
+	:		^( FUNCTION id=IDCON formals stm=. ) ;
 	finally {
-		defineFunction($id.getText(), $funcBinding.tree);
+		defineFunction($id.getText(), index);
+		environments.put($id.getText(), (Stack) Environment_stack.clone());
 	}
 
 // $>
