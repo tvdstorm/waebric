@@ -15,6 +15,8 @@ scope Environment {
 @header {
 	package org.cwi.waebric;
 	
+	import java.io.File;
+	import java.io.FileOutputStream;
 	import java.io.IOException;
 	import java.io.OutputStream;
 	import java.text.SimpleDateFormat;
@@ -64,14 +66,18 @@ scope Environment {
 		{ base.functions.put(function, loader.getFunctions().get(function).tree); }
 		Environment_stack.push(base);
 		
+		// Interpret main function
 		this.document = new Document();
 		if(interpretFunction("main")) {
 			if(current != null) { outputDocument(document, os); }
 		}
 		
+		// Interpret mappings
 		for(WaebricLoader.mapping_return mapping: loader.getMappings()) {
-			this.document = new Document();
-			// TODO : Evaluate function and store in file
+			WaebricInterpreter instance = new WaebricInterpreter(
+    				new CommonTreeNodeStream(mapping.tree),
+    				(Environment_scope) Environment_stack.elementAt(0));
+    			instance.mapping();
 		}
 	}
 	
@@ -176,15 +182,37 @@ scope Environment {
 		$Environment::variables.put(name, input);
 	}
 	
+	// Create file output stream for path
+	private OutputStream createOutputStream(String path) throws IOException {
+		int dirLength = path.lastIndexOf("/");
+		
+		// Create directories
+		if(dirLength != -1) {
+			File directory = new File(path.substring(0, dirLength));
+			directory.mkdirs();
+		}
+		
+		// Create file
+		File file = new File(path);
+		file.createNewFile();
+		
+		return new FileOutputStream(path); // Create stream
+	}
+	
 }
 
 // $<Site
 
-site:			'site' mappings 'end' ;
-
-mappings:		mapping? ( ';' mapping )* ;
-
-mapping	:		PATH ':' markup ;
+mapping
+	@init { this.document = new Document(); this.current = null; }
+	:		PATH ':' markup { 
+				try {
+					OutputStream os = createOutputStream($PATH.toString());
+					outputDocument(document, os);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} ;
 
 // $>
 // $<Markup
