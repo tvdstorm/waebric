@@ -229,7 +229,7 @@ scope Environment {
 
 mapping
 	@init { this.document = new Document(); this.current = null; }
-	:		PATH ':' markup { 
+	:		PATH ':' markup[false] { 
 				try {
 					OutputStream os = createOutputStream($PATH.toString());
 					if(current != null) { outputDocument(document, os); }
@@ -241,12 +241,11 @@ mapping
 // $>
 // $<Markup
 
-markup
+markup[boolean chain]
 	returns[boolean yield = false;]
 	@init { int start = input.index(); int attr = 0; int args = 0; }
 	:		^( MARKUP IDCON { attr = input.index(); } . { args = input.index(); } . ) {
-				if(containsFunction($IDCON.getText())) {
-								
+				if(containsFunction($IDCON.getText())) {		
 					// Process markup as function call
 					int curr = input.index();
 					input.seek(args);
@@ -254,7 +253,7 @@ markup
 					input.seek(curr);
 					
 					// Store yield arguments
-					if(containsYield($IDCON.getText())) {
+					if(containsYield($IDCON.getText()) && chain) {
 						yieldStack.add(start);
 						$yield = true;
 					}
@@ -397,7 +396,7 @@ statement:		ifStatement
 			| blockStatement
 			| ^( 'comment' STRCON ';' ) { addContent(new Comment($STRCON.getText())); }
 			| ^( 'echo' expression ';' ) { addContent(new Text($expression.eval)); }
-			| ^( 'echo' embedding ';' )
+			| ^( 'echo' embedding[false] ';' )
 			| ^( 'cdata' expression ';' ) {	addContent(new CDATA($expression.eval)); }
 			| 'yield;' {
 					int curr = input.index();
@@ -407,7 +406,7 @@ statement:		ifStatement
 					markupChain();
 					input.seek(curr);
 				}
-			| ^( MARKUP_STATEMENT markup { 
+			| ^( MARKUP_STATEMENT markup[true] { 
 					if($markup.yield) { 
 						matchAny(input); // Match markup chain, without executing
 						match(input, Token.UP, null); // Match up
@@ -416,7 +415,7 @@ statement:		ifStatement
 				} markupChain ) ;
 					
 					
-markupChain:		^( MARKUP_CHAIN markup {
+markupChain:		^( MARKUP_CHAIN markup[true] {
 					if($markup.yield) { 
 						matchAny(input); // Match markup chain, without executing
 						match(input, Token.UP, null); // Match up
@@ -425,7 +424,7 @@ markupChain:		^( MARKUP_CHAIN markup {
 				} markupChain )
 			| ^( MARKUP_CHAIN expression ';' ) { addContent(new Text($expression.eval)); }
 			| ^( MARKUP_CHAIN statement )
-			| ^( MARKUP_CHAIN embedding ';' )
+			| ^( MARKUP_CHAIN embedding[true] ';' )
 			| ^( MARKUP_CHAIN ';' ) ;
 
 ifStatement
@@ -515,9 +514,13 @@ predicate returns [boolean eval]
 // $>
 // $<Embedding
 
-embedding:		PRETEXT { addContent(new Text($PRETEXT.getText())); } embed textTail ;
+embedding [boolean chain]
+	:		PRETEXT { addContent(new Text($PRETEXT.getText())); } embed[chain] textTail[chain] ;
 
-embed:			markup+ | markup* expression { addContent(new Text($expression.eval)); } ;
+embed [boolean chain]
+	:		markup[chain]+ 
+			| markup[chain]* expression { addContent(new Text($expression.eval)); } ;
 
-textTail:		POSTTEXT { addContent(new Text($POSTTEXT.getText())); }
-			| MIDTEXT { addContent(new Text($MIDTEXT.getText())); } embed textTail ;
+textTail [boolean chain]
+	:		POSTTEXT { addContent(new Text($POSTTEXT.getText())); }
+			| MIDTEXT { addContent(new Text($MIDTEXT.getText())); } embed[chain] textTail[chain] ;
