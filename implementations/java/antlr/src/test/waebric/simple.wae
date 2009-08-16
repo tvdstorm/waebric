@@ -1,33 +1,9 @@
 module simple
 
 def main
- call-me();
+	call-me() "lol";
 end
 
 def call-me
-	menu({
-  			title: "Menu",
-  			kids: [
-  					{title: "Home", link: "/"}, 
-           			{title: "Misc", kids: 
-           			    [
-           					{title: "Contact", link: "contact.html"}, 
-                   			{title: "Links", link: "links.html"}
-                   		]
-                   	}
-                  ]
-       });
-end
-
-def menu(menu)
-  echo menu.title;
-  ul each (kid: menu.kids) item(kid);
-end
-
-def item(mi)
-  echo mi;
-  if (mi.kids)
-	echo "true";
-  else 
-	echo "false";
+	p yield;
 end

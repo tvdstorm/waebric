@@ -44,8 +44,9 @@ scope Environment {
 	private Document document;
 	private Element current;
 	
-	// Location of yield arguments
-	private Stack<Integer> yields = new Stack<Integer>();
+	// Yield related
+	private Stack<Integer> yieldStack = new Stack<Integer>();
+	private List<Integer> yieldLocations = new ArrayList<Integer>();
 	
 	// Personal environments, due to inherited environments on function bindings
 	private Map<String, Stack> environments = new HashMap<String, Stack>();
@@ -55,6 +56,8 @@ scope Environment {
 	 * @param os: Output stream for interpreting main function
 	 */
 	public void interpretProgram(OutputStream os, WaebricLoader loader) throws RecognitionException {
+		yieldLocations = loader.getYields(); // Store yield information
+	
 		// Store function definitions to allow lazy function binding
 		Environment_stack.clear();
 		Environment_scope base = new Environment_scope();
@@ -153,6 +156,12 @@ scope Environment {
 		return getFunction(name) != -1;
 	}
 	
+	private boolean containsYield(String name) {
+		int index = getFunction(name);
+		if(index != -1) { return yieldLocations.contains(index); }
+		return false;
+	}
+	
 	/**
 	 * Define function
 	 * @param name: Function name
@@ -233,19 +242,27 @@ mapping
 // $<Markup
 
 markup
-	@init { int attr = 0; int args = 0; }
+	returns[boolean yield = false;]
+	@init { int start = input.index(); int attr = 0; int args = 0; }
 	:		^( MARKUP IDCON { attr = input.index(); } . { args = input.index(); } . ) {
 				if(containsFunction($IDCON.getText())) {
+								
 					// Process markup as function call
-					int actualIndex = input.index();
+					int curr = input.index();
 					input.seek(args);
 					List<Integer> eval = arguments(true).args;
-					input.seek(actualIndex);
+					input.seek(curr);
 					
-					Stack actualEnvironment = Environment_stack;
+					// Store yield arguments
+					if(containsYield($IDCON.getText())) {
+						yieldStack.add(start);
+						$yield = true;
+					}
+					
+					Stack environment = Environment_stack;
 					Environment_stack = getEnvironment($IDCON.getText());
 					interpretFunction($IDCON.getText(), eval); // Interpret function
-					Environment_stack = actualEnvironment; // Restore environment
+					Environment_stack = environment; // Restore environment
 				} else {
 					// Process markup as tag
 					addContent(new Element($IDCON.getText()));
@@ -382,11 +399,21 @@ statement:		ifStatement
 			| ^( 'echo' expression ';' ) { addContent(new Text($expression.eval)); }
 			| ^( 'echo' embedding ';' )
 			| ^( 'cdata' expression ';' ) {	addContent(new CDATA($expression.eval)); }
-			| 'yield;'
-			| ^( MARKUP_STATEMENT markup+ expression ';' ) { addContent(new Text($expression.eval)); }
-			| ^( MARKUP_STATEMENT markup+ embedding ';' )
-			| ^( MARKUP_STATEMENT markup+ statement )
-			| ^( MARKUP_STATEMENT markup+ ';' ) ;
+			| 'yield;' {
+					int curr = input.index();
+					int index = yieldStack.pop();
+					input.seek(index);
+					matchAny(input); // Skip called markup
+					markupChain();
+					input.seek(curr);
+				}
+			| ^( MARKUP_STATEMENT m=markup { if(m.yield) { System.out.println("I WANNA QUIT OMG!"); } } markupChain ) ;
+							
+markupChain:		markup* 
+				( expression ';' { addContent(new Text($expression.eval)); } 
+				| embedding ';' 
+				| statement 
+				| ';' ) ;
 
 ifStatement
 	@init{ int ti = 0; int fi = 0; }
