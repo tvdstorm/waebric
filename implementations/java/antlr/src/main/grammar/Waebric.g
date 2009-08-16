@@ -10,6 +10,7 @@ tokens {
 	ARGUMENTS = 'args';
 	MARKUP = 'mrku';
 	MARKUP_STATEMENT = 'mstm';
+	MARKUP_CHAIN = 'mc';
 	FORMALS = 'fmls';
 	FUNCTION = 'def';
 }
@@ -127,14 +128,20 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 			| 'cdata' expression ';' 
 				-> ^( 'cdata' expression ';' )
 			| 'yield;'
-			| markup+ expression ';' 
-				-> ^( MARKUP_STATEMENT markup+ expression ';' )
-			| markup+ statement 
-				-> ^( MARKUP_STATEMENT markup+ statement )
-			| markup+ embedding ';' 
-				-> ^( MARKUP_STATEMENT markup+ embedding ';' )
-			| markup+ ';' 
-				-> ^( MARKUP_STATEMENT markup+ ';' ) ;
+			| markup markupChain
+				-> ^( MARKUP_STATEMENT markup markupChain );
+
+markupChain:		markup markupChain 
+				-> ^( MARKUP_CHAIN markup markupChain )
+			| expression ';' 
+				-> ^( MARKUP_CHAIN expression )
+			| statement  
+				-> ^( MARKUP_CHAIN statement )
+			| embedding ';' 
+				-> ^( MARKUP_CHAIN embedding )
+			| ';' 
+				-> ^( MARKUP_CHAIN ) ;
+
 
 // $>
 // $<Assignments

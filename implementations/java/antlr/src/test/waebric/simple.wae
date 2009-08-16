@@ -1,7 +1,7 @@
 module simple
 
 def main
-	call-me() "lol";
+	call-me() abc one two 123;
 end
 
 def call-me
