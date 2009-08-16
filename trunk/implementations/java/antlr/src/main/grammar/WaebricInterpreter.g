@@ -21,7 +21,6 @@ scope Environment {
 	import java.io.OutputStream;
 	import java.text.SimpleDateFormat;
 	
-	import java.util.Date;
 	import java.util.HashMap;
 	import java.util.Map;
 	import java.util.Collection;
@@ -103,6 +102,25 @@ scope Environment {
     			return true; // Succesfull interpretation
     		} return false;
     	}
+    	
+	/**
+	 * Create file output stream for path
+	 */
+	private OutputStream createOutputStream(String path) throws IOException {
+		int dirLength = path.lastIndexOf("/");
+		
+		// Create directories
+		if(dirLength != -1) {
+			File directory = new File(path.substring(0, dirLength));
+			directory.mkdirs();
+		}
+		
+		// Create file
+		File file = new File(path);
+		file.createNewFile();
+		
+		return new FileOutputStream(path); // Create stream
+	}
 	
 	/**
 	 * Write document to output stream
@@ -110,12 +128,6 @@ scope Environment {
 	private void outputDocument(Document document, OutputStream os) {
 		try {
 			if(os != null) {
-				// Brand-mark document
-				SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-				Comment comment = new Comment("Generated on " + format.format(new Date()));
-				document.addContent(0, comment);
-		
-				// Output document
 				XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
 				out.output(document, os);
 			}
@@ -212,25 +224,6 @@ scope Environment {
 	 */
 	private void defineVariable(String name, Integer input) {
 		$Environment::variables.put(name, input);
-	}
-	
-	/**
-	 * Create file output stream for path
-	 */
-	private OutputStream createOutputStream(String path) throws IOException {
-		int dirLength = path.lastIndexOf("/");
-		
-		// Create directories
-		if(dirLength != -1) {
-			File directory = new File(path.substring(0, dirLength));
-			directory.mkdirs();
-		}
-		
-		// Create file
-		File file = new File(path);
-		file.createNewFile();
-		
-		return new FileOutputStream(path); // Create stream
 	}
 	
 	/**
@@ -549,12 +542,14 @@ predicate returns [boolean eval]
 // $<Embedding
 
 embedding [boolean chain]
-	:		PRETEXT { addContent(new Text($PRETEXT.getText())); } embed[chain] textTail[chain] ;
+	:		PRETEXT { addContent(new Text($PRETEXT.getText().substring(1, $PRETEXT.getText().length()-1))); } 
+			embed[chain] textTail[chain] ;
 
 embed [boolean chain]
 	:		markup[chain]+ 
 			| markup[chain]* expression { addContent(new Text($expression.eval)); } ;
 
 textTail [boolean chain]
-	:		POSTTEXT { addContent(new Text($POSTTEXT.getText())); }
-			| MIDTEXT { addContent(new Text($MIDTEXT.getText())); } embed[chain] textTail[chain] ;
+	:		POSTTEXT { addContent(new Text($POSTTEXT.getText().substring(1, $POSTTEXT.getText().length()-1))); }
+			| MIDTEXT { addContent(new Text($MIDTEXT.getText().substring(1, $MIDTEXT.getText().length()-1))); }
+			embed[chain] textTail[chain] ;
