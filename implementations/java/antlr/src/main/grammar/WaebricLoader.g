@@ -157,11 +157,16 @@ statement
 			| ^( 'echo' embedding ';' )
 			| ^( 'cdata' expression ';' )
 			| 'yield;' { $yield = true; }
-			| ^( MARKUP_STATEMENT markup+ expression ';' )
-			| ^( MARKUP_STATEMENT markup+ stm=statement ) { $yield = $stm.yield; }
-			| ^( MARKUP_STATEMENT markup+ embedding ';' )
-			| ^( MARKUP_STATEMENT markup+ ';' ) ;
+			| ^( MARKUP_STATEMENT markup markupChain { $yield = $markupChain.yield; } ) ;
 
+markupChain
+	returns [boolean yield = true]
+	:		^( MARKUP_CHAIN markup c=markupChain { $yield = $c.yield; } )
+			| ^( MARKUP_CHAIN expression ';' )
+			| ^( MARKUP_CHAIN s=statement { $yield = $s.yield; } )
+			| ^( MARKUP_CHAIN embedding ';' )
+			| ^( MARKUP_CHAIN ';' ) ;
+			
 // $>
 // $<Assignments
 

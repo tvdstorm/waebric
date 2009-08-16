@@ -271,10 +271,13 @@ statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 			| ^( 'echo' embedding ';' )
 			| ^( 'cdata' expression ';' )
 			| 'yield;'
-			| ^( MARKUP_STATEMENT markup+ expression ';' )
-			| ^( MARKUP_STATEMENT markup+ statement )
-			| ^( MARKUP_STATEMENT markup+ embedding ';' )
-			| ^( MARKUP_STATEMENT markup+ ';' ) ;
+			| ^( MARKUP_STATEMENT markup markupChain ) ;
+			
+markupChain:		^( MARKUP_CHAIN markup markupChain )
+			| ^( MARKUP_CHAIN expression ';' )
+			| ^( MARKUP_CHAIN statement )
+			| ^( MARKUP_CHAIN embedding ';' )
+			| ^( MARKUP_CHAIN ';' ) ;
 
 eachStatement
 	scope Environment;

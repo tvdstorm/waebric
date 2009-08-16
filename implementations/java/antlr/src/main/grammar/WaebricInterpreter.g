@@ -407,13 +407,18 @@ statement:		ifStatement
 					markupChain();
 					input.seek(curr);
 				}
-			| ^( MARKUP_STATEMENT m=markup { if(m.yield) { System.out.println("I WANNA QUIT OMG!"); } } markupChain ) ;
-							
-markupChain:		markup* 
-				( expression ';' { addContent(new Text($expression.eval)); } 
-				| embedding ';' 
-				| statement 
-				| ';' ) ;
+			| ^( MARKUP_STATEMENT markup { 
+					if($markup.yield) { matchAny(input); } // Skip chain
+				} markupChain ) ;
+					
+					
+markupChain:		^( MARKUP_CHAIN markup { 
+					if($markup.yield) { matchAny(input); } // Skip chain
+				} markupChain )
+			| ^( MARKUP_CHAIN expression ';' ) { addContent(new Text($expression.eval)); }
+			| ^( MARKUP_CHAIN statement )
+			| ^( MARKUP_CHAIN embedding ';' )
+			| ^( MARKUP_CHAIN ';' ) ;
 
 ifStatement
 	@init{ int ti = 0; int fi = 0; }
