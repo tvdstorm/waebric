@@ -302,7 +302,12 @@ argument [List<Integer> args, boolean call]
 			} | IDCON '=' expression {
 				if(call) { 
 					 // TODO: Figure out what to do
-				} else { current.setAttribute($IDCON.getText(), $expression.eval); } 
+				} else { 
+					if($IDCON.getText().equals("xmlns")) {
+						// JDOM won't allow xmlns attributes
+						current.setNamespace(Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml"));
+					} else { current.setAttribute($IDCON.getText(), $expression.eval); }
+				} 
 			} ;
 
 // $>
@@ -399,12 +404,18 @@ statement:		ifStatement
 			| ^( 'echo' embedding[false] ';' )
 			| ^( 'cdata' expression ';' ) {	addContent(new CDATA($expression.eval)); }
 			| 'yield;' {
-					int curr = input.index();
-					int index = yieldStack.pop();
-					input.seek(index);
-					matchAny(input); // Skip called markup
-					markupChain();
-					input.seek(curr);
+					if(! yieldStack.isEmpty()) {
+						int curr = input.index();
+						int index = yieldStack.pop();
+						Stack clone = (Stack) yieldStack.clone();
+
+						input.seek(index);
+						matchAny(input); // Skip already interpreted markup
+						markupChain(); // Execute copied markup chain
+						input.seek(curr);
+						
+						yieldStack = clone;
+					}	
 				}
 			| ^( MARKUP_STATEMENT markup[true] { 
 					if($markup.yield) { 
