@@ -408,12 +408,20 @@ statement:		ifStatement
 					input.seek(curr);
 				}
 			| ^( MARKUP_STATEMENT markup { 
-					if($markup.yield) { matchAny(input); } // Skip chain
+					if($markup.yield) { 
+						matchAny(input); // Match markup chain, without executing
+						match(input, Token.UP, null); // Match up
+						return retval; // Quit parsing markup stm
+					}
 				} markupChain ) ;
 					
 					
-markupChain:		^( MARKUP_CHAIN markup { 
-					if($markup.yield) { matchAny(input); } // Skip chain
+markupChain:		^( MARKUP_CHAIN markup {
+					if($markup.yield) { 
+						matchAny(input); // Match markup chain, without executing
+						match(input, Token.UP, null); // Match up
+						return retval; // Quit parsing markup stm
+					}
 				} markupChain )
 			| ^( MARKUP_CHAIN expression ';' ) { addContent(new Text($expression.eval)); }
 			| ^( MARKUP_CHAIN statement )

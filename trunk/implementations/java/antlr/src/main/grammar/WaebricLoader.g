@@ -160,7 +160,7 @@ statement
 			| ^( MARKUP_STATEMENT markup markupChain { $yield = $markupChain.yield; } ) ;
 
 markupChain
-	returns [boolean yield = true]
+	returns [boolean yield = false]
 	:		^( MARKUP_CHAIN markup c=markupChain { $yield = $c.yield; } )
 			| ^( MARKUP_CHAIN expression ';' )
 			| ^( MARKUP_CHAIN s=statement { $yield = $s.yield; } )

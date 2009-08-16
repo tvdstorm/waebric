@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricLoader.g 2009-08-16 10:40:21
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricLoader.g 2009-08-16 10:47:33
 
 	package org.cwi.waebric;
 	import antlr.SemanticException;
@@ -2385,13 +2385,13 @@ public class WaebricLoader extends TreeParser {
     // $ANTLR end "statement"
 
     public static class markupChain_return extends TreeRuleReturnScope {
-        public boolean yield = true;
+        public boolean yield = false;
         CommonTree tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "markupChain"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricLoader.g:162:1: markupChain returns [boolean yield = true] : ( ^( MARKUP_CHAIN markup c= markupChain ) | ^( MARKUP_CHAIN expression ';' ) | ^( MARKUP_CHAIN s= statement ) | ^( MARKUP_CHAIN embedding ';' ) | ^( MARKUP_CHAIN ';' ) );
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricLoader.g:162:1: markupChain returns [boolean yield = false] : ( ^( MARKUP_CHAIN markup c= markupChain ) | ^( MARKUP_CHAIN expression ';' ) | ^( MARKUP_CHAIN s= statement ) | ^( MARKUP_CHAIN embedding ';' ) | ^( MARKUP_CHAIN ';' ) );
     public final WaebricLoader.markupChain_return markupChain() throws RecognitionException {
         WaebricLoader.markupChain_return retval = new WaebricLoader.markupChain_return();
         retval.start = input.LT(1);
