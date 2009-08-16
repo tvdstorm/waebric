@@ -241,7 +241,7 @@ mapping
 // $>
 // $<Markup
 
-markup[boolean chain]
+markup [boolean chain]
 	returns[boolean yield = false;]
 	@init { int start = input.index(); int attr = 0; int args = 0; }
 	:		^( MARKUP IDCON { attr = input.index(); } . { args = input.index(); } . ) {
@@ -284,11 +284,11 @@ attribute:		'#' IDCON { current.setAttribute("id", $IDCON.getText()); }
 			| '@' w=NATCON { current.setAttribute("width", $w.getText()); }
 				( '%' h=NATCON{ current.setAttribute("height", $h.getText()); } )? ;
 			
-arguments[boolean call]
+arguments [boolean call]
 	returns [List<Integer> args = new ArrayList<Integer>()]
 	:		^( ARGUMENTS argument[$args, call]* ) ;
 
-argument[List<Integer> args, boolean call]
+argument [List<Integer> args, boolean call]
 	:		expression {
 				if(call) { 
 					args.add($expression.index); // Add expression index to argument collection
@@ -369,7 +369,7 @@ expression returns [
 // $>
 // $<Function
 
-function[List<Integer> args]
+function [List<Integer> args]
 	@init { Element actual = null; int curr = 0; }
 	:		^( FUNCTION IDCON 
 				// Store formals as variable with corresponding argument
