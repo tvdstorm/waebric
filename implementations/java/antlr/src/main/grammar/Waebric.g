@@ -131,14 +131,14 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 			| markup markupChain
 				-> ^( MARKUP_STATEMENT markup markupChain );
 
-markupChain:		markup markupChain 
-				-> ^( MARKUP_CHAIN markup markupChain )
-			| expression ';' 
+markupChain:		expression ';' 
 				-> ^( MARKUP_CHAIN expression ';' )
 			| statement  
 				-> ^( MARKUP_CHAIN statement )
 			| embedding ';' 
 				-> ^( MARKUP_CHAIN embedding ';' )
+			| markup markupChain 
+				-> ^( MARKUP_CHAIN markup markupChain )
 			| ';' 
 				-> ^( MARKUP_CHAIN ';' ) ;
 

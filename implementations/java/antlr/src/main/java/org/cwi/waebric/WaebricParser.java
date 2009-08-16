@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-16 10:40:48
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-08-16 10:55:21
 
 	package org.cwi.waebric;
 	import java.util.ArrayList;
@@ -237,7 +237,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: function, imprt, 40, site, moduleId
+            // elements: site, imprt, moduleId, function, 40
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -436,7 +436,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: 42, moduleId
+            // elements: moduleId, 42
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -769,7 +769,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: attributes, arguments, IDCON
+            // elements: IDCON, attributes, arguments
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2002,7 +2002,7 @@ public class WaebricParser extends Parser {
 
 
             // AST REWRITE
-            // elements: IDCON, statement, formals
+            // elements: formals, statement, IDCON
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2381,7 +2381,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 48, 50, 58, statement, 57, statement, predicate
+                    // elements: predicate, 58, 50, 48, statement, 57, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2453,7 +2453,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: 48, statement, 59, 50, 43, IDCON, expression
+                    // elements: statement, 48, 59, 50, 43, expression, IDCON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2567,7 +2567,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: assignment, statement, 61, END, 60
+                    // elements: assignment, END, 61, statement, 60
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2701,7 +2701,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: STRCON, SEMICOLON, COMMENT
+                    // elements: COMMENT, STRCON, SEMICOLON
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2748,7 +2748,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, 62, expression
+                    // elements: SEMICOLON, expression, 62
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2795,7 +2795,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: embedding, SEMICOLON, 62
+                    // elements: SEMICOLON, 62, embedding
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2842,7 +2842,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: SEMICOLON, 63, expression
+                    // elements: expression, SEMICOLON, 63
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2959,29 +2959,29 @@ public class WaebricParser extends Parser {
     };
 
     // $ANTLR start "markupChain"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:1: markupChain : ( markup markupChain -> ^( MARKUP_CHAIN markup markupChain ) | expression ';' -> ^( MARKUP_CHAIN expression ';' ) | statement -> ^( MARKUP_CHAIN statement ) | embedding ';' -> ^( MARKUP_CHAIN embedding ';' ) | ';' -> ^( MARKUP_CHAIN ';' ) );
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:1: markupChain : ( expression ';' -> ^( MARKUP_CHAIN expression ';' ) | statement -> ^( MARKUP_CHAIN statement ) | embedding ';' -> ^( MARKUP_CHAIN embedding ';' ) | markup markupChain -> ^( MARKUP_CHAIN markup markupChain ) | ';' -> ^( MARKUP_CHAIN ';' ) );
     public final WaebricParser.markupChain_return markupChain() throws RecognitionException {
         WaebricParser.markupChain_return retval = new WaebricParser.markupChain_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token char_literal116=null;
-        Token char_literal119=null;
+        Token char_literal114=null;
+        Token char_literal117=null;
         Token char_literal120=null;
-        WaebricParser.markup_return markup113 = null;
+        WaebricParser.expression_return expression113 = null;
 
-        WaebricParser.markupChain_return markupChain114 = null;
+        WaebricParser.statement_return statement115 = null;
 
-        WaebricParser.expression_return expression115 = null;
+        WaebricParser.embedding_return embedding116 = null;
 
-        WaebricParser.statement_return statement117 = null;
+        WaebricParser.markup_return markup118 = null;
 
-        WaebricParser.embedding_return embedding118 = null;
+        WaebricParser.markupChain_return markupChain119 = null;
 
 
-        Object char_literal116_tree=null;
-        Object char_literal119_tree=null;
+        Object char_literal114_tree=null;
+        Object char_literal117_tree=null;
         Object char_literal120_tree=null;
         RewriteRuleTokenStream stream_SEMICOLON=new RewriteRuleTokenStream(adaptor,"token SEMICOLON");
         RewriteRuleSubtreeStream stream_statement=new RewriteRuleSubtreeStream(adaptor,"rule statement");
@@ -2990,68 +2990,21 @@ public class WaebricParser extends Parser {
         RewriteRuleSubtreeStream stream_expression=new RewriteRuleSubtreeStream(adaptor,"rule expression");
         RewriteRuleSubtreeStream stream_markup=new RewriteRuleSubtreeStream(adaptor,"rule markup");
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:12: ( markup markupChain -> ^( MARKUP_CHAIN markup markupChain ) | expression ';' -> ^( MARKUP_CHAIN expression ';' ) | statement -> ^( MARKUP_CHAIN statement ) | embedding ';' -> ^( MARKUP_CHAIN embedding ';' ) | ';' -> ^( MARKUP_CHAIN ';' ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:12: ( expression ';' -> ^( MARKUP_CHAIN expression ';' ) | statement -> ^( MARKUP_CHAIN statement ) | embedding ';' -> ^( MARKUP_CHAIN embedding ';' ) | markup markupChain -> ^( MARKUP_CHAIN markup markupChain ) | ';' -> ^( MARKUP_CHAIN ';' ) )
             int alt26=5;
             alt26 = dfa26.predict(input);
             switch (alt26) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:15: markup markupChain
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:15: expression ';'
                     {
-                    pushFollow(FOLLOW_markup_in_markupChain1010);
-                    markup113=markup();
+                    pushFollow(FOLLOW_expression_in_markupChain1010);
+                    expression113=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_markup.add(markup113.getTree());
-                    pushFollow(FOLLOW_markupChain_in_markupChain1012);
-                    markupChain114=markupChain();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_markupChain.add(markupChain114.getTree());
-
-
-                    // AST REWRITE
-                    // elements: markupChain, markup
-                    // token labels: 
-                    // rule labels: retval
-                    // token list labels: 
-                    // rule list labels: 
-                    // wildcard labels: 
-                    if ( state.backtracking==0 ) {
-                    retval.tree = root_0;
-                    RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
-
-                    root_0 = (Object)adaptor.nil();
-                    // 135:5: -> ^( MARKUP_CHAIN markup markupChain )
-                    {
-                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:135:8: ^( MARKUP_CHAIN markup markupChain )
-                        {
-                        Object root_1 = (Object)adaptor.nil();
-                        root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(MARKUP_CHAIN, "MARKUP_CHAIN"), root_1);
-
-                        adaptor.addChild(root_1, stream_markup.nextTree());
-                        adaptor.addChild(root_1, stream_markupChain.nextTree());
-
-                        adaptor.addChild(root_0, root_1);
-                        }
-
-                    }
-
-                    retval.tree = root_0;}
-                    }
-                    break;
-                case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:6: expression ';'
-                    {
-                    pushFollow(FOLLOW_expression_in_markupChain1036);
-                    expression115=expression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_expression.add(expression115.getTree());
-                    char_literal116=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_markupChain1038); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal116);
+                    if ( state.backtracking==0 ) stream_expression.add(expression113.getTree());
+                    char_literal114=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_markupChain1012); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal114);
 
 
 
@@ -3067,9 +3020,9 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 137:5: -> ^( MARKUP_CHAIN expression ';' )
+                    // 135:5: -> ^( MARKUP_CHAIN expression ';' )
                     {
-                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:137:8: ^( MARKUP_CHAIN expression ';' )
+                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:135:8: ^( MARKUP_CHAIN expression ';' )
                         {
                         Object root_1 = (Object)adaptor.nil();
                         root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(MARKUP_CHAIN, "MARKUP_CHAIN"), root_1);
@@ -3085,15 +3038,15 @@ public class WaebricParser extends Parser {
                     retval.tree = root_0;}
                     }
                     break;
-                case 3 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:6: statement
+                case 2 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:6: statement
                     {
-                    pushFollow(FOLLOW_statement_in_markupChain1062);
-                    statement117=statement();
+                    pushFollow(FOLLOW_statement_in_markupChain1036);
+                    statement115=statement();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_statement.add(statement117.getTree());
+                    if ( state.backtracking==0 ) stream_statement.add(statement115.getTree());
 
 
                     // AST REWRITE
@@ -3108,9 +3061,9 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 139:5: -> ^( MARKUP_CHAIN statement )
+                    // 137:5: -> ^( MARKUP_CHAIN statement )
                     {
-                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:139:8: ^( MARKUP_CHAIN statement )
+                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:137:8: ^( MARKUP_CHAIN statement )
                         {
                         Object root_1 = (Object)adaptor.nil();
                         root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(MARKUP_CHAIN, "MARKUP_CHAIN"), root_1);
@@ -3125,17 +3078,17 @@ public class WaebricParser extends Parser {
                     retval.tree = root_0;}
                     }
                     break;
-                case 4 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:140:6: embedding ';'
+                case 3 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:6: embedding ';'
                     {
-                    pushFollow(FOLLOW_embedding_in_markupChain1085);
-                    embedding118=embedding();
+                    pushFollow(FOLLOW_embedding_in_markupChain1059);
+                    embedding116=embedding();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_embedding.add(embedding118.getTree());
-                    char_literal119=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_markupChain1087); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal119);
+                    if ( state.backtracking==0 ) stream_embedding.add(embedding116.getTree());
+                    char_literal117=(Token)match(input,SEMICOLON,FOLLOW_SEMICOLON_in_markupChain1061); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_SEMICOLON.add(char_literal117);
 
 
 
@@ -3151,15 +3104,62 @@ public class WaebricParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (Object)adaptor.nil();
-                    // 141:5: -> ^( MARKUP_CHAIN embedding ';' )
+                    // 139:5: -> ^( MARKUP_CHAIN embedding ';' )
                     {
-                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:141:8: ^( MARKUP_CHAIN embedding ';' )
+                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:139:8: ^( MARKUP_CHAIN embedding ';' )
                         {
                         Object root_1 = (Object)adaptor.nil();
                         root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(MARKUP_CHAIN, "MARKUP_CHAIN"), root_1);
 
                         adaptor.addChild(root_1, stream_embedding.nextTree());
                         adaptor.addChild(root_1, stream_SEMICOLON.nextNode());
+
+                        adaptor.addChild(root_0, root_1);
+                        }
+
+                    }
+
+                    retval.tree = root_0;}
+                    }
+                    break;
+                case 4 :
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:140:6: markup markupChain
+                    {
+                    pushFollow(FOLLOW_markup_in_markupChain1085);
+                    markup118=markup();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_markup.add(markup118.getTree());
+                    pushFollow(FOLLOW_markupChain_in_markupChain1087);
+                    markupChain119=markupChain();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_markupChain.add(markupChain119.getTree());
+
+
+                    // AST REWRITE
+                    // elements: markup, markupChain
+                    // token labels: 
+                    // rule labels: retval
+                    // token list labels: 
+                    // rule list labels: 
+                    // wildcard labels: 
+                    if ( state.backtracking==0 ) {
+                    retval.tree = root_0;
+                    RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
+
+                    root_0 = (Object)adaptor.nil();
+                    // 141:5: -> ^( MARKUP_CHAIN markup markupChain )
+                    {
+                        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:141:8: ^( MARKUP_CHAIN markup markupChain )
+                        {
+                        Object root_1 = (Object)adaptor.nil();
+                        root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(MARKUP_CHAIN, "MARKUP_CHAIN"), root_1);
+
+                        adaptor.addChild(root_1, stream_markup.nextTree());
+                        adaptor.addChild(root_1, stream_markupChain.nextTree());
 
                         adaptor.addChild(root_0, root_1);
                         }
@@ -3345,7 +3345,7 @@ public class WaebricParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: formals, statement, IDCON
+                    // elements: formals, IDCON, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -4039,19 +4039,15 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred45_Waebric
     public final void synpred45_Waebric_fragment() throws RecognitionException {   
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:15: ( markup markupChain )
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:15: markup markupChain
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:15: ( expression ';' )
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:134:15: expression ';'
         {
-        pushFollow(FOLLOW_markup_in_synpred45_Waebric1010);
-        markup();
+        pushFollow(FOLLOW_expression_in_synpred45_Waebric1010);
+        expression();
 
         state._fsp--;
         if (state.failed) return ;
-        pushFollow(FOLLOW_markupChain_in_synpred45_Waebric1012);
-        markupChain();
-
-        state._fsp--;
-        if (state.failed) return ;
+        match(input,SEMICOLON,FOLLOW_SEMICOLON_in_synpred45_Waebric1012); if (state.failed) return ;
 
         }
     }
@@ -4059,26 +4055,10 @@ public class WaebricParser extends Parser {
 
     // $ANTLR start synpred46_Waebric
     public final void synpred46_Waebric_fragment() throws RecognitionException {   
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:6: ( expression ';' )
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:6: expression ';'
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:6: ( statement )
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:136:6: statement
         {
-        pushFollow(FOLLOW_expression_in_synpred46_Waebric1036);
-        expression();
-
-        state._fsp--;
-        if (state.failed) return ;
-        match(input,SEMICOLON,FOLLOW_SEMICOLON_in_synpred46_Waebric1038); if (state.failed) return ;
-
-        }
-    }
-    // $ANTLR end synpred46_Waebric
-
-    // $ANTLR start synpred47_Waebric
-    public final void synpred47_Waebric_fragment() throws RecognitionException {   
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:6: ( statement )
-        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:138:6: statement
-        {
-        pushFollow(FOLLOW_statement_in_synpred47_Waebric1062);
+        pushFollow(FOLLOW_statement_in_synpred46_Waebric1036);
         statement();
 
         state._fsp--;
@@ -4086,7 +4066,27 @@ public class WaebricParser extends Parser {
 
         }
     }
-    // $ANTLR end synpred47_Waebric
+    // $ANTLR end synpred46_Waebric
+
+    // $ANTLR start synpred48_Waebric
+    public final void synpred48_Waebric_fragment() throws RecognitionException {   
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:140:6: ( markup markupChain )
+        // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:140:6: markup markupChain
+        {
+        pushFollow(FOLLOW_markup_in_synpred48_Waebric1085);
+        markup();
+
+        state._fsp--;
+        if (state.failed) return ;
+        pushFollow(FOLLOW_markupChain_in_synpred48_Waebric1087);
+        markupChain();
+
+        state._fsp--;
+        if (state.failed) return ;
+
+        }
+    }
+    // $ANTLR end synpred48_Waebric
 
     // $ANTLR start synpred51_Waebric
     public final void synpred51_Waebric_fragment() throws RecognitionException {   
@@ -4260,6 +4260,20 @@ public class WaebricParser extends Parser {
         state.failed=false;
         return success;
     }
+    public final boolean synpred48_Waebric() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred48_Waebric_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
     public final boolean synpred58_Waebric() {
         state.backtracking++;
         int start = input.mark();
@@ -4321,20 +4335,6 @@ public class WaebricParser extends Parser {
         int start = input.mark();
         try {
             synpred53_Waebric_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred47_Waebric() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred47_Waebric_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -4421,7 +4421,7 @@ public class WaebricParser extends Parser {
     static final String DFA26_maxS =
         "\1\100\1\0\4\uffff\1\0\12\uffff";
     static final String DFA26_acceptS =
-        "\2\uffff\1\2\4\uffff\1\3\6\uffff\1\4\1\5\1\1";
+        "\2\uffff\1\1\4\uffff\1\2\6\uffff\1\3\1\5\1\4";
     static final String DFA26_specialS =
         "\1\uffff\1\0\4\uffff\1\1\12\uffff}>";
     static final String[] DFA26_transitionS = {
@@ -4475,7 +4475,7 @@ public class WaebricParser extends Parser {
             this.transition = DFA26_transition;
         }
         public String getDescription() {
-            return "134:1: markupChain : ( markup markupChain -> ^( MARKUP_CHAIN markup markupChain ) | expression ';' -> ^( MARKUP_CHAIN expression ';' ) | statement -> ^( MARKUP_CHAIN statement ) | embedding ';' -> ^( MARKUP_CHAIN embedding ';' ) | ';' -> ^( MARKUP_CHAIN ';' ) );";
+            return "134:1: markupChain : ( expression ';' -> ^( MARKUP_CHAIN expression ';' ) | statement -> ^( MARKUP_CHAIN statement ) | embedding ';' -> ^( MARKUP_CHAIN embedding ';' ) | markup markupChain -> ^( MARKUP_CHAIN markup markupChain ) | ';' -> ^( MARKUP_CHAIN ';' ) );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -4488,11 +4488,11 @@ public class WaebricParser extends Parser {
                         int index26_1 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (synpred45_Waebric()) ) {s = 16;}
+                        if ( (synpred45_Waebric()) ) {s = 2;}
 
-                        else if ( (synpred46_Waebric()) ) {s = 2;}
+                        else if ( (synpred46_Waebric()) ) {s = 7;}
 
-                        else if ( (synpred47_Waebric()) ) {s = 7;}
+                        else if ( (synpred48_Waebric()) ) {s = 16;}
 
                          
                         input.seek(index26_1);
@@ -4505,9 +4505,9 @@ public class WaebricParser extends Parser {
                         int index26_6 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (synpred46_Waebric()) ) {s = 2;}
+                        if ( (synpred45_Waebric()) ) {s = 2;}
 
-                        else if ( (synpred47_Waebric()) ) {s = 7;}
+                        else if ( (synpred46_Waebric()) ) {s = 7;}
 
                          
                         input.seek(index26_6);
@@ -4909,13 +4909,13 @@ public class WaebricParser extends Parser {
     public static final BitSet FOLLOW_64_in_statement977 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_markup_in_statement984 = new BitSet(new long[]{0xDA5000000092E800L,0x0000000000000001L});
     public static final BitSet FOLLOW_markupChain_in_statement986 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_markupChain1010 = new BitSet(new long[]{0xDA5000000092E800L,0x0000000000000001L});
-    public static final BitSet FOLLOW_markupChain_in_markupChain1012 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_markupChain1036 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_markupChain1038 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_statement_in_markupChain1062 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_embedding_in_markupChain1085 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_markupChain1087 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_markupChain1010 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_markupChain1012 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_statement_in_markupChain1036 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_embedding_in_markupChain1059 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_markupChain1061 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_markupChain1085 = new BitSet(new long[]{0xDA5000000092E800L,0x0000000000000001L});
+    public static final BitSet FOLLOW_markupChain_in_markupChain1087 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_SEMICOLON_in_markupChain1111 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_IDCON_in_assignment1138 = new BitSet(new long[]{0x0008000000000000L});
     public static final BitSet FOLLOW_51_in_assignment1140 = new BitSet(new long[]{0x005000000000E800L});
@@ -4953,11 +4953,11 @@ public class WaebricParser extends Parser {
     public static final BitSet FOLLOW_IDCON_in_synpred27_Waebric591 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_58_in_synpred32_Waebric715 = new BitSet(new long[]{0xDA40000000100800L,0x0000000000000001L});
     public static final BitSet FOLLOW_statement_in_synpred32_Waebric717 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_markup_in_synpred45_Waebric1010 = new BitSet(new long[]{0xDA5000000092E800L,0x0000000000000001L});
-    public static final BitSet FOLLOW_markupChain_in_synpred45_Waebric1012 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_synpred46_Waebric1036 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_SEMICOLON_in_synpred46_Waebric1038 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_statement_in_synpred47_Waebric1062 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_synpred45_Waebric1010 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_SEMICOLON_in_synpred45_Waebric1012 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_statement_in_synpred46_Waebric1036 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_markup_in_synpred48_Waebric1085 = new BitSet(new long[]{0xDA5000000092E800L,0x0000000000000001L});
+    public static final BitSet FOLLOW_markupChain_in_synpred48_Waebric1087 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_expression_in_synpred51_Waebric1210 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_66_in_synpred52_Waebric1233 = new BitSet(new long[]{0x005000000000E800L,0x0000000000000002L});
     public static final BitSet FOLLOW_predicate_in_synpred52_Waebric1235 = new BitSet(new long[]{0x0000000000000002L});
