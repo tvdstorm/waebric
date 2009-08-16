@@ -21,6 +21,5 @@ def inf-loop
     tr {
       td('images/janlezend.jpg); td('images/derekzeeman.jpg);
     }
-   }
   end
 end

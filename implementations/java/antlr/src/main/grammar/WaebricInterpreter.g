@@ -88,11 +88,19 @@ scope Environment {
     	private boolean interpretFunction(String name, List<Integer> args) throws RecognitionException {
     		int function = getFunction(name);
     		if(function != -1) {
+    			// Retrieve function environment
+    			Stack environment = cloneEnvironment();
+			Environment_stack = getEnvironment(name);
+    		
     			int actual = input.index();
     			input.seek(function);
     			function(args);
     			input.seek(actual);
-    			return true;
+    			
+    			 // Restore environment
+    			Environment_stack = environment;
+    			
+    			return true; // Succesfull interpretation
     		} return false;
     	}
 	
@@ -206,7 +214,9 @@ scope Environment {
 		$Environment::variables.put(name, input);
 	}
 	
-	// Create file output stream for path
+	/**
+	 * Create file output stream for path
+	 */
 	private OutputStream createOutputStream(String path) throws IOException {
 		int dirLength = path.lastIndexOf("/");
 		
@@ -221,6 +231,22 @@ scope Environment {
 		file.createNewFile();
 		
 		return new FileOutputStream(path); // Create stream
+	}
+	
+	/**
+	 * Clone current environment, regular stack.clone() maintains scopes
+	 */
+	private Stack cloneEnvironment() {
+		Stack result = new Stack();
+		for(int i = 0; i < $Environment.size(); i++) {
+			Environment_scope scope = new Environment_scope();
+			scope.functions = new HashMap<String, Integer>();
+			scope.functions.putAll($Environment[i]::functions);
+			scope.variables = new HashMap<String, Integer>();
+			scope.variables.putAll($Environment[i]::variables);
+			result.push(scope);
+		}
+		return result;
 	}
 	
 }
@@ -258,10 +284,8 @@ markup [boolean chain]
 						$yield = true;
 					}
 					
-					Stack environment = Environment_stack;
-					Environment_stack = getEnvironment($IDCON.getText());
-					interpretFunction($IDCON.getText(), eval); // Interpret function
-					Environment_stack = environment; // Restore environment
+					// Start interpreting function
+					interpretFunction($IDCON.getText(), eval);
 				} else {
 					// Process markup as tag
 					addContent(new Element($IDCON.getText()));
@@ -501,11 +525,10 @@ varBinding:		IDCON '=' expression ';' {
 			
 funcBinding
 	@init { int index = input.index(); }
-	:		^( FUNCTION id=IDCON formals . ) ;
-	finally {
-		defineFunction($id.getText(), index);
-		environments.put($id.getText(), (Stack) Environment_stack.clone());
-	}
+	:		^( FUNCTION id=IDCON formals . ) { 
+				environments.put($id.getText(), cloneEnvironment());
+				defineFunction($id.getText(), index); 
+			} ;
 
 // $>
 // $<Predicates
