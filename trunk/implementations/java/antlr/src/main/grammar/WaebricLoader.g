@@ -24,6 +24,11 @@ options {
 	private List<String> checked = new ArrayList<String>();
 	
 	/**
+	 * Detected yield positions
+	 */
+	private List<Integer> yields = new ArrayList<Integer>();
+	
+	/**
 	 * Collected function definitions
 	 */
 	private Map<String, function_return> functions = new HashMap<String, function_return>();
@@ -56,6 +61,10 @@ options {
 	 */
 	public List<mapping_return> getMappings() {
 		return mappings;
+	}
+	
+	public List<Integer> getYields() {
+		return yields;
 	}
 	
 }
@@ -113,8 +122,10 @@ keyValuePair:		IDCON ':' expression ;
 
 function 
 	returns [int args = 0, int index = 0]
-	@init { $index = input.index(); }
-	:		^( FUNCTION id=IDCON formals { $args = $formals.args; }	statement* ) ;
+	@init { $index = input.index();}
+	:		^( FUNCTION id=IDCON 
+			formals { $args = $formals.args; }
+			statements { if($statements.yield) { yields.add($index); } } );
 	finally {
 		if(functions.containsKey($id.getText())) {
 			exceptions.add(new WaebricChecker.DuplicateFunctionException($id));
@@ -130,18 +141,24 @@ formals returns [int args = 0]
 
 // $<Statements
 
+statements
+	returns[boolean yield = false]
+	:		( s=statement { if($s.yield) { $yield = true; } } )* ;
+
 statement
-	:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
-			| ^( 'each' '(' IDCON ':' expression ')' statement )
-			| ^( 'let' assignment+ 'in' statement* 'end' )
-			| ^( '{' statement* '}' )
+	returns[boolean yield = false;]
+	:		^( 'if' '(' predicate ')' t=statement { if($t.yield) $yield = true; } 
+				( 'else' f=statement { if($f.yield) $yield = true; } )? ) 
+			| ^( 'each' '(' IDCON ':' expression ')' stm=statement ) { $yield = $stm.yield; }
+			| ^( 'let' assignment+ 'in' stms=statements 'end' ) { $yield = $stms.yield; }
+			| ^( '{' stms=statements '}' ) { $yield = $stms.yield; }
 			| ^( 'comment' STRCON ';' )
 			| ^( 'echo' expression ';' )
 			| ^( 'echo' embedding ';' )
 			| ^( 'cdata' expression ';' )
-			| 'yield;'
+			| 'yield;' { $yield = true; }
 			| ^( MARKUP_STATEMENT markup+ expression ';' )
-			| ^( MARKUP_STATEMENT markup+ statement )
+			| ^( MARKUP_STATEMENT markup+ stm=statement ) { $yield = $stm.yield; }
 			| ^( MARKUP_STATEMENT markup+ embedding ';' )
 			| ^( MARKUP_STATEMENT markup+ ';' ) ;
 
