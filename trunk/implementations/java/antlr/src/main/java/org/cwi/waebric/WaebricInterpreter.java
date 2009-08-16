@@ -185,6 +185,10 @@ public class WaebricInterpreter extends TreeParser {
         	private boolean interpretFunction(String name, List<Integer> args) throws RecognitionException {
         		System.out.println("Interpretting " + name + "...");
         		
+        		if(name.equals("td")) {
+        			System.out.println("busted nubie");
+        		}
+        		
         		int function = getFunction(name);
         		if(function != -1) {
         			int actual = input.index();

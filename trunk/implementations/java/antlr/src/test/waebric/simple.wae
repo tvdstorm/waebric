@@ -1,9 +1,26 @@
 module simple
 
 def main
-	call-me() abc one two 123;
+	inf-loop();
 end
 
 def call-me
 	p yield;
+end
+
+def inf-loop
+  let 
+    td(img) = td(align='center) img(height=225,border=0, src=img, alt="Brandende Pen");
+  in
+    tr {
+      td('images/jury.jpg); td('images/joost.jpg);
+    }
+    tr {
+      td('images/zeeman.jpg); td('images/jan.jpg);
+    }
+    tr {
+      td('images/janlezend.jpg); td('images/derekzeeman.jpg);
+    }
+   }
+  end
 end
