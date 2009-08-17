@@ -83,12 +83,6 @@ namespace Checker
                     case "MarkupTag":
                         VisitMarkupTag(currentNode);
                         break;
-                    case "VarBindAssignment":
-                        VisitVarBindAssignment(currentNode);
-                        break;
-                    case "FuncBindAssignment":
-                        VisitFuncBindAssignment(currentNode);
-                        break;
                     default:
                         //If non of above types are matched, visit subnodes of current node
                         VisitSubNodes(currentNode);
@@ -134,7 +128,14 @@ namespace Checker
                 CreateChildSymbolTable();
 
                 //Visit assignment
-                VisitSubNodes(Assignment);
+                if (Assignment.Brand.Text == "VarBindAssignment")
+                {
+                    VisitVarBindAssignment(Assignment);
+                }
+                else if (Assignment.Brand.Text == "FuncBindAssignment")
+                {
+                    VisitFuncBindAssignment(Assignment);
+                }
             }
 
             //Visit statements
@@ -147,7 +148,7 @@ namespace Checker
                 MoveToParentSymbolTable();
             }
         }
-       
+
         /// <summary>
         /// Visit EachStatement
         /// </summary>
