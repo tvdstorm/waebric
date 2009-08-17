@@ -76,7 +76,7 @@ namespace Common
             if (!ContainsModule(list, GetModuleIdentifier(module)))
             {
                 list.Add(module);
-                List<String> imports = GetImports(module);
+                List<String> imports = GetImportsOfModule(module);
 
                 foreach (String importId in imports)
                 {
@@ -207,7 +207,7 @@ namespace Common
         /// </summary>
         /// <param name="moduleNode">Module to retrieve Imports from</param>
         /// <returns>List of Imports</returns>
-        private List<String> GetImports(Node moduleNode)
+        private List<String> GetImportsOfModule(Node moduleNode)
         {
             List<String> importList = new List<String>();
             foreach(Node currentNode in moduleNode.ViewAllNodes())
@@ -220,7 +220,7 @@ namespace Common
                     Node[] identifiers = ModuleId[0].ViewAllNodes().ToArray();
                     for (int i = 0; i <= (identifiers.Length - 1); i++)
                     {
-                        import += identifiers[i];
+                        import += identifiers[i].AtomicValue.ToString();
                         if (i != (identifiers.Length - 1))
                         {
                             import += ".";
