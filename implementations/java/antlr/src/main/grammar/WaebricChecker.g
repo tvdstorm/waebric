@@ -235,17 +235,16 @@ argument:		expression | IDCON '=' expression ;
 
 // $<Expressions
 
-expression:		( varExpression | NATCON | TEXT | SYMBOLCON 
+expression:		( IDCON { 
+					if(! isDefinedVariable($IDCON.getText())) {
+						exceptions.add(new UndefinedVariableException($IDCON.tree));
+					} 
+				} 
+				| NATCON | TEXT | SYMBOLCON 
 				| '[' expression? ( ',' expression )* ']' 
 				| '{' keyValuePair? ( ',' keyValuePair )* '}' 
 			) ( '+' expression | '.' IDCON )* ;
 
-varExpression:		IDCON {
-				if(! isDefinedVariable($IDCON.getText())) {
-					exceptions.add(new UndefinedVariableException($IDCON.tree));
-				}
-			} ;
-			
 keyValuePair:		IDCON ':' expression ;
 
 // $>
@@ -257,8 +256,7 @@ function
 		$Environment::functions = new HashMap<String, Integer>();
 	} :		^( FUNCTION IDCON formals statement* ) ;
 			
-formals returns [int args = 0] 
-	:		^( FORMALS ( IDCON { defineVariable($IDCON.getText()); $args++; } )* ) ;
+formals:		^( FORMALS ( IDCON { defineVariable($IDCON.getText()); } )* ) ;
 
 // $<Statements
 
