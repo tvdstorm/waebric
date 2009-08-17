@@ -680,7 +680,9 @@ namespace Interpreter
             Current.AddChild(element);
 
             //Interpret Embed and TextTail
+            XHTMLElement temp = Current;
             VisitEmbed(embed);
+            Current = temp;
             VisitTextTail(textTail);
         }
 
