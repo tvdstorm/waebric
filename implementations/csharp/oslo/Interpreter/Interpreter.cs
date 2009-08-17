@@ -149,7 +149,14 @@ namespace Interpreter
         public void VisitTextExpression(Node textExpression)
         {
             Node value = textExpression.ViewAllNodes().ElementAt(0);
-            TextValue = value.AtomicValue.ToString();
+            if (value.AtomicValue != null)
+            {
+                TextValue = value.AtomicValue.ToString();
+            }
+            else
+            {
+                TextValue = "";
+            }
         }
 
         /// <summary>
@@ -159,7 +166,14 @@ namespace Interpreter
         public void VisitSymbolExpression(Node symbolExpression)
         {
             Node value = symbolExpression.ViewAllNodes().ElementAt(0);
-            TextValue = value.AtomicValue.ToString();
+            if (value.AtomicValue != null)
+            {
+                TextValue = value.AtomicValue.ToString();
+            }
+            else
+            {
+                TextValue = "";
+            }
         }
 
         /// <summary>
@@ -194,7 +208,14 @@ namespace Interpreter
         public void VisitNatExpression(Node natExpression)
         {
             Node value = natExpression.ViewAllNodes().ElementAt(0);
-            TextValue = value.AtomicValue.ToString();
+            if (value.AtomicValue != null)
+            {
+                TextValue = value.AtomicValue.ToString();
+            }
+            else
+            {
+                TextValue = "";
+            }
         }
 
         /// <summary>
