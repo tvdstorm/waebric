@@ -574,7 +574,8 @@ namespace Interpreter
             Node trueStatement = ifStatement.ViewAllNodes().ElementAt(1);
             if (EvaluatePredicate(predicate))
             {
-                VisitStatement(trueStatement);
+                Node statement = trueStatement.ViewAllNodes().ElementAt(0);
+                VisitStatement(statement);
             }
         }
 
@@ -589,11 +590,13 @@ namespace Interpreter
             Node falseStatement = ifElseStatement.ViewAllNodes().ElementAt(2);
             if (EvaluatePredicate(predicate))
             {
-                VisitStatement(trueStatement);
+                Node statement = trueStatement.ViewAllNodes().ElementAt(0);
+                VisitStatement(statement);
             }
             else
             {
-                VisitStatement(falseStatement);
+                Node statement = falseStatement.ViewAllNodes().ElementAt(0);
+                VisitStatement(statement);
             }
         }
 
@@ -1147,6 +1150,15 @@ namespace Interpreter
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Get XHTML tree
+        /// </summary>
+        /// <returns>Root element of tree</returns>
+        public XHTMLElement GetTree()
+        {
+            return Root;
         }
 
         #endregion
