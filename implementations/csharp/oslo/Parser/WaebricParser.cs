@@ -6,6 +6,7 @@ using Microsoft.M.Grammar;
 using Microsoft.M;
 using System.Dataflow;
 using System.IO;
+using System.Reflection;
 
 namespace WaebricCompiler
 {
@@ -70,7 +71,10 @@ namespace WaebricCompiler
         private WaebricParser()
         {
             //Load grammar and initialize parser and graphbuilder
-            Grammar = new MImage("Waebric.mx");
+            String grammarPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(WaebricParser)).CodeBase);
+            grammarPath += "\\Waebric.mx";
+            grammarPath = grammarPath.Substring(6);
+            Grammar = new MImage(grammarPath);
             Parser = Grammar.ParserFactories["Waebric.Waebric"].Create();
             Parser.GraphBuilder = new NodeGraphBuilder();
         }
