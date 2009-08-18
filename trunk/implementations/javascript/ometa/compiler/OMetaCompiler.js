@@ -1,5 +1,7 @@
 /**
  * Compiles the raw data from the OMeta parser and saves the output to a file
+ * 
+ * @author Nickolas Heirbaut [nickolas.heirbaut@dejasmijn.be]
  */
 function OMetaCompiler(){
 		
@@ -10,9 +12,14 @@ function OMetaCompiler(){
 	 */
 	this.compile = function(pathInput){
 		try {
-			var source = this.getOMetaSource(pathInput);
-			var result = "/* Generated code by OMeta's Base Javascript Translator */\n\n";
-			result += this.translateCode(source);
+			print('\n---- Compiling ' + pathInput)
+			var source = getOMetaSource(pathInput);
+			var result = "/**\n"
+						+ " * Generated code by OMeta's Base Javascript Translator\n"
+						+ " *\n" 
+						+ " * @author Nickolas Heirbaut [nickolas.heirbaut@dejasmijn.be]\n"
+						+ " */\n\n"
+			result += translateCode(source);
 			var fw = new FileWriter(pathInput + '.js');
 			var bf = new BufferedWriter(fw);
 			bf.write(result);
@@ -27,7 +34,7 @@ function OMetaCompiler(){
 	 *
 	 * @return {String} Parser source
 	 */
-	this.getOMetaSource = function(path){
+	function getOMetaSource(path){
 		try {
 			var fis = new FileInputStream(path);
 			var bis = new BufferedInputStream(fis);
@@ -47,12 +54,12 @@ function OMetaCompiler(){
 	}
 	
 	/**
-	 * Parses OMeta source code by OMeta base code
+	 * Parses OMeta source code with OMeta base code
 	 *
 	 * @param {String} The OMeta source code
 	 * @return {Object} Parser object
 	 */
-	this.translateCode = function(source){
+	function translateCode(source){
 		var translationError = function(m, i){
 			print("Translation error - please tell Alex about this!");
 			throw fail
@@ -62,10 +69,10 @@ function OMetaCompiler(){
 			})
 		})
 		return BSOMetaJSTranslator.match(tree, "trans", undefined, translationError)
-	}
+	}	
 }
 
-OMetaCompiler.compile = function(pathInput){
+OMetaCompiler.compile = function(pathInput){	
 	var compiler = new OMetaCompiler();
 	compiler.compileWaebricParser(pathInput)
 }
@@ -73,4 +80,9 @@ OMetaCompiler.compile = function(pathInput){
 OMetaCompiler.compileWaebricParser = function(){
 	var compiler = new OMetaCompiler();
 	compiler.compile('../parser/WaebricParser.ometa');
+}
+
+OMetaCompiler.compileWaebricValidator = function(){
+	var compiler = new OMetaCompiler();
+	compiler.compile('../validator/WaebricValidator.ometa');
 }

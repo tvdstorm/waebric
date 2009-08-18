@@ -1,5 +1,4 @@
 load("../../vanilla/ast/WaebricEnvironment.js")
-load("../../vanilla/ast/VisitorNode.js")
 load("../../vanilla/ast/Node.js")
 load("../../vanilla/ast/Path.js")
 load("../../vanilla/ast/Module.js")
@@ -20,16 +19,10 @@ load("../../vanilla/ast/KeyValuePair.js")
 load("../../vanilla/ast/Predicate.js")
 load("../../vanilla/ast/TextTail.js")
 load("../../vanilla/ast/Type.js")
-load("../../vanilla/ast/Variable.js")
 load("../../vanilla/ast/Assignment.js")
 
 load('../../vanilla/interpreter/WaebricInterpreterResult.js')
+load("../../vanilla/interpreter/WaebricInterpreterException.js");
 load('../../vanilla/interpreter/WaebricInterpreter.js')
 load("../../vanilla/interpreter/WaebricInterpreterVisitor.js")
 load('../../vanilla/interpreter/DOM.js')
-
-load('../../vanilla/validator/WaebricSemanticValidatorResult.js')
-load("../../vanilla/validator/WaebricSemanticValidator.js")
-load("../../vanilla/validator/WaebricSemanticValidatorVisitor.js")
-load("../../vanilla/validator/WaebricSemanticValidatorException.js")
-load("../../vanilla/validator/XHTML.js")
