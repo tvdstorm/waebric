@@ -11,11 +11,13 @@ namespace WaebricCompiler
 {
     /// <summary>
     /// Class which calls the Oslo Parser and performs parser tasks
+    /// This class is a singleton to make parser perform better
     /// </summary>
     public class WaebricParser
     {
         #region Private Members
 
+        private static readonly WaebricParser WaebricParserInstance = new WaebricParser();
         private MImage Grammar;
         private DynamicParser Parser;
         private Node Root;
@@ -25,34 +27,52 @@ namespace WaebricCompiler
         #region Public Methods
 
         /// <summary>
-        /// Parses an specified file
+        /// Instance of WaebricParser singleton
         /// </summary>
-        /// <param name="filename">Filename of file to parse</param>
-        public WaebricParser(String filename)
+        public static WaebricParser Instance
         {
-            //Read grammar and create NodeGraphBuilder
-            Grammar = new MImage("Waebric.mx");
-            Parser = Grammar.ParserFactories["Waebric.Waebric"].Create();
-            Parser.GraphBuilder = new NodeGraphBuilder();
+            get
+            {
+                return WaebricParserInstance;
+            }
+        }
 
-            //Open sourcefile and parse it
+        /// <summary>
+        /// Parse waebric file which is specified
+        /// </summary>
+        /// <param name="filename">Path to Waebricfile which should be parsed</param>
+        public void Parse(String filename)
+        {
             try
             {
+                Root = null; //Dereference old tree
                 Root = (Node)Parser.Parse(filename, ErrorReporter.Standard);
             }
             catch
-            {
+            {   //Error so no AST
                 Root = null;
             }
         }
 
         /// <summary>
-        /// Retrieves AST
+        /// Retrieves AST if there's one
         /// </summary>
         /// <returns>Root element of AST</returns>
         public Node GetAST()
         {
             return Root;
+        }
+
+        #endregion
+
+        #region Private Members
+
+        private WaebricParser()
+        {
+            //Load grammar and initialize parser and graphbuilder
+            Grammar = new MImage("Waebric.mx");
+            Parser = Grammar.ParserFactories["Waebric.Waebric"].Create();
+            Parser.GraphBuilder = new NodeGraphBuilder();
         }
 
         #endregion
