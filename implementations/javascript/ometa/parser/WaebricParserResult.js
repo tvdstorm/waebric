@@ -1,10 +1,10 @@
 /**
- * Holds the result of the parser
+ * Represents the result of the parser
  * 
- * @param {Object} module
- * @param {Object} exceptions
+ * @author Nickolas Heirbaut [nickolas.heirbaut@dejasmijn.be]
+ *  
+ * @param {Module} module The Abstract Syntax Tree
  */
-function WaebricParserResult(module, exceptions){
+function WaebricParserResult(module){
 	this.module = module;
-	this.exceptions = exceptions;
 }

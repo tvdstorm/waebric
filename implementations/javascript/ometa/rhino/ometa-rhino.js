@@ -1,13 +1,13 @@
 /**
  * JAVASCRIPT INPUT FILE FOR RHINO
  * 
- * @author Nickolas Heirbaut
+ * @author Nickolas Heirbaut [nickolas.heirbaut@dejasmijn.be]
  */
-
 importPackage(java.io)
 
 load('env.rhino.js')
 load('vanilla-rhino.js')
+
 load('../base/lib.js')
 load('../base/ometa-base.js')
 load('../base/parser.js')
@@ -15,9 +15,25 @@ load('../base/bs-js-compiler.js')
 load('../base/bs-ometa-compiler.js')
 load('../base/bs-ometa-optimizer.js')
 load('../base/bs-ometa-js-compiler.js')
+
 load('../parser/WaebricParser.js')
+load('../parser/WaebricParser.ometa.js')
+load('../parser/WaebricParserResult.js')
 load('../parser/WaebricParserException.js')
+		
+load('../validator/WaebricValidator.js')
+load('../validator/WaebricValidator.ometa.js')	
+load('../validator/WaebricValidatorException.js')
+load('../validator/WaebricValidatorResult.js')
+load('../validator/WaebricSemanticException.js')
+load('../validator/WaebricFunctionValidator.js')
+load('../validator/WaebricVariableValidator.js')
+load('../validator/XHTML.js')
+
 load('../compiler/OMetaCompiler.js')
+
+load('../utils/WaebricFileLoader.js')
+load('../utils/WaebricDependencyParser.js')
 
 /**
  * Outputs the HTML code to a set of files
@@ -83,24 +99,17 @@ function createTidyOutput(waebricEnvironments, siteName){
 	bf.close();
 }
 
-
 /**
  * Converts a Waebric program to HTML
  */
-function convertToHTML(path, siteName){
-	
-	try {
-		//Parsing
-		var parserResult = WaebricParser.parseAll(path);
-		
-		//Validation		
-		var validationResult = WaebricSemanticValidator.validateAll(parserResult.module)
-		print('---------------VALIDATOR --------------------')
-		print(validationResult.exceptions)
-		print('---------------------------------------------')
+function convertToHTML(path, siteName){	
+	try {			
+		//Parsing + validation			
+		var validatorResult = WaebricValidator.parseAndValidate(path);
+		print(validatorResult.toString())
 		
 		//Interpreting
-		var interpreterResult = WaebricInterpreter.interpreteAll(parserResult.module);		
+		var interpreterResult = WaebricInterpreter.interprete(validatorResult.module);	
 		
 		//Output results
 		createHTML(interpreterResult.environments, siteName);
@@ -109,10 +118,12 @@ function convertToHTML(path, siteName){
 		createTidyOutput(interpreterResult.environments, siteName);
 	}catch(exception){
 		//Unexcpected error thrown
-		print(exception)
+		print('\n******************************************************************************')
+		print(exception.toString());
+		print('\n******************************************************************************\n')
 	}
 }
 
 //OMetaCompiler.compileWaebricParser();
+//OMetaCompiler.compileWaebricValidator();
 convertToHTML('../../../../demos/lava/lava.wae', 'lava')
-
