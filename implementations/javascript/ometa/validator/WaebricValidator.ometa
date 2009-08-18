@@ -11,10 +11,6 @@
  * Imports in the Waebric program are automatically loaded from the filesystem and parsed 
  * to an new AST (Module).
  *
- * Caution: The Import rule from the WaebricOMetaValidator is overriden to adjust the rule's 
- * action code behaviour. Calling super(#Import) would execute the action code from 
- * WaebricOMetaValidator too, which is not wanted, therefore the Grammar's syntax is duplicated.
- *
  * @author Nickolas Heirbaut [nickolas.heirbaut@dejasmijn.be]
  */
  
@@ -31,7 +27,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 										
 	FunctionDef		= 	super(#FunctionDef):func		
 					-> 	{
-							//Reset the environment
+							//Close the environment of the function definition
 							WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.parent;
 							
 							//Validate for duplicate functions
@@ -97,7 +93,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 							if(stmt instanceof EachStatement){	
 								WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.parent;
 							}else if(stmt instanceof LetStatement){
-								//Reset the environment
+								//Close the environment of the let-stmt
 								while(WaebricOMetaValidator.environment.type == "let-stmt"){							
 									WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.parent;
 								}
