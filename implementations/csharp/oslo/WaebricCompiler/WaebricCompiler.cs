@@ -37,8 +37,8 @@ namespace WaebricCompiler
             }
 
             //Lets parse the file
-            WaebricParser parser = new WaebricParser(Path);
-            Node rootNode = parser.GetAST();
+            WaebricParser.Instance.Parse(Path);
+            Node rootNode = WaebricParser.Instance.GetAST();
 
             //Initialize ModuleCache with correct DirectoryPath
             ModuleCache.Instance.SetDirectoryPath(GetDirectoryPath());

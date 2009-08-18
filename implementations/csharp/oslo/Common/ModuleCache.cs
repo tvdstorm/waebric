@@ -53,10 +53,10 @@ namespace Common
             }
 
             //Let's parse the stream
-            WaebricParser parser = new WaebricParser(GetPath(identifier));
+            WaebricParser.Instance.Parse(GetPath(identifier));
 
             //Add module to hashtable
-            Node requestedModule = parser.GetAST();
+            Node requestedModule = WaebricParser.Instance.GetAST();
             if (requestedModule.Brand.Text == "")
             {
                 return null;
