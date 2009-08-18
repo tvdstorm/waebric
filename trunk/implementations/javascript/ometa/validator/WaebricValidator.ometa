@@ -1,0 +1,143 @@
+/**
+ * OMeta Subvalidator for Waebric language
+ * 
+ * Preprocessing step for the WaebricOMetaValidator
+ * Collects all function definitions in a Waebric program including 
+ * those in import files.
+ * 
+ * Includes semantic validation for duplicate functions
+ * Non-existing imports are ignored and not processed
+ *
+ * Imports in the Waebric program are automatically loaded from the filesystem and parsed 
+ * to an new AST (Module).
+ *
+ * Caution: The Import rule from the WaebricOMetaValidator is overriden to adjust the rule's 
+ * action code behaviour. Calling super(#Import) would execute the action code from 
+ * WaebricOMetaValidator too, which is not wanted, therefore the Grammar's syntax is duplicated.
+ *
+ * @author Nickolas Heirbaut [nickolas.heirbaut@dejasmijn.be]
+ */
+ 
+ometa WaebricOMetaValidator <: WaebricOMetaParser {
+
+	Module			=	super(#Module):module
+					->	{	
+							//Validate the functioncalls that are still pending
+							WaebricFunctionValidator.validateFunctionCallQueue(WaebricOMetaValidator);
+							
+							//Return the original AST object
+							module;
+						},
+										
+	FunctionDef		= 	super(#FunctionDef):func		
+					-> 	{
+							//Reset the environment
+							WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.parent;
+							
+							//Validate for duplicate functions
+							WaebricFunctionValidator.validateFunction(func, WaebricOMetaValidator);
+							
+							//Return the original AST object
+							func; 
+						},
+						
+	FunctionDefId	=	super(#FunctionDefId):funcDefId
+					->	{
+							//Create new environment for the function
+							WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.addEnvironment("func-def");
+							
+							//Return the original AST object
+							funcDefId; 
+						},
+	
+	Assignment		=	super(#Assignment):binding
+					-> 	{
+							if(binding instanceof VariableBinding){								
+								//Add variable to the new environment
+								WaebricOMetaValidator.environment.addVariable(binding.variable);
+							}else if(binding instanceof FunctionBinding){
+								//Transform function binding to a function definition
+								var func = new FunctionDefinition(binding.variable, binding.formals, binding.statement);	
+															
+								//Validate for duplicate functions
+								WaebricFunctionValidator.validateFunction(func, WaebricOMetaValidator);
+								
+								//Remove variables
+								WaebricOMetaValidator.environment.variables = new Array();
+							}
+							
+							//Return the original AST object
+							binding;
+						},
+						
+	AssignmentId	=	super(#AssignmentId):assignmentId
+					->	{
+							//Create new environment for the let-stmt
+							WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.addEnvironment("let-stmt");
+							
+							//Return the original AST object
+							assignmentId; 							
+						},	
+						
+	Formals			=	super(#Formals):formals
+					->	{
+							//Add variables in formals to the environment					
+							for (var i = 0; i < formals.length; i++) {
+								var formal = formals[i];
+								WaebricOMetaValidator.environment.addVariable(formal);
+							}
+							
+							//Return the original AST object
+							formals; 
+						},
+						
+	Statement		=	super(#Statement):stmt
+					-> 	{
+							//Reset the environment
+							if(stmt instanceof EachStatement){	
+								WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.parent;
+							}else if(stmt instanceof LetStatement){
+								//Reset the environment
+								while(WaebricOMetaValidator.environment.type == "let-stmt"){							
+									WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.parent;
+								}
+							}
+							
+							//Return the original AST object
+							stmt;
+						},
+						
+	EachIdentifier	=	super(#EachIdentifier):identifier
+					->	{
+							//Add new environment because the scope of the Each identifier
+							//is limited to the statement inside the each statement.
+							WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.addEnvironment('each-stmt');
+							
+							//Add variable to new environment of each statement
+							WaebricOMetaValidator.environment.addVariable(identifier);
+							
+							//Return the original AST object
+							identifier;
+						},
+						
+	Expression		=	super(#Expression):expr
+					-> 	{							
+							//Validate defined variables
+							if(expr instanceof VarExpression){
+								WaebricVariableValidator.validateVariableReference(expr,WaebricOMetaValidator)
+							}
+							
+							//Return the original AST object
+							expr;
+						},
+						
+	Markup		=	super(#Markup):markup 
+					-> 	{			
+							//Validate if the function exists					
+							WaebricFunctionValidator.validateFunctionCall(markup, true, WaebricOMetaValidator);
+							
+							//Return the original AST object
+							markup;
+						}
+}
+WaebricOMetaValidator.environment = new WaebricEnvironment();
