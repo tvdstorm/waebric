@@ -450,10 +450,10 @@ markupChain:		^( MARKUP_CHAIN markup[true] {
 						return retval; // Quit parsing markup stm
 					}
 				} markupChain )
-			| ^( MARKUP_CHAIN expression ';' ) { addContent(new Text($expression.eval)); }
+			| ^( MARKUP_CHAIN expression ) { addContent(new Text($expression.eval)); }
 			| ^( MARKUP_CHAIN statement )
-			| ^( MARKUP_CHAIN embedding[true] ';' )
-			| ^( MARKUP_CHAIN ';' ) ;
+			| ^( MARKUP_CHAIN embedding[true] )
+			| ';' ;
 
 ifStatement
 	@init{ int ti = 0; int fi = 0; }
