@@ -551,5 +551,4 @@ embed [boolean element]
 
 textTail [boolean element]
 	:		POSTTEXT { addContent(new Text($POSTTEXT.getText().substring(1, $POSTTEXT.getText().length()-1))); }
-			| MIDTEXT { addContent(new Text($MIDTEXT.getText().substring(1, $MIDTEXT.getText().length()-1))); }
-			embed[element] textTail[element] ;
+			| MIDTEXT { addContent(new Text($MIDTEXT.getText().substring(1, $MIDTEXT.getText().length()-1))); } embed[element] textTail[element] ;
