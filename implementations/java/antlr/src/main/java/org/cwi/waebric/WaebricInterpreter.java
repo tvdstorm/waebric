@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-20 22:56:04
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-20 23:13:11
 
 	package org.cwi.waebric;
 	
@@ -4287,7 +4287,7 @@ public class WaebricInterpreter extends TreeParser {
                        addContent(new Text(MIDTEXT121.getText().substring(1, MIDTEXT121.getText().length()-1))); 
                     }
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_embed_in_textTail1221);
+                    pushFollow(FOLLOW_embed_in_textTail1218);
                     embed122=embed(element);
 
                     state._fsp--;
@@ -4295,7 +4295,7 @@ public class WaebricInterpreter extends TreeParser {
                     if ( state.backtracking==0 ) 
                     adaptor.addChild(root_0, embed122.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_textTail_in_textTail1224);
+                    pushFollow(FOLLOW_textTail_in_textTail1221);
                     textTail123=textTail(element);
 
                     state._fsp--;
@@ -4917,8 +4917,8 @@ public class WaebricInterpreter extends TreeParser {
     public static final BitSet FOLLOW_expression_in_embed1190 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_POSTTEXT_in_textTail1205 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_MIDTEXT_in_textTail1214 = new BitSet(new long[]{0x005000000000E840L});
-    public static final BitSet FOLLOW_embed_in_textTail1221 = new BitSet(new long[]{0x00000000000C0000L});
-    public static final BitSet FOLLOW_textTail_in_textTail1224 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_embed_in_textTail1218 = new BitSet(new long[]{0x00000000000C0000L});
+    public static final BitSet FOLLOW_textTail_in_textTail1221 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_56_in_synpred18_WaebricInterpreter450 = new BitSet(new long[]{0x005000000000E800L});
     public static final BitSet FOLLOW_expression_in_synpred18_WaebricInterpreter454 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_41_in_synpred19_WaebricInterpreter464 = new BitSet(new long[]{0x0000000000000800L});
