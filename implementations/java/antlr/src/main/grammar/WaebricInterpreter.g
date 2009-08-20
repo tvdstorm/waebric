@@ -416,10 +416,10 @@ statement:		ifStatement
 			| eachStatement
 			| letStatement
 			| blockStatement
-			| ^( 'comment' STRCON ';' ) { addContent(new Comment($STRCON.getText())); }
-			| ^( 'echo' expression ';' ) { addContent(new Text($expression.eval)); }
-			| ^( 'echo' embedding[false] ';' )
-			| ^( 'cdata' expression ';' ) {	addContent(new CDATA($expression.eval)); }
+			| ^( 'comment' STRCON ) { addContent(new Comment($STRCON.getText())); }
+			| ^( 'echo' expression ) { addContent(new Text($expression.eval)); }
+			| ^( 'echo' embedding[false] )
+			| ^( 'cdata' expression ) {	addContent(new CDATA($expression.eval)); }
 			| 'yield;' {
 					if(! yieldStack.isEmpty()) {
 						int curr = input.index();
@@ -457,7 +457,7 @@ markupChain:		^( MARKUP_CHAIN markup[true] {
 
 ifStatement
 	@init{ int ti = 0; int fi = 0; }
-	:		^( 'if' '(' predicate ')' { ti = input.index(); } t=.  ( 'else' { fi = input.index(); } f=. )? ) {
+	:		^( 'if' predicate { ti = input.index(); } t=.  ( 'else' { fi = input.index(); } f=. )? ) {
 				int curr = input.index();
 				if($predicate.eval) {
 					input.seek(ti);

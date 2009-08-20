@@ -265,14 +265,14 @@ formals
 
 // $<Statements
 
-statement:		^( 'if' '(' predicate ')' statement ( 'else' statement )? )
+statement:		^( 'if' predicate statement ( 'else' statement )? )
 			| eachStatement
 			| letStatement
 			| ^( '{' statement* '}' )
-			| ^( 'comment' STRCON ';' )
-			| ^( 'echo' expression ';' )
-			| ^( 'echo' embedding ';' )
-			| ^( 'cdata' expression ';' )
+			| ^( 'comment' STRCON )
+			| ^( 'echo' expression )
+			| ^( 'echo' embedding )
+			| ^( 'cdata' expression )
 			| 'yield;'
 			| ^( MARKUP_STATEMENT markup markupChain ) ;
 			

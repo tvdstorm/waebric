@@ -127,7 +127,7 @@ formals:		'(' IDCON? ( ',' IDCON )* ')'
 // $<Statements
 
 statement:		'if' '(' predicate ')' statement ( 'else' statement )?
-				-> ^( 'if' '(' predicate ')' statement ( 'else' statement )? )
+				-> ^( 'if' predicate statement ( 'else' statement )? )
 			| 'each' '(' IDCON ':' expression ')' statement 
 				-> ^( 'each' '(' IDCON ':' expression ')' statement )
 			| 'let' assignment+ 'in' statement* 'end'
@@ -135,13 +135,13 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 			| '{' statement* '}'
 				-> ^( '{' statement* '}' )
 			| 'comment' STRCON ';'
-				-> ^( 'comment' STRCON ';' )
+				-> ^( 'comment' STRCON )
 			| 'echo' expression ';'
-				-> ^( 'echo' expression ';' )
+				-> ^( 'echo' expression )
 			| 'echo' embedding ';'
-				-> ^( 'echo' embedding ';' )
+				-> ^( 'echo' embedding )
 			| 'cdata' expression ';' 
-				-> ^( 'cdata' expression ';' )
+				-> ^( 'cdata' expression )
 			| 'yield;'
 			| markup markupChain
 				-> ^( MARKUP_STATEMENT markup markupChain );
