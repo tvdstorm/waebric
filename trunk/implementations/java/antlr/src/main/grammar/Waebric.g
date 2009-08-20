@@ -154,7 +154,7 @@ assignment:		IDCON '=' expression ';' // Variable binding
 
 predicate:		( '!' predicate 
 				| expression // Not null
-				| expression '.' type // Is type 
+				| expression '.' type '?' // Is type 
 			) ( '&&' predicate | '||' predicate )* ; // Left-recussion removal
 type:			'list' | 'record' | 'string' ;
 
