@@ -260,7 +260,7 @@ mapping
 // $>
 // $<Markup
 
-markup [boolean chain]
+markup [boolean element]
 	returns[boolean yield = false;]
 	@init { int start = input.index(); int attr = 0; int args = 0; }
 	:		^( MARKUP IDCON { attr = input.index(); } . { args = input.index(); } . ) {
@@ -272,7 +272,7 @@ markup [boolean chain]
 					input.seek(curr);
 					
 					// Store yield arguments
-					if(containsYield($IDCON.getText()) && chain) {
+					if(containsYield($IDCON.getText()) && element) {
 						yieldStack.add(start);
 						$yield = true;
 					}
@@ -541,15 +541,15 @@ predicate returns [boolean eval]
 // $>
 // $<Embedding
 
-embedding [boolean chain]
+embedding [boolean element]
 	:		PRETEXT { addContent(new Text($PRETEXT.getText().substring(1, $PRETEXT.getText().length()-1))); } 
-			embed[chain] textTail[chain] ;
+			embed[element] textTail[element] ;
 
-embed [boolean chain]
-	:		markup[chain]+ 
-			| markup[chain]* expression { addContent(new Text($expression.eval)); } ;
+embed [boolean element]
+	:		markup[element]+ 
+			| markup[element]* expression { addContent(new Text($expression.eval)); } ;
 
-textTail [boolean chain]
+textTail [boolean element]
 	:		POSTTEXT { addContent(new Text($POSTTEXT.getText().substring(1, $POSTTEXT.getText().length()-1))); }
 			| MIDTEXT { addContent(new Text($MIDTEXT.getText().substring(1, $MIDTEXT.getText().length()-1))); }
-			embed[chain] textTail[chain] ;
+			embed[element] textTail[element] ;

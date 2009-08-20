@@ -191,6 +191,7 @@ module
 		$Environment::functions = new HashMap<String, Integer>();
 	} :		^( 'module' moduleId imprt* site* function* );
 
+// Verify that each module id relates to a physical file
 moduleId
 	@init { String path = ""; } 
 	@after { path += ".wae"; } // Include default extension
@@ -199,12 +200,11 @@ moduleId
 		finally {
 			java.io.File file = new java.io.File(path);
 			if(! file.isFile()) {
-				// Each import reference should be a valid file
 				exceptions.add(new NonExistingModuleException($moduleId.tree));
 			}
 		}
 
-imprt:			'import' moduleId ^ module ;
+imprt:			'import' moduleId module? ;
 
 // $>
 
@@ -214,6 +214,7 @@ mapping	:		PATH ':' markup ;
 
 // $<Markups
 
+// Verify that all function calls are made to a defined function and contain the correct amount of arguments
 markup:			^( MARKUP IDCON . arguments ) {
 				if(isDefinedFunction($IDCON.getText())) {
 					int expected = getFunctionArgs($IDCON.getText());
@@ -235,9 +236,10 @@ argument:		expression | IDCON '=' expression ;
 
 // $<Expressions
 
-expression:		( IDCON { 
-					if(! isDefinedVariable($IDCON.getText())) {
-						exceptions.add(new UndefinedVariableException($IDCON.tree));
+expression:		( id=IDCON { 
+					if(! isDefinedVariable($id.getText())) {
+						// Verify that all variable references are made to defined variables
+						exceptions.add(new UndefinedVariableException($id.tree));
 					} 
 				} 
 				| NATCON | TEXT | SYMBOLCON 
@@ -256,7 +258,10 @@ function
 		$Environment::functions = new HashMap<String, Integer>();
 	} :		^( FUNCTION IDCON formals statement* ) ;
 			
-formals:		^( FORMALS ( IDCON { defineVariable($IDCON.getText()); } )* ) ;
+formals
+	returns [int args = 0;]
+	:		
+			^( FORMALS ( IDCON { defineVariable($IDCON.getText()); $args++; } )* ) ;
 
 // $<Statements
 
