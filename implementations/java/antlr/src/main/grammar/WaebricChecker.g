@@ -277,10 +277,10 @@ statement:		^( 'if' predicate statement ( 'else' statement )? )
 			| ^( MARKUP_STATEMENT markup markupChain ) ;
 			
 markupChain:		^( MARKUP_CHAIN markup markupChain )
-			| ^( MARKUP_CHAIN expression ';' )
+			| ^( MARKUP_CHAIN expression )
 			| ^( MARKUP_CHAIN statement )
-			| ^( MARKUP_CHAIN embedding ';' )
-			| ^( MARKUP_CHAIN ';' ) ;
+			| ^( MARKUP_CHAIN embedding )
+			| ';' ;
 
 eachStatement
 	scope Environment;

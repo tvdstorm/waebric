@@ -147,15 +147,14 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( MARKUP_STATEMENT markup markupChain );
 
 markupChain:		expression ';' 
-				-> ^( MARKUP_CHAIN expression ';' )
+				-> ^( MARKUP_CHAIN expression )
 			| statement  
 				-> ^( MARKUP_CHAIN statement )
 			| embedding ';' 
-				-> ^( MARKUP_CHAIN embedding ';' )
+				-> ^( MARKUP_CHAIN embedding )
 			| markup markupChain 
 				-> ^( MARKUP_CHAIN markup markupChain )
-			| ';' 
-				-> ^( MARKUP_CHAIN ';' ) ;
+			| ';' ;
 
 // $>
 // $<Assignments

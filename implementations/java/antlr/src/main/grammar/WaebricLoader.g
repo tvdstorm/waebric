@@ -111,10 +111,10 @@ statement
 markupChain
 	returns [boolean yield = false]
 	:		^( MARKUP_CHAIN markup c=markupChain { $yield = $c.yield; } )
-			| ^( MARKUP_CHAIN expression ';' )
+			| ^( MARKUP_CHAIN expression )
 			| ^( MARKUP_CHAIN s=statement { $yield = $s.yield; } )
-			| ^( MARKUP_CHAIN embedding ';' )
-			| ^( MARKUP_CHAIN ';' ) ;
+			| ^( MARKUP_CHAIN embedding  )
+			| ';' ;
 			
 // $>
 // $<Assignments
