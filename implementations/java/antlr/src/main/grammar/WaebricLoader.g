@@ -178,7 +178,7 @@ assignment:		IDCON '=' expression ';' // Variable binding
 
 predicate:		( '!' predicate 
 				| expression // Not null
-				| expression '.' type // Is type 
+				| expression '.' type '?' // Is type 
 			) ( '&&' predicate | '||' predicate )* ;
 type:			'list' | 'record' | 'string' ;
 

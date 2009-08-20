@@ -313,7 +313,7 @@ funcBinding // Separated because only function bindings have local scopes
 
 predicate:		( '!' predicate 
 				| expression
-				| expression '.' type
+				| expression '.' type '?'
 			) ( '&&' predicate | '||' predicate )* ;
 type:			'list' | 'record' | 'string' ;		
 

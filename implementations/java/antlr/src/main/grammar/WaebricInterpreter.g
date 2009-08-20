@@ -535,7 +535,7 @@ predicate returns [boolean eval]
 						 	$eval = $e.eval.startsWith("{");
 						 } | 'string' { 
 						 	$eval = $e.index != -1;
-						 } ) // Is type 
+						 } ) '?' // Is type 
 			) ( '&&' p=predicate { $eval = $eval && $p.eval; } | '||' p=predicate { $eval = $eval || $p.eval; } )* ;
 		
 // $>
