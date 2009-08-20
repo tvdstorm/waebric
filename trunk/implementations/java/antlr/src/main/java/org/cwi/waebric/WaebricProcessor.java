@@ -46,7 +46,7 @@ public class WaebricProcessor {
 	        System.out.println("Parsed in " + parse_time + "ms.");
 	        
 	        CommonTree tree = (CommonTree) result.getTree();
-	        System.out.println(tree.toStringTree());
+	        //System.out.println(tree.toStringTree());
 	        
 	        WaebricLoader loader = new WaebricLoader(new CommonTreeNodeStream(tree));
 	        curr = System.currentTimeMillis();

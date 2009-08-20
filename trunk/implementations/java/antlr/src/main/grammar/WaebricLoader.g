@@ -13,30 +13,10 @@ options {
 }
 
 @members {
-	/**
-	 * Semantic exceptions
-	 */
 	private List<SemanticException> exceptions = new ArrayList<SemanticException>();
-	
-	/**
-	 * Checked modules
-	 */
-	private List<String> checked = new ArrayList<String>();
-	
-	/**
-	 * Detected yield positions
-	 */
-	private List<Integer> yields = new ArrayList<Integer>();
-	
-	/**
-	 * Collected function definitions
-	 */
 	private Map<String, function_return> functions = new HashMap<String, function_return>();
-	
-	/**
-	 * Collected mappings
-	 */
 	private List<mapping_return> mappings = new ArrayList<mapping_return>();
+	private List<Integer> yields = new ArrayList<Integer>();
 	
 	/**
 	 * Walk module to retrieve function definitions and mappings
@@ -48,46 +28,18 @@ options {
 		this.module();
 		return exceptions;
 	}
-	
-	/**
-	 * Retrieve function definitions
-	 */
-	public Map<String, function_return> getFunctions() {
-		return functions;
-	}
-	
-	/**
-	 * Retrieve mappings
-	 */
-	public List<mapping_return> getMappings() {
-		return mappings;
-	}
-	
-	public List<Integer> getYields() {
-		return yields;
-	}
-	
+		
+	public Map<String, function_return> getFunctions() { return functions; }
+	public List<mapping_return> getMappings() { return mappings; }
+	public List<Integer> getYields() { return yields; }
 }
 
 // $<Module
-module: 		^( 'module' moduleId imprt* site* function* ) {
-				checked.add($moduleId.name);
-			} ;
+module: 		^( 'module' moduleId imprt* site* function* ) ;
 			
-moduleId
-	returns [String name = ""]
-	:		id=IDCON { $name += $id.getText(); } ( '.' id=IDCON { $name += "." + $id.getText(); } )* ;
+moduleId:		IDCON ( '.' IDCON )* ;
 
-imprt
-	@init { int start = 0; }
-	:			'import' moduleId { start = input.index(); } dependancy=. {
-				if(! checked.contains($moduleId.name)) {
-					int curr = input.index();
-					input.seek(start);
-					module();
-					input.seek(curr);
-				}
-			} ;
+imprt:			'import' moduleId module? ;
 
 // $>
 // $<Site
@@ -99,9 +51,7 @@ mapping
 	returns [int index = 0]
 	@init { $index = input.index(); }
 	:		PATH ':' markup ;
-	finally {
-		mappings.add(retval);
-	}
+	finally { mappings.add(retval); }
 
 // $>
 // $<Markup
@@ -129,12 +79,11 @@ function
 	finally {
 		if(functions.containsKey($id.getText())) {
 			exceptions.add(new WaebricChecker.DuplicateFunctionException($id));
-		} else {
-			functions.put($id.getText(), retval); 
-		}
+		} else { functions.put($id.getText(), retval); }
 	}
 
-formals returns [int args = 0] 
+formals 
+	returns [int args = 0] 
 	:		^( FORMALS ( IDCON { $args++; } )* ) ;
 
 // $>

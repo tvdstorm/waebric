@@ -6,6 +6,7 @@ options {
 }
 
 tokens {
+	// Imagionary tokens
 	ATTRIBUTES = 'atts';
 	ARGUMENTS = 'args';
 	MARKUP = 'mrku';
@@ -22,6 +23,16 @@ tokens {
 
 @parser::members {
 	/**
+	 * Parsed modules
+	 */
+	private ArrayList<String> modules = new ArrayList<String>();
+
+	public WaebricParser(TokenStream input, ArrayList<String> modules) {
+		super(input);
+		this.modules = modules;
+	}
+
+	/**
 	 * Parse file on specified path.
 	 * @return AST
 	 */
@@ -30,7 +41,7 @@ tokens {
 			CharStream is = new ANTLRFileStream(path);
 			WaebricLexer lexer = new WaebricLexer(is);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
-      			WaebricParser parser = new WaebricParser(tokens);
+      			WaebricParser parser = new WaebricParser(tokens, modules);
       			return (CommonTree) parser.module().getTree();
       		} catch(java.io.IOException e) { return new CommonTree(); }
 	}
@@ -48,17 +59,21 @@ tokens {
 }
 
 // $<Module
-module: 		'module' moduleId ( imprt | site | function )*
-				-> ^( 'module' moduleId imprt* site* function* ) ; // Requires root node
+module: 		'module' moduleId { modules.add($moduleId.path); } ( imprt | site | function )*
+				-> ^( 'module' moduleId imprt* site* function* ) ;
 
 moduleId 
 	returns [String path = ""] // Determine physical path of module identifier
-	@after { $path += ".wae"; } // Each reference ends with waebric extension
+	@after { $path += ".wae"; }
 	:		e=IDCON { $path += e.getText(); } 
 			( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
 	
-imprt:			'import' moduleId
-				-> 'import' moduleId ^( { parseFile($moduleId.path) } ) ;
+imprt:			'import' moduleId {
+					if(! modules.contains($moduleId.path)) {
+						Object dependancy = adaptor.becomeRoot(parseFile($moduleId.path), (Object) adaptor.nil());
+						adaptor.addChild(root_0, dependancy);
+					}
+				} ; //-> 'import' moduleId ^( { parseFile($moduleId.path) } ) ;
 
 // $>
 // $<Site
