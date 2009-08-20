@@ -96,15 +96,15 @@ statements
 
 statement
 	returns[boolean yield = false;]
-	:		^( 'if' '(' predicate ')' t=statement { if($t.yield) $yield = true; } 
+	:		^( 'if' predicate t=statement { if($t.yield) $yield = true; } 
 				( 'else' f=statement { if($f.yield) $yield = true; } )? ) 
 			| ^( 'each' '(' IDCON ':' expression ')' stm=statement ) { $yield = $stm.yield; }
 			| ^( 'let' assignment+ 'in' stms=statements 'end' ) { $yield = $stms.yield; }
 			| ^( '{' stms=statements '}' ) { $yield = $stms.yield; }
-			| ^( 'comment' STRCON ';' )
-			| ^( 'echo' expression ';' )
-			| ^( 'echo' embedding ';' )
-			| ^( 'cdata' expression ';' )
+			| ^( 'comment' STRCON )
+			| ^( 'echo' expression )
+			| ^( 'echo' embedding )
+			| ^( 'cdata' expression )
 			| 'yield;' { $yield = true; }
 			| ^( MARKUP_STATEMENT markup markupChain { $yield = $markupChain.yield; } ) ;
 
