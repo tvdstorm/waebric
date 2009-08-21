@@ -68,12 +68,8 @@ moduleId
 	:		e=IDCON { $path += e.getText(); } 
 			( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
 	
-imprt:			'import' moduleId {
-					if(! modules.contains($moduleId.path)) {
-						Object dependancy = adaptor.becomeRoot(parseFile($moduleId.path), (Object) adaptor.nil());
-						adaptor.addChild(root_0, dependancy);
-					}
-				} ; //-> 'import' moduleId ^( { parseFile($moduleId.path) } ) ;
+imprt:			'import' moduleId { if(modules.contains($moduleId.path)) { return retval; } } 
+				-> 'import' moduleId ^( { parseFile($moduleId.path) } ) ;
 
 // $>
 // $<Site
