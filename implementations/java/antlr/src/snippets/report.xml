@@ -7,7 +7,7 @@
 			<license_note>License note: This is a evaluation copy license</license_note>
 
 		</license_notes>
-		<date>Sat Aug 22 11:41:52 2009</date>
+		<date>Sat Aug 22 11:44:20 2009</date>
 		<cmtjava_options> -l -o report.xml</cmtjava_options>
 		<cwd>/home/jeroen/Research/WaebricANTLR/src/snippets</cwd>
 	</header_info>
@@ -811,7 +811,7 @@
 		<package></package>
 		<imports>
 		</imports>
-		<class name="ParserPreamble" nesting="0" start_line="2">
+		<class name="InterpreterAction" nesting="0" start_line="2">
 			<class name="Environment" nesting="1" start_line="3">
 				<class_total>
 					<vG>1</vG>
@@ -1369,7 +1369,7 @@
 			<import>org.jdom.output.Format</import>
 			<import>org.jdom.output.XMLOutputter</import>
 		</imports>
-		<class name="ParserPreamble" nesting="0" start_line="24">
+		<class name="InterpreterPreamble" nesting="0" start_line="24">
 			<method name="interpretProgram" nesting="1" start_line="36">
 				<vG>5</vG>
 				<vG_max>5</vG_max>
