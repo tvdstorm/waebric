@@ -4,7 +4,7 @@ import antlr.SemanticException;
 public class Checker {
 private List<SemanticException> exceptions;
 	
-	public CheckerPreamble(TreeNodeStream input, List<SemanticException> exceptions) {
+	public Checker(TreeNodeStream input, List<SemanticException> exceptions) {
 		super(input);
 		this.exceptions = exceptions;
 	}

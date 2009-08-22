@@ -7,7 +7,7 @@ public class Parser {
 	 */
 	private ArrayList<String> modules = new ArrayList<String>();
 
-	public ParserPreamble(TokenStream input, ArrayList<String> modules) {
+	public Parser(TokenStream input, ArrayList<String> modules) {
 		super(input);
 		this.modules = modules;
 	}
