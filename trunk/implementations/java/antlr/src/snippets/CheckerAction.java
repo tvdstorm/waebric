@@ -14,7 +14,7 @@ public class CheckerAction {
 	 String path = "";
 	 path += ".wae";
 	 path = $id.getText();
-	 path += "/" + $id.getText(); }
+	 path += "/" + $id.getText();
  	java.io.File file = new java.io.File(path);
 	if(! file.isFile()) {
 		exceptions.add(new NonExistingModuleException($moduleId.tree));

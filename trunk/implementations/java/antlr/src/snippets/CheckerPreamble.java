@@ -32,7 +32,7 @@ private List<SemanticException> exceptions;
 		// Check if function is already defined
 		if(isDefinedFunction(id.getText())) {
 			exceptions.add(new DuplicateFunctionException(id));
-		} else { $Environment::functions.put(id.getText(), args); }
+		} else { Environment.functions.put(id.getText(), args); }
 	}
 
 	/**
@@ -40,8 +40,8 @@ private List<SemanticException> exceptions;
 	 * @param name: Function name
 	 */
 	private boolean isDefinedFunction(String name) {
-		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::functions.containsKey(name)) {
+		for(int i=Environment.size()-1; i>=0; i--) {
+			if(Environment[i].functions.containsKey(name)) {
 				return true; 
 			}
 		} return false;
@@ -52,9 +52,9 @@ private List<SemanticException> exceptions;
 	 * @param name: Function name
 	 */
 	private int getFunctionArgs(String name) {
-		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::functions.containsKey(name)) {
-				return $Environment[i]::functions.get(name); 
+		for(int i=Environment.size()-1; i>=0; i--) {
+			if(Environment[i].functions.containsKey(name)) {
+				return Environment[i].functions.get(name); 
 			}
 		} return -1;
 	}
@@ -64,7 +64,7 @@ private List<SemanticException> exceptions;
 	 * @param name: Variable name
 	 */
 	private void defineVariable(String name) {
-		$Environment::variables.add(name);
+		Environment.variables.add(name);
 	}
 
 	/**
@@ -72,8 +72,8 @@ private List<SemanticException> exceptions;
 	 * @param name: Variable name
 	 */
 	private boolean isDefinedVariable(String name) {
-		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::variables.contains(name)) { 
+		for(int i=Environment.size()-1; i>=0; i--) {
+			if(Environment[i].variables.contains(name)) { 
 				return true; 
 			}
 		} return false;
