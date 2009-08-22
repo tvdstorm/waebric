@@ -7,7 +7,7 @@ public class ParserPreamble {
 	 */
 	private ArrayList<String> modules = new ArrayList<String>();
 
-	public WaebricParser(TokenStream input, ArrayList<String> modules) {
+	public ParserPreamble(TokenStream input, ArrayList<String> modules) {
 		super(input);
 		this.modules = modules;
 	}
@@ -25,4 +25,5 @@ public class ParserPreamble {
       			return (CommonTree) parser.module().getTree();
       		} catch(java.io.IOException e) { return new CommonTree(); }
 	}
+
 }
