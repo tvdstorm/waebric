@@ -29,9 +29,17 @@ options {
 		return exceptions;
 	}
 		
-	public Map<String, function_return> getFunctions() { return functions; }
-	public List<mapping_return> getMappings() { return mappings; }
-	public List<Integer> getYields() { return yields; }
+	public Map<String, function_return> getFunctions() { 
+		return functions;
+	}
+	
+	public List<mapping_return> getMappings() { 
+		return mappings;
+	}
+	
+	public List<Integer> getYields() {
+		return yields;
+	}
 }
 
 // $<Module
@@ -72,7 +80,7 @@ keyValuePair:		IDCON ':' expression ;
 
 function 
 	returns [int args = 0, int index = 0]
-	@init { $index = input.index();}
+	@init { $index = input.index(); }
 	:		^( FUNCTION id=IDCON 
 			formals { $args = $formals.args; }
 			statements { if($statements.yield) { yields.add($index); } } );
