@@ -21,7 +21,7 @@ package org.cwi.waebric;
 	
 	import org.jdom.output.Format;
 	import org.jdom.output.XMLOutputter;
-public class ParserPreamble {
+public class InterpreterPreamble {
 	// JDOM elements
 	private Document document;
 	private Element current;

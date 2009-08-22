@@ -1,5 +1,5 @@
 
-public class ParserPreamble {
+public class InterpreterAction {
 	public class Environment {
 		public static Map<String, Integer> functions;
 		public static Map<String, Integer> variables;
