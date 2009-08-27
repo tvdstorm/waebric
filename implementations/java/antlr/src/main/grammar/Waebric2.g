@@ -30,10 +30,38 @@ arguments:		'(' argument? ( ',' argument )* ')' ;
 argument:		expression 
 			| IDCON '=' expression 
 			;
+			
+expression:		IDCON 
+			| '[' expression? ( ',' expression ']' )*
+			;
 
-statement:		'yield;' ;
+statement:		'if' '(' predicate ')' statement ( 'else' statement )?
+			| 'each' '(' IDCON ':' expression ')' statement 
+			| 'let' assignment+ 'in' statement* 'end'
+			| '{' statement* '}'
+			| 'yield;'
+			| 'comment' STRCON ';'
+			| 'echo' expression ';'
+			| 'echo' embedding ';'
+			| 'cdata' expression ';' 
+			;
+			
+assignment:		IDCON '=' expression ';' // Variable binding
+			| IDCON formals '=' statement // Function binding
+			;
+			
+predicate:		'!'* expression ( '.' type '?' )?
+			( '&&' predicate | '||' predicate )* ;
+type:			'list' 
+			| 'record' 
+			| 'string' 
+			;
 
-expression:		IDCON ;	
+embedding:		PRETEXT embed textTail ;
+embed:			markup* expression ; // How to add markup+ ?
+textTail:		POSTTEXT 
+			| MIDTEXT embed textTail 
+			;		
 
 // Lexical rules
 COMMENT	:		'comment' { inString = true; } ;
