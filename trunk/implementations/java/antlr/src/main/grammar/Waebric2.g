@@ -1,4 +1,4 @@
-grammar Waebric2;
+grammar Waebric;
 
 options {
 	output = AST ;
@@ -25,7 +25,7 @@ tokens {
 	 */
 	private ArrayList<String> modules = new ArrayList<String>();
 
-	public Waebric2Parser(TokenStream input, ArrayList<String> modules) {
+	public WaebricParser(TokenStream input, ArrayList<String> modules) {
 		super(input);
 		this.modules = modules;
 	}
@@ -105,8 +105,8 @@ expression:		( IDCON | NATCON | TEXT | SYMBOLCON
 			) ( '+' expression | '.' IDCON )* ;
 keyValuePair:		IDCON ':' expression ;
 
-statement:		'if' '(' predicate ')' statement ( 'else' statement )?
-				-> ^( 'if' '(' predicate ')' statement ( 'else' statement )? )
+statement:	'if' '(' predicate ')' statement ( 'else' statement )?
+				-> ^( 'if' predicate statement ( 'else' statement )? )
 			| 'each' '(' IDCON ':' expression ')' statement 
 				-> ^( 'each' '(' IDCON ':' expression ')' statement )
 			| 'let' assignment+ 'in' statement* 'end'
@@ -122,9 +122,11 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'echo' embedding )
 			| 'cdata' expression ';'
 				-> ^( 'cdata' expression )
-			| markup+ ( ';' | expression ';' | embedding ';' | statement )
-				-> ^( MARKUP_STATEMENT markup+ expression? embedding? statement? )
-			;
+			| markup ';'
+			| markup+ expression ';' 
+			| markup+ embedding ';'
+			| markup+ ';'
+			| markup+ statement ;
 			
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
@@ -132,16 +134,11 @@ assignment:		IDCON '=' expression ';' // Variable binding
 			
 predicate:		'!'* expression ( '.' type '?' )?
 			( '&&' predicate | '||' predicate )* ;
-type:			'list' 
-			| 'record' 
-			| 'string' 
-			;
+type:			'list' | 'record' | 'string' ;
 
 embedding:		PRETEXT embed textTail ;
 embed:			markup* expression? ;
-textTail:		POSTTEXT 
-			| MIDTEXT embed textTail 
-			;		
+textTail:		POSTTEXT | MIDTEXT embed textTail ;		
 
 // Lexical rules
 COMMENT	:		'comment' { inString = true; } ;
