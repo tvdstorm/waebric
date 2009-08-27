@@ -8,7 +8,7 @@ tokens {
 	// Imagionary tokens
 	ATTRIBUTES = 'atts';
 	ARGUMENTS = 'args';
-	MARKUP = 'markup';
+	MARKUP = 'mku';
 	MARKUP_STATEMENT = 'mstm';
 	FORMALS = 'fmls';
 	FUNCTION = 'def';
@@ -25,7 +25,7 @@ tokens {
 	 */
 	private ArrayList<String> modules = new ArrayList<String>();
 
-	public WaebricParser(TokenStream input, ArrayList<String> modules) {
+	public Waebric2Parser(TokenStream input, ArrayList<String> modules) {
 		super(input);
 		this.modules = modules;
 	}
@@ -74,7 +74,7 @@ mapping	:		PATH ':' markup ;
 
 function:		'def' IDCON formals? statement* 'end'
 				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement* ) ;
-
+		
 formals:		'(' IDCON? ( ',' IDCON )* ')'
 				-> IDCON* ;
 
@@ -106,15 +106,24 @@ expression:		( IDCON | NATCON | TEXT | SYMBOLCON
 keyValuePair:		IDCON ':' expression ;
 
 statement:		'if' '(' predicate ')' statement ( 'else' statement )?
+				-> ^( 'if' '(' predicate ')' statement ( 'else' statement )? )
 			| 'each' '(' IDCON ':' expression ')' statement 
+				-> ^( 'each' '(' IDCON ':' expression ')' statement )
 			| 'let' assignment+ 'in' statement* 'end'
+				-> ^( 'let' assignment+ 'in' statement* 'end' )
 			| '{' statement* '}'
+				-> ^( '{' statement* '}' )
 			| 'yield;'
 			| 'comment' STRCON ';'
+				-> ^( 'comment' STRCON )
 			| 'echo' expression ';'
+				-> ^( 'echo' expression )
 			| 'echo' embedding ';'
+				-> ^( 'echo' embedding )
 			| 'cdata' expression ';'
+				-> ^( 'cdata' expression )
 			| markup+ ( ';' | expression ';' | embedding ';' | statement )
+				-> ^( MARKUP_STATEMENT markup+ expression? embedding? statement? )
 			;
 			
 assignment:		IDCON '=' expression ';' // Variable binding
