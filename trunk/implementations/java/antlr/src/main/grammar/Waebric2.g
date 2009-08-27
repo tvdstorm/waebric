@@ -1,23 +1,89 @@
 grammar Waebric2;
 
 options {
-	output = AST;
+	output = AST ;
 }
 
-module: 		'module' moduleId ( imprt | site | function )* EOF ;
-moduleId:		IDCON ( '.' IDCON ) ;
+tokens {
+	// Imagionary tokens
+	ATTRIBUTES = 'atts';
+	ARGUMENTS = 'args';
+	MARKUP = 'markup';
+	MARKUP_STATEMENT = 'mstm';
+	FORMALS = 'fmls';
+	FUNCTION = 'def';
+}
 
-imprt:			'import' moduleId ;
+@parser::header {
+	package org.cwi.waebric;
+	import java.util.ArrayList;
+}
+
+@parser::members {
+	/**
+	 * Parsed modules
+	 */
+	private ArrayList<String> modules = new ArrayList<String>();
+
+	public WaebricParser(TokenStream input, ArrayList<String> modules) {
+		super(input);
+		this.modules = modules;
+	}
+
+	/**
+	 * Parse file on specified path.
+	 * @return AST
+	 */
+	private CommonTree parseFile(String path) throws RecognitionException {
+		try {
+			CharStream is = new ANTLRFileStream(path);
+			WaebricLexer lexer = new WaebricLexer(is);
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
+      			WaebricParser parser = new WaebricParser(tokens, modules);
+      			return (CommonTree) parser.module().getTree();
+      		} catch(java.io.IOException e) { return new CommonTree(); }
+	}
+}
+
+@lexer::header {
+	package org.cwi.waebric;
+}
+
+@lexer::members {
+	// Maintain context information
+	private boolean inSite = false;
+	private boolean inPath = false;
+	private boolean inString = false;
+}
+
+module: 		'module' moduleId { modules.add($moduleId.path); } ( imprt | site | function )*
+				-> ^( 'module' moduleId imprt* site* function* ) ;
+
+moduleId 
+	returns [String path = ""]
+	@after { $path += ".wae"; }
+	:		e=IDCON { $path += e.getText(); } 
+			( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
+	
+imprt:			'import' moduleId { if(modules.contains($moduleId.path)) { return retval; } } 
+				-> 'import' moduleId ^( { parseFile($moduleId.path) } ) ;
 
 site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
 
-function:		'def' IDCON formals? statement* 'end' ;
-formals:		'(' IDCON? ( ',' IDCON )* ')' ;
+function:		'def' IDCON formals? statement* 'end'
+				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement* ) ;
 
-markup:			IDCON attributes arguments? ;
-attributes:		attribute* ;
+formals:		'(' IDCON? ( ',' IDCON )* ')'
+				-> IDCON* ;
+
+markup:			IDCON attributes arguments?
+				-> ^( MARKUP IDCON attributes arguments? ) ;
+				
+attributes:		attribute* 
+				-> ^( ATTRIBUTES attribute* );	
+				
 attribute:		'#' IDCON // ID attribute
 			| '.' IDCON // Class attribute
 			| '$' IDCON // Name attribute
@@ -26,7 +92,9 @@ attribute:		'#' IDCON // ID attribute
 			| '@' NATCON '%' NATCON // Width-height attribute
 			;
 
-arguments:		'(' argument? ( ',' argument )* ')' ;
+arguments:		'(' argument? ( ',' argument )* ')'
+				-> ^( ARGUMENTS argument* ) ;
+
 argument:		expression 
 			| IDCON '=' expression 
 			;
@@ -46,14 +114,12 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 			| 'echo' expression ';'
 			| 'echo' embedding ';'
 			| 'cdata' expression ';'
-			| markup markupChain
+			| markup+ ( ';' | expression ';' | embedding ';' | statement )
 			;
-			
-markupChain:		markup* ( ';' | expression ';' | embedding ';' | statement ) ;
 			
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
-			;
+				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement ) ;
 			
 predicate:		'!'* expression ( '.' type '?' )?
 			( '&&' predicate | '||' predicate )* ;
