@@ -31,9 +31,11 @@ argument:		expression
 			| IDCON '=' expression 
 			;
 			
-expression:		IDCON 
-			| '[' expression? ( ',' expression ']' )*
-			;
+expression:		( IDCON | NATCON | TEXT | SYMBOLCON 
+				| '[' expression? ( ',' expression )* ']' // List
+				| '{' keyValuePair? ( ',' keyValuePair )* '}' // Record
+			) ( '+' expression | '.' IDCON )* ;
+keyValuePair:		IDCON ':' expression ;
 
 statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 			| 'each' '(' IDCON ':' expression ')' statement 
@@ -43,8 +45,11 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 			| 'comment' STRCON ';'
 			| 'echo' expression ';'
 			| 'echo' embedding ';'
-			| 'cdata' expression ';' 
+			| 'cdata' expression ';'
+			| markup markupChain
 			;
+			
+markupChain:		markup* ( ';' | expression ';' | embedding ';' | statement ) ;
 			
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
@@ -58,7 +63,7 @@ type:			'list'
 			;
 
 embedding:		PRETEXT embed textTail ;
-embed:			markup* expression ; // How to add markup+ ?
+embed:			markup* expression? ;
 textTail:		POSTTEXT 
 			| MIDTEXT embed textTail 
 			;		
