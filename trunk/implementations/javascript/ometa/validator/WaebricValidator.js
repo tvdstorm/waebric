@@ -4,7 +4,8 @@
  * The WaebricOMetaValidator converts a Waebric program into an AST (Module) and then
  * performs a semantic validation on it.
  * - Reads in the Waebric program from the filesystem using Rhino/Java
- * - Parses the tokens to an Abstract Syntax Tree {Module} using OMeta
+ * - Parses the program to an Abstract Syntax Tree {Module} using OMeta
+ *	 (imports are automatically loaded in OMeta)
  * - Performes semantic validation on the AST using OMeta
  *
  * The semantic validation includes:

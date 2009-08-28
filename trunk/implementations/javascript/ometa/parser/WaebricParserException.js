@@ -7,6 +7,7 @@
  * 
  * @param {String} message The error message
  * @param {String} filePath The path of the Waebric program on the filesystem
+ * @param {Object} childException The encapsulated exception
  */
 function WaebricParserException(message, filePath, childException){
 	this.message = message;

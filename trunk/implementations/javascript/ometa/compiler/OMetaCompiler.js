@@ -1,5 +1,5 @@
 /**
- * Compiles the raw data from the OMeta parser and saves the output to a file
+ * Compiles the OMeta grammar
  * 
  * @author Nickolas Heirbaut [nickolas.heirbaut@dejasmijn.be]
  */

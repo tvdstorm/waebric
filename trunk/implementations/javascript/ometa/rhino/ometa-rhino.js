@@ -22,7 +22,7 @@ load('../parser/WaebricParserResult.js')
 load('../parser/WaebricParserException.js')
 		
 load('../validator/WaebricValidator.js')
-load('../validator/WaebricValidator.ometa.js')	
+load('../validator/WaebricValidator.ometa.js')
 load('../validator/WaebricValidatorException.js')
 load('../validator/WaebricValidatorResult.js')
 load('../validator/WaebricSemanticException.js')
@@ -43,7 +43,7 @@ load('../utils/WaebricDependencyParser.js')
 function createHTML(waebricEnvironments, siteName){
 	for(var i = 0; i < waebricEnvironments.length; i++){	
 		var waebricEnvironment = waebricEnvironments[i];
-		var rootPath = '../../demos/ometa/';
+		var rootPath = '../../../../../demos/output_ometa/';
 		var sitePath = siteName + '/' + waebricEnvironment.path.toString();	
 		createDirectories(rootPath, sitePath)
 		
@@ -90,10 +90,10 @@ function createTidyOutput(waebricEnvironments, siteName){
 	var output = '';
 	for(var i = 0; i < waebricEnvironments.length; i++){	
 		var waebricEnvironment = waebricEnvironments[i];
-		output += '../../demos/ometa/' + siteName + '/' + waebricEnvironment.path.toString() + ' ';	
+		output += '../../../../../demos/output_ometa/' + siteName + '/' + waebricEnvironment.path.toString() + ' ';	
 	}
 	//Write file
-	var fw = new FileWriter('../../demos/ometa/tidy.txt');
+	var fw = new FileWriter('../../../../../demos/output_ometa/tidy.txt');
 	var bf = new BufferedWriter(fw);
 	bf.write(output);
 	bf.close();
@@ -104,7 +104,7 @@ function createTidyOutput(waebricEnvironments, siteName){
  */
 function convertToHTML(path, siteName){	
 	try {			
-		//Parsing + validation			
+		//Parsing + validation	
 		var validatorResult = WaebricValidator.parseAndValidate(path);
 		print(validatorResult.toString())
 		
@@ -126,4 +126,6 @@ function convertToHTML(path, siteName){
 
 //OMetaCompiler.compileWaebricParser();
 //OMetaCompiler.compileWaebricValidator();
-convertToHTML('../../../../demos/lava/lava.wae', 'lava')
+	
+convertToHTML('../../../../../demos/source/lava/lava.wae', 'lava')
+//convertToHTML('../programs/program.wae', 'program')

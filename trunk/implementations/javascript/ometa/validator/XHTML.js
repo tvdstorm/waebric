@@ -95,9 +95,6 @@ XHTML.tags = [
 	'ul',
 	'var',
 	'xmp'
-
-
-
 ];
 
 /**
@@ -113,5 +110,3 @@ XHTML.isXHTMLTag = function(input){
 	}
 	return false;
 }
-
-
