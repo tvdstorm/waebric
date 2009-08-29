@@ -8,9 +8,10 @@ tokens {
 	// Imagionary tokens
 	ATTRIBUTES = 'atts';
 	ARGUMENTS = 'args';
-	MARKUP = 'mku';
+	ARGUMENT = 'arg' ;
+	MARKUP = 'm';
 	MARKUP_STATEMENT = 'mstm';
-	FORMALS = 'fmls';
+	FORMALS = 'f';
 }
 
 @parser::header {
@@ -93,11 +94,13 @@ attribute:		'#' IDCON // ID attribute
 			| '@' NATCON '%' NATCON // Width-height attribute
 			;
 
-arguments:		'(' argument? ( ',' argument )* ')' ;
+arguments:		'(' argument? ( ',' argument )* ')'
+				-> ^( ARGUMENTS argument* ) ;
 
 argument:		expression
+				-> ^( ARGUMENT expression )
 			| IDCON '=' expression 
-			;
+				-> ^( ARGUMENT IDCON '=' expression ) ;
 
 statement:		regularStatement
 			| markupStatement 
@@ -130,12 +133,10 @@ regularStatement:	'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'cdata' expression )
 			;
 			
-markupStatement:	markup+ expression ';' 
-			| markup+ regularStatement ';' 
-			| markup+ embedding ';'
-			| markup+ ';' 
-			;
-			
+markupStatement:	( options {greedy=false;} : markup )+ 
+			( expression ';' | regularStatement | embedding ';' | ';' ) 
+				-> ^( MARKUP_STATEMENT markup+ expression? regularStatement? embedding? ) ;
+
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
 				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement ) ;
