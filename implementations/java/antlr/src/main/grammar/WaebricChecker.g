@@ -3,7 +3,6 @@ tree grammar WaebricChecker;
 options {
 	tokenVocab = Waebric;
 	ASTLabelType = CommonTree;
-	backtrack = true;
 	output = AST;
 }
 
@@ -15,6 +14,8 @@ scope Environment {
 @header {
 	package org.cwi.waebric;
 	import antlr.SemanticException;
+	import java.util.Map;
+	import java.util.HashMap;
 }
 
 @members {
@@ -265,22 +266,19 @@ formals
 
 // $<Statements
 
-statement:		^( 'if' predicate statement ( 'else' statement )? )
-			| eachStatement
-			| letStatement
+statement:		^( 'if' predicate statement ( 'else' statement )? ) 
+			| ^( 'each' '(' IDCON ':' expression ')' statement )
+			| ^( 'let' assignment+ 'in' statement* 'end' )
 			| ^( '{' statement* '}' )
 			| ^( 'comment' STRCON )
 			| ^( 'echo' expression )
 			| ^( 'echo' embedding )
 			| ^( 'cdata' expression )
-			| 'yield;'
-			| ^( MARKUP_STATEMENT markup markupChain ) ;
-			
-markupChain:		^( MARKUP_CHAIN markup markupChain )
-			| ^( MARKUP_CHAIN expression )
-			| ^( MARKUP_CHAIN statement )
-			| ^( MARKUP_CHAIN embedding )
-			| ';' ;
+			| 'yield'
+			| ^( MARKUP_EXPRESSION markup+ expression )
+			| ^( MARKUP_STATEMENT markup+ statement )
+			| ^( MARKUP_EMBEDDING markup+ embedding )
+			| ^( MARKUPS markup+ ) ;
 
 eachStatement
 	scope Environment;
@@ -316,16 +314,14 @@ funcBinding // Separated because only function bindings have local scopes
 			
 // $<Predicate
 
-predicate:		( '!' predicate 
-				| expression
-				| expression '.' type '?'
-			) ( '&&' predicate | '||' predicate )* ;
-type:			'list' | 'record' | 'string' ;		
+predicate:		'!'* expression ( '.' type '?' )?
+			( '&&' predicate | '||' predicate )* ;
+			
+type:			'list' | 'record' | 'string' ;
 
 // $>
-
 // $<Embedding
 
 embedding:		PRETEXT embed textTail ;
-embed:			markup* expression | markup* markup ;
+embed:			^( MARKUPS markup+ ) | ^( MARKUP_EXPRESSION markup* expression ) ;
 textTail:		POSTTEXT | MIDTEXT embed textTail ;
