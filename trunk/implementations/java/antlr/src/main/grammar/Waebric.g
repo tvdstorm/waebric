@@ -9,10 +9,12 @@ tokens {
 	// Imagionary tokens
 	ATTRIBUTES = 'atts';
 	ARGUMENTS = 'args';
-	MARKUP = 'mrku';
-	MARKUP_STATEMENT = 'mstm';
-	MARKUP_CHAIN = 'mc';
-	FORMALS = 'fmls';
+	MARKUP = 'm';
+	MARKUPS = 'mm' ;
+	MARKUP_STATEMENT = 'ms';
+	MARKUP_EXPRESSION = 'me' ;
+	MARKUP_EMBEDDING = 'mb' ;
+	FORMALS = 'f';
 }
 
 @parser::header {
@@ -97,7 +99,7 @@ arguments:		( '(' argument? ( ',' argument )* ')' )?
 				-> ^( ARGUMENTS argument* ) ;
 				
 argument:		expression // Variable definition
-			| IDCON '=' expression ; // Attribute definition
+			| IDCON '=' expression ;
 
 // $>
 // $<Expressions
@@ -121,7 +123,11 @@ formals:		'(' IDCON? ( ',' IDCON )* ')'
 
 // $<Statements
 
-statement:		'if' '(' predicate ')' statement ( 'else' statement )?
+statement:		regularStatement
+			| markupStatement 
+			;	
+
+regularStatement:	'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'if' predicate statement ( 'else' statement )? )
 			| 'each' '(' IDCON ':' expression ')' statement 
 				-> ^( 'each' '(' IDCON ':' expression ')' statement )
@@ -129,27 +135,26 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'let' assignment+ 'in' statement* 'end' )
 			| '{' statement* '}'
 				-> ^( '{' statement* '}' )
+			| 'yield' ';'
+				-> ^( 'yield' )
 			| 'comment' STRCON ';'
 				-> ^( 'comment' STRCON )
 			| 'echo' expression ';'
 				-> ^( 'echo' expression )
 			| 'echo' embedding ';'
 				-> ^( 'echo' embedding )
-			| 'cdata' expression ';' 
+			| 'cdata' expression ';'
 				-> ^( 'cdata' expression )
-			| 'yield;'
-			| markup markupChain
-				-> ^( MARKUP_STATEMENT markup markupChain );
-
-markupChain:		expression ';' 
-				-> ^( MARKUP_CHAIN expression )
-			| statement  
-				-> ^( MARKUP_CHAIN statement )
-			| embedding ';' 
-				-> ^( MARKUP_CHAIN embedding )
-			| markup markupChain 
-				-> ^( MARKUP_CHAIN markup markupChain )
-			| ';' ;
+			;
+			
+markupStatement:	( markup+ expression ';') => markup+ expression ';'
+				-> ^( MARKUP_EXPRESSION markup+ expression )
+			| ( markup+ regularStatement ) => markup+ regularStatement
+				-> ^( MARKUP_STATEMENT markup+ regularStatement )
+			| ( markup+ embedding ';' ) => markup+ embedding ';'
+				-> ^( MARKUP_EMBEDDING markup+ embedding )
+			| ( markup+ ';') => markup+ ';'
+				-> ^( MARKUPS markup+ ) ;
 
 // $>
 // $<Assignments
@@ -161,18 +166,27 @@ assignment:		IDCON '=' expression ';' // Variable binding
 // $>
 // $<Predicates
 
-predicate:		( '!' predicate 
-				| expression // Not null
-				| expression '.' type '?' // Is type 
-			) ( '&&' predicate | '||' predicate )* ; // Left-recussion removal
-type:			'list' | 'record' | 'string' ;
+predicate:		'!'* expression ( '.' type '?' )?
+			( '&&' predicate | '||' predicate )* ;
+			
+type:			'list' 
+			| 'record' 
+			| 'string' 
+			;
 
 // $>
 // $<Embedding
 
 embedding:		PRETEXT embed textTail ;
-embed:			markup* expression | markup* markup ;
-textTail:		POSTTEXT | MIDTEXT embed textTail ;
+
+embed:			( markup+ ) => markup+
+				-> ^( MARKUPS markup+ )
+			| ( markup* expression ) => markup* expression 
+				-> ^( MARKUP_EXPRESSION markup* expression ) ;
+
+textTail:		POSTTEXT 
+			| MIDTEXT embed textTail 
+			;
 
 // $>
 
