@@ -75,7 +75,7 @@ mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
 
 function:		'def' IDCON formals? statement* 'end'
-				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement* ) ;
+				-> ^( 'def' IDCON ^( FORMALS formals? ) statement* ) ;
 				
 formals:		'(' IDCON? ( ',' IDCON )* ')'
 				-> IDCON* ;
@@ -133,13 +133,11 @@ regularStatement:	'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'cdata' expression )
 			;
 			
-markupStatement:	( options {greedy=false;} : markup )+ 
-			( expression ';' | regularStatement | embedding ';' | ';' ) 
-				-> ^( MARKUP_STATEMENT markup+ expression? regularStatement? embedding? ) ;
+markupStatement:	markup+ ( (expression)=>expression ) ';' ;
 
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
-				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement ) ;
+				-> ^( 'def' IDCON ^( FORMALS formals? ) statement ) ;
 			
 predicate:		'!'* expression ( '.' type '?' )?
 			( '&&' predicate | '||' predicate )* ;
@@ -157,27 +155,10 @@ textTail:		POSTTEXT
 			| MIDTEXT embed textTail 
 			;		
 
-// Lexical rules
-MODULE:			'module' ;
-IMPORT:			'import' ;	
+// Lexical rules	
 SITE:			'site' { inSite = true; inPath = true; } ;
-FUNCTION:	 	'def' ;
-END:			'end' { inSite = false; inPath = false; } ;
-
-IF:			'if' ;
-ELSE:			'else' ;
-LET:			'let' ;
-IN:			'in' ;	
-EACH:			'each' ;
-YIELD:			'yield' ;
-CDATA:			'cdata' ;
-ECHO:			'echo' ;	
+END:			'end' { inSite = false; inPath = false; } ;	
 COMMENT:		'comment' { inString = true; } ;
-
-LIST:			'list' ;
-RECORD:			'record' ;
-STRING:			'string' ;			
-
 SEMICOLON:		';' { inPath = inSite; } ;
  
 NATCON:			DIGIT+ ;
