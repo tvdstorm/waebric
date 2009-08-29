@@ -256,7 +256,7 @@ function
 	@init {
 		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		^( FUNCTION IDCON formals statement* ) ;
+	} :		^( 'def' IDCON formals statement* ) ;
 			
 formals
 	returns [int args = 0;]
@@ -307,7 +307,7 @@ funcBinding // Separated because only function bindings have local scopes
 	@init {
 		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} : 		^( FUNCTION id=IDCON f=formals statement ) ;
+	} : 		^( 'def' id=IDCON f=formals statement ) ;
 	finally {
 		// Define function after poping local stack so the definition stays
 		defineFunction($id, $f.args);

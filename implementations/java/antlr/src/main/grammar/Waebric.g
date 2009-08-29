@@ -13,7 +13,6 @@ tokens {
 	MARKUP_STATEMENT = 'mstm';
 	MARKUP_CHAIN = 'mc';
 	FORMALS = 'fmls';
-	FUNCTION = 'def';
 }
 
 @parser::header {
@@ -113,7 +112,7 @@ keyValuePair:		IDCON ':' expression ;
 // $<Function
 
 function:		'def' IDCON formals? statement* 'end'
-				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement* ) ;
+				-> ^( 'def' IDCON ^( FORMALS formals? ) statement* ) ;
 		
 formals:		'(' IDCON? ( ',' IDCON )* ')'
 				-> IDCON* ;
@@ -157,7 +156,7 @@ markupChain:		expression ';'
 
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
-				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement ) ; // Manipulated to represent a function
+				-> ^( 'def' IDCON ^( FORMALS formals? ) statement ) ; // Manipulated to represent a function
 
 // $>
 // $<Predicates
@@ -178,7 +177,7 @@ textTail:		POSTTEXT | MIDTEXT embed textTail ;
 // $>
 
 // Lexical rules
-COMMENT	:		'comment' { inString = true; } ;
+COMMENT:		'comment' { inString = true; } ;
 SITE:			'site' { inSite = true; inPath = true; } ; // Site constructor
 END:			'end' { inSite = false; inPath = false; } ; // Site destructor
 SEMICOLON:		';' { inPath = inSite; } ; // Mapping separator
