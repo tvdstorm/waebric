@@ -1,6 +1,7 @@
-grammar Waebric;
+grammar Waebric ;
 
 options {
+	backtrack = true ;
 	output = AST ;
 }
 
@@ -8,10 +9,12 @@ tokens {
 	// Imagionary tokens
 	ATTRIBUTES = 'atts';
 	ARGUMENTS = 'args';
-	MARKUP = 'mku';
-	MARKUP_STATEMENT = 'mstm';
-	FORMALS = 'fmls';
-	FUNCTION = 'def';
+	MARKUP = 'm';
+	MARKUPS = 'mm' ;
+	MARKUP_STATEMENT = 'ms';
+	MARKUP_EXPRESSION = 'me' ;
+	MARKUP_EMBEDDING = 'mb' ;
+	FORMALS = 'f';
 }
 
 @parser::header {
@@ -56,11 +59,12 @@ tokens {
 	private boolean inString = false;
 }
 
+// $<Module
 module: 		'module' moduleId { modules.add($moduleId.path); } ( imprt | site | function )*
 				-> ^( 'module' moduleId imprt* site* function* ) ;
 
 moduleId 
-	returns [String path = ""]
+	returns [String path = ""] // Determine physical path of module identifier
 	@after { $path += ".wae"; }
 	:		e=IDCON { $path += e.getText(); } 
 			( '.' e=IDCON { $path += "/" + e.getText(); } )* ;
@@ -68,44 +72,62 @@ moduleId
 imprt:			'import' moduleId { if(modules.contains($moduleId.path)) { return retval; } } 
 				-> 'import' moduleId ^( { parseFile($moduleId.path) } ) ;
 
+// $>
+// $<Site
+
 site:			'site' mappings 'end' ;
 mappings:		mapping? ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
 
-function:		'def' IDCON formals? statement* 'end'
-				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement* ) ;
-		
-formals:		'(' IDCON? ( ',' IDCON )* ')'
-				-> IDCON* ;
+// $>
+// $<Markup
 
-markup:			IDCON attributes arguments?
-				-> ^( MARKUP IDCON attributes arguments? ) ;
+markup:			IDCON attributes arguments
+				-> ^( MARKUP IDCON attributes arguments ) ;
 				
 attributes:		attribute* 
 				-> ^( ATTRIBUTES attribute* );	
-				
+
 attribute:		'#' IDCON // ID attribute
 			| '.' IDCON // Class attribute
 			| '$' IDCON // Name attribute
 			| ':' IDCON // Type attribute
 			| '@' NATCON // Width attribute
-			| '@' NATCON '%' NATCON // Width-height attribute
-			;
-
-arguments:		'(' argument? ( ',' argument )* ')'
-				-> ^( ARGUMENTS argument* ) ;
-
-argument:		expression 
-			| IDCON '=' expression 
-			;
+			| '@' NATCON '%' NATCON; // Width-height attribute
 			
+arguments:		( '(' argument? ( ',' argument )* ')' )?
+				-> ^( ARGUMENTS argument* ) ;
+				
+argument:		expression // Variable definition
+			| IDCON '=' expression ;
+
+// $>
+// $<Expressions
+
 expression:		( IDCON | NATCON | TEXT | SYMBOLCON 
 				| '[' expression? ( ',' expression )* ']' // List
 				| '{' keyValuePair? ( ',' keyValuePair )* '}' // Record
-			) ( '+' expression | '.' IDCON )* ;
+			) ( '+' expression /* Cat */ | '.' IDCON /* Field */ )* ;
 keyValuePair:		IDCON ':' expression ;
 
-statement:	'if' '(' predicate ')' statement ( 'else' statement )?
+// $>
+// $<Function
+
+function:		'def' IDCON formals? statement* 'end'
+				-> ^( 'def' IDCON ^( FORMALS formals? ) statement* ) ;
+		
+formals:		'(' IDCON? ( ',' IDCON )* ')'
+				-> IDCON* ;
+
+// $>
+
+// $<Statements
+
+statement:		regularStatement
+			| markupStatement 
+			;	
+
+regularStatement:	'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'if' predicate statement ( 'else' statement )? )
 			| 'each' '(' IDCON ':' expression ')' statement 
 				-> ^( 'each' '(' IDCON ':' expression ')' statement )
@@ -113,7 +135,8 @@ statement:	'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'let' assignment+ 'in' statement* 'end' )
 			| '{' statement* '}'
 				-> ^( '{' statement* '}' )
-			| 'yield;'
+			| 'yield' ';'
+				-> ^( 'yield' )
 			| 'comment' STRCON ';'
 				-> ^( 'comment' STRCON )
 			| 'echo' expression ';'
@@ -122,26 +145,53 @@ statement:	'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'echo' embedding )
 			| 'cdata' expression ';'
 				-> ^( 'cdata' expression )
-			| markup ';'
-			| markup+ expression ';' 
-			| markup+ embedding ';'
-			| markup+ ';'
-			| markup+ statement ;
+			;
 			
+markupStatement:	( markup+ expression ';') => markup+ expression ';'
+				-> ^( MARKUP_EXPRESSION markup+ expression )
+			| ( markup+ regularStatement ) => markup+ regularStatement
+				-> ^( MARKUP_STATEMENT markup+ regularStatement )
+			| ( markup+ embedding ';' ) => markup+ embedding ';'
+				-> ^( MARKUP_EMBEDDING markup+ embedding )
+			| ( markup+ ';') => markup+ ';'
+				-> ^( MARKUPS markup+ ) ;
+
+// $>
+// $<Assignments
+
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
-				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement ) ;
-			
+				-> ^( 'def' IDCON ^( FORMALS formals? ) statement ) ; // Manipulated to represent a function
+
+// $>
+// $<Predicates
+
 predicate:		'!'* expression ( '.' type '?' )?
 			( '&&' predicate | '||' predicate )* ;
-type:			'list' | 'record' | 'string' ;
+			
+type:			'list' 
+			| 'record' 
+			| 'string' 
+			;
+
+// $>
+// $<Embedding
 
 embedding:		PRETEXT embed textTail ;
-embed:			markup* expression? ;
-textTail:		POSTTEXT | MIDTEXT embed textTail ;		
+
+embed:			( markup+ ) => markup+
+				-> ^( MARKUPS markup+ )
+			| ( markup* expression ) => markup* expression 
+				-> ^( MARKUP_EXPRESSION markup* expression ) ;
+
+textTail:		POSTTEXT 
+			| MIDTEXT embed textTail 
+			;
+
+// $>
 
 // Lexical rules
-COMMENT	:		'comment' { inString = true; } ;
+COMMENT:		'comment' { inString = true; } ;
 SITE:			'site' { inSite = true; inPath = true; } ; // Site constructor
 END:			'end' { inSite = false; inPath = false; } ; // Site destructor
 SEMICOLON:		';' { inPath = inSite; } ; // Mapping separator
