@@ -131,19 +131,14 @@ assignment:		IDCON '=' expression ';' // Variable binding
 // $>
 // $<Predicates
 
-
 predicate:		'!'* expression ( '.' type '?' )?
 			( '&&' predicate | '||' predicate )* ;
 			
-type:			'list' 
-			| 'record' 
-			| 'string' 
-			;
+type:			'list' | 'record' | 'string' ;
 
 // $>
 // $<Embedding
 
 embedding:		PRETEXT embed textTail ;
-embed:			^( MARKUPS markup+ )
-			| ^( MARKUP_EXPRESSION markup* expression ) ;
+embed:			^( MARKUPS markup+ ) | ^( MARKUP_EXPRESSION markup* expression ) ;
 textTail:		POSTTEXT | MIDTEXT embed textTail ;
