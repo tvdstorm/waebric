@@ -1,4 +1,4 @@
-grammar Waebric ;
+grammar Waebric2 ;
 
 options {
 	backtrack = true ;
@@ -28,7 +28,7 @@ tokens {
 	 */
 	private ArrayList<String> modules = new ArrayList<String>();
 
-	public WaebricParser(TokenStream input, ArrayList<String> modules) {
+	public Waebric2Parser(TokenStream input, ArrayList<String> modules) {
 		super(input);
 		this.modules = modules;
 	}
@@ -40,9 +40,9 @@ tokens {
 	private CommonTree parseFile(String path) throws RecognitionException {
 		try {
 			CharStream is = new ANTLRFileStream(path);
-			WaebricLexer lexer = new WaebricLexer(is);
+			Waebric2Lexer lexer = new Waebric2Lexer(is);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
-      			WaebricParser parser = new WaebricParser(tokens, modules);
+      			Waebric2Parser parser = new Waebric2Parser(tokens, modules);
       			return (CommonTree) parser.module().getTree();
       		} catch(java.io.IOException e) { return new CommonTree(); }
 	}

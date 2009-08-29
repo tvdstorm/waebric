@@ -3,14 +3,13 @@ tree grammar WaebricLoader;
 options {
 	tokenVocab = Waebric;
 	ASTLabelType = CommonTree;
+	backtrack = true;
 	output = AST;
 }
 
 @header {
 	package org.cwi.waebric;
 	import antlr.SemanticException;
-	import java.util.Map;
-	import java.util.HashMap;
 }
 
 @members {
@@ -54,7 +53,6 @@ imprt:			'import' moduleId module? ;
 // $<Site
 
 site:			'site' mappings 'end' ;
-
 mappings:		mapping? ( ';' mapping )* ;
 
 mapping
@@ -75,7 +73,6 @@ expression:		( IDCON | NATCON | TEXT | SYMBOLCON
 				| '[' expression? ( ',' expression )* ']' // List
 				| '{' keyValuePair? ( ',' keyValuePair )* '}' // Record
 			) ( '+' expression /* Cat */ | '.' IDCON /* Field */ )* ;
-			
 keyValuePair:		IDCON ':' expression ;
 
 // $>
@@ -84,7 +81,7 @@ keyValuePair:		IDCON ':' expression ;
 function 
 	returns [int args = 0, int index = 0]
 	@init { $index = input.index(); }
-	:		^( 'def' id=IDCON 
+	:		^( FUNCTION id=IDCON 
 			formals { $args = $formals.args; }
 			statements { if($statements.yield) { yields.add($index); } } );
 	finally {
@@ -116,29 +113,35 @@ statement
 			| ^( 'echo' expression )
 			| ^( 'echo' embedding )
 			| ^( 'cdata' expression )
-			| 'yield' { $yield = true; }
-			| ^( MARKUP_EXPRESSION markup+ expression )
-			| ^( MARKUP_STATEMENT markup+ stm=statement ) { $yield = $stm.yield; } 
-			| ^( MARKUP_EMBEDDING markup+ embedding )
-			| ^( MARKUPS markup+ ) ;
+			| 'yield;' { $yield = true; }
+			| ^( MARKUP_STATEMENT markup markupChain { $yield = $markupChain.yield; } ) ;
 
+markupChain
+	returns [boolean yield = false]
+	:		^( MARKUP_CHAIN markup c=markupChain { $yield = $c.yield; } )
+			| ^( MARKUP_CHAIN expression )
+			| ^( MARKUP_CHAIN s=statement { $yield = $s.yield; } )
+			| ^( MARKUP_CHAIN embedding  )
+			| ';' ;
+			
 // $>
 // $<Assignments
 
 assignment:		IDCON '=' expression ';' // Variable binding
-			| ^( 'def' IDCON formals statement ) ; // Function binding
+			| ^( FUNCTION IDCON formals statement ) ; // Function binding
 
 // $>
 // $<Predicates
 
-predicate:		'!'* expression ( '.' type '?' )?
-			( '&&' predicate | '||' predicate )* ;
-			
+predicate:		( '!' predicate 
+				| expression // Not null
+				| expression '.' type '?' // Is type 
+			) ( '&&' predicate | '||' predicate )* ;
 type:			'list' | 'record' | 'string' ;
 
 // $>
 // $<Embedding
 
 embedding:		PRETEXT embed textTail ;
-embed:			^( MARKUPS markup+ ) | ^( MARKUP_EXPRESSION markup* expression ) ;
+embed:			markup* expression | markup* markup ;
 textTail:		POSTTEXT | MIDTEXT embed textTail ;
