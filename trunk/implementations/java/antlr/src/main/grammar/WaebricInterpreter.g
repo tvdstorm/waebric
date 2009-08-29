@@ -393,7 +393,7 @@ expression returns [
 
 function [List<Integer> args]
 	@init { Element actual = null; int curr = 0; }
-	:		^( FUNCTION IDCON 
+	:		^( 'def' IDCON 
 				// Store formals as variable with corresponding argument
 				^( FORMALS ( id=IDCON {	if($args.size() > curr) { 
 					defineVariable($id.getText(), $args.get(curr)); curr++;
@@ -518,7 +518,7 @@ varBinding:		IDCON '=' expression ';' {
 			
 funcBinding
 	@init { int index = input.index(); }
-	:		^( FUNCTION id=IDCON formals . ) { 
+	:		^( 'def' id=IDCON formals . ) { 
 				environments.put($id.getText(), cloneEnvironment());
 				defineFunction($id.getText(), index); 
 			} ;

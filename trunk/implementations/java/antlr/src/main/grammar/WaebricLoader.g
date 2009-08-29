@@ -81,7 +81,7 @@ keyValuePair:		IDCON ':' expression ;
 function 
 	returns [int args = 0, int index = 0]
 	@init { $index = input.index(); }
-	:		^( FUNCTION id=IDCON 
+	:		^( 'def' id=IDCON 
 			formals { $args = $formals.args; }
 			statements { if($statements.yield) { yields.add($index); } } );
 	finally {
@@ -128,7 +128,7 @@ markupChain
 // $<Assignments
 
 assignment:		IDCON '=' expression ';' // Variable binding
-			| ^( FUNCTION IDCON formals statement ) ; // Function binding
+			| ^( 'def' IDCON formals statement ) ; // Function binding
 
 // $>
 // $<Predicates

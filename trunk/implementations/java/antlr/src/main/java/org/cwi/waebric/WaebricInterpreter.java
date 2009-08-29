@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-20 23:18:52
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-08-29 15:24:15
 
 	package org.cwi.waebric;
 	
@@ -34,77 +34,77 @@ import java.util.HashMap;
 
 public class WaebricInterpreter extends TreeParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTES", "ARGUMENTS", "MARKUP", "MARKUP_STATEMENT", "MARKUP_CHAIN", "FORMALS", "FUNCTION", "IDCON", "PATH", "NATCON", "TEXT", "SYMBOLCON", "STRCON", "PRETEXT", "POSTTEXT", "MIDTEXT", "COMMENT", "SITE", "END", "SEMICOLON", "LETTER", "DIGIT", "HEXADECIMAL", "PATHELEMENT", "FILEEXT", "STRCHAR", "ESCLAYOUT", "DECIMAL", "TEXTCHAR", "ESCQUOTE", "AMP", "CHARREF", "ENTREF", "SYMBOLCHAR", "COMMENTS", "LAYOUT", "'module'", "'.'", "'import'", "':'", "'#'", "'$'", "'@'", "'%'", "'('", "','", "')'", "'='", "'['", "']'", "'{'", "'}'", "'+'", "'if'", "'else'", "'each'", "'let'", "'in'", "'echo'", "'cdata'", "'yield;'", "'!'", "'?'", "'&&'", "'||'", "'list'", "'record'", "'string'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTES", "ARGUMENTS", "MARKUP", "MARKUP_STATEMENT", "MARKUP_CHAIN", "FORMALS", "IDCON", "PATH", "NATCON", "TEXT", "SYMBOLCON", "STRCON", "PRETEXT", "POSTTEXT", "MIDTEXT", "COMMENT", "SITE", "END", "SEMICOLON", "LETTER", "DIGIT", "HEXADECIMAL", "PATHELEMENT", "FILEEXT", "STRCHAR", "ESCLAYOUT", "DECIMAL", "TEXTCHAR", "ESCQUOTE", "AMP", "CHARREF", "ENTREF", "SYMBOLCHAR", "COMMENTS", "LAYOUT", "'module'", "'.'", "'import'", "':'", "'#'", "'$'", "'@'", "'%'", "'('", "','", "')'", "'='", "'['", "']'", "'{'", "'}'", "'+'", "'def'", "'if'", "'else'", "'each'", "'let'", "'in'", "'echo'", "'cdata'", "'yield;'", "'!'", "'?'", "'&&'", "'||'", "'list'", "'record'", "'string'"
     };
-    public static final int ESCLAYOUT=30;
+    public static final int ESCLAYOUT=29;
     public static final int T__42=42;
-    public static final int END=22;
+    public static final int END=21;
     public static final int T__57=57;
     public static final int T__51=51;
-    public static final int FILEEXT=28;
+    public static final int FILEEXT=27;
     public static final int T__69=69;
     public static final int T__47=47;
     public static final int T__50=50;
-    public static final int STRCHAR=29;
+    public static final int STRCHAR=28;
     public static final int T__65=65;
-    public static final int SYMBOLCON=15;
-    public static final int COMMENTS=38;
-    public static final int IDCON=11;
-    public static final int DECIMAL=31;
+    public static final int SYMBOLCON=14;
+    public static final int COMMENTS=37;
+    public static final int IDCON=10;
+    public static final int DECIMAL=30;
     public static final int T__70=70;
     public static final int T__67=67;
-    public static final int HEXADECIMAL=26;
-    public static final int TEXTCHAR=32;
+    public static final int HEXADECIMAL=25;
+    public static final int T__39=39;
+    public static final int TEXTCHAR=31;
     public static final int T__52=52;
     public static final int T__46=46;
     public static final int T__68=68;
-    public static final int FUNCTION=10;
     public static final int T__62=62;
     public static final int MARKUP=6;
-    public static final int STRCON=16;
+    public static final int STRCON=15;
     public static final int T__49=49;
-    public static final int AMP=34;
+    public static final int AMP=33;
     public static final int T__61=61;
-    public static final int POSTTEXT=18;
+    public static final int POSTTEXT=17;
     public static final int T__59=59;
     public static final int ATTRIBUTES=4;
-    public static final int DIGIT=25;
+    public static final int DIGIT=24;
     public static final int T__54=54;
     public static final int T__48=48;
     public static final int MARKUP_CHAIN=8;
-    public static final int LAYOUT=39;
-    public static final int ESCQUOTE=33;
-    public static final int PATHELEMENT=27;
+    public static final int LAYOUT=38;
+    public static final int ESCQUOTE=32;
+    public static final int PATHELEMENT=26;
     public static final int T__56=56;
-    public static final int ENTREF=36;
-    public static final int LETTER=24;
+    public static final int ENTREF=35;
+    public static final int LETTER=23;
     public static final int ARGUMENTS=5;
-    public static final int SITE=21;
+    public static final int SITE=20;
     public static final int T__58=58;
     public static final int T__64=64;
     public static final int T__44=44;
     public static final int T__66=66;
-    public static final int SYMBOLCHAR=37;
-    public static final int COMMENT=20;
+    public static final int SYMBOLCHAR=36;
+    public static final int COMMENT=19;
     public static final int MARKUP_STATEMENT=7;
     public static final int FORMALS=9;
-    public static final int T__45=45;
     public static final int T__55=55;
-    public static final int CHARREF=35;
-    public static final int MIDTEXT=19;
+    public static final int T__45=45;
+    public static final int CHARREF=34;
+    public static final int MIDTEXT=18;
     public static final int T__63=63;
-    public static final int PRETEXT=17;
+    public static final int PRETEXT=16;
     public static final int T__43=43;
-    public static final int SEMICOLON=23;
+    public static final int SEMICOLON=22;
     public static final int T__40=40;
     public static final int EOF=-1;
     public static final int T__53=53;
-    public static final int TEXT=14;
-    public static final int NATCON=13;
+    public static final int TEXT=13;
+    public static final int NATCON=12;
     public static final int T__60=60;
     public static final int T__41=41;
     public static final int T__71=71;
-    public static final int PATH=12;
+    public static final int PATH=11;
 
     // delegates
     // delegators
@@ -381,7 +381,7 @@ public class WaebricInterpreter extends TreeParser {
             adaptor.addChild(root_0, PATH1_tree);
             }
             _last = (CommonTree)input.LT(1);
-            char_literal2=(CommonTree)match(input,43,FOLLOW_43_in_mapping80); if (state.failed) return retval;
+            char_literal2=(CommonTree)match(input,42,FOLLOW_42_in_mapping80); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal2_tree = (CommonTree)adaptor.dupNode(char_literal2);
 
@@ -603,7 +603,7 @@ public class WaebricInterpreter extends TreeParser {
                     int alt1=2;
                     int LA1_0 = input.LA(1);
 
-                    if ( (LA1_0==41||(LA1_0>=43 && LA1_0<=46)) ) {
+                    if ( (LA1_0==40||(LA1_0>=42 && LA1_0<=45)) ) {
                         alt1=1;
                     }
 
@@ -702,27 +702,27 @@ public class WaebricInterpreter extends TreeParser {
             // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:297:10: ( '#' IDCON | '.' IDCON | '$' IDCON | ':' IDCON | '@' w= NATCON ( '%' h= NATCON )? )
             int alt3=5;
             switch ( input.LA(1) ) {
-            case 44:
+            case 43:
                 {
                 alt3=1;
                 }
                 break;
-            case 41:
+            case 40:
                 {
                 alt3=2;
                 }
                 break;
-            case 45:
+            case 44:
                 {
                 alt3=3;
                 }
                 break;
-            case 43:
+            case 42:
                 {
                 alt3=4;
                 }
                 break;
-            case 46:
+            case 45:
                 {
                 alt3=5;
                 }
@@ -742,7 +742,7 @@ public class WaebricInterpreter extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    char_literal10=(CommonTree)match(input,44,FOLLOW_44_in_attribute155); if (state.failed) return retval;
+                    char_literal10=(CommonTree)match(input,43,FOLLOW_43_in_attribute155); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal10_tree = (CommonTree)adaptor.dupNode(char_literal10);
 
@@ -769,7 +769,7 @@ public class WaebricInterpreter extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    char_literal12=(CommonTree)match(input,41,FOLLOW_41_in_attribute166); if (state.failed) return retval;
+                    char_literal12=(CommonTree)match(input,40,FOLLOW_40_in_attribute166); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal12_tree = (CommonTree)adaptor.dupNode(char_literal12);
 
@@ -796,7 +796,7 @@ public class WaebricInterpreter extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    char_literal14=(CommonTree)match(input,45,FOLLOW_45_in_attribute177); if (state.failed) return retval;
+                    char_literal14=(CommonTree)match(input,44,FOLLOW_44_in_attribute177); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal14_tree = (CommonTree)adaptor.dupNode(char_literal14);
 
@@ -823,7 +823,7 @@ public class WaebricInterpreter extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    char_literal16=(CommonTree)match(input,43,FOLLOW_43_in_attribute188); if (state.failed) return retval;
+                    char_literal16=(CommonTree)match(input,42,FOLLOW_42_in_attribute188); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal16_tree = (CommonTree)adaptor.dupNode(char_literal16);
 
@@ -850,7 +850,7 @@ public class WaebricInterpreter extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    char_literal18=(CommonTree)match(input,46,FOLLOW_46_in_attribute199); if (state.failed) return retval;
+                    char_literal18=(CommonTree)match(input,45,FOLLOW_45_in_attribute199); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal18_tree = (CommonTree)adaptor.dupNode(char_literal18);
 
@@ -870,7 +870,7 @@ public class WaebricInterpreter extends TreeParser {
                     int alt2=2;
                     int LA2_0 = input.LA(1);
 
-                    if ( (LA2_0==47) ) {
+                    if ( (LA2_0==46) ) {
                         alt2=1;
                     }
                     switch (alt2) {
@@ -878,7 +878,7 @@ public class WaebricInterpreter extends TreeParser {
                             // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:302:7: '%' h= NATCON
                             {
                             _last = (CommonTree)input.LT(1);
-                            char_literal19=(CommonTree)match(input,47,FOLLOW_47_in_attribute213); if (state.failed) return retval;
+                            char_literal19=(CommonTree)match(input,46,FOLLOW_46_in_attribute213); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
                             char_literal19_tree = (CommonTree)adaptor.dupNode(char_literal19);
 
@@ -974,7 +974,7 @@ public class WaebricInterpreter extends TreeParser {
                     int alt4=2;
                     int LA4_0 = input.LA(1);
 
-                    if ( (LA4_0==IDCON||(LA4_0>=NATCON && LA4_0<=SYMBOLCON)||LA4_0==52||LA4_0==54) ) {
+                    if ( (LA4_0==IDCON||(LA4_0>=NATCON && LA4_0<=SYMBOLCON)||LA4_0==51||LA4_0==53) ) {
                         alt4=1;
                     }
 
@@ -1061,10 +1061,10 @@ public class WaebricInterpreter extends TreeParser {
             if ( (LA5_0==IDCON) ) {
                 int LA5_1 = input.LA(2);
 
-                if ( (LA5_1==51) ) {
+                if ( (LA5_1==50) ) {
                     alt5=2;
                 }
-                else if ( (LA5_1==EOF||LA5_1==UP||LA5_1==IDCON||(LA5_1>=NATCON && LA5_1<=SYMBOLCON)||LA5_1==41||LA5_1==52||LA5_1==54||LA5_1==56) ) {
+                else if ( (LA5_1==EOF||LA5_1==UP||LA5_1==IDCON||(LA5_1>=NATCON && LA5_1<=SYMBOLCON)||LA5_1==40||LA5_1==51||LA5_1==53||LA5_1==55) ) {
                     alt5=1;
                 }
                 else {
@@ -1075,7 +1075,7 @@ public class WaebricInterpreter extends TreeParser {
                     throw nvae;
                 }
             }
-            else if ( ((LA5_0>=NATCON && LA5_0<=SYMBOLCON)||LA5_0==52||LA5_0==54) ) {
+            else if ( ((LA5_0>=NATCON && LA5_0<=SYMBOLCON)||LA5_0==51||LA5_0==53) ) {
                 alt5=1;
             }
             else {
@@ -1130,7 +1130,7 @@ public class WaebricInterpreter extends TreeParser {
                     adaptor.addChild(root_0, IDCON23_tree);
                     }
                     _last = (CommonTree)input.LT(1);
-                    char_literal24=(CommonTree)match(input,51,FOLLOW_51_in_argument271); if (state.failed) return retval;
+                    char_literal24=(CommonTree)match(input,50,FOLLOW_50_in_argument271); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal24_tree = (CommonTree)adaptor.dupNode(char_literal24);
 
@@ -1262,12 +1262,12 @@ public class WaebricInterpreter extends TreeParser {
                 alt10=4;
                 }
                 break;
-            case 52:
+            case 51:
                 {
                 alt10=5;
                 }
                 break;
-            case 54:
+            case 53:
                 {
                 alt10=6;
                 }
@@ -1366,7 +1366,7 @@ public class WaebricInterpreter extends TreeParser {
                     // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:353:6: '[' (e= expression )? ( ',' e= expression )* ']'
                     {
                     _last = (CommonTree)input.LT(1);
-                    char_literal29=(CommonTree)match(input,52,FOLLOW_52_in_expression342); if (state.failed) return retval;
+                    char_literal29=(CommonTree)match(input,51,FOLLOW_51_in_expression342); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal29_tree = (CommonTree)adaptor.dupNode(char_literal29);
 
@@ -1376,7 +1376,7 @@ public class WaebricInterpreter extends TreeParser {
                     int alt6=2;
                     int LA6_0 = input.LA(1);
 
-                    if ( (LA6_0==IDCON||(LA6_0>=NATCON && LA6_0<=SYMBOLCON)||LA6_0==52||LA6_0==54) ) {
+                    if ( (LA6_0==IDCON||(LA6_0>=NATCON && LA6_0<=SYMBOLCON)||LA6_0==51||LA6_0==53) ) {
                         alt6=1;
                     }
                     switch (alt6) {
@@ -1408,7 +1408,7 @@ public class WaebricInterpreter extends TreeParser {
                         int alt7=2;
                         int LA7_0 = input.LA(1);
 
-                        if ( (LA7_0==49) ) {
+                        if ( (LA7_0==48) ) {
                             alt7=1;
                         }
 
@@ -1418,7 +1418,7 @@ public class WaebricInterpreter extends TreeParser {
                     	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:354:8: ',' e= expression
                     	    {
                     	    _last = (CommonTree)input.LT(1);
-                    	    char_literal30=(CommonTree)match(input,49,FOLLOW_49_in_expression363); if (state.failed) return retval;
+                    	    char_literal30=(CommonTree)match(input,48,FOLLOW_48_in_expression363); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
                     	    char_literal30_tree = (CommonTree)adaptor.dupNode(char_literal30);
 
@@ -1447,7 +1447,7 @@ public class WaebricInterpreter extends TreeParser {
                     } while (true);
 
                     _last = (CommonTree)input.LT(1);
-                    char_literal31=(CommonTree)match(input,53,FOLLOW_53_in_expression374); if (state.failed) return retval;
+                    char_literal31=(CommonTree)match(input,52,FOLLOW_52_in_expression374); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal31_tree = (CommonTree)adaptor.dupNode(char_literal31);
 
@@ -1471,7 +1471,7 @@ public class WaebricInterpreter extends TreeParser {
                     // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:361:6: '{' (id= IDCON ':' e= expression )? ( ',' id= IDCON ':' e= expression )* '}'
                     {
                     _last = (CommonTree)input.LT(1);
-                    char_literal32=(CommonTree)match(input,54,FOLLOW_54_in_expression383); if (state.failed) return retval;
+                    char_literal32=(CommonTree)match(input,53,FOLLOW_53_in_expression383); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal32_tree = (CommonTree)adaptor.dupNode(char_literal32);
 
@@ -1496,7 +1496,7 @@ public class WaebricInterpreter extends TreeParser {
                             adaptor.addChild(root_0, id_tree);
                             }
                             _last = (CommonTree)input.LT(1);
-                            char_literal33=(CommonTree)match(input,43,FOLLOW_43_in_expression391); if (state.failed) return retval;
+                            char_literal33=(CommonTree)match(input,42,FOLLOW_42_in_expression391); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
                             char_literal33_tree = (CommonTree)adaptor.dupNode(char_literal33);
 
@@ -1527,7 +1527,7 @@ public class WaebricInterpreter extends TreeParser {
                         int alt9=2;
                         int LA9_0 = input.LA(1);
 
-                        if ( (LA9_0==49) ) {
+                        if ( (LA9_0==48) ) {
                             alt9=1;
                         }
 
@@ -1537,7 +1537,7 @@ public class WaebricInterpreter extends TreeParser {
                     	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:362:8: ',' id= IDCON ':' e= expression
                     	    {
                     	    _last = (CommonTree)input.LT(1);
-                    	    char_literal34=(CommonTree)match(input,49,FOLLOW_49_in_expression410); if (state.failed) return retval;
+                    	    char_literal34=(CommonTree)match(input,48,FOLLOW_48_in_expression410); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
                     	    char_literal34_tree = (CommonTree)adaptor.dupNode(char_literal34);
 
@@ -1551,7 +1551,7 @@ public class WaebricInterpreter extends TreeParser {
                     	    adaptor.addChild(root_0, id_tree);
                     	    }
                     	    _last = (CommonTree)input.LT(1);
-                    	    char_literal35=(CommonTree)match(input,43,FOLLOW_43_in_expression416); if (state.failed) return retval;
+                    	    char_literal35=(CommonTree)match(input,42,FOLLOW_42_in_expression416); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
                     	    char_literal35_tree = (CommonTree)adaptor.dupNode(char_literal35);
 
@@ -1580,7 +1580,7 @@ public class WaebricInterpreter extends TreeParser {
                     } while (true);
 
                     _last = (CommonTree)input.LT(1);
-                    char_literal36=(CommonTree)match(input,55,FOLLOW_55_in_expression427); if (state.failed) return retval;
+                    char_literal36=(CommonTree)match(input,54,FOLLOW_54_in_expression427); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal36_tree = (CommonTree)adaptor.dupNode(char_literal36);
 
@@ -1610,7 +1610,7 @@ public class WaebricInterpreter extends TreeParser {
                 int alt11=3;
                 int LA11_0 = input.LA(1);
 
-                if ( (LA11_0==56) ) {
+                if ( (LA11_0==55) ) {
                     int LA11_2 = input.LA(2);
 
                     if ( (synpred18_WaebricInterpreter()) ) {
@@ -1619,7 +1619,7 @@ public class WaebricInterpreter extends TreeParser {
 
 
                 }
-                else if ( (LA11_0==41) ) {
+                else if ( (LA11_0==40) ) {
                     int LA11_3 = input.LA(2);
 
                     if ( (synpred19_WaebricInterpreter()) ) {
@@ -1635,7 +1635,7 @@ public class WaebricInterpreter extends TreeParser {
             	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:373:6: '+' e= expression
             	    {
             	    _last = (CommonTree)input.LT(1);
-            	    char_literal37=(CommonTree)match(input,56,FOLLOW_56_in_expression450); if (state.failed) return retval;
+            	    char_literal37=(CommonTree)match(input,55,FOLLOW_55_in_expression450); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
             	    char_literal37_tree = (CommonTree)adaptor.dupNode(char_literal37);
 
@@ -1666,7 +1666,7 @@ public class WaebricInterpreter extends TreeParser {
             	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:379:6: '.' id= IDCON
             	    {
             	    _last = (CommonTree)input.LT(1);
-            	    char_literal38=(CommonTree)match(input,41,FOLLOW_41_in_expression464); if (state.failed) return retval;
+            	    char_literal38=(CommonTree)match(input,40,FOLLOW_40_in_expression464); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
             	    char_literal38_tree = (CommonTree)adaptor.dupNode(char_literal38);
 
@@ -1728,7 +1728,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "function"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:394:1: function[List<Integer> args] : ^( FUNCTION IDCON ^( FORMALS (id= IDCON )* ) ( statement )* ) ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:394:1: function[List<Integer> args] : ^( 'def' IDCON ^( FORMALS (id= IDCON )* ) ( statement )* ) ;
     public final WaebricInterpreter.function_return function(List<Integer> args) throws RecognitionException {
         WaebricInterpreter.function_return retval = new WaebricInterpreter.function_return();
         retval.start = input.LT(1);
@@ -1739,21 +1739,21 @@ public class WaebricInterpreter extends TreeParser {
         CommonTree _last = null;
 
         CommonTree id=null;
-        CommonTree FUNCTION39=null;
+        CommonTree string_literal39=null;
         CommonTree IDCON40=null;
         CommonTree FORMALS41=null;
         WaebricInterpreter.statement_return statement42 = null;
 
 
         CommonTree id_tree=null;
-        CommonTree FUNCTION39_tree=null;
+        CommonTree string_literal39_tree=null;
         CommonTree IDCON40_tree=null;
         CommonTree FORMALS41_tree=null;
 
          Element actual = null; int curr = 0; 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:396:2: ( ^( FUNCTION IDCON ^( FORMALS (id= IDCON )* ) ( statement )* ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:396:5: ^( FUNCTION IDCON ^( FORMALS (id= IDCON )* ) ( statement )* )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:396:2: ( ^( 'def' IDCON ^( FORMALS (id= IDCON )* ) ( statement )* ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:396:5: ^( 'def' IDCON ^( FORMALS (id= IDCON )* ) ( statement )* )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1762,11 +1762,11 @@ public class WaebricInterpreter extends TreeParser {
             CommonTree _save_last_1 = _last;
             CommonTree _first_1 = null;
             CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            FUNCTION39=(CommonTree)match(input,FUNCTION,FOLLOW_FUNCTION_in_function501); if (state.failed) return retval;
+            string_literal39=(CommonTree)match(input,56,FOLLOW_56_in_function501); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            FUNCTION39_tree = (CommonTree)adaptor.dupNode(FUNCTION39);
+            string_literal39_tree = (CommonTree)adaptor.dupNode(string_literal39);
 
-            root_1 = (CommonTree)adaptor.becomeRoot(FUNCTION39_tree, root_1);
+            root_1 = (CommonTree)adaptor.becomeRoot(string_literal39_tree, root_1);
             }
 
 
@@ -1842,7 +1842,7 @@ public class WaebricInterpreter extends TreeParser {
                 int alt13=2;
                 int LA13_0 = input.LA(1);
 
-                if ( (LA13_0==MARKUP_STATEMENT||LA13_0==COMMENT||LA13_0==54||LA13_0==57||(LA13_0>=59 && LA13_0<=60)||(LA13_0>=62 && LA13_0<=64)) ) {
+                if ( (LA13_0==MARKUP_STATEMENT||LA13_0==COMMENT||LA13_0==53||LA13_0==57||(LA13_0>=59 && LA13_0<=60)||(LA13_0>=62 && LA13_0<=64)) ) {
                     alt13=1;
                 }
 
@@ -2443,14 +2443,14 @@ public class WaebricInterpreter extends TreeParser {
                         alt16=3;
                         }
                         break;
-                    case 54:
+                    case 53:
                         {
                         int LA16_5 = input.LA(4);
 
                         if ( (LA16_5==DOWN) ) {
                             alt16=3;
                         }
-                        else if ( (LA16_5==IDCON||LA16_5==49||LA16_5==55) ) {
+                        else if ( (LA16_5==IDCON||LA16_5==48||LA16_5==54) ) {
                             alt16=2;
                         }
                         else {
@@ -2466,7 +2466,7 @@ public class WaebricInterpreter extends TreeParser {
                     case NATCON:
                     case TEXT:
                     case SYMBOLCON:
-                    case 52:
+                    case 51:
                         {
                         alt16=2;
                         }
@@ -2908,7 +2908,7 @@ public class WaebricInterpreter extends TreeParser {
 
             match(input, Token.DOWN, null); if (state.failed) return retval;
             _last = (CommonTree)input.LT(1);
-            char_literal75=(CommonTree)match(input,48,FOLLOW_48_in_eachStatement847); if (state.failed) return retval;
+            char_literal75=(CommonTree)match(input,47,FOLLOW_47_in_eachStatement847); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal75_tree = (CommonTree)adaptor.dupNode(char_literal75);
 
@@ -2922,7 +2922,7 @@ public class WaebricInterpreter extends TreeParser {
             adaptor.addChild(root_1, IDCON76_tree);
             }
             _last = (CommonTree)input.LT(1);
-            char_literal77=(CommonTree)match(input,43,FOLLOW_43_in_eachStatement851); if (state.failed) return retval;
+            char_literal77=(CommonTree)match(input,42,FOLLOW_42_in_eachStatement851); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal77_tree = (CommonTree)adaptor.dupNode(char_literal77);
 
@@ -2937,7 +2937,7 @@ public class WaebricInterpreter extends TreeParser {
             if ( state.backtracking==0 ) 
             adaptor.addChild(root_1, e.getTree());
             _last = (CommonTree)input.LT(1);
-            char_literal78=(CommonTree)match(input,50,FOLLOW_50_in_eachStatement857); if (state.failed) return retval;
+            char_literal78=(CommonTree)match(input,49,FOLLOW_49_in_eachStatement857); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal78_tree = (CommonTree)adaptor.dupNode(char_literal78);
 
@@ -3029,7 +3029,7 @@ public class WaebricInterpreter extends TreeParser {
             CommonTree _save_last_1 = _last;
             CommonTree _first_1 = null;
             CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            char_literal80=(CommonTree)match(input,54,FOLLOW_54_in_blockStatement883); if (state.failed) return retval;
+            char_literal80=(CommonTree)match(input,53,FOLLOW_53_in_blockStatement883); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal80_tree = (CommonTree)adaptor.dupNode(char_literal80);
 
@@ -3044,7 +3044,7 @@ public class WaebricInterpreter extends TreeParser {
                 int alt18=2;
                 int LA18_0 = input.LA(1);
 
-                if ( (LA18_0==MARKUP_STATEMENT||LA18_0==COMMENT||LA18_0==54||LA18_0==57||(LA18_0>=59 && LA18_0<=60)||(LA18_0>=62 && LA18_0<=64)) ) {
+                if ( (LA18_0==MARKUP_STATEMENT||LA18_0==COMMENT||LA18_0==53||LA18_0==57||(LA18_0>=59 && LA18_0<=60)||(LA18_0>=62 && LA18_0<=64)) ) {
                     alt18=1;
                 }
 
@@ -3079,7 +3079,7 @@ public class WaebricInterpreter extends TreeParser {
             } while (true);
 
             _last = (CommonTree)input.LT(1);
-            char_literal82=(CommonTree)match(input,55,FOLLOW_55_in_blockStatement894); if (state.failed) return retval;
+            char_literal82=(CommonTree)match(input,54,FOLLOW_54_in_blockStatement894); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal82_tree = (CommonTree)adaptor.dupNode(char_literal82);
 
@@ -3171,7 +3171,7 @@ public class WaebricInterpreter extends TreeParser {
                 int alt19=2;
                 int LA19_0 = input.LA(1);
 
-                if ( ((LA19_0>=FUNCTION && LA19_0<=IDCON)) ) {
+                if ( (LA19_0==IDCON||LA19_0==56) ) {
                     alt19=1;
                 }
 
@@ -3217,7 +3217,7 @@ public class WaebricInterpreter extends TreeParser {
                 int alt20=2;
                 int LA20_0 = input.LA(1);
 
-                if ( (LA20_0==MARKUP_STATEMENT||LA20_0==COMMENT||LA20_0==54||LA20_0==57||(LA20_0>=59 && LA20_0<=60)||(LA20_0>=62 && LA20_0<=64)) ) {
+                if ( (LA20_0==MARKUP_STATEMENT||LA20_0==COMMENT||LA20_0==53||LA20_0==57||(LA20_0>=59 && LA20_0<=60)||(LA20_0>=62 && LA20_0<=64)) ) {
                     alt20=1;
                 }
 
@@ -3314,7 +3314,7 @@ public class WaebricInterpreter extends TreeParser {
             if ( (LA21_0==IDCON) ) {
                 alt21=1;
             }
-            else if ( (LA21_0==FUNCTION) ) {
+            else if ( (LA21_0==56) ) {
                 alt21=2;
             }
             else {
@@ -3418,7 +3418,7 @@ public class WaebricInterpreter extends TreeParser {
             adaptor.addChild(root_0, IDCON90_tree);
             }
             _last = (CommonTree)input.LT(1);
-            char_literal91=(CommonTree)match(input,51,FOLLOW_51_in_varBinding969); if (state.failed) return retval;
+            char_literal91=(CommonTree)match(input,50,FOLLOW_50_in_varBinding969); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal91_tree = (CommonTree)adaptor.dupNode(char_literal91);
 
@@ -3470,7 +3470,7 @@ public class WaebricInterpreter extends TreeParser {
     };
 
     // $ANTLR start "funcBinding"
-    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:519:1: funcBinding : ^( FUNCTION id= IDCON formals . ) ;
+    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:519:1: funcBinding : ^( 'def' id= IDCON formals . ) ;
     public final WaebricInterpreter.funcBinding_return funcBinding() throws RecognitionException {
         WaebricInterpreter.funcBinding_return retval = new WaebricInterpreter.funcBinding_return();
         retval.start = input.LT(1);
@@ -3481,19 +3481,19 @@ public class WaebricInterpreter extends TreeParser {
         CommonTree _last = null;
 
         CommonTree id=null;
-        CommonTree FUNCTION94=null;
+        CommonTree string_literal94=null;
         CommonTree wildcard96=null;
         WaebricInterpreter.formals_return formals95 = null;
 
 
         CommonTree id_tree=null;
-        CommonTree FUNCTION94_tree=null;
+        CommonTree string_literal94_tree=null;
         CommonTree wildcard96_tree=null;
 
          int index = input.index(); 
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:521:2: ( ^( FUNCTION id= IDCON formals . ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:521:5: ^( FUNCTION id= IDCON formals . )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:521:2: ( ^( 'def' id= IDCON formals . ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:521:5: ^( 'def' id= IDCON formals . )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -3502,11 +3502,11 @@ public class WaebricInterpreter extends TreeParser {
             CommonTree _save_last_1 = _last;
             CommonTree _first_1 = null;
             CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            FUNCTION94=(CommonTree)match(input,FUNCTION,FOLLOW_FUNCTION_in_funcBinding997); if (state.failed) return retval;
+            string_literal94=(CommonTree)match(input,56,FOLLOW_56_in_funcBinding997); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            FUNCTION94_tree = (CommonTree)adaptor.dupNode(FUNCTION94);
+            string_literal94_tree = (CommonTree)adaptor.dupNode(string_literal94);
 
-            root_1 = (CommonTree)adaptor.becomeRoot(FUNCTION94_tree, root_1);
+            root_1 = (CommonTree)adaptor.becomeRoot(string_literal94_tree, root_1);
             }
 
 
@@ -3669,7 +3669,7 @@ public class WaebricInterpreter extends TreeParser {
                     if ( state.backtracking==0 ) 
                     adaptor.addChild(root_0, e.getTree());
                     _last = (CommonTree)input.LT(1);
-                    char_literal98=(CommonTree)match(input,41,FOLLOW_41_in_predicate1060); if (state.failed) return retval;
+                    char_literal98=(CommonTree)match(input,40,FOLLOW_40_in_predicate1060); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal98_tree = (CommonTree)adaptor.dupNode(char_literal98);
 
@@ -4238,7 +4238,7 @@ public class WaebricInterpreter extends TreeParser {
         // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:373:6: ( '+' e= expression )
         // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:373:6: '+' e= expression
         {
-        match(input,56,FOLLOW_56_in_synpred18_WaebricInterpreter450); if (state.failed) return ;
+        match(input,55,FOLLOW_55_in_synpred18_WaebricInterpreter450); if (state.failed) return ;
         pushFollow(FOLLOW_expression_in_synpred18_WaebricInterpreter454);
         e=expression();
 
@@ -4256,7 +4256,7 @@ public class WaebricInterpreter extends TreeParser {
         // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:379:6: ( '.' id= IDCON )
         // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g:379:6: '.' id= IDCON
         {
-        match(input,41,FOLLOW_41_in_synpred19_WaebricInterpreter464); if (state.failed) return ;
+        match(input,40,FOLLOW_40_in_synpred19_WaebricInterpreter464); if (state.failed) return ;
         id=(CommonTree)match(input,IDCON,FOLLOW_IDCON_in_synpred19_WaebricInterpreter468); if (state.failed) return ;
 
         }
@@ -4401,16 +4401,16 @@ public class WaebricInterpreter extends TreeParser {
     static final String DFA15_eofS =
         "\15\uffff";
     static final String DFA15_minS =
-        "\1\7\5\uffff\1\2\3\uffff\1\13\2\uffff";
+        "\1\7\5\uffff\1\2\3\uffff\1\12\2\uffff";
     static final String DFA15_maxS =
-        "\1\100\5\uffff\1\2\3\uffff\1\66\2\uffff";
+        "\1\100\5\uffff\1\2\3\uffff\1\65\2\uffff";
     static final String DFA15_acceptS =
         "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\uffff\1\10\1\11\1\12\1\uffff\1\6"+
         "\1\7";
     static final String DFA15_specialS =
         "\15\uffff}>";
     static final String[] DFA15_transitionS = {
-            "\1\11\14\uffff\1\5\41\uffff\1\4\2\uffff\1\1\1\uffff\1\2\1\3"+
+            "\1\11\13\uffff\1\5\41\uffff\1\4\3\uffff\1\1\1\uffff\1\2\1\3"+
             "\1\uffff\1\6\1\7\1\10",
             "",
             "",
@@ -4464,7 +4464,7 @@ public class WaebricInterpreter extends TreeParser {
     static final String DFA23_eofS =
         "\12\uffff";
     static final String DFA23_minS =
-        "\1\13\1\uffff\6\0\2\uffff";
+        "\1\12\1\uffff\6\0\2\uffff";
     static final String DFA23_maxS =
         "\1\101\1\uffff\6\0\2\uffff";
     static final String DFA23_acceptS =
@@ -4472,7 +4472,7 @@ public class WaebricInterpreter extends TreeParser {
     static final String DFA23_specialS =
         "\2\uffff\1\0\1\1\1\2\1\3\1\4\1\5\2\uffff}>";
     static final String[] DFA23_transitionS = {
-            "\1\2\1\uffff\1\3\1\4\1\5\44\uffff\1\6\1\uffff\1\7\12\uffff\1"+
+            "\1\2\1\uffff\1\3\1\4\1\5\44\uffff\1\6\1\uffff\1\7\13\uffff\1"+
             "\1",
             "",
             "\1\uffff",
@@ -4624,17 +4624,17 @@ public class WaebricInterpreter extends TreeParser {
     static final String DFA27_eofS =
         "\17\uffff";
     static final String DFA27_minS =
-        "\1\6\1\2\1\uffff\1\13\1\4\2\2\1\4\1\6\1\4\1\3\1\uffff\1\3\1\4\1"+
+        "\1\6\1\2\1\uffff\1\12\1\4\2\2\1\4\1\6\1\4\1\3\1\uffff\1\3\1\4\1"+
         "\3";
     static final String DFA27_maxS =
-        "\1\66\1\2\1\uffff\1\13\2\107\1\3\1\107\1\66\2\107\1\uffff\2\107"+
+        "\1\65\1\2\1\uffff\1\12\2\107\1\3\1\107\1\65\2\107\1\uffff\2\107"+
         "\1\3";
     static final String DFA27_acceptS =
         "\2\uffff\1\2\10\uffff\1\1\3\uffff";
     static final String DFA27_specialS =
         "\17\uffff}>";
     static final String[] DFA27_transitionS = {
-            "\1\1\4\uffff\1\2\1\uffff\3\2\44\uffff\1\2\1\uffff\1\2",
+            "\1\1\3\uffff\1\2\1\uffff\3\2\44\uffff\1\2\1\uffff\1\2",
             "\1\3",
             "",
             "\1\4",
@@ -4642,7 +4642,7 @@ public class WaebricInterpreter extends TreeParser {
             "\1\7\1\uffff\104\6",
             "\1\11\1\10",
             "\104\12",
-            "\1\1\4\uffff\1\2\1\uffff\3\2\2\uffff\2\13\40\uffff\1\2\1\uffff"+
+            "\1\1\3\uffff\1\2\1\uffff\3\2\2\uffff\2\13\40\uffff\1\2\1\uffff"+
             "\1\2",
             "\104\14",
             "\1\15\104\12",
@@ -4687,60 +4687,60 @@ public class WaebricInterpreter extends TreeParser {
     }
  
 
-    public static final BitSet FOLLOW_PATH_in_mapping78 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_43_in_mapping80 = new BitSet(new long[]{0x0000000000000040L});
+    public static final BitSet FOLLOW_PATH_in_mapping78 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_mapping80 = new BitSet(new long[]{0x0000000000000040L});
     public static final BitSet FOLLOW_markup_in_mapping82 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_MARKUP_in_markup113 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_IDCON_in_markup115 = new BitSet(new long[]{0xFFFFFFFFFFFFFFF0L,0x00000000000000FFL});
     public static final BitSet FOLLOW_ATTRIBUTES_in_attributes141 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attribute_in_attributes143 = new BitSet(new long[]{0x00007A0000000008L});
-    public static final BitSet FOLLOW_44_in_attribute155 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_attribute_in_attributes143 = new BitSet(new long[]{0x00003D0000000008L});
+    public static final BitSet FOLLOW_43_in_attribute155 = new BitSet(new long[]{0x0000000000000400L});
     public static final BitSet FOLLOW_IDCON_in_attribute157 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_41_in_attribute166 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_40_in_attribute166 = new BitSet(new long[]{0x0000000000000400L});
     public static final BitSet FOLLOW_IDCON_in_attribute168 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_45_in_attribute177 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_44_in_attribute177 = new BitSet(new long[]{0x0000000000000400L});
     public static final BitSet FOLLOW_IDCON_in_attribute179 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_43_in_attribute188 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_42_in_attribute188 = new BitSet(new long[]{0x0000000000000400L});
     public static final BitSet FOLLOW_IDCON_in_attribute190 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_46_in_attribute199 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_NATCON_in_attribute203 = new BitSet(new long[]{0x0000800000000002L});
-    public static final BitSet FOLLOW_47_in_attribute213 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_45_in_attribute199 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_NATCON_in_attribute203 = new BitSet(new long[]{0x0000400000000002L});
+    public static final BitSet FOLLOW_46_in_attribute213 = new BitSet(new long[]{0x0000000000001000L});
     public static final BitSet FOLLOW_NATCON_in_attribute217 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ARGUMENTS_in_arguments244 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_argument_in_arguments246 = new BitSet(new long[]{0x005000000000E808L});
+    public static final BitSet FOLLOW_argument_in_arguments246 = new BitSet(new long[]{0x0028000000007408L});
     public static final BitSet FOLLOW_expression_in_argument263 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDCON_in_argument269 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_argument271 = new BitSet(new long[]{0x005000000000E800L});
+    public static final BitSet FOLLOW_IDCON_in_argument269 = new BitSet(new long[]{0x0004000000000000L});
+    public static final BitSet FOLLOW_50_in_argument271 = new BitSet(new long[]{0x0028000000007400L});
     public static final BitSet FOLLOW_expression_in_argument273 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDCON_in_expression306 = new BitSet(new long[]{0x0100020000000002L});
-    public static final BitSet FOLLOW_NATCON_in_expression315 = new BitSet(new long[]{0x0100020000000002L});
-    public static final BitSet FOLLOW_TEXT_in_expression324 = new BitSet(new long[]{0x0100020000000002L});
-    public static final BitSet FOLLOW_SYMBOLCON_in_expression333 = new BitSet(new long[]{0x0100020000000002L});
-    public static final BitSet FOLLOW_52_in_expression342 = new BitSet(new long[]{0x007200000000E800L});
-    public static final BitSet FOLLOW_expression_in_expression348 = new BitSet(new long[]{0x0022000000000000L});
-    public static final BitSet FOLLOW_49_in_expression363 = new BitSet(new long[]{0x005000000000E800L});
-    public static final BitSet FOLLOW_expression_in_expression367 = new BitSet(new long[]{0x0022000000000000L});
-    public static final BitSet FOLLOW_53_in_expression374 = new BitSet(new long[]{0x0100020000000002L});
-    public static final BitSet FOLLOW_54_in_expression383 = new BitSet(new long[]{0x0082000000000800L});
-    public static final BitSet FOLLOW_IDCON_in_expression389 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_43_in_expression391 = new BitSet(new long[]{0x005000000000E800L});
-    public static final BitSet FOLLOW_expression_in_expression395 = new BitSet(new long[]{0x0082000000000000L});
-    public static final BitSet FOLLOW_49_in_expression410 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_IDCON_in_expression414 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_43_in_expression416 = new BitSet(new long[]{0x005000000000E800L});
-    public static final BitSet FOLLOW_expression_in_expression420 = new BitSet(new long[]{0x0082000000000000L});
-    public static final BitSet FOLLOW_55_in_expression427 = new BitSet(new long[]{0x0100020000000002L});
-    public static final BitSet FOLLOW_56_in_expression450 = new BitSet(new long[]{0x005000000000E800L});
-    public static final BitSet FOLLOW_expression_in_expression454 = new BitSet(new long[]{0x0100020000000002L});
-    public static final BitSet FOLLOW_41_in_expression464 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_IDCON_in_expression468 = new BitSet(new long[]{0x0100020000000002L});
-    public static final BitSet FOLLOW_FUNCTION_in_function501 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_IDCON_in_expression306 = new BitSet(new long[]{0x0080010000000002L});
+    public static final BitSet FOLLOW_NATCON_in_expression315 = new BitSet(new long[]{0x0080010000000002L});
+    public static final BitSet FOLLOW_TEXT_in_expression324 = new BitSet(new long[]{0x0080010000000002L});
+    public static final BitSet FOLLOW_SYMBOLCON_in_expression333 = new BitSet(new long[]{0x0080010000000002L});
+    public static final BitSet FOLLOW_51_in_expression342 = new BitSet(new long[]{0x0039000000007400L});
+    public static final BitSet FOLLOW_expression_in_expression348 = new BitSet(new long[]{0x0011000000000000L});
+    public static final BitSet FOLLOW_48_in_expression363 = new BitSet(new long[]{0x0028000000007400L});
+    public static final BitSet FOLLOW_expression_in_expression367 = new BitSet(new long[]{0x0011000000000000L});
+    public static final BitSet FOLLOW_52_in_expression374 = new BitSet(new long[]{0x0080010000000002L});
+    public static final BitSet FOLLOW_53_in_expression383 = new BitSet(new long[]{0x0041000000000400L});
+    public static final BitSet FOLLOW_IDCON_in_expression389 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_expression391 = new BitSet(new long[]{0x0028000000007400L});
+    public static final BitSet FOLLOW_expression_in_expression395 = new BitSet(new long[]{0x0041000000000000L});
+    public static final BitSet FOLLOW_48_in_expression410 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_IDCON_in_expression414 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_expression416 = new BitSet(new long[]{0x0028000000007400L});
+    public static final BitSet FOLLOW_expression_in_expression420 = new BitSet(new long[]{0x0041000000000000L});
+    public static final BitSet FOLLOW_54_in_expression427 = new BitSet(new long[]{0x0080010000000002L});
+    public static final BitSet FOLLOW_55_in_expression450 = new BitSet(new long[]{0x0028000000007400L});
+    public static final BitSet FOLLOW_expression_in_expression454 = new BitSet(new long[]{0x0080010000000002L});
+    public static final BitSet FOLLOW_40_in_expression464 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_IDCON_in_expression468 = new BitSet(new long[]{0x0080010000000002L});
+    public static final BitSet FOLLOW_56_in_function501 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_IDCON_in_function503 = new BitSet(new long[]{0x0000000000000200L});
     public static final BitSet FOLLOW_FORMALS_in_function517 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_IDCON_in_function523 = new BitSet(new long[]{0x0000000000000808L});
-    public static final BitSet FOLLOW_statement_in_function548 = new BitSet(new long[]{0xDA40000000100088L,0x0000000000000001L});
+    public static final BitSet FOLLOW_IDCON_in_function523 = new BitSet(new long[]{0x0000000000000408L});
+    public static final BitSet FOLLOW_statement_in_function548 = new BitSet(new long[]{0xDA20000000080088L,0x0000000000000001L});
     public static final BitSet FOLLOW_FORMALS_in_formals569 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_IDCON_in_formals571 = new BitSet(new long[]{0x0000000000000808L});
+    public static final BitSet FOLLOW_IDCON_in_formals571 = new BitSet(new long[]{0x0000000000000408L});
     public static final BitSet FOLLOW_ifStatement_in_statement587 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_eachStatement_in_statement594 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_letStatement_in_statement601 = new BitSet(new long[]{0x0000000000000002L});
@@ -4755,10 +4755,10 @@ public class WaebricInterpreter extends TreeParser {
     public static final BitSet FOLLOW_expression_in_statement663 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_64_in_statement674 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_MARKUP_STATEMENT_in_statement685 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_markup_in_statement687 = new BitSet(new long[]{0x0000000000800100L});
+    public static final BitSet FOLLOW_markup_in_statement687 = new BitSet(new long[]{0x0000000000400100L});
     public static final BitSet FOLLOW_markupChain_in_statement692 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_MARKUP_CHAIN_in_markupChain716 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_markup_in_markupChain718 = new BitSet(new long[]{0x0000000000800100L});
+    public static final BitSet FOLLOW_markup_in_markupChain718 = new BitSet(new long[]{0x0000000000400100L});
     public static final BitSet FOLLOW_markupChain_in_markupChain723 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_MARKUP_CHAIN_in_markupChain734 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_expression_in_markupChain736 = new BitSet(new long[]{0x0000000000000008L});
@@ -4771,59 +4771,59 @@ public class WaebricInterpreter extends TreeParser {
     public static final BitSet FOLLOW_predicate_in_ifStatement794 = new BitSet(new long[]{0xFFFFFFFFFFFFFFF0L,0x00000000000000FFL});
     public static final BitSet FOLLOW_58_in_ifStatement805 = new BitSet(new long[]{0xFFFFFFFFFFFFFFF0L,0x00000000000000FFL});
     public static final BitSet FOLLOW_59_in_eachStatement845 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_48_in_eachStatement847 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_IDCON_in_eachStatement849 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_43_in_eachStatement851 = new BitSet(new long[]{0x005000000000E800L});
-    public static final BitSet FOLLOW_expression_in_eachStatement855 = new BitSet(new long[]{0x0004000000000000L});
-    public static final BitSet FOLLOW_50_in_eachStatement857 = new BitSet(new long[]{0xFFFFFFFFFFFFFFF0L,0x00000000000000FFL});
-    public static final BitSet FOLLOW_54_in_blockStatement883 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_statement_in_blockStatement887 = new BitSet(new long[]{0xDAC0000000100088L,0x0000000000000001L});
-    public static final BitSet FOLLOW_55_in_blockStatement894 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_47_in_eachStatement847 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_IDCON_in_eachStatement849 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_eachStatement851 = new BitSet(new long[]{0x0028000000007400L});
+    public static final BitSet FOLLOW_expression_in_eachStatement855 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_eachStatement857 = new BitSet(new long[]{0xFFFFFFFFFFFFFFF0L,0x00000000000000FFL});
+    public static final BitSet FOLLOW_53_in_blockStatement883 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_statement_in_blockStatement887 = new BitSet(new long[]{0xDA60000000080088L,0x0000000000000001L});
+    public static final BitSet FOLLOW_54_in_blockStatement894 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_60_in_letStatement922 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_assignment_in_letStatement924 = new BitSet(new long[]{0x2000000000000C00L});
-    public static final BitSet FOLLOW_61_in_letStatement927 = new BitSet(new long[]{0xDA40000000500088L,0x0000000000000001L});
-    public static final BitSet FOLLOW_statement_in_letStatement931 = new BitSet(new long[]{0xDA40000000500088L,0x0000000000000001L});
+    public static final BitSet FOLLOW_assignment_in_letStatement924 = new BitSet(new long[]{0x2100000000000400L});
+    public static final BitSet FOLLOW_61_in_letStatement927 = new BitSet(new long[]{0xDA20000000280088L,0x0000000000000001L});
+    public static final BitSet FOLLOW_statement_in_letStatement931 = new BitSet(new long[]{0xDA20000000280088L,0x0000000000000001L});
     public static final BitSet FOLLOW_END_in_letStatement938 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_varBinding_in_assignment952 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_funcBinding_in_assignment956 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDCON_in_varBinding967 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_varBinding969 = new BitSet(new long[]{0x005000000000E800L});
-    public static final BitSet FOLLOW_expression_in_varBinding971 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_IDCON_in_varBinding967 = new BitSet(new long[]{0x0004000000000000L});
+    public static final BitSet FOLLOW_50_in_varBinding969 = new BitSet(new long[]{0x0028000000007400L});
+    public static final BitSet FOLLOW_expression_in_varBinding971 = new BitSet(new long[]{0x0000000000400000L});
     public static final BitSet FOLLOW_SEMICOLON_in_varBinding973 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FUNCTION_in_funcBinding997 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_56_in_funcBinding997 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_IDCON_in_funcBinding1001 = new BitSet(new long[]{0x0000000000000200L});
     public static final BitSet FOLLOW_formals_in_funcBinding1003 = new BitSet(new long[]{0xFFFFFFFFFFFFFFF0L,0x00000000000000FFL});
-    public static final BitSet FOLLOW_65_in_predicate1029 = new BitSet(new long[]{0x005000000000E800L,0x0000000000000002L});
+    public static final BitSet FOLLOW_65_in_predicate1029 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000002L});
     public static final BitSet FOLLOW_predicate_in_predicate1033 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000018L});
     public static final BitSet FOLLOW_expression_in_predicate1045 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000018L});
-    public static final BitSet FOLLOW_expression_in_predicate1058 = new BitSet(new long[]{0x0000020000000000L});
-    public static final BitSet FOLLOW_41_in_predicate1060 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000E0L});
+    public static final BitSet FOLLOW_expression_in_predicate1058 = new BitSet(new long[]{0x0000010000000000L});
+    public static final BitSet FOLLOW_40_in_predicate1060 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000E0L});
     public static final BitSet FOLLOW_69_in_predicate1064 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
     public static final BitSet FOLLOW_70_in_predicate1070 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
     public static final BitSet FOLLOW_71_in_predicate1076 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
     public static final BitSet FOLLOW_66_in_predicate1082 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000018L});
-    public static final BitSet FOLLOW_67_in_predicate1092 = new BitSet(new long[]{0x005000000000E800L,0x0000000000000002L});
+    public static final BitSet FOLLOW_67_in_predicate1092 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000002L});
     public static final BitSet FOLLOW_predicate_in_predicate1096 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000018L});
-    public static final BitSet FOLLOW_68_in_predicate1102 = new BitSet(new long[]{0x005000000000E800L,0x0000000000000002L});
+    public static final BitSet FOLLOW_68_in_predicate1102 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000002L});
     public static final BitSet FOLLOW_predicate_in_predicate1106 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000018L});
-    public static final BitSet FOLLOW_PRETEXT_in_embedding1129 = new BitSet(new long[]{0x005000000000E840L});
-    public static final BitSet FOLLOW_embed_in_embedding1137 = new BitSet(new long[]{0x00000000000C0000L});
+    public static final BitSet FOLLOW_PRETEXT_in_embedding1129 = new BitSet(new long[]{0x0028000000007440L});
+    public static final BitSet FOLLOW_embed_in_embedding1137 = new BitSet(new long[]{0x0000000000060000L});
     public static final BitSet FOLLOW_textTail_in_embedding1140 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_markup_in_embed1154 = new BitSet(new long[]{0x0000000000000042L});
-    public static final BitSet FOLLOW_markup_in_embed1164 = new BitSet(new long[]{0x005000000000E840L});
+    public static final BitSet FOLLOW_markup_in_embed1164 = new BitSet(new long[]{0x0028000000007440L});
     public static final BitSet FOLLOW_expression_in_embed1168 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_POSTTEXT_in_textTail1183 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MIDTEXT_in_textTail1192 = new BitSet(new long[]{0x005000000000E840L});
-    public static final BitSet FOLLOW_embed_in_textTail1196 = new BitSet(new long[]{0x00000000000C0000L});
+    public static final BitSet FOLLOW_MIDTEXT_in_textTail1192 = new BitSet(new long[]{0x0028000000007440L});
+    public static final BitSet FOLLOW_embed_in_textTail1196 = new BitSet(new long[]{0x0000000000060000L});
     public static final BitSet FOLLOW_textTail_in_textTail1199 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_56_in_synpred18_WaebricInterpreter450 = new BitSet(new long[]{0x005000000000E800L});
+    public static final BitSet FOLLOW_55_in_synpred18_WaebricInterpreter450 = new BitSet(new long[]{0x0028000000007400L});
     public static final BitSet FOLLOW_expression_in_synpred18_WaebricInterpreter454 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_41_in_synpred19_WaebricInterpreter464 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_40_in_synpred19_WaebricInterpreter464 = new BitSet(new long[]{0x0000000000000400L});
     public static final BitSet FOLLOW_IDCON_in_synpred19_WaebricInterpreter468 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_expression_in_synpred42_WaebricInterpreter1045 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_67_in_synpred45_WaebricInterpreter1092 = new BitSet(new long[]{0x005000000000E800L,0x0000000000000002L});
+    public static final BitSet FOLLOW_67_in_synpred45_WaebricInterpreter1092 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000002L});
     public static final BitSet FOLLOW_predicate_in_synpred45_WaebricInterpreter1096 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_68_in_synpred46_WaebricInterpreter1102 = new BitSet(new long[]{0x005000000000E800L,0x0000000000000002L});
+    public static final BitSet FOLLOW_68_in_synpred46_WaebricInterpreter1102 = new BitSet(new long[]{0x0028000000007400L,0x0000000000000002L});
     public static final BitSet FOLLOW_predicate_in_synpred46_WaebricInterpreter1106 = new BitSet(new long[]{0x0000000000000002L});
 
 }
