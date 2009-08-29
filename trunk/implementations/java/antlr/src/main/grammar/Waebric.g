@@ -9,12 +9,11 @@ tokens {
 	// Imagionary tokens
 	ATTRIBUTES = 'atts';
 	ARGUMENTS = 'args';
-	MARKUP = 'm';
-	MARKUPS = 'mm' ;
-	MARKUP_STATEMENT = 'ms';
-	MARKUP_EXPRESSION = 'me' ;
-	MARKUP_EMBEDDING = 'mb' ;
-	FORMALS = 'f';
+	MARKUP = 'mrku';
+	MARKUP_STATEMENT = 'mstm';
+	MARKUP_CHAIN = 'mc';
+	FORMALS = 'fmls';
+	FUNCTION = 'def';
 }
 
 @parser::header {
@@ -99,7 +98,7 @@ arguments:		( '(' argument? ( ',' argument )* ')' )?
 				-> ^( ARGUMENTS argument* ) ;
 				
 argument:		expression // Variable definition
-			| IDCON '=' expression ;
+			| IDCON '=' expression ; // Attribute definition
 
 // $>
 // $<Expressions
@@ -114,7 +113,7 @@ keyValuePair:		IDCON ':' expression ;
 // $<Function
 
 function:		'def' IDCON formals? statement* 'end'
-				-> ^( 'def' IDCON ^( FORMALS formals? ) statement* ) ;
+				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement* ) ;
 		
 formals:		'(' IDCON? ( ',' IDCON )* ')'
 				-> IDCON* ;
@@ -123,11 +122,7 @@ formals:		'(' IDCON? ( ',' IDCON )* ')'
 
 // $<Statements
 
-statement:		regularStatement
-			| markupStatement 
-			;	
-
-regularStatement:	'if' '(' predicate ')' statement ( 'else' statement )?
+statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'if' predicate statement ( 'else' statement )? )
 			| 'each' '(' IDCON ':' expression ')' statement 
 				-> ^( 'each' '(' IDCON ':' expression ')' statement )
@@ -135,63 +130,55 @@ regularStatement:	'if' '(' predicate ')' statement ( 'else' statement )?
 				-> ^( 'let' assignment+ 'in' statement* 'end' )
 			| '{' statement* '}'
 				-> ^( '{' statement* '}' )
-			| 'yield' ';'
-				-> ^( 'yield' )
 			| 'comment' STRCON ';'
 				-> ^( 'comment' STRCON )
 			| 'echo' expression ';'
 				-> ^( 'echo' expression )
 			| 'echo' embedding ';'
 				-> ^( 'echo' embedding )
-			| 'cdata' expression ';'
+			| 'cdata' expression ';' 
 				-> ^( 'cdata' expression )
-			;
-			
-markupStatement:	( markup+ expression ';') => markup+ expression ';'
-				-> ^( MARKUP_EXPRESSION markup+ expression )
-			| ( markup+ regularStatement ) => markup+ regularStatement
-				-> ^( MARKUP_STATEMENT markup+ regularStatement )
-			| ( markup+ embedding ';' ) => markup+ embedding ';'
-				-> ^( MARKUP_EMBEDDING markup+ embedding )
-			| ( markup+ ';') => markup+ ';'
-				-> ^( MARKUPS markup+ ) ;
+			| 'yield;'
+			| markup markupChain
+				-> ^( MARKUP_STATEMENT markup markupChain );
+
+markupChain:		expression ';' 
+				-> ^( MARKUP_CHAIN expression )
+			| statement  
+				-> ^( MARKUP_CHAIN statement )
+			| embedding ';' 
+				-> ^( MARKUP_CHAIN embedding )
+			| markup markupChain 
+				-> ^( MARKUP_CHAIN markup markupChain )
+			| ';' ;
 
 // $>
 // $<Assignments
 
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
-				-> ^( 'def' IDCON ^( FORMALS formals? ) statement ) ; // Manipulated to represent a function
+				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement ) ; // Manipulated to represent a function
 
 // $>
 // $<Predicates
 
-predicate:		'!'* expression ( '.' type '?' )?
-			( '&&' predicate | '||' predicate )* ;
-			
-type:			'list' 
-			| 'record' 
-			| 'string' 
-			;
+predicate:		( '!' predicate 
+				| expression // Not null
+				| expression '.' type '?' // Is type 
+			) ( '&&' predicate | '||' predicate )* ; // Left-recussion removal
+type:			'list' | 'record' | 'string' ;
 
 // $>
 // $<Embedding
 
 embedding:		PRETEXT embed textTail ;
-
-embed:			( markup+ ) => markup+
-				-> ^( MARKUPS markup+ )
-			| ( markup* expression ) => markup* expression 
-				-> ^( MARKUP_EXPRESSION markup* expression ) ;
-
-textTail:		POSTTEXT 
-			| MIDTEXT embed textTail 
-			;
+embed:			markup* expression | markup* markup ;
+textTail:		POSTTEXT | MIDTEXT embed textTail ;
 
 // $>
 
 // Lexical rules
-COMMENT:		'comment' { inString = true; } ;
+COMMENT	:		'comment' { inString = true; } ;
 SITE:			'site' { inSite = true; inPath = true; } ; // Site constructor
 END:			'end' { inSite = false; inPath = false; } ; // Site destructor
 SEMICOLON:		';' { inPath = inSite; } ; // Mapping separator
