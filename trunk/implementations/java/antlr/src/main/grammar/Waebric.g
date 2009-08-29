@@ -9,11 +9,13 @@ tokens {
 	// Imagionary tokens
 	ATTRIBUTES = 'atts';
 	ARGUMENTS = 'args';
-	MARKUP = 'mrku';
+	MARKUP = 'm';
 	MARKUP_STATEMENT = 'mstm';
 	MARKUP_CHAIN = 'mc';
-	FORMALS = 'fmls';
+	FORMALS = 'f';
 	FUNCTION = 'def';
+	EXPRESSION = 'expr';
+	EMBEDDING = 'emb';
 }
 
 @parser::header {
