@@ -7,5 +7,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/WaebricJParsec"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WaebricLPG"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WaebricSableCC"/>
+	<classpathentry kind="lib" path="lib/aterm-java.jar"/>
+	<classpathentry kind="lib" path="lib/jjtraveler.jar"/>
+	<classpathentry kind="lib" path="lib/shared-objects.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

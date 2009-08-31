@@ -17,7 +17,7 @@ import org.waebric.adapter.TreeWalker;
 public class SableCCRunner implements IParserRunner {
 
 	public String getName() {
-		return "waebric.sablecc";
+		return "sablecc";
 	}
 
 	public String parse(File filename) {
