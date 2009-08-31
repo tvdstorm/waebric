@@ -26,17 +26,17 @@ public class WaebricParser {
      * @param filename The name of the file to parse.
      * @return The parser created for parsing the file.
      */
-    private static Parser getParser(String filename) throws IOException {
-	File inputFile = new File(filename);
-	
-	if (!inputFile.exists() || inputFile.isDirectory())
-	    throw new IllegalArgumentException("Please specify a valid and existing input file");
-	    
-	BufferedReader fileReader = new BufferedReader(new FileReader(inputFile));
-	Lexer lexer = new Lexer(new PushbackReader(fileReader, 1024));
+	private static Parser getParser(String filename) throws IOException {
+		File inputFile = new File(filename);
 
-	return new Parser(lexer);
-    }
+		if (!inputFile.exists() || inputFile.isDirectory())
+			throw new IllegalArgumentException("Please specify a valid and existing input file");
+
+		BufferedReader fileReader = new BufferedReader(new FileReader(inputFile));
+		Lexer lexer = new Lexer(new PushbackReader(fileReader, 1024));
+
+		return new Parser(lexer);
+	}
     
     /**
      * Saves the AST Tree to the supplied filename on disc.
