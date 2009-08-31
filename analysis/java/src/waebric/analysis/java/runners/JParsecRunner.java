@@ -15,7 +15,7 @@ import com.uva.se.wparse.parser.WeabrickParser;
 public class JParsecRunner implements IParserRunner {
 
 	public String getName() {
-		return "waebric.jparsec";
+		return "jparsec";
 	}
 
 	public String parse(File filename) {

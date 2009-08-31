@@ -4,10 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import waebric.analysis.java.runners.IParserRunner;
 import waebric.analysis.java.runners.JParsecRunner;
@@ -15,6 +15,8 @@ import waebric.analysis.java.runners.JavaCCRunner;
 import waebric.analysis.java.runners.JavaCupRunner;
 import waebric.analysis.java.runners.LPGRunner;
 import waebric.analysis.java.runners.SableCCRunner;
+import aterm.ATerm;
+import aterm.pure.PureFactory;
 
 
 public class AnalyseJavaWaebricImpls {
@@ -22,12 +24,14 @@ public class AnalyseJavaWaebricImpls {
 	private static String TESTS_DAT = "tests.dat";
 	private List<String> tests;
 	private List<IParserRunner> parsers = new ArrayList<IParserRunner>();
-	private Map<String, Map<String, Boolean>> stats = new HashMap<String, Map<String,Boolean>>();
+	private Map<String, Map<String, TestResult>> stats = new HashMap<String, Map<String,TestResult>>();
 	private String root;
+	private PureFactory factory;
 	
 	public AnalyseJavaWaebricImpls(List<String> tests, String root) {
 		this.tests = tests;
 		this.root = root;
+		this.factory = new PureFactory();
 		addParser(new JavaCCRunner());		
 		addParser(new JavaCupRunner());
 		addParser(new JParsecRunner());
@@ -37,7 +41,7 @@ public class AnalyseJavaWaebricImpls {
 
 	public void addParser(IParserRunner parser) {
 		this.parsers.add(parser);
-		stats.put(parser.getName(), new HashMap<String,Boolean>());
+		stats.put(parser.getName(), new HashMap<String,TestResult>());
 	}
 
 
@@ -53,17 +57,35 @@ public class AnalyseJavaWaebricImpls {
 		printResults();
 	}
 	
+	public ATerm getExpectedAST(String test) {
+		String[] elts = test.split("\\.");
+		String astFileName = root + "/output/" + elts[0] + ".ast";
+		try {
+			return factory.readFromFile(astFileName);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public void printResults() {
-		Set<String> names = stats.keySet();
-		System.out.print("\t\t");
+		List<String> names = new ArrayList<String>(stats.keySet());
+		Collections.sort(names);
+		System.out.print(String.format("%-16s,", ""));
 		for (String name: names) {
-			System.out.print(name + "\t");
+			System.out.print(String.format("%-9s", name));
+			if (!names.get(names.size() - 1).equals(name)) {
+				System.out.print(", ");
+			}
 		}
 		System.out.println();
 		for (String filename: tests) {
-			System.out.print(filename + "\t");
+			System.out.print(String.format("%-16s,", filename));
+			//System.out.print(filename + "\t");
 			for (String name: names) {
-				System.out.print(stats.get(name).get(filename) + "\t\t");
+				System.out.print(String.format("%-9s", stats.get(name).get(filename)));
+				if (!names.get(names.size() - 1).equals(name)) {
+					System.out.print(", ");
+				}
 			}
 			System.out.println();
 		}
@@ -77,16 +99,27 @@ public class AnalyseJavaWaebricImpls {
 				if (result != null) {
 //					System.err.println("success: ");
 //					System.err.println(result);
-					stats.get(parser.getName()).put(filename, true);
+					try {
+						ATerm ast = factory.parse(result);
+						if (ast.equals(getExpectedAST(filename))) {
+							stats.get(parser.getName()).put(filename, new Success());
+						}
+						else {
+							stats.get(parser.getName()).put(filename, new ASTMismatch());
+						}
+					}
+					catch (aterm.ParseError e) {
+						stats.get(parser.getName()).put(filename, new InvalidAST());
+					}
 				}
 				else {
-					stats.get(parser.getName()).put(filename, false);
+					stats.get(parser.getName()).put(filename, new ParseError());
 					//System.err.println("FAILURE");
 				}
 			}
 			catch (Throwable t) {
+				stats.get(parser.getName()).put(filename, new Other());
 				t.printStackTrace();
-				System.err.println("FAILURE");
 			}
 		}
 	}

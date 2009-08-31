@@ -28,7 +28,7 @@ public class JavaCCRunner implements IParserRunner {
 	}
 
 	public String getName() {
-		return "waebric.javacc";
+		return "javacc";
 	}
 
 

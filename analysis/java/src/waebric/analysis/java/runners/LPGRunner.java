@@ -11,7 +11,7 @@ import waebricc.WaebricAst.Ast;
 public class LPGRunner implements IParserRunner {
 
 	public String getName() {
-		return "waebric.lpg";
+		return "lpg";
 	}
 
 	public String parse(File filename) {

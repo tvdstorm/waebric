@@ -14,7 +14,7 @@ import waebric.node.SyntaxNode;
 public class JavaCupRunner implements IParserRunner {
 
 	public String getName() {
-		return "waebric.javacup";
+		return "javacup";
 	}
 
 	private static class PrintAST2 extends PrintAST {
