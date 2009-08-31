@@ -100,11 +100,11 @@ public class PrintAST extends VisitorAdaptor {
 		
 	}
 
-	private void cout(Integer i) {
+	protected void cout(Integer i) {
 		System.out.print(i.toString());
 	}
 	
-	private void cout(String s) {
+	protected void cout(String s) {
 		System.out.print(s);
 	}
 	

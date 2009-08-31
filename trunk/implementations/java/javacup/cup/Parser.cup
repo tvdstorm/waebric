@@ -15,7 +15,7 @@ parser code {:
       		System.err.println("Fatal: " + message + " \nCan't recover from previous error(s), giving up. @ " + (Symbol)info);     		
       	else 
       		System.err.println("Fatal: " + message + " \nCan't recover from previous error(s), giving up. @ " + cur_token);
-      	System.exit(1);
+      	throw new RuntimeException(new ParseException(message));
     }
 
     public void report_error(String message, Object info)
@@ -24,6 +24,7 @@ parser code {:
     		System.err.println("Error: " + message + " @ " + (Symbol)info);        	
       	else
         	System.err.println("Error: " + message + " @ " + cur_token);
+      	throw new RuntimeException(new ParseException(message));
     }
 :};
 
