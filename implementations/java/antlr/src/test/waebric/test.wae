@@ -1,19 +1,15 @@
 module test
 
-def test(bla) 
-	let 
-		mylizzle=["1","2","3"]; 
-		func3(my,argz) = { echo my; html title argz; } 
-		in func1("LOL"); 
-	end 
+site 
+	test.html : test("t")
 end
 
-def test 
-	yield; 
-end
-	
-def func1(arg) 
+def test(e)
+	html {
+		func echo e;
+	}
 end
 
-def func2(arg,arg) 
+def func
+	yield;
 end
