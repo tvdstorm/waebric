@@ -7,7 +7,8 @@ public class ModuleIdVisitor extends WaebricParserVisitorAdapter {
 		addToAST( "module-id([" );
 		
 		String[] dataFromJjt = node.image.split(SPLIT_SEPARATOR);
-		String moduleIdStr = addQuotes( dataFromJjt[FIRST_DATA_ELEMENT] );
+//		String moduleIdStr = addQuotes( dataFromJjt[FIRST_DATA_ELEMENT] );
+		String moduleIdStr = dataFromJjt[FIRST_DATA_ELEMENT];
 
 		for ( int index = START_AT_2ND_ELEMENT; index < dataFromJjt.length; index++ ){
 			moduleIdStr += ", " + addQuotes( dataFromJjt[index] );
