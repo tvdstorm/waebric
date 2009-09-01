@@ -1,4 +1,4 @@
-%package "waebric";
+%package "waebric.beaver";
 %import "waebric.ast.*";
 %class "WaebricParser";
 
