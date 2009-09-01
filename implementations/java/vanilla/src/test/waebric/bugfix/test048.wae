@@ -1,6 +1,0 @@
-module test048
-
-def main
-  each (x: []) 
-   echo x;
-end
