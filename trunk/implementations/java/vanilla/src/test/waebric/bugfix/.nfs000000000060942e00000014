@@ -1,0 +1,10 @@
+module test073
+
+def main
+  let p = "P";
+  in
+
+    echo "<p()>";
+
+  end
+end
