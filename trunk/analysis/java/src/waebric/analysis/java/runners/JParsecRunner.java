@@ -44,6 +44,7 @@ public class JParsecRunner implements IParserRunner {
 		}
 		OutputTransformer outputTransformer = new OutputTransformer();
 		String output = outputTransformer.transform(parseTree);
+		System.err.println(output);
 		return output;
 	}
 

@@ -1,3 +1,4 @@
+package waebric.analysis.java;
 
 public class InvalidAST extends TestResult {
 	@Override

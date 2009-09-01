@@ -16,7 +16,9 @@ public class JavaCCRunner implements IParserRunner {
 			FileReader reader = new FileReader(file);
 			WaebricParser.ReInit(reader);
 			try {
-				return parser.buildAST(parser.Modules(), 0);
+				String ast = parser.buildAST(parser.Modules(), 0);
+				System.err.println(ast);
+				return ast;
 			} catch (ParseException e) {
 				//e.printStackTrace();
 				return null;
