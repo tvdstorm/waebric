@@ -128,7 +128,7 @@ scope Environment {
 	private void outputDocument(Document document, OutputStream os) {
 		try {
 			if(os != null) {
-				XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+				XMLOutputter out = new XMLOutputter(Format.getRawFormat());
 				out.output(document, os);
 			}
 		} catch(IOException e) { e.printStackTrace(); }
