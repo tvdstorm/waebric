@@ -1,0 +1,7 @@
+module cyclic
+
+import cycle
+
+def main
+  fg;
+end
