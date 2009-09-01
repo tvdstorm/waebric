@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import waebric.analysis.java.runners.BeaverRunner;
 import waebric.analysis.java.runners.IParserRunner;
 import waebric.analysis.java.runners.JParsecRunner;
 import waebric.analysis.java.runners.JavaCCRunner;
@@ -47,6 +48,7 @@ public class AnalyseJavaWaebricImpls {
 		addParser(new LPGRunner());
 		addParser(new SableCCRunner());
 		addParser(new RatsRunner());
+		addParser(new BeaverRunner());
 	}
 
 	public void addParser(IParserRunner parser) {
@@ -132,7 +134,7 @@ public class AnalyseJavaWaebricImpls {
 	
 	public void runSuite(IParserRunner parser) {
 		for (String filename: tests) {
-			//System.err.println("TESTING: " + filename);
+			System.out.println("TESTING: " + filename);
 			String name = parser.getName();
 			try {
 				String result = parser.parse(new File(new File(root), filename));
