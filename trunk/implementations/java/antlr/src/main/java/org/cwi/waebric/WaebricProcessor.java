@@ -1,5 +1,9 @@
 package org.cwi.waebric;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +29,21 @@ public class WaebricProcessor {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-			CharStream is;
-			if(args.length == 1) {
+			CharStream is; // Input stream
+			OutputStream os = System.out;
+			
+			if(args.length > 0) {
 				is = new ANTLRFileStream(args[0]);
 				System.out.println("Processing... " + args[0]);
+				if(args.length > 1) {
+					try {
+						os = getOutputStream(args[1]);
+						System.out.println("Storing... " + args[1]);
+					} catch(IOException e) {
+						e.printStackTrace();
+						System.out.println("Could not write to " + args[1] + " writing to console instead.");
+					}
+				}
 			} else {
 				is = new ANTLRInputStream(System.in);
 			}
@@ -71,9 +86,37 @@ public class WaebricProcessor {
 	     
 	        WaebricInterpreter interpreter = new WaebricInterpreter(new CommonTreeNodeStream(tree));
 	        curr = System.currentTimeMillis();
-	        interpreter.interpretProgram(System.out, loader);
+	        interpreter.interpretProgram(os, loader);
 	        long inter_time = System.currentTimeMillis() - curr;
 	        System.out.println("Interpreted in " + inter_time + "ms");
+	}
+	
+	/**
+	 * Convert requested output file path into output stream. In case
+	 * the interpreted was construct with an output stream, this stream
+	 * will be returned instead.
+	 * 
+	 * When a directory or file in the specified path does not exist
+	 * they will be created, this might result in an IOException.
+	 * 
+	 * @param module
+	 * @return
+	 * @throws IOException
+	 */
+	public static OutputStream getOutputStream(String path) throws IOException {
+		int dirLength = path.lastIndexOf("/");
+		
+		// Create directories
+		if(dirLength != -1) {
+			File directory = new File(path.substring(0, dirLength));
+			directory.mkdirs();
+		}
+		
+		// Create file
+		File file = new File(path);
+		file.createNewFile(); // Create new file
+		
+		return new FileOutputStream(path);
 	}
 		
 }
