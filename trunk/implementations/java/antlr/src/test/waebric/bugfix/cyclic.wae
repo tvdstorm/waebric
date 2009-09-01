@@ -1,8 +1,0 @@
-
-module cyclic
-
-import cycle
-
-def main
-  f;
-end
