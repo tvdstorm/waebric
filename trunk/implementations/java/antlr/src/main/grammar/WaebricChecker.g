@@ -256,12 +256,12 @@ function
 	@init {
 		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		^( FUNCTION IDCON formals statement* ) ;
+	} :		^( FUNCTION IDCON formals? statement* ) ;
 			
 formals
 	returns [int args = 0;]
-	:		
-			^( FORMALS ( IDCON { defineVariable($IDCON.getText()); $args++; } )* ) ;
+	:		'(' id=IDCON { defineVariable($id.getText()); $args++; }
+			( ',' id=IDCON { defineVariable($id.getText()); $args++; } )* ')' ;
 
 // $<Statements
 
@@ -307,10 +307,10 @@ funcBinding // Separated because only function bindings have local scopes
 	@init {
 		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} : 		^( FUNCTION id=IDCON f=formals statement ) ;
+		int args = 0;
+	} : 		^( FUNCTION id=IDCON ( formals { args = $formals.args; } )? statement ) ;
 	finally {
-		// Define function after poping local stack so the definition stays
-		defineFunction($id, $f.args);
+		defineFunction($id, args);
 	}
 		
 			

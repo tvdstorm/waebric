@@ -12,7 +12,6 @@ tokens {
 	MARKUP = 'm';
 	MARKUP_STATEMENT = 'mstm';
 	MARKUP_CHAIN = 'mc';
-	FORMALS = 'f';
 	FUNCTION = 'def';
 	EXPRESSION = 'expr';
 	EMBEDDING = 'emb';
@@ -76,8 +75,8 @@ imprt:			'import' moduleId { if(modules.contains($moduleId.path)) { return retva
 // $>
 // $<Site
 
-site:			'site' mappings 'end' ;
-mappings:		mapping? ( ';' mapping )* ;
+site:			'site' mappings? 'end' ;
+mappings:		mapping ( ';' mapping )* ;
 mapping	:		PATH ':' markup ;
 
 // $>
@@ -115,10 +114,9 @@ keyValuePair:		IDCON ':' expression ;
 // $<Function
 
 function:		'def' IDCON formals? statement* 'end'
-				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement* ) ;
+				-> ^( FUNCTION IDCON formals? statement* ) ;
 		
-formals:		'(' IDCON? ( ',' IDCON )* ')'
-				-> IDCON* ;
+formals:		'(' IDCON ( ',' IDCON )* ')' ;
 
 // $>
 
@@ -159,7 +157,7 @@ markupChain:		expression ';'
 
 assignment:		IDCON '=' expression ';' // Variable binding
 			| IDCON formals '=' statement // Function binding
-				-> ^( FUNCTION IDCON ^( FORMALS formals? ) statement ) ; // Manipulated to represent a function
+				-> ^( FUNCTION IDCON formals? statement ) ; // Manipulated to represent a function
 
 // $>
 // $<Predicates

@@ -82,7 +82,7 @@ function
 	returns [int args = 0, int index = 0]
 	@init { $index = input.index(); }
 	:		^( FUNCTION id=IDCON 
-			formals { $args = $formals.args; }
+			( formals { $args = $formals.args; } )?
 			statements { if($statements.yield) { yields.add($index); } } );
 	finally {
 		if(functions.containsKey($id.getText())) {
@@ -92,7 +92,7 @@ function
 
 formals 
 	returns [int args = 0] 
-	:		^( FORMALS ( IDCON { $args++; } )* ) ;
+	:		'(' IDCON { $args++; } ( ',' IDCON { $args++; } )* ')' ;
 
 // $>
 
@@ -128,7 +128,7 @@ markupChain
 // $<Assignments
 
 assignment:		IDCON '=' expression ';' // Variable binding
-			| ^( FUNCTION IDCON formals statement ) ; // Function binding
+			| ^( FUNCTION IDCON formals? statement ) ; // Function binding
 
 // $>
 // $<Predicates
