@@ -33,7 +33,7 @@ module Waebric
         token NewLine =
             '\u000A'   // New Line
             | '\u000D' // Carriage Return
-            | '\u000D' '\u000A' 
+            | '\u000A' // Line Feed
             | '\u0085' // Next Line
             | '\u2028' // Line Separator
             | '\u2029' // Paragraph Separator
@@ -119,23 +119,23 @@ module Waebric
         token Mid_Text = '>' t:Text_Char* '<' => MidText[t];
         
         //---Keyword Tokens---
-        @{Classification["Keyword"]} token ModuleKeyword = "module";
-        @{Classification["Keyword"]} token ImportKeyword = "import";
-        @{Classification["Keyword"]} token DefKeyword = "def";
-        @{Classification["Keyword"]} token EndKeyword = "end";
-        @{Classification["Keyword"]} token SiteKeyword = "site";
-        @{Classification["Keyword"]} token EchoKeyword = "echo";
-        @{Classification["Keyword"]} token EachKeyword = "each";
-        @{Classification["Keyword"]} token IfKeyword = "if";
-        @{Classification["Keyword"]} token ElseKeyword = "else";
-        @{Classification["Keyword"]} token YieldKeyword = "yield";
-        @{Classification["Keyword"]} token LetKeyword = "let";
-        @{Classification["Keyword"]} token InKeyword = "in";
-        @{Classification["Keyword"]} token CommentKeyword = "comment";
-        @{Classification["Keyword"]} token CDataKeyword = "cdata";
-        @{Classification["Keyword"]} token String = "string";
-        @{Classification["Keyword"]} token Record = "record";
-        @{Classification["Keyword"]} token List = "list";
+        @{Classification["Keyword"]} final token ModuleKeyword = "module";
+        @{Classification["Keyword"]} final token ImportKeyword = "import";
+        @{Classification["Keyword"]} final token DefKeyword = "def";
+        @{Classification["Keyword"]} final token EndKeyword = "end";
+        @{Classification["Keyword"]} final token SiteKeyword = "site";
+        @{Classification["Keyword"]} final token EchoKeyword = "echo";
+        @{Classification["Keyword"]} final token EachKeyword = "each";
+        @{Classification["Keyword"]} final token IfKeyword = "if";
+        @{Classification["Keyword"]} final token ElseKeyword = "else";
+        @{Classification["Keyword"]} final token YieldKeyword = "yield";
+        @{Classification["Keyword"]} final token LetKeyword = "let";
+        @{Classification["Keyword"]} final token InKeyword = "in";
+        @{Classification["Keyword"]} final token CommentKeyword = "comment";
+        @{Classification["Keyword"]} final token CDataKeyword = "cdata";
+        @{Classification["Keyword"]} final token String = "string";
+        @{Classification["Keyword"]} final token Record = "record";
+        @{Classification["Keyword"]} final token List = "list";
         
         //---Waebric---
         //Starting symbol

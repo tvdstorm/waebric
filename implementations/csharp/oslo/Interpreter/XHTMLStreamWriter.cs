@@ -15,6 +15,7 @@ namespace Interpreter
     {
         #region Private Members
 
+        private DocType DocTyping;
         private XHTMLElement Root;
         private XhtmlTextWriter XhtmlWriter;
 
@@ -39,11 +40,9 @@ namespace Interpreter
         /// <param name="docType">DocType of XHTML document</param>
         public XHTMLStreamWriter(TextWriter writer, DocType docType, XHTMLElement tree)
         {
+            DocTyping = docType;
             XhtmlWriter = new XhtmlTextWriter(writer);
             Root = tree;
-
-            //Write doctype before starting document
-            WriteDocType(docType);
         }
 
         /// <summary>
@@ -51,6 +50,12 @@ namespace Interpreter
         /// </summary>
         public void WriteStream()
         {
+            //If root is generated, no doctype, otherwise write a doctype header
+            if (!Root.IsGenerated() || !IsEmptyElement(Root))
+            {
+                //Write doctype before starting document
+                WriteDocType(DocTyping);
+            }
             Visit(Root);
         }
 
@@ -70,6 +75,7 @@ namespace Interpreter
             }
             else
             {   //Normal XHTML tag handling
+
                 XhtmlWriter.BeginRender();
 
                 //Check if element is tag, if not write tag, otherwise handle as XHTML tag
@@ -81,8 +87,6 @@ namespace Interpreter
                     CharIterator charIterator = new CharIterator();
                     String tag = charIterator.ParseText(element.GetTag());
                     XhtmlWriter.Write(tag);
-
-                    //XhtmlWriter.WriteLine();
                     XhtmlWriter.EndRender();
                     XhtmlWriter.Flush();
                     return;
@@ -94,7 +98,7 @@ namespace Interpreter
                     XhtmlWriter.WriteAttribute(pair.Key, pair.Value, false);
                 }
 
-                if (IsEmptyElement(element.GetTag()))
+                if (IsEmptyElement(element))
                 {   //Nothing inside element, so write tag end
                     XhtmlWriter.Write(XhtmlTextWriter.SelfClosingTagEnd);
                 }
@@ -132,7 +136,7 @@ namespace Interpreter
         public void WriteCData(XHTMLElement element)
         {
             XhtmlWriter.BeginRender();
-            XhtmlWriter.Write("<![CDATA[" + element.GetContent() + "]]>");;
+            XhtmlWriter.Write("<![CDATA[" + element.GetContent() + "]]>");
             XhtmlWriter.EndRender();
             XhtmlWriter.Flush();
         }
@@ -145,7 +149,7 @@ namespace Interpreter
         {
             //Write comment open tag
             XhtmlWriter.BeginRender();
-            XhtmlWriter.Write("<!-- ");
+            XhtmlWriter.Write("<!--");
 
             //Lets parse the text, because the XhtmlWriter handles layout chars incorrectly           
             CharIterator charIterator = new CharIterator();
@@ -153,7 +157,7 @@ namespace Interpreter
             XhtmlWriter.Write(content);
 
             //Close comment tag
-            XhtmlWriter.Write(" -->");
+            XhtmlWriter.Write("-->");
             XhtmlWriter.EndRender();
             XhtmlWriter.Flush();
         }
@@ -188,11 +192,25 @@ namespace Interpreter
         /// <summary>
         /// Method which determines if the tag needs alternative closing, like <img />, <br />, <hr />
         /// </summary>
-        /// <param name="tag">Tag to check</param>
+        /// <param name="element">Element to check</param>
         /// <returns>True if empty element, otherwise false</returns>
-        private bool IsEmptyElement(String tag)
+        private bool IsEmptyElement(XHTMLElement element)
         {
+            //Check if element has childs, if not it's empty
+            if (element.GetChildren().Count == 0 && !element.IsGenerated())
+            {
+                return true;
+            }
+
+            //Generated elements like html in empty file should not be shortened in ending
+            if (element.IsGenerated())
+            {
+                return false;
+            }
+
+            //Some elements are always empty
             String[] xhtmlEmptyTags = Enum.GetNames(typeof(EmptyXHTMLElement));
+            String tag = element.GetTag();
             foreach (String item in xhtmlEmptyTags)
             {
                 if (item.Equals(tag.ToUpper()))

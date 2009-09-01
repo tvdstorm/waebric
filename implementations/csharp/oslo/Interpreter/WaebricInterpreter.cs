@@ -43,7 +43,7 @@ namespace Interpreter
             }
 
             //Interpret main method if one available
-            if (ContainsMainFunction(root))
+            if (SymbolTable.ContainsFunction("main"))
             {
                 //Interpret main function
                 Interpreter interpreter = new Interpreter(SymbolTable);
@@ -104,27 +104,6 @@ namespace Interpreter
             //Create file and return StreamWriter which writes to new file
             FileStream stream = File.Create(path);
             return new StreamWriter(stream);
-        }
-        
-        /// <summary>
-        /// Checks if an module contains an main function
-        /// </summary>
-        /// <param name="module">Module to check</param>
-        /// <returns>ContainsMainFunction</returns>
-        private bool ContainsMainFunction(Node module)
-        {
-            foreach (Node node in module.ViewAllNodes())
-            {
-                if (node.Brand.Text == "FunctionDef")
-                {
-                    Node functionIdentifier = node.ViewAllNodes().ElementAt(0);
-                    if (functionIdentifier.AtomicValue.ToString() == "main")
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         /// <summary>
