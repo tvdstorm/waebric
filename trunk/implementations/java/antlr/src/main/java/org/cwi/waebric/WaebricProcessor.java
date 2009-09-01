@@ -30,7 +30,7 @@ public class WaebricProcessor {
 	 */
 	public static void main(String[] args) throws Exception {
 			CharStream is; // Input stream
-			OutputStream os = System.out;
+			OutputStream os = System.out; // Output stream
 			
 			if(args.length > 0) {
 				is = new ANTLRFileStream(args[0]);
