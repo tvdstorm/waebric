@@ -61,7 +61,7 @@ namespace Common
             {
                 return null;
             }
-            ModuleTable.Add(GetModuleIdentifier(requestedModule), requestedModule);
+            ModuleTable.Add(identifier, requestedModule);
 
             return requestedModule;
         }

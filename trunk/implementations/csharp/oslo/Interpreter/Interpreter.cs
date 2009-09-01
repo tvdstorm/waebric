@@ -20,6 +20,7 @@ namespace Interpreter
         private Dictionary<Node, SymbolTable> FunctionSymbolTable;              //Stores symboltables per function
         private String TextValue = "";                                          //Buffer used for buffering values
         private Stack<Node> YieldStack;                                         //Stack containing nodes which are referred by a yield
+        private int Depth;                                                      //Depth in XHTMLTree, for navigation
 
         #endregion
 
@@ -42,13 +43,23 @@ namespace Interpreter
         /// <param name="functionDefinition">FunctionDefinition to interpret</param>
         public void VisitFunctionDefinition(Node functionDefinition)
         {
-            //Interpret statements
             Node statementList = functionDefinition.ViewAllNodes().ElementAt(2);
-            XHTMLElement temp = Current;
+
+            //Create root XHTML element when multiple statements can be root and there's no root 
+            int stmtCount = statementList.ViewAllNodes().Count(); 
+            if (stmtCount> 1 && Root == null)
+            {
+                XHTMLElement newRoot = new XHTMLElement("html", null, true);
+                Root = newRoot;
+                Current = Root;
+            }
+
+            //Interpret statements
+            int depth = this.Depth;
             foreach(Node statement in statementList.ViewAllNodes())
             {
-                Current = temp;
                 VisitStatement(statement);
+                BackToParentXHTMLElement(depth);
             }
         }
 
@@ -148,6 +159,12 @@ namespace Interpreter
         /// <param name="textExpression">TextExpression to interpret</param>
         public void VisitTextExpression(Node textExpression)
         {
+            if (textExpression.ViewAllNodes().Count == 0)
+            {   //This is a special custom made undef node
+                TextValue = "undef";
+                return;
+            }
+
             Node value = textExpression.ViewAllNodes().ElementAt(0);
             if (value.AtomicValue != null)
             {
@@ -430,12 +447,13 @@ namespace Interpreter
         /// <param name="blockStatement">BlockStatement to interpret</param>
         public void VisitBlockStatement(Node blockStatement)
         {
-            XHTMLElement temp = Current;
+            
             Node statementList = blockStatement.ViewAllNodes().ElementAt(0);
+            int depth = this.Depth;
             foreach (Node currentStatement in statementList.ViewAllNodes())
             {
-                Current = temp;
                 VisitStatement(currentStatement);
+                BackToParentXHTMLElement(depth);
             }
         }
 
@@ -451,11 +469,8 @@ namespace Interpreter
             if (expression.Brand.Text == "ListExpression")
             {
                 //Walk through list expression
-                XHTMLElement temp = Current;
                 foreach (Node expr in expression.ViewAllNodes())
                 {
-                    Current = temp;
-
                     //New scope
                     SymbolTable = new SymbolTable(SymbolTable);
 
@@ -512,9 +527,11 @@ namespace Interpreter
 
             //Interpret statements
             Node Statements = letStatement.ViewAllNodes().ElementAt(1);
+            int depth = this.Depth;
             foreach (Node statement in Statements.ViewAllNodes())
             {
                 VisitStatement(statement);
+                BackToParentXHTMLElement(depth);
             }
 
             //Restore scoping on end of LetStatement
@@ -627,9 +644,11 @@ namespace Interpreter
         /// <param name="commentStatement">CommentStatement to interpret</param>
         public void VisitCommentStatement(Node commentStatement)
         {
-            AddElement(new XHTMLElement("comment", Current));
-            Node comment = commentStatement.ViewAllNodes().ElementAt(0);
-            Current.AddContent(comment.AtomicValue.ToString());
+            XHTMLElement comment = new XHTMLElement("comment", Current);
+            comment.SetTagState(false);
+            Node commentNode = commentStatement.ViewAllNodes().ElementAt(0);
+            comment.AddContent(commentNode.AtomicValue.ToString());
+            AddElement(comment);
         }
 
         /// <summary>
@@ -645,7 +664,7 @@ namespace Interpreter
             XHTMLElement echoElement = new XHTMLElement(TextValue, Current);
             echoElement.SetTagState(false);
 
-            Current.AddChild(echoElement);
+            AddElement(echoElement);
         }
 
         /// <summary>
@@ -677,12 +696,10 @@ namespace Interpreter
             }
             XHTMLElement element = new XHTMLElement(preTextString, Current);
             element.SetTagState(false);
-            Current.AddChild(element);
+            AddElement(element);
 
             //Interpret Embed and TextTail
-            XHTMLElement temp = Current;
             VisitEmbed(embed);
-            Current = temp;
             VisitTextTail(textTail);
         }
 
@@ -731,13 +748,11 @@ namespace Interpreter
                 }
                 XHTMLElement element = new XHTMLElement(midTextString, Current);
                 element.SetTagState(false);
-                Current.AddChild(element);
+                AddElement(element);
 
                 //Interpret embed
-                XHTMLElement temp = Current;
                 Node embed = textTail.ViewAllNodes().ElementAt(1);
                 VisitEmbed(embed);
-                Current = temp;
 
                 //Interpret texttail
                 Node tail = textTail.ViewAllNodes().ElementAt(2);
@@ -757,7 +772,7 @@ namespace Interpreter
 
                 XHTMLElement element = new XHTMLElement(postTextString, Current);
                 element.SetTagState(false);
-                Current.AddChild(element);
+                AddElement(element);
             }
         }
 
@@ -770,8 +785,12 @@ namespace Interpreter
         {
             Node expression = cDataStatement.ViewAllNodes().ElementAt(0);
             VisitExpression(expression);
-            AddElement(new XHTMLElement("cdata", Current));
-            Current.AddContent(TextValue);
+
+            XHTMLElement cdata = new XHTMLElement("cdata", Current);
+            cdata.SetTagState(false);
+            cdata.AddContent(TextValue);
+            
+            AddElement(cdata);
         }
 
         /// <summary>
@@ -807,7 +826,7 @@ namespace Interpreter
                     //TODO, MAYBE TEMP ELEMENT IS NEEDED!!!
                     XHTMLElement element = new XHTMLElement(TextValue, Current);
                     element.SetTagState(false);
-                    Current.AddChild(element);
+                    AddElement(element);
                 }
 
                 //Restore YieldStack in original shape before interpreting
@@ -970,7 +989,7 @@ namespace Interpreter
 
                 XHTMLElement element = new XHTMLElement(TextValue, Current);
                 element.SetTagState(false);
-                Current.AddChild(element);
+                AddElement(element);
             }
             else
             {   //Interpret markup
@@ -1099,15 +1118,21 @@ namespace Interpreter
                 {
                     Node arguments = markup.ViewAllNodes().ElementAt(1);
                     Node formals = functionDefinition.ViewAllNodes().ElementAt(1);
-                    int parameterNr = 0;
-                    foreach (Node argument in arguments.ViewAllNodes())
+                    int index = 0;
+                    foreach (Node formal in formals.ViewAllNodes())
                     {
-                        //Store arguments in SymbolTable
-                        if (argument.Brand.Text == "ExpressionArgument")
+                        if (arguments.ViewAllNodes().Count > index)
                         {
-                            Node parameter = formals.ViewAllNodes().ElementAt(parameterNr);
-                            SymbolTable.AddVariableDefinition(parameter.AtomicValue.ToString(), argument.ViewAllNodes().ElementAt(0));
-                            parameterNr++;
+                            Node arg = arguments.ViewAllNodes().ElementAt(index);
+                            Node expr = arg.ViewAllNodes().ElementAt(0);
+                            SymbolTable.AddVariableDefinition(formal.AtomicValue.ToString(), expr);
+                            index++;
+                        }
+                        else
+                        {   //Arity mismatch, so fill with undef to prevent looking in parent symboltable
+                            NodeGraphBuilder graphBuilder = new NodeGraphBuilder();
+                            Node textExpr = (Node)graphBuilder.DefineNode("TextExpression");
+                            SymbolTable.AddVariableDefinition(formal.AtomicValue.ToString(), textExpr);
                         }
                     }
                 }
@@ -1181,6 +1206,12 @@ namespace Interpreter
         /// <returns>Root element of tree</returns>
         public XHTMLElement GetTree()
         {
+            //If tree is empty, return empty html element
+            if (Root == null)
+            {
+                Root = new XHTMLElement("html", null, true);
+            }
+
             return Root;
         }
 
@@ -1236,18 +1267,46 @@ namespace Interpreter
         /// <param name="element">Element to add</param>
         private void AddElement(XHTMLElement element)
         {
-            //If no root element, new element is root
+            //If no root element, create new root
             if (Root == null)
             {
-                Root = element;
-                Current = Root;
-                return;
+                if (element.GetTagState())
+                {
+                    Root = element;
+                }
+                else
+                {
+                    XHTMLElement newRoot = new XHTMLElement("html", null, true);
+                    Root = newRoot;
+                    Current = Root;
+                    newRoot.AddChild(element);
+                }
+            }
+            else
+            {
+                //Add element as child of current element
+                Current.AddChild(element);
             }
 
-            //Add element as child of current element
-            Current.AddChild(element);
-            //Set current to last added element
-            Current = element;
+
+            if (element.GetTagState())
+            {
+                Current = element;
+                Depth++;
+            }
+        }
+
+        /// <summary>
+        /// Set Current to parent
+        /// </summary>
+        /// <param name="requestedDepth">Depth of parents</param>
+        private void BackToParentXHTMLElement(int requestedDepth)
+        {
+            for (int i = 0; Depth > requestedDepth; i++)
+            {
+                Current = Current.GetParent();
+                Depth--;
+            }
         }
 
         /// <summary>
