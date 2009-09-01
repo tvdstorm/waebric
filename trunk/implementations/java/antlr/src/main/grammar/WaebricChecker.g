@@ -189,22 +189,22 @@ module
 	@init {
 		$Environment::variables = new ArrayList<String>();
 		$Environment::functions = new HashMap<String, Integer>();
-	} :		^( 'module' moduleId imprt* site* function* );
+	} :		^( 'module' moduleId[false] imprt* site* function* );
 
 // Verify that each module id relates to a physical file
-moduleId
+moduleId [boolean eval]
 	@init { String path = ""; } 
 	@after { path += ".wae"; } // Include default extension
 	:		id=IDCON { path = $id.getText(); } 
 			( '.' id=IDCON { path += "/" + $id.getText(); } )* ;
 		finally {
 			java.io.File file = new java.io.File(path);
-			if(! file.isFile()) {
+			if(! file.isFile() && eval) {
 				exceptions.add(new NonExistingModuleException($moduleId.tree));
 			}
 		}
 
-imprt:			'import' moduleId module? ;
+imprt:			'import' moduleId[true] module? ;
 
 // $>
 
