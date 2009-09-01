@@ -1,6 +1,6 @@
 <project name="Waebric Language Parser" default="help">
 
-	<property file="../build.properties"/>
+	<!-- <property file="../build.properties"/> -->
 
 	<target name="jflextask" unless="jflex.available" description="creates JFlex Ant task">
 		<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${jflex_jar}"/>
