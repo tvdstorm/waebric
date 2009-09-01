@@ -1,3 +1,4 @@
+package waebric.analysis.java;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,6 +15,7 @@ import waebric.analysis.java.runners.JParsecRunner;
 import waebric.analysis.java.runners.JavaCCRunner;
 import waebric.analysis.java.runners.JavaCupRunner;
 import waebric.analysis.java.runners.LPGRunner;
+import waebric.analysis.java.runners.RatsRunner;
 import waebric.analysis.java.runners.SableCCRunner;
 import aterm.ATerm;
 import aterm.pure.PureFactory;
@@ -25,6 +27,13 @@ public class AnalyseJavaWaebricImpls {
 	private List<String> tests;
 	private List<IParserRunner> parsers = new ArrayList<IParserRunner>();
 	private Map<String, Map<String, TestResult>> stats = new HashMap<String, Map<String,TestResult>>();
+	private Map<String, Integer> numOfInvalids = new HashMap<String, Integer>(); // not an ATerm
+	private Map<String, Integer> numOfSuccess = new HashMap<String, Integer>(); 
+	private Map<String, Integer> numOfMismatch = new HashMap<String, Integer>(); // different ATerm
+	private Map<String, Integer> numOfOther = new HashMap<String, Integer>(); 
+	private Map<String, Integer> numOfParseError= new HashMap<String, Integer>(); // unexpected parse error
+	private Map<String, Integer> numOfNoError = new HashMap<String, Integer>(); // no error, but expected one
+	
 	private String root;
 	private PureFactory factory;
 	
@@ -37,6 +46,7 @@ public class AnalyseJavaWaebricImpls {
 		addParser(new JParsecRunner());
 		addParser(new LPGRunner());
 		addParser(new SableCCRunner());
+		addParser(new RatsRunner());
 	}
 
 	public void addParser(IParserRunner parser) {
@@ -57,16 +67,26 @@ public class AnalyseJavaWaebricImpls {
 		printResults();
 	}
 	
-	public ATerm getExpectedAST(String test) {
+	public String getExpectedASTSource(String test) {
 		String[] elts = test.split("\\.");
 		String astFileName = root + "/output/" + elts[0] + ".ast";
+		String src = "";
 		try {
-			return factory.readFromFile(astFileName);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			BufferedReader reader = new BufferedReader(new FileReader(new File(astFileName)));
+			String line = reader.readLine();
+			while (line != null) {
+				src += line;
+				line = reader.readLine();
+			}
 		}
+		catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+//			throw new RuntimeException(e);
+		}
+		return src;
 	}
-	
+
 	public void printResults() {
 		List<String> names = new ArrayList<String>(stats.keySet());
 		Collections.sort(names);
@@ -89,36 +109,70 @@ public class AnalyseJavaWaebricImpls {
 			}
 			System.out.println();
 		}
+		System.out.println(String.format("%-12s   %10s %10s %10s %10s %10s %10s", "", "success", "error", "mismatch", "invalid", "no-error", "other"));
+		for (String name: names) {
+			System.out.print(String.format("%-12s : ", name));
+			System.out.print(String.format("%10d ", numOfSuccess.get(name))); 
+			System.out.print(String.format("%10d ", numOfParseError.get(name))); 
+			System.out.print(String.format("%10d ", numOfMismatch.get(name))); 
+			System.out.print(String.format("%10d ", numOfInvalids.get(name))); 
+			System.out.print(String.format("%10d ", numOfNoError.get(name)));
+			System.out.print(String.format("%10d", numOfOther.get(name))); 
+			System.out.println();
+		}
+		
+	}
+	
+	public void inc(Map<String,Integer> map, String name) {
+		if (!map.containsKey(name)) {
+			map.put(name, 0);
+		}
+		map.put(name, map.get(name) + 1);
 	}
 	
 	public void runSuite(IParserRunner parser) {
 		for (String filename: tests) {
 			//System.err.println("TESTING: " + filename);
+			String name = parser.getName();
 			try {
 				String result = parser.parse(new File(new File(root), filename));
+				String expected = getExpectedASTSource(filename);
 				if (result != null) {
-//					System.err.println("success: ");
-//					System.err.println(result);
+					if (expected.equals("")) {
+						stats.get(name).put(filename, new NoParseError());
+						inc(numOfNoError, name);
+						continue;
+					}
 					try {
 						ATerm ast = factory.parse(result);
-						if (ast.equals(getExpectedAST(filename))) {
-							stats.get(parser.getName()).put(filename, new Success());
+						if (ast.equals(factory.parse(expected))) {
+							stats.get(name).put(filename, new Success());
+							inc(numOfSuccess, name);
 						}
 						else {
-							stats.get(parser.getName()).put(filename, new ASTMismatch());
+							stats.get(name).put(filename, new ASTMismatch());
+							inc(numOfMismatch, name);
 						}
 					}
 					catch (aterm.ParseError e) {
-						stats.get(parser.getName()).put(filename, new InvalidAST());
+						inc(numOfInvalids, name);
+						stats.get(name).put(filename, new InvalidAST());
 					}
 				}
 				else {
-					stats.get(parser.getName()).put(filename, new ParseError());
-					//System.err.println("FAILURE");
+					if (expected.equals("")) {
+						inc(numOfSuccess, name);
+						stats.get(name).put(filename, new Success());
+					}
+					else {
+						inc(numOfParseError, name);
+						stats.get(name).put(filename, new ParseError());
+					}
 				}
 			}
 			catch (Throwable t) {
-				stats.get(parser.getName()).put(filename, new Other());
+				inc(numOfOther, name);
+				stats.get(name).put(filename, new Other());
 				t.printStackTrace();
 			}
 		}

@@ -1,3 +1,4 @@
+package waebric.analysis.java;
 
 public class Other extends TestResult {
 	@Override

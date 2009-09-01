@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/aterm-java.jar"/>
 	<classpathentry kind="lib" path="lib/jjtraveler.jar"/>
 	<classpathentry kind="lib" path="lib/shared-objects.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/WaebricRats"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
