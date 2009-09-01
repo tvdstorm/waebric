@@ -1,0 +1,5 @@
+module embed
+
+def main
+html { title { echo "hello"; } body { p h1 h2 { p h1 { p h2 { echo "text"; } } } } }
+end
