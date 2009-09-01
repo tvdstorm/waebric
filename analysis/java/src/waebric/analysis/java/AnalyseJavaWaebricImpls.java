@@ -10,6 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import waebric.analysis.java.results.ASTMismatch;
+import waebric.analysis.java.results.InvalidAST;
+import waebric.analysis.java.results.NoParseError;
+import waebric.analysis.java.results.Other;
+import waebric.analysis.java.results.ParseError;
+import waebric.analysis.java.results.Success;
+import waebric.analysis.java.results.TestResult;
 import waebric.analysis.java.runners.BeaverRunner;
 import waebric.analysis.java.runners.IParserRunner;
 import waebric.analysis.java.runners.JParsecRunner;
@@ -55,8 +62,6 @@ public class AnalyseJavaWaebricImpls {
 		this.parsers.add(parser);
 		stats.put(parser.getName(), new HashMap<String,TestResult>());
 	}
-
-
 
 	public static void main(String args[]) {
 		new AnalyseJavaWaebricImpls(tests(TESTS_DAT, TEST_PATH), TEST_PATH).run();
