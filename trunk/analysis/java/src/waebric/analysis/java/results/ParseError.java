@@ -1,4 +1,4 @@
-package waebric.analysis.java;
+package waebric.analysis.java.results;
 
 public class ParseError extends TestResult {
 	@Override
