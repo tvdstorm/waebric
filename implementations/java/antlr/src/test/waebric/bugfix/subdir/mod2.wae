@@ -1,6 +1,0 @@
-
-module mod2
-
-def g
-  echo "G";
-end

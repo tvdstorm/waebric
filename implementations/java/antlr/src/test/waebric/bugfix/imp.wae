@@ -1,9 +1,0 @@
-module imp
-
-import mod
-import subdir.mod2
-
-def main
-  f;
-  g;
-end
