@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-09-01 14:46:54
+// $ANTLR 3.1.2 /ufs/schagen/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-09-01 15:12:19
 
 	package org.cwi.waebric;
 

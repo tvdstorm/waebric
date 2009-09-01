@@ -260,8 +260,8 @@ function
 			
 formals
 	returns [int args = 0;]
-	:		'(' id=IDCON { defineVariable($id.getText()); $args++; }
-			( ',' id=IDCON { defineVariable($id.getText()); $args++; } )* ')' ;
+	:		'(' ( id=IDCON { defineVariable($id.getText()); $args++; }
+			( ',' id=IDCON { defineVariable($id.getText()); $args++; } )* )? ')' ;
 
 // $<Statements
 

@@ -92,7 +92,7 @@ function
 
 formals 
 	returns [int args = 0] 
-	:		'(' IDCON { $args++; } ( ',' IDCON { $args++; } )* ')' ;
+	:		'(' ( IDCON { $args++; } ( ',' IDCON { $args++; } )* )? ')' ;
 
 // $>
 
