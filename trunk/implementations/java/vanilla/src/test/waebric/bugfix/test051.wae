@@ -1,8 +1,0 @@
-module test051
-
-def main
-   if (a)
-     echo "a";
-   else
-     echo "no";
-end
