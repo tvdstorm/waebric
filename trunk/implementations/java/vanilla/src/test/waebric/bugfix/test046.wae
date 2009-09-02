@@ -1,7 +1,0 @@
-module test046
-
-def main
-  each (x: [1,2,3,4]) {
-   echo x;
-  }
-end

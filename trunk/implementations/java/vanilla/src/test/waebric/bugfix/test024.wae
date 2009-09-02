@@ -1,5 +1,0 @@
-module test024
-
-def main
-  html() "Hello world!";
-end

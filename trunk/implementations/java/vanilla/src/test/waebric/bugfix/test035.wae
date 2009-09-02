@@ -1,5 +1,0 @@
-module test035
-
-def main
-  html.alert#bla.notalert#notbla;
-end
