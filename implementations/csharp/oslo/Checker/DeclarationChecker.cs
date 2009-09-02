@@ -101,10 +101,12 @@ namespace Checker
 
             //Check Formals (always second element of functiondef)
             Node Formals = functionDef.ViewAllNodes().ElementAt(1);
+            NodeGraphBuilder graphBuilder = new NodeGraphBuilder();
             foreach (Node formal in Formals.ViewAllNodes())
             {
                 //Store variable, but without expression
-                SymbolTable.AddVariableDefinition(formal.AtomicValue.ToString(), null);
+                Node textExpression = (Node)graphBuilder.DefineNode("TextExpression");
+                SymbolTable.AddVariableDefinition(formal.AtomicValue.ToString(), textExpression);
             }
             
             //Check statements. StatementList is always at second position
