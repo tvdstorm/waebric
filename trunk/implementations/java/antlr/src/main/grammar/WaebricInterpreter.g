@@ -44,8 +44,14 @@ scope Environment {
 	private Element current;
 	private int depth = 0;
 	
-	// Yield related
-	private Stack<Integer> yieldStack = new Stack<Integer>();
+	// Yield stack
+	private Stack<Yieldable> yieldStack = new Stack<Yieldable>();
+	public class Yieldable {
+		public Integer index;
+		public Stack environment;
+	}
+	
+	// Functions with yield statements
 	private List<Integer> yieldLocations = new ArrayList<Integer>();
 	
 	// Personal environments, due to inherited environments on function bindings
@@ -275,6 +281,13 @@ scope Environment {
 			depth--;
 		}
 	}
+
+	public void addYield(Integer index) {
+		Yieldable element = new Yieldable();
+		element.index = index;
+		element.environment = cloneEnvironment();
+		yieldStack.push(element);
+	}
 	
 }
 
@@ -307,7 +320,7 @@ markup [boolean element]
 					
 					// Store yield arguments
 					if(containsYield($IDCON.getText()) && element) {
-						yieldStack.add(start);
+						addYield(start);
 						$yield = true;
 					}
 					
@@ -459,15 +472,19 @@ statement:		ifStatement
 			| ^( 'cdata' expression ) {	addContent(new CDATA($expression.eval)); }
 			| 'yield;' {
 					if(! yieldStack.isEmpty()) {
-						int curr = input.index();
-						int index = yieldStack.pop();
+						Yieldable e = yieldStack.pop();
 						Stack clone = (Stack) yieldStack.clone();
-
-						input.seek(index);
+						
+						Stack actual = cloneEnvironment();
+						Environment_stack = e.environment;
+						
+						int curr = input.index();
+						input.seek(e.index);
 						matchAny(input); // Skip already interpreted markup
 						markupChain(); // Execute copied markup chain
 						input.seek(curr);
 						
+						Environment_stack = actual;
 						yieldStack = clone;
 					}	
 				}
