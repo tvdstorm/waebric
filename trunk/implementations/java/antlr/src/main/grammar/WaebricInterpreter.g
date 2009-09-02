@@ -364,8 +364,10 @@ argument [List<Integer> args, boolean call]
 					current.setAttribute("value",  value);
 				}
 			} | IDCON '=' expression {
-				if(call) { 
-					defineVariable($IDCON.getText(), $expression.index);
+				if(call) {
+					if(! $Environment::variables.containsKey($IDCON.getText())) {
+						defineVariable($IDCON.getText(), $expression.index);
+					}
 				} else { 
 					if($IDCON.getText().equals("xmlns")) {
 						// JDOM won't allow xmlns attributes
