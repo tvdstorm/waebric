@@ -269,6 +269,13 @@ scope Environment {
 		return result;
 	}
 	
+	private void restoreCurrent(int arg) {
+		for(int i = 0; depth > arg; i++) {
+			current = current.getParentElement();
+			depth--;
+		}
+	}
+	
 }
 
 // $<Site
@@ -577,9 +584,13 @@ embedding [boolean element]
 			embed[element] textTail[element] ;
 
 embed [boolean element]
+	@init { int depth = this.depth; }
+	@after { restoreCurrent(depth); }
 	:		markup[element]+ 
 			| markup[element]* expression { addContent(new Text($expression.eval)); } ;
 
 textTail [boolean element]
+	@init { int depth = this.depth; }
+	@after { restoreCurrent(depth); }
 	:		POSTTEXT { addContent(new Text($POSTTEXT.getText().substring(1, $POSTTEXT.getText().length()-1))); }
 			| MIDTEXT { addContent(new Text($MIDTEXT.getText().substring(1, $MIDTEXT.getText().length()-1))); } embed[element] textTail[element] ;
