@@ -173,6 +173,19 @@ scope Environment {
 		document.setRootElement(html);
 		current = html;
 	}
+	
+	/**
+	 * Attach attribute value to current element
+	 * @param att Attribute name
+	 * @param value Added value
+	 */
+	private void addAttributeValue(String att, String value) {
+		org.jdom.Attribute attribute = current.getAttribute(att);
+		
+		String actual = "";
+		if(attribute != null) { actual = attribute.getValue() + " "; }
+		current.setAttribute(att, actual + value);
+	}
 
 	/**
 	 * Retrieve function
@@ -308,12 +321,12 @@ markup [boolean element]
 			
 attributes:		^( ATTRIBUTES attribute* ) ;
 
-attribute:		'#' IDCON { current.setAttribute("id", $IDCON.getText()); }
-			| '.' IDCON { current.setAttribute("class", $IDCON.getText()); }
-			| '$' IDCON { current.setAttribute("name", $IDCON.getText()); }
-			| ':' IDCON { current.setAttribute("type", $IDCON.getText()); }
-			| '@' w=NATCON { current.setAttribute("width", $w.getText()); }
-				( '%' h=NATCON{ current.setAttribute("height", $h.getText()); } )? ;
+attribute:		'#' IDCON { addAttributeValue("id", $IDCON.getText()); }
+			| '.' IDCON { addAttributeValue("class", $IDCON.getText()); }
+			| '$' IDCON { addAttributeValue("name", $IDCON.getText()); }
+			| ':' IDCON { addAttributeValue("type", $IDCON.getText()); }
+			| '@' w=NATCON { addAttributeValue("width", $w.getText()); }
+				( '%' h=NATCON{ addAttributeValue("height", $h.getText()); } )? ;
 			
 arguments [boolean call]
 	returns [List<Integer> args = new ArrayList<Integer>()]
@@ -337,7 +350,7 @@ argument [List<Integer> args, boolean call]
 					if($IDCON.getText().equals("xmlns")) {
 						// JDOM won't allow xmlns attributes
 						current.setNamespace(Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml"));
-					} else { current.setAttribute($IDCON.getText(), $expression.eval); }
+					} else { addAttributeValue($IDCON.getText(), $expression.eval); }
 				} 
 			} ;
 
