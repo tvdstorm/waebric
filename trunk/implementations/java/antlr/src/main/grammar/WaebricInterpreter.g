@@ -395,8 +395,12 @@ function [List<Integer> args]
 	@init { Element actual = null; int curr = 0; }
 	:		^( FUNCTION IDCON 
 				// Store formals as variable with corresponding argument
-				( '(' ( id=IDCON { if($args.size() > curr) { defineVariable($id.getText(), $args.get(curr)); curr++; } }
-				( ',' id=IDCON { if($args.size() > curr) { defineVariable($id.getText(), $args.get(curr)); curr++; } } )* )? ')' )?
+				( '(' ( id=IDCON { 
+					if($args.size() > curr) { 
+						defineVariable($id.getText(), $args.get(curr)); 
+						curr++; 
+					} 
+				} )* ')' )?
 				
 				// Execute each statement and reset JDOM element
 				( statement { 
@@ -405,7 +409,7 @@ function [List<Integer> args]
 				} )*
 			) ;
 
-formals:		'(' ( IDCON ( ',' IDCON )* )? ')' ;
+formals:		'(' IDCON* ')' ;
 
 // $>
 
