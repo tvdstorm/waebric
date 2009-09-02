@@ -1,9 +1,0 @@
-module test055
-
-def f
-  yield;
-end
-
-def main
-  f "abc";
-end

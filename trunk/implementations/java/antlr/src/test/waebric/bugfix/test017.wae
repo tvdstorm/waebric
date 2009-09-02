@@ -1,9 +1,0 @@
-module test017
-
-def main
-  let 
-    f() = echo "abc";
-  in
-	f;
-  end
-end
