@@ -95,7 +95,7 @@ attribute:		'#' IDCON // ID attribute
 			| '@' NATCON // Width attribute
 			| '@' NATCON '%' NATCON; // Width-height attribute
 			
-arguments:		( '(' argument? ( ',' argument )* ')' )?
+arguments:		( '(' ( argument ( ',' argument )* )? ')' )?
 				-> ^( ARGUMENTS argument* ) ;
 				
 argument:		expression // Variable definition
@@ -145,12 +145,12 @@ statement:		'if' '(' predicate ')' statement ( 'else' statement )?
 
 markupChain:		expression ';' 
 				-> ^( MARKUP_CHAIN expression )
-			| statement  
-				-> ^( MARKUP_CHAIN statement )
 			| embedding ';' 
 				-> ^( MARKUP_CHAIN embedding )
 			| markup markupChain 
 				-> ^( MARKUP_CHAIN markup markupChain )
+			| statement  
+				-> ^( MARKUP_CHAIN statement )
 			| ';' ;
 
 // $>
@@ -173,8 +173,14 @@ type:			'list' | 'record' | 'string' ;
 // $<Embedding
 
 embedding:		PRETEXT embed textTail ;
-embed:			markup* expression | markup* markup ;
-textTail:		POSTTEXT | MIDTEXT embed textTail ;
+
+embed:			markup* expression
+			| markup+
+			;
+			
+textTail:		POSTTEXT 
+			| MIDTEXT embed textTail 
+			;
 
 // $>
 

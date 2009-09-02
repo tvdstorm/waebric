@@ -209,7 +209,9 @@ imprt:			'import' moduleId[true] module? ;
 // $>
 
 site:			'site' mappings 'end' ;
+
 mappings:		mapping? ( ';' mapping )* ;
+
 mapping	:		PATH ':' markup ;
 
 // $<Markups
@@ -230,7 +232,9 @@ markup:			^( MARKUP IDCON . arguments ) {
 arguments returns [int args = 0]
 	:		^( ARGUMENTS ( argument {$args++;} )* ) ;
 			
-argument:		expression | IDCON '=' expression ;
+argument:		expression 
+			| IDCON '=' expression 
+			;
 
 // $>
 
@@ -277,8 +281,8 @@ statement:		^( 'if' predicate statement ( 'else' statement )? )
 			
 markupChain:		^( MARKUP_CHAIN markup markupChain )
 			| ^( MARKUP_CHAIN expression )
-			| ^( MARKUP_CHAIN statement )
 			| ^( MARKUP_CHAIN embedding )
+			| ^( MARKUP_CHAIN statement )
 			| ';' ;
 
 eachStatement
@@ -319,6 +323,7 @@ predicate:		( '!' predicate
 				| expression
 				| expression '.' type '?'
 			) ( '&&' predicate | '||' predicate )* ;
+			
 type:			'list' | 'record' | 'string' ;		
 
 // $>
@@ -326,5 +331,11 @@ type:			'list' | 'record' | 'string' ;
 // $<Embedding
 
 embedding:		PRETEXT embed textTail ;
-embed:			markup* expression | markup* markup ;
-textTail:		POSTTEXT | MIDTEXT embed textTail ;
+
+embed:			markup* expression
+			| markup+
+			;
+			
+textTail:		POSTTEXT 
+			| MIDTEXT embed textTail 
+			;
