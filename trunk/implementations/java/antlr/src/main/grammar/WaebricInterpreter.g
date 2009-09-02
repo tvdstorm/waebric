@@ -51,18 +51,18 @@ scope Environment {
 		public Stack environment;
 	}
 	
-	// Functions with yield statements
-	private List<Integer> yieldLocations = new ArrayList<Integer>();
-	
 	// Personal environments, due to inherited environments on function bindings
 	private Map<String, Stack> environments = new HashMap<String, Stack>();
+	
+	// WAEBRIC loader
+	private WaebricLoader loader;
 	
 	/**
 	 * Interpret program
 	 * @param os: Output stream for interpreting main function
 	 */
 	public void interpretProgram(OutputStream os, WaebricLoader loader) throws RecognitionException {
-		yieldLocations = loader.getYields(); // Store yield information
+		this.loader = loader;
 	
 		// Store function definitions to allow lazy function binding
 		Environment_stack.clear();
@@ -211,7 +211,7 @@ scope Environment {
 	
 	private boolean containsYield(String name) {
 		int index = getFunction(name);
-		if(index != -1) { return yieldLocations.contains(index); }
+		if(index != -1) { return loader.hasYield(index); }
 		return false;
 	}
 	
@@ -441,21 +441,16 @@ expression returns [
 // $<Function
 
 function [List<Integer> args]
-	@init { Element actual = null; int curr = 0; }
+	@init { int i = 0; }
 	:		^( FUNCTION IDCON 
 				// Store formals as variable with corresponding argument
 				( '(' ( id=IDCON { 
-					if($args.size() > curr) { 
-						defineVariable($id.getText(), $args.get(curr)); 
-						curr++; 
+					    if($args.size() > i) { 
+					    	defineVariable($id.getText(), $args.get(i));
+					    	i++; // Increment counter
+					    } 
 					} 
-				} )* ')' )?
-				
-				// Execute each statement and reset JDOM element
-				( statement { 
-					if(actual != null) { this.current = actual; } 
-					else { actual = this.current; } 
-				} )*
+				)* ')' )? statements
 			) ;
 
 formals:		'(' IDCON* ')' ;
@@ -463,6 +458,15 @@ formals:		'(' IDCON* ')' ;
 // $>
 
 // $<Statements
+
+statements
+	@init { 
+		int depth = this.depth;
+		int stms = loader.getStatementCount(input.index());
+		if(stms > 1 && ! document.hasRootElement()) {
+			createXHTMLRoot(false); 
+		}
+	}:		( statement { restoreCurrent(depth); } )* ;
 
 statement:		ifStatement
 			| eachStatement
@@ -546,23 +550,14 @@ eachStatement
               			}
 			};
 
-blockStatement
-	@init { Element actual = this.current; }
-	:		^( '{' ( statement { 
-					if(actual != null) { this.current = actual; } 
-					else { actual = this.current; } 
-				} )* '}' ) ;		
+blockStatement:		^( '{' statements '}' ) ;		
 
 letStatement
 	scope Environment;
 	@init {
 		$Environment::variables = new HashMap<String, Integer>();
 		$Environment::functions = new HashMap<String, Integer>();
-		Element actual = this.current;
-	} :		^( 'let' assignment+ 'in' ( statement { 
-					if(actual != null) { this.current = actual; } 
-					else { actual = this.current; } 
-				} )* 'end' ) ;
+	} :		^( 'let' assignment+ 'in' statements 'end' ) ;
 
 // $>
 // $<Assignments

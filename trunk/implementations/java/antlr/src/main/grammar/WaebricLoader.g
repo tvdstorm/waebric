@@ -17,6 +17,7 @@ options {
 	private Map<String, function_return> functions = new HashMap<String, function_return>();
 	private List<mapping_return> mappings = new ArrayList<mapping_return>();
 	private List<Integer> yields = new ArrayList<Integer>();
+	private Map<Integer, Integer> statements = new HashMap<Integer, Integer>();
 	
 	/**
 	 * Walk module to retrieve function definitions and mappings
@@ -37,8 +38,12 @@ options {
 		return mappings;
 	}
 	
-	public List<Integer> getYields() {
-		return yields;
+	public boolean hasYield(Integer index) {
+		return yields.contains(index);
+	}
+	
+	public Integer getStatementCount(Integer index) {
+		return statements.get(index);
 	}
 }
 
@@ -102,7 +107,11 @@ formals
 
 statements
 	returns[boolean yield = false]
-	:		( s=statement { if($s.yield) { $yield = true; } } )* ;
+	@init { 
+		int index = input.index();
+		int count = 0;
+	} @after { statements.put(index, count); }
+	:		( s=statement { count++; if($s.yield) { $yield = true; } } )* ;
 
 statement
 	returns[boolean yield = false;]
