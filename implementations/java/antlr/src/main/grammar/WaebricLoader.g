@@ -145,8 +145,8 @@ assignment:		IDCON '=' expression ';' // Variable binding
 // $<Predicates
 
 predicate:		( '!' predicate 
-				| expression // Not null
 				| expression '.' type '?' // Is type 
+				| expression // Not null
 			) ( '&&' predicate | '||' predicate )* ;
 type:			'list' | 'record' | 'string' ;
 

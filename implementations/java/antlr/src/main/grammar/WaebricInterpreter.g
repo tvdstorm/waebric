@@ -410,7 +410,6 @@ expression returns [
 			| '{' ( id=IDCON ':' e=expression { $map.put($id.getText(), e); } )? 
 			  ( ',' id=IDCON ':' e=expression { $map.put($id.getText(), e); } )* '}' {
 			  		// Build record type string evaluation
-					$collection = $map.values();
 					$eval = "{";
 					for(String key:$map.keySet()) { $eval += key + ":" + $map.get(key).eval + ","; }
 					$eval = $eval.substring(0, $eval.length()); // Clip last character
@@ -584,7 +583,6 @@ funcBinding
 
 predicate returns [boolean eval]
 	:		( '!' p=predicate { $eval = ! $p.eval; }
-				| e=expression { $eval = $e.index != -1; } // Is defined
 				| e=expression '.' ( 'list' {
 							$eval = $e.eval.startsWith("[");
 						 } | 'record' { 
@@ -592,6 +590,7 @@ predicate returns [boolean eval]
 						 } | 'string' { 
 						 	$eval = $e.index != -1;
 						 } ) '?' // Is type 
+				| e=expression { $eval = $e.index != -1; } // Is defined
 			) ( '&&' p=predicate { $eval = $eval && $p.eval; } | '||' p=predicate { $eval = $eval || $p.eval; } )* ;
 		
 // $>

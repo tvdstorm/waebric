@@ -320,8 +320,8 @@ funcBinding // Separated because only function bindings have local scopes
 // $<Predicate
 
 predicate:		( '!' predicate 
-				| expression
 				| expression '.' type '?'
+				| expression
 			) ( '&&' predicate | '||' predicate )* ;
 			
 type:			'list' | 'record' | 'string' ;		
