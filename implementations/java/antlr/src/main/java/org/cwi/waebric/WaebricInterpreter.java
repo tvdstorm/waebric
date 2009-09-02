@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-09-02 15:17:58
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-09-02 15:25:40
 
 	package org.cwi.waebric;
 	
@@ -1639,10 +1639,10 @@ public class WaebricInterpreter extends TreeParser {
                     if ( state.backtracking==0 ) {
 
                       			  		// Build record type string evaluation
-                      					retval.eval = "{";
+                      					retval.eval = "[";
                       					for(String key:retval.map.keySet()) { retval.eval += key + ":" + retval.map.get(key).eval + ","; }
                       					retval.eval = retval.eval.substring(0, retval.eval.length()); // Clip last character
-                      					retval.eval += "}";
+                      					retval.eval += "]";
                       				
                     }
 
