@@ -69,12 +69,9 @@ public class WaebricProcessor {
 	        long load_time = System.currentTimeMillis() - curr;
 	        System.out.println("Loaded in " + load_time + "ms.");
 	        System.out.println(loader.getFunctions().keySet().toString());
-	        System.out.println(loader.getYields().toString());
 	        
-	        WaebricChecker checker = new WaebricChecker(
-	        			new CommonTreeNodeStream(tree), // Input tokens
-	        			se // Caught exceptions while loading functions
-	        		);
+	        WaebricChecker checker = new WaebricChecker(new CommonTreeNodeStream(tree), se);
+	        
 	        curr = System.currentTimeMillis();
 	        checker.checkAST(loader);
 	        long check_time = System.currentTimeMillis() - curr;
