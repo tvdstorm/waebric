@@ -606,8 +606,8 @@ embedding [boolean element]
 embed [boolean element]
 	@init { int depth = this.depth; }
 	@after { restoreCurrent(depth); }
-	:		markup[element]+ 
-			| markup[element]* expression { addContent(new Text($expression.eval)); } ;
+	:		markup[element]* expression { addContent(new Text($expression.eval)); }
+			| markup[element]+ ;
 
 textTail [boolean element]
 	@init { int depth = this.depth; }

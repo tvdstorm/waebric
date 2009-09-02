@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-09-02 12:37:00
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g 2009-09-02 14:08:47
 
 	package org.cwi.waebric;
 
@@ -926,8 +926,8 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:182:9: ( 'comment' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:182:12: 'comment'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:188:9: ( 'comment' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:188:12: 'comment'
             {
             match("comment"); 
 
@@ -948,8 +948,8 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = SITE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:183:5: ( 'site' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:183:9: 'site'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:189:5: ( 'site' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:189:9: 'site'
             {
             match("site"); 
 
@@ -970,8 +970,8 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = END;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:184:4: ( 'end' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:184:8: 'end'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:190:4: ( 'end' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:190:8: 'end'
             {
             match("end"); 
 
@@ -992,8 +992,8 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = SEMICOLON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:185:10: ( ';' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:185:13: ';'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:191:10: ( ';' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:191:13: ';'
             {
             match(';'); 
              inPath = inSite; 
@@ -1011,7 +1011,7 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "LETTER"
     public final void mLETTER() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:187:16: ( 'a' .. 'z' | 'A' .. 'Z' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:193:16: ( 'a' .. 'z' | 'A' .. 'Z' )
             // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
@@ -1035,8 +1035,8 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "DIGIT"
     public final void mDIGIT() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:188:15: ( '0' .. '9' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:188:18: '0' .. '9'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:194:15: ( '0' .. '9' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:194:18: '0' .. '9'
             {
             matchRange('0','9'); 
 
@@ -1051,10 +1051,10 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "HEXADECIMAL"
     public final void mHEXADECIMAL() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:189:21: ( ( 'a' .. 'f' | 'A' .. 'F' | DIGIT )+ )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:189:23: ( 'a' .. 'f' | 'A' .. 'F' | DIGIT )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:195:21: ( ( 'a' .. 'f' | 'A' .. 'F' | DIGIT )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:195:23: ( 'a' .. 'f' | 'A' .. 'F' | DIGIT )+
             {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:189:23: ( 'a' .. 'f' | 'A' .. 'F' | DIGIT )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:195:23: ( 'a' .. 'f' | 'A' .. 'F' | DIGIT )+
             int cnt1=0;
             loop1:
             do {
@@ -1106,20 +1106,20 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = PATH;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:191:5: ({...}? => ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:191:9: {...}? => ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:197:5: ({...}? => ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:197:9: {...}? => ( PATHELEMENT '/' )* PATHELEMENT '.' FILEEXT
             {
             if ( !(( inPath )) ) {
                 throw new FailedPredicateException(input, "PATH", " inPath ");
             }
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:191:24: ( PATHELEMENT '/' )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:197:24: ( PATHELEMENT '/' )*
             loop2:
             do {
                 int alt2=2;
                 alt2 = dfa2.predict(input);
                 switch (alt2) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:191:26: PATHELEMENT '/'
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:197:26: PATHELEMENT '/'
             	    {
             	    mPATHELEMENT(); 
             	    match('/'); 
@@ -1150,10 +1150,10 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "PATHELEMENT"
     public final void mPATHELEMENT() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:192:21: ( ( LETTER | DIGIT | '%' )+ )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:192:23: ( LETTER | DIGIT | '%' )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:198:21: ( ( LETTER | DIGIT | '%' )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:198:23: ( LETTER | DIGIT | '%' )+
             {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:192:23: ( LETTER | DIGIT | '%' )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:198:23: ( LETTER | DIGIT | '%' )+
             int cnt3=0;
             loop3:
             do {
@@ -1203,10 +1203,10 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "FILEEXT"
     public final void mFILEEXT() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:193:17: ( ( LETTER | DIGIT )+ )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:193:19: ( LETTER | DIGIT )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:199:17: ( ( LETTER | DIGIT )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:199:19: ( LETTER | DIGIT )+
             {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:193:19: ( LETTER | DIGIT )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:199:19: ( LETTER | DIGIT )+
             int cnt4=0;
             loop4:
             do {
@@ -1258,14 +1258,14 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = STRCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:195:7: ({...}? => '\\\"' ( STRCHAR )* '\\\"' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:195:11: {...}? => '\\\"' ( STRCHAR )* '\\\"'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:201:7: ({...}? => '\\\"' ( STRCHAR )* '\\\"' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:201:11: {...}? => '\\\"' ( STRCHAR )* '\\\"'
             {
             if ( !(( inString )) ) {
                 throw new FailedPredicateException(input, "STRCON", " inString ");
             }
             match('\"'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:195:33: ( STRCHAR )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:201:33: ( STRCHAR )*
             loop5:
             do {
                 int alt5=2;
@@ -1278,7 +1278,7 @@ public class WaebricLexer extends Lexer {
 
                 switch (alt5) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:195:33: STRCHAR
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:201:33: STRCHAR
             	    {
             	    mSTRCHAR(); 
 
@@ -1306,7 +1306,7 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "STRCHAR"
     public final void mSTRCHAR() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:196:17: (~ ( '\\u0000' .. '\\u001F' | '\"' | '\\\\' ) | ESCLAYOUT | DECIMAL )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:17: (~ ( '\\u0000' .. '\\u001F' | '\"' | '\\\\' ) | ESCLAYOUT | DECIMAL )
             int alt6=3;
             int LA6_0 = input.LA(1);
 
@@ -1343,7 +1343,7 @@ public class WaebricLexer extends Lexer {
             }
             switch (alt6) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:196:19: ~ ( '\\u0000' .. '\\u001F' | '\"' | '\\\\' )
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:19: ~ ( '\\u0000' .. '\\u001F' | '\"' | '\\\\' )
                     {
                     if ( (input.LA(1)>=' ' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                         input.consume();
@@ -1358,14 +1358,14 @@ public class WaebricLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:196:58: ESCLAYOUT
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:58: ESCLAYOUT
                     {
                     mESCLAYOUT(); 
 
                     }
                     break;
                 case 3 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:196:70: DECIMAL
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:70: DECIMAL
                     {
                     mDECIMAL(); 
 
@@ -1382,7 +1382,7 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "ESCLAYOUT"
     public final void mESCLAYOUT() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:197:19: ( '\\\\n' | '\\\\t' | '\\\\\"' | '\\\\\\\\' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:203:19: ( '\\\\n' | '\\\\t' | '\\\\\"' | '\\\\\\\\' )
             int alt7=4;
             int LA7_0 = input.LA(1);
 
@@ -1424,7 +1424,7 @@ public class WaebricLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:197:21: '\\\\n'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:203:21: '\\\\n'
                     {
                     match("\\n"); 
 
@@ -1432,7 +1432,7 @@ public class WaebricLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:197:29: '\\\\t'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:203:29: '\\\\t'
                     {
                     match("\\t"); 
 
@@ -1440,7 +1440,7 @@ public class WaebricLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:197:37: '\\\\\"'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:203:37: '\\\\\"'
                     {
                     match("\\\""); 
 
@@ -1448,7 +1448,7 @@ public class WaebricLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:197:45: '\\\\\\\\'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:203:45: '\\\\\\\\'
                     {
                     match("\\\\"); 
 
@@ -1466,8 +1466,8 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "DECIMAL"
     public final void mDECIMAL() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:198:17: ( '\\\\\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:198:19: '\\\\\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:204:17: ( '\\\\\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:204:19: '\\\\\\\\' 'a:' DIGIT 'b:' DIGIT 'c:' DIGIT
             {
             match("\\\\"); 
 
@@ -1494,14 +1494,14 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = TEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:200:5: ({...}? => '\\\"' ( TEXTCHAR )* '\\\"' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:200:9: {...}? => '\\\"' ( TEXTCHAR )* '\\\"'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:206:5: ({...}? => '\\\"' ( TEXTCHAR )* '\\\"' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:206:9: {...}? => '\\\"' ( TEXTCHAR )* '\\\"'
             {
             if ( !(( ! inString )) ) {
                 throw new FailedPredicateException(input, "TEXT", " ! inString ");
             }
             match('\"'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:200:33: ( TEXTCHAR )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:206:33: ( TEXTCHAR )*
             loop8:
             do {
                 int alt8=2;
@@ -1514,7 +1514,7 @@ public class WaebricLexer extends Lexer {
 
                 switch (alt8) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:200:33: TEXTCHAR
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:206:33: TEXTCHAR
             	    {
             	    mTEXTCHAR(); 
 
@@ -1541,12 +1541,12 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "TEXTCHAR"
     public final void mTEXTCHAR() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:201:18: (~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' ) | '\\n' | '\\r' | '\\t' | ESCQUOTE | AMP | CHARREF | ENTREF )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:207:18: (~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' ) | '\\n' | '\\r' | '\\t' | ESCQUOTE | AMP | CHARREF | ENTREF )
             int alt9=8;
             alt9 = dfa9.predict(input);
             switch (alt9) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:201:20: ~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' )
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:207:20: ~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' )
                     {
                     if ( (input.LA(1)>=' ' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='%')||(input.LA(1)>='\'' && input.LA(1)<=';')||(input.LA(1)>='=' && input.LA(1)<='\u007F') ) {
                         input.consume();
@@ -1561,49 +1561,49 @@ public class WaebricLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:5: '\\n'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:5: '\\n'
                     {
                     match('\n'); 
 
                     }
                     break;
                 case 3 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:12: '\\r'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:12: '\\r'
                     {
                     match('\r'); 
 
                     }
                     break;
                 case 4 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:19: '\\t'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:19: '\\t'
                     {
                     match('\t'); 
 
                     }
                     break;
                 case 5 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:26: ESCQUOTE
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:26: ESCQUOTE
                     {
                     mESCQUOTE(); 
 
                     }
                     break;
                 case 6 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:37: AMP
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:37: AMP
                     {
                     mAMP(); 
 
                     }
                     break;
                 case 7 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:43: CHARREF
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:43: CHARREF
                     {
                     mCHARREF(); 
 
                     }
                     break;
                 case 8 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:202:53: ENTREF
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:53: ENTREF
                     {
                     mENTREF(); 
 
@@ -1620,7 +1620,7 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "ESCQUOTE"
     public final void mESCQUOTE() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:203:18: ( '\\\\\\\\' | '\\\\\"' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:209:18: ( '\\\\\\\\' | '\\\\\"' )
             int alt10=2;
             int LA10_0 = input.LA(1);
 
@@ -1648,7 +1648,7 @@ public class WaebricLexer extends Lexer {
             }
             switch (alt10) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:203:20: '\\\\\\\\'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:209:20: '\\\\\\\\'
                     {
                     match("\\\\"); 
 
@@ -1656,7 +1656,7 @@ public class WaebricLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:203:29: '\\\\\"'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:209:29: '\\\\\"'
                     {
                     match("\\\""); 
 
@@ -1674,11 +1674,11 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "AMP"
     public final void mAMP() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:204:13: ( '\\&' (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+ )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:204:16: '\\&' (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:210:13: ( '\\&' (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:210:16: '\\&' (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+
             {
             match('&'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:204:21: (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:210:21: (~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' ) )+
             int cnt11=0;
             loop11:
             do {
@@ -1692,7 +1692,7 @@ public class WaebricLexer extends Lexer {
 
                 switch (alt11) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:204:21: ~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' )
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:210:21: ~ ( '#' | '0' .. '9' | 'a' .. 'z' | 'A' .. 'Z' | '_' | ':' )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\"')||(input.LA(1)>='$' && input.LA(1)<='/')||(input.LA(1)>=';' && input.LA(1)<='@')||(input.LA(1)>='[' && input.LA(1)<='^')||input.LA(1)=='`'||(input.LA(1)>='{' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -1728,7 +1728,7 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "CHARREF"
     public final void mCHARREF() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:205:17: ( '&#' ( DIGIT )+ ';' | '&#x' HEXADECIMAL ';' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:211:17: ( '&#' ( DIGIT )+ ';' | '&#x' HEXADECIMAL ';' )
             int alt13=2;
             int LA13_0 = input.LA(1);
 
@@ -1766,11 +1766,11 @@ public class WaebricLexer extends Lexer {
             }
             switch (alt13) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:205:19: '&#' ( DIGIT )+ ';'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:211:19: '&#' ( DIGIT )+ ';'
                     {
                     match("&#"); 
 
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:205:24: ( DIGIT )+
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:211:24: ( DIGIT )+
                     int cnt12=0;
                     loop12:
                     do {
@@ -1784,7 +1784,7 @@ public class WaebricLexer extends Lexer {
 
                         switch (alt12) {
                     	case 1 :
-                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:205:24: DIGIT
+                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:211:24: DIGIT
                     	    {
                     	    mDIGIT(); 
 
@@ -1805,7 +1805,7 @@ public class WaebricLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:205:37: '&#x' HEXADECIMAL ';'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:211:37: '&#x' HEXADECIMAL ';'
                     {
                     match("&#x"); 
 
@@ -1825,8 +1825,8 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "ENTREF"
     public final void mENTREF() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:206:16: ( '&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':' )* ';' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:206:18: '&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':' )* ';'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:212:16: ( '&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':' )* ';' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:212:18: '&' ( LETTER | '_' | ':' ) ( LETTER | DIGIT | '.' | '-' | '_' | ':' )* ';'
             {
             match('&'); 
             if ( input.LA(1)==':'||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
@@ -1838,7 +1838,7 @@ public class WaebricLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:206:45: ( LETTER | DIGIT | '.' | '-' | '_' | ':' )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:212:45: ( LETTER | DIGIT | '.' | '-' | '_' | ':' )*
             loop14:
             do {
                 int alt14=2;
@@ -1886,11 +1886,11 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = PRETEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:8: ( '\"' ( TEXTCHAR )* '<' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:11: '\"' ( TEXTCHAR )* '<'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:214:8: ( '\"' ( TEXTCHAR )* '<' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:214:11: '\"' ( TEXTCHAR )* '<'
             {
             match('\"'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:15: ( TEXTCHAR )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:214:15: ( TEXTCHAR )*
             loop15:
             do {
                 int alt15=2;
@@ -1903,7 +1903,7 @@ public class WaebricLexer extends Lexer {
 
                 switch (alt15) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:208:15: TEXTCHAR
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:214:15: TEXTCHAR
             	    {
             	    mTEXTCHAR(); 
 
@@ -1932,11 +1932,11 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = POSTTEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:209:9: ( '>' ( TEXTCHAR )* '\"' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:209:12: '>' ( TEXTCHAR )* '\"'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:215:9: ( '>' ( TEXTCHAR )* '\"' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:215:12: '>' ( TEXTCHAR )* '\"'
             {
             match('>'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:209:16: ( TEXTCHAR )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:215:16: ( TEXTCHAR )*
             loop16:
             do {
                 int alt16=2;
@@ -1949,7 +1949,7 @@ public class WaebricLexer extends Lexer {
 
                 switch (alt16) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:209:16: TEXTCHAR
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:215:16: TEXTCHAR
             	    {
             	    mTEXTCHAR(); 
 
@@ -1978,11 +1978,11 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = MIDTEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:210:8: ( '>' ( TEXTCHAR )* '<' )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:210:11: '>' ( TEXTCHAR )* '<'
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:216:8: ( '>' ( TEXTCHAR )* '<' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:216:11: '>' ( TEXTCHAR )* '<'
             {
             match('>'); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:210:15: ( TEXTCHAR )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:216:15: ( TEXTCHAR )*
             loop17:
             do {
                 int alt17=2;
@@ -1995,7 +1995,7 @@ public class WaebricLexer extends Lexer {
 
                 switch (alt17) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:210:15: TEXTCHAR
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:216:15: TEXTCHAR
             	    {
             	    mTEXTCHAR(); 
 
@@ -2024,11 +2024,11 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = SYMBOLCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:212:10: ( '\\'' ( SYMBOLCHAR )* )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:212:13: '\\'' ( SYMBOLCHAR )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:218:10: ( '\\'' ( SYMBOLCHAR )* )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:218:13: '\\'' ( SYMBOLCHAR )*
             {
             match('\''); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:212:18: ( SYMBOLCHAR )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:218:18: ( SYMBOLCHAR )*
             loop18:
             do {
                 int alt18=2;
@@ -2041,7 +2041,7 @@ public class WaebricLexer extends Lexer {
 
                 switch (alt18) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:212:18: SYMBOLCHAR
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:218:18: SYMBOLCHAR
             	    {
             	    mSYMBOLCHAR(); 
 
@@ -2067,8 +2067,8 @@ public class WaebricLexer extends Lexer {
     // $ANTLR start "SYMBOLCHAR"
     public final void mSYMBOLCHAR() throws RecognitionException {
         try {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:213:20: (~ ( '\\u0000' .. '\\u001F' | ' ' | ';' | ',' | '>' | '}' | ')' ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:213:22: ~ ( '\\u0000' .. '\\u001F' | ' ' | ';' | ',' | '>' | '}' | ')' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:219:20: (~ ( '\\u0000' .. '\\u001F' | ' ' | ';' | ',' | '>' | '}' | ')' ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:219:22: ~ ( '\\u0000' .. '\\u001F' | ' ' | ';' | ',' | '>' | '}' | ')' )
             {
             if ( (input.LA(1)>='!' && input.LA(1)<='(')||(input.LA(1)>='*' && input.LA(1)<='+')||(input.LA(1)>='-' && input.LA(1)<=':')||(input.LA(1)>='<' && input.LA(1)<='=')||(input.LA(1)>='?' && input.LA(1)<='|')||(input.LA(1)>='~' && input.LA(1)<='\uFFFF') ) {
                 input.consume();
@@ -2093,10 +2093,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = NATCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:215:7: ( ( DIGIT )+ )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:215:11: ( DIGIT )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:221:7: ( ( DIGIT )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:221:11: ( DIGIT )+
             {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:215:11: ( DIGIT )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:221:11: ( DIGIT )+
             int cnt19=0;
             loop19:
             do {
@@ -2110,7 +2110,7 @@ public class WaebricLexer extends Lexer {
 
                 switch (alt19) {
             	case 1 :
-            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:215:11: DIGIT
+            	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:221:11: DIGIT
             	    {
             	    mDIGIT(); 
 
@@ -2142,11 +2142,11 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = IDCON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:216:6: ( LETTER ( LETTER | DIGIT | '-' )* )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:216:10: LETTER ( LETTER | DIGIT | '-' )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:222:6: ( LETTER ( LETTER | DIGIT | '-' )* )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:222:10: LETTER ( LETTER | DIGIT | '-' )*
             {
             mLETTER(); 
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:216:17: ( LETTER | DIGIT | '-' )*
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:222:17: ( LETTER | DIGIT | '-' )*
             loop20:
             do {
                 int alt20=2;
@@ -2195,10 +2195,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = COMMENTS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:218:9: ( ( '//' ( options {greedy=false; } : . )* '\\n' | '/*' ( options {greedy=false; } : . )* '*/' ) )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:218:12: ( '//' ( options {greedy=false; } : . )* '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:224:9: ( ( '//' ( options {greedy=false; } : . )* '\\n' | '/*' ( options {greedy=false; } : . )* '*/' ) )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:224:12: ( '//' ( options {greedy=false; } : . )* '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
             {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:218:12: ( '//' ( options {greedy=false; } : . )* '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:224:12: ( '//' ( options {greedy=false; } : . )* '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
             int alt23=2;
             int LA23_0 = input.LA(1);
 
@@ -2226,11 +2226,11 @@ public class WaebricLexer extends Lexer {
             }
             switch (alt23) {
                 case 1 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:218:14: '//' ( options {greedy=false; } : . )* '\\n'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:224:14: '//' ( options {greedy=false; } : . )* '\\n'
                     {
                     match("//"); 
 
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:218:19: ( options {greedy=false; } : . )*
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:224:19: ( options {greedy=false; } : . )*
                     loop21:
                     do {
                         int alt21=2;
@@ -2246,7 +2246,7 @@ public class WaebricLexer extends Lexer {
 
                         switch (alt21) {
                     	case 1 :
-                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:218:47: .
+                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:224:47: .
                     	    {
                     	    matchAny(); 
 
@@ -2263,11 +2263,11 @@ public class WaebricLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:219:6: '/*' ( options {greedy=false; } : . )* '*/'
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:225:6: '/*' ( options {greedy=false; } : . )* '*/'
                     {
                     match("/*"); 
 
-                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:219:11: ( options {greedy=false; } : . )*
+                    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:225:11: ( options {greedy=false; } : . )*
                     loop22:
                     do {
                         int alt22=2;
@@ -2292,7 +2292,7 @@ public class WaebricLexer extends Lexer {
 
                         switch (alt22) {
                     	case 1 :
-                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:219:39: .
+                    	    // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:225:39: .
                     	    {
                     	    matchAny(); 
 
@@ -2329,10 +2329,10 @@ public class WaebricLexer extends Lexer {
         try {
             int _type = LAYOUT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:221:7: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:221:11: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:227:7: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:227:11: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             {
-            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:221:11: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/Waebric.g:227:11: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             int cnt24=0;
             loop24:
             do {
@@ -2830,7 +2830,7 @@ public class WaebricLexer extends Lexer {
             this.transition = DFA2_transition;
         }
         public String getDescription() {
-            return "()* loopback of 191:24: ( PATHELEMENT '/' )*";
+            return "()* loopback of 197:24: ( PATHELEMENT '/' )*";
         }
     }
     static final String DFA9_eotS =
@@ -2891,7 +2891,7 @@ public class WaebricLexer extends Lexer {
             this.transition = DFA9_transition;
         }
         public String getDescription() {
-            return "201:10: fragment TEXTCHAR : (~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' ) | '\\n' | '\\r' | '\\t' | ESCQUOTE | AMP | CHARREF | ENTREF );";
+            return "207:10: fragment TEXTCHAR : (~ ( '\\u0000' .. '\\u001F' | '&' | '\"' | '<' | '\\u0080' .. '\\uFFFF' ) | '\\n' | '\\r' | '\\t' | ESCQUOTE | AMP | CHARREF | ENTREF );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;

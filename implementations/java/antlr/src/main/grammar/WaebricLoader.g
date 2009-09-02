@@ -53,6 +53,7 @@ imprt:			'import' moduleId module? ;
 // $<Site
 
 site:			'site' mappings 'end' ;
+
 mappings:		mapping? ( ';' mapping )* ;
 
 mapping
@@ -73,6 +74,7 @@ expression:		( IDCON | NATCON | TEXT | SYMBOLCON
 				| '[' expression? ( ',' expression )* ']' // List
 				| '{' keyValuePair? ( ',' keyValuePair )* '}' // Record
 			) ( '+' expression /* Cat */ | '.' IDCON /* Field */ )* ;
+			
 keyValuePair:		IDCON ':' expression ;
 
 // $>
@@ -120,8 +122,8 @@ markupChain
 	returns [boolean yield = false]
 	:		^( MARKUP_CHAIN markup c=markupChain { $yield = $c.yield; } )
 			| ^( MARKUP_CHAIN expression )
-			| ^( MARKUP_CHAIN s=statement { $yield = $s.yield; } )
 			| ^( MARKUP_CHAIN embedding  )
+			| ^( MARKUP_CHAIN s=statement { $yield = $s.yield; } )
 			| ';' ;
 			
 // $>
@@ -143,5 +145,11 @@ type:			'list' | 'record' | 'string' ;
 // $<Embedding
 
 embedding:		PRETEXT embed textTail ;
-embed:			markup* expression | markup* markup ;
-textTail:		POSTTEXT | MIDTEXT embed textTail ;
+
+embed:			markup* expression
+			| markup+
+			;
+			
+textTail:		POSTTEXT 
+			| MIDTEXT embed textTail 
+			;
