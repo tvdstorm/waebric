@@ -1151,31 +1151,32 @@ namespace Interpreter
                 SymbolTable = new SymbolTable(GetSymbolTableOfFunction(functionDefinition));
 
                 //Interpret arguments of function call
+                Node arguments = null;
                 if (markup.ViewAllNodes().Count == 2)
                 {
-                    Node arguments = markup.ViewAllNodes().ElementAt(1);
-                    Node formals = functionDefinition.ViewAllNodes().ElementAt(1);
-                    int index = 0;
-                    foreach (Node formal in formals.ViewAllNodes())
-                    {
-                        Node expr = null;
+                    arguments = markup.ViewAllNodes().ElementAt(1);
+                }
+                Node formals = functionDefinition.ViewAllNodes().ElementAt(1);
+                int index = 0;
+                foreach (Node formal in formals.ViewAllNodes())
+                {
+                   Node expr = null;
 
-                        if (arguments.ViewAllNodes().Count > index)
-                        {
-                            Node arg = arguments.ViewAllNodes().ElementAt(index);
-                            if (arg.Brand.Text == "AttrArgument")
-                            {   //AttrArgument
-                                expr = arg.ViewAllNodes().ElementAt(1);
-                            }
-                            else
-                            {   //ExpressionArgument
-                                expr = arg.ViewAllNodes().ElementAt(0);
-                            }
-                        }
+                   if (arguments.ViewAllNodes().Count > index)
+                   {
+                       Node arg = arguments.ViewAllNodes().ElementAt(index);
+                       if (arg.Brand.Text == "AttrArgument")
+                       {   //AttrArgument
+                           expr = arg.ViewAllNodes().ElementAt(1);
+                       }
+                       else
+                       {   //ExpressionArgument
+                           expr = arg.ViewAllNodes().ElementAt(0);
+                       }
+                   }
 
-                        SymbolTable.AddVariableDefinition(formal.AtomicValue.ToString(), expr);
-                        index++;
-                    }
+                   SymbolTable.AddVariableDefinition(formal.AtomicValue.ToString(), expr);
+                   index++;
                 }
 
                 //Visit function definition
