@@ -135,8 +135,8 @@ scope Environment {
 	private void outputDocument(Document document, OutputStream os) {
 		try {
 			if(os != null) {
-				if(! document.hasRootElement()) { createXHTMLRoot(false); }
 				XMLOutputter out = new XMLOutputter(Format.getRawFormat());
+				if(! document.hasRootElement()) { createXHTMLRoot(false); }
 				out.output(document, os);
 			}
 		} catch(IOException e) { e.printStackTrace(); }
@@ -298,7 +298,7 @@ mapping
 	:		PATH ':' markup[false] { 
 				try {
 					OutputStream os = createOutputStream($PATH.toString());
-					if(current != null) { outputDocument(document, os); }
+					outputDocument(document, os);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

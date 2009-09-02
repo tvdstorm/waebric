@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-09-02 15:25:40
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-09-02 15:32:03
 
 	package org.cwi.waebric;
 	
@@ -234,8 +234,8 @@ public class WaebricInterpreter extends TreeParser {
     	private void outputDocument(Document document, OutputStream os) {
     		try {
     			if(os != null) {
-    				if(! document.hasRootElement()) { createXHTMLRoot(false); }
     				XMLOutputter out = new XMLOutputter(Format.getRawFormat());
+    				if(! document.hasRootElement()) { createXHTMLRoot(false); }
     				out.output(document, os);
     			}
     		} catch(IOException e) { e.printStackTrace(); }
@@ -447,7 +447,7 @@ public class WaebricInterpreter extends TreeParser {
                
               				try {
               					OutputStream os = createOutputStream(PATH1.toString());
-              					if(current != null) { outputDocument(document, os); }
+              					outputDocument(document, os);
               				} catch (IOException e) {
               					e.printStackTrace();
               				}
