@@ -448,7 +448,9 @@ function [List<Integer> args]
 					    if($args.size() > i) { 
 					    	defineVariable($id.getText(), $args.get(i));
 					    	i++; // Increment counter
-					    } 
+					    } else {
+					    	defineVariable($id.getText(), -1);
+					    }
 					} 
 				)* ')' )? statements
 			) ;
@@ -461,11 +463,12 @@ formals:		'(' IDCON* ')' ;
 
 statements
 	@init { 
-		int depth = this.depth;
 		int stms = loader.getStatementCount(input.index());
 		if(stms > 1 && ! document.hasRootElement()) {
 			createXHTMLRoot(false); 
 		}
+		
+		int depth = this.depth;
 	}:		( statement { restoreCurrent(depth); } )* ;
 
 statement:		ifStatement
