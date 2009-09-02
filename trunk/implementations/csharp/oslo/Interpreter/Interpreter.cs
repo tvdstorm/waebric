@@ -1163,7 +1163,14 @@ namespace Interpreter
                         if (arguments.ViewAllNodes().Count > index)
                         {
                             Node arg = arguments.ViewAllNodes().ElementAt(index);
-                            expr = arg.ViewAllNodes().ElementAt(0);    
+                            if (arg.Brand.Text == "AttrArgument")
+                            {   //AttrArgument
+                                expr = arg.ViewAllNodes().ElementAt(1);
+                            }
+                            else
+                            {   //ExpressionArgument
+                                expr = arg.ViewAllNodes().ElementAt(0);
+                            }
                         }
 
                         SymbolTable.AddVariableDefinition(formal.AtomicValue.ToString(), expr);
