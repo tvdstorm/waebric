@@ -1,5 +1,0 @@
-module test071
-
-def main
-  echo "Click <a "here">.";
-end

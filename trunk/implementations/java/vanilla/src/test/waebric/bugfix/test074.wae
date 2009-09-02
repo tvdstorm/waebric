@@ -1,9 +1,0 @@
-module test074
-
-def main
-  let 
-    p() = p "a paragraph";
-  in
-    p;
-  end
-end

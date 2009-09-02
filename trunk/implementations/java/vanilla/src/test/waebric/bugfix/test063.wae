@@ -1,5 +1,0 @@
-module test063
-
-def main
-  a "";
-end
