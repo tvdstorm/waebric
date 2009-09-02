@@ -367,7 +367,7 @@ argument [List<Integer> args, boolean call]
 				if(call) {
 					if(! $Environment::variables.containsKey($IDCON.getText())) {
 						defineVariable($IDCON.getText(), $expression.index);
-					}
+					} args.add($expression.index); // Add expression index to argument collection
 				} else { 
 					if($IDCON.getText().equals("xmlns")) {
 						// JDOM won't allow xmlns attributes
@@ -474,7 +474,7 @@ statement:		ifStatement
 			| eachStatement
 			| letStatement
 			| blockStatement
-			| ^( 'comment' STRCON ) { addContent(new Comment($STRCON.getText())); }
+			| ^( 'comment' STRCON ) { addContent(new Comment($STRCON.getText().substring(1,$STRCON.getText().length()-1))); }
 			| ^( 'echo' expression ) { addContent(new Text($expression.eval)); }
 			| ^( 'echo' embedding[false] )
 			| ^( 'cdata' expression ) {	addContent(new CDATA($expression.eval)); }
@@ -586,7 +586,7 @@ predicate returns [boolean eval]
 				| e=expression '.' ( 'list' {
 							$eval = $e.eval.startsWith("[");
 						 } | 'record' { 
-						 	$eval = $e.eval.startsWith("{");
+						 	$eval = $e.eval.startsWith("[");
 						 } | 'string' { 
 						 	$eval = $e.index != -1;
 						 } ) '?' // Is type 

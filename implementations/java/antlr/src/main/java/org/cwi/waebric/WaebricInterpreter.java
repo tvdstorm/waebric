@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-09-02 15:32:03
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-09-02 15:56:16
 
 	package org.cwi.waebric;
 	
@@ -1197,7 +1197,7 @@ public class WaebricInterpreter extends TreeParser {
                       				if(call) {
                       					if(! ((Environment_scope)Environment_stack.peek()).variables.containsKey(IDCON23.getText())) {
                       						defineVariable(IDCON23.getText(), (expression25!=null?expression25.index:0));
-                      					}
+                      					} args.add((expression25!=null?expression25.index:0)); // Add expression index to argument collection
                       				} else { 
                       					if(IDCON23.getText().equals("xmlns")) {
                       						// JDOM won't allow xmlns attributes
@@ -2283,7 +2283,7 @@ public class WaebricInterpreter extends TreeParser {
                     }
 
                     if ( state.backtracking==0 ) {
-                       addContent(new Comment(STRCON53.getText())); 
+                       addContent(new Comment(STRCON53.getText().substring(1,STRCON53.getText().length()-1))); 
                     }
 
                     if ( state.backtracking==0 ) {
