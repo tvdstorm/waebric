@@ -42,6 +42,7 @@ scope Environment {
 	// JDOM elements
 	private Document document;
 	private Element current;
+	private int depth = 0;
 	
 	// Yield related
 	private Stack<Integer> yieldStack = new Stack<Integer>();
@@ -69,7 +70,7 @@ scope Environment {
 		// Interpret main function with zero arguments
 		this.document = new Document();
 		if(interpretFunction("main", new ArrayList<Integer>())) {
-			if(current != null) { outputDocument(document, os); }
+			outputDocument(document, os);
 		}
 		
 		// Interpret mappings
@@ -128,36 +129,49 @@ scope Environment {
 	private void outputDocument(Document document, OutputStream os) {
 		try {
 			if(os != null) {
+				if(! document.hasRootElement()) { createXHTMLRoot(false); }
 				XMLOutputter out = new XMLOutputter(Format.getRawFormat());
 				out.output(document, os);
 			}
 		} catch(IOException e) { e.printStackTrace(); }
 	}
 	
-    	private void addContent(Content content) {
-    		if(current == null) { // Construct root element
-        		if(content instanceof Element && ((Element) content).getName().equals("html")) {
-        			document.setRootElement((Element) content);
-        			current = document.getRootElement();
-        		} else {
-        			Element XHTML = createXHTMLTag();
-            			document.setRootElement(XHTML);
-            			XHTML.addContent(content);
-            			
-            			if(content instanceof Element) { current = (Element) content; }
-            			else { current = XHTML; }
-        		}	
-        	} else {
-    			current.addContent(content); // Attach content
-    			if(content instanceof Element) { current = (Element) content; }
-    		}
-    	}
+	/**
+	 * Attach content to current element, in-case element
+	 * does not exist create root element.
+	 * @param content
+	 */
+	private void addContent(Content content) {
+		// Update JDOM objects
+		if(current == null) {
+			if(content instanceof Element) {
+				document.setRootElement((Element) content);
+			} else {
+				createXHTMLRoot(false);
+				document.getRootElement().addContent(content);
+			}
+		} else { current.addContent(content); }
+
+		// Maintain field information
+		if(content instanceof Element) {
+			current = (Element) content;
+			depth++;
+		}
+	}
 	
-	private Element createXHTMLTag() {
-		Namespace XHTML = Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml");
-		Element tag = new Element("html", XHTML);
-		tag.setAttribute("lang", "en");
-		return tag;
+	/**
+	 * Create default XHTML root tag
+	 * @return
+	 */
+	private void createXHTMLRoot(boolean namespace) {
+		Element html;
+		if(namespace) {
+			Namespace XHTML = Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml");
+			html = new Element("html", XHTML);
+			html.setAttribute("lang", "en");
+		} else { html = new Element("html"); }
+		document.setRootElement(html);
+		current = html;
 	}
 
 	/**
