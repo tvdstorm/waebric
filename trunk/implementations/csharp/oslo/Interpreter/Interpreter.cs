@@ -1438,8 +1438,8 @@ namespace Interpreter
             if (predicate.Brand.Text == "IsAPredicate")
             {   //Evaluate IsAPredicate
                 Node expression = predicate.ViewAllNodes().ElementAt(0);
-                Node type = predicate.ViewAllNodes().ElementAt(1);
-
+                Node typeNode = predicate.ViewAllNodes().ElementAt(1);
+                Node type = typeNode.ViewAllNodes().ElementAt(0);
                 //In case of VarExpression, get expression from symboltable
                 if (expression.Brand.Text == "VarExpression")
                 {
