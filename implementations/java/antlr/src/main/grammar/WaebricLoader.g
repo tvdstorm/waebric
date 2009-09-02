@@ -139,7 +139,7 @@ markupChain
 // $<Assignments
 
 assignment:		IDCON '=' expression ';' // Variable binding
-			| ^( FUNCTION IDCON formals? statement ) ; // Function binding
+			| ^( FUNCTION IDCON formals? { statements.put(input.index(), 1); } statement ) ; // Function binding
 
 // $>
 // $<Predicates
