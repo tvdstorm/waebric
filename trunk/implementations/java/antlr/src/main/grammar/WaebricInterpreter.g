@@ -365,7 +365,7 @@ argument [List<Integer> args, boolean call]
 				}
 			} | IDCON '=' expression {
 				if(call) { 
-					 // TODO: Figure out what to do
+					defineVariable($IDCON.getText(), $expression.index);
 				} else { 
 					if($IDCON.getText().equals("xmlns")) {
 						// JDOM won't allow xmlns attributes

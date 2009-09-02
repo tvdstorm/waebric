@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-09-02 13:45:10
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-09-02 13:49:16
 
 	package org.cwi.waebric;
 	
@@ -1195,7 +1195,7 @@ public class WaebricInterpreter extends TreeParser {
                     if ( state.backtracking==0 ) {
 
                       				if(call) { 
-                      					 // TODO: Figure out what to do
+                      					defineVariable(IDCON23.getText(), (expression25!=null?expression25.index:0));
                       				} else { 
                       					if(IDCON23.getText().equals("xmlns")) {
                       						// JDOM won't allow xmlns attributes
