@@ -369,7 +369,7 @@ expression returns [
 		String eval = "undef", // Evaluation value for printing
 		Map<String, expression_return> map = new HashMap<String, expression_return>(), // Map structure for fields
 		Collection<expression_return> collection = new ArrayList() // List structure for iterations
-	] @init{ retval.index = input.index(); }
+	] @init{ $index = input.index(); }
 	: 		// Non-recursive expressions
 			( var=IDCON {
 					// Reference
@@ -379,7 +379,7 @@ expression returns [
 						input.seek(next);
 						retval = expression();
 						input.seek(curr);
-					} 
+					} else { $index = -1; } // Undefined variable
 				}
 			| NATCON { $eval = $NATCON.getText(); }
 			| TEXT { $eval = $TEXT.getText(); $eval = $eval.substring(1, $eval.length()-1); }

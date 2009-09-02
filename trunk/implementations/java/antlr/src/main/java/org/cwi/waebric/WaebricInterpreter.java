@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-09-02 13:19:13
+// $ANTLR 3.1.2 /Users/Jeroen/Documents/workspace/WaebricANTLR/src/main/grammar/WaebricInterpreter.g 2009-09-02 13:25:26
 
 	package org.cwi.waebric;
 	
@@ -1335,7 +1335,7 @@ public class WaebricInterpreter extends TreeParser {
                       						input.seek(next);
                       						retval = expression();
                       						input.seek(curr);
-                      					} 
+                      					} else { retval.index = -1; } // Undefined variable
                       				
                     }
 
