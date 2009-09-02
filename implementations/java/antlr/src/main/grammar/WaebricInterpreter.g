@@ -529,17 +529,18 @@ eachStatement
 	@init {
 		$Environment::variables = new HashMap<String, Integer>();
 		$Environment::functions = new HashMap<String, Integer>();
-		int stm = 0;
-	} :		^( 'each' '(' IDCON ':' e=expression ')' { stm = input.index(); } . ) {
-				int actualIndex = input.index();
-              			Element actualElement = this.current;
+		int index = 0;
+	} :		^( 'each' '(' IDCON ':' e=expression ')' { index = input.index(); } . ) {
+				if(! document.hasRootElement()) { createXHTMLRoot(false); }
+				int depth = this.depth;
+	
+				int actual = input.index();
               			for(expression_return value: e.collection) {
               				defineVariable($IDCON.getText(), value.index);
-              				input.seek(stm);
+              				input.seek(index);
               				statement();
-              				input.seek(actualIndex);	
-              				if(actualElement == null) { actualElement = document.getRootElement(); }
-              				this.current = actualElement;
+              				input.seek(actual);	
+              				restoreCurrent(depth);
               			}
 			};
 
