@@ -1,5 +1,0 @@
-module test072
-
-def main
-  echo "Click <a.alert#myid "here">.";
-end
