@@ -47,7 +47,12 @@ namespace Common
         /// <param name="functionDefinition">FunctionDefinition to add</param>
         public void AddFunctionDefinition(String functionIdentifier, Node functionDefinition)
         {
-            FunctionDefinitions.Add(functionIdentifier, functionDefinition);
+            if (functionDefinition == null)
+            {
+                return;
+            }
+            String identifier = functionIdentifier == null ? "" : functionIdentifier;
+            FunctionDefinitions.Add(identifier, functionDefinition);
         }
 
         /// <summary>
@@ -130,6 +135,10 @@ namespace Common
         public bool ContainsVariable(String identifier)
         {
             bool contains = VariableDefinitions.ContainsKey(identifier);
+            if (contains)
+            {
+                return VariableDefinitions[identifier] != null;
+            }
             if (!contains && ParentSymbolTable != null)
             {
                 return ParentSymbolTable.ContainsVariable(identifier);

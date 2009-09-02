@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CharIterator.cs" />
+    <Compile Include="YieldElement.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="WaebricInterpreter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

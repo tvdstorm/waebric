@@ -19,8 +19,8 @@ namespace Interpreter
         private XHTMLElement Current;                                           //Pointer to current element in XHTMLTree
         private Dictionary<Node, SymbolTable> FunctionSymbolTable;              //Stores symboltables per function
         private String TextValue = "";                                          //Buffer used for buffering values
-        private Stack<Node> YieldStack;                                         //Stack containing nodes which are referred by a yield
-        private int Depth;                                                      //Depth in XHTMLTree, for navigation
+        private Stack<YieldElement> YieldStack;                                         //Stack containing nodes which are referred by a yield
+        private int Depth = 0;                                                      //Depth in XHTMLTree, for navigation
 
         #endregion
 
@@ -34,7 +34,7 @@ namespace Interpreter
         {
             SymbolTable = symbolTable;
             FunctionSymbolTable = new Dictionary<Node, SymbolTable>();
-            YieldStack = new Stack<Node>();
+            YieldStack = new Stack<YieldElement>();
         }
 
         /// <summary>
@@ -447,8 +447,17 @@ namespace Interpreter
         /// <param name="blockStatement">BlockStatement to interpret</param>
         public void VisitBlockStatement(Node blockStatement)
         {
-            
             Node statementList = blockStatement.ViewAllNodes().ElementAt(0);
+            
+            //Create root XHTML element when multiple statements can be root and there's no root 
+            if (statementList.ViewAllNodes().Count > 1 && Root == null)
+            {
+                XHTMLElement newRoot = new XHTMLElement("html", null, true);
+                Root = newRoot;
+                Current = Root;
+            }
+
+            
             int depth = this.Depth;
             foreach (Node currentStatement in statementList.ViewAllNodes())
             {
@@ -463,14 +472,25 @@ namespace Interpreter
         /// <param name="eachStatement">EachStatement to interpret</param>
         public void VisitEachStatement(Node eachStatement)
         {
+            //If no root element, create one
+            if (Root == null)
+            {
+                XHTMLElement newRoot = new XHTMLElement("html", null, true);
+                Root = newRoot;
+                Current = Root;
+            }
+
             Node expression = eachStatement.ViewAllNodes().ElementAt(1);
             Node varId = eachStatement.ViewAllNodes().ElementAt(0);
             Node statement = eachStatement.ViewAllNodes().ElementAt(2);
             if (expression.Brand.Text == "ListExpression")
             {
                 //Walk through list expression
+                XHTMLElement temp = Current;
                 foreach (Node expr in expression.ViewAllNodes())
                 {
+                    Current = temp;
+
                     //New scope
                     SymbolTable = new SymbolTable(SymbolTable);
 
@@ -497,7 +517,8 @@ namespace Interpreter
             }
             else if(expression.Brand.Text == "VarExpression")
             {   //Get expression in referenced record
-                Node expr = SymbolTable.GetVariableDefinition(varId.AtomicValue.ToString());
+                Node exprId = expression.ViewAllNodes().ElementAt(0);
+                Node expr = SymbolTable.GetVariableDefinition(exprId.AtomicValue.ToString());
 
                 //Create new EachStatement with new expression
                 NodeGraphBuilder nodeBuilder = new NodeGraphBuilder();
@@ -525,10 +546,19 @@ namespace Interpreter
                 VisitAssignment(Assignment);
             }
 
+            Node statements = letStatement.ViewAllNodes().ElementAt(1);
+
+            //If no root element, create one
+            if (statements.ViewAllNodes().Count > 1 && Root == null)
+            {
+                XHTMLElement newRoot = new XHTMLElement("html", null, true);
+                Root = newRoot;
+                Current = Root;
+            }
+
             //Interpret statements
-            Node Statements = letStatement.ViewAllNodes().ElementAt(1);
             int depth = this.Depth;
-            foreach (Node statement in Statements.ViewAllNodes())
+            foreach (Node statement in statements.ViewAllNodes())
             {
                 VisitStatement(statement);
                 BackToParentXHTMLElement(depth);
@@ -709,6 +739,7 @@ namespace Interpreter
         /// <param name="embed">Embed to interpret</param>
         public void VisitEmbed(Node embed)
         {
+            int depth = this.Depth;
             //Convert to MarkupsStatement
             NodeGraphBuilder nodeBuilder = new NodeGraphBuilder();
 
@@ -726,6 +757,8 @@ namespace Interpreter
             
             //Interpret markupsStatement
             VisitMarkupsStatement(markupsStatement);
+
+            BackToParentXHTMLElement(depth);
         }
 
         /// <summary>
@@ -805,29 +838,33 @@ namespace Interpreter
             }
 
             //Pop from YieldStack and lets interpet it
-            Node node = YieldStack.Pop();
+            YieldElement yieldElement = YieldStack.Pop();
 
-            if (node != null)
+            if (yieldElement != null && yieldElement.GetRootElement() != null)
             {
                 //Let's copy yieldstack, because there are possible yields in the yield. 
-                Stack<Node> tempYieldStack = new Stack<Node>();
-                List<Node> yieldList = YieldStack.ToList();
-                foreach (Node yieldNode in yieldList)
+                Stack<YieldElement> tempYieldStack = new Stack<YieldElement>();
+                List<YieldElement> yieldList = YieldStack.ToList();
+                foreach (YieldElement yieldNode in yieldList)
                 {
                     tempYieldStack.Push(yieldNode);
                 }
 
-                //Lets interpret it
-                VisitYieldNode(node);
+                //Lets interpret it with specific symboltable
+                SymbolTable temp = (SymbolTable)SymbolTable.Clone();
+                SymbolTable = yieldElement.GetSymbolTable();
+                VisitYieldNode(yieldElement.GetRootElement());
 
                 //Add some content when node is an expression or embedding
-                if (IsExpression(node) || node.Brand.Text == "Embedding")
+                if (IsExpression(yieldElement.GetRootElement()) || yieldElement.GetRootElement().Brand.Text == "Embedding")
                 {
-                    //TODO, MAYBE TEMP ELEMENT IS NEEDED!!!
                     XHTMLElement element = new XHTMLElement(TextValue, Current);
                     element.SetTagState(false);
                     AddElement(element);
                 }
+
+                //Restore symboltable
+                SymbolTable = temp;
 
                 //Restore YieldStack in original shape before interpreting
                 YieldStack = tempYieldStack;
@@ -968,7 +1005,7 @@ namespace Interpreter
                         newMarkupsStatement.Add(markupsStatement.ViewAllNodes().ElementAt(1));
                         
                         //Push node to yieldstack
-                        YieldStack.Push(newMarkupsStatement);
+                        PushYieldNode(newMarkupsStatement);
                     }
 
                     //Interpret markup
@@ -1030,7 +1067,7 @@ namespace Interpreter
                         newMarkupStatStatement.Add(markupStatStatement.ViewAllNodes().ElementAt(1));
 
                         //Push node to yieldstack
-                        YieldStack.Push(newMarkupStatStatement);
+                        PushYieldNode(newMarkupStatStatement);
                     }
 
                     //Interpret markup
@@ -1080,7 +1117,7 @@ namespace Interpreter
                         newMarkupEmbeddingStatement.Add(markupEmbeddingStatement.ViewAllNodes().ElementAt(1));
 
                         //Push node to yieldstack
-                        YieldStack.Push(newMarkupEmbeddingStatement);
+                        PushYieldNode(newMarkupEmbeddingStatement);
                     }
 
                     //Interpret markup
@@ -1121,19 +1158,16 @@ namespace Interpreter
                     int index = 0;
                     foreach (Node formal in formals.ViewAllNodes())
                     {
+                        Node expr = null;
+
                         if (arguments.ViewAllNodes().Count > index)
                         {
                             Node arg = arguments.ViewAllNodes().ElementAt(index);
-                            Node expr = arg.ViewAllNodes().ElementAt(0);
-                            SymbolTable.AddVariableDefinition(formal.AtomicValue.ToString(), expr);
-                            index++;
+                            expr = arg.ViewAllNodes().ElementAt(0);    
                         }
-                        else
-                        {   //Arity mismatch, so fill with undef to prevent looking in parent symboltable
-                            NodeGraphBuilder graphBuilder = new NodeGraphBuilder();
-                            Node textExpr = (Node)graphBuilder.DefineNode("TextExpression");
-                            SymbolTable.AddVariableDefinition(formal.AtomicValue.ToString(), textExpr);
-                        }
+
+                        SymbolTable.AddVariableDefinition(formal.AtomicValue.ToString(), expr);
+                        index++;
                     }
                 }
 
@@ -1324,6 +1358,18 @@ namespace Interpreter
         }
 
         /// <summary>
+        /// Push node to yieldstack with current symboltable state
+        /// </summary>
+        /// <param name="node">Node to push</param>
+        private void PushYieldNode(Node node)
+        {
+            YieldElement element = new YieldElement();
+            element.SetRootElement(node);
+            element.SetSymbolTable((SymbolTable)SymbolTable.Clone());
+            YieldStack.Push(element);
+        }
+
+        /// <summary>
         /// Retrieve concrete expression of an fieldexpression
         /// </summary>
         /// <param name="expression">FieldExpression</param>
@@ -1355,12 +1401,46 @@ namespace Interpreter
             return null;
         }
 
+        /// <summary>
+        /// Retrieve real expression of varexpression
+        /// </summary>
+        /// <param name="expression">VarExpression to get real expression from</param>
+        /// <returns>Real expression value</returns>
+        private Node GetReferenceExpression(Node expression)
+        {
+            Node identifierNode = expression.ViewAllNodes().ElementAt(0);
+            String identifier = identifierNode.AtomicValue.ToString();
+            Node referenceExpr = null;
+            do
+            {
+                if (SymbolTable.ContainsVariable(identifier))
+                {
+                    referenceExpr = SymbolTable.GetVariableDefinition(identifier);
+                    if (referenceExpr == expression && SymbolTable.GetParentSymbolTable() != null)
+                    {   //Get reference from parent symboltable
+                        referenceExpr = SymbolTable.GetParentSymbolTable().GetVariableDefinition(identifier);
+                    }
+                }
+            } while (referenceExpr.Brand.Text == "VarExpression");
+            return referenceExpr;
+        }
+
         private bool EvaluatePredicate(Node predicate)
         {
             if (predicate.Brand.Text == "IsAPredicate")
             {   //Evaluate IsAPredicate
                 Node expression = predicate.ViewAllNodes().ElementAt(0);
                 Node type = predicate.ViewAllNodes().ElementAt(1);
+
+                //In case of VarExpression, get expression from symboltable
+                if (expression.Brand.Text == "VarExpression")
+                {
+                    expression = GetReferenceExpression(expression);
+                    if (expression == null)
+                    {
+                        return false;
+                    }
+                }
 
                 //Evaluate type
                 if (type.AtomicValue.ToString() == "string")
