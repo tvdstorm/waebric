@@ -354,10 +354,10 @@ module Waebric
        
         //---Markup---
         syntax Markup 
-            = mc:MarkupCall
-               => mc
-            | d:Designator
-                => MarkupTag[d];
+            = d:Designator
+                => MarkupTag[d]
+            | mc:MarkupCall
+               => mc;
         syntax MarkupCall 
             = d:Designator a:Arguments
                 => MarkupCall[d,a];
