@@ -1,5 +1,0 @@
-module test031
-
-def main
-  html.alert.nuther;
-end

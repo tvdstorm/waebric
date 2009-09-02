@@ -1,5 +1,0 @@
-module test025
-
-def main
-  html(name="bla", type="xhtml") "Hello world!";
-end

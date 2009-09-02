@@ -1,7 +1,0 @@
-module test003
-
-// Echo embedding
-
-def main
-  echo "abc<em "bla">def";
-end
