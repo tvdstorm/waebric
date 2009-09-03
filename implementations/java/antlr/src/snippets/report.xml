@@ -7,7 +7,7 @@
 			<license_note>License note: This is a evaluation copy license</license_note>
 
 		</license_notes>
-		<date>Sat Aug 22 20:12:36 2009</date>
+		<date>Sat Aug 22 20:39:00 2009</date>
 		<cmtjava_options> -l -o report.xml</cmtjava_options>
 		<cwd>/home/jeroen/Research/WaebricANTLR/src/snippets</cwd>
 	</header_info>
@@ -4369,6 +4369,71 @@
 		<imports>
 		</imports>
 		<class name="ScannerAction" nesting="0" start_line="2">
+			<method name="scan" nesting="1" start_line="4">
+				<vG>5</vG>
+				<vG_max>6</vG_max>
+				<vG_avg>1</vG_avg>
+				<LOCphy>10</LOCphy>
+				<LOCpro>10</LOCpro>
+				<LOCbl>0</LOCbl>
+				<LOCcom alarmed="1">0</LOCcom>
+				<N>51</N>
+				<N1>27</N1>
+				<N2>24</N2>
+				<n>14</n>
+				<n1>7</n1>
+				<n2>7</n2>
+				<V>194.175</V>
+				<B>0.059</B>
+				<D>12.000</D>
+				<E>2330.101</E>
+				<L>0.083</L>
+				<T>00:02:09</T>
+				<MaxND>2</MaxND>
+				<MIwoc>105</MIwoc>
+				<MIcwc>0</MIcwc>
+				<MI>105</MI>
+			</method>
+			<class_total>
+				<vG>5</vG>
+				<vG_max>6</vG_max>
+				<vG_avg>1</vG_avg>
+				<LOCphy>13</LOCphy>
+				<LOCpro>12</LOCpro>
+				<LOCbl>1</LOCbl>
+				<LOCcom alarmed="1">0</LOCcom>
+				<N>55</N>
+				<N1>30</N1>
+				<N2>25</N2>
+				<n>16</n>
+				<n1>8</n1>
+				<n2>8</n2>
+				<V>220.000</V>
+				<B>0.065</B>
+				<D>12.500</D>
+				<E>2750.000</E>
+				<L>0.080</L>
+				<T>00:02:32</T>
+				<MaxND>2</MaxND>
+				<MIwoc>100</MIwoc>
+				<MIcwc>0</MIcwc>
+				<MI>100</MI>
+			</class_total>
+		</class>
+		<file_total>
+			<vG>5</vG>
+			<LOCphy>14</LOCphy>
+			<LOCbl>2</LOCbl>
+			<LOCpro>12</LOCpro>
+			<LOCcom>0</LOCcom>
+			<semicolons>9</semicolons>
+		</file_total>
+	</file>
+	<file name="Scanner.java">
+		<package>org.cwi.waebric</package>
+		<imports>
+		</imports>
+		<class name="ScannerAction" nesting="0" start_line="2">
 			<method name="scan" nesting="1" start_line="7">
 				<vG>5</vG>
 				<vG_max>6</vG_max>
@@ -4423,35 +4488,75 @@
 		<file_total>
 			<vG>5</vG>
 			<LOCphy>17</LOCphy>
-			<LOCbl>2</LOCbl>
-			<LOCpro>15</LOCpro>
+			<LOCbl>1</LOCbl>
+			<LOCpro>16</LOCpro>
 			<LOCcom>0</LOCcom>
-			<semicolons>12</semicolons>
+			<semicolons>13</semicolons>
+		</file_total>
+	</file>
+	<file name="ScannerPreamble.java">
+		<package>org.cwi.waebric</package>
+		<imports>
+		</imports>
+		<class name="ScannerAction" nesting="0" start_line="2">
+			<class_total>
+				<vG>1</vG>
+				<vG_max>6</vG_max>
+				<vG_avg>1</vG_avg>
+				<LOCphy>5</LOCphy>
+				<LOCpro>5</LOCpro>
+				<LOCbl>0</LOCbl>
+				<LOCcom>0</LOCcom>
+				<N>19</N>
+				<N1>9</N1>
+				<N2>10</N2>
+				<n>11</n>
+				<n1>5</n1>
+				<n2>6</n2>
+				<V alarmed="1">65.729</V>
+				<B>0.014</B>
+				<D>4.167</D>
+				<E>273.872</E>
+				<L>0.240</L>
+				<T>00:00:15</T>
+				<MaxND>0</MaxND>
+				<MIwoc>123</MIwoc>
+				<MIcwc>0</MIcwc>
+				<MI>123</MI>
+			</class_total>
+		</class>
+		<file_total>
+			<vG>1</vG>
+			<LOCphy>6</LOCphy>
+			<LOCbl>0</LOCbl>
+			<LOCpro>6</LOCpro>
+			<LOCcom>0</LOCcom>
+			<semicolons>4</semicolons>
 		</file_total>
 	</file>
 	<system>
 		<packages>1</packages>
-		<files>13</files>
-		<measured_items>168</measured_items>
-		<LOCphy>1697</LOCphy>
-		<LOCpro>1226</LOCpro>
+		<files>15</files>
+		<measured_items>171</measured_items>
+		<LOCphy>1717</LOCphy>
+		<LOCpro>1245</LOCpro>
 		<LOCcom>314</LOCcom>
-		<LOCbl>201</LOCbl>
-		<semicolons>755</semicolons>
+		<LOCbl>202</LOCbl>
+		<semicolons>769</semicolons>
 		<java_comment_blocks>46</java_comment_blocks>
-		<vG>135</vG>
+		<vG>139</vG>
 		<MIwoc>106</MIwoc>
 		<MIcw>30</MIcw>
 		<MI>136</MI>
 		<methods_on_two_top_levels>
-			<total>141</total>
+			<total>142</total>
 			<LOCpro_avg>7</LOCpro_avg>
 			<comment_percent_avg>17</comment_percent_avg>
 			<vG_avg>1</vG_avg>
 		</methods_on_two_top_levels>
 		<classes>
-			<total>27</total>
-			<on_top_level>13</on_top_level>
+			<total>29</total>
+			<on_top_level>15</on_top_level>
 			<extends>10</extends>
 			<implements>0</implements>
 		</classes>
@@ -4464,8 +4569,8 @@
 		<alarms>
 			<vG_alarmed>0</vG_alarmed>
 			<LOCpro_alarmed>0</LOCpro_alarmed>
-			<comment_percent_alarmed>30</comment_percent_alarmed>
-			<V_alarmed>8</V_alarmed>
+			<comment_percent_alarmed>32</comment_percent_alarmed>
+			<V_alarmed>9</V_alarmed>
 			<B_alarmed>2</B_alarmed>
 			<MI_alarmed>0</MI_alarmed>
 		</alarms>
