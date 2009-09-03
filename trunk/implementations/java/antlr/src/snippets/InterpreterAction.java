@@ -1,27 +1,31 @@
 
 public class InterpreterAction {
+	Object input;
+	
 	public class Environment {
 		public static Map<String, Integer> functions;
 		public static Map<String, Integer> variables;
 	 }
 	
 	public void mapping() {
+		Object PATH;
 		this.document = new Document(); this.current = null;
 		try {
-			OutputStream os = createOutputStream($PATH.toString());
-			if(current != null) { outputDocument(document, os); }
+			OutputStream os = createOutputStream(PATH.toString());
+			outputDocument(document, os);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void markup() {
+		Object IDCON;
 		boolean element;
 		boolean yield = false;
 		int start = input.index(); int attr = 0; int args = 0;
 		attr = input.index();
 		args = input.index();
-		if(containsFunction($IDCON.getText())) {		
+		if(containsFunction(IDCON.getText())) {		
 			// Process markup as function call
 			int curr = input.index();
 			input.seek(args);
@@ -29,16 +33,16 @@ public class InterpreterAction {
 			input.seek(curr);
 			
 			// Store yield arguments
-			if(containsYield($IDCON.getText()) && element) {
+			if(containsYield(IDCON.getText()) && element) {
 				yieldStack.add(start);
 				yield = true;
 			}
 			
 			// Start interpreting function
-			interpretFunction($IDCON.getText(), eval);
+			interpretFunction(IDCON.getText(), eval);
 		} else {
 			// Process markup as tag
-			addContent(new Element($IDCON.getText()));
+			addContent(new Element(IDCON.getText()));
 			
 			// Process attributes
 			int actual = input.index();
@@ -50,12 +54,13 @@ public class InterpreterAction {
 	}
 	
 	public void attribute() {
-		current.setAttribute("id", $IDCON.getText());
-		current.setAttribute("class", $IDCON.getText());
-		current.setAttribute("name", $IDCON.getText());
-		current.setAttribute("type", $IDCON.getText());
-		current.setAttribute("width", $w.getText());
-		current.setAttribute("height", $h.getText());
+		Object IDCON,w,h;
+		addAttributeValue("id", IDCON.getText());
+		addAttributeValue("class", IDCON.getText());
+		addAttributeValue("name", IDCON.getText());
+		addAttributeValue("type", IDCON.getText());
+		addAttributeValue("width", w.getText());
+		addAttributeValue("height", h.getText());
 	}
 	
 	public void arguments() {
@@ -65,24 +70,28 @@ public class InterpreterAction {
 	
 	public void argument() {
 		List<Integer> args;
+		String IDCON;
+		String expression;
 		boolean call;
 		if(call) { 
-			args.add($expression.index); // Add expression index to argument collection
+			args.add(expression.index); // Add expression index to argument collection
 		} else {
 			// Attach argument to value attribute
 			Attribute attribute = current.getAttribute("value");
 			String value = (attribute == null) ? "" : attribute.getValue() + ", ";
-			value += $expression.eval;
+			value += expression.eval;
 			current.setAttribute("value",  value);
 		}
-		if(call) { 
-			 // TODO: Figure out what to do
+		if(call) {
+			if(! Environment.variables.containsKey(IDCON.toString())) {
+				defineVariable(IDCON.getText(), expression.toString());
+			} args.add(expression.toString()); // Add expression index to argument collection
 		} else { 
-			if($IDCON.getText().equals("xmlns")) {
+			if(IDCON.toString().equals("xmlns")) {
 				// JDOM won't allow xmlns attributes
 				current.setNamespace(Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml"));
-			} else { current.setAttribute($IDCON.getText(), $expression.eval); }
-		} 
+			} else { addAttributeValue(IDCON.getText(), expression.toString()); }
+		}
 	}
 	
 	public void expression() {
@@ -99,19 +108,19 @@ public class InterpreterAction {
 			retval = expression();
 			input.seek(curr);
 		} 
-		eval = $NATCON.getText();
-		eval = $TEXT.getText(); eval = eval.substring(1, eval.length()-1);
-		eval = $SYMBOLCON.getText(); eval = eval.substring(1, eval.length());
+		Object NATCON, TEXT, SYMBOLCON, id;
+		eval = NATCON.getText();
+		eval = TEXT.getText(); eval = eval.substring(1, eval.length()-1);
+		eval = SYMBOLCON.getText(); eval = eval.substring(1, eval.length());
 		collection.add(e);
 		collection.add(e);
 		eval = "[";
 		for(expression_return eret:collection) { eval += eret.eval + ","; }
 		eval = eval.substring(0, eval.length()); // Clip last character
 		eval += "]";
-		map.put($id.getText(), e);
-		map.put($id.getText(), e);
+		map.put(id.getText(), e);
+		map.put(id.getText(), e);
 		// Build record type string evaluation
-		collection = map.values();
 		eval = "{";
 		for(String key:map.keySet()) { eval += key + ":" + map.get(key).eval + ","; }
 		eval = eval.substring(0, eval.length()); // Clip last character
@@ -120,7 +129,7 @@ public class InterpreterAction {
 		eval += e.eval;
 		collection.clear();
 		map.clear();
-		if(map.containsKey($id.getText())) { retval = map.get($id.getText()); } 
+		if(map.containsKey(id.getText())) { retval = map.get(id.getText()); } 
 		else {
 			index = -1;
 			eval = "undef";
@@ -131,16 +140,31 @@ public class InterpreterAction {
 	
 	public void function() {
 		List<Integer> args;
-		Element actual = null; int curr = 0;
-		defineVariable($id.getText(), args.get(curr)); curr++;
-		if(actual != null) { this.current = actual; } 
-		else { actual = this.current; } 
+		Object id;
+		Element actual = null; int i = 0;
+		if(args.size() > i) { 
+	    	defineVariable(id.getText(), args.get(i));
+	    	i++; // Increment counter
+	    } else {
+	    	defineVariable(id.getText(), -1);
+	    }
+	}
+	
+	public void statements() {
+			int stms = loader.getStatementCount(input.index());
+			if(stms > 1 && ! document.hasRootElement()) {
+				createXHTMLRoot(false); 
+			}
+			
+			int depth = this.depth;
+		restoreCurrent(depth);
 	}
 	
 	public void statement() {
-		addContent(new Comment($STRCON.getText()));
-		addContent(new Text($expression.eval));
-		addContent(new CDATA($expression.eval));
+		Object STRCON, expression, markup;
+		addContent(new Comment(STRCON.getText().substring(1,STRCON.getText().length()-1)));
+		addContent(new Text(expression.eval));
+		addContent(new CDATA(expression.eval));
 		if(! yieldStack.isEmpty()) {
 			int curr = input.index();
 			int index = yieldStack.pop();
@@ -153,7 +177,7 @@ public class InterpreterAction {
 			
 			yieldStack = clone;
 		}
-		if($markup.yield) { 
+		if(markup.yield) { 
 			matchAny(input); // Match markup chain, without executing
 			match(input, Token.UP, null); // Match up
 			return retval; // Quit parsing markup stm
@@ -161,20 +185,22 @@ public class InterpreterAction {
 	}
 	
 	public void markupChain() {
-		if($markup.yield) { 
+		Object markup, expression, retval;
+		if(markup.yield) { 
 			matchAny(input); // Match markup chain, without executing
 			match(input, Token.UP, null); // Match up
 			return retval; // Quit parsing markup stm
 		}
-		addContent(new Text($expression.eval));
+		addContent(new Text(expression.eval));
 	}
 	
 	public void ifStatement() {
+		Object predicate;
 		int ti = 0; int fi = 0;
 		ti = input.index();
 		fi = input.index();
 		int curr = input.index();
-		if($predicate.eval) {
+		if(predicate.eval) {
 			input.seek(ti);
 			statement();
 			input.seek(curr);
@@ -186,20 +212,20 @@ public class InterpreterAction {
 	}
 	
 	public void eachStatement() {
+		Object IDCON;
 		Environment.variables = new HashMap<String, Integer>();
 		Environment.functions = new HashMap<String, Integer>();
-		int stm = 0;
-		stm = input.index();
-		int actualIndex = input.index();
-			Element actualElement = this.current;
-			for(expression_return value: e.collection) {
-				defineVariable($IDCON.getText(), value.index);
-				input.seek(stm);
-				statement();
-				input.seek(actualIndex);	
-				if(actualElement == null) { actualElement = document.getRootElement(); }
-				this.current = actualElement;
-			}
+		if(! document.hasRootElement()) { createXHTMLRoot(false); }
+		int index = input.index();
+		int depth = this.depth;
+		int actual = input.index();
+      			for(expression_return value: e.collection) {
+      				defineVariable(IDCON.getText(), value.index);
+      				input.seek(index);
+      				statement();
+      				input.seek(actual);	
+      				restoreCurrent(depth);
+      			}
 	}
 	
 	public void blockStatement() {
@@ -217,36 +243,45 @@ public class InterpreterAction {
 	}
 	
 	public void varBinding() {
-		defineVariable($IDCON.getText(), $expression.index);
+		Object IDCON, expression;
+		defineVariable(IDCON.getText(), expression.index);
 	}
 	
 	public void funcBinding() {
+		Object id;
 		int index = input.index();
-		environments.put($id.getText(), cloneEnvironment());
-		defineFunction($id.getText(), index); 
+		environments.put(id.getText(), cloneEnvironment());
+		defineFunction(id.getText(), index); 
 	}
 	
 	public void predicate() {
+		Object e,p;
 		boolean eval;
-		eval = ! $p.eval;
-		eval = $e.index != -1;
-		eval = $e.eval.startsWith("[");
-		eval = $e.eval.startsWith("{");
-		eval = $e.index != -1;
-		eval = eval && $p.eval;
-		eval = eval || $p.eval;
+		eval = ! p.eval;
+		eval = e.index != -1;
+		eval = e.eval.startsWith("[");
+		eval = e.eval.startsWith("{");
+		eval = e.index != -1;
+		eval = eval && p.eval;
+		eval = eval || p.eval;
 	}
 	
 	public void embedding() {
-		addContent(new Text($PRETEXT.getText().substring(1, $PRETEXT.getText().length()-1)));
+		Object PRETEXT;
+		addContent(new Text(PRETEXT.getText().substring(1, PRETEXT.getText().length()-1)));
 	}
 	
 	public void embed() {
-		addContent(new Text($expression.eval));
+		int depth = this.depth;
+		addContent(new Text(expression.eval));
+		restoreCurrent(depth);
 	}
 	
 	public void textTail() {
-		addContent(new Text($POSTTEXT.getText().substring(1, $POSTTEXT.getText().length()-1)));
-		addContent(new Text($MIDTEXT.getText().substring(1, $MIDTEXT.getText().length()-1)));
+		int depth = this.depth;
+		Object POSTTEXT, MIDTEXT;
+		addContent(new Text(POSTTEXT.getText().substring(1, POSTTEXT.getText().length()-1)));
+		addContent(new Text(MIDTEXT.getText().substring(1, MIDTEXT.getText().length()-1)));
+		restoreCurrent(depth);
 	}
 }
