@@ -181,9 +181,9 @@ public class InterpreterPreamble {
 	 * @param name: Function name
 	 */
 	private Integer getFunction(String name) {
-		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::functions.containsKey(name)) {
-				return $Environment[i]::functions.get(name); 
+		for(int i=Environment.size()-1; i>=0; i--) {
+			if(Environment.elementAt(i)functions.containsKey(name)) {
+				return Environment.elementAt(i).functions.get(name); 
 			}
 		} return -1 ;
 	}
@@ -204,7 +204,7 @@ public class InterpreterPreamble {
 	 * @param index: Function index
 	 */
 	private void defineFunction(String name, Integer index) {
-		$Environment::functions.put(name, index);
+		Environment.functions.put(name, index);
 	}
 	
 	/**
@@ -226,9 +226,9 @@ public class InterpreterPreamble {
 	 * @param name: Variable name
 	 */
 	private Integer getVariable(String name) {
-		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i]::variables.containsKey(name)) {
-				return $Environment[i]::variables.get(name); 
+		for(int i=Environment.size()-1; i>=0; i--) {
+			if(Environment.elementAt(i).variables.containsKey(name)) {
+				return Environment.elementAt(i).variables.get(name); 
 			}
 		} return -1;
 	}
@@ -239,7 +239,7 @@ public class InterpreterPreamble {
 	 * @param eval: Variable evaluation
 	 */
 	private void defineVariable(String name, Integer input) {
-		$Environment::variables.put(name, input);
+		Environment.variables.put(name, input);
 	}
 	
 	/**
@@ -250,9 +250,9 @@ public class InterpreterPreamble {
 		for(int i = 0; i < $Environment.size(); i++) {
 			Environment_scope scope = new Environment_scope();
 			scope.functions = new HashMap<String, Integer>();
-			scope.functions.putAll($Environment[i]::functions);
+			scope.functions.putAll(Environment.functions);
 			scope.variables = new HashMap<String, Integer>();
-			scope.variables.putAll($Environment[i]::variables);
+			scope.variables.putAll(Environment.variables);
 			result.push(scope);
 		}
 		return result;

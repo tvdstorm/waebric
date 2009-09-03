@@ -1,8 +1,5 @@
 
 public class ScannerAction {
- boolean inSite = false;
- boolean inPath = false;
- boolean inString = false;
  
  public void scan() {
 	 inString = true;
