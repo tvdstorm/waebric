@@ -11,12 +11,13 @@ public class CheckerAction {
  }
  
  public void moduleId() {
+	 boolean eval;
 	 String path = "";
 	 path += ".wae";
 	 path = $id.getText();
 	 path += "/" + $id.getText();
  	java.io.File file = new java.io.File(path);
-	if(! file.isFile()) {
+	if(! file.isFile() && eval) {
 		exceptions.add(new NonExistingModuleException($moduleId.tree));
 	}
  }

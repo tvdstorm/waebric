@@ -21,25 +21,35 @@ package org.cwi.waebric;
 	
 	import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+
+import InterpreterAction.Environment;
+import InterpreterPreamble.Yieldable;
 	
 public class Interpreter {
 	// JDOM elements
 	private Document document;
 	private Element current;
+	private int depth = 0;
 	
-	// Yield related
-	private Stack<Integer> yieldStack = new Stack<Integer>();
-	private List<Integer> yieldLocations = new ArrayList<Integer>();
+	// Yield stack
+	private Stack<Yieldable> yieldStack = new Stack<Yieldable>();
+	public class Yieldable {
+		public Integer index;
+		public Stack environment;
+	}
 	
 	// Personal environments, due to inherited environments on function bindings
 	private Map<String, Stack> environments = new HashMap<String, Stack>();
+	
+	// WAEBRIC loader
+	private WaebricLoader loader;
 	
 	/**
 	 * Interpret program
 	 * @param os: Output stream for interpreting main function
 	 */
 	public void interpretProgram(OutputStream os, WaebricLoader loader) throws RecognitionException {
-		yieldLocations = loader.getYields(); // Store yield information
+		this.loader = loader;
 	
 		// Store function definitions to allow lazy function binding
 		Environment_stack.clear();
@@ -53,7 +63,7 @@ public class Interpreter {
 		// Interpret main function with zero arguments
 		this.document = new Document();
 		if(interpretFunction("main", new ArrayList<Integer>())) {
-			if(current != null) { outputDocument(document, os); }
+			outputDocument(document, os);
 		}
 		
 		// Interpret mappings
@@ -112,36 +122,62 @@ public class Interpreter {
 	private void outputDocument(Document document, OutputStream os) {
 		try {
 			if(os != null) {
-				XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+				XMLOutputter out = new XMLOutputter(Format.getRawFormat());
+				if(! document.hasRootElement()) { createXHTMLRoot(false); }
 				out.output(document, os);
 			}
 		} catch(IOException e) { e.printStackTrace(); }
 	}
 	
-    	private void addContent(Content content) {
-    		if(current == null) { // Construct root element
-        		if(content instanceof Element && ((Element) content).getName().equals("html")) {
-        			document.setRootElement((Element) content);
-        			current = document.getRootElement();
-        		} else {
-        			Element XHTML = createXHTMLTag();
-            			document.setRootElement(XHTML);
-            			XHTML.addContent(content);
-            			
-            			if(content instanceof Element) { current = (Element) content; }
-            			else { current = XHTML; }
-        		}	
-        	} else {
-    			current.addContent(content); // Attach content
-    			if(content instanceof Element) { current = (Element) content; }
-    		}
-    	}
+	/**
+	 * Attach content to current element, in-case element
+	 * does not exist create root element.
+	 * @param content
+	 */
+	private void addContent(Content content) {
+		// Update JDOM objects
+		if(current == null) {
+			if(content instanceof Element) {
+				document.setRootElement((Element) content);
+			} else {
+				createXHTMLRoot(false);
+				document.getRootElement().addContent(content);
+			}
+		} else { current.addContent(content); }
+
+		// Maintain field information
+		if(content instanceof Element) {
+			current = (Element) content;
+			depth++;
+		}
+	}
 	
-	private Element createXHTMLTag() {
-		Namespace XHTML = Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml");
-		Element tag = new Element("html", XHTML);
-		tag.setAttribute("lang", "en");
-		return tag;
+	/**
+	 * Create default XHTML root tag
+	 * @return
+	 */
+	private void createXHTMLRoot(boolean namespace) {
+		Element html;
+		if(namespace) {
+			Namespace XHTML = Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml");
+			html = new Element("html", XHTML);
+			html.setAttribute("lang", "en");
+		} else { html = new Element("html"); }
+		document.setRootElement(html);
+		current = html;
+	}
+	
+	/**
+	 * Attach attribute value to current element
+	 * @param att Attribute name
+	 * @param value Added value
+	 */
+	private void addAttributeValue(String att, String value) {
+		org.jdom.Attribute attribute = current.getAttribute(att);
+		
+		String actual = "";
+		if(attribute != null) { actual = attribute.getValue() + " "; }
+		current.setAttribute(att, actual + value);
 	}
 
 	/**
@@ -150,8 +186,8 @@ public class Interpreter {
 	 */
 	private Integer getFunction(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i].functions.containsKey(name)) {
-				return $Environment[i].functions.get(name); 
+			if($Environment[i]::functions.containsKey(name)) {
+				return $Environment[i]::functions.get(name); 
 			}
 		} return -1 ;
 	}
@@ -162,7 +198,7 @@ public class Interpreter {
 	
 	private boolean containsYield(String name) {
 		int index = getFunction(name);
-		if(index != -1) { return yieldLocations.contains(index); }
+		if(index != -1) { return loader.hasYield(index); }
 		return false;
 	}
 	
@@ -172,7 +208,7 @@ public class Interpreter {
 	 * @param index: Function index
 	 */
 	private void defineFunction(String name, Integer index) {
-		$Environment.functions.put(name, index);
+		$Environment::functions.put(name, index);
 	}
 	
 	/**
@@ -195,8 +231,8 @@ public class Interpreter {
 	 */
 	private Integer getVariable(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i].variables.containsKey(name)) {
-				return $Environment[i].variables.get(name); 
+			if($Environment[i]::variables.containsKey(name)) {
+				return $Environment[i]::variables.get(name); 
 			}
 		} return -1;
 	}
@@ -207,7 +243,7 @@ public class Interpreter {
 	 * @param eval: Variable evaluation
 	 */
 	private void defineVariable(String name, Integer input) {
-		$Environment.variables.put(name, input);
+		$Environment::variables.put(name, input);
 	}
 	
 	/**
@@ -218,13 +254,29 @@ public class Interpreter {
 		for(int i = 0; i < $Environment.size(); i++) {
 			Environment_scope scope = new Environment_scope();
 			scope.functions = new HashMap<String, Integer>();
-			scope.functions.putAll($Environment[i].functions);
+			scope.functions.putAll($Environment[i]::functions);
 			scope.variables = new HashMap<String, Integer>();
-			scope.variables.putAll($Environment[i].variables);
+			scope.variables.putAll($Environment[i]::variables);
 			result.push(scope);
 		}
 		return result;
 	}
+	
+	private void restoreCurrent(int arg) {
+		for(int i = 0; depth > arg; i++) {
+			current = current.getParentElement();
+			depth--;
+		}
+	}
+
+	public void addYield(Integer index) {
+		Yieldable element = new Yieldable();
+		element.index = index;
+		element.environment = cloneEnvironment();
+		yieldStack.push(element);
+	}
+	
+	Object input;
 	
 	public class Environment {
 		public static Map<String, Integer> functions;
@@ -232,22 +284,24 @@ public class Interpreter {
 	 }
 	
 	public void mapping() {
+		Object PATH;
 		this.document = new Document(); this.current = null;
 		try {
-			OutputStream os = createOutputStream($PATH.toString());
-			if(current != null) { outputDocument(document, os); }
+			OutputStream os = createOutputStream(PATH.toString());
+			outputDocument(document, os);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void markup() {
+		Object IDCON;
 		boolean element;
 		boolean yield = false;
 		int start = input.index(); int attr = 0; int args = 0;
 		attr = input.index();
 		args = input.index();
-		if(containsFunction($IDCON.getText())) {		
+		if(containsFunction(IDCON.getText())) {		
 			// Process markup as function call
 			int curr = input.index();
 			input.seek(args);
@@ -255,16 +309,16 @@ public class Interpreter {
 			input.seek(curr);
 			
 			// Store yield arguments
-			if(containsYield($IDCON.getText()) && element) {
+			if(containsYield(IDCON.getText()) && element) {
 				yieldStack.add(start);
 				yield = true;
 			}
 			
 			// Start interpreting function
-			interpretFunction($IDCON.getText(), eval);
+			interpretFunction(IDCON.getText(), eval);
 		} else {
 			// Process markup as tag
-			addContent(new Element($IDCON.getText()));
+			addContent(new Element(IDCON.getText()));
 			
 			// Process attributes
 			int actual = input.index();
@@ -276,12 +330,13 @@ public class Interpreter {
 	}
 	
 	public void attribute() {
-		current.setAttribute("id", $IDCON.getText());
-		current.setAttribute("class", $IDCON.getText());
-		current.setAttribute("name", $IDCON.getText());
-		current.setAttribute("type", $IDCON.getText());
-		current.setAttribute("width", $w.getText());
-		current.setAttribute("height", $h.getText());
+		Object IDCON,w,h;
+		addAttributeValue("id", IDCON.getText());
+		addAttributeValue("class", IDCON.getText());
+		addAttributeValue("name", IDCON.getText());
+		addAttributeValue("type", IDCON.getText());
+		addAttributeValue("width", w.getText());
+		addAttributeValue("height", h.getText());
 	}
 	
 	public void arguments() {
@@ -291,24 +346,28 @@ public class Interpreter {
 	
 	public void argument() {
 		List<Integer> args;
+		String IDCON;
+		String expression;
 		boolean call;
 		if(call) { 
-			args.add($expression.index); // Add expression index to argument collection
+			args.add(expression.index); // Add expression index to argument collection
 		} else {
 			// Attach argument to value attribute
 			Attribute attribute = current.getAttribute("value");
 			String value = (attribute == null) ? "" : attribute.getValue() + ", ";
-			value += $expression.eval;
+			value += expression.eval;
 			current.setAttribute("value",  value);
 		}
-		if(call) { 
-			 // TODO: Figure out what to do
+		if(call) {
+			if(! Environment.variables.containsKey(IDCON.toString())) {
+				defineVariable(IDCON.getText(), expression.toString());
+			} args.add(expression.toString()); // Add expression index to argument collection
 		} else { 
-			if($IDCON.getText().equals("xmlns")) {
+			if(IDCON.toString().equals("xmlns")) {
 				// JDOM won't allow xmlns attributes
 				current.setNamespace(Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml"));
-			} else { current.setAttribute($IDCON.getText(), $expression.eval); }
-		} 
+			} else { addAttributeValue(IDCON.getText(), expression.toString()); }
+		}
 	}
 	
 	public void expression() {
@@ -325,19 +384,19 @@ public class Interpreter {
 			retval = expression();
 			input.seek(curr);
 		} 
-		eval = $NATCON.getText();
-		eval = $TEXT.getText(); eval = eval.substring(1, eval.length()-1);
-		eval = $SYMBOLCON.getText(); eval = eval.substring(1, eval.length());
+		Object NATCON, TEXT, SYMBOLCON, id;
+		eval = NATCON.getText();
+		eval = TEXT.getText(); eval = eval.substring(1, eval.length()-1);
+		eval = SYMBOLCON.getText(); eval = eval.substring(1, eval.length());
 		collection.add(e);
 		collection.add(e);
 		eval = "[";
 		for(expression_return eret:collection) { eval += eret.eval + ","; }
 		eval = eval.substring(0, eval.length()); // Clip last character
 		eval += "]";
-		map.put($id.getText(), e);
-		map.put($id.getText(), e);
+		map.put(id.getText(), e);
+		map.put(id.getText(), e);
 		// Build record type string evaluation
-		collection = map.values();
 		eval = "{";
 		for(String key:map.keySet()) { eval += key + ":" + map.get(key).eval + ","; }
 		eval = eval.substring(0, eval.length()); // Clip last character
@@ -346,7 +405,7 @@ public class Interpreter {
 		eval += e.eval;
 		collection.clear();
 		map.clear();
-		if(map.containsKey($id.getText())) { retval = map.get($id.getText()); } 
+		if(map.containsKey(id.getText())) { retval = map.get(id.getText()); } 
 		else {
 			index = -1;
 			eval = "undef";
@@ -357,16 +416,31 @@ public class Interpreter {
 	
 	public void function() {
 		List<Integer> args;
-		Element actual = null; int curr = 0;
-		defineVariable($id.getText(), args.get(curr)); curr++;
-		if(actual != null) { this.current = actual; } 
-		else { actual = this.current; } 
+		Object id;
+		Element actual = null; int i = 0;
+		if(args.size() > i) { 
+	    	defineVariable(id.getText(), args.get(i));
+	    	i++; // Increment counter
+	    } else {
+	    	defineVariable(id.getText(), -1);
+	    }
+	}
+	
+	public void statements() {
+			int stms = loader.getStatementCount(input.index());
+			if(stms > 1 && ! document.hasRootElement()) {
+				createXHTMLRoot(false); 
+			}
+			
+			int depth = this.depth;
+		restoreCurrent(depth);
 	}
 	
 	public void statement() {
-		addContent(new Comment($STRCON.getText()));
-		addContent(new Text($expression.eval));
-		addContent(new CDATA($expression.eval));
+		Object STRCON, expression, markup;
+		addContent(new Comment(STRCON.getText().substring(1,STRCON.getText().length()-1)));
+		addContent(new Text(expression.eval));
+		addContent(new CDATA(expression.eval));
 		if(! yieldStack.isEmpty()) {
 			int curr = input.index();
 			int index = yieldStack.pop();
@@ -379,7 +453,7 @@ public class Interpreter {
 			
 			yieldStack = clone;
 		}
-		if($markup.yield) { 
+		if(markup.yield) { 
 			matchAny(input); // Match markup chain, without executing
 			match(input, Token.UP, null); // Match up
 			return retval; // Quit parsing markup stm
@@ -387,20 +461,22 @@ public class Interpreter {
 	}
 	
 	public void markupChain() {
-		if($markup.yield) { 
+		Object markup, expression, retval;
+		if(markup.yield) { 
 			matchAny(input); // Match markup chain, without executing
 			match(input, Token.UP, null); // Match up
 			return retval; // Quit parsing markup stm
 		}
-		addContent(new Text($expression.eval));
+		addContent(new Text(expression.eval));
 	}
 	
 	public void ifStatement() {
+		Object predicate;
 		int ti = 0; int fi = 0;
 		ti = input.index();
 		fi = input.index();
 		int curr = input.index();
-		if($predicate.eval) {
+		if(predicate.eval) {
 			input.seek(ti);
 			statement();
 			input.seek(curr);
@@ -412,20 +488,20 @@ public class Interpreter {
 	}
 	
 	public void eachStatement() {
+		Object IDCON;
 		Environment.variables = new HashMap<String, Integer>();
 		Environment.functions = new HashMap<String, Integer>();
-		int stm = 0;
-		stm = input.index();
-		int actualIndex = input.index();
-			Element actualElement = this.current;
-			for(expression_return value: e.collection) {
-				defineVariable($IDCON.getText(), value.index);
-				input.seek(stm);
-				statement();
-				input.seek(actualIndex);	
-				if(actualElement == null) { actualElement = document.getRootElement(); }
-				this.current = actualElement;
-			}
+		if(! document.hasRootElement()) { createXHTMLRoot(false); }
+		int index = input.index();
+		int depth = this.depth;
+		int actual = input.index();
+      			for(expression_return value: e.collection) {
+      				defineVariable(IDCON.getText(), value.index);
+      				input.seek(index);
+      				statement();
+      				input.seek(actual);	
+      				restoreCurrent(depth);
+      			}
 	}
 	
 	public void blockStatement() {
@@ -443,36 +519,45 @@ public class Interpreter {
 	}
 	
 	public void varBinding() {
-		defineVariable($IDCON.getText(), $expression.index);
+		Object IDCON, expression;
+		defineVariable(IDCON.getText(), expression.index);
 	}
 	
 	public void funcBinding() {
+		Object id;
 		int index = input.index();
-		environments.put($id.getText(), cloneEnvironment());
-		defineFunction($id.getText(), index); 
+		environments.put(id.getText(), cloneEnvironment());
+		defineFunction(id.getText(), index); 
 	}
 	
 	public void predicate() {
+		Object e,p;
 		boolean eval;
-		eval = ! $p.eval;
-		eval = $e.index != -1;
-		eval = $e.eval.startsWith("[");
-		eval = $e.eval.startsWith("{");
-		eval = $e.index != -1;
-		eval = eval && $p.eval;
-		eval = eval || $p.eval;
+		eval = ! p.eval;
+		eval = e.index != -1;
+		eval = e.eval.startsWith("[");
+		eval = e.eval.startsWith("{");
+		eval = e.index != -1;
+		eval = eval && p.eval;
+		eval = eval || p.eval;
 	}
 	
 	public void embedding() {
-		addContent(new Text($PRETEXT.getText().substring(1, $PRETEXT.getText().length()-1)));
+		Object PRETEXT;
+		addContent(new Text(PRETEXT.getText().substring(1, PRETEXT.getText().length()-1)));
 	}
 	
 	public void embed() {
-		addContent(new Text($expression.eval));
+		int depth = this.depth;
+		addContent(new Text(expression.eval));
+		restoreCurrent(depth);
 	}
 	
 	public void textTail() {
-		addContent(new Text($POSTTEXT.getText().substring(1, $POSTTEXT.getText().length()-1)));
-		addContent(new Text($MIDTEXT.getText().substring(1, $MIDTEXT.getText().length()-1)));
+		int depth = this.depth;
+		Object POSTTEXT, MIDTEXT;
+		addContent(new Text(POSTTEXT.getText().substring(1, POSTTEXT.getText().length()-1)));
+		addContent(new Text(MIDTEXT.getText().substring(1, MIDTEXT.getText().length()-1)));
+		restoreCurrent(depth);
 	}
 }

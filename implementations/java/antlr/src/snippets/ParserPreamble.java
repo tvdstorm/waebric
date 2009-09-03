@@ -5,12 +5,7 @@ public class ParserPreamble {
 	/**
 	 * Parsed modules
 	 */
-	private ArrayList<String> modules = new ArrayList<String>();
-
-	public ParserPreamble(TokenStream input, ArrayList<String> modules) {
-		super(input);
-		this.modules = modules;
-	}
+	public static ArrayList<String> modules = new ArrayList<String>();
 
 	/**
 	 * Parse file on specified path.
@@ -21,7 +16,7 @@ public class ParserPreamble {
 			CharStream is = new ANTLRFileStream(path);
 			WaebricLexer lexer = new WaebricLexer(is);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
-      			WaebricParser parser = new WaebricParser(tokens, modules);
+      			WaebricParser parser = new WaebricParser(tokens);
       			return (CommonTree) parser.module().getTree();
       		} catch(java.io.IOException e) { return new CommonTree(); }
 	}

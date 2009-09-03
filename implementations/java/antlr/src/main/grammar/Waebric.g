@@ -26,12 +26,7 @@ tokens {
 	/**
 	 * Parsed modules
 	 */
-	private ArrayList<String> modules = new ArrayList<String>();
-
-	public WaebricParser(TokenStream input, ArrayList<String> modules) {
-		super(input);
-		this.modules = modules;
-	}
+	public static ArrayList<String> modules = new ArrayList<String>();
 
 	/**
 	 * Parse file on specified path.
@@ -42,9 +37,9 @@ tokens {
 			CharStream is = new ANTLRFileStream(path);
 			WaebricLexer lexer = new WaebricLexer(is);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
-      			WaebricParser parser = new WaebricParser(tokens, modules);
-      			return (CommonTree) parser.module().getTree();
-      		} catch(java.io.IOException e) { return new CommonTree(); }
+      		WaebricParser parser = new WaebricParser(tokens);
+      		return (CommonTree) parser.module().getTree();
+      	} catch(java.io.IOException e) { return new CommonTree(); }
 	}
 }
 

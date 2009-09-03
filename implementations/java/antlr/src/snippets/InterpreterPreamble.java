@@ -1,44 +1,51 @@
 package org.cwi.waebric;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Collection;
 	
-	import java.io.File;
-	import java.io.FileOutputStream;
-	import java.io.IOException;
-	import java.io.OutputStream;
-	import java.text.SimpleDateFormat;
-	
-	import java.util.HashMap;
-	import java.util.Map;
-	import java.util.Collection;
-		
-	import org.jdom.Attribute;
-	import org.jdom.CDATA;
-	import org.jdom.Comment;
-	import org.jdom.Content;
-	import org.jdom.Document;
-	import org.jdom.Element;
-	import org.jdom.Namespace;
-	import org.jdom.Text;
-	
-	import org.jdom.output.Format;
-	import org.jdom.output.XMLOutputter;
+import org.jdom.Attribute;
+import org.jdom.CDATA;
+import org.jdom.Comment;
+import org.jdom.Content;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.jdom.Text;
+
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 public class InterpreterPreamble {
 	// JDOM elements
 	private Document document;
 	private Element current;
+	private int depth = 0;
 	
-	// Yield related
-	private Stack<Integer> yieldStack = new Stack<Integer>();
-	private List<Integer> yieldLocations = new ArrayList<Integer>();
+	// Yield stack
+	private Stack<Yieldable> yieldStack = new Stack<Yieldable>();
+	public class Yieldable {
+		public Integer index;
+		public Stack environment;
+	}
 	
 	// Personal environments, due to inherited environments on function bindings
 	private Map<String, Stack> environments = new HashMap<String, Stack>();
+	
+	// WAEBRIC loader
+	private WaebricLoader loader;
 	
 	/**
 	 * Interpret program
 	 * @param os: Output stream for interpreting main function
 	 */
 	public void interpretProgram(OutputStream os, WaebricLoader loader) throws RecognitionException {
-		yieldLocations = loader.getYields(); // Store yield information
+		this.loader = loader;
 	
 		// Store function definitions to allow lazy function binding
 		Environment_stack.clear();
@@ -52,7 +59,7 @@ public class InterpreterPreamble {
 		// Interpret main function with zero arguments
 		this.document = new Document();
 		if(interpretFunction("main", new ArrayList<Integer>())) {
-			if(current != null) { outputDocument(document, os); }
+			outputDocument(document, os);
 		}
 		
 		// Interpret mappings
@@ -111,36 +118,62 @@ public class InterpreterPreamble {
 	private void outputDocument(Document document, OutputStream os) {
 		try {
 			if(os != null) {
-				XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+				XMLOutputter out = new XMLOutputter(Format.getRawFormat());
+				if(! document.hasRootElement()) { createXHTMLRoot(false); }
 				out.output(document, os);
 			}
 		} catch(IOException e) { e.printStackTrace(); }
 	}
 	
-    	private void addContent(Content content) {
-    		if(current == null) { // Construct root element
-        		if(content instanceof Element && ((Element) content).getName().equals("html")) {
-        			document.setRootElement((Element) content);
-        			current = document.getRootElement();
-        		} else {
-        			Element XHTML = createXHTMLTag();
-            			document.setRootElement(XHTML);
-            			XHTML.addContent(content);
-            			
-            			if(content instanceof Element) { current = (Element) content; }
-            			else { current = XHTML; }
-        		}	
-        	} else {
-    			current.addContent(content); // Attach content
-    			if(content instanceof Element) { current = (Element) content; }
-    		}
-    	}
+	/**
+	 * Attach content to current element, in-case element
+	 * does not exist create root element.
+	 * @param content
+	 */
+	private void addContent(Content content) {
+		// Update JDOM objects
+		if(current == null) {
+			if(content instanceof Element) {
+				document.setRootElement((Element) content);
+			} else {
+				createXHTMLRoot(false);
+				document.getRootElement().addContent(content);
+			}
+		} else { current.addContent(content); }
+
+		// Maintain field information
+		if(content instanceof Element) {
+			current = (Element) content;
+			depth++;
+		}
+	}
 	
-	private Element createXHTMLTag() {
-		Namespace XHTML = Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml");
-		Element tag = new Element("html", XHTML);
-		tag.setAttribute("lang", "en");
-		return tag;
+	/**
+	 * Create default XHTML root tag
+	 * @return
+	 */
+	private void createXHTMLRoot(boolean namespace) {
+		Element html;
+		if(namespace) {
+			Namespace XHTML = Namespace.getNamespace("xhtml", "http://www.w3.org/1999/xhtml");
+			html = new Element("html", XHTML);
+			html.setAttribute("lang", "en");
+		} else { html = new Element("html"); }
+		document.setRootElement(html);
+		current = html;
+	}
+	
+	/**
+	 * Attach attribute value to current element
+	 * @param att Attribute name
+	 * @param value Added value
+	 */
+	private void addAttributeValue(String att, String value) {
+		org.jdom.Attribute attribute = current.getAttribute(att);
+		
+		String actual = "";
+		if(attribute != null) { actual = attribute.getValue() + " "; }
+		current.setAttribute(att, actual + value);
 	}
 
 	/**
@@ -149,8 +182,8 @@ public class InterpreterPreamble {
 	 */
 	private Integer getFunction(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i].functions.containsKey(name)) {
-				return $Environment[i].functions.get(name); 
+			if($Environment[i]::functions.containsKey(name)) {
+				return $Environment[i]::functions.get(name); 
 			}
 		} return -1 ;
 	}
@@ -161,7 +194,7 @@ public class InterpreterPreamble {
 	
 	private boolean containsYield(String name) {
 		int index = getFunction(name);
-		if(index != -1) { return yieldLocations.contains(index); }
+		if(index != -1) { return loader.hasYield(index); }
 		return false;
 	}
 	
@@ -171,7 +204,7 @@ public class InterpreterPreamble {
 	 * @param index: Function index
 	 */
 	private void defineFunction(String name, Integer index) {
-		$Environment.functions.put(name, index);
+		$Environment::functions.put(name, index);
 	}
 	
 	/**
@@ -194,8 +227,8 @@ public class InterpreterPreamble {
 	 */
 	private Integer getVariable(String name) {
 		for(int i=$Environment.size()-1; i>=0; i--) {
-			if($Environment[i].variables.containsKey(name)) {
-				return $Environment[i].variables.get(name); 
+			if($Environment[i]::variables.containsKey(name)) {
+				return $Environment[i]::variables.get(name); 
 			}
 		} return -1;
 	}
@@ -206,7 +239,7 @@ public class InterpreterPreamble {
 	 * @param eval: Variable evaluation
 	 */
 	private void defineVariable(String name, Integer input) {
-		$Environment.variables.put(name, input);
+		$Environment::variables.put(name, input);
 	}
 	
 	/**
@@ -217,11 +250,26 @@ public class InterpreterPreamble {
 		for(int i = 0; i < $Environment.size(); i++) {
 			Environment_scope scope = new Environment_scope();
 			scope.functions = new HashMap<String, Integer>();
-			scope.functions.putAll($Environment[i].functions);
+			scope.functions.putAll($Environment[i]::functions);
 			scope.variables = new HashMap<String, Integer>();
-			scope.variables.putAll($Environment[i].variables);
+			scope.variables.putAll($Environment[i]::variables);
 			result.push(scope);
 		}
 		return result;
 	}
+	
+	private void restoreCurrent(int arg) {
+		for(int i = 0; depth > arg; i++) {
+			current = current.getParentElement();
+			depth--;
+		}
+	}
+
+	public void addYield(Integer index) {
+		Yieldable element = new Yieldable();
+		element.index = index;
+		element.environment = cloneEnvironment();
+		yieldStack.push(element);
+	}
+	
 }
