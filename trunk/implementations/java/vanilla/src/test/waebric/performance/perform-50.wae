@@ -1,0 +1,56 @@
+module perform-50 // 51LOC
+
+site
+	output.html: main()
+end
+
+def main
+	html { 
+		head title "Performance test suite";
+		body {
+			// Scalable mark-up statement (10LOC)
+			let collection = [1,2,3,4,[5,6]];
+	    	in
+	      		each(e:collection) p 
+	      			if(e.list?) { 
+	      				echo "I'm a list, MATE!"; 
+	      			} else { 
+	      				echo "I'm no list, DUDE!";
+	      			}
+	    	end
+	    	
+	    	// Scalable mark-up statement (10LOC)
+			let collection = [1,2,3,4,[5,6]];
+	    	in
+	      		each(e:collection) p 
+	      			if(e.list?) { 
+	      				echo "I'm a list, MATE!"; 
+	      			} else { 
+	      				echo "I'm no list, DUDE!";
+	      			}
+	    	end
+	    	
+	    	// Scalable mark-up statement (10LOC)
+			let collection = [1,2,3,4,[5,6]];
+	    	in
+	      		each(e:collection) p 
+	      			if(e.list?) { 
+	      				echo "I'm a list, MATE!"; 
+	      			} else { 
+	      				echo "I'm no list, DUDE!";
+	      			}
+	    	end
+	    	
+	    	// Scalable mark-up statement (10LOC)
+			let collection = [1,2,3,4,[5,6]];
+	    	in
+	      		each(e:collection) p 
+	      			if(e.list?) { 
+	      				echo "I'm a list, MATE!"; 
+	      			} else { 
+	      				echo "I'm no list, DUDE!";
+	      			}
+	    	end
+		}
+	}
+end
