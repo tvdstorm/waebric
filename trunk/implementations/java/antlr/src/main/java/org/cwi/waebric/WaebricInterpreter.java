@@ -248,14 +248,17 @@ public class WaebricInterpreter extends TreeParser {
     	 */
     	private void addContent(Content content) {
     		// Update JDOM objects
-    		if(current == null) {
+    		if(! document.hasRootElement()) {
     			if(content instanceof Element) {
     				document.setRootElement((Element) content);
     			} else {
     				createXHTMLRoot(false);
     				document.getRootElement().addContent(content);
     			}
-    		} else { current.addContent(content); }
+    		} else { 
+    			if(current == null) { current = document.getRootElement(); }
+    			current.addContent(content); 
+    		}
 
     		// Maintain field information
     		if(content instanceof Element) {
