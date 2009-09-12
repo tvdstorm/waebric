@@ -52,7 +52,7 @@ scope Environment {
 	}
 	
 	// Personal environments, due to inherited environments on function bindings
-	private Map<String, Stack> environments = new HashMap<String, Stack>();
+	private Map<Integer, Stack> environments = new HashMap<Integer, Stack>();
 	
 	// WAEBRIC loader
 	private WaebricLoader loader;
@@ -229,8 +229,9 @@ scope Environment {
 	 * @param name: Function name
 	 */
 	private Stack getEnvironment(String name) {
-		if(environments.containsKey(name)) {
-			return (Stack) environments.get(name).clone();
+		int index = getFunction(name);
+		if(environments.containsKey(index)) {
+			return (Stack) environments.get(index).clone();
 		} else {
 			Stack environment = new Stack();
 			environment.push(Environment_stack.elementAt(0));
@@ -555,17 +556,21 @@ eachStatement
 blockStatement:		^( '{' statements '}' ) ;		
 
 letStatement
-	scope Environment;
 	@init {
-		$Environment::variables = new HashMap<String, Integer>();
-		$Environment::functions = new HashMap<String, Integer>();
-	} :		^( 'let' assignment+ 'in' statements 'end' ) ;
+		int assignments = 0;
+	} @after{
+		for(int i = 0; i < assignments; i++) { Environment_stack.pop(); }
+	} :		^( 'let' ( assignment { assignments++; } )+ 'in' statements 'end' ) ;
 
 // $>
 // $<Assignments
 
-assignment:		varBinding 
-			| funcBinding ;
+assignment 
+	@init {
+		Environment_stack.push(new Environment_scope());
+		$Environment::variables = new HashMap<String, Integer>();
+		$Environment::functions = new HashMap<String, Integer>();
+	} :		varBinding | funcBinding ;
 		
 varBinding:		IDCON '=' expression ';' {
 				defineVariable($IDCON.getText(), $expression.index);
@@ -574,7 +579,7 @@ varBinding:		IDCON '=' expression ';' {
 funcBinding
 	@init { int index = input.index(); }
 	:		^( FUNCTION id=IDCON formals? . ) { 
-				environments.put($id.getText(), cloneEnvironment());
+				environments.put(index, cloneEnvironment());
 				defineFunction($id.getText(), index); 
 			} ;
 
