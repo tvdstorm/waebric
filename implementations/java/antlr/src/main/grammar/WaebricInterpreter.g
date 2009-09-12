@@ -149,14 +149,17 @@ scope Environment {
 	 */
 	private void addContent(Content content) {
 		// Update JDOM objects
-		if(current == null) {
+		if(! document.hasRootElement()) {
 			if(content instanceof Element) {
 				document.setRootElement((Element) content);
 			} else {
 				createXHTMLRoot(false);
 				document.getRootElement().addContent(content);
 			}
-		} else { current.addContent(content); }
+		} else {
+			if(current == null) { current = document.getRootElement(); }
+			current.addContent(content);
+		}
 
 		// Maintain field information
 		if(content instanceof Element) {
@@ -385,7 +388,7 @@ expression returns [
 		String eval = "undef", // Evaluation value for printing
 		Map<String, expression_return> map = new HashMap<String, expression_return>(), // Map structure for fields
 		Collection<expression_return> collection = new ArrayList() // List structure for iterations
-	] @init{ $index = input.index(); }
+	] @init{ $index = input.index(); int actual = $index; }
 	: 		// Non-recursive expressions
 			( var=IDCON {
 					// Reference
@@ -421,6 +424,7 @@ expression returns [
 			// Recursive expressions
 			( '+' e=expression {
 					// Expression combination
+					$index = actual;
 					$eval += $e.eval;
 					$collection.clear();
 					$map.clear();
