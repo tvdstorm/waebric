@@ -1,0 +1,3 @@
+waebric_dir= D:\MSc\SoftwareConstruction\prakticum\aart\beaver\waebric\test\input
+waebric_extension= wae
+html_elements_file =
