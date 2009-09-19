@@ -1,4 +1,9 @@
-function TimingTimer(){
+/*****************************************************************************
+ * Performance Timer
+ * 
+ * @author Nickolas Heirbaut
+ *****************************************************************************/
+function PerformanceTimer(){
 	
 	var startTime;
 	var totalTime = 0;
@@ -9,7 +14,7 @@ function TimingTimer(){
 	
 	this.stop = function(){
 		var currentTime = new Date();
-		totalTime += (currentTime.getTime() - startTime.getTime());		
+		totalTime += (currentTime.getTime() - startTime.getTime());	
 	}	
 	
 	this.write = function(path,seperator){		
@@ -24,5 +29,9 @@ function TimingTimer(){
 	this.stopAndWrite = function(path,seperator){		
 		this.stop();
 		this.write(path, seperator);
+	}
+	
+	this.getTotalTime = function(){
+		return totalTime;
 	}
 }
