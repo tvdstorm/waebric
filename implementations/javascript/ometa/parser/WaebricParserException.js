@@ -9,19 +9,22 @@
  * @param {String} filePath The path of the Waebric program on the filesystem
  * @param {Object} childException The encapsulated exception
  */
-function WaebricParserException(message, filePath, childException){
+function WaebricParserException(message, filePath, childException, lineNumber){
 	this.message = message;
 	this.filePath = filePath;
 	this.childException = childException;
+	this.lineNumber = lineNumber;
 	
 	this.toString = function(){
 		if (this.childException) {
 			return 	"\nWaebricParserException" 
-					+ '\n====> ' + this.message + ': ' + this.filePath
+					+ '\n====> ' + this.message + ': ' + this.filePath					
+					+ '\nLine number: ' + this.lineNumber
 					+ '\n\n' + this.childException;
 		} else {
-			return 	"\nWaebricParserException" 
-					+ '\n====> ' + this.message + ': ' + this.filePath;
+			return 	"\nWaebricParserException" 			
+					//+ '\nLine number: ' + this.lineNumber
+					//+ '\n====> ' + this.message + ': ' + this.filePath;
 		}
 	}
 }

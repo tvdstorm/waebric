@@ -29,16 +29,21 @@ function WaebricParser(){
 		if (fileExists) {
 			//Setup WaebricOMetaParser variables
 			WaebricOMetaParser.parentPath = path;
+			WaebricOMetaParser.currentDependencies = new Array();
+			WaebricOMetaParser.allDependencies = new Array();
+			WaebricOMetaParser.environment = new WaebricEnvironment();
+			WaebricOMetaParser.lineNumber = 1;
 
 			//Load the source of the Waebric program
 			var programSource = WaebricFileLoader.loadFile(path);
-
+			
 			//Parse the source of the Waebric program
 			try {
+				print('---- Parsing module ' + path)
 				var module = WaebricOMetaParser.matchAll(programSource, 'Module');
 				return new WaebricParserResult(module);
 			}catch(exception){
-				throw new WaebricParserException("Parsing failed", path, exception);
+				throw new WaebricParserException("Parsing failed", path, exception, WaebricOMetaParser.lineNumber);
 			}
 		}else{
 			throw new NonExistingModuleException(path);
@@ -59,8 +64,7 @@ WaebricParser.parse = function(path){
 		return parser.parse(path);
 	}catch(exception if exception instanceof WaebricParserException){
 		throw exception;
-	}catch(exception){
-		print(exception)
+	}catch(exception){		
 		throw new WaebricParserException(exception.message, path, exception);
 	}
 }
