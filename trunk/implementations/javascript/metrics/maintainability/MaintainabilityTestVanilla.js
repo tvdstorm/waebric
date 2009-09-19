@@ -4,8 +4,8 @@
  * @author Nickolas Heirbaut
  *****************************************************************************/
 
-load('../jsmeter/MaintainabilityTest.js')
+load('../metrics/jsmeter/MaintainabilityTest.js')
 var analyzer = new MaintainabilityTest();
-var projectPath = '../../vanilla/'
+var projectPath = '../vanilla/'
 var directories = ['ast','parser','validator','interpreter'];	
 analyzer.ananlyzeProject(projectPath, directories)

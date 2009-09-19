@@ -79,10 +79,10 @@ OMetaCompiler.compile = function(pathInput){
 
 OMetaCompiler.compileWaebricParser = function(){
 	var compiler = new OMetaCompiler();
-	compiler.compile('../parser/WaebricParser.ometa');
+	compiler.compile('../ometa/parser/WaebricParser.ometa');
 }
 
 OMetaCompiler.compileWaebricValidator = function(){
 	var compiler = new OMetaCompiler();
-	compiler.compile('../validator/WaebricValidator.ometa');
+	compiler.compile('../ometa/validator/WaebricValidator.ometa');
 }
