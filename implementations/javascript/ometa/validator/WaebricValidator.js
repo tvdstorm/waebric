@@ -49,6 +49,11 @@ function WaebricValidator(){
 			//Setup WaebricOMetaParser for correct Importing
 			WaebricOMetaParser.parentPath = path;
 			WaebricOMetaParser.subParser = WaebricOMetaValidator;
+			WaebricOMetaParser.currentDependencies = new Array();
+			WaebricOMetaParser.allDependencies = new Array();
+			WaebricOMetaParser.environment = new WaebricEnvironment();
+			WaebricOMetaParser.lineNumber = 1;
+			WaebricOMetaValidator.environment = new WaebricEnvironment();		
 	
 			//Load the source of the Waebric program
 			var programSource = WaebricFileLoader.loadFile(path);
@@ -56,11 +61,12 @@ function WaebricValidator(){
 			//Parse the source of the Waebric program
 			try {
 				//Parsing + validation
+				print('---- Parsing+validating module ' + path)
 				var module = WaebricOMetaValidator.matchAll(programSource, 'Module');
 				var exceptions = WaebricOMetaValidator.environment.getExceptions();
 				return new WaebricValidatorResult(module, exceptions);
 			}catch(exception){
-				throw new WaebricParserException("Parsing failed", path, exception);
+				throw new WaebricParserException("Parsing failed", path, exception, WaebricOMetaParser.lineNumber);
 			}
 		}else{
 			throw new NonExistingModuleException(path);

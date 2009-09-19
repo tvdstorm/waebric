@@ -16,10 +16,12 @@ function WaebricValidatorException(message, filePath, childException){
 		if (this.childException) {
 			return 	"\nWaebricValidatorException" 
 					+ '\n====> ' + this.message + ': ' + this.filePath
-					+ '\n\n' + this.childException;
+					+ '\n\n' + this.childException
+					
 		} else {
 			return 	"\nWaebricValidatorException" 
-					+ '\n====> ' + this.message + ': ' + this.filePath;
+					+ '\n====> ' + this.message + ': ' + this.filePath
+					+ '\n' + this.position
 		}
 	}
 }

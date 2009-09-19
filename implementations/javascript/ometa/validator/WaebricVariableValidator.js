@@ -3,9 +3,8 @@ function WaebricVariableValidator(parentParser){
 	this.parentParser = parentParser;
 	
 	this.validateVariableReference = function(varExpr){
-		if (!parentParser.environment.containsVariable(varExpr.variable)) {
-			parentParser.environment.addException(
-				new parentParser(varExpr.variable, parentParser.environment));
+		if (!parentParser.environment.containsVariable(varExpr.variable)) {			
+			parentParser.environment.addException(varExpr.variable, parentParser.environment);
 		}
 	}
 }
