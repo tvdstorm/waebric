@@ -180,8 +180,11 @@ ometa WaebricOMetaParser <: Parser {
   StrChar         	= ' ' | "\\n" | "\\t" | "\\\"" | "\\\\" | "\\" digit digit digit | '!' | cRange('#','[') | cRange(']', '~'),
   HexaDecimal     	= char:c ?((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')),
   Amp             	= "\&",
-  Comment         	= fromTo('/*', '*/') | fromTo('//', '\n'),
-  space           	= super(#space) | Comment,
+  Comment         	= fromTo('/*', '*/')
+  					| fromTo('//', '\n'):comments -> {WaebricOMetaParser.lineNumber++; comments},
+  space           	= '\n':newLine -> {WaebricOMetaParser.lineNumber++; newLine}
+  					| super(#space):space
+  					| Comment,
   EscQuote        	= '\\' '\"' -> '\\\"',
   fromTo :x :y    	= seq(x) (~seq(y) char)* seq(y),
   cRange :x :y    	= char:c ?(c >= x) ?(c <= y) -> c
@@ -192,3 +195,4 @@ WaebricOMetaParser.currentDependencies = new Array();
 WaebricOMetaParser.allDependencies = new Array();
 WaebricOMetaParser.environment = new WaebricEnvironment();
 WaebricOMetaParser.subParser = WaebricOMetaParser;
+WaebricOMetaParser.lineNumber = 1;
