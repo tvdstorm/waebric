@@ -1,0 +1,32 @@
+WaebricParserException:
+Parsing failed: ../metrics/functionality/source/test088.wae
+
+WaebricSyntaxException:
+Parsing failed at "Expression Parser"
+
+Expected: Text, Natural, Identifier, "{" or "[" (Start Expression)
+
+Actual: echo [Reserved keyword not allowed]
+
+Position: line: 7 column: 9
+
+Stack:
+> Parsing Module
+> Parsing ModuleElements
+> Parsing ModuleElement
+> Parsing FunctionDefinition
+> Parsing Statements
+> Parsing Statement
+> Parsing EchoStatement
+> Parsing Module
+> Parsing ModuleElements
+> Parsing ModuleElement
+> Parsing FunctionDefinition
+> Parsing Statements
+> Parsing Statement
+> Parsing LetStatement
+> Parsing Assignments
+> Parsing Assignment
+> Parsing VariableBinding
+> Parsing Expression 
+> Failed

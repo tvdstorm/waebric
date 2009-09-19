@@ -1,0 +1,21 @@
+WaebricParserException:
+Parsing failed: ../metrics/functionality/source/test087.wae
+
+WaebricSyntaxException:
+Parsing failed at "EchoStatement Parser"
+
+Expected: ; (Closing of statement)
+
+Actual: end [Reserved keyword not allowed]
+
+Position: line: 7 column: 1
+
+Stack:
+> Parsing Module
+> Parsing ModuleElements
+> Parsing ModuleElement
+> Parsing FunctionDefinition
+> Parsing Statements
+> Parsing Statement
+> Parsing EchoStatement 
+> Failed

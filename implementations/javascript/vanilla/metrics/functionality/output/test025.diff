@@ -1,0 +1,5 @@
+2c2
+< <html name="bla" type="xhtml">Hello world!</html>
+---
+> <html name="bla" type="xhtml" >Hello world!</html>
+\ No newline at end of file

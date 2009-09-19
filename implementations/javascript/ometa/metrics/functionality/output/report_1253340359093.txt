@@ -1,0 +1,107 @@
+imp.wae : IDENTICAL
+cyclic.wae : IDENTICAL
+trans.wae : IDENTICAL
+transcyclic.wae : IDENTICAL
+test001.wae : DIFFERENT *
+test002.wae : IDENTICAL
+test003.wae : IDENTICAL
+test004.wae : IDENTICAL
+test005.wae : IDENTICAL
+test006.wae : IDENTICAL
+test007.wae : IDENTICAL
+test008.wae : IDENTICAL
+test009.wae : IDENTICAL
+test010.wae : IDENTICAL
+test011.wae : IDENTICAL
+test012.wae : IDENTICAL
+test013.wae : IDENTICAL
+test014.wae : IDENTICAL
+test015.wae : IDENTICAL
+test016.wae : IDENTICAL
+test017.wae : IDENTICAL
+test018.wae : IDENTICAL
+test019.wae : IDENTICAL
+test020.wae : IDENTICAL
+test021.wae : IDENTICAL
+test022.wae : IDENTICAL
+test023.wae : DIFFERENT *
+test024.wae : IDENTICAL
+test025.wae : DIFFERENT *
+test026.wae : IDENTICAL
+test027.wae : IDENTICAL
+test028.wae : IDENTICAL
+test029.wae : IDENTICAL
+test030.wae : IDENTICAL
+test031.wae : IDENTICAL
+test032.wae : IDENTICAL
+test033.wae : IDENTICAL
+test034.wae : IDENTICAL
+test035.wae : IDENTICAL
+test036.wae : IDENTICAL
+test037.wae : IDENTICAL
+test038.wae : IDENTICAL
+test039.wae : IDENTICAL
+test040.wae : IDENTICAL
+test041.wae : IDENTICAL
+test042.wae : IDENTICAL
+test043.wae : IDENTICAL
+test044.wae : IDENTICAL
+test045.wae : IDENTICAL
+test046.wae : IDENTICAL
+test047.wae : IDENTICAL
+test048.wae : DIFFERENT *
+test049.wae : IDENTICAL
+test050.wae : IDENTICAL
+test051.wae : IDENTICAL
+test052.wae : IDENTICAL
+test053.wae : IDENTICAL
+test054.wae : IDENTICAL
+test055.wae : IDENTICAL
+test056.wae : IDENTICAL
+test057.wae : IDENTICAL
+test058.wae : IDENTICAL
+test059.wae : IDENTICAL
+test060.wae : IDENTICAL
+test061.wae : DIFFERENT *
+test062.wae : IDENTICAL
+test063.wae : IDENTICAL
+test064.wae : IDENTICAL
+test065.wae : IDENTICAL
+test066.wae : IDENTICAL
+test067.wae : IDENTICAL
+test068.wae : IDENTICAL
+test069.wae : IDENTICAL
+test070.wae : IDENTICAL
+test071.wae : IDENTICAL
+test072.wae : DIFFERENT *
+test073.wae : IDENTICAL
+test074.wae : IDENTICAL
+test075.wae : IDENTICAL
+test076.wae : IDENTICAL
+test077.wae : IDENTICAL
+test078.wae : IDENTICAL
+test079.wae : IDENTICAL
+test080.wae : IDENTICAL
+test081.wae : IDENTICAL
+test082.wae : IDENTICAL
+test083.wae : IDENTICAL
+test084.wae : IDENTICAL
+test085.wae : IDENTICAL
+test086.wae : DIFFERENT *
+test087.wae : UNKNOWN EXIT STATUS *
+test088.wae : UNKNOWN EXIT STATUS *
+test089.wae : UNKNOWN EXIT STATUS *
+test090.wae : IDENTICAL
+test091.wae : IDENTICAL
+test092.wae : DIFFERENT *
+test093.wae : IDENTICAL
+test094.wae : IDENTICAL
+test095.wae : IDENTICAL
+test096.wae : IDENTICAL
+test097.wae : IDENTICAL
+test098.wae : IDENTICAL
+test099.wae : DIFFERENT *
+test100.wae : IDENTICAL
+
+
+ACCEPTANCE PERCENTAGE: 92%
