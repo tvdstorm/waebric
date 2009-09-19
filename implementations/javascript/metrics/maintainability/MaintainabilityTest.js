@@ -7,9 +7,9 @@
  * @author Nickolas Heirbaut [nickolas.heirbaut@dejasmijn.be]
  */
 importPackage(java.io);
-load('../jsmeter/tokens.js');
-load('../jsmeter/parse.js');
-load('../jsmeter/complexity.js');
+load('../metrics/jsmeter/tokens.js');
+load('../metrics/jsmeter/parse.js');
+load('../metrics/jsmeter/complexity.js');
 
 function MaintainabilityTest(){	
 
