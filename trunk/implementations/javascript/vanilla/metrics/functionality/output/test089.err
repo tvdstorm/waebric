@@ -1,0 +1,41 @@
+WaebricParserException:
+Parsing failed: ../metrics/functionality/source/test089.wae
+
+WaebricSyntaxException:
+Parsing failed at "PostTextTail/MidTextTail Parser"
+
+Expected: > (Closing embedding)
+
+Actual: /
+
+Position: line: 6 column: 20
+
+Stack:
+> Parsing Module
+> Parsing ModuleElements
+> Parsing ModuleElement
+> Parsing FunctionDefinition
+> Parsing Statements
+> Parsing Statement
+> Parsing EchoStatement
+> Parsing Module
+> Parsing ModuleElements
+> Parsing ModuleElement
+> Parsing FunctionDefinition
+> Parsing Statements
+> Parsing Statement
+> Parsing LetStatement
+> Parsing Assignments
+> Parsing Assignment
+> Parsing VariableBinding
+> Parsing Expression
+> Parsing Module
+> Parsing ModuleElements
+> Parsing ModuleElement
+> Parsing FunctionDefinition
+> Parsing Statements
+> Parsing Statement
+> Parsing EchoEmbeddingStatement
+> Parsing Embedding
+> Parsing PostTextTail/MidTextTail 
+> Failed

@@ -1,0 +1,10 @@
+
+WaebricValidatorException
+====> Parsing/validating failed: ../metrics/functionality/source/test089.wae
+
+
+WaebricParserException
+====> Parsing failed: ../metrics/functionality/source/test089.wae
+Line number: 6
+
+match failed
