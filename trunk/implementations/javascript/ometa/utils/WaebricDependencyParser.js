@@ -18,6 +18,11 @@ function WaebricDependencyParser(rootParser, subParser){
 		//Visit only unprocessed dependencies
 		var existingDependencyEnv = subParser.environment.getDependency(imprt.moduleId.toString())
 		var existingDependency = this.getExistingDependency(imprt.moduleId.toString());
+		
+		//Check for cyclic imports
+		if(this.isCyclicImport(imprt.moduleId.toString(), subParser.environment)){
+			return;
+		}
 
 		if (!existingDependencyEnv) {
 			//Make new environment for the Import in the current Environment
@@ -121,6 +126,23 @@ function WaebricDependencyParser(rootParser, subParser){
 				return dependency;
 			}
 		}
+	}
+	
+	/**
+	 * Checks whether the current import is one of its parents (cyclic import). 
+	 * 
+	 * @param {Object} dependencyName
+	 * @param {Object} currentEnvironment
+	 */
+	this.isCyclicImport = function(dependencyName, currentEnvironment){
+		if(currentEnvironment.parent != null){
+			if(currentEnvironment.parent.name == dependencyName){
+				return true
+			}else{
+				return this.isCyclicImport(dependencyName, currentEnvironment.parent);
+			}
+		}
+		return false
 	}
 }
 
