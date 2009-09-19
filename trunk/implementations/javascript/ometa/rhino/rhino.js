@@ -1,4 +1,4 @@
-load('../vanilla/rhino/rhino-imports.js')
+load('../ometa/rhino/rhino-imports.js')
 
 /**
  * Outputs the HTML code to a set of files
@@ -6,10 +6,10 @@ load('../vanilla/rhino/rhino-imports.js')
  * @param {Array} An array of XML documents
  */
 function createHTML(waebricEnvironments, siteName){
-	for(var i = 0; i < waebricEnvironments.length; i++){			
+	for(var i = 0; i < waebricEnvironments.length; i++){	
 		var waebricEnvironment = waebricEnvironments[i];
-		if (waebricEnvironment.path != '') {
-			var rootPath = '../vanilla/generated_html/';
+		if (waebricEnvironment.path.toString()) {			
+			var rootPath = '../ometa/generated_html/';
 			var sitePath = siteName + '/' + waebricEnvironment.path.toString();
 			createDirectories(rootPath, sitePath)
 			
@@ -19,7 +19,7 @@ function createHTML(waebricEnvironments, siteName){
 			bf.write(waebricEnvironment.document);
 			bf.close();
 		}else{
-			print('Unable to write XHTML document for file ' + waebricEnvironment.name + '.wae. DOM document is empty.')
+			print('\nNo main function found!\n')
 		}
 	}	
 }
@@ -45,33 +45,28 @@ function createDirectories(rootPath, sitePath){
 			fDir.mkdir();
 		}
 		lastDirectory += pathElement + '/';
-	}
-	
+	}	
 }
 
 /**
- * Converts a Waebric Program to HTML
- * 
- * @param {String} path
- * @param {String} siteName
+ * Converts a Waebric program to HTML
  */
 function convertToHTML(path, siteName){	
-	try {
-		//Parsing
-		var parserResult = WaebricParser.parse(path);
-		
-		//Validating		
-		var validatorResult = WaebricValidator.validate(parserResult.module)
-		print(validatorResult)
+	try {			
+		//Parsing + validation	
+		var validatorResult = WaebricValidator.parseAndValidate(path);
+		print(validatorResult.toString())
 		
 		//Interpreting
-		var interpreterResult = WaebricInterpreter.interprete(parserResult.module);
+		var interpreterResult = WaebricInterpreter.interprete(validatorResult.module);	
 		
-		//Output results		
+		//Output results
 		createHTML(interpreterResult.environments, siteName);
 	}catch(exception){
 		print(exception.toString());
 	}
 }
 
-convertToHTML('../../../../demos/source/lava/lava.wae', 'lava');
+//OMetaCompiler.compileWaebricParser();
+//OMetaCompiler.compileWaebricValidator();	
+convertToHTML('lava/lava.wae', 'lava')
