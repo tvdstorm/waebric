@@ -16,7 +16,7 @@
  
 ometa WaebricOMetaValidator <: WaebricOMetaParser {
 
-	Module			=	super(#Module):module
+	Module			=	^Module:module
 					->	{	
 							//Validate the functioncalls that are still pending
 							WaebricFunctionValidator.validateFunctionCallQueue(WaebricOMetaValidator);
@@ -25,7 +25,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 							module;
 						},
 										
-	FunctionDef		= 	super(#FunctionDef):func		
+	FunctionDef		= 	^FunctionDef:func		
 					-> 	{
 							//Close the environment of the function definition
 							WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.parent;
@@ -37,7 +37,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 							func; 
 						},
 						
-	FunctionDefId	=	super(#FunctionDefId):funcDefId
+	FunctionDefId	=	^FunctionDefId:funcDefId
 					->	{
 							//Create new environment for the function
 							WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.addEnvironment("func-def");
@@ -46,7 +46,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 							funcDefId; 
 						},
 	
-	Assignment		=	super(#Assignment):binding
+	Assignment		=	^Assignment:binding
 					-> 	{
 							if(binding instanceof VariableBinding){								
 								//Add variable to the new environment
@@ -66,7 +66,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 							binding;
 						},
 						
-	AssignmentId	=	super(#AssignmentId):assignmentId
+	AssignmentId	=	^AssignmentId:assignmentId
 					->	{
 							//Create new environment for the let-stmt
 							WaebricOMetaValidator.environment = WaebricOMetaValidator.environment.addEnvironment("let-stmt");
@@ -75,7 +75,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 							assignmentId; 							
 						},	
 						
-	Formals			=	super(#Formals):formals
+	Formals			=	^Formals:formals
 					->	{
 							//Add variables in formals to the environment					
 							for (var i = 0; i < formals.length; i++) {
@@ -87,7 +87,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 							formals; 
 						},
 						
-	Statement		=	super(#Statement):stmt
+	Statement		=	^Statement:stmt
 					-> 	{
 							//Reset the environment
 							if(stmt instanceof EachStatement){	
@@ -103,7 +103,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 							stmt;
 						},
 						
-	EachIdentifier	=	super(#EachIdentifier):identifier
+	EachIdentifier	=	^EachIdentifier:identifier
 					->	{
 							//Add new environment because the scope of the Each identifier
 							//is limited to the statement inside the each statement.
@@ -116,7 +116,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 							identifier;
 						},
 						
-	Expression		=	super(#Expression):expr
+	Expression		=	^Expression:expr
 					-> 	{							
 							//Validate defined variables
 							if(expr instanceof VarExpression){
@@ -127,7 +127,7 @@ ometa WaebricOMetaValidator <: WaebricOMetaParser {
 							expr;
 						},
 						
-	Markup		=	super(#Markup):markup 
+	Markup		=	^Markup:markup 
 					-> 	{			
 							//Validate if the function exists					
 							WaebricFunctionValidator.validateFunctionCall(markup, true, WaebricOMetaValidator);
