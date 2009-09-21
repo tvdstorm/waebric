@@ -99,7 +99,9 @@ argument:		expression // Variable definition
 // $>
 // $<Expressions
 
-expression:		( IDCON | NATCON | TEXT | SYMBOLCON 
+expression
+	options { backtrack = false; }
+	:		( IDCON | NATCON | TEXT | SYMBOLCON 
 				| '[' expression? ( ',' expression )* ']' // List
 				| '{' keyValuePair? ( ',' keyValuePair )* '}' // Record
 			) ( '+' expression /* Cat */ | '.' IDCON /* Field */ )* ;
