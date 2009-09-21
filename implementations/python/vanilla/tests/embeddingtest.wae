@@ -1,0 +1,11 @@
+module embeddingtest
+
+site
+  site/embedtest.html: embedtext()
+end
+
+def embedtext
+    p " pretext < "midtext" > posttext ";
+    p "<em 'UTRECHT> - De Vlaamse schrijver <em "Joost Vandecasteele"> heeft afgelopen
+          zaterdag literatuurprijs De Brandende Pen gewonnen. Zijn tekst";
+end
