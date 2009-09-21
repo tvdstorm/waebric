@@ -183,7 +183,7 @@ ometa WaebricOMetaParser <: Parser {
   Comment         	= fromTo('/*', '*/')
   					| fromTo('//', '\n'):comments -> {WaebricOMetaParser.lineNumber++; comments},
   space           	= '\n':newLine -> {WaebricOMetaParser.lineNumber++; newLine}
-  					| super(#space):space
+  					| ^space
   					| Comment,
   EscQuote        	= '\\' '\"' -> '\\\"',
   fromTo :x :y    	= seq(x) (~seq(y) char)* seq(y),

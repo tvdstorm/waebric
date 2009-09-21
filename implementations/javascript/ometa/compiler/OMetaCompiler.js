@@ -6,7 +6,7 @@
 function OMetaCompiler(){
 		
 	/**
-	 * Compiles the parser and saves it to a file
+	 * Compiles the parser and outputs it to a file
 	 *
 	 * @return {Object} The parser
 	 */
@@ -74,15 +74,5 @@ function OMetaCompiler(){
 
 OMetaCompiler.compile = function(pathInput){	
 	var compiler = new OMetaCompiler();
-	compiler.compileWaebricParser(pathInput)
-}
-
-OMetaCompiler.compileWaebricParser = function(){
-	var compiler = new OMetaCompiler();
-	compiler.compile('../ometa/parser/WaebricParser.ometa');
-}
-
-OMetaCompiler.compileWaebricValidator = function(){
-	var compiler = new OMetaCompiler();
-	compiler.compile('../ometa/validator/WaebricValidator.ometa');
+	compiler.compile(pathInput)
 }
