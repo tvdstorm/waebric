@@ -7,124 +7,137 @@
  * @author Nickolas Heirbaut [nickolas.heirbaut@dejasmijn.be]
  */
 importPackage(java.io);
-load('../metrics/jsmeter/tokens.js');
-load('../metrics/jsmeter/parse.js');
-load('../metrics/jsmeter/complexity.js');
+load('../metrics/maintainability/tokens.js');
+load('../metrics/maintainability/parse.js');
+load('../metrics/maintainability/complexity.js');
 
 function MaintainabilityTest(){	
 
+	var html;
+	
 	/**
 	 * Analyze the whole project and outputs the result
 	 * 
-	 * @param {String} rootDirectory
+	 * @param {String} allTestsPath
+	 * @parem {String} title
 	 */
-	this.ananlyzeProject = function(rootDirectory, projectDirectories){		
+	this.runAll = function(allTestsPath, outputPath, title){
+		var source = getSource(allTestsPath);
+		var metrics = analyze(source, title);					
+		outputStatistics(outputPath, metrics, title);		
+	}
+	
+	/**
+	 * Merge the content of all files listed in the input file
+	 * 
+	 * @param {Object} allTestsPath
+	 * @return {String} Merged file content
+	 */
+	function getSource(allTestsPath){
+		var source = '';
 		
-		var result;
+		var fis = new FileInputStream(allTestsPath);
+        var bis = new BufferedInputStream(fis);
+        var dis = new DataInputStream(bis);
 		
-		var body_html = "";
-		for(var i = 0; i < projectDirectories.length; i++){
-			var subdirectoryName = projectDirectories[i];
-			var path = rootDirectory + subdirectoryName;
-			var source = mergeFileContent(path);
-
-			body_html += '<h4>' + subdirectoryName.toString().toUpperCase() +'</h4>'			
-			body_html += analyze(source);
-		}	
-		outputStatistics(body_html, rootDirectory);		
+		//Get file content of each file/directory
+		while (dis.available() != 0) {
+			var inputFile = new File(dis.readLine());
+			var inputFileExists = inputFile.exists();
+			var isDirectory = inputFile.isDirectory();
+			
+			if(!inputFileExists){
+				print('Unable to load file: ' + inputFile.toString());
+			} else if(isDirectory){
+				source += getDirectorySource(inputFile);
+			}else{
+				source += getFileSource(inputFile);
+			}
+		}		
+		return source;
+	}
+		
+	/**
+	 * Merge the file content of all files in the directory
+	 * 
+	 * @param {String} directory The directory
+	 * @return {String}
+	 */
+	function getDirectorySource(dir){
+		var files = dir.listFiles();
+		var source = '';
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			if (file.isDirectory()) {
+				source += getDirectorySource(file);
+			} else if(isValidFileExtension(file.getName().toString())) {
+				source += getFileSource(file);
+			}
+		}		
+		return source;	
+	}	
+	
+	/**
+	 * Returns the content of the file
+	 * 
+	 * @param {String} path The path of the file
+	 * @return {String} filePath source
+	 */
+	function getFileSource(filePath){
+		return readFile(filePath)
 	}
 	
 	/**
 	 * Start measuring
 	 * Copied from jsmeter.html
 	 */
-	function analyze(source){
-		//Build parser
-		parse = make_parse();     
-		
-		//Parse the javascript file to an AST   
-        tree = parse(source);
-		
-		//Calculate the complexity
-        COMPLEXITY.complexity(tree, "code");
-		
-		//The metrics
-		return COMPLEXITY.renderStats();
+	function analyze(source, title){
+		try {
+			//Build parser
+			parse = make_parse();
+			
+			//Parse the javascript file to an AST   
+			tree = parse(source);
+			
+			//Calculate the complexity
+			COMPLEXITY.complexity(tree, "code");
+			
+			//The metrics
+			return COMPLEXITY.renderStats();
+		}catch(exception){
+			print('Analysis failed for ' + title);
+			return 'ANALYSIS FAILED!';
+		}
 	}
 	
 	/**
-	 * Concats the content of each file in the directory and
-	 * returns it.
+	 * Filter files
 	 * 
-	 * @param {String} directory The directory
-	 * @return {String}
+	 * @param {Object} fileName
 	 */
-	function mergeFileContent(directory){
-		var dir = new File(directory);
-		var files = dir.listFiles();
-		var result = '';		
-		for (var i = 0; i < files.length; i++) {
-			var file = files[i];
-			if (file.isDirectory() && file.getName != '.svn') {
-				result += mergeFileContent(file);
-			} else if(isValidFileExtension(file.getName().toString())) {
-				result += getFileSource(file);
-			}
-		}
-		
-		return result;	
-	}
-	
 	function isValidFileExtension(fileName){
-		if (fileName.length() > 3) {
-			var extension = fileName.substring(fileName.length() - 2)
-			if (fileName.length() > 7) {
-				var longExtension = fileName.substring(fileName.length() - 8)
-				var isJavaScriptFile = (extension == "js");
-				var isCompilerOMetaFile = (longExtension == "ometa.js")
-				return isJavaScriptFile && !isCompilerOMetaFile;
-			}else{
-				return isJavaScriptFile
-			}
-			
+		var startIndexFileExt = fileName.lastIndexOf('.') + 1;
+		if(startIndexFileExt > 0){			
+			var fileExt = fileName.substring(startIndexFileExt, fileName.length());
+			return fileExt == 'js'
 		}else{
 			return false;
 		}
 	}
-	
-	/**
-	 * Returns the content of the file
-	 * 
-	 * @param {String} path The path of the file
-	 * @return {String} The source
-	 */
-	function getFileSource(path){
-		var fis = new FileInputStream(path);
-		var bis = new BufferedInputStream(fis);
-		var dis = new DataInputStream(bis);
 		
-		var source = '';
-		while (dis.available() != 0) {
-			source += dis.readLine() + '\n';
-		}
-		fis.close();
-		bis.close();
-		dis.close();
-		return source;
-	}
-	
 	/**
 	 * Outputs the results to a file
 	 * 
-	 * @param {String} source The output
+	 * @param {String} outputPath The output
 	 */
-	function outputStatistics(source, rootDirectory){
-		var fw = new FileWriter(rootDirectory + 'metrics/maintainability/maintainability.html');
+	function outputStatistics(outputPath, metrics, title){
+		var fw = new FileWriter(outputPath);
 		var bf = new BufferedWriter(fw);
 		htmlPage = '<html><head><title>Metrics Waebric Project - Vanilla implementation/>'
 		htmlPage += '<link rel="stylesheet" type="text/css" href="style.css"/></head>'
-		htmlPage += '<body><h1>Metrics Waebric Project</h1><h3>Vanilla implementation</h3>' 
-		htmlPage += source;
+		htmlPage += '<body><h1>Metrics Waebric Project</h1><h3>Vanilla implementation</h3>'
+		htmlPage += '<h4>' + title.toString().toUpperCase() +'</h4>'	
+		htmlPage += metrics;
 		htmlPage += '</body></html>'
 		bf.write(htmlPage);
 		bf.close();
