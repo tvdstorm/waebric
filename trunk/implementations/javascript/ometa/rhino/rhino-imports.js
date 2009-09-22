@@ -46,8 +46,7 @@ load('../ometa/validator/WaebricFunctionValidator.js')
 load('../ometa/validator/WaebricVariableValidator.js')
 load('../ometa/validator/XHTML.js')
 
-load('../ometa/compiler/OMetaCompiler.js')
-
+load('../ometa/utils/OMetaCompiler.js')
 load('../ometa/utils/WaebricFileLoader.js')
 load('../ometa/utils/WaebricDependencyParser.js')
 

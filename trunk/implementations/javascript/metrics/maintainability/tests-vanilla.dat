@@ -1,0 +1,6 @@
+vanilla-ast
+vanilla-interpreter
+vanilla-parser
+vanilla-parser-lexical
+vanilla-parser-syntactic
+vanilla-validator
