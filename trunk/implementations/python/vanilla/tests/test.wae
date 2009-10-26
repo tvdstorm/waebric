@@ -1,11 +1,10 @@
-
-module test 
+module test
 
 site
   site/abonnementen.html: abonnementen()
 end
 
-def abonnementen 
+def abonnementen
   layout single-column {
    header("Abonnee worden?");
 
@@ -13,7 +12,7 @@ def abonnementen
       thuisgestuurd. Draag je Lava een extra warm hart toe? Neem dan voor
       40 euro een steunabonnement.  Je kunt natuurlijk ook een abonnement
       cadeau doen.";
-   
+
    p {
      echo "Je kunt je abonneren door:";
      ul {
@@ -23,7 +22,7 @@ def abonnementen
         "info@spabonneeservice.nl">; vermeld &quot;abonnement
         Lava&quot; en al je adresgegevens (ook je email-adres).";
 
-      li "te bellen tijdens werkdagen van 9.00-17.00 
+      li "te bellen tijdens werkdagen van 9.00-17.00
         uur naar 0172 476 085;";
       }
     }
@@ -35,7 +34,7 @@ def abonnementen
       iedere jaargang.";
 
     table {
-     let 
+     let
        td(img, alt) = td img(width="160",height="160", alt=alt,src=img);
      in
       tr {
@@ -44,8 +43,6 @@ def abonnementen
           td("images/lavakaft_14-2.jpg", "lava 14-2");
       }
      end
-
     }
-
   }
 end
