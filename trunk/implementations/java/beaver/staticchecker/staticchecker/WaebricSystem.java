@@ -89,7 +89,7 @@ class WaebricSystem {
       pathSeparator = WINDOWS_PATH_SEPARATOR;
     }
 
-    StringList configList = InputFile.textFileToList("config.txt");
+    StringList configList = InputFile.textFileToList("staticchecker/config.txt");
 
     waebricDir = configItem(configList,"waebric_dir",defaultDir);
 
