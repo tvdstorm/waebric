@@ -22,9 +22,9 @@ class Testtokenizer(unittest.TestCase):
         self.result = self.result + line
 
     def test_comment(self):
-        source = open('tests/commenttest.wae').readline
+        source = open('tests/wae/commenttest.wae').readline
         tokenize(source, self.tokeneater)
-        expected = r""" 1,0   1,6 :            NAME         'module'
+        expected = r""" 1,0   1,6 :         KEYWORD         'module'
  1,7   1,18:            NAME    'commenttest'
  1,18  1,19:              OP              ';'
  3,0   3,17:         COMMENT  '/* commentline */'
@@ -36,18 +36,18 @@ class Testtokenizer(unittest.TestCase):
         #d = Differ()
         #diffresult = list(d.compare(expected.splitlines(1), self.result.splitlines(1)))
         #pprint(diffresult) 
-        #sys.stdout.writelines(self.result)
+        #sys.stdout.writelines(r""+self.result)
 
         self.assertEqual(self.result, expected)
 
     def test_embedding(self):
-        source = open('tests/embeddingtest.wae').readline
+        source = open('tests/wae/embeddingtest.wae').readline
         tokenize(source, self.tokeneater)
-        expected = r""" 1,0   1,6 :            NAME         'module'
+        expected = r""" 1,0   1,6 :         KEYWORD         'module'
  1,7   1,20:            NAME  'embeddingtest'
- 3,0   3,4 :            NAME           'site'
- 4,2   4,6 :            NAME           'site'
- 4,6   4,7 :      ERRORTOKEN              '/'
+ 3,0   3,4 :         KEYWORD           'site'
+ 4,2   4,6 :         KEYWORD           'site'
+ 4,6   4,7 :              OP              '/'
  4,7   4,16:            NAME      'embedtest'
  4,16  4,17:              OP              '.'
  4,17  4,21:            NAME           'html'
@@ -55,8 +55,8 @@ class Testtokenizer(unittest.TestCase):
  4,23  4,32:            NAME      'embedtext'
  4,32  4,33:              OP              '('
  4,33  4,34:              OP              ')'
- 5,0   5,3 :            NAME            'end'
- 7,0   7,3 :            NAME            'def'
+ 5,0   5,3 :         KEYWORD            'end'
+ 7,0   7,3 :         KEYWORD            'def'
  7,4   7,13:            NAME      'embedtext'
  8,4   8,5 :            NAME              'p'
  8,6   8,17:       PRESTRING     '" pretext '
@@ -75,14 +75,13 @@ class Testtokenizer(unittest.TestCase):
 13,2  14,9 :       EMBSTRING  '<em "midtext over multi lines\n\t\t\t\t\t\t" >'
 14,9  15,30:      POSTSTRING  ' posttext \n\t\tpost text over multi lines!"'
 15,30 15,31:              OP              ';'
-16,0  16,3 :            NAME            'end'
+16,0  16,3 :         KEYWORD            'end'
 17,0  17,0 :       ENDMARKER               ''
 """
-        #d = Differ()
-        #diffresult = list(d.compare(expected.splitlines(1), self.result.splitlines(1)))
-        #pprint(diffresult) 
-        #sys.stdout.writelines(self.result)
-
+        d = Differ()
+        diffresult = list(d.compare(expected.splitlines(1), self.result.splitlines(1)))
+        pprint(diffresult) 
+        sys.stdout.writelines(self.result)
         self.assertEqual(self.result, expected)
 
 
