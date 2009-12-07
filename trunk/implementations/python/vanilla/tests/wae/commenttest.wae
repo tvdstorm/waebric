@@ -1,0 +1,13 @@
+module commenttest;
+
+/* commentline */
+// commentslashes
+/* comment
+   comment
+*/
+
+/* comment    
+// commentblaaaaaaaaaa
+
+   comment
+*/

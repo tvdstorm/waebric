@@ -78,10 +78,10 @@ class Testtokenizer(unittest.TestCase):
 16,0  16,3 :         KEYWORD            'end'
 17,0  17,0 :       ENDMARKER               ''
 """
-        d = Differ()
-        diffresult = list(d.compare(expected.splitlines(1), self.result.splitlines(1)))
-        pprint(diffresult) 
-        sys.stdout.writelines(self.result)
+        #d = Differ()
+        #diffresult = list(d.compare(expected.splitlines(1), self.result.splitlines(1)))
+        #pprint(diffresult)
+        #sys.stdout.writelines(self.result)
         self.assertEqual(self.result, expected)
 
 
