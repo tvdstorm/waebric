@@ -1,7 +1,7 @@
 
 import unittest
-from parser.tokenize import tokenize
-from parser.token import *
+from tokenize import tokenize
+from token import *
 
 from difflib import Differ
 from pprint import pprint

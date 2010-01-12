@@ -1,4 +1,3 @@
-
 module test
 
 /* comment */
@@ -13,13 +12,11 @@ module test
    comment
 */
 
-
-
 site
   site/abonnementen.html: abonnementen()
 end
 
-def abonnementen 
+def abonnementen()
   layout single-column {
    header("Abonnee worden?");
 
