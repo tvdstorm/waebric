@@ -1,4 +1,4 @@
-module commenttest;
+module commenttest
 
 /* commentline */
 // commentslashes
