@@ -13,7 +13,7 @@ module test
 */
 
 site
-  site/abonnementen.html: abonnementen()
+  site/abonnementen.html: abonnementen();
 end
 
 def abonnementen()
@@ -60,3 +60,4 @@ def abonnementen()
 
   }
 end
+
