@@ -1,0 +1,21 @@
+module block 
+
+site
+  site/block.html: function();
+end
+
+def function()
+  layout single-column {
+   
+   table {
+     let 
+       td(img) = td img(src=img);
+     in
+      tr {
+          td("34.jpg");
+      }
+     end
+    }
+  }
+end
+
