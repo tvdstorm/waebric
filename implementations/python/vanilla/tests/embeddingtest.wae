@@ -1,7 +1,7 @@
 module embeddingtest
 
 site
-  site/embedtest.html: embedtext()
+  site/embedtest.html: embedtext();
 end
 
 def embedtext()
