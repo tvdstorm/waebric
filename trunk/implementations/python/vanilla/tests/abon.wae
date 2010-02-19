@@ -6,7 +6,7 @@ module test
    comment
 */
 
-/* comment    
+/* comment
 // commentblaaaaaaaaaa
 
    comment
@@ -20,33 +20,28 @@ def abonnementen()
   layout single-column {
    header("Abonnee worden?");
 
-   p "Voor 30 euro krijg je een jaargang van ons literaire tijdschrift
-      thuisgestuurd. Draag je Lava een extra warm hart toe? Neem dan voor
-      40 euro een steunabonnement.  Je kunt natuurlijk ook een abonnement
-      cadeau doen.";
-   
+   p "Voor 30 ";
+
+   p undefvariable;
+
+   p undefFunction("bla");
+   p defFunction("i do excist");
+
    p {
      echo "Je kunt je abonneren door:";
      ul {
 
-      li "een email te sturen naar
-        <a(href="mailto:info@spabonneeservice.nl")
-        "info@spabonneeservice.nl">; vermeld &quot;abonnement
-        Lava&quot; en al je adresgegevens (ook je email-adres).";
+      li "een  <a(href="mailto:info@spabonneeservice.nl")
+        "info@spabonneeservice.nl">; vermeld .";
 
-      li "te bellen tijdens werkdagen van 9.00-17.00 
-        uur naar 0172 476 085;";
+      li "0172 476 085;";
       }
     }
 
-     p "Een acceptgiro voor betaling volgt. Alle portokosten zijn
-      inbegrepen. Abonnementen worden stilzwijgend verlengd.
-      Opzegging kan alleen schriftelijk geschieden
-      v&oacute;&oacute;r toezending van het laatste nummer van
-      iedere jaargang.";
+    p "Een acceptgiro ";
 
     table {
-     let 
+     let
        td(img, alt) = td img(width="160",height="160", alt=alt,src=img);
      in
       tr {
@@ -61,3 +56,6 @@ def abonnementen()
   }
 end
 
+def defFunction(arg)
+    p arg;
+end
