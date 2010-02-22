@@ -1,0 +1,15 @@
+module function
+
+site
+    generated/test.html : function1();
+end
+
+
+def function1
+    html head body function2("hoi");
+end
+
+
+def function2(text)
+    p p p(text);
+end

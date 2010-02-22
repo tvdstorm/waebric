@@ -14,9 +14,8 @@ module test
 */
 
 
-
 site
-  site/abonnementen.html: abonnementen()
+  site/abonnementen.html: abonnementen();
 end
 
 def abonnementen 
@@ -58,8 +57,6 @@ def abonnementen
           td("images/lavakaft_14-2.jpg", "lava 14-2");
       }
      end
-
     }
-
   }
 end
