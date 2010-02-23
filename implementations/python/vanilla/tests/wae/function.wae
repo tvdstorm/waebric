@@ -7,9 +7,19 @@ end
 
 def function1
     html head body function2("hoi");
+	function2("bla", "teveelargumenten");
+	function2() // te weinig argumenten
+	function3(); //ik besta niet.
+	htmlInvalid;
+	p;
 end
 
+def function1
+	ik besta al;
+end
 
 def function2(text)
-    p p p(text);
+    p p p text;
 end
+
+
