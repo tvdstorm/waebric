@@ -1,5 +1,8 @@
 module function
 
+import tests.blocks
+import tests.idontexist
+
 site
     generated/test.html : function1();
 end
