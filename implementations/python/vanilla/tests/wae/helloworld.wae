@@ -1,0 +1,15 @@
+module helloworld
+
+import src.test.waebric.mod.sub
+import src.test.waebric.mod.sub
+
+site
+	generated/website/lol.html: test("LOL, HET WERKT!")
+end
+
+def main
+	html { 
+		head title "HAI";
+		body p "WORLD";
+	}
+end
