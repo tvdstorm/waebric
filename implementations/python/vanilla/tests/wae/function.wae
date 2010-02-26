@@ -23,6 +23,6 @@ end
 
 def function2(text)
     p p p text;
+    p idontexist;
 end
-
 
