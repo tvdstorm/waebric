@@ -1,14 +1,14 @@
-module block 
+module block
 
 site
-  site/block.html: function();
+  site/block.html: function()
 end
 
 def function()
   layout single-column {
-   
+
    table {
-     let 
+     let
        td(img) = td img(src=img);
      in
       tr {
