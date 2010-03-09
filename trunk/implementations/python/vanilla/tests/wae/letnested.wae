@@ -1,0 +1,12 @@
+module test
+
+def main
+	func(var);
+	let var = "success"; in
+ 		let func(arg) = echo arg; in
+			func(var);
+		end
+		func(var);
+	end
+	func(var);
+end
