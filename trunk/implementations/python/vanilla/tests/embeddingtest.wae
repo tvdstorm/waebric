@@ -5,7 +5,7 @@ site
 end
 
 def embedtext()
-    p " pretext < "midtext" > posttext ";
+    p " pretext < em "midtext" > posttext ";
     p "<em 'UTRECHT> - De Vlaamse schrijver <em "Joost Vandecasteele"> heeft afgelopen
           zaterdag literatuurprijs De Brandende Pen gewonnen. Zijn tekst";
 	p " pre string over 
