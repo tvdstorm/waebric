@@ -1,16 +1,21 @@
 module embeddingtest
 
 site
-  site/embedtest.html: embedtext();
+  site/embedtest.html: embedtext()
 end
 
 def embedtext()
-    p " pretext < em "midtext" > posttext ";
-    p "<em 'UTRECHT> - De Vlaamse schrijver <em "Joost Vandecasteele"> heeft afgelopen
-          zaterdag literatuurprijs De Brandende Pen gewonnen. Zijn tekst";
-	p " pre string over 
-                        multi lines
-		<em "midtext over multi lines
-						" > posttext 
-		post text over multi lines!";
+    p@10 " pretext < em "embtext" > posttext ";
+    p " pretext < em "embeddingtext" > midtext < em "test"> tailtext";
+	p " pre string over
+                       multi lines
+		<em "embedding txt over multi lines
+						" > posttext
+	post text over multi lines!";
+
+  p " pretext
+    < em "embedding
+               text" > real
+                            midtext < em "test"> tail
+            text";
 end
