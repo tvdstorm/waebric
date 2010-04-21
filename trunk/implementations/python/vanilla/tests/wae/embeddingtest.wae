@@ -7,10 +7,10 @@ end
 def embedtext
     p " pretext < "midtext" > posttext ";
     p "<em 'UTRECHT> - De Vlaamse schrijver <em "Joost Vandecasteele"> heeft afgelopen
-          zaterdag literatuurprijs De Brandende Pen gewonnen. Zijn tekst";
+  zaterdag literatuurprijs De Brandende Pen gewonnen. Zijn tekst";
 	p " pre string over 
                         multi lines
 		<em "midtext over multi lines
-						" > posttext 
+						//" > posttext 
 		post text over multi lines!";
 end
