@@ -25,6 +25,9 @@ parser.currenToken object contains the current token of the
 tokenize generator and is a list containing:
 [tokentype, token, (startrow, startcolumn),(endrow,endcolumn),line]
 
+There is one interesting function: checkForLastExpression(parser) 
+which solves ambiguity during parsing.
+
 """
 
 import logging
@@ -444,7 +447,6 @@ def parsePredicate(parser):
 
     return predicate
 
-# TODO refactor all parser.next(lexeme=';') out of parse functions.
 #@trace
 def parseStatement(parser):
     if parser.matchLexeme(keywords['LET']):
@@ -602,12 +604,15 @@ def parseStatementBlock(parser):
 #@trace
 def checkForLastExpression(parser):
     """
-    check if parser is at the last expression item in a
-    markup chain.
-    if it is, parsing should be done by expression parser.
-    except if it is a makup call.
-    This is a helper function wich returns True if it
-    is an expression.
+    waebric is ambiguous. it is unclear if a makrup chain
+    is ended and how the last expression or markup should 
+    be parsed. This function dertemines by looking ahead 
+    * tokens if needed todetermine if arrived at the last expression
+    of a markup chain. 
+    Tokens are chached in the parser opbject so in the worst
+    case the entire source is in cache. Not really an opinion 
+    in my case. There is no need for backtracking perfomance should
+    be linear.
     """
     if parser.matchTokensort(STRING):
         return True
