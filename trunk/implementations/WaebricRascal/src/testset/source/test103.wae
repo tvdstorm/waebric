@@ -1,0 +1,20 @@
+module test103
+
+
+def take-one-down(x)
+  echo "Take one down and pass it around, <x> bottles of beer on the wall.";
+end
+
+
+def line
+  li yield;
+end
+
+def main
+  let iter = [{cur: 99, next: 98}, {cur: 98, next: 97}, {cur: 97, next: 96}];
+  in
+    each (n: iter) {
+      line take-one-down(n.next);
+    }
+  end
+end
