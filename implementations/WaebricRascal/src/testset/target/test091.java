@@ -42,13 +42,11 @@ Object $temp = new Object() {
 				$v.addAll(new Object() {
 			public List<Object> list() {
 				List<Object> $v = new ArrayList<Object>()
-
 ;
 				$v.add("2");
 				$v.addAll(new Object() {
 			public List<Object> list() {
 				List<Object> $v = new ArrayList<Object>()
-
 ;
 				$v.add("3");
 	$v.addAll(new ArrayList<Object>()

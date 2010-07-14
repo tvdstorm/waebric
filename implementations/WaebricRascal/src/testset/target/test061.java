@@ -253,7 +253,6 @@ private void main(final Writer $out, final Markup $markup)
 				$v.addAll(new Object() {
 			public List<Object> list() {
 				List<Object> $v = new ArrayList<Object>()
-
 ;
 				$v.add(new Object() {
 			public Map<String,Object> map() {
@@ -287,7 +286,6 @@ private void main(final Writer $out, final Markup $markup)
 				$v.addAll(new Object() {
 			public List<Object> list() {
 				List<Object> $v = new ArrayList<Object>()
-
 ;
 				$v.add(new Object() {
 			public Map<String,Object> map() {
