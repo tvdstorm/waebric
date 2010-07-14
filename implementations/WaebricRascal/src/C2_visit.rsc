@@ -373,7 +373,7 @@ public tuple[str, str] getMuda(Markup m, list[tuple[str, list[IdCon], Statement?
 					toReturn += ""+markupCalculation(m, assignments, formals);
 				}else{
 					toReturn += ""+printMarkupData(getMarkupData(m));
-					endings += printMarkupEnding(getMarkupData(m));
+					endings += ""+printMarkupEnding(getMarkupData(m));
 				}
 			}else{
 				if(!defaultStyle){
@@ -418,7 +418,7 @@ public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Stateme
 				}
 				<r1, r2> = getMuda(m, assignments, formals, style);
 				toReturn += r1;
-				muEnding += r2;
+				muEnding = r2 + muEnding;
 			}
 			toReturn += ""+getStatementData(s, assignments, formals, defaultStyle) + ""+muEnding;
             return toReturn;
@@ -434,7 +434,7 @@ public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Stateme
 			for(Markup m <- ms){
 				<r1, r2> = getMuda(m, assignments, formals, false); 
 				toReturn += r1;
-				muEnding += r2;
+				muEnding = r2 + muEnding;
 			}
 			<r1, r2> = getMuda(mu, assignments, formals, true);
 			toReturn += r1 + r2 + muEnding;  
@@ -446,7 +446,7 @@ public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Stateme
 			for(/`<Markup m>` <- ms){
 				<r1, r2> = getMuda(m, assignments, formals, false); 
 				toReturn += r1;
-				muEnding += r2;
+				muEnding = r2 + muEnding;
 			}
 			toReturn += ""+printExpression(e, defaultStyle) + ""+muEnding;
 			return toReturn;
@@ -457,7 +457,7 @@ public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Stateme
 			for(/`<Markup m>` <- ms){
 				<r1, r2> = getMuda(m, assignments, formals, false); 
 				toReturn += r1;
-				muEnding += r2;
+				muEnding = r2 + muEnding;
 			}
 						
 			toReturn += ""+getEmbedding(embedding, assignments, formals, defaultStyle) + ""+muEnding;
