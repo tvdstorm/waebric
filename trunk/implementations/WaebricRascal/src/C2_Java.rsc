@@ -22,7 +22,6 @@ public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str]
 <printInterfaces_2()>
 ";}
 
-
 public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
 	<<mu,atr>, pars> = markup;
 	toReturn = "$out.write(\"\<<mu>";
@@ -30,7 +29,7 @@ public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] 
 		return toReturn + "\>\");\n";
 	}else{
 		if(pars!=[]){
-			return toReturn + "\");\n" + printMarkupParametersRec(pars)+"";
+			return toReturn + "\");\n" + printMarkupParametersRec(pars);
 		}else{
 			return toReturn + printAttributes(atr) + "\n$out.write(\"\>\");\n";
 		}
@@ -72,10 +71,10 @@ public tuple[str, int] getAttributeList(list[tuple[str,str]] attr, str attribute
 			if(currSize==size(attr)){
 				toReturn += default1 + " "+attribute_type+"=\\\"\" + <"<headVal>"> + \"\\\"";
 			}else{
-				toReturn += default1 + " " + default1 + ""+attribute_type+"=\\\"\" + <"<headVal>"> " + default2 + default3 + "\"\\\"";
+				toReturn += default1 + " " + default1 + attribute_type+"=\\\"\" + <"<headVal>"> " + default2 + default3 + "\"\\\"";
 			}
 		}else{
-			toReturn += default1 + " " + default1 + ""+attribute_type+"=\\\"\" + <"<headVal>"> " + default2 + default3;
+			toReturn += default1 + " " + default1 + attribute_type+"=\\\"\" + <"<headVal>"> " + default2 + default3;
 			for(val <- tail(attributeList, size(attributeList)-1)){
 				currSize += 1;
 				toReturn += "\" \" + <val>" + default2 + default3 + "\"\\\"";
@@ -90,15 +89,13 @@ public str printMarkupData2(str name){ return
 	public void render(Writer $out) 
 		throws IOException, SQLException {
 ";}
-public str printMarkupEndings2(str expr){
-	toReturn = "}}, <expr>);";
-	return toReturn;
-}
+
 public str printMarkupEnding(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
 <<mu,atr>, pars> = markup;
 return
 "$out.write(\"\</<mu>\>\");
 ";}
+
 public str printMarkupParametersRec(list[Argument] args){
 	if(`<IdCon id> = <Expression e>` := head(args)){
 		if(size(args)==1){ return 
@@ -111,7 +108,6 @@ $out.write(\"\\\"\");\n"
 			+ printMarkupParametersRec(tail(args)) + "\n";
 		}
 	}
-return "FAAL";
 }
 
 public str printIfElse(str condition, str doIf, str doElse){ 
@@ -124,6 +120,15 @@ public str printIfElse(str condition, str doIf, str doElse){
 			}
 ";
 }
+
+public str printIfElseALT(str condition, str doIf, str doElse){ 
+	return "stat-to-jstats(if (<condition>)
+			<doIf>
+		else
+			<doElse>)
+";
+}
+
 public str printIf(str condition, str doIf){ 
 	return "
 			if (<condition>) {
@@ -132,15 +137,7 @@ public str printIf(str condition, str doIf){
 ";
 }
 
-
-public str printIfElseNEW(str condition, str doIf, str doElse){ 
-	return "stat-to-jstats(if (<condition>)
-			<doIf>
-		else
-			<doElse>)
-";
-}
-public str printIfNEW(str condition, str doIf){ 
+public str printIfALT(str condition, str doIf){ 
 	return "stat-to-jstats(if (<condition>)
 			<doIf>)
 ";
@@ -180,7 +177,6 @@ public class <module_id> {
 ";}
 private str printSites(list[tuple[str, str]] sites) { 
 	returnable = "";
-	//TODO: for loops screw up the markup, is there another way?
 	for(<str site, str pars> <- sites){
 		returnable += printSite(site, pars);
 	}
@@ -201,7 +197,6 @@ $out.write(\"\<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\
 /* The function definitions */
 private str printFunctions(list[tuple[str, list[str], list[str]]] methodes) {
 	returnable = "";
-	//TODO: for loops screw up the markup, is there another way?
 	for(<str id, list[str] params, list[str] methodBody> <- methodes){
 		returnable += printFunction(id, params, methodBody);
 	}
@@ -220,7 +215,6 @@ public void " + id + "(final Writer $out"+printConstuctorParams(params)+")
 ";}
 public str printConstuctorParams(list[str] pars){ 
 	toReturn = "";
-	//TODO: for loops screw up the markup, is there another way?
 	for(str p <- pars){
 		toReturn += ", final Object "+p;
 	}
@@ -228,7 +222,6 @@ public str printConstuctorParams(list[str] pars){
 }
 public str printMarkup(list[str] mu){
 	returnable = "";
-	//TODO: for loops screw up the markup, is there another way? 
 	for(str s <- mu){
 		returnable += s;
 	}
@@ -236,7 +229,6 @@ public str printMarkup(list[str] mu){
 }
 public str printMethodParams(list[str] pars){
 	toReturn = "";
-	//TODO: for loops screw up the markup, is there another way?
 	for(str p <- pars){
 		toReturn += ", "+p;
 	}
@@ -524,23 +516,15 @@ public str printForEachArray2(){ return
 		}.each($out);
 ";
 }
-public str printExpr2(str name, Markup m){
-	return "<name>.call($out, $nil<m>);";
-}
-public str printExpression(Expression e, bool defaultStyle){
-	if(defaultStyle)		
-		return "$out.write(" + getExpression(e, true) + ");\n";
-	else		
-		return "f.call($out, $nil, " + getExpression(e, true) + ");"; // DIT IS GRUWELIJK
+
+public str printExpression(Expression e){
+	return "$out.write(" + getExpression(e, true) + ");\n";
 }
 
 public str something(){ return ");
 				$v.addAll(new Object() {
 			public List\<Object\> list() {
-				List\<Object\> $v = new ArrayList\<Object\>()
-
-;
-				$v.add(";
+				List\<Object\> $v = new ArrayList\<Object\>()\n;\n\t\t\t\t$v.add(";
 }
 
 public str getExpression(Expression e, bool firstTime){
@@ -561,15 +545,15 @@ public str getExpression(Expression e, bool firstTime){
 				for(KeyValuePair pair <- kv){
 					if(eerste){
 						eerste = false;
-						ending += ""+printArrayCloseNEW();
+						ending += printArrayCloseNEW();
 					}else{
 						onlyOne = true;
-						toReturn += ""+printArray4();
+						toReturn += printArray4();
 						ending += printArrayClose2();
 					}
-					toReturn += ""+getKeyValuePairs(pair);
+					toReturn += getKeyValuePairs(pair);
 				}
-				return toReturn + "" + ending + "";
+				return toReturn + ending;
 			}			
 
 		}
@@ -585,32 +569,32 @@ public str getExpression(Expression e, bool firstTime){
 				for(Expression expr <- i, "<expr>"!=""){
 					if(firstTime){
 						firstTime = false;
-						toReturn += ""+printList1();
-						toReturn += ""+getExpression(expr, false);
+						toReturn += printList1();
+						toReturn += getExpression(expr, false);
 						listClose = printListClose();
 	endings += ");
 					return $v;
-				}}.list()" + "";
+				}}.list()";
 					}
 					else if(substring("<i>", 0, 1)=="\""){
-						toReturn += ""+printArray2();
-						toReturn += ""+getExpression(expr, false);
+						toReturn += printArray2();
+						toReturn += getExpression(expr, false);
 					}
 					else if(substring("<i>", 0, 1)=="{"){
-						toReturn += ""+something()+""+getExpression(expr, false);
+						toReturn += something() + getExpression(expr, false);
 	endings += ");
 					return $v;
-				}}.list()" + "";
+				}}.list()";
 					}
 					else{
-						toReturn += ""+something();
-						toReturn += ""+getExpression(expr, false);
+						toReturn += something();
+						toReturn += getExpression(expr, false);
 	endings += ");
 					return $v;
-				}}.list()" + "";
+				}}.list()";
 					}
 				}
-				return toReturn + "" + listClose + "" + endings + "";
+				return toReturn + listClose + endings;
 			}
 		}
 		case (Expression) `<IdCon i>` :{
@@ -618,7 +602,7 @@ public str getExpression(Expression e, bool firstTime){
 				return "<toString(e)>.toString()";
 			}
 			else{
-				return ""+toString(e);
+				return toString(e);
 			}
 		}
 		case (Expression) `<SymbolCon s>` :{
@@ -646,7 +630,7 @@ public str getExpression(Expression e, bool firstTime){
 			if(isNumber("<e>")){
 				return "\""+toString(e)+"\"";
 			}else{
-				return toString(e)+"";
+				return toString(e);
 			}
 		}
 	}
@@ -675,11 +659,7 @@ public str printList1() { return
 ;
 				$v.add(";
 }
-public str printList2() { return
-	"public Map\<String,Object\> map() {
-		Map\<String,Object\> $v = new Hashtable\<String,Object\>()
-";
-}
+
 public str printArray2() { return	"
 	$v.put(";
 }
@@ -693,14 +673,7 @@ public str printArrayCloseNEW(){ return "
 				return $v;
 			}}.map()";
 }
-public str printArrayClose(){ return "
-	$v.putAll(new Hashtable\<String,Object\>()			
-);
-				return $v;
-			}}.map());
-				return $v;
-			}}.map()";
-}
+
 public str printArrayClose2(){ return ");
 				return $v;
 			}}.map()";
@@ -711,34 +684,11 @@ public str printListClose(){ return
 	$v.addAll(new ArrayList\<Object\>()
 ";
 }
-public str printListCloseOLD(){ return 
-");	
-	$v.addAll(new ArrayList\<Object\>()
-);
-				return $v;
-			}}.list());
-				return $v;
-			}}.list()";
-}
+
 public str printArray3(str nam, str val) { return
 	"new Object() {
 			public Map\<String,Object\> map() {
 				Map\<String,Object\> $v = new Hashtable\<String,Object\>()
 ;
 	$v.put(\"<nam>\", <val>);";
-}
-
-public str printArray5() { return "
-	$v.putAll(new Hashtable\<String,Object\>()
-);
-				return $v;
-			}}.map());
-				return $v;
-			}}.map());
-				$v.addAll(new Object() {
-			public List\<Object\> list() {
-				List\<Object\> $v = new ArrayList\<Object\>()
-
-;
-				$v.add(";
 }

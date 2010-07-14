@@ -77,7 +77,6 @@ final Object iter = new Object() {
 				$v.addAll(new Object() {
 			public List<Object> list() {
 				List<Object> $v = new ArrayList<Object>()
-
 ;
 				$v.add(new Object() {
 			public Map<String,Object> map() {
@@ -98,7 +97,6 @@ final Object iter = new Object() {
 				$v.addAll(new Object() {
 			public List<Object> list() {
 				List<Object> $v = new ArrayList<Object>()
-
 ;
 				$v.add(new Object() {
 			public Map<String,Object> map() {
