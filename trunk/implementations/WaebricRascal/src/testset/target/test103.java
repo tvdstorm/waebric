@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.Hashtable;
  
 @SuppressWarnings("unchecked")
-public class test091 {
+public class test103 {
 	private static final Markup $nil = new Markup() { public void render(Writer $out)  
 			throws IOException, SQLException { } };
 	public static void main(String args[]) throws IOException, SQLException {
-		new test091().generateSite();
+		new test103().generateSite();
 	}
 	public void generateSite(String root) throws IOException, SQLException  {
 		Writer writer;
@@ -26,31 +26,96 @@ public class test091 {
 		generateSite(".");
 	}
 
-	private void main(final Writer $out, final Markup $markup) 
+	private void take_one_down(final Writer $out, final Markup $markup, final Object x) 
+	throws IOException, SQLException {
+	$out.write("Take one down and pass it around, ");
+$out.write(x.toString());
+$out.write(" bottles of beer on the wall.");
+
+}
+
+public void take_one_down(final Writer $out, final Object x)
+	throws IOException, SQLException {
+	take_one_down($out, $nil, x);
+}
+private void line(final Writer $out, final Markup $markup) 
+	throws IOException, SQLException {
+	$out.write("<li>");
+$markup.render($out);
+$out.write("</li>");
+
+}
+
+public void line(final Writer $out)
+	throws IOException, SQLException {
+	line($out, $nil);
+}
+private void main(final Writer $out, final Markup $markup) 
 	throws IOException, SQLException {
 	
-new Object() {
-public void each(final Writer $out) 
-	throws IOException, 
-		SQLException  {
-
-Object $temp = new Object() {
+{
+final Object iter = new Object() {
 			public List<Object> list() {
 				List<Object> $v = new ArrayList<Object>()
 ;
-				$v.add("1");
+				$v.add(new Object() {
+			public Map<String,Object> map() {
+				Map<String,Object> $v = new Hashtable<String,Object>()
+;
+	$v.put("cur", "99");
+	$v.putAll(new Object() {
+			public Map<String,Object> map() {
+				Map<String,Object> $v = new Hashtable<String,Object>()
+;
+	$v.put("next", "98");
+	$v.putAll(new Hashtable<String,Object>()			
+);
+				return $v;
+			}}.map());
+				return $v;
+			}}.map());
 				$v.addAll(new Object() {
 			public List<Object> list() {
 				List<Object> $v = new ArrayList<Object>()
 
 ;
-				$v.add("2");
+				$v.add(new Object() {
+			public Map<String,Object> map() {
+				Map<String,Object> $v = new Hashtable<String,Object>()
+;
+	$v.put("cur", "98");
+	$v.putAll(new Object() {
+			public Map<String,Object> map() {
+				Map<String,Object> $v = new Hashtable<String,Object>()
+;
+	$v.put("next", "97");
+	$v.putAll(new Hashtable<String,Object>()			
+);
+				return $v;
+			}}.map());
+				return $v;
+			}}.map());
 				$v.addAll(new Object() {
 			public List<Object> list() {
 				List<Object> $v = new ArrayList<Object>()
 
 ;
-				$v.add("3");
+				$v.add(new Object() {
+			public Map<String,Object> map() {
+				Map<String,Object> $v = new Hashtable<String,Object>()
+;
+	$v.put("cur", "97");
+	$v.putAll(new Object() {
+			public Map<String,Object> map() {
+				Map<String,Object> $v = new Hashtable<String,Object>()
+;
+	$v.put("next", "96");
+	$v.putAll(new Hashtable<String,Object>()			
+);
+				return $v;
+			}}.map());
+				return $v;
+			}}.map());
 	$v.addAll(new ArrayList<Object>()
 );
 					return $v;
@@ -59,6 +124,12 @@ Object $temp = new Object() {
 				}}.list());
 					return $v;
 				}}.list();
+
+new Object() {
+public void each(final Writer $out) 
+	throws IOException, 
+		SQLException  {
+Object $temp = iter;
 	Iterable<Object> $iter;
 	if ($temp instanceof Iterable) {
 		$iter = (Iterable<Object>)$temp;
@@ -85,28 +156,46 @@ Object $temp = new Object() {
 		}
 		ResultSetMetaData $meta = 
 			$rs.getMetaData();
-		Map<String,Object> x = 
+		Map<String,Object> n = 
 			new Hashtable<String,Object>();
 		for (int $i = 0; $i < $meta.getColumnCount(); $i++) {
-			x.put($meta.getColumnName($i), "null");
+			n.put($meta.getColumnName($i), "null");
 		}
 		while ($rs.next()) {
-			for (String $k: x.keySet()) {
+			for (String $k: n.keySet()) {
 				Object $v = $rs.getObject($k);
 				if ($v != null) {
-					x.put($k, $v);
+					n.put($k, $v);
 				}
 				else {
-					x.put($k, "null");
+					n.put($k, "null");
 				}
 
 				
-{
-final Object y = x + "xx";
-$out.write("<p>");
-$out.write(y.toString());
-$out.write("</p>");
-};
+line($out, new Markup() {
+			public void render(Writer $out) 
+				throws IOException, SQLException {
+take_one_down($out, $nil, new Object() {
+	public Object field() throws SQLException {
+		Object $temp = n;
+		Object $result = "null";
+		if ($temp instanceof Map) {
+			$result = (Map<String,Object>)$temp.
+				get("next");
+		}
+		else if ($temp instanceof ResultSet) {
+			$result = (ResultSet)$temp.
+				getObject("next");
+			
+		}
+		else {
+			$result = "<invalid type for field dereference " +
+				$temp.getClass().toString() + ">";
+		}
+		return $result;
+	}
+}.field());
+}});;
 			}
 		}				
 		return;
@@ -118,20 +207,38 @@ $out.write("</p>");
 			$single.add($temp);
 			$iter = $single;
 		}
-		for (final Object x: $iter) {
+		for (final Object n: $iter) {
+			line($out, new Markup() {
+			public void render(Writer $out) 
+				throws IOException, SQLException {
+take_one_down($out, $nil, new Object() {
+	public Object field() throws SQLException {
+		Object $temp = n;
+		Object $result = "null";
+		if ($temp instanceof Map) {
+			$result = (Map<String,Object>)$temp.
+				get("next");
+		}
+		else if ($temp instanceof ResultSet) {
+			$result = (ResultSet)$temp.
+				getObject("next");
 			
-{
-final Object y = x + "xx";
-$out.write("<p>");
-$out.write(y.toString());
-$out.write("</p>");
+		}
+		else {
+			$result = "<invalid type for field dereference " +
+				$temp.getClass().toString() + ">";
+		}
+		return $result;
+	}
+}.field());
+}});
     
-}
-
-
 		}
 		}
 	}.each($out);
+    
+}
+
 
 }
 

@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.Hashtable;
  
 @SuppressWarnings("unchecked")
-public class test052 {
+public class test100 {
 	private static final Markup $nil = new Markup() { public void render(Writer $out)  
 			throws IOException, SQLException { } };
 	public static void main(String args[]) throws IOException, SQLException {
-		new test052().generateSite();
+		new test100().generateSite();
 	}
 	public void generateSite(String root) throws IOException, SQLException  {
 		Writer writer;
@@ -28,21 +28,51 @@ public class test052 {
 
 	private void main(final Writer $out, final Markup $markup) 
 	throws IOException, SQLException {
-	
-{
-final Object a = "3";
-
-			if (a != null) {
-				$out.write("yes");
-
-			}
-			else {
-				$out.write("no");
-
-			}
-    
-}
-
+	$out.write("<h2>");
+$out.write("Important Dates");
+$out.write("</h2>");
+$out.write("<table>");
+$out.write("<tr>");
+$out.write("<td>");
+$out.write("<b>");
+$out.write("Abstract submission deadline:");
+$out.write("</b>");
+$out.write("</td>");
+    $out.write("<td>");
+$out.write("Friday November 28th, 2008");
+$out.write("</td>");
+    $out.write("</tr>");
+    $out.write("<tr>");
+$out.write("<td>");
+$out.write("<b>");
+$out.write("Paper submission deadline:");
+$out.write("</b>");
+$out.write("</td>");
+    $out.write("<td>");
+$out.write("Friday December 5th, 2008");
+$out.write("</td>");
+    $out.write("</tr>");
+    $out.write("<tr>");
+$out.write("<td>");
+$out.write("<b>");
+$out.write("Notification of acceptance:");
+$out.write("</b>");
+$out.write("</td>");
+    $out.write("<td>");
+$out.write("Friday February 6th, 2009");
+$out.write("</td>");
+    $out.write("</tr>");
+    $out.write("<tr>");
+$out.write("<td>");
+$out.write("<b>");
+$out.write("Workshop date:");
+$out.write("</b>");
+$out.write("</td>");
+    $out.write("<td>");
+$out.write("20th March 20th, 2009 (tentative)");
+$out.write("</td>");
+    $out.write("</tr>");
+    $out.write("</table>");
 
 }
 

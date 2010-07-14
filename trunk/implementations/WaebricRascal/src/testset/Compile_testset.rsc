@@ -1,4 +1,4 @@
-module Compile_testset
+module testset::Compile_testset
 
 import C2_visit; 
 import IO;
@@ -12,7 +12,6 @@ public void main(){
 		if(/^.*\/<name:.*>\.wae$/:=f.path){
 			println("Compiling ", "\"<name>.wae\"");
 			outputFile = |project://WaebricRascal/src/testset/target/<name>.java|;
-			
 			doVisit(f,	outputFile);
 			println("finished");
 		}
