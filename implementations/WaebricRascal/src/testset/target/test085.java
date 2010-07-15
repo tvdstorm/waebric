@@ -47,12 +47,12 @@ final Object b = new Object() {
 				$v.add("3");
 	$v.addAll(new ArrayList<Object>()
 );
-					return $v;
-				}}.list());
-					return $v;
-				}}.list());
-					return $v;
-				}}.list();
+	return $v;
+	}}.list());
+	return $v;
+	}}.list());
+	return $v;
+	}}.list();
 stat-to-jstats(if (b.list? && !b.x)
 			echo "Yes";
 		else

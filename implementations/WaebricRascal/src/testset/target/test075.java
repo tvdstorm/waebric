@@ -33,7 +33,7 @@ public class test075 {
 final Func0 mypar = new Func0() {
 				public void call(Writer $out, Markup $markup)
 				throws IOException, SQLException {
-$out.write("<p>");
+			$out.write("<p>");
 $out.write("Mypar: ");
     $markup.render($out);
     $out.write("</p>");

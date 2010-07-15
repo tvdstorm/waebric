@@ -51,12 +51,12 @@ Object $temp = new Object() {
 				$v.add("3");
 	$v.addAll(new ArrayList<Object>()
 );
-					return $v;
-				}}.list());
-					return $v;
-				}}.list());
-					return $v;
-				}}.list();
+	return $v;
+	}}.list());
+	return $v;
+	}}.list());
+	return $v;
+	}}.list();
 	Iterable<Object> $iter;
 	if ($temp instanceof Iterable) {
 		$iter = (Iterable<Object>)$temp;

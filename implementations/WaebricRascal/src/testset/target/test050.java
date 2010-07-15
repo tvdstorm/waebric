@@ -52,14 +52,14 @@ final Object l = new Object() {
 				$v.add("4");
 	$v.addAll(new ArrayList<Object>()
 );
-					return $v;
-				}}.list());
-					return $v;
-				}}.list());
-					return $v;
-				}}.list());
-					return $v;
-				}}.list();
+	return $v;
+	}}.list());
+	return $v;
+	}}.list());
+	return $v;
+	}}.list());
+	return $v;
+	}}.list();
 
 new Object() {
 public void each(final Writer $out) 

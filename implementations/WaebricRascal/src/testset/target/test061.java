@@ -305,10 +305,10 @@ private void main(final Writer $out, final Markup $markup)
 			}}.map());
 	$v.addAll(new ArrayList<Object>()
 );
-					return $v;
-				}}.list());
-					return $v;
-				}}.list());
+	return $v;
+	}}.list());
+	return $v;
+	}}.list());
 	$v.putAll(new Hashtable<String,Object>()			
 );
 				return $v;
@@ -317,10 +317,10 @@ private void main(final Writer $out, final Markup $markup)
 			}}.map());
 	$v.addAll(new ArrayList<Object>()
 );
-					return $v;
-				}}.list());
-					return $v;
-				}}.list());
+	return $v;
+	}}.list());
+	return $v;
+	}}.list());
 	$v.putAll(new Hashtable<String,Object>()			
 );
 				return $v;

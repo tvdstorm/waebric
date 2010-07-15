@@ -44,6 +44,7 @@ final Object a = "A";
 f($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
+
 $out.write(a.toString());
 
 }});

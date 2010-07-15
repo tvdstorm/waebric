@@ -41,6 +41,7 @@ private void main(final Writer $out, final Markup $markup)
 	f($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
+
 $out.write("abc");
 
 }});

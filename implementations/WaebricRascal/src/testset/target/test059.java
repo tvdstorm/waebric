@@ -66,14 +66,14 @@ Object $temp = new Object() {
 				$v.add("4");
 	$v.addAll(new ArrayList<Object>()
 );
-					return $v;
-				}}.list());
-					return $v;
-				}}.list());
-					return $v;
-				}}.list());
-					return $v;
-				}}.list();
+	return $v;
+	}}.list());
+	return $v;
+	}}.list());
+	return $v;
+	}}.list());
+	return $v;
+	}}.list();
 	Iterable<Object> $iter;
 	if ($temp instanceof Iterable) {
 		$iter = (Iterable<Object>)$temp;
@@ -136,6 +136,7 @@ $out.write(x.toString());
 			f($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
+
 $out.write(x.toString());
 
 }});

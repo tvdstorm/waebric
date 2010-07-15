@@ -42,7 +42,6 @@ public str printMethodName(str name){
 }
 
 public str printAttributes(list[tuple[str,str]] atr){
-
 	<javaCode, iterator> = getAttributeList(atr, "class", 0);
 	toReturn = javaCode; 
 	<javaCode, iterator> = getAttributeList(atr, "id", iterator);
@@ -121,7 +120,7 @@ public str printIfElse(str condition, str doIf, str doElse){
 ";
 }
 
-public str printIfElseALT(str condition, str doIf, str doElse){ 
+public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de bedoeling?
 	return "stat-to-jstats(if (<condition>)
 			<doIf>
 		else
@@ -341,11 +340,6 @@ public void each(final Writer $out)
 public str printForEach2(){ return "
 Object $temp = ";
 }
-public str printForEach2OLD(){ return "
-Object $temp = new Object() {
-";
-}
-
 public str printForEach3(str var){ return "
 public List\<Object\> list() {
 	List\<Object\> $v = new ArrayList\<Object\>()
@@ -368,11 +362,12 @@ public str printForEach6() { return "
 	}}.list());
 ";
 }
-public str printForEach7() { return "
+
+public str printForEach9() { return ");
 	return $v;
-	}}.list();
-";
+	}}.list()";
 }
+
 public str printForEach8(str a, str b) { return "
 	Iterable\<Object\> $iter;
 	if ($temp instanceof Iterable) {
@@ -518,7 +513,11 @@ public str printForEachArray2(){ return
 }
 
 public str printExpression(Expression e){
-	return "$out.write(" + getExpression(e, true) + ");\n";
+	return printLine(getExpression(e, true));
+}
+
+public str printLine(str toPrint){
+	return "$out.write(<toPrint>);\n";
 }
 
 public str something(){ return ");
@@ -572,9 +571,7 @@ public str getExpression(Expression e, bool firstTime){
 						toReturn += printList1();
 						toReturn += getExpression(expr, false);
 						listClose = printListClose();
-	endings += ");
-					return $v;
-				}}.list()";
+						endings += printForEach9();
 					}
 					else if(substring("<i>", 0, 1)=="\""){
 						toReturn += printArray2();
@@ -582,16 +579,12 @@ public str getExpression(Expression e, bool firstTime){
 					}
 					else if(substring("<i>", 0, 1)=="{"){
 						toReturn += something() + getExpression(expr, false);
-	endings += ");
-					return $v;
-				}}.list()";
+						endings += printForEach9();
 					}
 					else{
 						toReturn += something();
 						toReturn += getExpression(expr, false);
-	endings += ");
-					return $v;
-				}}.list()";
+						endings += printForEach9();
 					}
 				}
 				return toReturn + listClose + endings;

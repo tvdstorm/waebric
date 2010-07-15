@@ -18,7 +18,7 @@ public str strip(str string){
 	}
 	return toReturn;
 }
-public tuple[str, str] getWTF(str inputStr){
+public tuple[str, str] splitAtDot(str inputStr){
 	if(/^<begin:.*>\.<end:.*$>/ := inputStr ){
 		return <begin, end>;
 	}

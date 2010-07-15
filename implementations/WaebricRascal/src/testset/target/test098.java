@@ -33,7 +33,7 @@ public class test098 {
 final Func0 f = new Func0() {
 				public void call(Writer $out, Markup $markup)
 				throws IOException, SQLException {
-$out.write("<p>");
+			$out.write("<p>");
 g($out, $nil, "b");
 $out.write("</p>");
 
@@ -46,8 +46,7 @@ $out.write("</p>");
 			}
 			else {
 				$out.write("calling f");
-    f.call($out, $nil);
-    
+    f.call($out, $nil);    
 			}
 
 }
