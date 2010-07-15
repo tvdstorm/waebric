@@ -35,12 +35,11 @@ final Object x = "Hello";
 final Func0 f = new Func0() {
 				public void call(Writer $out, Markup $markup)
 				throws IOException, SQLException {
-$out.write(x.toString());
+			$out.write(x.toString());
 
 	}
 		};
 f.call($out, $nil);
-
 }
 
 }

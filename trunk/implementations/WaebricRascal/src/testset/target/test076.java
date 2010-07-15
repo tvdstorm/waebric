@@ -33,7 +33,7 @@ public class test076 {
 final Func0 p = new Func0() {
 				public void call(Writer $out, Markup $markup)
 				throws IOException, SQLException {
-$out.write("<p>");
+			$out.write("<p>");
 $out.write("p0: ");
     $markup.render($out);
     $out.write("</p>");
@@ -44,7 +44,7 @@ $out.write("p0: ");
 final Func0 p = new Func0() {
 				public void call(Writer $out, Markup $markup)
 				throws IOException, SQLException {
-p.call($out, new Markup() {
+			p.call($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
 $out.write("p1: ");
@@ -58,7 +58,7 @@ $out.write("p1: ");
 final Func0 p = new Func0() {
 				public void call(Writer $out, Markup $markup)
 				throws IOException, SQLException {
-p.call($out, new Markup() {
+			p.call($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
 $out.write("p2: ");
@@ -72,7 +72,7 @@ $out.write("p2: ");
 final Func0 p = new Func0() {
 				public void call(Writer $out, Markup $markup)
 				throws IOException, SQLException {
-p.call($out, new Markup() {
+			p.call($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
 $out.write("p3: ");
@@ -86,7 +86,7 @@ $out.write("p3: ");
 final Func0 p = new Func0() {
 				public void call(Writer $out, Markup $markup)
 				throws IOException, SQLException {
-p.call($out, new Markup() {
+			p.call($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
 $out.write("p4: ");
@@ -100,7 +100,7 @@ $out.write("p4: ");
 final Func0 p = new Func0() {
 				public void call(Writer $out, Markup $markup)
 				throws IOException, SQLException {
-p.call($out, new Markup() {
+			p.call($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
 $out.write("p5: ");
@@ -114,7 +114,7 @@ $out.write("p5: ");
 final Func0 p = new Func0() {
 				public void call(Writer $out, Markup $markup)
 				throws IOException, SQLException {
-p.call($out, new Markup() {
+			p.call($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
 $out.write("p6: ");

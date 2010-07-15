@@ -33,13 +33,12 @@ public class test078 {
 final Func1 g = new Func1() {
 				public void call(Writer $out, Markup $markup, final Object a)
 				throws IOException, SQLException {
-$out.write(a.toString());
+			$out.write(a.toString());
     $out.write(b.toString());
     
 	}
 		};
 g.call($out, $nil);
-
 }
 
 

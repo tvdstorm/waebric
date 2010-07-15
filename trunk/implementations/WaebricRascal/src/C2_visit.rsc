@@ -42,12 +42,9 @@ public tuple[str, str, str] getVarList(Expression b, str expr1, str expr2){
 	str mid = "";	
 	firstTime = true;
 
-
 	visit(b){
 		case `{ <{KeyValuePair ","}* e> }` : {
-			ending += ");
-	return $v;
-	}}.list()";
+			ending += printForEach9();
 		}
 	}
 	if(`[ ]`:=b){
@@ -97,7 +94,7 @@ public str getArgs(list[Argument] args){
 	return toReturn;
 }
 
-public str getExpression2(IdCon idc, Expression e, bool firstTime, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){	
+public str getExpression2(IdCon idc, Expression e, bool firstTime, list[tuple[str, list[IdCon], Statement?]] assignments){	
 	switch(e){ 	
 		case (Expression) `[ <{ Expression "," }* expressions> ]` :{
 			<left, mid, right> = getVarList(e);
@@ -115,7 +112,7 @@ public str getAssignment(Assignment+ ass, list[tuple[str, list[IdCon], Statement
 	visit(ass){
 		case (Assignment) `<IdCon idc> = <Expression ex> ;`:{
 			closingBrackets = "\n}\n" + closingBrackets;
-			toReturn += "<getExpression2(idc, ex, false, assignments, defaultStyle)>";
+			toReturn += "<getExpression2(idc, ex, false, assignments)>";
 		}
 		case (Assignment) `<func_name> ( <{IdCon "," }* idcs> ) = <Statement s>`:{
 
@@ -128,12 +125,10 @@ public str getAssignment(Assignment+ ass, list[tuple[str, list[IdCon], Statement
 				constrParams += ", final Object " + toString(idc);
 				params += ", " + toString(idc);
 			};
-			
-			toReturn += 
-			"{\nfinal Func<size(idConList)> <func_name> = new Func<size(idConList)>() {
+			toReturn +=	"{\nfinal Func<size(idConList)> <func_name> = new Func<size(idConList)>() {
 				public void call(Writer $out, Markup $markup<constrParams>)
 				throws IOException, SQLException {
-";
+			";
 			toReturn += getStatementData(s, assignments, defaultStyle) + "\n\t}\n\t\t};\n";
 			assignments += [<"<func_name>", idConList, s>];
 			containsStatements = false;
@@ -162,7 +157,7 @@ public void getData(Module source, bool defaultStyle){
 			sites += [<toString(path), printMarkupParameters(getMarkupData(mu))>];
 		case (FunctionDef) `def <IdCon name> <Formals formals> <Statement* stat> end` :{
 			metho0 += <printMethodName("<name>"), [ s | `<Statement s>` <- stat]>;
-			metho += <printMethodName("<name>"), [getParameters(formal) | formal <- formals], []>;
+			metho += <printMethodName("<name>"), [getFormals(formal) | formal <- formals], []>;
 		}
 	}
 	list[tuple[str, list[str], list[str]]] newMetho = [];
@@ -238,16 +233,16 @@ public str unQuote(str string){
 public str getIfElse(Predicate p, Statement s, Statement s2, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	switch(p){
 		case `<Expression expr> . <Type tpe> ?` : 
-			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>");
+			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>"); //ben ik hier een asf+sdf bug aan het wegwerken?
 
 		case `! <Predicate p1>` : 
-			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>"); 	
+			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>"); 	//ben ik hier een asf+sdf bug aan het wegwerken?
 
 		case `<Predicate p1> && <Predicate p2>` : 
-			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>");
+			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>");	//ben ik hier een asf+sdf bug aan het wegwerken?
 
 		case `<Predicate p1> || <Predicate p2>` : 
-			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>");
+			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>");	//ben ik hier een asf+sdf bug aan het wegwerken?
 
 		default: {
 			return printIfElse(getPredicate(p, true),  
@@ -278,15 +273,15 @@ public str getPredicate(Predicate p, bool defaultStyle){
 			return getPredicate(p1, false) + " || " + getPredicate(p2, false);
 
 		default: {
-			<begin, end> = getWTF("<p>");
-				if(defaultStyle)
-					if(begin!=""){
-						return printForEachArray1("<begin>", "<end>")+" != null";
-					}
-					else
-						return "<getExpression(p, true)> != null";
+			<begin, end> = splitAtDot("<p>");
+			if(defaultStyle)
+				if(begin!=""){
+					return printForEachArray1("<begin>", "<end>")+" != null";
+				}
 				else
-					return "<getExpression(p, true)>";
+					return "<getExpression(p, true)> != null";
+			else
+				return "<getExpression(p, true)>";
 		}
 	}
 }
@@ -308,8 +303,8 @@ public tuple[str, str] getMuda(Markup m, list[tuple[str, list[IdCon], Statement?
 			name = subString(name, 0, size(name)-1);
 		}
 		<<name2,_>, argus> = getMarkupData(m);
-		k = {<namcall, milf>| <nam, milf, _> <- assignments, namcall:="<nam>.call"};
-		if(name2==name || "<name2>.call" in domain(k)){
+		k = {namcall| <nam, _, _> <- assignments, namcall := "<nam>.call"};
+		if(name2==name || "<name2>.call" in k){
 			if(name2==name){
 				if(argus!=[]){
 					if(defaultStyle){
@@ -326,20 +321,21 @@ public tuple[str, str] getMuda(Markup m, list[tuple[str, list[IdCon], Statement?
 					}else{
 						toReturn += "<name2>($out, new Markup() {
 			public void render(Writer $out) 
-				throws IOException, SQLException {
+				throws IOException, SQLException {\n
 ";
 						endings += "\n}});\n";
 					}
 				}
 			}
-			else if("<name2>.call" in domain(k)){
+			else if("<name2>.call" in k){
 				if(argus!=[]){
 					toReturn += "<name2>.call($out, $nil";
 					endings += "<getArgs(argus)>);";
 				}
 				else{
 					if(defaultStyle){
-						toReturn += "<name2>.call($out, $nil);\n";
+						toReturn += "<name2>.call($out, $nil";//);\n";
+endings += ");"; //TEST
 					}else{
 						toReturn += "<name2>.call($out, new Markup() {
 			public void render(Writer $out) 
@@ -358,7 +354,6 @@ public tuple[str, str] getMuda(Markup m, list[tuple[str, list[IdCon], Statement?
 				if(methname==methname2){
 					functionExists = true;
 					theName = methname;
-					theParms = parms2;
 					theVals = argus;
 				}
 			}
@@ -435,7 +430,7 @@ public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Stateme
 		}
 		case (Statement) `<Markup+ ms> <Expression e>;`: {
 			toReturn = "";	
-			str muEnding = "";
+			muEnding = "";
 			for(/`<Markup m>` <- ms){
 				<r1, r2> = getMuda(m, assignments, false); 
 				toReturn += r1;
@@ -452,12 +447,10 @@ public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Stateme
 				toReturn += r1;
 				muEnding = r2 + muEnding;
 			}
-						
 			toReturn += getEmbedding(embedding, assignments, defaultStyle) + muEnding;
 			return toReturn;
 		}
 		case (Statement)`if ( <Predicate p> ) <Statement s> <NoElseMayFollow>`:{
-			// return getIf();
 			return printIf(getPredicate(p, true), getStatementData(s, assignments, defaultStyle));
 		}
 		case (Statement)`if ( <Predicate p> ) <Statement s> else <Statement s2>`:{
@@ -575,7 +568,7 @@ public tuple[str, list[tuple[str, str]]] getDesignator(Designator des){
 	}
 }
 
-public list[str] getParameters(Formals form){
+public list[str] getFormals(Formals form){
 	toReturn = [];
 	visit(form){
 		case `<IdCon i>` : {
