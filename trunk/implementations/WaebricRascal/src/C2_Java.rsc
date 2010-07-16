@@ -13,7 +13,10 @@ import Map;
 import Node; 
 
 
-/* This is the main function */
+/*
+VAL_IN: 5
+VAL_OUT: 1
+*/
 public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str], list[str]]] metho, list[tuple[str, str]] sites){ return 	
 "<printImports()> 
 <printConstructor(getOneFrom(modul), sites)>
@@ -22,6 +25,10 @@ public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str]
 <printInterfaces_2()>
 ";}
 
+/*
+VAL_IN: 4
+VAL_OUT: 1
+*/
 public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
 	<<mu,atr>, pars> = markup;
 	toReturn = "$out.write(\"\<<mu>";
@@ -36,11 +43,19 @@ public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] 
 	}
 }
 
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str printMethodName(str name){
 	name = replaceAll(name, " ", "");
 	return replaceAll(name, "-", "_");
 }
 
+/*
+VAL_IN: 2
+VAL_OUT: 1
+*/
 public str printAttributes(list[tuple[str,str]] atr){
 	<javaCode, iterator> = getAttributeList(atr, "class", 0);
 	toReturn = javaCode; 
@@ -55,6 +70,11 @@ public str printAttributes(list[tuple[str,str]] atr){
 	toReturn += "\");";
 	return toReturn;
 }
+
+/*
+VAL_IN: 4
+VAL_OUT: 2
+*/
 public tuple[str, int] getAttributeList(list[tuple[str,str]] attr, str attribute_type, int iterator){
 	default1 = "\");\n$out.write(\"";
 	default2 = ");\n";
@@ -83,18 +103,30 @@ public tuple[str, int] getAttributeList(list[tuple[str,str]] attr, str attribute
 	return <toReturn, currSize>;
 }
 
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str printMarkupData2(str name){ return 
 "<name>($out, new Markup() {
 	public void render(Writer $out) 
 		throws IOException, SQLException {
 ";}
 
+/*
+VAL_IN: 4
+VAL_OUT: 1
+*/
 public str printMarkupEnding(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
 <<mu,atr>, pars> = markup;
 return
 "$out.write(\"\</<mu>\>\");
 ";}
 
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str printMarkupParametersRec(list[Argument] args){
 	if(`<IdCon id> = <Expression e>` := head(args)){
 		if(size(args)==1){ return 
@@ -109,6 +141,10 @@ $out.write(\"\\\"\");\n"
 	}
 }
 
+/*
+VAL_IN: 3
+VAL_OUT: 1
+*/
 public str printIfElse(str condition, str doIf, str doElse){ 
 	return "
 			if (<condition>) {
@@ -120,6 +156,10 @@ public str printIfElse(str condition, str doIf, str doElse){
 ";
 }
 
+/*
+VAL_IN: 3
+VAL_OUT: 1
+*/
 public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de bedoeling?
 	return "stat-to-jstats(if (<condition>)
 			<doIf>
@@ -128,6 +168,10 @@ public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de
 ";
 }
 
+/*
+VAL_IN: 2
+VAL_OUT: 1
+*/
 public str printIf(str condition, str doIf){ 
 	return "
 			if (<condition>) {
@@ -136,12 +180,20 @@ public str printIf(str condition, str doIf){
 ";
 }
 
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str printIfALT(str condition, str doIf){ 
 	return "stat-to-jstats(if (<condition>)
 			<doIf>)
 ";
 }
 
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 private str printImports(){ return 
 "import java.io.IOException;
 import java.io.Writer;
@@ -157,7 +209,10 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 ";}
 
-/* The constructor of the java code, and the creation of the html files. */
+/* The constructor of the java code, and the creation of the html files. 
+VAL_IN: 3
+VAL_OUT: 1
+*/
 private str printConstructor(str module_id, list[tuple[str,str]] sites){ return 
 "@SuppressWarnings(\"unchecked\")
 public class <module_id> {
@@ -174,6 +229,11 @@ public class <module_id> {
 		generateSite(\"<".">\");
 	}
 ";}
+
+/*
+VAL_IN: 2
+VAL_OUT: 1
+*/
 private str printSites(list[tuple[str, str]] sites) { 
 	returnable = "";
 	for(<str site, str pars> <- sites){
@@ -181,6 +241,11 @@ private str printSites(list[tuple[str, str]] sites) {
 	}
 	return returnable;
 }
+
+/*
+VAL_IN: 2
+VAL_OUT: 1
+*/
 private str printSite(str site, str parameters) { return 
 "writer = new FileWriter(new File(root,\"" + site + "\"));
 		new Markup() {
@@ -193,7 +258,10 @@ $out.write(\"\<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\
 		writer.close();
 ";}
 
-/* The function definitions */
+/* The function definitions 
+VAL_IN: 3
+VAL_OUT: 1
+*/
 private str printFunctions(list[tuple[str, list[str], list[str]]] methodes) {
 	returnable = "";
 	for(<str id, list[str] params, list[str] methodBody> <- methodes){
@@ -201,6 +269,11 @@ private str printFunctions(list[tuple[str, list[str], list[str]]] methodes) {
 	}
 	return returnable;
 }
+
+/*
+VAL_IN: 3
+VAL_OUT: 1
+*/
 private str printFunction(str id, list[str] params, list[str] mu){ return
 "private void <id>(final Writer $out, final Markup $markup" + printConstuctorParams(params) + ") 
 	throws IOException, SQLException {
@@ -212,6 +285,11 @@ public void " + id + "(final Writer $out"+printConstuctorParams(params)+")
 	"+ id +"($out, $nil"+printMethodParams(params)+");
 }
 ";}
+
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str printConstuctorParams(list[str] pars){ 
 	toReturn = "";
 	for(str p <- pars){
@@ -219,6 +297,11 @@ public str printConstuctorParams(list[str] pars){
 	}
 	return toReturn;
 }
+
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str printMarkup(list[str] mu){
 	returnable = "";
 	for(str s <- mu){
@@ -226,6 +309,11 @@ public str printMarkup(list[str] mu){
 	}
 	return returnable;
 }
+
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str printMethodParams(list[str] pars){
 	toReturn = "";
 	for(str p <- pars){
@@ -234,7 +322,10 @@ public str printMethodParams(list[str] pars){
 	return toReturn;
 }
 
-/* The interfaces are always the same for every waebric program */
+/* The interfaces are always the same for every waebric program 
+VAL_IN: 0
+VAL_OUT: 1
+*/
 private str printInterfaces(){ return 
 "}
 interface Markup {
@@ -295,6 +386,11 @@ interface Func6 {
 		Object arg6)
 		throws IOException, SQLException;
 }";}
+
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 private str printInterfaces_2(){ return 
 "interface Func5 {
 	public void call(Writer out, Markup markup, Object arg1,
@@ -330,6 +426,11 @@ interface Func0 {
 	public void call(Writer out, Markup markup)
 		throws IOException, SQLException;
 }";}
+
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printForEach1(){ return "
 new Object() {
 public void each(final Writer $out) 
@@ -337,37 +438,75 @@ public void each(final Writer $out)
 		SQLException  {
 ";
 }
+
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printForEach2(){ return "
 Object $temp = ";
 }
+
+/*
+VAL_IN: 1 
+VAL_OUT: 1
+*/
 public str printForEach3(str var){ return "
 public List\<Object\> list() {
 	List\<Object\> $v = new ArrayList\<Object\>()
 ;
 	$v.add(\"<var>\");";
 }
+
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printForEach2b(){ return "
 Object $temp = new ArrayList\<Object\>()
 ;";
 }
+
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printForEach4(){ return "
 	$v.addAll(new Object() {";
 }
+
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printForEach5(){ return "
 	$v.addAll(new ArrayList\<Object\>() 
 );";
 }
+
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printForEach6() { return "
 	return $v;
 	}}.list());
 ";
 }
 
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printForEach9() { return ");
 	return $v;
 	}}.list()";
 }
 
+/*
+VAL_IN: 2
+VAL_OUT: 1
+*/
 public str printForEach8(str a, str b) { return "
 	Iterable\<Object\> $iter;
 	if ($temp instanceof Iterable) {
@@ -429,6 +568,11 @@ public str printForEach8(str a, str b) { return "
 	}.each($out);
 ";
 }
+
+/*
+VAL_IN: 2
+VAL_OUT: 1
+*/
 public str printForEachArray1(str parent, str kids){ return 
 "new Object() {
 	public Object field() throws SQLException {
@@ -451,6 +595,11 @@ public str printForEachArray1(str parent, str kids){ return
 	}
 }.field()";
 }
+
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printForEachArray2(){ return
 ";
 		Iterable\<Object\> $iter;
@@ -512,20 +661,36 @@ public str printForEachArray2(){ return
 ";
 }
 
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str printExpression(Expression e){
 	return printLine(getExpression(e, true));
 }
 
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str printLine(str toPrint){
 	return "$out.write(<toPrint>);\n";
 }
 
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str something(){ return ");
 				$v.addAll(new Object() {
 			public List\<Object\> list() {
 				List\<Object\> $v = new ArrayList\<Object\>()\n;\n\t\t\t\t$v.add(";
 }
 
+/*
+VAL_IN: 2
+VAL_OUT: 1
+*/
 public str getExpression(Expression e, bool firstTime){
 	switch(e){
 		case (Expression) `<Expression e1> + <Expression e2> ` :{
@@ -628,12 +793,22 @@ public str getExpression(Expression e, bool firstTime){
 		}
 	}
 }
+
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str getQuotedString(str toReturn){
 	if(startsWith(toReturn, "'")){
 		return "\"" + substring(toReturn, 1, size(toReturn)) + "\"";
 	}
 	return toReturn; 
 }
+
+/*
+VAL_IN: 1
+VAL_OUT: 1
+*/
 public str getKeyValuePairs(KeyValuePair kv){
 	toReturn = "";
 	switch(kv){
@@ -645,6 +820,10 @@ public str getKeyValuePairs(KeyValuePair kv){
 	return toReturn;
 }
 
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printList1() { return
 	"new Object() {
 			public List\<Object\> list() {
@@ -653,13 +832,25 @@ public str printList1() { return
 				$v.add(";
 }
 
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printArray2() { return	"
 	$v.put(";
 }
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printArray4() { return "
 	$v.putAll(";
 }
 
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printArrayCloseNEW(){ return "
 	$v.putAll(new Hashtable\<String,Object\>()			
 );
@@ -667,17 +858,29 @@ public str printArrayCloseNEW(){ return "
 			}}.map()";
 }
 
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printArrayClose2(){ return ");
 				return $v;
 			}}.map()";
 }
 
+/*
+VAL_IN: 0
+VAL_OUT: 1
+*/
 public str printListClose(){ return 
 ");
 	$v.addAll(new ArrayList\<Object\>()
 ";
 }
 
+/*
+VAL_IN: 2
+VAL_OUT: 1
+*/
 public str printArray3(str nam, str val) { return
 	"new Object() {
 			public Map\<String,Object\> map() {
