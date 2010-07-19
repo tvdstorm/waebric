@@ -12,17 +12,14 @@ import ToString;
 import Relation; 
 import Map; 
 import Node; 
-
+//[ ,+=\-\/%][\w\d]+\([\w\"\<\>, \(\)]*\)
 public list[str] modul = []; 
 public list[str] impor = []; 
 public list[tuple[str, list[Statement]]] metho0 = [];
 public list[tuple[str, list[str], list[str]]] metho = [];
 public list[tuple[str, str]] sites = [];
 
-/*
-VAL_IN: 4
-VAL_OUT: 1
-*/
+/* VAL_IN: 4 VAL_OUT: 1 FUNCTION: getEach -> printForEach1, printForEachArray1, printForEachArray2, printForEach1, getVarList, toString, getStatementData */
 public str getEach(Statement stat, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	if(`each ( <a> : <b> ) <c>` := stat){
 		if(`<Expression e> . <IdCon idc>`:=b){
@@ -34,18 +31,12 @@ public str getEach(Statement stat, list[tuple[str, list[IdCon], Statement?]] ass
 	}
 }
 
-/*
-VAL_IN: 1
-VAL_OUT: 3
-*/
+/* VAL_IN: 1 VAL_OUT: 3 FUNCTION getVarList -> getVarList */
 public tuple[str, str, str] getVarList(Expression b){	
 	return getVarList(b, "", "");
 }
 
-/*
-VAL_IN: 3
-VAL_OUT: 3
-*/
+/* VAL_IN: 3 VAL_OUT: 3 FUNCTION: getVarList -> printForEach9,  printForEach1, printForEach2b, getExpression, printForEach1, printForEach2, getExpression, printForEach4, printForEach5, printForEach3, printForEach8 */
 public tuple[str, str, str] getVarList(Expression b, str expr1, str expr2){
 	toReturn = ""; 
 	ending = "";	
@@ -90,6 +81,7 @@ public tuple[str, str, str] getVarList(Expression b, str expr1, str expr2){
 /*
 VAL_IN: 2
 VAL_OUT: 0
+FUNCTION: doVisit -> getData, parse, writeFile, printJava
 */
 public void doVisit(loc inp, loc outputLoc){
 	modul = [];	impor = [];	metho = [];	metho0 = []; sites = []; 
@@ -100,6 +92,7 @@ public void doVisit(loc inp, loc outputLoc){
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: getArgs -> getExpression
 */
 public str getArgs(list[Argument] args){ 
 	toReturn = ""; 	
@@ -116,6 +109,7 @@ public str getArgs(list[Argument] args){
 /*
 VAL_IN: 6
 VAL_OUT: 1
+FUNCTION: getExpression2 -> getVarList, getExpression
 */
 public str getExpression2(IdCon idc, Expression e, bool firstTime, list[tuple[str, list[IdCon], Statement?]] assignments){	
 	switch(e){ 	
@@ -130,6 +124,7 @@ public str getExpression2(IdCon idc, Expression e, bool firstTime, list[tuple[st
 /*
 VAL_IN: 6
 VAL_OUT: 1
+FUNCTION: getExpression2, toString, size, getStatementData, getMultipleStatementsData
 */
 public str getAssignment(Assignment+ ass, list[tuple[str, list[IdCon], Statement?]] assignments, Statement* stats, bool defaultStyle){
 	toReturn = ""; 
@@ -177,6 +172,7 @@ public str getAssignment(Assignment+ ass, list[tuple[str, list[IdCon], Statement
 /*
 VAL_IN: 2
 VAL_OUT: 0
+FUNCTION: getData -> toString, printMarkupParameters, getMarkupData, printMethodName, getFormals
 */
 public void getData(Module source, bool defaultStyle){
 	visit(source){
@@ -209,6 +205,7 @@ public void getData(Module source, bool defaultStyle){
 /*
 VAL_IN: 4
 VAL_OUT: 1
+FUNCTION: getMarkupData, unQuote, toString, getQuotedString, printAttributes, getStatementData, getArgs
 */
 public str markupCalculation(Markup m, list[tuple[str, list[IdCon], Statement?]] assignments){
 	<<object, attr>, parameters> = getMarkupData(m);
@@ -261,6 +258,7 @@ public str markupCalculation(Markup m, list[tuple[str, list[IdCon], Statement?]]
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: unQuote -> substring, size
 */
 public str unQuote(str string){
 	if(substring(string, 0, 1)=="\"" && substring(string, size(string)-1, size(string))=="\""){
@@ -272,6 +270,7 @@ public str unQuote(str string){
 /*
 VAL_IN: 7
 VAL_OUT: 1
+FUNCTION: getIfElse -> printIfElseALT, getStatementData, getPredicate
 */
 public str getIfElse(Predicate p, Statement s, Statement s2, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	switch(p){
@@ -298,6 +297,7 @@ public str getIfElse(Predicate p, Statement s, Statement s2, list[tuple[str, lis
 /*
 VAL_IN: 2
 VAL_OUT: 1
+FUNCTION: getPredicate -> getExpression, getPredicate, splitAtDot, printForEachArray1, getExpression
 */
 public str getPredicate(Predicate p, bool defaultStyle){
 	switch(p){
@@ -336,6 +336,7 @@ public str getPredicate(Predicate p, bool defaultStyle){
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: getMu1 -> getMarkupData
 */
 public str getMu1(Markup m){
 	<<object, attr>, parameters> = getMarkupData(m);
@@ -348,6 +349,7 @@ public str getMu1(Markup m){
 /*	Check for functions over markup.
 VAL_IN: 5
 VAL_OUT: 2
+FUNCTION: getMuda -> getMarkupData, getArgs, subString, printMarkupData2, getMarkupData, printMethodName, getMu1, markupCalculation, printMethodName, printMarkupData
 */
 public tuple[str, str] getMuda(Markup m, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	toReturn = "";
@@ -388,7 +390,7 @@ public tuple[str, str] getMuda(Markup m, list[tuple[str, list[IdCon], Statement?
 				}
 				else{
 					if(defaultStyle){
-						toReturn += "<name2>.call($out, $nil";//);\n";
+						toReturn += "<name2>.call($out, $nil";
 						endings += ");";
 					}else{
 						toReturn += "<name2>.call($out, new Markup() {
@@ -451,6 +453,7 @@ public tuple[str, str] getMuda(Markup m, list[tuple[str, list[IdCon], Statement?
 /*
 VAL_IN: 5
 VAL_OUT: 1
+FUNCTION: getStatementData -> getMuda, getStatementData, printExpression, getEmbedding, printIf, getPredicate, getIfElse, getAssignment, getMultipleStatementsData, getEach
 */
 public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	switch(stat){
@@ -540,6 +543,7 @@ public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Stateme
 /*
 VAL_IN: 5
 VAL_OUT: 1
+FUNCTION: getEmbedding -> toString
 */
 public str getEmbedding(Embedding embedding, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	if((Embedding) `<preText:_> <Embed e> <TextTail tail>` <- embedding){
@@ -550,6 +554,7 @@ public str getEmbedding(Embedding embedding, list[tuple[str, list[IdCon], Statem
 /*
 VAL_IN: 5
 VAL_OUT: 1
+FUNCTION: getEmbeddingRec -> toString, substring
 */
 public str getEmbeddingRec(TextTail textTail, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	if((TextTail) `<PostText text>` <- textTail){
@@ -564,6 +569,7 @@ public str getEmbeddingRec(TextTail textTail, list[tuple[str, list[IdCon], State
 /*
 VAL_IN: 7
 VAL_OUT: 1
+FUNCTION: getEmbedding -> substring, printMarkupData, getMarkupData, printMarkupEnding, printExpression, reverse, getEmbeddingRec, getMu1, markupCalculation, reverse
 */
 public str getEmbedding(str pre, Embed e, TextTail textTail, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	toReturn = "$out.write(\"" + substring(pre, 1, size(pre)-1) + "\");\n";
@@ -597,6 +603,7 @@ public str getEmbedding(str pre, Embed e, TextTail textTail, list[tuple[str, lis
 /*
 VAL_IN: 5
 VAL_OUT: 1
+FUNCTION: getMultipleStatementsData -> getStatementData
 */
 public str getMultipleStatementsData(Statement* stat, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	toReturn = "";
@@ -609,6 +616,7 @@ public str getMultipleStatementsData(Statement* stat, list[tuple[str, list[IdCon
 /*
 VAL_IN: 1
 VAL_OUT: 4
+FUNCTION: getMarkupData -> getDesignator
 */
 public tuple[tuple[str, list[tuple[str, str]]], list[Argument]] getMarkupData(Markup markup){
 	switch(markup){
@@ -623,6 +631,7 @@ public tuple[tuple[str, list[tuple[str, str]]], list[Argument]] getMarkupData(Ma
 /*
 VAL_IN: 1
 VAL_OUT: 3
+FUNCTION: getDesignator
 */
 public tuple[str, list[tuple[str, str]]] getDesignator(Designator des){
 	if(`<IdCon idc> <Attribute* attrs>`:= des){
@@ -653,6 +662,7 @@ public tuple[str, list[tuple[str, str]]] getDesignator(Designator des){
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: getFormals -> toString
 */
 public list[str] getFormals(Formals form){
 	toReturn = [];
