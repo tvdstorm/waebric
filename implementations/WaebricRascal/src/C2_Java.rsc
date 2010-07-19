@@ -16,6 +16,7 @@ import Node;
 /*
 VAL_IN: 5
 VAL_OUT: 1
+FUNCTION: printJava -> printImports, printConstructor, getOneFrom, printFunctions, printInterfaces, printInterfaces_2
 */
 public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str], list[str]]] metho, list[tuple[str, str]] sites){ return 	
 "<printImports()> 
@@ -28,6 +29,7 @@ public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str]
 /*
 VAL_IN: 4
 VAL_OUT: 1
+FUNCTION: printMarkupData -> printMarkupParametersRec, printAttributes
 */
 public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
 	<<mu,atr>, pars> = markup;
@@ -46,6 +48,7 @@ public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] 
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: printMethodName -> replaceAll
 */
 public str printMethodName(str name){
 	name = replaceAll(name, " ", "");
@@ -55,6 +58,7 @@ public str printMethodName(str name){
 /*
 VAL_IN: 2
 VAL_OUT: 1
+FUNCTION: printAttributes -> getAttributeList
 */
 public str printAttributes(list[tuple[str,str]] atr){
 	<javaCode, iterator> = getAttributeList(atr, "class", 0);
@@ -74,6 +78,7 @@ public str printAttributes(list[tuple[str,str]] atr){
 /*
 VAL_IN: 4
 VAL_OUT: 2
+FUNCTION: getAttributeList -> getOneFrom, head, size, tail
 */
 public tuple[str, int] getAttributeList(list[tuple[str,str]] attr, str attribute_type, int iterator){
 	default1 = "\");\n$out.write(\"";
@@ -106,6 +111,7 @@ public tuple[str, int] getAttributeList(list[tuple[str,str]] attr, str attribute
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: printMarkupData2
 */
 public str printMarkupData2(str name){ return 
 "<name>($out, new Markup() {
@@ -116,6 +122,7 @@ public str printMarkupData2(str name){ return
 /*
 VAL_IN: 4
 VAL_OUT: 1
+FUNCTION: printMarkupEnding
 */
 public str printMarkupEnding(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
 <<mu,atr>, pars> = markup;
@@ -126,6 +133,7 @@ return
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: printMarkupParametersRec -> head, getExpression, printMarkupParametersRec, tail
 */
 public str printMarkupParametersRec(list[Argument] args){
 	if(`<IdCon id> = <Expression e>` := head(args)){
@@ -144,6 +152,7 @@ $out.write(\"\\\"\");\n"
 /*
 VAL_IN: 3
 VAL_OUT: 1
+FUNCTION: printIfElse
 */
 public str printIfElse(str condition, str doIf, str doElse){ 
 	return "
@@ -159,6 +168,7 @@ public str printIfElse(str condition, str doIf, str doElse){
 /*
 VAL_IN: 3
 VAL_OUT: 1
+FUNCTION: printIfElseALT
 */
 public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de bedoeling?
 	return "stat-to-jstats(if (<condition>)
@@ -171,6 +181,7 @@ public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de
 /*
 VAL_IN: 2
 VAL_OUT: 1
+FUNCTION: printIf
 */
 public str printIf(str condition, str doIf){ 
 	return "
@@ -183,6 +194,7 @@ public str printIf(str condition, str doIf){
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: printIfALT
 */
 public str printIfALT(str condition, str doIf){ 
 	return "stat-to-jstats(if (<condition>)
@@ -193,6 +205,7 @@ public str printIfALT(str condition, str doIf){
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printImports
 */
 private str printImports(){ return 
 "import java.io.IOException;
@@ -212,6 +225,7 @@ import java.util.Hashtable;
 /* The constructor of the java code, and the creation of the html files. 
 VAL_IN: 3
 VAL_OUT: 1
+FUNCTION: printConstructor
 */
 private str printConstructor(str module_id, list[tuple[str,str]] sites){ return 
 "@SuppressWarnings(\"unchecked\")
@@ -233,6 +247,7 @@ public class <module_id> {
 /*
 VAL_IN: 2
 VAL_OUT: 1
+FUNCTION: printSites -> printSite
 */
 private str printSites(list[tuple[str, str]] sites) { 
 	returnable = "";
@@ -245,6 +260,7 @@ private str printSites(list[tuple[str, str]] sites) {
 /*
 VAL_IN: 2
 VAL_OUT: 1
+FUNCTION: printSite
 */
 private str printSite(str site, str parameters) { return 
 "writer = new FileWriter(new File(root,\"" + site + "\"));
@@ -261,6 +277,7 @@ $out.write(\"\<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\
 /* The function definitions 
 VAL_IN: 3
 VAL_OUT: 1
+FUNCTION: printFunctions -> printFunction
 */
 private str printFunctions(list[tuple[str, list[str], list[str]]] methodes) {
 	returnable = "";
@@ -273,6 +290,7 @@ private str printFunctions(list[tuple[str, list[str], list[str]]] methodes) {
 /*
 VAL_IN: 3
 VAL_OUT: 1
+FUNCTION: printFunction -> printConstuctorParams, printMarkup, printMethodParams
 */
 private str printFunction(str id, list[str] params, list[str] mu){ return
 "private void <id>(final Writer $out, final Markup $markup" + printConstuctorParams(params) + ") 
@@ -289,6 +307,7 @@ public void " + id + "(final Writer $out"+printConstuctorParams(params)+")
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: printConstuctorParams
 */
 public str printConstuctorParams(list[str] pars){ 
 	toReturn = "";
@@ -301,6 +320,7 @@ public str printConstuctorParams(list[str] pars){
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: printMarkup
 */
 public str printMarkup(list[str] mu){
 	returnable = "";
@@ -313,6 +333,7 @@ public str printMarkup(list[str] mu){
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: printMethodParams
 */
 public str printMethodParams(list[str] pars){
 	toReturn = "";
@@ -325,6 +346,7 @@ public str printMethodParams(list[str] pars){
 /* The interfaces are always the same for every waebric program 
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION:
 */
 private str printInterfaces(){ return 
 "}
@@ -390,6 +412,7 @@ interface Func6 {
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printInterfaces_2
 */
 private str printInterfaces_2(){ return 
 "interface Func5 {
@@ -430,6 +453,7 @@ interface Func0 {
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printForEach1
 */
 public str printForEach1(){ return "
 new Object() {
@@ -442,6 +466,7 @@ public void each(final Writer $out)
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printForEach2
 */
 public str printForEach2(){ return "
 Object $temp = ";
@@ -450,6 +475,7 @@ Object $temp = ";
 /*
 VAL_IN: 1 
 VAL_OUT: 1
+FUNCTION: printForEach3
 */
 public str printForEach3(str var){ return "
 public List\<Object\> list() {
@@ -461,6 +487,7 @@ public List\<Object\> list() {
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printForEach2b
 */
 public str printForEach2b(){ return "
 Object $temp = new ArrayList\<Object\>()
@@ -470,6 +497,7 @@ Object $temp = new ArrayList\<Object\>()
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printForEach4
 */
 public str printForEach4(){ return "
 	$v.addAll(new Object() {";
@@ -478,6 +506,7 @@ public str printForEach4(){ return "
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printForEach5
 */
 public str printForEach5(){ return "
 	$v.addAll(new ArrayList\<Object\>() 
@@ -487,6 +516,7 @@ public str printForEach5(){ return "
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printForEach6
 */
 public str printForEach6() { return "
 	return $v;
@@ -497,6 +527,7 @@ public str printForEach6() { return "
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printForEach9
 */
 public str printForEach9() { return ");
 	return $v;
@@ -506,6 +537,7 @@ public str printForEach9() { return ");
 /*
 VAL_IN: 2
 VAL_OUT: 1
+FUNCTION: printForEach8 ->
 */
 public str printForEach8(str a, str b) { return "
 	Iterable\<Object\> $iter;
@@ -572,6 +604,7 @@ public str printForEach8(str a, str b) { return "
 /*
 VAL_IN: 2
 VAL_OUT: 1
+FUNCTION: printForEachArray1
 */
 public str printForEachArray1(str parent, str kids){ return 
 "new Object() {
@@ -599,6 +632,7 @@ public str printForEachArray1(str parent, str kids){ return
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printForEachArray2
 */
 public str printForEachArray2(){ return
 ";
@@ -664,6 +698,7 @@ public str printForEachArray2(){ return
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: printExpression -> printLine, getExpression
 */
 public str printExpression(Expression e){
 	return printLine(getExpression(e, true));
@@ -672,6 +707,7 @@ public str printExpression(Expression e){
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: printLine
 */
 public str printLine(str toPrint){
 	return "$out.write(<toPrint>);\n";
@@ -680,6 +716,7 @@ public str printLine(str toPrint){
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: something
 */
 public str something(){ return ");
 				$v.addAll(new Object() {
@@ -690,6 +727,7 @@ public str something(){ return ");
 /*
 VAL_IN: 2
 VAL_OUT: 1
+FUNCTION: getExpression -> printArrayCloseNEW, printArrayClose2, getKeyValuePairs, printList1, printListClose, printForEach9, something, toString, getQuotedString, replaceAll, printForEachArray1
 */
 public str getExpression(Expression e, bool firstTime){
 	switch(e){
@@ -712,7 +750,7 @@ public str getExpression(Expression e, bool firstTime){
 						ending += printArrayCloseNEW();
 					}else{
 						onlyOne = true;
-						toReturn += printArray4();
+						toReturn += printArrayCloseNEW();
 						ending += printArrayClose2();
 					}
 					toReturn += getKeyValuePairs(pair);
@@ -797,6 +835,7 @@ public str getExpression(Expression e, bool firstTime){
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: getQuotedString -> startsWith, substring, size
 */
 public str getQuotedString(str toReturn){
 	if(startsWith(toReturn, "'")){
@@ -808,6 +847,7 @@ public str getQuotedString(str toReturn){
 /*
 VAL_IN: 1
 VAL_OUT: 1
+FUNCTION: getKeyValuePairs -> getExpression, printArray3
 */
 public str getKeyValuePairs(KeyValuePair kv){
 	toReturn = "";
@@ -823,6 +863,7 @@ public str getKeyValuePairs(KeyValuePair kv){
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printList1
 */
 public str printList1() { return
 	"new Object() {
@@ -835,6 +876,7 @@ public str printList1() { return
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printArray2
 */
 public str printArray2() { return	"
 	$v.put(";
@@ -842,6 +884,7 @@ public str printArray2() { return	"
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printArray4
 */
 public str printArray4() { return "
 	$v.putAll(";
@@ -850,6 +893,7 @@ public str printArray4() { return "
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printArrayCloseNEW
 */
 public str printArrayCloseNEW(){ return "
 	$v.putAll(new Hashtable\<String,Object\>()			
@@ -861,6 +905,7 @@ public str printArrayCloseNEW(){ return "
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printArrayClose2
 */
 public str printArrayClose2(){ return ");
 				return $v;
@@ -870,6 +915,7 @@ public str printArrayClose2(){ return ");
 /*
 VAL_IN: 0
 VAL_OUT: 1
+FUNCTION: printListClose
 */
 public str printListClose(){ return 
 ");
@@ -880,6 +926,7 @@ public str printListClose(){ return
 /*
 VAL_IN: 2
 VAL_OUT: 1
+FUNCTION: printArray3
 */
 public str printArray3(str nam, str val) { return
 	"new Object() {
