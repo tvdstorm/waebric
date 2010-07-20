@@ -5,12 +5,14 @@ class MetricCalculation
 		$dir = dir
 		val_in = AverageMetric.new("VAL_IN").calculate
 		val_out = AverageMetric.new("VAL_OUT").calculate
-		fan_in, fan_out = CalculateFanMetrics.new("FUNCTION").calculate
-		
+		fan_in, fan_out, functions, signatures = CalculateFanMetrics.new("FUNCTION").calculate
+
 		puts "val-in: " + val_in.to_s
 		puts "val-out: " + val_out.to_s
-		puts "avg fan-in: " + fan_in.to_s
-		puts "avg fan-out: " + fan_out.to_s
+		puts "fan-in/function: " + (fan_in/functions).to_s
+		puts "fan-out/function: " + (fan_out/functions).to_s
+		puts "functions: " + functions.to_s
+		puts "signatures: " + signatures.to_s
 		
 	end
 end
@@ -21,16 +23,20 @@ class CalculateFanMetrics
 	end
 	
 	def calculate
-		callGraph = []
-		
+		callGraph = Array.new
+		@functions = []
 		Find.find($dir) do |file_loc|
 			if File.extname(file_loc) == '.rsc' then
 				file = File.open(file_loc)
 				while (line = file.gets) != nil do
+					if /\w*#{@metric_name}: ?(\w+).*/ =~ line then
+						@functions += [$1]
+					end
+				
 					if /\w*#{@metric_name}: ?(\w+) *-> *([\w, ]+)( )*/ =~ line then
 						func = $1
 						calls = $2.split(/, */)
-						item = []
+						item = Array.new
 						calls.each do |x|
 							item += ["#{x.strip}"]
 						end
@@ -45,52 +51,78 @@ class CalculateFanMetrics
 		for t in 0...callGraph.size do
 			if t%2 == 0 then
 				item = callGraph[t]
-				@fanOut[item] = callGraph[t+1].size
-			end 			
+				if @fanOut[item]==nil then
+					@fanOut[item] = Array.new
+				end
+				Array value = callGraph[t+1]
+				@fanOut[item] += [value]
+				@fanOut[item] = @fanOut[item].flatten.uniq
+			end
 		end
 		
 		@fanIn = {}
 		for t in 0...callGraph.size do
 			if t%2 == 1 then 
 				callGraph[t].each do |item|
-					if @fanIn.has_key? item then
-						@fanIn[item] = 1 + Integer(@fanIn[item])
-					else
-						@fanIn[item] = 1
+					if not @fanIn.has_key? item then
+						@fanIn[item] = Array.new
 					end
+					Array value = callGraph[t-1]
+					@fanIn[item] += [value]
+					@fanIn[item] = @fanIn[item].flatten.uniq
 				end
 			end 			
 		end
-						
-		return average_fan_in, average_fan_out
+		@fanIn = @fanIn.delete_if{ |k,v|
+			@fanOut.keys.include?(k)==false
+		}
+		@num_of_signatures = @functions.size
+		@num_of_functions = @functions.uniq.size
+
+		#printDependencies
+		
+		return average_fan_in, average_fan_out, @num_of_functions, @num_of_signatures
 	end
 	
 	def average_fan_in
 		tot = 0.0
 		keys = @fanIn.keys
 		keys.each do |key|
-			tot += @fanIn[key]
+			tot += @fanIn[key].size
 		end
-		puts "calls fan-in #{@fanIn.size}"
-		@fanIn.keys.each do |x| puts x end
-		return tot/keys.size
+		return tot
 	end
 	
 	def average_fan_out
 		tot = 0.0
 		keys = @fanOut.keys
 		keys.each do |key|
-			tot += @fanOut[key]
+			tot += @fanOut[key].size
 		end
-#		puts "calls fan-out #{@fanOut.size}"
-#		@fanOut.keys.each do |x| puts x end
-
-#		k = (@fanIn.keys & @fanOut.keys)
-#		k.each do |x| 
-#			puts x 
-#		end
-
-		return tot/keys.size
+		return tot
+	end
+	
+	def printMe(table)
+		table.keys.each do |x|
+			val = "[#{x}] "
+			for i in table[x] do 
+				if i != nil then
+					val += i.to_s+", " 
+				end
+			end
+			puts val.sub(/, $/, "") 
+		end
+	end
+	
+	def printDependencies
+		puts "Fan-in:"
+		puts ""
+		printMe(@fanIn)
+		puts "===================="
+		puts "Fan-out:"
+		puts ""
+		printMe(@fanOut)
+		puts "===================="
 	end
 end
 
