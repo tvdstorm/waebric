@@ -19,11 +19,11 @@ public list[tuple[str, list[Statement]]] metho0 = [];
 public list[tuple[str, list[str], list[str]]] metho = [];
 public list[tuple[str, str]] sites = [];
 
-/* VAL_IN: 4 VAL_OUT: 1 FUNCTION: getEach -> printForEach1, printForEachArray1, printForEachArray2, printForEach1, getVarList, toString, getStatementData */
+/* VAL_IN: 4 VAL_OUT: 1 FUNCTION: getEach -> printForEachArray1, getVarList, toString, getStatementData */
 public str getEach(Statement stat, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	if(`each ( <a> : <b> ) <c>` := stat){
 		if(`<Expression e> . <IdCon idc>`:=b){
-			return printForEach1() + "Object $temp = " + printForEachArray1("<e>", "<idc>") + printForEachArray2();
+			return printForEach1 + "Object $temp = " + printForEachArray1("<e>", "<idc>") + printForEachArray2;
 		}else{
 			<left, mid, right> = getVarList(b, toString(a), getStatementData(c, assignments, defaultStyle));
 			return "<left><mid><right>";
@@ -36,7 +36,7 @@ public tuple[str, str, str] getVarList(Expression b){
 	return getVarList(b, "", "");
 }
 
-/* VAL_IN: 3 VAL_OUT: 3 FUNCTION: getVarList -> printForEach9,  printForEach1, printForEach2b, getExpression, printForEach1, printForEach2, getExpression, printForEach4, printForEach5, printForEach3, printForEach8 */
+/* VAL_IN: 3 VAL_OUT: 3 FUNCTION: getVarList -> getExpression, getExpression, printForEach3, printForEach8 */
 public tuple[str, str, str] getVarList(Expression b, str expr1, str expr2){
 	toReturn = ""; 
 	ending = "";	
@@ -46,30 +46,30 @@ public tuple[str, str, str] getVarList(Expression b, str expr1, str expr2){
 
 	visit(b){
 		case `{ <{KeyValuePair ","}* e> }` : {
-			ending += printForEach9();
+			ending += printForEach9;
 		}
 	}
 	if(`[ ]`:=b){
-		left += printForEach1() + printForEach2b();
+		left += printForEach1 + printForEach2b;
 	}else{
 		switch(b){
 			case `{ <{KeyValuePair ","}* e> }` : { 
 				toReturn += getExpression(b, false) + ";";
 				mid = toReturn; 
-				left += printForEach1()+printForEach2();
+				left += printForEach1 + printForEach2;
 			}
 			case `[ <{Expression ","}* e> ]` : { 
 				toReturn += getExpression(b, false) + ";";
 				mid = toReturn; 
-				left += printForEach1() + printForEach2();
+				left += printForEach1 + printForEach2;
 			}
 			case `<Expression expr>` : {
 				if(!firstTime){ 
-					toReturn += printForEach4(); 	
-					mid = toReturn + printForEach5() + ending;
-					left += printForEach1() + printForEach2();			
+					toReturn += printForEach4; 	
+					mid = toReturn + printForEach5 + ending;
+					left += printForEach1 + printForEach2;			
 				}else{
-					left += printForEach1() + "Object $temp = <b>;";
+					left += printForEach1 + "Object $temp = <b>;";
 				} 
 				toReturn += printForEach3(toString(expr));
 			}
@@ -193,7 +193,7 @@ public void getData(Module source, bool defaultStyle){
 /*
 VAL_IN: 4
 VAL_OUT: 1
-FUNCTION: getMarkupData, unQuote, toString, getQuotedString, printAttributes, getStatementData, getArgs
+FUNCTION: markupCalculation -> getMarkupData, unQuote, toString, getQuotedString, printAttributes, getStatementData, getArgs
 */
 public str markupCalculation(Markup m, list[tuple[str, list[IdCon], Statement?]] assignments){
 	<<object, attr>, parameters> = getMarkupData(m);
