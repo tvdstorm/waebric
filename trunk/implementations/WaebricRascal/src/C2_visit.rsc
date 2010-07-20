@@ -12,7 +12,7 @@ import ToString;
 import Relation; 
 import Map; 
 import Node; 
-//[ ,+=\-\/%][\w\d]+\([\w\"\<\>, \(\)]*\)
+
 public list[str] modul = []; 
 public list[str] impor = []; 
 public list[tuple[str, list[Statement]]] metho0 = [];
@@ -78,22 +78,14 @@ public tuple[str, str, str] getVarList(Expression b, str expr1, str expr2){
 	return <left, mid, printForEach8(expr1, expr2)>;
 }
 
-/*
-VAL_IN: 2
-VAL_OUT: 0
-FUNCTION: doVisit -> getData, parse, writeFile, printJava
-*/
+/* VAL_IN: 2 VAL_OUT: 0 FUNCTION: doVisit -> getData, parse, writeFile, printJava */
 public void doVisit(loc inp, loc outputLoc){
 	modul = [];	impor = [];	metho = [];	metho0 = []; sites = []; 
 	getData(parse(#Module, inp), true);
 	writeFile(outputLoc, printJava(modul, impor, metho, sites));
 }	
 
-/*
-VAL_IN: 1
-VAL_OUT: 1
-FUNCTION: getArgs -> getExpression
-*/
+/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: getArgs -> getExpression */
 public str getArgs(list[Argument] args){ 
 	toReturn = ""; 	
 	for(Argument arg <- args){
@@ -106,11 +98,7 @@ public str getArgs(list[Argument] args){
 	return toReturn;
 }
 
-/*
-VAL_IN: 6
-VAL_OUT: 1
-FUNCTION: getExpression2 -> getVarList, getExpression
-*/
+/* VAL_IN: 6 VAL_OUT: 1 FUNCTION: getExpression2 -> getVarList, getExpression */
 public str getExpression2(IdCon idc, Expression e, bool firstTime, list[tuple[str, list[IdCon], Statement?]] assignments){	
 	switch(e){ 	
 		case (Expression) `[ <{ Expression "," }* expressions> ]` :{
@@ -121,10 +109,10 @@ public str getExpression2(IdCon idc, Expression e, bool firstTime, list[tuple[st
 	return "{\nfinal Object <idc> = " + getExpression(e, firstTime)+";\n";
 }
 
-/*
-VAL_IN: 6
-VAL_OUT: 1
-FUNCTION: getExpression2, toString, size, getStatementData, getMultipleStatementsData
+/* 
+VAL_IN: 6 
+VAL_OUT: 1 
+FUNCTION: getExpression2, toString, size, getStatementData, getMultipleStatementsData 
 */
 public str getAssignment(Assignment+ ass, list[tuple[str, list[IdCon], Statement?]] assignments, Statement* stats, bool defaultStyle){
 	toReturn = ""; 
