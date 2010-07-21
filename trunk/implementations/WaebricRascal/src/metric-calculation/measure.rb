@@ -1,18 +1,22 @@
 require 'find';
 
 class MetricCalculation
-	def initialize(dir)
+	def initialize(info, filetype, dir)
+		$filetype = filetype
 		$dir = dir
 		val_in = AverageMetric.new("VAL_IN").calculate
 		val_out = AverageMetric.new("VAL_OUT").calculate
 		fan_in, fan_out, functions, signatures = CalculateFanMetrics.new("FUNCTION").calculate
 
+		puts info
+		puts ""
 		puts "val-in: " + val_in.to_s
 		puts "val-out: " + val_out.to_s
 		puts "fan-in/function: " + (fan_in/functions).to_s
 		puts "fan-out/function: " + (fan_out/functions).to_s
 		puts "functions: " + functions.to_s
 		puts "signatures: " + signatures.to_s
+		puts "======"
 		
 	end
 end
@@ -26,14 +30,15 @@ class CalculateFanMetrics
 		callGraph = Array.new
 		@functions = []
 		Find.find($dir) do |file_loc|
-			if File.extname(file_loc) == '.rsc' then
+			if File.extname(file_loc) == $filetype then
 				file = File.open(file_loc)
 				while (line = file.gets) != nil do
-					if /\w*#{@metric_name}: ?(\w+).*/ =~ line then
+					if /\w*#{@metric_name}: ?([\w\-]+).*/ =~ line then
 						@functions += [$1]
 					end
 				
-					if /\w*#{@metric_name}: ?(\w+) *-> *([\w, ]+)( )*/ =~ line then
+					if /\w*#{@metric_name}: ?([\w\-]+) *-> *([\w,\- ]+)( )*/ =~ line then		
+							
 						func = $1
 						calls = $2.split(/, */)
 						item = Array.new
@@ -137,7 +142,7 @@ class AverageMetric
 		tot = 0
 		
 		Find.find($dir) do |file_loc|
-			if File.extname(file_loc) == '.rsc' then
+			if File.extname(file_loc) == $filetype then
 				file = File.open(file_loc)
 				while (line = file.gets) != nil do
 					if /.*#{@metric_name}: (\d+?).*/ =~ line then
@@ -155,5 +160,5 @@ class AverageMetric
 		end
 	end
 end
-
-MetricCalculation.new('..')
+MetricCalculation.new('Rascal metrics: ', '.rsc', '..')
+MetricCalculation.new('ASF+SDF metrics:', '.asf', './compiler(asf+sdf)/')
