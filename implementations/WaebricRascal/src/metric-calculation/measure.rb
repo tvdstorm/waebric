@@ -1,12 +1,12 @@
 require 'find';
 
 class MetricCalculation
-	def initialize(info, filetype, dir)
+	def initialize(info, filetype, dir, printDependencies)
 		$filetype = filetype
 		$dir = dir
-		val_in = CountMetric.new("VAL_IN").calculate
-		val_out = CountMetric.new("VAL_OUT").calculate
-		fan_in, fan_out, functions, signatures = CalculateMetrics.new("FUNCTION").calculate
+		$doPrint = printDependencies
+		
+		fan_in, fan_out, functions, signatures, val_in, val_out = CalculateMetrics.new("FUNCTION").calculate
 
 		puts info
 		puts ""
@@ -29,19 +29,25 @@ class CalculateMetrics
 	
 	def calculate
 		callGraph = Array.new
-		@functions = []
+		@fun_val = {}
 		Find.find($dir) do |file_loc|
 			if File.extname(file_loc) == $filetype then
 				file = File.open(file_loc)
 				while (line = file.gets) != nil do
-					if /\w*#{@metric_name}: ?([\w\-]+).*/ =~ line then
-						@functions += [$1]
+					if /\w*#{@metric_name} \((\d+)->(\d+)\): ([\w\-]+).*/ =~ line then
+						if @fun_val.has_key? $3 then
+							@fun_val[$3][0] += Float($1)
+							@fun_val[$3][1] += Float($2)
+							@fun_val[$3][2] += 1
+						else	
+							@fun_val[$3] = Float($1), Float($2), 1
+						end
 					end
 				
-					if /\w*#{@metric_name}: ?([\w\-]+) *-> *([\w,\- ]+)( )*/ =~ line then		
+					if /\w*#{@metric_name} \((\d+)->(\d+)\): ([\w\-]+) *-> *([\w,\- ]+)( )*/ =~ line then		
 							
-						func = $1
-						calls = $2.split(/, */)
+						func = $3
+						calls = $4.split(/, */)
 						item = Array.new
 						calls.each do |x|
 							item += ["#{x.strip}"]
@@ -82,12 +88,20 @@ class CalculateMetrics
 		@fanIn = @fanIn.delete_if{ |k,v|
 			@fanOut.keys.include?(k)==false
 		}
-		@num_of_signatures = @functions.size
-		@num_of_functions = @functions.uniq.size
-
-		#printDependencies
 		
-		return average_fan_in, average_fan_out, @num_of_functions, @num_of_signatures
+		@num_of_signatures = 0
+		@val_in = 0
+		@val_out = 0
+		@fun_val.keys.each do |key|
+			@num_of_signatures += @fun_val[key][2]
+			@val_in += @fun_val[key][0]/@fun_val[key][2]
+			@val_out += @fun_val[key][1]/@fun_val[key][2]
+		end
+		@num_of_functions = @fun_val.size
+		
+		if $doPrint then printDependencies end
+		
+		return average_fan_in, average_fan_out, @num_of_functions, @num_of_signatures, @val_in, @val_out
 	end
 	
 	def average_fan_in
@@ -132,33 +146,6 @@ class CalculateMetrics
 	end
 end
 
-
-class CountMetric
-	def initialize(metric_name)
-		@metric_name = metric_name
-	end
-	
-	def calculate
-		tot = 0
-		num = 0
-		Find.find($dir) do |file_loc|
-			if File.extname(file_loc) == $filetype then
-				file = File.open(file_loc)
-				while (line = file.gets) != nil do
-					if /.*#{@metric_name}:[ ]*(\d+?)[. \-]*/ =~ line then
-						num += 1
-						tot += Float($1)
-					end
-				end
-			end
-		end
-		
-		if tot > 0 then
-			return tot
-		else 
-			return 0
-		end
-	end
-end
-MetricCalculation.new('Rascal metrics: ', '.rsc', '..')
-MetricCalculation.new('ASF+SDF metrics:', '.asf', './compiler(asf+sdf)/')
+#MetricCalculation.new('Test metrics: ', '.test', '.', false)
+MetricCalculation.new('Rascal metrics: ', '.rsc', '..', true)
+MetricCalculation.new('ASF+SDF metrics:', '.asf', './compiler(asf+sdf)/', false)
