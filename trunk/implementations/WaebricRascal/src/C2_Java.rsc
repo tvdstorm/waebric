@@ -13,8 +13,7 @@ import Map;
 import Node; 
 
 
-/* VAL_IN: 5 VAL_OUT: 1
-FUNCTION: printJava -> printConstructor, getOneFrom, printFunctions */
+/* FUNCTION (5->1): printJava -> printConstructor, getOneFrom, printFunctions */
 public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str], list[str]]] metho, list[tuple[str, str]] sites){ return 	
 "<printImports> 
 <printConstructor(getOneFrom(modul), sites)>
@@ -23,7 +22,7 @@ public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str]
 <printInterfaces_2>
 ";}
 
-/* VAL_IN: 4 VAL_OUT: 1 FUNCTION: printMarkupData -> printMarkupParametersRec, printAttributes */
+/* FUNCTION (4->1): printMarkupData -> printMarkupParametersRec, printAttributes */
 public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
 	<<mu,atr>, pars> = markup;
 	toReturn = "$out.write(\"\<<mu>";
@@ -38,13 +37,13 @@ public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] 
 	}
 }
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: printMethodName -> replaceAll */
+/* FUNCTION (1->1): printMethodName -> replaceAll */
 public str printMethodName(str name){
 	name = replaceAll(name, " ", "");
 	return replaceAll(name, "-", "_");
 }
 
-/* VAL_IN: 2 VAL_OUT: 1 FUNCTION: printAttributes -> getAttributeList */
+/* FUNCTION (2->1): printAttributes -> getAttributeList */
 public str printAttributes(list[tuple[str,str]] atr){
 	<javaCode, iterator> = getAttributeList(atr, "class", 0);
 	toReturn = javaCode; 
@@ -60,7 +59,7 @@ public str printAttributes(list[tuple[str,str]] atr){
 	return toReturn;
 }
 
-/* VAL_IN: 4 VAL_OUT: 2 FUNCTION: getAttributeList -> getOneFrom, head, size, tail */
+/* FUNCTION (4->2): getAttributeList -> getOneFrom, head, size, tail */
 public tuple[str, int] getAttributeList(list[tuple[str,str]] attr, str attribute_type, int iterator){
 	default1 = "\");\n$out.write(\"";
 	default2 = ");\n";
@@ -89,21 +88,21 @@ public tuple[str, int] getAttributeList(list[tuple[str,str]] attr, str attribute
 	return <toReturn, currSize>;
 }
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: printMarkupData2 */
+/* FUNCTION (1->1): printMarkupData2 */
 public str printMarkupData2(str name){ return 
 "<name>($out, new Markup() {
 	public void render(Writer $out) 
 		throws IOException, SQLException {
 ";}
 
-/* VAL_IN: 4 VAL_OUT: 1 FUNCTION: printMarkupEnding */
+/* FUNCTION (4->1): printMarkupEnding */
 public str printMarkupEnding(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
 <<mu,atr>, pars> = markup;
 return
 "$out.write(\"\</<mu>\>\");
 ";}
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: printMarkupParametersRec -> head, getExpression, printMarkupParametersRec, tail */
+/* FUNCTION (1->1): printMarkupParametersRec -> head, getExpression, printMarkupParametersRec, tail */
 public str printMarkupParametersRec(list[Argument] args){
 	if(`<IdCon id> = <Expression e>` := head(args)){
 		if(size(args)==1){ return 
@@ -118,7 +117,7 @@ $out.write(\"\\\"\");\n"
 	}
 }
 
-/* VAL_IN: 3 VAL_OUT: 1 FUNCTION: printIfElse */
+/* FUNCTION (3->1): printIfElse */
 public str printIfElse(str condition, str doIf, str doElse){ 
 	return "
 			if (<condition>) {
@@ -130,7 +129,7 @@ public str printIfElse(str condition, str doIf, str doElse){
 ";
 }
 
-/* VAL_IN: 3 VAL_OUT: 1 FUNCTION: printIfElseALT */
+/* FUNCTION (3->1): printIfElseALT */
 public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de bedoeling?
 	return "stat-to-jstats(if (<condition>)
 			<doIf>
@@ -139,7 +138,7 @@ public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de
 ";
 }
 
-/* VAL_IN: 2 VAL_OUT: 1 FUNCTION: printIf */
+/* FUNCTION (2->1): printIf */
 public str printIf(str condition, str doIf){ 
 	return "
 			if (<condition>) {
@@ -148,15 +147,14 @@ public str printIf(str condition, str doIf){
 ";
 }
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: printIfALT */
+/* FUNCTION (1->1): printIfALT */
 public str printIfALT(str condition, str doIf){ 
 	return "stat-to-jstats(if (<condition>)
 			<doIf>)
 ";
 }
 
-/* The constructor of the java code, and the creation of the html files. 
-	VAL_IN: 3 VAL_OUT: 1 FUNCTION: printConstructor */
+/* FUNCTION (3->1): printConstructor */
 private str printConstructor(str module_id, list[tuple[str,str]] sites){ return 
 "@SuppressWarnings(\"unchecked\")
 public class <module_id> {
@@ -174,7 +172,7 @@ public class <module_id> {
 	}
 ";}
 
-/* VAL_IN: 2 VAL_OUT: 1 FUNCTION: printSites -> printSite */
+/* FUNCTION (2->1): printSites -> printSite */
 private str printSites(list[tuple[str, str]] sites) { 
 	returnable = "";
 	for(<str site, str pars> <- sites){
@@ -183,7 +181,7 @@ private str printSites(list[tuple[str, str]] sites) {
 	return returnable;
 }
 
-/* VAL_IN: 2 VAL_OUT: 1 FUNCTION: printSite */
+/* FUNCTION (2->1): printSite */
 private str printSite(str site, str parameters) { return 
 "writer = new FileWriter(new File(root,\"" + site + "\"));
 		new Markup() {
@@ -196,7 +194,7 @@ $out.write(\"\<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\
 		writer.close();
 ";}
 
-/* VAL_IN: 3 VAL_OUT: 1 FUNCTION: printFunctions -> printFunction */
+/* FUNCTION (3->1): printFunctions -> printFunction */
 private str printFunctions(list[tuple[str, list[str], list[str]]] methodes) {
 	returnable = "";
 	for(<str id, list[str] params, list[str] methodBody> <- methodes){
@@ -205,7 +203,7 @@ private str printFunctions(list[tuple[str, list[str], list[str]]] methodes) {
 	return returnable;
 }
 
-/* VAL_IN: 3 VAL_OUT: 1 FUNCTION: printFunction -> printConstuctorParams, printMarkup, printMethodParams */
+/* FUNCTION (3->1): printFunction -> printConstuctorParams, printMarkup, printMethodParams */
 private str printFunction(str id, list[str] params, list[str] mu){ return
 "private void <id>(final Writer $out, final Markup $markup" + printConstuctorParams(params) + ") 
 	throws IOException, SQLException {
@@ -218,7 +216,7 @@ public void " + id + "(final Writer $out"+printConstuctorParams(params)+")
 }
 ";}
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: printConstuctorParams */
+/* FUNCTION (1->1): printConstuctorParams */
 public str printConstuctorParams(list[str] pars){ 
 	toReturn = "";
 	for(str p <- pars){
@@ -227,7 +225,7 @@ public str printConstuctorParams(list[str] pars){
 	return toReturn;
 }
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: printMarkup */
+/* FUNCTION (->): printMarkup */
 public str printMarkup(list[str] mu){
 	returnable = "";
 	for(str s <- mu){
@@ -236,7 +234,7 @@ public str printMarkup(list[str] mu){
 	return returnable;
 }
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: printMethodParams */
+/* FUNCTION (1->1): printMethodParams */
 public str printMethodParams(list[str] pars){
 	toReturn = "";
 	for(str p <- pars){
@@ -245,7 +243,7 @@ public str printMethodParams(list[str] pars){
 	return toReturn;
 }
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: printForEach3 */
+/* FUNCTION (1->1): printForEach3 */
 public str printForEach3(str var){ return "
 public List\<Object\> list() {
 	List\<Object\> $v = new ArrayList\<Object\>()
@@ -253,7 +251,7 @@ public List\<Object\> list() {
 	$v.add(\"<var>\");";
 }
 
-/* VAL_IN: 2 VAL_OUT: 1 FUNCTION: printForEach8 */
+/* FUNCTION (2->1): printForEach8 */
 public str printForEach8(str a, str b) { return "
 	Iterable\<Object\> $iter;
 	if ($temp instanceof Iterable) {
@@ -316,7 +314,7 @@ public str printForEach8(str a, str b) { return "
 ";
 }
 
-/* VAL_IN: 2 VAL_OUT: 1 FUNCTION: printForEachArray1 */
+/* FUNCTION (2->1): printForEachArray1 */
 public str printForEachArray1(str parent, str kids){ return 
 "new Object() {
 	public Object field() throws SQLException {
@@ -340,17 +338,17 @@ public str printForEachArray1(str parent, str kids){ return
 }.field()";
 }
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: printExpression -> printLine, getExpression */
+/* FUNCTION (1->1): printExpression -> printLine, getExpression */
 public str printExpression(Expression e){
 	return printLine(getExpression(e, true));
 }
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: printLine */
+/* FUNCTION (1->1): printLine */
 public str printLine(str toPrint){
 	return "$out.write(<toPrint>);\n";
 }
 
-/* VAL_IN: 2 VAL_OUT: 1 FUNCTION: getExpression -> getKeyValuePairs, toString, getQuotedString, replaceAll, printForEachArray1 */
+/* FUNCTION (2->1): getExpression -> getKeyValuePairs, toString, getQuotedString, replaceAll, printForEachArray1 */
 public str getExpression(Expression e, bool firstTime){
 	switch(e){
 		case (Expression) `<Expression e1> + <Expression e2> ` :{
@@ -454,7 +452,7 @@ public str getExpression(Expression e, bool firstTime){
 	}
 }
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: getQuotedString -> startsWith, substring, size */
+/* FUNCTION (1->1): getQuotedString -> startsWith, substring, size */
 public str getQuotedString(str toReturn){
 	if(startsWith(toReturn, "'")){
 		return "\"" + substring(toReturn, 1, size(toReturn)) + "\"";
@@ -462,7 +460,7 @@ public str getQuotedString(str toReturn){
 	return toReturn; 
 }
 
-/* VAL_IN: 1 VAL_OUT: 1 FUNCTION: getKeyValuePairs -> getExpression, printArray3 */
+/* FUNCTION (1->1): getKeyValuePairs -> getExpression, printArray3 */
 public str getKeyValuePairs(KeyValuePair kv){
 	toReturn = "";
 	switch(kv){
@@ -474,7 +472,7 @@ public str getKeyValuePairs(KeyValuePair kv){
 	return toReturn;
 }
 
-/* VAL_IN: 2 VAL_OUT: 1 FUNCTION: printArray3 */
+/* FUNCTION (2->1): printArray3 */
 public str printArray3(str nam, str val) { return
 	"new Object() {
 			public Map\<String,Object\> map() {
@@ -482,7 +480,6 @@ public str printArray3(str nam, str val) { return
 ;
 	$v.put(\"<nam>\", <val>);";
 }
-
 
 private str printImports =
 "import java.io.IOException;

@@ -1,13 +1,13 @@
 equations
 
-%	FUNCTION: idcon-to-id -> id
+%	FUNCTION (1->1): idcon-to-id -> id
 	VAL_IN: 1
 	VAL_OUT: 1 
 %
 []	idcon-to-id(idcon(&idhead)) = id(&idhead)
 
 
-%	FUNCTION: idcon-to-id -> id 
+%	FUNCTION (1->1): idcon-to-id -> id 
 	VAL_IN: 1
 	VAL_OUT: 1
 	%
@@ -16,7 +16,7 @@ equations
 	idcon-to-id(idcon(&idhead1 &idhead2 &idtail*)) =
 		id(&idhead1 &idhead2 &jtail*)
 
-%	FUNCTION: idcon-to-id -> id  
+%	FUNCTION (1->1): idcon-to-id -> id  
 	VAL_IN: 1
 	VAL_OUT: 1
 %
@@ -25,7 +25,7 @@ equations
 	idcon-to-id(idcon(&idhead1 &d &idtail*)) =
 		id(&idhead1 &d &jtail*)
 
-%	FUNCTION: idcon-to-id -> id 
+%	FUNCTION (1->1): idcon-to-id -> id 
 	VAL_IN: 1
 	VAL_OUT: 1
 %

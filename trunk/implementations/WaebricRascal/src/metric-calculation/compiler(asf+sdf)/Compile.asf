@@ -1,9 +1,6 @@
 equations
 
-% 	FUNCTION: compile 
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): compile %
 [compile-top]
 	&set := defined(&module*, {}),
 	&module*' := annotate(&module*, &set),
@@ -47,26 +44,17 @@ func-interfaces(10)
 
 equations
 
-%	FUNCTION: defined -> union 
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): defined -> union %
 [definitions-1] 
 	defined(def &id &stat* end, &set) = union({&id}, &set)
 
-% FUNCTION: defined -> union  
-	VAL_IN: 2 
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): defined -> union %
 [definitions-2] 
 	defined(def &id &formals &stat* end, &set) = union({&id}, &set)
 
 equations
 
-% FUNCTION: annotate -> ? 
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): annotate -> ? %
 [annotate-1] 
 	annotate(&id, &set) = ? &id
 		when &id in &set == true
@@ -74,19 +62,13 @@ equations
 
 equations
 
-% FUNCTION: collect-mappings  
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): collect-mappings  %
 [collect-mappings-top] 
 	collect-mappings(&mapping, &mapping*) = &mapping; &mapping*
 
 equations
 
-% FUNCTION: compile-funcs -> func-to-metho  
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): compile-funcs -> func-to-metho  %
 [compile-funcs-1] 
 	compile-funcs(&func-def, &classbodydec*) = 
 		&classbodydec*
@@ -95,18 +77,12 @@ equations
 
 equations
 
-% FUNCTION: func-to-method  
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): func-to-method  %
 [func-to-method-1] 
 	func-to-method(def &id &stat* end) = func-to-method(def &id () &stat* end)
 
 
-% FUNCTION: func-to-method -> formals-to-formalparams, formals-to-exprs  
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): func-to-method -> formals-to-formalparams, formals-to-exprs  %
 [func-to-method-2] 
 	&jstat* := stats-to-jstats(&stat*),
 	Object &jid := Object idcon-to-id(&id)
@@ -125,19 +101,13 @@ equations
 
 equations
 
-% FUNCTION: mappings-to-jstats  
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): mappings-to-jstats  %
 [mappings-to-jstats-1]
 	&mapping* ==
 	===
 	mappings-to-jstats(&mapping*) = 
 
-% FUNCTION: mappings-to-jstats -> path-to-stringliteral, mappings-to-jstats  
-	VAL_IN: 1 
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): mappings-to-jstats -> path-to-stringliteral, mappings-to-jstats %
 [mappings-to-jstats-2]
 	mappings-to-jstats(&path : &markup; &mapping*) =
 		writer = new FileWriter(new File(root, path-to-stringliteral(&path)));
@@ -153,19 +123,13 @@ $out.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"h
 
 equations
 
-% FUNCTION: stats-to-jstats  
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stats-to-jstats  %
 [stats-to-jstats-nil]
 	&stat* == 
 	===
 	stats-to-jstats(&stat*) = 
 
-% FUNCTION: stats-to-jstats
-	VAL_IN: 1 
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stats-to-jstats %
 [stats-to-jstats-cons]
 	stats-to-jstats(&stat &stat*) =
 		stat-to-jstats(&stat)
@@ -173,63 +137,39 @@ equations
 
 equations
 
-% FUNCTION: exp-to-jstring -> stringliteral  
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jstring -> stringliteral  %
 [exp-to-jstring-1]
 	stringliteral(" &string-part* ") := exp-to-jexp(&exp)
 	===
 	exp-to-jstring(&exp) = stringliteral(" &string-part* ")
 
-% FUNCTION: exp-to-jstring  
-	VAL_IN: 1 
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jstring %
 [default-exp-to-jstring-2]
 	exp-to-jstring(&exp) = exp-to-jexp(&exp).toString()
 equations
 
-% FUNCTION: stat-to-jstats  
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats  %
 []	stat-to-jstats({ &stat* }) = 
         		stats-to-jstats(&stat*)
 
-% FUNCTION: stat-to-jstats  
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats %
 []	stat-to-jstats(yield;) = $markup.render($out); 
 
-% FUNCTION: stat-to-jstats -> exp-to-jstring
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> exp-to-jstring %
 []	stat-to-jstats(echo &exp;) = 
 	  	$out.write(exp-to-jstring(&exp));
 
-% FUNCTION: stat-to-jstats -> embedding-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> embedding-to-jstats %
 []	stat-to-jstats(echo &embedding;) =
 		embedding-to-jstats(&embedding)
 
-% FUNCTION: stat-to-jstats -> exp-to-jexp
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> exp-to-jexp %
 []	stat-to-jstats(if (&exp) &stat) = 
 		if (exp-to-jexp(&exp) != null) {
 			stat-to-jstats(&stat)
  		}
 
-% FUNCTION: stat-to-jstats -> exp-to-jexp
-	VAL_IN:  1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> exp-to-jexp %
 []	stat-to-jstats(if (&exp) &stat1 else &stat2) = 
 		if (exp-to-jexp(&exp) != null) {
 			stat-to-jstats(&stat1)
@@ -238,10 +178,7 @@ equations
 			stat-to-jstats(&stat2)
 		}
 
-% FUNCTION: stat-to-jstats -> exp-to-jexp, idcon-to-id, stats-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> exp-to-jexp, idcon-to-id, stats-to-jstats %
 []	&jexp := exp-to-jexp(&exp)
 	===
 	stat-to-jstats(each (&id: &exp) &stat) =
@@ -303,10 +240,7 @@ equations
 		}.each($out);
 
 
-% FUNCTION: stat-to-jstats -> exp-to-jexp, stats-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> exp-to-jexp, stats-to-jstats %
 [stat-to-jstats-5]
 	stat-to-jstats(let &id = &exp; in &stat* end) =
 		{
@@ -314,10 +248,7 @@ equations
 			stats-to-jstats(&stat*)
 		}
 
-% FUNCTION: stat-to-jstats -> idcon-to-id, formals-to-formalparams, stats-to-jstats, subst
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> idcon-to-id, formals-to-formalparams, stats-to-jstats, subst %
 [stat-to-jstats-6]
 	Object &jid := func-interface(&id*)
 	===
@@ -332,104 +263,68 @@ equations
 			stats-to-jstats(subst(&stat*, &id, !&id))
 		}
 
-% FUNCTION: stat-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats %
 [stat-to-jstats-6]
 	stat-to-jstats(let &assignment &assignment+ in &stat* end) =
 		stat-to-jstats(let &assignment in
 				let &assignment+ in &stat* end end)
 
-% FUNCTION: stat-to-jstats -> strcon-to-stringliteral%
+% FUNCTION (1->1): stat-to-jstats -> strcon-to-stringliteral %
 [stat-to-jstats-6]
 	&strcon' := "<!--" || &strcon || "-->"
 	===
 	stat-to-jstats(comment &strcon;) =
 		$out.write(strcon-to-stringliteral(&strcon'));
 
-% FUNCTION: stat-to-jstats -> markup-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> markup-to-jstats %
 [stat-to-jstats-7]
 	stat-to-jstats(&markup ;) = markup-to-jstats(&markup)
 
-% FUNCTION: stat-to-jstats -> markups-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> markups-to-jstats %
 [stat-to-jstats-8]
 	stat-to-jstats(&markup+ &stat) = 
 		markups-to-jstats(&markup+, stat-to-jstats(&stat))
 
-% FUNCTION: stat-to-jstats -> markups-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> markups-to-jstats %
 [stat-to-jstats-8]
 	stat-to-jstats(&markup+ &exp ;) = 
 		markups-to-jstats(&markup+, stat-to-jstats(echo &exp;))
 
-% FUNCTION: stat-to-jstats -> markups-to-jstats, embedding-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> markups-to-jstats, embedding-to-jstats %
 [stat-to-jstats-8]
 	stat-to-jstats(&markup+ &embedding;) = 
 		markups-to-jstats(&markup+, embedding-to-jstats(&embedding))
 
-% FUNCTION: stat-to-jstats -> markups-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stat-to-jstats -> markups-to-jstats %
 [stat-to-jstats-8]
 	stat-to-jstats(&markup+ &markup ;) = 
 		markups-to-jstats(&markup+, markup-to-jstats(&markup))
 equations
 
-% FUNCTION: markups-to-jstats
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): markups-to-jstats %
 []	markups-to-jstats(&markup, &jstat*) = 
 		markup-to-jstats(&markup, &jstat*)
 
-% FUNCTION: markups-to-jstats
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): markups-to-jstats %
 []	markups-to-jstats(&markup+ &markup, &jstat*) =
 		markups-to-jstats(&markup+, markup-to-jstats(&markup, &jstat*))
 
 equations
 
-% FUNCTION: markup-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): markup-to-jstats %
 []	markup-to-jstats(&markup) = markup-to-jstats(&markup, )
 
-% FUNCTION: markup-to-jstats
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): markup-to-jstats %
 []	markup-to-jstats(&des, &jstat*) =
 		markup-to-jstats(&des (), &jstat*)
 
-% FUNCTION: markup-to-jstats -> markup-to-call, make-markup
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): markup-to-jstats -> markup-to-call, make-markup %
 []	is-defined(&des) == true
 	===
 	markup-to-jstats(&des &args, &jstat*) =
 		markup-to-call(&des, &args, make-markup(&jstat*))
 
-% FUNCTION: markup-to-jstats -> markup-to-output
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): markup-to-jstats -> markup-to-output %
 []	is-defined(&des) == false
 	===
 	markup-to-jstats(&des &args, &jstat*) =
@@ -437,17 +332,11 @@ equations
 
 equations
 
-% FUNCTION: make-markup
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): make-markup %
 [make-markup-empty]
 	make-markup(&jstat*) = $nil when &jstat* == 
 
-% FUNCTION: make-markup
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): make-markup %
 [make-markup-normal]
 	make-markup(&jstat+) =  new Markup() {
 			public void render(stream-type() $out) 
@@ -458,33 +347,21 @@ equations
 
 equations
 
-% FUNCTION: markup-to-call -> idcon-to-id, args-to-exprs
-	VAL_IN: 3
-	VAL_OUT: 1
-%
+% FUNCTION (3->1): markup-to-call -> idcon-to-id, args-to-exprs %
 [markup-to-call-1]
 	markup-to-call(? &id, (&arg*), &jexp) = idcon-to-id(&id)($out, &jexp, args-to-exprs(&arg*));
 
-% FUNCTION: markup-to-call -> idcon-to-id, args-to-exprs
-	VAL_IN: 3
-	VAL_OUT: 1
-%
+% FUNCTION (3->1): markup-to-call -> idcon-to-id, args-to-exprs %
 [markup-to-call-2]
 	markup-to-call(! &id, (&arg*), &jexp) = idcon-to-id(&id).call($out, &jexp, args-to-exprs(&arg*));
 
 equations
 
-% FUNCTION: markup-to-output -> empty-with-designator
-	VAL_IN: 3
-	VAL_OUT: 1
-%
+% FUNCTION (3->1): markup-to-output -> empty-with-designator %
 [markup-to-output-1]
 	markup-to-output(&des, &args, ) = empty-with-designator(&des, &args)
 
-% FUNCTION: markup-to-output -> start-with-designator, end-with-designator
-	VAL_IN: 3
-	VAL_OUT: 1 
-%
+% FUNCTION (3->1): markup-to-output -> start-with-designator, end-with-designator %
 [markup-to-output-2]
 	markup-to-output(&des, &args, &jstat+) =
 		start-with-designator(&des, &args)
@@ -494,10 +371,7 @@ equations
 
 equations
 
-% FUNCTION: embedding-to-jstats -> pre-to-stringliteral, embed-to-jstats, tail-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): embedding-to-jstats -> pre-to-stringliteral, embed-to-jstats, tail-to-jstats %
 []	embedding-to-jstats(&pre &embed &tail) =
 		$out.write(pre-to-stringliteral(&pre));
 		embed-to-jstats(&embed)
@@ -505,101 +379,62 @@ equations
 
 equations
 
-% FUNCTION: tail-to-jstats -> mid-to-stringliteral, embed-to-jstats, tail-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): tail-to-jstats -> mid-to-stringliteral, embed-to-jstats, tail-to-jstats %
 []	tail-to-jstats(&mid &embed &tail) = 
 		$out.write(mid-to-stringliteral(&mid));
 		embed-to-jstats(&embed)
 		tail-to-jstats(&tail) 
 
-% FUNCTION: tail-to-jstats -> post-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): tail-to-jstats -> post-to-stringliteral %
 []	tail-to-jstats(&post) = $out.write(post-to-stringliteral(&post));
 
 
 equations
 
-% FUNCTION: embed-to-jstats -> stat-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): embed-to-jstats -> stat-to-jstats %
 []	embed-to-jstats(&exp) = stat-to-jstats(echo &exp;)
 
-% FUNCTION: embed-to-jstats -> markups-to-jstats, stat-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): embed-to-jstats -> markups-to-jstats, stat-to-jstats %
 []	embed-to-jstats(&markup+ &exp) = 
 		markups-to-jstats(&markup+, stat-to-jstats(echo &exp;))
 
-% FUNCTION: embed-to-jstats -> markup-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): embed-to-jstats -> markup-to-jstats %
 []	embed-to-jstats(&markup) = markup-to-jstats(&markup)
 
-% FUNCTION: embed-to-jstats -> markups-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): embed-to-jstats -> markups-to-jstats %
 []	embed-to-jstats(&markup+ &markup) = 
 		markups-to-jstats(&markup+, markup-to-jstats(&markup))
 
 
 equations
 
-% FUNCTION: subst
-	VAL_IN: 3
-	VAL_OUT: 1
-%
+% FUNCTION (3->1): subst %
 [subst-top]
 	subst(&id, &id, !&id') = !&id'
 
-% FUNCTION: subst
-	VAL_IN: 3
-	VAL_OUT: 1
-%
+% FUNCTION (3->1): subst %
 [subst-top]
 	subst(? &id, &id, !&id') = !&id'
 
 equations
 
-% FUNCTION: exp-to-jexp -> text-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jexp -> text-to-stringliteral %
 [exp-to-jexp-1]
 	exp-to-jexp(&text) = text-to-stringliteral(&text)
 
-% FUNCTION: exp-to-jexp -> natcon-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jexp -> natcon-to-stringliteral %
 [exp-to-jexp-2]
 	exp-to-jexp(&natcon) = natcon-to-stringliteral(&natcon)
 
-% FUNCTION: exp-to-jexp -> idcon-to-id
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jexp -> idcon-to-id %
 [exp-to-jexp-3]
 	exp-to-jexp(&id) = idcon-to-id(&id)
 
-% FUNCTION: exp-to-jexp
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jexp %
 [exp-to-jexp-3-1]
 	exp-to-jexp(&exp1 + &exp2) = exp-to-jexp(&exp1) + exp-to-jexp(&exp2)
 
-% FUNCTION: exp-to-jexp -> idcon-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jexp -> idcon-to-stringliteral %
 [exp-to-jexp-4]
 	&jexp := exp-to-jexp(&exp)
 	===
@@ -625,24 +460,15 @@ equations
 		}
 		}.field()
 
-% FUNCTION: exp-to-jexp -> symbol-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jexp -> symbol-to-stringliteral %
 [exp-to-jexp-5]
 	exp-to-jexp(&sym) = symbol-to-stringliteral(&sym)
 
-% FUNCTION: exp-to-jexp
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jexp %
 [exp-to-jexp-8]
 	exp-to-jexp([]) = new ArrayList<Object>()
 
-% FUNCTION: exp-to-jexp
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jexp %
 [exp-to-jexp-9]
 	exp-to-jexp([&exp, &exp*]) = new Object() {
 			public List<Object> list() {
@@ -652,17 +478,11 @@ equations
 				return $v;
 			}}.list()
 
-% FUNCTION: exp-to-jexp
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jexp %
 [exp-to-jexp-10]
 	exp-to-jexp({}) = new Hashtable<String,Object>()
 
-% FUNCTION: exp-to-jexp -> idcon-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): exp-to-jexp -> idcon-to-stringliteral %
 [exp-to-jexp-20]
 	exp-to-jexp({&id: &exp, &key-val*}) = new Object() {
 			public Map<String,Object> map() {
@@ -676,20 +496,14 @@ equations
 
 equations
 
-% FUNCTION: start-tag -> strcon-to-stringliteral
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): start-tag -> strcon-to-stringliteral %
 [start-tag-0]
 	&strcon := "<" || unparse-to-string(&id) || ">"
 	===
 	start-tag(&id, ) =
 		$out.write(strcon-to-stringliteral(&strcon));
 
-% FUNCTION: start-tag -> unparse-to-string, strcon-to-stringliteral
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): start-tag -> unparse-to-string, strcon-to-stringliteral %
 [start-tag-1]
 	&strcon := "<" || unparse-to-string(&id)
 	===
@@ -701,28 +515,19 @@ equations
 
 equations
 
-% FUNCTION: empty-with-designator -> make-empty-element, args-to-jstats, attributes-to-args
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): empty-with-designator -> make-empty-element, args-to-jstats, attributes-to-args %
 [empty-with-designator-1]
 	empty-with-designator(&id &attribute*, (&arg*)) =
 		make-empty-element(&id, args-to-jstats(attributes-to-args(&attribute*), &arg*))
 
 equations
 
-% FUNCTION: make-empty-element -> idcon-to-stringliteral
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): make-empty-element -> idcon-to-stringliteral %
 [make-empty-element-1]
 	make-empty-element(&id, ) =
 		$out.write("<" + idcon-to-stringliteral(&id) + " />");
 
-% FUNCTION: make-empty-element -> idcon-to-stringliteral
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): make-empty-element -> idcon-to-stringliteral %
 [make-empty-element-1]
 	make-empty-element(&id, &jstat+) =
 		$out.write("<" + idcon-to-stringliteral(&id));
@@ -732,20 +537,14 @@ equations
 
 equations
 
-% FUNCTION: start-with-designator -> start-tag, args-to-jstats, attributes-to-args
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): start-with-designator -> start-tag, args-to-jstats, attributes-to-args %
 [start-with-designator-1]
 	start-with-designator(&id &attribute*, (&arg*)) =
 		start-tag(&id, args-to-jstats(attributes-to-args(&attribute*), &arg*))
 
 equations
 
-% FUNCTION: end-with-designator -> strcon-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): end-with-designator -> strcon-to-stringliteral %
 [end-with-designator-2]
 	&strcon := "</" || unparse-to-string(&id) || ">"
 	===
@@ -755,27 +554,18 @@ equations
 
 equations
 
-% FUNCTION: args-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): args-to-jstats %
 [args-to-jstats-1]
 	() == (&arg*)
 	===
 	args-to-jstats(&arg*) =  
 
-% FUNCTION: args-to-jstats
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): args-to-jstats %
 [args-to-jstats-2]
 	args-to-jstats(&exp, &arg*) = args-to-jstats(value = &exp, &arg*)
 
 
-% FUNCTION: args-to-jstats -> strcon-to-stringliteral, exp-to-jexp
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): args-to-jstats -> strcon-to-stringliteral, exp-to-jexp %
 [args-to-jstats-2]
 	&strcon := " " || unparse-to-string(&id) || "=\""
 	===
@@ -783,10 +573,7 @@ equations
 		$out.write(strcon-to-stringliteral(&strcon) + exp-to-jexp(&exp) + "\"");
 
 
-% FUNCTION: args-to-jstats -> strcon-to-stringliteral, exp-to-jexp, sim-args-to-jstats, remove-args-for-id
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): args-to-jstats -> strcon-to-stringliteral, exp-to-jexp, sim-args-to-jstats, remove-args-for-id %
 [default-args-to-jstats-3]
 	&strcon := unparse-to-string(&id) || "=\""
 	===
@@ -799,63 +586,39 @@ equations
 
 equations
 
-% FUNCTION: sim-args-to-jstats
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): sim-args-to-jstats %
 []	sim-args-to-jstats(&id, ) =
 
-% FUNCTION: sim-args-to-jstats -> exp-to-jexp
-	VAL_IN: 3
-	VAL_OUT: 1
-%
+% FUNCTION (3->1): sim-args-to-jstats -> exp-to-jexp %
 []	sim-args-to-jstats(&id, &id = &exp, &arg*) =
 		$out.write(" " + exp-to-jexp(&exp));
 		sim-args-to-jstats(&id, &arg*)
 
-% FUNCTION: sim-args-to-jstats
-	VAL_IN: 3
-	VAL_OUT: 1
-%
+% FUNCTION (3->1): sim-args-to-jstats %
 [default-sim]
 	sim-args-to-jstats(&id, &arg, &arg*) =
 		sim-args-to-jstats(&id, &arg*)
 
 equations
 
-% FUNCTION: remove-args-for-id
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): remove-args-for-id %
 []	remove-args-for-id(&id, ) =
 
-% FUNCTION: remove-args-for-id
-	VAL_IN: 3
-	VAL_OUT: 1
-%
+% FUNCTION (3->1): remove-args-for-id %
 []	remove-args-for-id(&id, &id = &exp, &arg*) =	
 		remove-args-for-id(&id, &arg*)
 
-% FUNCTION: remove-args-for-id
-	VAL_IN: 3
-	VAL_OUT: 1
-%
+% FUNCTION (3->1): remove-args-for-id %
 [default-rm]
 	remove-args-for-id(&id, &arg, &arg*) =
 		&arg, remove-args-for-id(&id, &arg*)
 
 equations
 
-% FUNCTION: idcon-to-text -> text, textchar
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): idcon-to-text -> text, textchar %
 []	idcon-to-text(idcon(&idhead)) = text(" textchar(&idhead) ")
 
-% FUNCTION: idcon-to-text -> text, textchar
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->): idcon-to-text -> text, textchar %
 []	text(" textchar(a) &textchar* ") := idcon-to-text(idcon(a &idtail*))
 	===
 	idcon-to-text(idcon(&idhead &idtail &idtail*)) =
@@ -863,78 +626,48 @@ equations
 
 equations
 
-% FUNCTION: natcon-to-text -> text, textchar
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->): natcon-to-text -> text, textchar %
 []	natcon-to-text(natcon(&d)) = text(" textchar(&d) ")
 
-% FUNCTION: natcon-to-text -> text, textchar
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): natcon-to-text -> text, textchar %
 []	text(" &textchar* ") := natcon-to-text(natcon(&d+))
 	===
 	natcon-to-text(natcon(&d &d+)) = text(" textchar(&d) &textchar* ")
 
 equations
 
-% FUNCTION: attributes-to-args -> attributes-to-args
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): attributes-to-args -> attributes-to-args %
 []	x.dummy &attribute* == x.dummy
 	===
 	attributes-to-args(&attribute*) = 
 
-% FUNCTION: attributes-to-args -> idcon-to-text
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): attributes-to-args -> idcon-to-text %
 []	attributes-to-args(. &id &attribute*) = 
 		class = idcon-to-text(&id),
 		attributes-to-args(&attribute*)
 
-% FUNCTION: attributes-to-args -> idcon-to-text
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): attributes-to-args -> idcon-to-text %
 []	attributes-to-args(# &id &attribute*) = 
 		id = idcon-to-text(&id),
 		attributes-to-args(&attribute*)
 
-% FUNCTION: attributes-to-args -> idcon-to-text
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): attributes-to-args -> idcon-to-text %
 []	attributes-to-args($ &id &attribute*) = 
 		name = idcon-to-text(&id),
 		attributes-to-args(&attribute*)
 
-% FUNCTION: attributes-to-args -> idcon-to-text
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): attributes-to-args -> idcon-to-text %
 []	attributes-to-args(: &id &attribute*) = 
 		type = idcon-to-text(&id),
 		attributes-to-args(&attribute*)
 
-% FUNCTION: attributes-to-args -> natcon-to-text
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): attributes-to-args -> natcon-to-text %
 []	attributes-to-args(@ &natcon &attribute*) = 
 		width = natcon-to-text(&natcon),
 		attributes-to-args(&attribute*)
 
-% FUNCTION: attributes-to-args -> natcon-to-text
-	VAL_IN: 1
-	VAL_OUT: 1
-%
-[]	attributes-to-args(@ &natcon1
-	VAL_IN: 1
-	VAL_OUT: 1
-% &natcon2 &attribute*) = 
+% FUNCTION (1->1): attributes-to-args -> natcon-to-text %
+[]	attributes-to-args(@ &natcon1 % &natcon2 &attribute*) = 
 		width = natcon-to-text(&natcon1),
 		height = natcon-to-text(&natcon2),
 		attributes-to-args(&attribute*)
@@ -942,89 +675,59 @@ equations
 
 equations
 
-% FUNCTION: args-to-exprs
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): args-to-exprs %
 [args-to-exprs-1]
 	() == (&arg*)
 	===
 	args-to-exprs(&arg*) = 
 
-% FUNCTION: args-to-exprs -> exp-to-jexp
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): args-to-exprs -> exp-to-jexp %
 [args-to-exprs-2]
 	args-to-exprs(&exp, &arg*) =
 		exp-to-jexp(&exp), args-to-exprs(&arg*)
 
-% FUNCTION: args-to-exprs
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): args-to-exprs %
 [args-to-exprs-2]
 	args-to-exprs(&id = &exp, &arg*) =
 		args-to-exprs(&arg*)
 
 equations
 
-% FUNCTION: formals-to-formalparams -> idcon-to-id
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): formals-to-formalparams -> idcon-to-id %
 [formals-to-formalparams-0]
 	(&id*) == ()
 	====
 	formals-to-formalparams(&id*) = 
 
-% FUNCTION: formals-to-formalparams
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): formals-to-formalparams %
 [formals-to-formalparams-1]
 	formals-to-formalparams(&id, &id*) =
 		final Object idcon-to-id(&id), formals-to-formalparams(&id*)
 
 equations
 
-% FUNCTION: formals-to-exprs
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): formals-to-exprs %
 [formals-to-exprs-0]
 	(&id*) == ()
 	====
 	formals-to-exprs(&id*) = 
 
-% FUNCTION: formals-to-exprs -> idcon-to-id
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): formals-to-exprs -> idcon-to-id %
 [formals-to-exprs-1]
 	formals-to-exprs(&id, &id*) =
 		idcon-to-id(&id), formals-to-exprs(&id*)
 
 equations
 
-% FUNCTION: is-defined
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): is-defined %
 [is-defined-1]
 	is-defined(? &id) = true 
 
-% FUNCTION: is-defined
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): is-defined %
 [is-defined-1]
 	is-defined(! &id) = true 
 
-% FUNCTION: is-defined
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): is-defined %
 [default-is-defined-2]
 	is-defined(&des) = false
 
@@ -1032,54 +735,36 @@ equations
 
 equations
 
-% FUNCTION: strcon-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): strcon-to-stringliteral %
 []	&strcon == ""
 	===
 	strcon-to-stringliteral(&strcon) = ""
 
-% FUNCTION: strcon-to-stringliteral -> stringliteral, stringpart, stringchars
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): strcon-to-stringliteral -> stringliteral, stringpart, stringchars %
 []	stringliteral(" &string-part* ") := strcon-to-stringliteral(strcon(\" &strchar* \"))
 	===
 	strcon-to-stringliteral(strcon(\" strchar(&strcon-jstr-char) &strchar* \")) =
 		stringliteral(" stringpart(stringchars(&strcon-jstr-char)) &string-part* ")
 
-% FUNCTION: strcon-to-stringliteral -> stringliteral, stringpart, escapesec, namedescape
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): strcon-to-stringliteral -> stringliteral, stringpart, escapesec, namedescape %
 []	stringliteral(" &string-part* ") := strcon-to-stringliteral(strcon(\" &strchar* \"))
 	===
 	strcon-to-stringliteral(strcon(\" strchar(\n) &strchar* \")) =
 		stringliteral(" stringpart(escapeseq(namedescape(\n))) &string-part* ")
 
-% FUNCTION: strcon-to-stringliteral -> stringliteral, stringpart, escapeseq, namedescape
-	VAL_IN: 1
-	VAL_OUT: 1
-%	
+% FUNCTION (1->1): strcon-to-stringliteral -> stringliteral, stringpart, escapeseq, namedescape %	
 []	stringliteral(" &string-part* ") := strcon-to-stringliteral(strcon(\" &strchar* \"))
 	===
 	strcon-to-stringliteral(strcon(\" strchar(\t) &strchar* \")) =
 		stringliteral(" stringpart(escapeseq(namedescape(\t))) &string-part* ")
 
-% FUNCTION: strcon-to-stringliteral -> stringliteral, stringpart, escapeseq, namedescape
-	VAL_IN: 1
-	VAL_OUT: 1
-%	
+% FUNCTION (1->1): strcon-to-stringliteral -> stringliteral, stringpart, escapeseq, namedescape %	
 []	stringliteral(" &string-part* ") := strcon-to-stringliteral(strcon(\" &strchar* \"))
 	===
 	strcon-to-stringliteral(strcon(\" strchar(\") &strchar* \")) =
 		stringliteral(" stringpart(escapeseq(namedescape(\\"))) &string-part* ")
 
-% FUNCTION: strcon-to-stringliteral -> stringliteral, stringpart, escapeseq, namedescape
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): strcon-to-stringliteral -> stringliteral, stringpart, escapeseq, namedescape %
 []	stringliteral(" &string-part* ") := strcon-to-stringliteral(strcon(\" &strchar* \"))
 	===
 	strcon-to-stringliteral(strcon(\" strchar(\\) &strchar* \")) =
@@ -1088,84 +773,57 @@ equations
 
 equations
 
-% FUNCTION: idcon-to-stringliteral -> strcon-to-stringliteral, unparse-to-string
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): idcon-to-stringliteral -> strcon-to-stringliteral, unparse-to-string %
 []	idcon-to-stringliteral(&id) = strcon-to-stringliteral(unparse-to-string(&id))
 
 equations
 
-% FUNCTION: symbol-to-stringliteral -> strcon-to-stringliteral, strcon
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): symbol-to-stringliteral -> strcon-to-stringliteral, strcon %
 []	strcon(\" strchar(\') &strchar* \") := unparse-to-string(&sym)
 	===
 	symbol-to-stringliteral(&sym) = strcon-to-stringliteral(strcon(\" &strchar* \"))
 
 equations
 
-% FUNCTION: text-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): text-to-stringliteral %
 []	text-to-stringliteral(&text) = "" when &text == ""
 
-% FUNCTION: text-to-stringliteral -> stringliteral, stringpart, stringchars
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): text-to-stringliteral -> stringliteral, stringpart, stringchars %
 []	&text := text(" &textchar* "),
 	stringliteral(" &string-part* ") := text-to-stringliteral(&text)
 	===
 	text-to-stringliteral(text(" textchar(&text-jstr-char) &textchar* ")) = 
 		stringliteral(" stringpart(stringchars(&text-jstr-char)) &string-part* ")
 
-% FUNCTION: text-to-stringliteral -> stringpart, escapeseq, namedescape
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): text-to-stringliteral -> stringpart, escapeseq, namedescape %
 []	&text := text(" &textchar* "),
 	stringliteral(" &string-part* ") := text-to-stringliteral(&text)
 	===
 	text-to-stringliteral(text(" textchar(&quote) &textchar* ")) = 
 		stringliteral(" stringpart(escapeseq(namedescape(\\"))) &string-part* ")
 
-% FUNCTION: text-to-stringliteral -> stringliteral, stringpart, stringchars
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): text-to-stringliteral -> stringliteral, stringpart, stringchars %
 []	&text := text(" &textchar* "),
 	stringliteral(" &string-part* ") := text-to-stringliteral(&text)
 	===
 	text-to-stringliteral(text(" textchar(amp(&amp)) &textchar* ")) = 
 		stringliteral(" stringpart(stringchars(\&)) &string-part* ")
 
-% FUNCTION: text-to-stringliteral -> stringpart, escapesec, namedescape
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): text-to-stringliteral -> stringpart, escapesec, namedescape %
 []	&text := text(" &textchar* "),
 	stringliteral(" &string-part* ") := text-to-stringliteral(&text)
 	===
 	text-to-stringliteral(text(" textchar(&nl) &textchar* ")) = 
 		stringliteral(" stringpart(escapeseq(namedescape(\n))) &string-part* ")
 
-% FUNCTION: text-to-stringliteral -> stringliteral, stringpart, escapesec, namedescape
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): text-to-stringliteral -> stringliteral, stringpart, escapesec, namedescape %
 []	&text := text(" &textchar* "),
 	stringliteral(" &string-part* ") := text-to-stringliteral(&text)
 	===
 	text-to-stringliteral(text(" textchar(&cr) &textchar* ")) = 
 		stringliteral(" stringpart(escapeseq(namedescape(\r))) &string-part* ")
 
-% FUNCTION: text-to-stringliteral -> stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): text-to-stringliteral -> stringliteral %
 []	&text := text(" &textchar* "),
 	stringliteral(" &string-part*0 ") := char-ref-to-stringliteral(textcharref(&# &d+;)),
 	stringliteral(" &string-part* ") := text-to-stringliteral(&text)
@@ -1173,10 +831,7 @@ equations
 	text-to-stringliteral(text(" textchar(textcharref(&# &d+ ;)) &textchar* ")) = 
 		stringliteral(" &string-part*0 &string-part* ")
 
-% FUNCTION: text-to-stringliteral -> stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): text-to-stringliteral -> stringliteral %
 []	&text := text(" &textchar* "),
 	stringliteral(" &string-part*0 ") := char-ref-to-stringliteral(textcharref(&#x &xd+;)),
 	stringliteral(" &string-part* ") := text-to-stringliteral(&text)
@@ -1184,10 +839,7 @@ equations
 	text-to-stringliteral(text(" textchar(textcharref(&#x &xd+ ;)) &textchar* ")) = 
 		stringliteral(" &string-part*0 &string-part* ")
 
-% FUNCTION: text-to-stringliteral -> stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): text-to-stringliteral -> stringliteral %
 []	&text := text(" &textchar* "),
 	stringliteral(" &string-part*0 ") := entity-ref-to-stringliteral(textentityref(& &ehead &etail*;)),
 	stringliteral(" &string-part* ") := text-to-stringliteral(&text)
@@ -1198,34 +850,22 @@ equations
 
 equations
 
-% FUNCTION: char-ref-to-stringliteral -> stringliteral, stringpart, stringchars
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): char-ref-to-stringliteral -> stringliteral, stringpart, stringchars %
 []	char-ref-to-stringliteral(textcharref(&# &d;)) = 
 		stringliteral(" stringpart(stringchars(\& \# &d \;)) ")
 
-% FUNCTION: char-ref-to-stringliteral -> stringliteral, stringpart, stringchars
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): char-ref-to-stringliteral -> stringliteral, stringpart, stringchars %
 []	char-ref-to-stringliteral(textcharref(&#x &xd;)) = 
 		stringliteral(" stringpart(stringchars(\& \# x &xd \;)) ")
 
-% FUNCTION: char-ref-to-stringliteral -> stringliteral, stringpart, stringchars
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): char-ref-to-stringliteral -> stringliteral, stringpart, stringchars %
 []	stringliteral(" stringpart(stringchars(\& \# &string-char* \;)) ") :=
 		char-ref-to-stringliteral(textcharref(&# &d+ ;))
 	===
 	char-ref-to-stringliteral(textcharref(&# &d &d+;)) = 
 		stringliteral(" stringpart(stringchars(\& \# &d &string-char* \;)) ")
 
-% FUNCTION: char-ref-to-stringliteral -> stringliteral, stringpart, stringchars
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): char-ref-to-stringliteral -> stringliteral, stringpart, stringchars %
 []	stringliteral(" stringpart(stringchars(\& \# x &string-char* \;)) ") :=
 		char-ref-to-stringliteral(textcharref(&#x &xd+ ;))
 	===
@@ -1234,24 +874,15 @@ equations
 
 equations
 
-% FUNCTION: entity-ref-to-stringliteral -> stringliteral, stringpart, stringchars
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): entity-ref-to-stringliteral -> stringliteral, stringpart, stringchars %
 []	entity-ref-to-stringliteral(textentityref(& &ehead ; )) = 
 		stringliteral(" stringpart(stringchars(\& &ehead \;)) ")
 
-% FUNCTION: entity-ref-to-stringliteral -> stringliteral, stringpart, stringchars
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): entity-ref-to-stringliteral -> stringliteral, stringpart, stringchars %
 []	entity-ref-to-stringliteral(textentityref(& &ehead &etail ; )) =
 		 stringliteral(" stringpart(stringchars(\& &ehead &etail \;)) ")
 
-% FUNCTION: entity-ref-to-stringliteral -> stringliteral, stringpart, stringchars
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): entity-ref-to-stringliteral -> stringliteral, stringpart, stringchars %
 []	stringliteral(" stringpart(stringchars(\& a &string-char* \;)) ") :=
 		entity-ref-to-stringliteral(textentityref(& a &etail* ;))
 	===
@@ -1262,99 +893,66 @@ equations
 
 equations
 
-% FUNCTION: path-to-stringliteral -> strcon-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): path-to-stringliteral -> strcon-to-stringliteral %
 []	&strcon1 := unparse-to-string(&dir),
 	&strcon2 := unparse-to-string(&filename),
 	&strcon3 := &strcon1 || "/" || &strcon2
 	===
 	path-to-stringliteral(&dir/&filename) = strcon-to-stringliteral(&strcon3)
 
-% FUNCTION: path-to-stringliteral -> strcon-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): path-to-stringliteral -> strcon-to-stringliteral %
 []	&strcon := unparse-to-string(&filename)
 	===
 	path-to-stringliteral(&filename) = strcon-to-stringliteral(&strcon)
 
 equations
 
-% FUNCTION: natcon-to-stringliteral -> strcon-to-stringliteral, unparse-to-string
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): natcon-to-stringliteral -> strcon-to-stringliteral, unparse-to-string %
 []	natcon-to-stringliteral(&natcon) = strcon-to-stringliteral(unparse-to-string(&natcon))
 
 
 equations
 
-% FUNCTION: pre-to-stringliteral -> text-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): pre-to-stringliteral -> text-to-stringliteral %
 []	&text := text(" &textchar* ")
 	===
 	pre-to-stringliteral(pretext(" &textchar* <)) = text-to-stringliteral(&text)
 
-% FUNCTION: post-to-stringliteral -> text-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): post-to-stringliteral -> text-to-stringliteral %
 []	&text := text(" &textchar* ")
 	===
 	post-to-stringliteral(posttext(> &textchar* ")) = text-to-stringliteral(&text)
 
-% FUNCTION: mid-to-stringliteral -> text-to-stringliteral
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): mid-to-stringliteral -> text-to-stringliteral %
 []	&text := text(" &textchar* ")
 	===
 	mid-to-stringliteral(midtext(> &textchar* <)) = text-to-stringliteral(&text)
 
 equations
 
-% FUNCTION: func-interface -> natcon-to-formal
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): func-interface -> natcon-to-formal %
 []	&natcon := arity(&id*)
 	===
 	func-interface(&id*) = natcon-to-formal(Func, &natcon)
 
 equations
 
-% FUNCTION: arity
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): arity %
 []	(&id*) == ()
 	===
 	arity(&id*) = 0
 
-% FUNCTION: arity
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): arity %
 []	arity(&id, &id*) = 1 + arity(&id*)
 
 equations
 
-% FUNCTION: func-interfaces
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): func-interfaces %
 []	&typedec* := func-interface-dec(0)
 	===
 	func-interfaces(0) = &typedec*
 
-% FUNCTION: func-interfaces -> func-interface-dec, func-interfaces
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): func-interfaces -> func-interface-dec, func-interfaces %
 []	&natcon > 0 == true
 	===
 	func-interfaces(&natcon) = 
@@ -1363,10 +961,7 @@ equations
 
 equations
 
-% FUNCTION: func-interface-dec -> func-formals
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): func-interface-dec -> func-formals %
 []	Object &jid := natcon-to-formal(Func, &natcon) 
 	===
 	func-interface-dec(&natcon) = 
@@ -1377,34 +972,22 @@ equations
 
 equations
 
-% FUNCTION: natcon-to-formal
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): natcon-to-formal %
 []	natcon-to-formal(id(&jhead &jtail*), natcon(&d)) = Object id(&jhead &jtail* &d)
 
-% FUNCTION: natcon-to-formal
-	VAL_IN: 2
-	VAL_OUT: 1
-%
+% FUNCTION (2->1): natcon-to-formal %
 []	Object id(&jhead &jtail*) := natcon-to-formal(&jid, natcon(&d+))
 	===
 	natcon-to-formal(&jid, natcon(&d+ &d)) = Object id(&jhead &jtail* &d)
 
 equations
 
-% FUNCTION: func-formals
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): func-formals %
 []	&natcon == 0
 	===
 	func-formals(&natcon) = 
 
-% FUNCTION: func-formals -> natcon-to-formal
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): func-formals -> natcon-to-formal %
 []	&natcon > 0 == true,
 	&natcon' := &natcon - 1
 	===
@@ -1415,8 +998,5 @@ equations
 
 equations
 
-% FUNCTION: stream-type
-	VAL_IN: 1
-	VAL_OUT: 1
-%
+% FUNCTION (1->1): stream-type %
 []	stream-type() = Writer
