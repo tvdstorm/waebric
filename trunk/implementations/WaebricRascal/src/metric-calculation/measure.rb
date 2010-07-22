@@ -154,7 +154,6 @@ class CountMetric
 		end
 		
 		if tot > 0 then
-			puts "?? " + num.to_s
 			return tot
 		else 
 			return 0
