@@ -218,7 +218,7 @@ equations
 		embedding-to-jstats(&embedding)
 
 % FUNCTION: stat-to-jstats -> exp-to-jexp
-	VAL_IN:  1
+	VAL_IN: 1
 	VAL_OUT: 1
 %
 []	stat-to-jstats(if (&exp) &stat) = 
@@ -227,7 +227,7 @@ equations
  		}
 
 % FUNCTION: stat-to-jstats -> exp-to-jexp
-	VAL_IN: 1
+	VAL_IN:  1
 	VAL_OUT: 1
 %
 []	stat-to-jstats(if (&exp) &stat1 else &stat2) = 
@@ -475,7 +475,8 @@ equations
 equations
 
 % FUNCTION: markup-to-output -> empty-with-designator
-
+	VAL_IN: 3
+	VAL_OUT: 1
 %
 [markup-to-output-1]
 	markup-to-output(&des, &args, ) = empty-with-designator(&des, &args)
