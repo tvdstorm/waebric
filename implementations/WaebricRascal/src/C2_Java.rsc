@@ -156,7 +156,7 @@ public str printIfALT(str condition, str doIf){
 }
 
 /* The constructor of the java code, and the creation of the html files. 
-VAL_IN: 3 VAL_OUT: 1 FUNCTION: printConstructor */
+	VAL_IN: 3 VAL_OUT: 1 FUNCTION: printConstructor */
 private str printConstructor(str module_id, list[tuple[str,str]] sites){ return 
 "@SuppressWarnings(\"unchecked\")
 public class <module_id> {
@@ -350,11 +350,7 @@ public str printLine(str toPrint){
 	return "$out.write(<toPrint>);\n";
 }
 
-/*
-VAL_IN: 2
-VAL_OUT: 1
-FUNCTION: getExpression -> getKeyValuePairs, toString, getQuotedString, replaceAll, printForEachArray1
-*/
+/* VAL_IN: 2 VAL_OUT: 1 FUNCTION: getExpression -> getKeyValuePairs, toString, getQuotedString, replaceAll, printForEachArray1 */
 public str getExpression(Expression e, bool firstTime){
 	switch(e){
 		case (Expression) `<Expression e1> + <Expression e2> ` :{

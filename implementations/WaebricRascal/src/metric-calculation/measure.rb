@@ -4,24 +4,25 @@ class MetricCalculation
 	def initialize(info, filetype, dir)
 		$filetype = filetype
 		$dir = dir
-		val_in = AverageMetric.new("VAL_IN").calculate
-		val_out = AverageMetric.new("VAL_OUT").calculate
-		fan_in, fan_out, functions, signatures = CalculateFanMetrics.new("FUNCTION").calculate
+		val_in = CountMetric.new("VAL_IN").calculate
+		val_out = CountMetric.new("VAL_OUT").calculate
+		fan_in, fan_out, functions, signatures = CalculateMetrics.new("FUNCTION").calculate
 
 		puts info
 		puts ""
-		puts "val-in: " + val_in.to_s
-		puts "val-out: " + val_out.to_s
-		puts "fan-in/function: " + (fan_in/functions).to_s
-		puts "fan-out/function: " + (fan_out/functions).to_s
 		puts "functions: " + functions.to_s
 		puts "signatures: " + signatures.to_s
+		puts "signatures/function: " + (Float(signatures)/Float(functions)).to_s
+		puts "val-in: " + (val_in/functions).to_s
+		puts "val-out: " + (val_out/functions).to_s
+		puts "fan-in/function: " + (fan_in/functions).to_s
+		puts "fan-out/function: " + (fan_out/functions).to_s
 		puts "======"
 		
 	end
 end
 
-class CalculateFanMetrics
+class CalculateMetrics
 	def initialize(metric_name)
 		@metric_name = metric_name
 	end
@@ -132,20 +133,19 @@ class CalculateFanMetrics
 end
 
 
-class AverageMetric
+class CountMetric
 	def initialize(metric_name)
 		@metric_name = metric_name
 	end
 	
 	def calculate
-		num = 0
 		tot = 0
-		
+		num = 0
 		Find.find($dir) do |file_loc|
 			if File.extname(file_loc) == $filetype then
 				file = File.open(file_loc)
 				while (line = file.gets) != nil do
-					if /.*#{@metric_name}: (\d+?).*/ =~ line then
+					if /.*#{@metric_name}:[ ]*(\d+?)[. \-]*/ =~ line then
 						num += 1
 						tot += Float($1)
 					end
@@ -154,7 +154,8 @@ class AverageMetric
 		end
 		
 		if tot > 0 then
-			return tot / num
+			puts "?? " + num.to_s
+			return tot
 		else 
 			return 0
 		end

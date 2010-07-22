@@ -31,7 +31,7 @@ public str getEach(Statement stat, list[tuple[str, list[IdCon], Statement?]] ass
 	}
 }
 
-/* VAL_IN: 1 VAL_OUT: 3 FUNCTION getVarList -> getVarList */
+/* VAL_IN: 1 VAL_OUT: 3 FUNCTION: getVarList -> getVarList */
 public tuple[str, str, str] getVarList(Expression b){	
 	return getVarList(b, "", "");
 }
