@@ -1,4 +1,5 @@
-require 'find';
+require 'find'
+require 'ftools'
 
 class MetricCalculation
 	def initialize(info, filetype, dir, printDependencies)
@@ -6,30 +7,55 @@ class MetricCalculation
 		$dir = dir
 		$doPrint = printDependencies
 		
-		fan_in, fan_out, functions, signatures, val_in, val_out = CalculateMetrics.new("FUNCTION").calculate
-		inf_fl_comp = informationFlowComplexity(fan_in, fan_out)
-		puts info
+		@fan_in, @fan_out, @functions, @signatures, @val_in, @val_out = CalculateMetrics.new("FUNCTION").calculate
+		@inf_fl_comp = informationFlowComplexity(@fan_in, @fan_out)
+		puts info + " metrics: "
 		puts ""
-		puts "functions: " + functions.to_s
-		puts "signatures: " + signatures.to_s
-		puts "signatures/function: " + (Float(signatures)/Float(functions)).to_s
-		puts "val-in: " + (sum(val_in)/functions).to_s
-		puts printFunctionMetric(val_in)
+		puts "functions: " + @functions.to_s
+		puts "signatures: " + @signatures.to_s
+		puts "signatures/function: " + (Float(@signatures)/Float(@functions)).to_s
+		puts "val-in: " + (sum(@val_in)/@functions).to_s
+		createRFiles("val_in", info, @val_in)
 
-		puts "val-out: " + (sum(val_out)/functions).to_s
-		puts printFunctionMetric(val_out)
-
-		puts "fan-in/function: " + (sum(fan_in)/functions).to_s
-		puts printFunctionMetric(fan_in)
-
-		puts "fan-out/function: " + (sum(fan_out)/functions).to_s
-		puts printFunctionMetric(fan_out)		
-
-		puts "information flow complexity (function)/function: " + (sum(inf_fl_comp)/functions).to_s
-		puts printFunctionMetric(inf_fl_comp)
+		puts "val-out: " + (sum(@val_out)/@functions).to_s
+		createRFiles("val_out", info, @val_out)
+		
+		puts "fan-in/function: " + (sum(@fan_in)/@functions).to_s
+		createRFiles("fan_in", info, @fan_in)
+		
+		puts "fan-out/function: " + (sum(@fan_out)/@functions).to_s
+		createRFiles("fan_out", info, @fan_out)
+		
+		puts "information flow complexity (function)/function: " + (sum(@inf_fl_comp)/@functions).to_s
+		createRFiles("information_flow_complexity", info, @inf_fl_comp)
 
 		puts "======"
 		
+
+	end
+	
+	def createRFiles(metric, info, values)
+		args = printFunctionMetric(values)
+		filename = "R_Generated_Graphs/#{metric}_#{info}"
+		content = "
+		
+		jpeg(\"#{filename}.jpeg\")
+		plot(c(#{args}), 
+			main=\"#{metric} (#{info})\", 
+			type=\"s\", 
+			xlab=\"#{info} functions in ascending \\\"#{metric}\\\" order\", 
+			ylab=\"#{metric}\"
+		)
+		dev.off()
+		
+		"
+		filenameR = filename + ".R"
+		file = File.new(filenameR, 'w')
+		file.write content
+		file.close
+		%x[R CMD BATCH #{filenameR} --no-save]
+		File.delete(filenameR)
+		File.delete('--no-save')
 	end
 		
 	def informationFlowComplexity(fan_in, fan_out)
@@ -48,9 +74,12 @@ class MetricCalculation
 		end
 		lijst = lijst.sort
 		toReturn = ""
+
 		lijst.each do |i|
-			toReturn += "#{i}  "
-		end		
+			toReturn += "#{i}, "
+		end
+		toReturn = toReturn[0, toReturn.size-2]		
+
 		return toReturn
 	end
 	
@@ -188,5 +217,5 @@ class CalculateMetrics
 end
 
 #MetricCalculation.new('Test metrics: ', '.test', '.', false)
-MetricCalculation.new('Rascal metrics: ', '.rsc', '..', false)
-MetricCalculation.new('ASF+SDF metrics:', '.asf', './compiler(asf+sdf)/', false)
+MetricCalculation.new('Rascal', '.rsc', '..', false)
+MetricCalculation.new('ASF+SDF', '.asf', './compiler(asf+sdf)/', false)
