@@ -7,27 +7,51 @@ class MetricCalculation
 		$doPrint = printDependencies
 		
 		fan_in, fan_out, functions, signatures, val_in, val_out = CalculateMetrics.new("FUNCTION").calculate
-
+		inf_fl_comp = informationFlowComplexity(fan_in, fan_out)
 		puts info
 		puts ""
 		puts "functions: " + functions.to_s
 		puts "signatures: " + signatures.to_s
 		puts "signatures/function: " + (Float(signatures)/Float(functions)).to_s
 		puts "val-in: " + (sum(val_in)/functions).to_s
-		puts "val-out: " + (sum(val_out)/functions).to_s
-		puts "fan-in/function: " + (sum(fan_in)/functions).to_s
-		puts "fan-out/function: " + (sum(fan_out)/functions).to_s
+		puts printFunctionMetric(val_in)
 
-#		printFunctionMetric(fan_in)
+		puts "val-out: " + (sum(val_out)/functions).to_s
+		puts printFunctionMetric(val_out)
+
+		puts "fan-in/function: " + (sum(fan_in)/functions).to_s
+		puts printFunctionMetric(fan_in)
+
+		puts "fan-out/function: " + (sum(fan_out)/functions).to_s
+		puts printFunctionMetric(fan_out)		
+
+		puts "information flow complexity (function)/function: " + (sum(inf_fl_comp)/functions).to_s
+		puts printFunctionMetric(inf_fl_comp)
 
 		puts "======"
 		
 	end
+		
+	def informationFlowComplexity(fan_in, fan_out)
+		toReturn = {}
+		(fan_in.keys & fan_out.keys).each do |key|
+			toReturn[key] = (fan_in[key]*fan_out[key])*(fan_in[key]*fan_out[key])
+		end
+		return toReturn
+	end
 	
 	def printFunctionMetric(arr)
+		lijst = Array.new
+		
 		arr.each do |k,v|
-			puts "\[#{k}\] #{v}"
+			lijst += [Float(v)]
 		end
+		lijst = lijst.sort
+		toReturn = ""
+		lijst.each do |i|
+			toReturn += "#{i}  "
+		end		
+		return toReturn
 	end
 	
 	def sum(arr)
@@ -125,7 +149,7 @@ class CalculateMetrics
 		toReturn = {}
 		keys = @fanIn.keys
 		keys.each do |key|
-			toReturn[@fanIn[key]] = @fanIn[key].size
+			toReturn[key] = Float(@fanIn[key].size)
 		end
 		return toReturn
 	end
@@ -134,7 +158,7 @@ class CalculateMetrics
 		toReturn = {}
 		keys = @fanOut.keys
 		keys.each do |key|
-			toReturn[@fanOut[key]] = @fanOut[key].size
+			toReturn[key] = Float(@fanOut[key].size)
 		end
 		return toReturn
 	end
