@@ -13,12 +13,29 @@ class MetricCalculation
 		puts "functions: " + functions.to_s
 		puts "signatures: " + signatures.to_s
 		puts "signatures/function: " + (Float(signatures)/Float(functions)).to_s
-		puts "val-in: " + (val_in/functions).to_s
-		puts "val-out: " + (val_out/functions).to_s
-		puts "fan-in/function: " + (fan_in/functions).to_s
-		puts "fan-out/function: " + (fan_out/functions).to_s
+		puts "val-in: " + (sum(val_in)/functions).to_s
+		puts "val-out: " + (sum(val_out)/functions).to_s
+		puts "fan-in/function: " + (sum(fan_in)/functions).to_s
+		puts "fan-out/function: " + (sum(fan_out)/functions).to_s
+
+#		printFunctionMetric(fan_in)
+
 		puts "======"
 		
+	end
+	
+	def printFunctionMetric(arr)
+		arr.each do |k,v|
+			puts "\[#{k}\] #{v}"
+		end
+	end
+	
+	def sum(arr)
+		tot = Float(0)
+		arr.each do |k,v|
+			tot += Float(v)
+		end
+		return tot
 	end
 end
 
@@ -90,36 +107,36 @@ class CalculateMetrics
 		}
 		
 		@num_of_signatures = 0
-		@val_in = 0
-		@val_out = 0
+		@val_in = {}
+		@val_out = {}
 		@fun_val.keys.each do |key|
 			@num_of_signatures += @fun_val[key][2]
-			@val_in += @fun_val[key][0]/@fun_val[key][2]
-			@val_out += @fun_val[key][1]/@fun_val[key][2]
+			@val_in[key] = @fun_val[key][0]/@fun_val[key][2]
+			@val_out[key] = @fun_val[key][1]/@fun_val[key][2]
 		end
 		@num_of_functions = @fun_val.size
 		
 		if $doPrint then printDependencies end
 		
-		return average_fan_in, average_fan_out, @num_of_functions, @num_of_signatures, @val_in, @val_out
+		return listOf_fan_in, listOf_fan_out, @num_of_functions, @num_of_signatures, @val_in, @val_out
 	end
 	
-	def average_fan_in
-		tot = 0.0
+	def listOf_fan_in
+		toReturn = {}
 		keys = @fanIn.keys
 		keys.each do |key|
-			tot += @fanIn[key].size
+			toReturn[@fanIn[key]] = @fanIn[key].size
 		end
-		return tot
+		return toReturn
 	end
 	
-	def average_fan_out
-		tot = 0.0
+	def listOf_fan_out
+		toReturn = {}
 		keys = @fanOut.keys
 		keys.each do |key|
-			tot += @fanOut[key].size
+			toReturn[@fanOut[key]] = @fanOut[key].size
 		end
-		return tot
+		return toReturn
 	end
 	
 	def printMe(table)
@@ -147,5 +164,5 @@ class CalculateMetrics
 end
 
 #MetricCalculation.new('Test metrics: ', '.test', '.', false)
-MetricCalculation.new('Rascal metrics: ', '.rsc', '..', true)
+MetricCalculation.new('Rascal metrics: ', '.rsc', '..', false)
 MetricCalculation.new('ASF+SDF metrics:', '.asf', './compiler(asf+sdf)/', false)
