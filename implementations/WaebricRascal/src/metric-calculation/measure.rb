@@ -58,22 +58,23 @@ class MetricCalculation
 			
 		filename = "R_Generated_Graphs/#{metric.gsub(" ", "_")}"
 		content = "
-		jpeg(\"R_Generated_Graphs/#{metric}.jpeg\")
+		pdf(\"R_Generated_Graphs/#{metric}.pdf\")
 		numOfLines <- #{valueList.size}
 		
 		dataset <- data.frame(
 			#{data}
 		)
 
-		rangeY <- -1
-		for(i in 1:numOfLines){
-			currRangeY <- range(dataset[i])
+		rangeMaxY <- -1		
+		for(i in 1:numOfLines*2){
+			currRange <- range(dataset[i])
 			if(i%%#{valueList.size}==0){
-				if(currRangeY > rangeY){
-					rangeY = currRangeY
+				if(max(currRange) > rangeMaxY){
+					rangeMaxY <- max(currRange)
 				}
 			}
 		}
+		rangeY = c(0, rangeMaxY)
 
 		rangeX <- c(0, 100)
 		plot(rangeX, rangeY,
