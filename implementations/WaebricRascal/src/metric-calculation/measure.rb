@@ -2,51 +2,104 @@ require 'find'
 require 'ftools'
 
 class MetricCalculation
-	def initialize(info, filetype, dir, printDependencies)
-		$filetype = filetype
-		$dir = dir
-		$doPrint = printDependencies
+	def initialize(transf_languages)
+		@fan_in = {}
+		@fan_out = {}
+		@functions = {}
+		@signatures = {}
+		@val_in = {}
+		@val_out = {}
+		@inf_fl_comp = {}
+		transf_languages.each do |info, filetype, dir, printDependencies|
+			$filetype = filetype
+			$dir = dir
+			$doPrint = printDependencies
 		
-		@fan_in, @fan_out, @functions, @signatures, @val_in, @val_out = CalculateMetrics.new("FUNCTION").calculate
-		@inf_fl_comp = informationFlowComplexity(@fan_in, @fan_out)
-		puts info + " metrics: "
-		puts ""
-		puts "functions: " + @functions.to_s
-		puts "signatures: " + @signatures.to_s
-		puts "signatures/function: " + (Float(@signatures)/Float(@functions)).to_s
-		puts "val-in: " + (sum(@val_in)/@functions).to_s
-		createRFiles("val_in", info, @val_in)
+			@fan_in[info], @fan_out[info], @functions[info], @signatures[info], @val_in[info], @val_out[info] = CalculateMetrics.new("FUNCTION").calculate
+			@inf_fl_comp[info] = informationFlowComplexity(@fan_in[info], @fan_out[info])
+			puts info + " metrics: "
+			puts ""
+			puts "functions: " + @functions[info].to_s
+			puts "signatures: " + @signatures[info].to_s
+			puts "signatures/function: " + (Float(@signatures[info])/Float(@functions[info])).to_s
+			puts "val-in: " + (sum(@val_in[info])/@functions[info]).to_s
 
-		puts "val-out: " + (sum(@val_out)/@functions).to_s
-		createRFiles("val_out", info, @val_out)
+			puts "val-out: " + (sum(@val_out[info])/@functions[info]).to_s
 		
-		puts "fan-in/function: " + (sum(@fan_in)/@functions).to_s
-		createRFiles("fan_in", info, @fan_in)
+			puts "fan-in/function: " + (sum(@fan_in[info])/@functions[info]).to_s
 		
-		puts "fan-out/function: " + (sum(@fan_out)/@functions).to_s
-		createRFiles("fan_out", info, @fan_out)
+			puts "fan-out/function: " + (sum(@fan_out[info])/@functions[info]).to_s
 		
-		puts "information flow complexity (function)/function: " + (sum(@inf_fl_comp)/@functions).to_s
-		createRFiles("information_flow_complexity", info, @inf_fl_comp)
+			puts "information flow complexity (function)/function: " + (sum(@inf_fl_comp[info])/@functions[info]).to_s
 
-		puts "======"
+			puts "======"
+		end
 		
-
+		
+		createRFiles("val in", @val_in)
+		createRFiles("val out", @val_out)
+		createRFiles("fan in", @fan_in)
+		createRFiles("fan out", @fan_out)
+		createRFiles("information flow complexity", @inf_fl_comp)
+		
+		
 	end
 	
-	def createRFiles(metric, info, values)
-		args = printFunctionMetric(values)
-		filename = "R_Generated_Graphs/#{metric}_#{info}"
+	def createRFiles(metric, valueList)
+		sampleSize = 100
+		data = ""
+		dataName = ""	
+		valueList.each do |key, values|
+			data += "approx(c(" + printFunctionMetric(values) + "), n=#{sampleSize}), "
+			dataName += "\"#{key}\", "
+		end
+		data = data[0, data.size-2]
+		dataName = dataName[0, dataName.size-2]
+			
+		filename = "R_Generated_Graphs/#{metric.gsub(" ", "_")}"
 		content = "
+		jpeg(\"R_Generated_Graphs/#{metric}.jpeg\")
+		numOfLines <- #{valueList.size}
 		
-		jpeg(\"#{filename}.jpeg\")
-		plot(c(#{args}), 
-			main=\"#{metric} (#{info})\", 
-			type=\"s\", 
-			xlab=\"#{info} functions in ascending \\\"#{metric}\\\" order\", 
+		dataset <- data.frame(
+			#{data}
+		)
+
+		rangeY <- -1
+		for(i in 1:numOfLines){
+			currRangeY <- range(dataset[i])
+			if(i%%#{valueList.size}==0){
+				if(currRangeY > rangeY){
+					rangeY = currRangeY
+				}
+			}
+		}
+
+		rangeX <- c(0, 100)
+		plot(rangeX, rangeY,
+			main=\"Comparison of \\\"#{metric}\\\" values\", 
+			type=\"n\", 
+			xlab=\"Percentage of functions with at most the corresponding \\\"#{metric}\\\"\", 
 			ylab=\"#{metric}\"
 		)
-		dev.off()
+		
+		ltys <- c(1:(numOfLines))
+ 		for (i in 1:numOfLines){
+ 			lines(dataset[i*numOfLines],  type=\"l\", lwd=1.5, lty=ltys[i], pch=i)
+ 		}
+ 		
+		names <- c(
+			#{dataName}
+		)
+		
+ 		legend(rangeX[1], rangeY[2],
+ 			names, 
+ 			cex=1.1, 
+ 			lty=ltys,
+ 			title=\"Transformation language\"
+ 		)
+
+		dev.off()		
 		
 		"
 		filenameR = filename + ".R"
@@ -216,6 +269,7 @@ class CalculateMetrics
 	end
 end
 
-#MetricCalculation.new('Test metrics: ', '.test', '.', false)
-MetricCalculation.new('Rascal', '.rsc', '..', false)
-MetricCalculation.new('ASF+SDF', '.asf', './compiler(asf+sdf)/', false)
+MetricCalculation.new([
+	['Rascal', '.rsc', '..', false], 
+	['ASF+SDF', '.asf', './compiler(asf+sdf)/', false]
+])
