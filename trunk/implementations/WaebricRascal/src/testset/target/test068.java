@@ -36,7 +36,6 @@ $out.write(b.toString());
 $out.write("");
 
 }
-
 public void f(final Writer $out, final Object a, final Object b)
 	throws IOException, SQLException {
 	f($out, $nil, a, b);
@@ -46,7 +45,6 @@ private void main(final Writer $out, final Markup $markup)
 	f($out, $nil);
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

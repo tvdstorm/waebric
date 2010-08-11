@@ -31,7 +31,6 @@ public class test038 {
 	$out.write("bla");
 
 }
-
 public void f(final Writer $out)
 	throws IOException, SQLException {
 	f($out, $nil);
@@ -40,7 +39,6 @@ private void main(final Writer $out, final Markup $markup)
 	throws IOException, SQLException {
 	f($out, $nil);
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

@@ -33,7 +33,6 @@ $out.write("akshdakjsdh8372643&^%&^%^92389");
 $out.write("</p>");
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

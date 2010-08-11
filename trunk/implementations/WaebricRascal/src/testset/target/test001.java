@@ -30,7 +30,6 @@ public class test001 {
 	throws IOException, SQLException {
 	
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

@@ -33,7 +33,6 @@ $out.write("");
 $out.write("</a>");
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);
