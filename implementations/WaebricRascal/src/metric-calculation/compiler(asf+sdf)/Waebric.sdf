@@ -1,25 +1,17 @@
 module languages/waebric/compile/Waebric
-
 imports languages/waebric/compile/Compile
 	languages/waebric/import/Resolve
-
 hiddens
 context-free start-symbols Module CompilationUnit
-
 exports 
-
 context-free syntax
 	compile(Module) -> CompilationUnit 
 	compile(ImportResults) -> CompilationUnit 
 	c(ImportResults) -> CompilationUnit 
-
 hiddens
 variables
  "&error*"[0-9\']* -> {Error ","}*
-
 variables
-  
-
   "&arg" [0-9\']*        -> Argument             
   "&arg*" [0-9\']*       -> {Argument ","}*      
   "&arg+" [0-9\']*       -> {Argument ","}*      
@@ -61,7 +53,3 @@ variables
   "&post" [0-9\']*       -> PostText             
   "&mid" [0-9\']*        -> MidText              
   "&tail" [0-9\']*       -> TextTail             
-
-
-
-

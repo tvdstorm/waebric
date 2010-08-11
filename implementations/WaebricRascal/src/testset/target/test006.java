@@ -31,7 +31,6 @@ public class test006 {
 	$out.write("4");
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

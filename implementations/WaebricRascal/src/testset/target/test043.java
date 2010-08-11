@@ -30,7 +30,6 @@ public class test043 {
 	throws IOException, SQLException {
 	f($out, $nil, "Hello world!");
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);
@@ -39,7 +38,6 @@ private void f(final Writer $out, final Markup $markup, final Object x)
 	throws IOException, SQLException {
 	g($out, $nil, x);
 }
-
 public void f(final Writer $out, final Object x)
 	throws IOException, SQLException {
 	f($out, $nil, x);
@@ -49,7 +47,6 @@ private void g(final Writer $out, final Markup $markup, final Object x)
 	$out.write("x = " + x.toString());
 
 }
-
 public void g(final Writer $out, final Object x)
 	throws IOException, SQLException {
 	g($out, $nil, x);

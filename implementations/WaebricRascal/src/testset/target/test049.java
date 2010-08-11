@@ -72,11 +72,9 @@ Object $temp = l;
 	}
 	else if ($temp instanceof Map) {
 		List<Object> $list = new ArrayList<Object>()
-
 ;
 		for (Map.Entry<String,Object> $entry: (Map<String,Object>)$temp.entrySet()) {
 			List<Object> $tuple = new ArrayList<Object>()
-
 ;
 			$tuple.add($entry.getKey());
 			$tuple.add($entry.getValue());
@@ -106,7 +104,6 @@ Object $temp = l;
 				else {
 					x.put($k, "null");
 				}
-
 				
 $out.write(x.toString());;
 			}
@@ -115,7 +112,6 @@ $out.write(x.toString());;
 	}
 	else {
 		List<Object> $single = new ArrayList<Object>()
-
 ;
 			$single.add($temp);
 			$iter = $single;
@@ -131,7 +127,6 @@ $out.write(x.toString());;
 
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

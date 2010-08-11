@@ -31,7 +31,6 @@ public class test005 {
 	$out.write("abc" + "cdef".toString());
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

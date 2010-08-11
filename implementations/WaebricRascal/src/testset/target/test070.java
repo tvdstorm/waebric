@@ -30,7 +30,6 @@ public class test070 {
 	throws IOException, SQLException {
 	$out.write("<!--abcdef-->");
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

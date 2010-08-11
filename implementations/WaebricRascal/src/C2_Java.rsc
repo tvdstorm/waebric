@@ -1,5 +1,4 @@
 module C2_Java
-
 import Tools;
 import List;
 import String;
@@ -11,8 +10,6 @@ import ToString;
 import Relation; 
 import Map; 
 import Node; 
-
-
 /* FUNCTION (5->1): printJava -> printConstructor, getOneFrom, printFunctions */
 public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str], list[str]]] metho, list[tuple[str, str]] sites){ return 	
 "<printImports> 
@@ -21,7 +18,6 @@ public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str]
 <printInterfaces> 
 <printInterfaces_2>
 ";}
-
 /* FUNCTION (4->1): printMarkupData -> printMarkupParametersRec, printAttributes */
 public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
 	<<mu,atr>, pars> = markup;
@@ -36,13 +32,11 @@ public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] 
 		}
 	}
 }
-
 /* FUNCTION (1->1): printMethodName -> replaceAll */
 public str printMethodName(str name){
 	name = replaceAll(name, " ", "");
 	return replaceAll(name, "-", "_");
 }
-
 /* FUNCTION (2->1): printAttributes -> getAttributeList */
 public str printAttributes(list[tuple[str,str]] atr){
 	<javaCode, iterator> = getAttributeList(atr, "class", 0);
@@ -58,7 +52,6 @@ public str printAttributes(list[tuple[str,str]] atr){
 	toReturn += "\");";
 	return toReturn;
 }
-
 /* FUNCTION (4->2): getAttributeList -> getOneFrom, head, size, tail */
 public tuple[str, int] getAttributeList(list[tuple[str,str]] attr, str attribute_type, int iterator){
 	default1 = "\");\n$out.write(\"";
@@ -87,21 +80,18 @@ public tuple[str, int] getAttributeList(list[tuple[str,str]] attr, str attribute
 	}
 	return <toReturn, currSize>;
 }
-
 /* FUNCTION (1->1): printMarkupData2 */
 public str printMarkupData2(str name){ return 
 "<name>($out, new Markup() {
 	public void render(Writer $out) 
 		throws IOException, SQLException {
 ";}
-
 /* FUNCTION (4->1): printMarkupEnding */
 public str printMarkupEnding(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
 <<mu,atr>, pars> = markup;
 return
 "$out.write(\"\</<mu>\>\");
 ";}
-
 /* FUNCTION (1->1): printMarkupParametersRec -> head, getExpression, printMarkupParametersRec, tail */
 public str printMarkupParametersRec(list[Argument] args){
 	if(`<IdCon id> = <Expression e>` := head(args)){
@@ -116,7 +106,6 @@ $out.write(\"\\\"\");\n"
 		}
 	}
 }
-
 /* FUNCTION (3->1): printIfElse */
 public str printIfElse(str condition, str doIf, str doElse){ 
 	return "
@@ -128,7 +117,6 @@ public str printIfElse(str condition, str doIf, str doElse){
 			}
 ";
 }
-
 /* FUNCTION (3->1): printIfElseALT */
 public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de bedoeling?
 	return "stat-to-jstats(if (<condition>)
@@ -137,7 +125,6 @@ public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de
 			<doElse>)
 ";
 }
-
 /* FUNCTION (2->1): printIf */
 public str printIf(str condition, str doIf){ 
 	return "
@@ -146,14 +133,6 @@ public str printIf(str condition, str doIf){
 			}
 ";
 }
-
-/* FUNCTION (1->1): printIfALT */
-public str printIfALT(str condition, str doIf){ 
-	return "stat-to-jstats(if (<condition>)
-			<doIf>)
-";
-}
-
 /* FUNCTION (3->1): printConstructor */
 private str printConstructor(str module_id, list[tuple[str,str]] sites){ return 
 "@SuppressWarnings(\"unchecked\")
@@ -171,7 +150,6 @@ public class <module_id> {
 		generateSite(\"<".">\");
 	}
 ";}
-
 /* FUNCTION (2->1): printSites -> printSite */
 private str printSites(list[tuple[str, str]] sites) { 
 	returnable = "";
@@ -180,7 +158,6 @@ private str printSites(list[tuple[str, str]] sites) {
 	}
 	return returnable;
 }
-
 /* FUNCTION (2->1): printSite */
 private str printSite(str site, str parameters) { return 
 "writer = new FileWriter(new File(root,\"" + site + "\"));
@@ -193,7 +170,6 @@ $out.write(\"\<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\
 		}.render(writer);
 		writer.close();
 ";}
-
 /* FUNCTION (3->1): printFunctions -> printFunction */
 private str printFunctions(list[tuple[str, list[str], list[str]]] methodes) {
 	returnable = "";
@@ -202,20 +178,17 @@ private str printFunctions(list[tuple[str, list[str], list[str]]] methodes) {
 	}
 	return returnable;
 }
-
 /* FUNCTION (3->1): printFunction -> printConstuctorParams, printMarkup, printMethodParams */
 private str printFunction(str id, list[str] params, list[str] mu){ return
 "private void <id>(final Writer $out, final Markup $markup" + printConstuctorParams(params) + ") 
 	throws IOException, SQLException {
 	<printMarkup(mu)>
 }
-
 public void " + id + "(final Writer $out"+printConstuctorParams(params)+")
 	throws IOException, SQLException {
 	"+ id +"($out, $nil"+printMethodParams(params)+");
 }
 ";}
-
 /* FUNCTION (1->1): printConstuctorParams */
 public str printConstuctorParams(list[str] pars){ 
 	toReturn = "";
@@ -224,7 +197,6 @@ public str printConstuctorParams(list[str] pars){
 	}
 	return toReturn;
 }
-
 /* FUNCTION (->): printMarkup */
 public str printMarkup(list[str] mu){
 	returnable = "";
@@ -233,7 +205,6 @@ public str printMarkup(list[str] mu){
 	}
 	return returnable;
 }
-
 /* FUNCTION (1->1): printMethodParams */
 public str printMethodParams(list[str] pars){
 	toReturn = "";
@@ -242,7 +213,6 @@ public str printMethodParams(list[str] pars){
 	}
 	return toReturn;
 }
-
 /* FUNCTION (1->1): printForEach3 */
 public str printForEach3(str var){ return "
 public List\<Object\> list() {
@@ -250,7 +220,6 @@ public List\<Object\> list() {
 ;
 	$v.add(\"<var>\");";
 }
-
 /* FUNCTION (2->1): printForEach8 */
 public str printForEach8(str a, str b) { return "
 	Iterable\<Object\> $iter;
@@ -259,11 +228,9 @@ public str printForEach8(str a, str b) { return "
 	}
 	else if ($temp instanceof Map) {
 		List\<Object\> $list = new ArrayList\<Object\>()
-
 ;
 		for (Map.Entry\<String,Object\> $entry: (Map\<String,Object\>)$temp.entrySet()) {
 			List\<Object\> $tuple = new ArrayList\<Object\>()
-
 ;
 			$tuple.add($entry.getKey());
 			$tuple.add($entry.getValue());
@@ -293,7 +260,6 @@ public str printForEach8(str a, str b) { return "
 				else {
 					<a>.put($k, \"null\");
 				}
-
 				<strip(b)>;
 			}
 		}				
@@ -301,7 +267,6 @@ public str printForEach8(str a, str b) { return "
 	}
 	else {
 		List\<Object\> $single = new ArrayList\<Object\>()
-
 ;
 			$single.add($temp);
 			$iter = $single;
@@ -313,7 +278,6 @@ public str printForEach8(str a, str b) { return "
 	}.each($out);
 ";
 }
-
 /* FUNCTION (2->1): printForEachArray1 */
 public str printForEachArray1(str parent, str kids){ return 
 "new Object() {
@@ -337,17 +301,14 @@ public str printForEachArray1(str parent, str kids){ return
 	}
 }.field()";
 }
-
 /* FUNCTION (1->1): printExpression -> printLine, getExpression */
 public str printExpression(Expression e){
 	return printLine(getExpression(e, true));
 }
-
 /* FUNCTION (1->1): printLine */
 public str printLine(str toPrint){
 	return "$out.write(<toPrint>);\n";
 }
-
 /* FUNCTION (2->1): getExpression -> getKeyValuePairs, toString, getQuotedString, replaceAll, printForEachArray1 */
 public str getExpression(Expression e, bool firstTime){
 	switch(e){
@@ -377,7 +338,6 @@ public str getExpression(Expression e, bool firstTime){
 				}
 				return toReturn + ending;
 			}			
-
 		}
 		case (Expression) `[ <{ Expression "," }* i> ]` :{
 			if(firstTime){
@@ -436,7 +396,6 @@ public str getExpression(Expression e, bool firstTime){
 			toReturn = replaceAll(toReturn, "\n", "\\n");
 			return toReturn;
 		}
-
 		case (Expression) `<Expression e1> . <IdCon idc>` :
 			if(firstTime)
 				return printForEachArray1("<e1>", "<idc>")+".toString()";
@@ -451,7 +410,6 @@ public str getExpression(Expression e, bool firstTime){
 		}
 	}
 }
-
 /* FUNCTION (1->1): getQuotedString -> startsWith, substring, size */
 public str getQuotedString(str toReturn){
 	if(startsWith(toReturn, "'")){
@@ -459,7 +417,6 @@ public str getQuotedString(str toReturn){
 	}
 	return toReturn; 
 }
-
 /* FUNCTION (1->1): getKeyValuePairs -> getExpression, printArray3 */
 public str getKeyValuePairs(KeyValuePair kv){
 	toReturn = "";
@@ -471,7 +428,6 @@ public str getKeyValuePairs(KeyValuePair kv){
 	}
 	return toReturn;
 }
-
 /* FUNCTION (2->1): printArray3 */
 public str printArray3(str nam, str val) { return
 	"new Object() {
@@ -480,7 +436,6 @@ public str printArray3(str nam, str val) { return
 ;
 	$v.put(\"<nam>\", <val>);";
 }
-
 private str printImports =
 "import java.io.IOException;
 import java.io.Writer;
@@ -495,7 +450,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Hashtable;
 ";
-
 private str printInterfaces = "}
 interface Markup {
 	public void render(Writer out) throws IOException, SQLException;
@@ -555,7 +509,6 @@ interface Func6 {
 		Object arg6)
 		throws IOException, SQLException;
 }";
-
 private str printInterfaces_2 = 
 "interface Func5 {
 	public void call(Writer out, Markup markup, Object arg1,
@@ -591,37 +544,29 @@ interface Func0 {
 	public void call(Writer out, Markup markup)
 		throws IOException, SQLException;
 }";
-
 public str printForEach1 = "
 new Object() {
 public void each(final Writer $out) 
 	throws IOException, 
 		SQLException  {
 ";
-
 public str printForEach2 = "
 Object $temp = ";
-
 public str printForEach2b = "
 Object $temp = new ArrayList\<Object\>()
 ;";
-
 public str printForEach4 = "
 	$v.addAll(new Object() {";
-
 public str printForEach5 = "
 	$v.addAll(new ArrayList\<Object\>() 
 );";
-
 public str printForEach6 = "
 	return $v;
 	}}.list());
 ";
-
 public str printForEach9 = ");
 	return $v;
 	}}.list()";
-
 public str printForEachArray2 =
 ";
 		Iterable\<Object\> $iter;
@@ -630,7 +575,6 @@ public str printForEachArray2 =
 		}
 		else if ($temp instanceof Map) {
 			List\<Object\> $list = new ArrayList\<Object\>()
-
 ;
 			for (Map.Entry\<String,Object\> $entry: (Map\<String,Object\>)$temp.entrySet()) {
 				List\<Object\> $tuple = new ArrayList\<Object\>()
@@ -670,7 +614,6 @@ public str printForEachArray2 =
 		}
 		else {
 			List\<Object\> $single = new ArrayList\<Object\>()
-
 ;
 				$single.add($temp);
 				$iter = $single;
@@ -681,35 +624,28 @@ public str printForEachArray2 =
 			}
 		}.each($out);
 ";
-
 public str something = ");
 				$v.addAll(new Object() {
 			public List\<Object\> list() {
 				List\<Object\> $v = new ArrayList\<Object\>()\n;\n\t\t\t\t$v.add(";
-
 public str printList1 =
 	"new Object() {
 			public List\<Object\> list() {
 				List\<Object\> $v = new ArrayList\<Object\>()
 ;
 				$v.add(";
-
 public str printArray2 = "
 	$v.put(";
-
 public str printArray4 = "
 	$v.putAll(";
-
 public str printArrayCloseNEW = "
 	$v.putAll(new Hashtable\<String,Object\>()			
 );
 				return $v;
 			}}.map()";
-
 public str printArrayClose2 = ");
 				return $v;
 			}}.map()";
-
 public str printListClose = ");
 	$v.addAll(new ArrayList\<Object\>()
 ";

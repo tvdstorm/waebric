@@ -43,7 +43,6 @@ public class test053 {
 			}
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

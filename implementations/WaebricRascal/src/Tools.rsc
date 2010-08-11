@@ -1,7 +1,6 @@
 module Tools
 import String;
 import IO;
-
 /* FUNCTION (1->1): strip */
 public str strip(str string){
 	str toReturn = "";
@@ -18,7 +17,6 @@ public str strip(str string){
 	}
 	return toReturn;
 }
-
 /* FUNCTION (1->1): splitAtDot */
 public tuple[str, str] splitAtDot(str inputStr){
 	if(/^<begin:.*>\.<end:.*$>/ := inputStr ){
@@ -26,7 +24,6 @@ public tuple[str, str] splitAtDot(str inputStr){
 	}
 	return <"","">;
 }
-
 /* FUNCTION (1->1): isNumber */
 public bool isNumber(str string){
 	if(/^[0123456789]*$/ := string){

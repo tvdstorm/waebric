@@ -1,13 +1,10 @@
 equations
-
 % FUNCTION (2->1): start -> compile 
 	VAL_IN: 2
 	VAL_OUT: 1
 %
 [main]	start(Module, &module) = start(CompilationUnit, compile(&module))
-
 equations
-
 % FUNCTION (1->1): compile 
 	VAL_IN: 1
 	VAL_OUT: 1
@@ -17,9 +14,7 @@ equations
 	&module* := import-only(&module)
 	===
 	compile(&module) = compile(&id, &module*)
-
 equations
-
 % FUNCTION (2->1): compile  
 	VAL_IN: 2
 	VAL_OUT: 1
@@ -28,4 +23,3 @@ equations
 	module &id* . &id &mod-elt* := &module
 	===
 	compile(<&module &module*, &error*>) = compile(&id, &module &module*)
-

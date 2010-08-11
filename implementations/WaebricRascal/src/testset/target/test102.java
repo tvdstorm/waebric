@@ -33,7 +33,6 @@ $out.write(x.toString());
 $out.write(" bottles of beer on the wall.");
 
 }
-
 public void take_one_down(final Writer $out, final Object x)
 	throws IOException, SQLException {
 	take_one_down($out, $nil, x);
@@ -45,7 +44,6 @@ $markup.render($out);
 $out.write("</li>");
 
 }
-
 public void line(final Writer $out)
 	throws IOException, SQLException {
 	line($out, $nil);
@@ -112,11 +110,9 @@ Object $temp = iter;
 	}
 	else if ($temp instanceof Map) {
 		List<Object> $list = new ArrayList<Object>()
-
 ;
 		for (Map.Entry<String,Object> $entry: (Map<String,Object>)$temp.entrySet()) {
 			List<Object> $tuple = new ArrayList<Object>()
-
 ;
 			$tuple.add($entry.getKey());
 			$tuple.add($entry.getValue());
@@ -146,7 +142,6 @@ Object $temp = iter;
 				else {
 					n.put($k, "null");
 				}
-
 				
 line($out, new Markup() {
 			public void render(Writer $out) 
@@ -178,7 +173,6 @@ take_one_down($out, $nil, new Object() {
 	}
 	else {
 		List<Object> $single = new ArrayList<Object>()
-
 ;
 			$single.add($temp);
 			$iter = $single;
@@ -217,7 +211,6 @@ take_one_down($out, $nil, new Object() {
 
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

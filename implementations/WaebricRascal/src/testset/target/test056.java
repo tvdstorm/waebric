@@ -31,7 +31,6 @@ public class test056 {
 	$markup.render($out);
 
 }
-
 public void f(final Writer $out)
 	throws IOException, SQLException {
 	f($out, $nil);
@@ -53,7 +52,6 @@ $out.write(a.toString());
 
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

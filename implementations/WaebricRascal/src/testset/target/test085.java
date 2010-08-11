@@ -62,7 +62,6 @@ stat-to-jstats(if (b.list? && !b.x)
 
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

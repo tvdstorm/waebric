@@ -53,7 +53,6 @@ $out.write("</p>");
 
 
 }
-
 public void g(final Writer $out, final Object a)
 	throws IOException, SQLException {
 	g($out, $nil, a);
@@ -62,7 +61,6 @@ private void main(final Writer $out, final Markup $markup)
 	throws IOException, SQLException {
 	g($out, $nil);
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

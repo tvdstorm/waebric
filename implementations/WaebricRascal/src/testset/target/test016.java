@@ -46,7 +46,6 @@ f.call($out, $nil);
 
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

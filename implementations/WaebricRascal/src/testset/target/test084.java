@@ -55,7 +55,6 @@ stat-to-jstats(if (b.x && b.y)
 
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

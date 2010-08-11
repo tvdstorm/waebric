@@ -88,7 +88,6 @@ $out.write(" />");
     $out.write("<!--<![endif]-->");    $out.write("</object>");
 
 }
-
 public void swfobject(final Writer $out, final Object url, final Object width, final Object height, final Object id)
 	throws IOException, SQLException {
 	swfobject($out, $nil, url, width, height, id);
@@ -98,7 +97,6 @@ private void main(final Writer $out, final Markup $markup)
 	swfobject($out, $nil, "htt://google.nl", "232", "3875", "swfobject");
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);

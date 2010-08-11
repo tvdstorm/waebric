@@ -41,7 +41,6 @@ $out.write(x + " " + y.toString());
 
 
 }
-
 public void main(final Writer $out)
 	throws IOException, SQLException {
 	main($out, $nil);
