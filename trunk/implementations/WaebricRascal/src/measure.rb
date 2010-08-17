@@ -11,6 +11,7 @@ class MetricCalculation
 		@val_out = {}
 		@inf_fl_comp = {}
 		transf_languages.each do |info, filetype, dir, printDependencies|
+		
 			$filetype = filetype
 			$dir = dir
 			$doPrint = printDependencies
@@ -34,15 +35,13 @@ class MetricCalculation
 
 			puts "======"
 		end
-		
-		
+				
 		createRFiles("val in", @val_in)
 		createRFiles("val out", @val_out)
 		createRFiles("fan in", @fan_in)
 		createRFiles("fan out", @fan_out)
 		createRFiles("information flow complexity", @inf_fl_comp)
-		
-		
+			
 	end
 	
 	def createRFiles(metric, valueList)
@@ -68,7 +67,7 @@ class MetricCalculation
 		rangeMaxY <- -1		
 		for(i in 1:numOfLines*2){
 			currRange <- range(dataset[i])
-			if(i%%#{valueList.size}==0){
+			if(i%%2==0){
 				if(max(currRange) > rangeMaxY){
 					rangeMaxY <- max(currRange)
 				}
@@ -86,7 +85,7 @@ class MetricCalculation
 		
 		ltys <- c(1:(numOfLines))
  		for (i in 1:numOfLines){
- 			lines(dataset[i*numOfLines],  type=\"l\", lwd=1.5, lty=ltys[i], pch=i)
+ 			lines(dataset[i*2],  type=\"l\", lwd=1.5, lty=ltys[i], pch=i)
  		}
  		
 		names <- c(
@@ -270,7 +269,10 @@ class CalculateMetrics
 	end
 end
 
+
+
 MetricCalculation.new([
-	['Rascal', '.rsc', '..', false], 
-	['ASF+SDF', '.asf', './compiler(asf+sdf)/', false]
+	['Rascal-v1', '.rsc', './compiler(rascal-v1)', false],
+ 	['Rascal-v2', '.rsc', './compiler(rascal-v2)', false], 
+	['ASF+SDF', '.asf', './compiler(asf+sdf)/', false],
 ])
