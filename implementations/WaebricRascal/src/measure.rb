@@ -272,7 +272,7 @@ end
 
 
 MetricCalculation.new([
-	['Rascal-v1', '.rsc', './compiler(rascal-v1)', false],
- 	['Rascal-v2', '.rsc', './compiler(rascal-v2)', false], 
-	['ASF+SDF', '.asf', './compiler(asf+sdf)/', false],
+	['Rascal-v1', '.rsc', './compiler_rascal_v1', false],
+ 	['Rascal-v2', '.rsc', './compiler_rascal_v2', false], 
+	['ASF+SDF', '.asf', './compiler_asf+sdf/', false],
 ])

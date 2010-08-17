@@ -1,6 +1,6 @@
-module C2_visit
-import C2_Java; 
-import Tools;
+module compiler_rascal_v2::C2_visit
+import compiler_rascal_v2::C2_Java; 
+import compiler_rascal_v2::Tools;
 import languages::waebric::syntax::Waebric; 
 import ParseTree; 
 import IO; 
