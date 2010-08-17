@@ -1,5 +1,5 @@
-module C2_Java
-import Tools;
+module compiler_rascal_v2::C2_Java
+import compiler_rascal_v2::Tools;
 import List;
 import String;
 import languages::waebric::syntax::Waebric;
