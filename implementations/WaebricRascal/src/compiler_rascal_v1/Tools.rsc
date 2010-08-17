@@ -1,4 +1,4 @@
-module Tools
+module compiler_rascal_v1::Tools
 import String;
 import IO;
 /* FUNCTION (1->1): strip */
