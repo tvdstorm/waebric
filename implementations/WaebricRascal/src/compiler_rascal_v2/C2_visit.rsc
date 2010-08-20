@@ -89,15 +89,15 @@ public str getArgs(list[Argument] args){
 	}	
 	return toReturn;
 }
-/* FUNCTION (6->1): getExpression2 -> getVarList, getExpression */
-public str getExpression2(IdCon idc, Expression e, bool firstTime, list[tuple[str, list[IdCon], Statement?]] assignments){	
+/* FUNCTION (2->1): getExpression2 -> getVarList, getExpression */
+public str getExpression2(IdCon idc, Expression e){	
 	switch(e){ 	
 		case (Expression) `[ <{ Expression "," }* expressions> ]` :{
 			<left, mid, right> = getVarList(e);
 			return "{\nfinal Object <idc> = <mid>\n"; 
 		}
 	} 	
-	return "{\nfinal Object <idc> = " + getExpression(e, firstTime)+";\n";
+	return "{\nfinal Object <idc> = " + getExpression(e, false)+";\n";
 }
 /* FUNCTION (6->1): getExpression2, toString, size, getStatementData, getMultipleStatementsData */
 public str getAssignment(Assignment+ ass, list[tuple[str, list[IdCon], Statement?]] assignments, Statement* stats, bool defaultStyle){
@@ -107,7 +107,7 @@ public str getAssignment(Assignment+ ass, list[tuple[str, list[IdCon], Statement
 	visit(ass){
 		case (Assignment) `<IdCon idc> = <Expression ex> ;`:{
 			closingBrackets = "\n}\n" + closingBrackets;
-			toReturn += "<getExpression2(idc, ex, false, assignments)>";
+			toReturn += "<getExpression2(idc, ex)>";
 		}
 		case (Assignment) `<func_name> ( <{IdCon "," }* idcs> ) = <Statement s>`:{
 			closingBrackets = "\n}\n" + closingBrackets;
