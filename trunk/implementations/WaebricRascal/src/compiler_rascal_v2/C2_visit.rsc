@@ -221,8 +221,8 @@ public str unQuote(str string){
 	}
 	return string;
 }
-/* FUNCTION (7->1): getIfElse -> printIfElseALT, getStatementData, getPredicate */
-public str getIfElse(Predicate p, Statement s, Statement s2, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
+/* FUNCTION (3->1): getIfElse -> printIfElseALT, getStatementData, getPredicate */
+public str getIfElse(Predicate p, Statement s, Statement s2){
 	switch(p){
 		case `<Expression expr> . <Type tpe> ?` : 
 			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>"); //ben ik hier een asf+sdf bug aan het wegwerken?
@@ -233,9 +233,7 @@ public str getIfElse(Predicate p, Statement s, Statement s2, list[tuple[str, lis
 		case `<Predicate p1> || <Predicate p2>` : 
 			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>");	//ben ik hier een asf+sdf bug aan het wegwerken?
 		default: {
-			return printIfElse(getPredicate(p, true),  
-				getStatementData(s, assignments, defaultStyle), 
-				getStatementData(s2, assignments, defaultStyle));
+			return ""; 
 		}
 	}
 }
@@ -437,7 +435,15 @@ public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Stateme
 			return printIf(getPredicate(p, true), getStatementData(s, assignments, defaultStyle));
 		}
 		case (Statement)`if ( <Predicate p> ) <Statement s> else <Statement s2>`:{
-			return getIfElse(p, s, s2, assignments, defaultStyle); 
+			toReturn = getIfElse(p, s, s2);
+			if(toReturn!=""){
+				return toReturn;
+			}
+			else{
+				return printIfElse(getPredicate(p, true),  
+				getStatementData(s, assignments, defaultStyle), 
+				getStatementData(s2, assignments, defaultStyle));
+			}
 		}
 		case (Statement)`let <Assignment+ ass> in <Statement* stat> end`:
 			return "\n" + getAssignment(ass, assignments, stat, defaultStyle) + "\n";
