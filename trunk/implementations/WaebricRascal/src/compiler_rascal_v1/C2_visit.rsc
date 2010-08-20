@@ -78,12 +78,12 @@ public void doVisit(loc inp, loc outputLoc){
 	writeFile(outputLoc, printJava(modul, impor, metho, sites));
 }	
 /* FUNCTION (1->1): getArgs -> getExpression */
-public str getArgs(list[Argument] args){ 
+public str getArgs(list[Argument] args){
 	toReturn = ""; 	
 	for(Argument arg <- args){
-		switch(arg){
+		toReturn += switch(arg){
 			case (Argument) `<Expression expr>` : {
-				toReturn += ", <getExpression(expr, false)>";
+				return ", <getExpression(expr, false)>";
 			}
 		} 
 	}	

@@ -75,7 +75,7 @@ public tuple[str, str, str] getVarList(Expression b, str expr1, str expr2){
 public void doVisit(loc inp, loc outputLoc){
 	modul = [];	impor = [];	metho = [];	metho0 = []; sites = []; 
 	getData(parse(#Module, inp), true);
-	writeFile(outputLoc, printJava(modul, impor, metho, sites));
+	writeFile(outputLoc, printJava(modul, metho, sites));
 }	
 /* FUNCTION (1->1): getArgs -> getExpression */
 public str getArgs(list[Argument] args){ 

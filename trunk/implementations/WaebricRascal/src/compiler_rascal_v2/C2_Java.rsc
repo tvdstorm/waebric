@@ -10,11 +10,11 @@ import ToString;
 import Relation; 
 import Map; 
 import Node; 
-/* FUNCTION (5->1): printJava -> printConstructor, getOneFrom, printFunctions */
-public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str], list[str]]] metho, list[tuple[str, str]] sites){ return 	
+/* FUNCTION (4->1): printJava -> printConstructor, getOneFrom, printFunctions */
+public str printJava(list[str] modul, list[tuple[str, list[str], list[str]]] metho, list[tuple[str, str]] sites){ return 	
 "<printImports> 
 <printConstructor(getOneFrom(modul), sites)>
-	<printFunctions(metho)>
+	<(""|it+printFunction(id, params, methodBody)|<str id, list[str] params, list[str] methodBody> <- metho)>
 <printInterfaces> 
 <printInterfaces_2>
 ";}
@@ -107,32 +107,27 @@ $out.write(\"\\\"\");\n"
 	}
 }
 /* FUNCTION (3->1): printIfElse */
-public str printIfElse(str condition, str doIf, str doElse){ 
-	return "
+public str printIfElse(str condition, str doIf, str doElse){ return "
 			if (<condition>) {
 				<doIf>
 			}
 			else {
 				<doElse>
 			}
-";
-}
+";}
 /* FUNCTION (3->1): printIfElseALT */
 public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de bedoeling?
 	return "stat-to-jstats(if (<condition>)
 			<doIf>
 		else
 			<doElse>)
-";
-}
+";}
 /* FUNCTION (2->1): printIf */
-public str printIf(str condition, str doIf){ 
-	return "
+public str printIf(str condition, str doIf){ return "
 			if (<condition>) {
 				<doIf>
 			}
-";
-}
+";}
 /* FUNCTION (3->1): printConstructor */
 private str printConstructor(str module_id, list[tuple[str,str]] sites){ return 
 "@SuppressWarnings(\"unchecked\")
@@ -152,16 +147,16 @@ public class <module_id> {
 ";}
 /* FUNCTION (2->1): printSites -> printSite */
 private str printSites(list[tuple[str, str]] sites) { 
-	returnable = "";
-	for(<str site, str pars> <- sites){
-		returnable += printSite(site, pars);
-	}
-	return returnable;
+	return (""|printSite(site)+printSiteParameters(parameters)+it|x:<str site, str parameters><-sites);
 }
-/* FUNCTION (2->1): printSite */
-private str printSite(str site, str parameters) { return 
+/* FUNCTION (1->1): printSite */
+private str printSite(str site) { return 
 "writer = new FileWriter(new File(root,\"" + site + "\"));
-		new Markup() {
+";}
+
+/* FUNCTION (1->1): printSiteParameters */
+private str printSiteParameters(str paramters){ return
+"new Markup() {
 			public void render(Writer $out)
 				throws IOException, SQLException {
 $out.write(\"\<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\\" \\\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\\\"\>\\n\");
@@ -170,14 +165,6 @@ $out.write(\"\<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\
 		}.render(writer);
 		writer.close();
 ";}
-/* FUNCTION (3->1): printFunctions -> printFunction */
-private str printFunctions(list[tuple[str, list[str], list[str]]] methodes) {
-	returnable = "";
-	for(<str id, list[str] params, list[str] methodBody> <- methodes){
-		returnable += printFunction(id, params, methodBody);
-	}
-	return returnable;
-}
 /* FUNCTION (3->1): printFunction -> printConstuctorParams, printMarkup, printMethodParams */
 private str printFunction(str id, list[str] params, list[str] mu){ return
 "private void <id>(final Writer $out, final Markup $markup" + printConstuctorParams(params) + ") 
@@ -197,21 +184,13 @@ public str printConstuctorParams(list[str] pars){
 	}
 	return toReturn;
 }
-/* FUNCTION (->): printMarkup */
+/* FUNCTION (1->1): printMarkup */
 public str printMarkup(list[str] mu){
-	returnable = "";
-	for(str s <- mu){
-		returnable += s;
-	}
-	return returnable;
+	return (""|it+x|x<-mu);	
 }
 /* FUNCTION (1->1): printMethodParams */
 public str printMethodParams(list[str] pars){
-	toReturn = "";
-	for(str p <- pars){
-		toReturn += ", "+p;
-	}
-	return toReturn;
+	return (""|it+", <x>"|x<-pars);
 }
 /* FUNCTION (1->1): printForEach3 */
 public str printForEach3(str var){ return "
@@ -220,7 +199,7 @@ public List\<Object\> list() {
 ;
 	$v.add(\"<var>\");";
 }
-/* FUNCTION (2->1): printForEach8 */
+/* FUNCTION (2->1): printForEach8 -> strip */
 public str printForEach8(str a, str b) { return "
 	Iterable\<Object\> $iter;
 	if ($temp instanceof Iterable) {
