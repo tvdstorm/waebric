@@ -220,7 +220,7 @@ public List\<Object\> list() {
 ;
 	$v.add(\"<var>\");";
 }
-/* FUNCTION (2->1): printForEach8 */
+/* FUNCTION (2->1): printForEach8 -> strip */
 public str printForEach8(str a, str b) { return "
 	Iterable\<Object\> $iter;
 	if ($temp instanceof Iterable) {

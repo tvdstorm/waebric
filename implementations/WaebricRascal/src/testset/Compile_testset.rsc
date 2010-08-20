@@ -1,6 +1,6 @@
 module testset::Compile_testset
 
-import compiler_rascal_v1::C2_visit; 
+import compiler_rascal_v2::C2_visit; 
 import IO;
 import Resources;
 import ParseTree;
