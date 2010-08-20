@@ -487,33 +487,21 @@ public str getEmbeddingRec(TextTail textTail, list[tuple[str, list[IdCon], State
 public str getEmbedding(str pre, Embed e, TextTail textTail, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	toReturn = "$out.write(\"" + substring(pre, 1, size(pre)-1) + "\");\n";
 	if((Embed) `<Markup* ms><Expression expr>` <- e){
-		list[str] endings = [];
-		for(Markup m <- ms){
-			toReturn += printMarkupData(getMarkupData(m));
-			endings += printMarkupEnding(getMarkupData(m));
-		}
-		toReturn += printExpression(expr);
-		for(str s <- reverse(endings)){ 
-			toReturn += s;
-		}
-		toReturn += getEmbeddingRec(textTail, assignments, defaultStyle);
-	}else if((Embed) `<Markup* ms> <Markup mu>` <- e){
-		list[str] endings = [];
-		for(Markup m <- ms){
-			toReturn += printMarkupData(getMarkupData(m));
-			endings += printMarkupEnding(getMarkupData(m));
-		}
-		toReturn += getMu1(mu);
-		toReturn += markupCalculation(mu, assignments);
-		for(str s <- reverse(endings)){ 
-			toReturn += s;
-		}
-		toReturn += getEmbeddingRec(textTail, assignments, defaultStyle);
+		toReturn += ( printExpression(expr) 
+			| printMarkupData(mdata) + it + printMarkupEnding(mdata) 
+			| m<-ms, mdata:=getMarkupData(m) ) 
+		+ getEmbeddingRec(textTail, assignments, defaultStyle);
+	}else if((Embed) `<Markup* ms> <Markup mu>` <- e){ 
+		toReturn += ( getMu1(mu) + markupCalculation(mu, assignments) 
+			| printMarkupData(mdata) + it + printMarkupEnding(mdata)
+			| m<-ms, mdata:=getMarkupData(m) ) 
+		+ getEmbeddingRec(textTail, assignments, defaultStyle);
 	}
 	return toReturn;
 }
 /* FUNCTION (5->1): getMultipleStatementsData -> getStatementData */
 public str getMultipleStatementsData(Statement* stat, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
+// (""|it+getStatementData(s, assignments, defaultStyle)+"    "|s<-stat);
 	toReturn = "";
 	for(Statement s <- stat){	
 		toReturn += ""+getStatementData(s, assignments, defaultStyle)+"    ";	
