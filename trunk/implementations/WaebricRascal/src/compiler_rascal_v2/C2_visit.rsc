@@ -11,13 +11,17 @@ import ToString;
 import Relation; 
 import Map; 
 import Node; 
+
 public list[str] modul = []; 
 public list[str] impor = []; 
 public list[tuple[str, list[Statement]]] metho0 = [];
 public list[tuple[str, list[str], list[str]]] metho = [];
 public list[tuple[str, str]] sites = [];
-/* FUNCTION (4->1): getEach -> printForEachArray1, getVarList, toString, getStatementData */
-public str getEach(Statement stat, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
+
+data Allocatie = allocatie(str id, list[node] args, node val);
+
+/* FUNCTION (3->1): getEach -> printForEachArray1, getVarList, toString, getStatementData */
+public str getEach(Statement stat, list[Allocatie] assignments, bool defaultStyle){
 	if(`each ( <a> : <b> ) <c>` := stat){
 		if(`<Expression e> . <IdCon idc>`:=b){
 			return printForEach1 + "Object $temp = " + printForEachArray1("<e>", "<idc>") + printForEachArray2;
@@ -99,8 +103,8 @@ public str getExpression2(IdCon idc, Expression e){
 	} 	
 	return "{\nfinal Object <idc> = " + getExpression_NOT_FIRST_TIME(e)+";\n";
 }
-/* FUNCTION (6->1): getExpression2, toString, size, getStatementData, getMultipleStatementsData */
-public str getAssignment(Assignment+ ass, list[tuple[str, list[IdCon], Statement?]] assignments, Statement* stats, bool defaultStyle){
+/* FUNCTION (4->1): getExpression2, toString, size, getStatementData, getMultipleStatementsData */
+public str getAssignment(Assignment+ ass, list[Allocatie] assignments, Statement* stats, bool defaultStyle){
 	toReturn = ""; 
 	closingBrackets = ""; 
 	containsStatements = true;
@@ -124,7 +128,8 @@ public str getAssignment(Assignment+ ass, list[tuple[str, list[IdCon], Statement
 				throws IOException, SQLException {
 			";
 			toReturn += getStatementData(s, assignments, defaultStyle) + "\n\t}\n\t\t};\n";
-			assignments += [<"<func_name>", idConList, s>];
+			assignments += allocatie("<func_name>", idConList, s); 
+// [<"<func_name>", idConList, s>];
 			containsStatements = false;
 		}
 	}
@@ -167,8 +172,8 @@ public void getData(Module source, bool defaultStyle){
 	}
 	metho = newMetho;
 }
-/* FUNCTION (4->1): markupCalculation -> getMarkupData, unQuote, toString, getQuotedString, printAttributes, getStatementData, getArgs */
-public str markupCalculation(Markup m, list[tuple[str, list[IdCon], Statement?]] assignments){
+/* FUNCTION (2->1): markupCalculation -> getMarkupData, unQuote, toString, getQuotedString, printAttributes, getStatementData, getArgs */
+public str markupCalculation(Markup m, list[Allocatie] assignments){
 	<<object, attr>, parameters> = getMarkupData(m);
 	newAttr = attr;
 	toReturn = "";
@@ -191,8 +196,8 @@ public str markupCalculation(Markup m, list[tuple[str, list[IdCon], Statement?]]
 	}else{
 		for(/`<Expression par>` <- parameters){
 			for(ass <- assignments){
-				if(ass[0]==object){	
-					k = visit(ass[2]){
+				if(ass.id==object){	
+					k = visit(ass.val){
 						case (Expression) `<Expression var>` => par 
 					}
 					toReturn += getStatementData(k, assignments, false);
@@ -275,8 +280,8 @@ public str getMu1(Markup m){
 	}
 	return "";
 }
-/*	Check for functions over markup.FUNCTION (5->2): getMuda -> getMarkupData, getArgs, subString, printMarkupData2, getMarkupData, printMethodName, getMu1, markupCalculation, printMethodName, printMarkupData */
-public tuple[str, str] getMuda(Markup m, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
+/*	Check for functions over markup.FUNCTION (3->2): getMuda -> getMarkupData, getArgs, subString, printMarkupData2, getMarkupData, printMethodName, getMu1, markupCalculation, printMethodName, printMarkupData */
+public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defaultStyle){
 	toReturn = "";
 	endings = "";
 	if(<str name, list[str] params, list[str] values> <- metho){
@@ -284,7 +289,7 @@ public tuple[str, str] getMuda(Markup m, list[tuple[str, list[IdCon], Statement?
 			name = subString(name, 0, size(name)-1);
 		}
 		<<name2,_>, argus> = getMarkupData(m);
-		k = {namcall| <nam, _, _> <- assignments, namcall := "<nam>.call"};
+		k = {namcall| var <- assignments, namcall := "<var.id>.call"};
 		if(name2==name || "<name2>.call" in k){
 			if(name2==name){
 				if(argus!=[]){
@@ -374,8 +379,8 @@ public tuple[str, str] getMuda(Markup m, list[tuple[str, list[IdCon], Statement?
 	}
 	return <toReturn, endings>;
 }
-/* FUNCTION (5->1): getStatementData -> getMuda, getStatementData, printExpression, getEmbedding, printIf, getPredicate, getIfElse, getAssignment, getMultipleStatementsData, getEach */
-public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
+/* FUNCTION (3->1): getStatementData -> getMuda, getStatementData, printExpression, getEmbedding, printIf, getPredicate, getIfElse, getAssignment, getMultipleStatementsData, getEach */
+public str getStatementData(Statement stat, list[Allocatie] assignments, bool defaultStyle){
 	switch(stat){
 		case (Statement) `<Markup+ ms> <Statement s>`: {
 			toReturn = "";
@@ -467,14 +472,14 @@ public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Stateme
 		default : return getEach(stat, assignments, defaultStyle);
 	};
 }
-/* FUNCTION (5->1): getEmbedding */
-public str getEmbedding(Embedding embedding, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
+/* FUNCTION (3->1): getEmbedding */
+public str getEmbedding(Embedding embedding, list[Allocatie] assignments, bool defaultStyle){
 	if((Embedding) `<preText:_> <Embed e> <TextTail tail>` <- embedding){
 		return getEmbedding("<preText>", e, tail, assignments, defaultStyle);
 	}
 }
-/* FUNCTION (5->1): getEmbeddingRec -> toString, substring */
-public str getEmbeddingRec(TextTail textTail, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
+/* FUNCTION (3->1): getEmbeddingRec -> toString, substring */
+public str getEmbeddingRec(TextTail textTail, list[Allocatie] assignments, bool defaultStyle){
 	if((TextTail) `<PostText text>` <- textTail){
 		post = toString(text);
 		return "$out.write(\"" + substring(post, 1, size(post)-1) + "\");\n";
@@ -483,8 +488,8 @@ public str getEmbeddingRec(TextTail textTail, list[tuple[str, list[IdCon], State
 		return getEmbedding(toString(preText), e, tail, assignments, defaultStyle);
 	}
 }
-/* FUNCTION (7->1): getEmbedding -> substring, printMarkupData, getMarkupData, printMarkupEnding, printExpression, getEmbeddingRec, getMu1, markupCalculation*/
-public str getEmbedding(str pre, Embed e, TextTail textTail, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
+/* FUNCTION (5->1): getEmbedding -> substring, printMarkupData, getMarkupData, printMarkupEnding, printExpression, getEmbeddingRec, getMu1, markupCalculation*/
+public str getEmbedding(str pre, Embed e, TextTail textTail, list[Allocatie] assignments, bool defaultStyle){
 	toReturn = "$out.write(\"" + substring(pre, 1, size(pre)-1) + "\");\n";
 	if((Embed) `<Markup* ms><Expression expr>` <- e){
 		toReturn += ( printExpression(expr) 
@@ -499,8 +504,8 @@ public str getEmbedding(str pre, Embed e, TextTail textTail, list[tuple[str, lis
 	}
 	return toReturn;
 }
-/* FUNCTION (5->1): getMultipleStatementsData -> getStatementData */
-public str getMultipleStatementsData(Statement* stat, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
+/* FUNCTION (3->1): getMultipleStatementsData -> getStatementData */
+public str getMultipleStatementsData(Statement* stat, list[Allocatie] assignments, bool defaultStyle){
 	return (""|it+getStatementData(s, assignments, defaultStyle)+"    "|s<-stat);
 }
 /*FUNCTION (1->4): getMarkupData -> getDesignator */

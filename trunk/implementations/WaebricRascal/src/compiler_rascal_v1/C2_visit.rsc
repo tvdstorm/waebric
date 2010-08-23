@@ -16,7 +16,7 @@ public list[str] impor = [];
 public list[tuple[str, list[Statement]]] metho0 = [];
 public list[tuple[str, list[str], list[str]]] metho = [];
 public list[tuple[str, str]] sites = [];
-/* FUNCTION (4->1): getEach -> printForEachArray1, getVarList, toString, getStatementData */
+/* FUNCTION (5->1): getEach -> printForEachArray1, getVarList, toString, getStatementData */
 public str getEach(Statement stat, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	if(`each ( <a> : <b> ) <c>` := stat){
 		if(`<Expression e> . <IdCon idc>`:=b){
