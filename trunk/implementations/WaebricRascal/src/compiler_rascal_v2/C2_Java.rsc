@@ -92,15 +92,15 @@ public str printMarkupEnding(tuple[tuple[str, list[tuple[str, str]]], list[void]
 return
 "$out.write(\"\</<mu>\>\");
 ";}
-/* FUNCTION (1->1): printMarkupParametersRec -> head, getExpression, printMarkupParametersRec, tail */
+/* FUNCTION (1->1): printMarkupParametersRec -> head, getExpression_NOT_FIRST_TIME, printMarkupParametersRec, tail */
 public str printMarkupParametersRec(list[Argument] args){
 	if(`<IdCon id> = <Expression e>` := head(args)){
 		if(size(args)==1){ return 
-"$out.write(\" <"<id>">=\\\"\" + <"<getExpression(e, false)>"> + \"\\\"\");
+"$out.write(\" <"<id>">=\\\"\" + <"<getExpression_NOT_FIRST_TIME(e)>"> + \"\\\"\");
 $out.write(\"\>\");\n";
 		}else{ return 
 "$out.write(\" \"); 
-$out.write(\"<"<id>">=\\\"\" + <"<getExpression(e, false)>"> );
+$out.write(\"<"<id>">=\\\"\" + <"<getExpression_NOT_FIRST_TIME(e)>"> );
 $out.write(\"\\\"\");\n" 
 			+ printMarkupParametersRec(tail(args)) + "\n";
 		}
@@ -282,93 +282,32 @@ public str printForEachArray1(str parent, str kids){ return
 }
 /* FUNCTION (1->1): printExpression -> printLine, getExpression */
 public str printExpression(Expression e){
-	return printLine(getExpression(e, true));
+	return printLine(getExpression_FIRST_TIME(e));
 }
 /* FUNCTION (1->1): printLine */
 public str printLine(str toPrint){
 	return "$out.write(<toPrint>);\n";
 }
-/* FUNCTION (2->1): getExpression -> getKeyValuePairs, toString, getQuotedString, replaceAll, printForEachArray1 */
-public str getExpression(Expression e, bool firstTime){
+/* FUNCTION (1->1): getExpression_FIRST_TIME -> getQuotedString, replaceAll, toString */
+public str getExpression_FIRST_TIME(Expression e){
 	switch(e){
-		case (Expression) `<Expression e1> + <Expression e2> ` :{
-			if(firstTime)
-				return getExpression(e1, false) + " + " + getExpression(e2, false) + ".toString()";
-			else
-				return getExpression(e1, false) + " + " + getExpression(e2, false);
+		case (Expression) `<Expression e1> + <Expression e2> ` :{ 
+			return getExpression_NOT_FIRST_TIME(e1) + " + " + getExpression_NOT_FIRST_TIME(e2) + ".toString()";
 		}
 		case (Expression) `{ <{KeyValuePair ","}* kv> }` :{
-			if(firstTime){
-				return "new Hashtable\<String,Object\>()\n.toString()";
-			}else{
-				str toReturn = "";
-				str ending = "";
-				bool eerste = true; 
-				for(KeyValuePair pair <- kv){
-					if(eerste){
-						eerste = false;
-						ending += printArrayCloseNEW;
-					}else{
-						onlyOne = true;
-						toReturn += printArray4;
-						ending += printArrayClose2;
-					}
-					toReturn += getKeyValuePairs(pair);
-				}
-				return toReturn + ending;
-			}			
+			return "new Hashtable\<String,Object\>()\n.toString()";
 		}
-		case (Expression) `[ <{ Expression "," }* i> ]` :{
-			if(firstTime){
-				return "new ArrayList\<Object\>()\n.toString()";
-			}else{
-				str toReturn = "";
-				str endings = "";
-				bool firstTime = true;
-				str listClose = "";
-	
-				for(Expression expr <- i, "<expr>"!=""){
-					if(firstTime){
-						firstTime = false;
-						toReturn += printList1;
-						toReturn += getExpression(expr, false);
-						listClose = printListClose;
-						endings += printForEach9;
-					}
-					else if(substring("<i>", 0, 1)=="\""){
-						toReturn += printArray2;
-						toReturn += getExpression(expr, false);
-					}
-					else if(substring("<i>", 0, 1)=="{"){
-						toReturn += something + getExpression(expr, false);
-						endings += printForEach9;
-					}
-					else{
-						toReturn += something;
-						toReturn += getExpression(expr, false);
-						endings += printForEach9;
-					}
-				}
-				return toReturn + listClose + endings;
-			}
+		case (Expression) `[ <{ Expression "," }* i> ]` :{ 
+			return "new ArrayList\<Object\>()\n.toString()";
 		}
 		case (Expression) `<IdCon i>` :{
-			if(firstTime){
-				return "<toString(e)>.toString()";
-			}
-			else{
-				return toString(e);
-			}
+			return "<toString(e)>.toString()";
 		}
 		case (Expression) `<SymbolCon s>` :{
 			return getQuotedString("<s>");
 		}
 		case (Expression) `<NatCon n>` :{
-			if(firstTime)
-				return "\"" + toString(e) + "\"";
-			else{
-				return "\"<toString(e)>\"";
-}
+			return "\"" + toString(e) + "\"";
 		}
 		case (Expression) `<Text t>` :{
 			toReturn = getQuotedString("<t>");
@@ -376,10 +315,7 @@ public str getExpression(Expression e, bool firstTime){
 			return toReturn;
 		}
 		case (Expression) `<Expression e1> . <IdCon idc>` :
-			if(firstTime)
-				return printForEachArray1("<e1>", "<idc>")+".toString()";
-			else
-				return printForEachArray1("<e1>", "<idc>");
+			return printForEachArray1("<e1>", "<idc>")+".toString()";
 		default : {
 			if(isNumber("<e>")){
 				return "\""+toString(e)+"\"";
@@ -389,6 +325,185 @@ public str getExpression(Expression e, bool firstTime){
 		}
 	}
 }
+/* FUNCTION (1->1): getExpression_NOT_FIRST_TIME -> getKeyValuePairs, getQuotedString, replaceAll, printForEachArray1 */
+public str getExpression_NOT_FIRST_TIME(Expression e){
+	switch(e){
+		case (Expression) `<Expression e1> + <Expression e2> ` :{
+			return getExpression_NOT_FIRST_TIME(e1) + " + " + getExpression_NOT_FIRST_TIME(e2);
+		}
+		case (Expression) `{ <{KeyValuePair ","}* kv> }` :{
+			str toReturn = "";
+			str ending = "";
+			bool eerste = true; 
+			for(KeyValuePair pair <- kv){
+				if(eerste){
+					eerste = false;
+					ending += printArrayCloseNEW;
+				}else{
+					onlyOne = true;
+					toReturn += printArray4;
+					ending += printArrayClose2;
+				}
+				toReturn += getKeyValuePairs(pair);
+			}
+			return toReturn + ending;
+		}
+		case (Expression) `[ <{ Expression "," }* i> ]` :{
+			str toReturn = "";
+			str endings = "";
+			bool firstTime = true;
+			str listClose = "";
+	
+			for(Expression expr <- i, "<expr>"!=""){
+				if(firstTime){
+					firstTime = false;
+					toReturn += printList1;
+					toReturn += getExpression_NOT_FIRST_TIME(expr);
+					listClose = printListClose;
+					endings += printForEach9;
+				}
+				else if(substring("<i>", 0, 1)=="\""){
+					toReturn += printArray2;
+					toReturn += getExpression_NOT_FIRST_TIME(expr);
+				}
+				else if(substring("<i>", 0, 1)=="{"){
+					toReturn += something + getExpression_NOT_FIRST_TIME(expr);
+					endings += printForEach9;
+				}
+				else{
+					toReturn += something;
+					toReturn += getExpression_NOT_FIRST_TIME(expr);
+					endings += printForEach9;
+				}
+			}
+			return toReturn + listClose + endings;
+		}
+		case (Expression) `<IdCon i>` :{
+			return toString(e);
+		}
+		case (Expression) `<SymbolCon s>` :{
+			return getQuotedString("<s>");
+		}
+		case (Expression) `<NatCon n>` :{
+			return "\"<toString(e)>\"";
+		}
+		case (Expression) `<Text t>` :{
+			toReturn = getQuotedString("<t>");
+			toReturn = replaceAll(toReturn, "\n", "\\n");
+			return toReturn;
+		}
+		case (Expression) `<Expression e1> . <IdCon idc>` :
+			return printForEachArray1("<e1>", "<idc>");
+		default : {
+			if(isNumber("<e>")){
+				return "\""+toString(e)+"\"";
+			}else{
+				return toString(e);
+			}
+		}
+	}
+}
+/* FUNCXXXXXXXXXXXXXTION (2->1): getExpression -> getKeyValuePairs, toString, getQuotedString, replaceAll, printForEachArray1 */
+// public str getExpression(Expression e, bool firstTime){
+	// switch(e){
+		// case (Expression) `<Expression e1> + <Expression e2> ` :{
+			// if(firstTime)
+				// return getExpression(e1, false) + " + " + getExpression(e2, false) + ".toString()";
+			// else
+				// return getExpression(e1, false) + " + " + getExpression(e2, false);
+		// }
+		// case (Expression) `{ <{KeyValuePair ","}* kv> }` :{
+			// if(firstTime){
+				// return "new Hashtable\<String,Object\>()\n.toString()";
+			// }else{
+				// str toReturn = "";
+				// str ending = "";
+				// bool eerste = true; 
+				// for(KeyValuePair pair <- kv){
+					// if(eerste){
+						// eerste = false;
+						// ending += printArrayCloseNEW;
+					// }else{
+						// onlyOne = true;
+						// toReturn += printArray4;
+						// ending += printArrayClose2;
+					// }
+					// toReturn += getKeyValuePairs(pair);
+				// }
+				// return toReturn + ending;
+			// }			
+		// }
+		// case (Expression) `[ <{ Expression "," }* i> ]` :{
+			// if(firstTime){
+				// return "new ArrayList\<Object\>()\n.toString()";
+			// }else{
+				// str toReturn = "";
+				// str endings = "";
+				// bool firstTime = true;
+				// str listClose = "";
+	
+				// for(Expression expr <- i, "<expr>"!=""){
+					// if(firstTime){
+						// firstTime = false;
+						// toReturn += printList1;
+						// toReturn += getExpression(expr, false);
+						// listClose = printListClose;
+						// endings += printForEach9;
+					// }
+					// else if(substring("<i>", 0, 1)=="\""){
+						// toReturn += printArray2;
+						// toReturn += getExpression(expr, false);
+					// }
+					// else if(substring("<i>", 0, 1)=="{"){
+						// toReturn += something + getExpression(expr, false);
+						// endings += printForEach9;
+					// }
+					// else{
+						// toReturn += something;
+						// toReturn += getExpression(expr, false);
+						// endings += printForEach9;
+					// }
+				// }
+				// return toReturn + listClose + endings;
+			// }
+		// }
+		// case (Expression) `<IdCon i>` :{
+			// if(firstTime){
+				// return "<toString(e)>.toString()";
+			// }
+			// else{
+				// return toString(e);
+			// }
+		// }
+		// case (Expression) `<SymbolCon s>` :{
+			// return getQuotedString("<s>");
+		// }
+		// case (Expression) `<NatCon n>` :{
+			// if(firstTime)
+				// return "\"" + toString(e) + "\"";
+			// else{
+				// return "\"<toString(e)>\"";
+// }
+		// }
+		// case (Expression) `<Text t>` :{
+			// toReturn = getQuotedString("<t>");
+			// toReturn = replaceAll(toReturn, "\n", "\\n");
+			// return toReturn;
+		// }
+		// case (Expression) `<Expression e1> . <IdCon idc>` :
+			// if(firstTime)
+				// return printForEachArray1("<e1>", "<idc>")+".toString()";
+			// else
+				// return printForEachArray1("<e1>", "<idc>");
+		// default : {
+			// if(isNumber("<e>")){
+				// return "\""+toString(e)+"\"";
+			// }else{
+				// return toString(e);
+			// }
+		// }
+	// }
+// }
 /* FUNCTION (1->1): getQuotedString -> startsWith, substring, size */
 public str getQuotedString(str toReturn){
 	if(startsWith(toReturn, "'")){
@@ -396,12 +511,12 @@ public str getQuotedString(str toReturn){
 	}
 	return toReturn; 
 }
-/* FUNCTION (1->1): getKeyValuePairs -> getExpression, printArray3 */
+/* FUNCTION (1->1): getKeyValuePairs -> getExpression_NOT_FIRST_TIME, printArray3 */
 public str getKeyValuePairs(KeyValuePair kv){
 	toReturn = "";
 	switch(kv){
 		case (KeyValuePair) `<IdCon idc> : <Expression expr>` : {
-			str expression = getExpression(expr, false);
+			str expression = getExpression_NOT_FIRST_TIME(expr);
 			toReturn +=  printArray3("<idc>", expression);
 		}
 	}
