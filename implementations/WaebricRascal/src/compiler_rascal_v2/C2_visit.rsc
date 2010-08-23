@@ -31,7 +31,7 @@ public str getEach(Statement stat, list[tuple[str, list[IdCon], Statement?]] ass
 public tuple[str, str, str] getVarList(Expression b){	
 	return getVarList(b, "", "");
 }
-/* FUNCTION (3->3): getVarList -> getExpression, getExpression, printForEach3, printForEach8 */
+/* FUNCTION (3->3): getVarList -> getExpression_NOT_FIRST_TIME, printForEach3, printForEach8 */
 public tuple[str, str, str] getVarList(Expression b, str expr1, str expr2){
 	toReturn = ""; 
 	ending = "";	
@@ -48,12 +48,12 @@ public tuple[str, str, str] getVarList(Expression b, str expr1, str expr2){
 	}else{
 		switch(b){
 			case `{ <{KeyValuePair ","}* e> }` : { 
-				toReturn += getExpression(b, false) + ";";
+				toReturn += getExpression_NOT_FIRST_TIME(b) + ";";
 				mid = toReturn; 
 				left += printForEach1 + printForEach2;
 			}
 			case `[ <{Expression ","}* e> ]` : { 
-				toReturn += getExpression(b, false) + ";";
+				toReturn += getExpression_NOT_FIRST_TIME(b) + ";";
 				mid = toReturn; 
 				left += printForEach1 + printForEach2;
 			}
@@ -77,19 +77,19 @@ public void doVisit(loc inp, loc outputLoc){
 	getData(parse(#Module, inp), true);
 	writeFile(outputLoc, printJava(modul, metho, sites));
 }	
-/* FUNCTION (1->1): getArgs -> getExpression */
+/* FUNCTION (1->1): getArgs -> getExpression_NOT_FIRST_TIME */
 public str getArgs(list[Argument] args){ 
 	toReturn = ""; 	
 	for(Argument arg <- args){
 		switch(arg){
 			case (Argument) `<Expression expr>` : {
-				toReturn += ", <getExpression(expr, false)>";
+				toReturn += ", <getExpression_NOT_FIRST_TIME(expr)>";
 			}
 		} 
 	}	
 	return toReturn;
 }
-/* FUNCTION (2->1): getExpression2 -> getVarList, getExpression */
+/* FUNCTION (2->1): getExpression2 -> getVarList, getExpression_NOT_FIRST_TIME */
 public str getExpression2(IdCon idc, Expression e){	
 	switch(e){ 	
 		case (Expression) `[ <{ Expression "," }* expressions> ]` :{
@@ -97,7 +97,7 @@ public str getExpression2(IdCon idc, Expression e){
 			return "{\nfinal Object <idc> = <mid>\n"; 
 		}
 	} 	
-	return "{\nfinal Object <idc> = " + getExpression(e, false)+";\n";
+	return "{\nfinal Object <idc> = " + getExpression_NOT_FIRST_TIME(e)+";\n";
 }
 /* FUNCTION (6->1): getExpression2, toString, size, getStatementData, getMultipleStatementsData */
 public str getAssignment(Assignment+ ass, list[tuple[str, list[IdCon], Statement?]] assignments, Statement* stats, bool defaultStyle){
@@ -237,17 +237,17 @@ public str getIfElse(Predicate p, Statement s, Statement s2){
 		}
 	}
 }
-/* FUNCTION (2->1): getPredicate -> getExpression, getPredicate, splitAtDot, printForEachArray1, getExpression */
+/* FUNCTION (2->1): getPredicate -> getExpression_NOT_FIRST_TIME, getExpression_FIRST_TIME, getPredicate, splitAtDot, printForEachArray1 */
 public str getPredicate(Predicate p, bool defaultStyle){
 	switch(p){
 		case `<Expression expr>` :{
 			if(defaultStyle)
-				return "<getExpression(expr, true)> != null";
+				return "<getExpression_FIRST_TIME(expr)> != null";
 			else
-				return "<getExpression(expr, true)>";
+				return "<getExpression_FIRST_TIME(expr)>";
 		}		
 		case `<Expression expr> . <Type tpe> ?` : 
-			return "<getExpression(expr, false)>.<tpe>?";		
+			return "<getExpression_NOT_FIRST_TIME(expr)>.<tpe>?";		
 		case `! <Predicate p>` : 
 			return "!"+getPredicate(p, false);
 		case `<Predicate p1> && <Predicate p2>` : 
@@ -261,9 +261,9 @@ public str getPredicate(Predicate p, bool defaultStyle){
 					return printForEachArray1("<begin>", "<end>")+" != null";
 				}
 				else
-					return "<getExpression(p, true)> != null";
+					return "<getExpression_FIRST_TIME(p)> != null";
 			else
-				return "<getExpression(p, true)>";
+				return "<getExpression_FIRST_TIME(p)>";
 		}
 	}
 }
@@ -483,7 +483,7 @@ public str getEmbeddingRec(TextTail textTail, list[tuple[str, list[IdCon], State
 		return getEmbedding(toString(preText), e, tail, assignments, defaultStyle);
 	}
 }
-/* FUNCTION (7->1): getEmbedding -> substring, printMarkupData, getMarkupData, printMarkupEnding, printExpression, reverse, getEmbeddingRec, getMu1, markupCalculation, reverse */
+/* FUNCTION (7->1): getEmbedding -> substring, printMarkupData, getMarkupData, printMarkupEnding, printExpression, getEmbeddingRec, getMu1, markupCalculation*/
 public str getEmbedding(str pre, Embed e, TextTail textTail, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	toReturn = "$out.write(\"" + substring(pre, 1, size(pre)-1) + "\");\n";
 	if((Embed) `<Markup* ms><Expression expr>` <- e){
