@@ -467,10 +467,10 @@ public str getStatementData(Statement stat, list[tuple[str, list[IdCon], Stateme
 		default : return getEach(stat, assignments, defaultStyle);
 	};
 }
-/* FUNCTION (5->1): getEmbedding -> toString */
+/* FUNCTION (5->1): getEmbedding */
 public str getEmbedding(Embedding embedding, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	if((Embedding) `<preText:_> <Embed e> <TextTail tail>` <- embedding){
-		return getEmbedding(toString(preText), e, tail, assignments, defaultStyle);
+		return getEmbedding("<preText>", e, tail, assignments, defaultStyle);
 	}
 }
 /* FUNCTION (5->1): getEmbeddingRec -> toString, substring */
@@ -501,12 +501,7 @@ public str getEmbedding(str pre, Embed e, TextTail textTail, list[tuple[str, lis
 }
 /* FUNCTION (5->1): getMultipleStatementsData -> getStatementData */
 public str getMultipleStatementsData(Statement* stat, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
-// (""|it+getStatementData(s, assignments, defaultStyle)+"    "|s<-stat);
-	toReturn = "";
-	for(Statement s <- stat){	
-		toReturn += ""+getStatementData(s, assignments, defaultStyle)+"    ";	
-	};
-	return toReturn;
+	return (""|it+getStatementData(s, assignments, defaultStyle)+"    "|s<-stat);
 }
 /*FUNCTION (1->4): getMarkupData -> getDesignator */
 public tuple[tuple[str, list[tuple[str, str]]], list[Argument]] getMarkupData(Markup markup){
@@ -544,12 +539,12 @@ public tuple[str, list[tuple[str, str]]] getDesignator(Designator des){
 		return <"<idc>", toReturn>;
 	}
 }
-/* FUNCTION (1->1): getFormals -> toString */
+/* FUNCTION (1->1): getFormals */
 public list[str] getFormals(Formals form){
 	toReturn = [];
 	visit(form){
 		case `<IdCon i>` : {
-			toReturn += toString(i);
+			toReturn += "<i>";
 		}
 	}
 	return toReturn;
