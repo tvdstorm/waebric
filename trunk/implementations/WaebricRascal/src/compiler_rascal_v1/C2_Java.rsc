@@ -10,7 +10,7 @@ import ToString;
 import Relation; 
 import Map; 
 import Node; 
-/* FUNCTION (5->1): printJava -> printConstructor, getOneFrom, printFunctions */
+/* FUNCTION (7->1): printJava -> printConstructor, getOneFrom, printFunctions */
 public str printJava(list[str] modul, list[str] impor, list[tuple[str, list[str], list[str]]] metho, list[tuple[str, str]] sites){ return 	
 "<printImports> 
 <printConstructor(getOneFrom(modul), sites)>

@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.Hashtable;
  
 @SuppressWarnings("unchecked")
-public class test091 {
+public class test018 {
 	private static final Markup $nil = new Markup() { public void render(Writer $out)  
 			throws IOException, SQLException { } };
 	public static void main(String args[]) throws IOException, SQLException {
-		new test091().generateSite();
+		new test018().generateSite();
 	}
 	public void generateSite(String root) throws IOException, SQLException  {
 		Writer writer;
@@ -29,103 +29,17 @@ public class test091 {
 	private void main(final Writer $out, final Markup $markup) 
 	throws IOException, SQLException {
 	
-new Object() {
-public void each(final Writer $out) 
-	throws IOException, 
-		SQLException  {
+{
+final Func1 f = new Func1() {
+				public void call(Writer $out, Markup $markup, final Object x)
+				throws IOException, SQLException {
+			$out.write(x.toString());
 
-Object $temp = new Object() {
-			public List<Object> list() {
-				List<Object> $v = new ArrayList<Object>()
-;
-				$v.add("1");
-				$v.addAll(new Object() {
-			public List<Object> list() {
-				List<Object> $v = new ArrayList<Object>()
-;
-				$v.add("2");
-				$v.addAll(new Object() {
-			public List<Object> list() {
-				List<Object> $v = new ArrayList<Object>()
-;
-				$v.add("3");
-	$v.addAll(new ArrayList<Object>()
-);
-	return $v;
-	}}.list());
-	return $v;
-	}}.list());
-	return $v;
-	}}.list();
-	Iterable<Object> $iter;
-	if ($temp instanceof Iterable) {
-		$iter = (Iterable<Object>)$temp;
 	}
-	else if ($temp instanceof Map) {
-		List<Object> $list = new ArrayList<Object>()
-;
-		for (Map.Entry<String,Object> $entry: (Map<String,Object>)$temp.entrySet()) {
-			List<Object> $tuple = new ArrayList<Object>()
-;
-			$tuple.add($entry.getKey());
-			$tuple.add($entry.getValue());
-			$list.add($tuple);
-		}
-		$iter = $list;
-	}
-	else if ($temp instanceof ResultSet) {
-		ResultSet $rs = (ResultSet)$temp;
-		boolean $first = $rs.first();
-		if (!$first) {
-			return;
-		}
-		ResultSetMetaData $meta = 
-			$rs.getMetaData();
-		Map<String,Object> x = 
-			new Hashtable<String,Object>();
-		for (int $i = 0; $i < $meta.getColumnCount(); $i++) {
-			x.put($meta.getColumnName($i), "null");
-		}
-		while ($rs.next()) {
-			for (String $k: x.keySet()) {
-				Object $v = $rs.getObject($k);
-				if ($v != null) {
-					x.put($k, $v);
-				}
-				else {
-					x.put($k, "null");
-				}
-				
-{
-final Object y = x + "xx";
-$out.write("<p>");
-$out.write(y.toString());
-$out.write("</p>");
-};
-			}
-		}				
-		return;
-	}
-	else {
-		List<Object> $single = new ArrayList<Object>()
-;
-			$single.add($temp);
-			$iter = $single;
-		}
-		for (final Object x: $iter) {
-			
-{
-final Object y = x + "xx";
-$out.write("<p>");
-$out.write(y.toString());
-$out.write("</p>");
-    
+		};
+f.call($out, $nil, "Hello");
 }
 
-
-		}
-		}
-	}.each($out);
 
 }
 public void main(final Writer $out)

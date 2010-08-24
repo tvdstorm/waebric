@@ -11,14 +11,14 @@ import ToString;
 import Relation; 
 import Map; 
 import Node; 
-
+import compiler_rascal_v2::Datatypes; 
+data Allocatie = allocatie(str id, list[node] args, node val);
 public list[str] modul = []; 
 public list[str] impor = []; 
 public list[tuple[str, list[Statement]]] metho0 = [];
-public list[tuple[str, list[str], list[str]]] metho = [];
+public list[Method] metho = [];
 public list[tuple[str, str]] sites = [];
 
-data Allocatie = allocatie(str id, list[node] args, node val);
 
 /* FUNCTION (3->1): getEach -> printForEachArray1, getVarList, toString, getStatementData */
 public str getEach(Statement stat, list[Allocatie] assignments, bool defaultStyle){
@@ -155,17 +155,17 @@ public void getData(Module source, bool defaultStyle){
 			sites += [<toString(path), printMarkupParameters(getMarkupData(mu))>];
 		case (FunctionDef) `def <IdCon name> <Formals formals> <Statement* stat> end` :{
 			metho0 += <printMethodName("<name>"), [ s | `<Statement s>` <- stat]>;
-			metho += <printMethodName("<name>"), [getFormals(formal) | formal <- formals], []>;
+			metho += method(printMethodName("<name>"), [getFormals(formal) | formal <- formals], []);
 		}
 	}
-	list[tuple[str, list[str], list[str]]] newMetho = [];
-	for(<str name, list[str] formals, list[str] statementList> <- metho){
+	list[Method] newMetho = [];
+	for(me <- metho){
 		for(<str name2, list[Statement] stat> <- metho0){
-			if(name==name2){ 
-				if(statementList==[]){ 
-					newMetho += <name, formals, [getStatementData(s, [], defaultStyle)| Statement s <- stat]>; 
+			if(me.id==name2){ 
+				if(me.body==[]){ 
+					newMetho += method(me.id, me.args, [getStatementData(s, [], defaultStyle)| Statement s <- stat]); 
 				}else{ 
-					newMetho += statementList; 
+					newMetho += me.body; 
 				}
 			}
 		}
@@ -206,10 +206,10 @@ public str markupCalculation(Markup m, list[Allocatie] assignments){
 		}
 		str pars = getArgs(parameters);
 		if(toReturn==""){
-			for(<name, list[str] p1, list[str] p2> <- metho, <name, list[Statement] statementList> <- metho0){ 
-				if(name==object){ 
-					if(p2==[]){ 
-						p2 = [getStatementData(s, assignments, false)| Statement s <- statementList]; 
+			for(me <- metho, <name, list[Statement] statementList> <- metho0){ 
+				if(name==object && name==me.id){ 
+					if(me.body==[]){ 
+						me.body = [getStatementData(s, assignments, false)| Statement s <- statementList]; 
 					} 
 					return "<name>($out, $nil<pars>);\n";
 				}
@@ -284,14 +284,14 @@ public str getMu1(Markup m){
 public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defaultStyle){
 	toReturn = "";
 	endings = "";
-	if(<str name, list[str] params, list[str] values> <- metho){
-		if(endsWith(name, " ")){
-			name = subString(name, 0, size(name)-1);
+	if(me <- metho){
+		if(endsWith(me.id, " ")){
+			me.id = subString(me.id, 0, size(me.id)-1);
 		}
 		<<name2,_>, argus> = getMarkupData(m);
 		k = {namcall| var <- assignments, namcall := "<var.id>.call"};
-		if(name2==name || "<name2>.call" in k){
-			if(name2==name){
+		if(name2==me.id || "<name2>.call" in k){
+			if(name2==me.id){
 				if(argus!=[]){
 					if(defaultStyle){
 						toReturn += "<name2>($out, $nil<getArgs(argus)>";
@@ -334,12 +334,12 @@ public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defau
 		}else{
 			bool functionExists = false;
 			theName = ""; theParms = []; theVals = [];
-			for(<methname, parms, vals> <- metho){
+			for(met <- metho){
 				<<name2,parms2>, argus> = getMarkupData(m);
 				methname2 = printMethodName(name2);
-				if(methname==methname2){
+				if(met.id==methname2){
 					functionExists = true;
-					theName = methname;
+					theName = met.id;
 					theVals = argus;
 				}
 			}
