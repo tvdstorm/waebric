@@ -1,5 +1,6 @@
 module compiler_rascal_v2::C2_Java
 import compiler_rascal_v2::Tools;
+import compiler_rascal_v2::Datatypes;
 import List;
 import String;
 import languages::waebric::syntax::Waebric;
@@ -10,8 +11,13 @@ import ToString;
 import Relation; 
 import Map; 
 import Node; 
+
 /* FUNCTION (4->1): printJava -> printConstructor, getOneFrom, printFunctions */
-public str printJava(list[str] modul, list[tuple[str, list[str], list[str]]] metho, list[tuple[str, str]] sites){ return 	
+public str printJava(list[str] modul, list[Method] metho, list[tuple[str, str]] sites){ return
+	printJava(modul, [<me.id, me.args, me.body>|me<-metho], sites);
+}
+/* FUNCTION (4->1): printJava -> printConstructor, getOneFrom, printFunctions */
+private str printJava(list[str] modul, list[tuple[str, list[str], list[str]]] metho, list[tuple[str, str]] sites){ return 	
 "<printImports> 
 <printConstructor(getOneFrom(modul), sites)>
 	<(""|it+printFunction(id, params, methodBody)|<str id, list[str] params, list[str] methodBody> <- metho)>
