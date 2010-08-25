@@ -197,7 +197,7 @@ public str printConstuctorParams(list[str] pars){
 	}
 	return toReturn;
 }
-/* FUNCTION (->): printMarkup */
+/* FUNCTION (1->1): printMarkup */
 public str printMarkup(list[str] mu){
 	returnable = "";
 	for(str s <- mu){
