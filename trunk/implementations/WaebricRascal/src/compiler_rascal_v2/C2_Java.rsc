@@ -11,30 +11,26 @@ import ToString;
 import Relation; 
 import Map; 
 import Node; 
-
 /* FUNCTION (4->1): printJava -> printConstructor, getOneFrom, printFunctions */
-public str printJava(list[str] modul, list[Method] metho, list[tuple[str, str]] sites){ return
-	printJava(modul, [<me.id, me.args, me.body>|me<-metho], sites);
+public str printJava(list[str] modul, list[Method] metho, list[tuple[str, str]] sites){ return 
+	"<printImports> 
+	<printConstructor(getOneFrom(modul), sites)>
+		<(""|it+printFunction(me)| me <- metho)>
+	<printInterfaces> 
+	<printInterfaces_2>
+	";
 }
-/* FUNCTION (4->1): printJava -> printConstructor, getOneFrom, printFunctions */
-private str printJava(list[str] modul, list[tuple[str, list[str], list[str]]] metho, list[tuple[str, str]] sites){ return 	
-"<printImports> 
-<printConstructor(getOneFrom(modul), sites)>
-	<(""|it+printFunction(id, params, methodBody)|<str id, list[str] params, list[str] methodBody> <- metho)>
-<printInterfaces> 
-<printInterfaces_2>
-";}
-/* FUNCTION (4->1): printMarkupData -> printMarkupParametersRec, printAttributes */
-public str printMarkupData(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
-	<<mu,atr>, pars> = markup;
-	toReturn = "$out.write(\"\<<mu>";
-	if(pars==[] && atr==[]){
+/* FUNCTION (2->1): printMarkupData -> printMarkupParametersRec, printAttributes */
+public str printMarkupData(tuple[XmlNode, list[void]] markup){ 
+	<xmlno, pars> = markup;
+	toReturn = "$out.write(\"\<<xmlno.id>";
+	if(pars==[] && xmlno.atrs==[]){
 		return toReturn + "\>\");\n";
 	}else{
 		if(pars!=[]){
 			return toReturn + "\");\n" + printMarkupParametersRec(pars);
 		}else{
-			return toReturn + printAttributes(atr) + "\n$out.write(\"\>\");\n";
+			return toReturn + printAttributes(xmlno.atrs) + "\n$out.write(\"\>\");\n";
 		}
 	}
 }
@@ -43,8 +39,8 @@ public str printMethodName(str name){
 	name = replaceAll(name, " ", "");
 	return replaceAll(name, "-", "_");
 }
-/* FUNCTION (2->1): printAttributes -> getAttributeList */
-public str printAttributes(list[tuple[str,str]] atr){
+/* FUNCTION (1->1): printAttributes -> getAttributeList */
+public str printAttributes(list[XmlArgument] atr){
 	<javaCode, iterator> = getAttributeList(atr, "class", 0);
 	toReturn = javaCode; 
 	<javaCode, iterator> = getAttributeList(atr, "id", iterator);
@@ -58,15 +54,15 @@ public str printAttributes(list[tuple[str,str]] atr){
 	toReturn += "\");";
 	return toReturn;
 }
-/* FUNCTION (4->2): getAttributeList -> getOneFrom, head, size, tail */
-public tuple[str, int] getAttributeList(list[tuple[str,str]] attr, str attribute_type, int iterator){
+/* FUNCTION (3->2): getAttributeList -> getOneFrom, head, size, tail */
+public tuple[str, int] getAttributeList(list[XmlArgument] attr, str attribute_type, int iterator){
 	default1 = "\");\n$out.write(\"";
 	default2 = ");\n";
 	default3 = "$out.write(";
 	int currSize = iterator;
 	toReturn = "";
-	attributeList = [ val | <attribute_type, val> <- attr];
-	attrLength = [tp| tuple[str,str] x:<tp, vl> <- attr];
+	attributeList = [ xmlarg.attribute | xmlarg <- attr, attribute_type:=xmlarg.id];
+	attrLength = [xmlarg.id| xmlarg <- attr];
 	if(attributeList!=[]){
 		currSize += 1;
 		headVal = getOneFrom(head(attributeList, 1));
@@ -92,11 +88,11 @@ public str printMarkupData2(str name){ return
 	public void render(Writer $out) 
 		throws IOException, SQLException {
 ";}
-/* FUNCTION (4->1): printMarkupEnding */
-public str printMarkupEnding(tuple[tuple[str, list[tuple[str, str]]], list[void]] markup){ 
-<<mu,atr>, pars> = markup;
+/* FUNCTION (2->1): printMarkupEnding */
+public str printMarkupEnding(tuple[XmlNode, list[void]] markup){ 
+<xmlno, pars> = markup;
 return
-"$out.write(\"\</<mu>\>\");
+"$out.write(\"\</<xmlno.id>\>\");
 ";}
 /* FUNCTION (1->1): printMarkupParametersRec -> head, getExpression_NOT_FIRST_TIME, printMarkupParametersRec, tail */
 public str printMarkupParametersRec(list[Argument] args){
@@ -159,7 +155,6 @@ private str printSites(list[tuple[str, str]] sites) {
 private str printSite(str site) { return 
 "writer = new FileWriter(new File(root,\"" + site + "\"));
 ";}
-
 /* FUNCTION (1->1): printSiteParameters */
 private str printSiteParameters(str paramters){ return
 "new Markup() {
@@ -171,15 +166,15 @@ $out.write(\"\<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\
 		}.render(writer);
 		writer.close();
 ";}
-/* FUNCTION (3->1): printFunction -> printConstuctorParams, printMarkup, printMethodParams */
-private str printFunction(str id, list[str] params, list[str] mu){ return
-"private void <id>(final Writer $out, final Markup $markup" + printConstuctorParams(params) + ") 
+/* FUNCTION (1->1): printFunction -> printConstuctorParams, printMarkup, printMethodParams */
+private str printFunction(Method me){ return
+"private void <me.id>(final Writer $out, final Markup $markup" + printConstuctorParams(me.args) + ") 
 	throws IOException, SQLException {
-	<printMarkup(mu)>
+	<printMarkup(me.body)>
 }
-public void " + id + "(final Writer $out"+printConstuctorParams(params)+")
+public void " + me.id + "(final Writer $out"+printConstuctorParams(me.args)+")
 	throws IOException, SQLException {
-	"+ id +"($out, $nil"+printMethodParams(params)+");
+	"+ me.id +"($out, $nil"+printMethodParams(me.args)+");
 }
 ";}
 /* FUNCTION (1->1): printConstuctorParams */
@@ -409,107 +404,6 @@ public str getExpression_NOT_FIRST_TIME(Expression e){
 		}
 	}
 }
-/* FUNCXXXXXXXXXXXXXTION (2->1): getExpression -> getKeyValuePairs, toString, getQuotedString, replaceAll, printForEachArray1 */
-// public str getExpression(Expression e, bool firstTime){
-	// switch(e){
-		// case (Expression) `<Expression e1> + <Expression e2> ` :{
-			// if(firstTime)
-				// return getExpression(e1, false) + " + " + getExpression(e2, false) + ".toString()";
-			// else
-				// return getExpression(e1, false) + " + " + getExpression(e2, false);
-		// }
-		// case (Expression) `{ <{KeyValuePair ","}* kv> }` :{
-			// if(firstTime){
-				// return "new Hashtable\<String,Object\>()\n.toString()";
-			// }else{
-				// str toReturn = "";
-				// str ending = "";
-				// bool eerste = true; 
-				// for(KeyValuePair pair <- kv){
-					// if(eerste){
-						// eerste = false;
-						// ending += printArrayCloseNEW;
-					// }else{
-						// onlyOne = true;
-						// toReturn += printArray4;
-						// ending += printArrayClose2;
-					// }
-					// toReturn += getKeyValuePairs(pair);
-				// }
-				// return toReturn + ending;
-			// }			
-		// }
-		// case (Expression) `[ <{ Expression "," }* i> ]` :{
-			// if(firstTime){
-				// return "new ArrayList\<Object\>()\n.toString()";
-			// }else{
-				// str toReturn = "";
-				// str endings = "";
-				// bool firstTime = true;
-				// str listClose = "";
-	
-				// for(Expression expr <- i, "<expr>"!=""){
-					// if(firstTime){
-						// firstTime = false;
-						// toReturn += printList1;
-						// toReturn += getExpression(expr, false);
-						// listClose = printListClose;
-						// endings += printForEach9;
-					// }
-					// else if(substring("<i>", 0, 1)=="\""){
-						// toReturn += printArray2;
-						// toReturn += getExpression(expr, false);
-					// }
-					// else if(substring("<i>", 0, 1)=="{"){
-						// toReturn += something + getExpression(expr, false);
-						// endings += printForEach9;
-					// }
-					// else{
-						// toReturn += something;
-						// toReturn += getExpression(expr, false);
-						// endings += printForEach9;
-					// }
-				// }
-				// return toReturn + listClose + endings;
-			// }
-		// }
-		// case (Expression) `<IdCon i>` :{
-			// if(firstTime){
-				// return "<toString(e)>.toString()";
-			// }
-			// else{
-				// return toString(e);
-			// }
-		// }
-		// case (Expression) `<SymbolCon s>` :{
-			// return getQuotedString("<s>");
-		// }
-		// case (Expression) `<NatCon n>` :{
-			// if(firstTime)
-				// return "\"" + toString(e) + "\"";
-			// else{
-				// return "\"<toString(e)>\"";
-// }
-		// }
-		// case (Expression) `<Text t>` :{
-			// toReturn = getQuotedString("<t>");
-			// toReturn = replaceAll(toReturn, "\n", "\\n");
-			// return toReturn;
-		// }
-		// case (Expression) `<Expression e1> . <IdCon idc>` :
-			// if(firstTime)
-				// return printForEachArray1("<e1>", "<idc>")+".toString()";
-			// else
-				// return printForEachArray1("<e1>", "<idc>");
-		// default : {
-			// if(isNumber("<e>")){
-				// return "\""+toString(e)+"\"";
-			// }else{
-				// return toString(e);
-			// }
-		// }
-	// }
-// }
 /* FUNCTION (1->1): getQuotedString -> startsWith, substring, size */
 public str getQuotedString(str toReturn){
 	if(startsWith(toReturn, "'")){
