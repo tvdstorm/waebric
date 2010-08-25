@@ -17,7 +17,7 @@ public list[str] modul = [];
 public list[str] impor = []; 
 public list[tuple[str, list[Statement]]] metho0 = [];
 public list[Method] metho = [];
-public list[tuple[str, str]] sites = [];
+public list[Website] sites = [];
 /* FUNCTION (3->1): getEach -> printForEachArray1, getVarList, toString, getStatementData */
 public str getEach(Statement stat, list[Allocatie] assignments, bool defaultStyle){
 	if(`each ( <a> : <b> ) <c>` := stat){
@@ -149,7 +149,7 @@ public void getData(Module source, bool defaultStyle){
 		case (Import) `import <ModuleId mid>`:
 			impor += toString(mid);
 		case (Mapping) `<Path path> : <Markup mu>`:
-			sites += [<toString(path), printMarkupParameters(getMarkupData(mu))>];
+			sites += website(toString(path), printMarkupParameters(getMarkupData(mu)));
 		case (FunctionDef) `def <IdCon name> <Formals formals> <Statement* stat> end` :{
 			metho0 += <printMethodName("<name>"), [ s | `<Statement s>` <- stat]>;
 			metho += method(printMethodName("<name>"), [getFormals(formal) | formal <- formals], []);
@@ -171,10 +171,10 @@ public void getData(Module source, bool defaultStyle){
 }
 /* FUNCTION (2->1): markupCalculation -> getMarkupData, unQuote, toString, getQuotedString, printAttributes, getStatementData, getArgs */
 public str markupCalculation(Markup m, list[Allocatie] assignments){
-	<xmlno, parameters> = getMarkupData(m);
-	xmlarglist = xmlno.atrs;
+	markupData = getMarkupData(m);
+	xmlarglist = markupData.nod.atrs;
 	toReturn = "";
-	for(par <- parameters){
+	for(par <- markupData.args){
 		if(/`<IdCon idc> = <Expression expr>`:=par){
 			str string = "\"<unQuote(toString(expr))>\"";
 			for(key <- ["class", "id", "name", "type"]){
@@ -191,9 +191,9 @@ public str markupCalculation(Markup m, list[Allocatie] assignments){
 		toReturn += ";\n$out.write(\" /\>\");\n";
 		return toReturn;
 	}else{
-		for(/`<Expression par>` <- parameters){
+		for(/`<Expression par>` <- markupData.args){
 			for(ass <- assignments){
-				if(ass.id==xmlno.id){	
+				if(ass.id==markupData.nod.id){	
 					k = visit(ass.val){
 						case (Expression) `<Expression var>` => par 
 					}
@@ -201,17 +201,17 @@ public str markupCalculation(Markup m, list[Allocatie] assignments){
 				}
 			}
 		}
-		str pars = getArgs(parameters);
+		str pars = getArgs(markupData.args);
 		if(toReturn==""){
 			for(me <- metho, <name, list[Statement] statementList> <- metho0){ 
-				if(name==xmlno.id && name==me.id){ 
+				if(name==markupData.nod.id && name==me.id){ 
 					if(me.body==[]){ 
 						me.body = [getStatementData(s, assignments, false)| Statement s <- statementList]; 
 					} 
 					return "<name>($out, $nil<pars>);\n";
 				}
 			}
-			return "$out.write(\"\<\" + \"<"<xmlno.id>">\" + \" /\>\");\n";
+			return "$out.write(\"\<\" + \"<"<markupData.nod.id>">\" + \" /\>\");\n";
 		}
 		return toReturn;
 	}
@@ -271,9 +271,9 @@ public str getPredicate(Predicate p, bool defaultStyle){
 }
 /* FUNCTION (1->1): getMu1 -> getMarkupData */
 public str getMu1(Markup m){
-	<xmlno, parameters> = getMarkupData(m);
-	if(xmlno.atrs!=[]){
-		return "$out.write(\"\<\" + \"<xmlno.id>";
+	markupData = getMarkupData(m);
+	if(markupData.nod.atrs!=[]){
+		return "$out.write(\"\<\" + \"<markupData.nod.id>";
 	}
 	return "";
 }
@@ -285,24 +285,24 @@ public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defau
 		if(endsWith(me.id, " ")){
 			me.id = subString(me.id, 0, size(me.id)-1);
 		}
-		<xmlno, argus> = getMarkupData(m);
+		markupData = getMarkupData(m);
 		k = {namcall| var <- assignments, namcall := "<var.id>.call"};
-		if(xmlno.id==me.id || "<xmlno.id>.call" in k){
-			if(xmlno.id==me.id){
-				if(argus!=[]){
+		if(markupData.nod.id==me.id || "<markupData.nod.id>.call" in k){
+			if(markupData.nod.id==me.id){
+				if(markupData.args!=[]){
 					if(defaultStyle){
-						toReturn += "<xmlno.id>($out, $nil<getArgs(argus)>";
+						toReturn += "<markupData.nod.id>($out, $nil<getArgs(markupData.args)>";
 						endings += ");\n";
 					}else{
-						toReturn += printMarkupData2("<xmlno.id>");
-						endings += "}}<getArgs(argus)>);";
+						toReturn += printMarkupData2("<markupData.nod.id>");
+						endings += "}}<getArgs(markupData.args)>);";
 					}
 				}else{
 					if(defaultStyle){
-						toReturn += "<xmlno.id>($out, $nil";
+						toReturn += "<markupData.nod.id>($out, $nil";
 						endings += ");";
 					}else{
-						toReturn += "<xmlno.id>($out, new Markup() {
+						toReturn += "<markupData.nod.id>($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {\n
 ";
@@ -310,17 +310,17 @@ public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defau
 					}
 				}
 			}
-			else if("<xmlno.id>.call" in k){
-				if(argus!=[]){
-					toReturn += "<xmlno.id>.call($out, $nil";
-					endings += "<getArgs(argus)>);";
+			else if("<markupData.nod.id>.call" in k){
+				if(markupData.args!=[]){
+					toReturn += "<markupData.nod.id>.call($out, $nil";
+					endings += "<getArgs(markupData.args)>);";
 				}
 				else{
 					if(defaultStyle){
-						toReturn += "<xmlno.id>.call($out, $nil";
+						toReturn += "<markupData.nod.id>.call($out, $nil";
 						endings += ");";
 					}else{
-						toReturn += "<xmlno.id>.call($out, new Markup() {
+						toReturn += "<markupData.nod.id>.call($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
 ";
@@ -332,12 +332,12 @@ public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defau
 			bool functionExists = false;
 			theName = ""; theParms = []; theVals = [];
 			for(met <- metho){
-				<xmlno, argus> = getMarkupData(m);
-				methname2 = printMethodName(xmlno.id);
+				markupData = getMarkupData(m);
+				methname2 = printMethodName(markupData.nod.id);
 				if(met.id==methname2){
 					functionExists = true;
 					theName = met.id;
-					theVals = argus;
+					theVals = markupData.args;
 				}
 			}
 			if(!functionExists){
@@ -360,15 +360,15 @@ public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defau
 						}
 						endings += ");\n";
 				}else{
-					if(argus==[]){
+					if(markupData.args==[]){
 						toReturn += "<theName>($out, $nil);\n";
 					}else{
-						args = getArgs(argus);
+						args = getArgs(markupData.args);
 						parame = ""; 
 						for(arg <- args){
 							parame += arg;
 						}			
-						toReturn += "<printMethodName(xmlno.id)>($out, $nil<parame>);";
+						toReturn += "<printMethodName(markupData.nod.id)>($out, $nil<parame>);";
 					}
 				}
 			}
@@ -505,14 +505,14 @@ public str getEmbedding(str pre, Embed e, TextTail textTail, list[Allocatie] ass
 public str getMultipleStatementsData(Statement* stat, list[Allocatie] assignments, bool defaultStyle){
 	return (""|it+getStatementData(s, assignments, defaultStyle)+"    "|s<-stat);
 }
-/*FUNCTION (1->2): getMarkupData -> getDesignator */
-public tuple[XmlNode, list[Argument]] getMarkupData(Markup markup){
+/*FUNCTION (1->1): getMarkupData -> getDesignator */
+public MarkupData getMarkupData(Markup markup){
 	switch(markup){
 		case (Markup) `<Designator des> <Arguments args>` :{
-			return <getDesignator(des), [arg| /`<Argument arg>` <- args]>;
+			return markupdata(getDesignator(des), [arg| /`<Argument arg>` <- args]);
 		}
 		case (Markup) `<Designator des>` :
-			return <getDesignator(des), []>;
+			return markupdata(getDesignator(des), []);
 	}	
 }
 /* FUNCTION (1->1): getDesignator */
