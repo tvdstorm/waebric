@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Hashtable;
  
-@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 public class test059 {
 	private static final Markup $nil = new Markup() { public void render(Writer $out)  
 			throws IOException, SQLException { } };
@@ -26,7 +26,7 @@ public class test059 {
 		generateSite(".");
 	}
 
-	private void f(final Writer $out, final Markup $markup) 
+		private void f(final Writer $out, final Markup $markup) 
 	throws IOException, SQLException {
 	$markup.render($out);
 
@@ -146,7 +146,7 @@ public void main(final Writer $out)
 	main($out, $nil);
 }
 
-}
+	}
 interface Markup {
 	public void render(Writer out) throws IOException, SQLException;
 }
@@ -205,7 +205,7 @@ interface Func6 {
 		Object arg6)
 		throws IOException, SQLException;
 } 
-interface Func5 {
+	interface Func5 {
 	public void call(Writer out, Markup markup, Object arg1,
 		Object arg2,
 		Object arg3,
@@ -239,3 +239,4 @@ interface Func0 {
 	public void call(Writer out, Markup markup)
 		throws IOException, SQLException;
 }
+	

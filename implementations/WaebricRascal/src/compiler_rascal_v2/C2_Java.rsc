@@ -11,8 +11,8 @@ import ToString;
 import Relation; 
 import Map; 
 import Node; 
-/* FUNCTION (4->1): printJava -> printConstructor, getOneFrom, printFunctions */
-public str printJava(list[str] modul, list[Method] metho, list[tuple[str, str]] sites){ return 
+/* FUNCTION (3->1): printJava -> printConstructor, getOneFrom, printFunctions */
+public str printJava(list[str] modul, list[Method] metho, list[Website] sites){ return 
 	"<printImports> 
 	<printConstructor(getOneFrom(modul), sites)>
 		<(""|it+printFunction(me)| me <- metho)>
@@ -20,17 +20,16 @@ public str printJava(list[str] modul, list[Method] metho, list[tuple[str, str]] 
 	<printInterfaces_2>
 	";
 }
-/* FUNCTION (2->1): printMarkupData -> printMarkupParametersRec, printAttributes */
-public str printMarkupData(tuple[XmlNode, list[void]] markup){ 
-	<xmlno, pars> = markup;
-	toReturn = "$out.write(\"\<<xmlno.id>";
-	if(pars==[] && xmlno.atrs==[]){
+/* FUNCTION (1->1): printMarkupData -> printMarkupParametersRec, printAttributes */
+public str printMarkupData(MarkupData markupData){ 
+	toReturn = "$out.write(\"\<<markupData.nod.id>";
+	if(markupData.args==[] && markupData.nod.atrs==[]){
 		return toReturn + "\>\");\n";
 	}else{
-		if(pars!=[]){
-			return toReturn + "\");\n" + printMarkupParametersRec(pars);
+		if(markupData.args!=[]){
+			return toReturn + "\");\n" + printMarkupParametersRec(markupData.args);
 		}else{
-			return toReturn + printAttributes(xmlno.atrs) + "\n$out.write(\"\>\");\n";
+			return toReturn + printAttributes(markupData.nod.atrs) + "\n$out.write(\"\>\");\n";
 		}
 	}
 }
@@ -88,11 +87,9 @@ public str printMarkupData2(str name){ return
 	public void render(Writer $out) 
 		throws IOException, SQLException {
 ";}
-/* FUNCTION (2->1): printMarkupEnding */
-public str printMarkupEnding(tuple[XmlNode, list[void]] markup){ 
-<xmlno, pars> = markup;
-return
-"$out.write(\"\</<xmlno.id>\>\");
+/* FUNCTION (1->1): printMarkupEnding */
+public str printMarkupEnding(MarkupData markupData){ return
+"$out.write(\"\</<markupData.nod.id>\>\");
 ";}
 /* FUNCTION (1->1): printMarkupParametersRec -> head, getExpression_NOT_FIRST_TIME, printMarkupParametersRec, tail */
 public str printMarkupParametersRec(list[Argument] args){
@@ -130,8 +127,8 @@ public str printIf(str condition, str doIf){ return "
 				<doIf>
 			}
 ";}
-/* FUNCTION (3->1): printConstructor */
-private str printConstructor(str module_id, list[tuple[str,str]] sites){ return 
+/* FUNCTION (2->1): printConstructor */
+private str printConstructor(str module_id, list[Website] sites){ return 
 "@SuppressWarnings(\"unchecked\")
 public class <module_id> {
 	private static final Markup $nil = new Markup() { public void render(Writer $out)  
@@ -147,16 +144,16 @@ public class <module_id> {
 		generateSite(\"<".">\");
 	}
 ";}
-/* FUNCTION (2->1): printSites -> printSite */
-private str printSites(list[tuple[str, str]] sites) { 
-	return (""|printSite(site)+printSiteParameters(parameters)+it|x:<str site, str parameters><-sites);
+/* FUNCTION (1->1): printSites -> printSite */
+private str printSites(list[Website] sites) { 
+	return (""|printSite(siteId)+printSiteParameters(siteVal)+it|site<-sites, siteId:=site.id, siteVal:=site.val);
 }
 /* FUNCTION (1->1): printSite */
 private str printSite(str site) { return 
 "writer = new FileWriter(new File(root,\"" + site + "\"));
 ";}
 /* FUNCTION (1->1): printSiteParameters */
-private str printSiteParameters(str paramters){ return
+private str printSiteParameters(str parameters){ return
 "new Markup() {
 			public void render(Writer $out)
 				throws IOException, SQLException {
