@@ -485,21 +485,28 @@ public str getEmbeddingRec(TextTail textTail, list[Allocatie] assignments, bool 
 		return getEmbedding(toString(preText), e, tail, assignments, defaultStyle);
 	}
 }
-/* FUNCTION (5->1): getEmbedding -> substring, printMarkupData, getMarkupData, printMarkupEnding, printExpression, getEmbeddingRec, getMu1, markupCalculation*/
+/* FUNCTION (5->1): getEmbedding -> substring, printMarkupData, getMarkupData, printMarkupEnding, printExpression, getEmbeddingRec, getMu1, markupCalculation, reverse*/
 public str getEmbedding(str pre, Embed e, TextTail textTail, list[Allocatie] assignments, bool defaultStyle){
 	toReturn = "$out.write(\"" + substring(pre, 1, size(pre)-1) + "\");\n";
-	if((Embed) `<Markup* ms><Expression expr>` <- e){
-		toReturn += ( printExpression(expr) 
-			| printMarkupData(mdata) + it + printMarkupEnding(mdata) 
-			| m<-ms, mdata:=getMarkupData(m) ) 
-		+ getEmbeddingRec(textTail, assignments, defaultStyle);
-	}else if((Embed) `<Markup* ms> <Markup mu>` <- e){ 
-		toReturn += ( getMu1(mu) + markupCalculation(mu, assignments) 
+	if((Embed) `<Markup* ms><Expression _>` := e || (Embed) `<Markup* ms><Markup _>` := e){
+		muStats = [m|Markup m <- ms];
+		lastElem = getEmbeddingRec(textTail, assignments, defaultStyle);
+		if((Embed) `<Markup* _><Expression expr>` := e){
+			return toReturn 
+			+ (printExpression(expr)
+				| printMarkupData(mdata) + it + printMarkupEnding(mdata)
+				| Markup m <- reverse(muStats), mdata:=getMarkupData(m)) 
+			+ lastElem;
+		}else if((Embed) `<Markup* _><Markup mu>` := e){
+			return toReturn + 
+			(getMu1(mu) + markupCalculation(mu, assignments)
 			| printMarkupData(mdata) + it + printMarkupEnding(mdata)
-			| m<-ms, mdata:=getMarkupData(m) ) 
-		+ getEmbeddingRec(textTail, assignments, defaultStyle);
+			| Markup m <- reverse(muStats), mdata:=getMarkupData(m)) 
+			+ lastElem;
+		}
+	}else{
+		return toReturn;
 	}
-	return toReturn;
 }
 /* FUNCTION (3->1): getMultipleStatementsData -> getStatementData */
 public str getMultipleStatementsData(Statement* stat, list[Allocatie] assignments, bool defaultStyle){
@@ -511,8 +518,9 @@ public MarkupData getMarkupData(Markup markup){
 		case (Markup) `<Designator des> <Arguments args>` :{
 			return markupdata(getDesignator(des), [arg| /`<Argument arg>` <- args]);
 		}
-		case (Markup) `<Designator des>` :
+		case (Markup) `<Designator des>` :{
 			return markupdata(getDesignator(des), []);
+		}
 	}	
 }
 /* FUNCTION (1->1): getDesignator */
