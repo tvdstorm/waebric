@@ -480,6 +480,7 @@ public str getEmbeddingRec(TextTail textTail, list[tuple[str, list[IdCon], State
 /* FUNCTION (7->1): getEmbedding -> substring, printMarkupData, getMarkupData, printMarkupEnding, printExpression, reverse, getEmbeddingRec, getMu1, markupCalculation, reverse */
 public str getEmbedding(str pre, Embed e, TextTail textTail, list[tuple[str, list[IdCon], Statement?]] assignments, bool defaultStyle){
 	toReturn = "$out.write(\"" + substring(pre, 1, size(pre)-1) + "\");\n";
+	lastElem = getEmbeddingRec(textTail, assignments, defaultStyle);
 	if((Embed) `<Markup* ms><Expression expr>` <- e){
 		list[str] endings = [];
 		for(Markup m <- ms){
@@ -490,7 +491,7 @@ public str getEmbedding(str pre, Embed e, TextTail textTail, list[tuple[str, lis
 		for(str s <- reverse(endings)){ 
 			toReturn += s;
 		}
-		toReturn += getEmbeddingRec(textTail, assignments, defaultStyle);
+		return toReturn + lastElem;
 	}else if((Embed) `<Markup* ms> <Markup mu>` <- e){
 		list[str] endings = [];
 		for(Markup m <- ms){
@@ -502,7 +503,7 @@ public str getEmbedding(str pre, Embed e, TextTail textTail, list[tuple[str, lis
 		for(str s <- reverse(endings)){ 
 			toReturn += s;
 		}
-		toReturn += getEmbeddingRec(textTail, assignments, defaultStyle);
+		return toReturn + lastElem;
 	}
 	return toReturn;
 }
