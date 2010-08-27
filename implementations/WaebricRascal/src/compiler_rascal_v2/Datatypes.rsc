@@ -1,5 +1,6 @@
 module compiler_rascal_v2::Datatypes
 import languages::waebric::syntax::Waebric;
+data Allocatie = allocatie(str id, list[node] args, node val);
 data Method = method(str id, list[str] args, list[str] body);
 data Website = website(str id, str val);
 data XmlNode = xmlnode(str id, list[XmlArgument] atrs);
