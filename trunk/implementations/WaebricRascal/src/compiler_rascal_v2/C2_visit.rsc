@@ -12,7 +12,6 @@ import Relation;
 import Map; 
 import Node; 
 import compiler_rascal_v2::Datatypes; 
-data Allocatie = allocatie(str id, list[node] args, node val);
 public list[str] modul = []; 
 public list[str] impor = []; 
 public list[tuple[str, list[Statement]]] metho0 = [];
