@@ -157,9 +157,9 @@ public void getData(Module source, bool defaultStyle){
 	list[Method] newMetho = [];
 	for(me <- metho){
 		for(<str name2, list[Statement] stat> <- metho0){
-			if(me.id==name2){ 
+			if(me.getName==name2){ 
 				if(me.body==[]){ 
-					newMetho += method(me.id, me.args, [getStatementData(s, [], defaultStyle)| Statement s <- stat]); 
+					newMetho += method(me.getName, me.args, [getStatementData(s, [], defaultStyle)| Statement s <- stat]); 
 				}else{ 
 					newMetho += me.body; 
 				}
@@ -203,7 +203,7 @@ public str markupCalculation(Markup m, list[Allocation] assignments){
 		str pars = getArgs(markupData.getArgs);
 		if(toReturn==""){
 			for(me <- metho, <name, list[Statement] statementList> <- metho0){ 
-				if(name==markupData.getXmlnode.getType && name==me.id){ 
+				if(name==markupData.getXmlnode.getType && name==me.getName){ 
 					if(me.body==[]){ 
 						me.body = [getStatementData(s, assignments, false)| Statement s <- statementList]; 
 					} 
@@ -281,13 +281,13 @@ public tuple[str, str] getMuda(Markup m, list[Allocation] assignments, bool defa
 	toReturn = "";
 	endings = "";
 	if(me <- metho){
-		if(endsWith(me.id, " ")){
-			me.id = subString(me.id, 0, size(me.id)-1);
+		if(endsWith(me.getName, " ")){
+			me.getName = subString(me.getName, 0, size(me.getName)-1);
 		}
 		markupData = getMarkupData(m);
 		k = {namcall| var <- assignments, namcall := "<var.id>.call"};
-		if(markupData.getXmlnode.getType==me.id || "<markupData.getXmlnode.getType>.call" in k){
-			if(markupData.getXmlnode.getType==me.id){
+		if(markupData.getXmlnode.getType==me.getName || "<markupData.getXmlnode.getType>.call" in k){
+			if(markupData.getXmlnode.getType==me.getName){
 				if(markupData.getArgs!=[]){
 					if(defaultStyle){
 						toReturn += "<markupData.getXmlnode.getType>($out, $nil<getArgs(markupData.getArgs)>";
@@ -333,9 +333,9 @@ public tuple[str, str] getMuda(Markup m, list[Allocation] assignments, bool defa
 			for(met <- metho){
 				markupData = getMarkupData(m);
 				methname2 = printMethodName(markupData.getXmlnode.getType);
-				if(met.id==methname2){
+				if(met.getName==methname2){
 					functionExists = true;
-					theName = met.id;
+					theName = met.getName;
 					theVals = markupData.getArgs;
 				}
 			}
