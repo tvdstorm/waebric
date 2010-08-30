@@ -17,7 +17,7 @@ public str strip(str string){
 	}
 	return toReturn;
 }
-/* FUNCTION (1->1): splitAtDot */
+/* FUNCTION (1->2): splitAtDot */
 public tuple[str, str] splitAtDot(str inputStr){
 	if(/^<begin:.*>\.<end:.*$>/ := inputStr ){
 		return <begin, end>;

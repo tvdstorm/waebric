@@ -18,7 +18,7 @@ public list[tuple[str, list[Statement]]] metho0 = [];
 public list[Method] metho = [];
 public list[Website] sites = [];
 /* FUNCTION (3->1): getEach -> printForEachArray1, getVarList, toString, getStatementData */
-public str getEach(Statement stat, list[Allocatie] assignments, bool defaultStyle){
+public str getEach(Statement stat, list[Allocation] assignments, bool defaultStyle){
 	if(`each ( <a> : <b> ) <c>` := stat){
 		if(`<Expression e> . <IdCon idc>`:=b){
 			return printForEach1 + "Object $temp = " + printForEachArray1("<e>", "<idc>") + printForEachArray2;
@@ -101,7 +101,7 @@ public str getExpression2(IdCon idc, Expression e){
 	return "{\nfinal Object <idc> = " + getExpression_NOT_FIRST_TIME(e)+";\n";
 }
 /* FUNCTION (4->1): getExpression2, toString, size, getStatementData, getMultipleStatementsData */
-public str getAssignment(Assignment+ ass, list[Allocatie] assignments, Statement* stats, bool defaultStyle){
+public str getAssignment(Assignment+ ass, list[Allocation] assignments, Statement* stats, bool defaultStyle){
 	toReturn = ""; 
 	closingBrackets = ""; 
 	containsStatements = true;
@@ -125,7 +125,7 @@ public str getAssignment(Assignment+ ass, list[Allocatie] assignments, Statement
 				throws IOException, SQLException {
 			";
 			toReturn += getStatementData(s, assignments, defaultStyle) + "\n\t}\n\t\t};\n";
-			assignments += allocatie("<func_name>", idConList, s); 
+			assignments += allocation("<func_name>", idConList, s); 
 			containsStatements = false;
 		}
 	}
@@ -169,7 +169,7 @@ public void getData(Module source, bool defaultStyle){
 	metho = newMetho;
 }
 /* FUNCTION (2->1): markupCalculation -> getMarkupData, unQuote, toString, getQuotedString, printAttributes, getStatementData, getArgs */
-public str markupCalculation(Markup m, list[Allocatie] assignments){
+public str markupCalculation(Markup m, list[Allocation] assignments){
 	markupData = getMarkupData(m);
 	xmlarglist = markupData.nod.atrs;
 	toReturn = "";
@@ -203,14 +203,14 @@ public str markupCalculation(Markup m, list[Allocatie] assignments){
 		str pars = getArgs(markupData.args);
 		if(toReturn==""){
 			for(me <- metho, <name, list[Statement] statementList> <- metho0){ 
-				if(name==markupData.nod.id && name==me.id){ 
+				if(name==markupData.nod.node_type && name==me.id){ 
 					if(me.body==[]){ 
 						me.body = [getStatementData(s, assignments, false)| Statement s <- statementList]; 
 					} 
 					return "<name>($out, $nil<pars>);\n";
 				}
 			}
-			return "$out.write(\"\<\" + \"<"<markupData.nod.id>">\" + \" /\>\");\n";
+			return "$out.write(\"\<\" + \"<"<markupData.nod.node_type>">\" + \" /\>\");\n";
 		}
 		return toReturn;
 	}
@@ -272,12 +272,12 @@ public str getPredicate(Predicate p, bool defaultStyle){
 public str getMu1(Markup m){
 	markupData = getMarkupData(m);
 	if(markupData.nod.atrs!=[]){
-		return "$out.write(\"\<\" + \"<markupData.nod.id>";
+		return "$out.write(\"\<\" + \"<markupData.nod.node_type>";
 	}
 	return "";
 }
 /*	Check for functions over markup.FUNCTION (3->2): getMuda -> getMarkupData, getArgs, subString, printMarkupData2, getMarkupData, printMethodName, getMu1, markupCalculation, printMethodName, printMarkupData */
-public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defaultStyle){
+public tuple[str, str] getMuda(Markup m, list[Allocation] assignments, bool defaultStyle){
 	toReturn = "";
 	endings = "";
 	if(me <- metho){
@@ -286,22 +286,22 @@ public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defau
 		}
 		markupData = getMarkupData(m);
 		k = {namcall| var <- assignments, namcall := "<var.id>.call"};
-		if(markupData.nod.id==me.id || "<markupData.nod.id>.call" in k){
-			if(markupData.nod.id==me.id){
+		if(markupData.nod.node_type==me.id || "<markupData.nod.node_type>.call" in k){
+			if(markupData.nod.node_type==me.id){
 				if(markupData.args!=[]){
 					if(defaultStyle){
-						toReturn += "<markupData.nod.id>($out, $nil<getArgs(markupData.args)>";
+						toReturn += "<markupData.nod.node_type>($out, $nil<getArgs(markupData.args)>";
 						endings += ");\n";
 					}else{
-						toReturn += printMarkupData2("<markupData.nod.id>");
+						toReturn += printMarkupData2("<markupData.nod.node_type>");
 						endings += "}}<getArgs(markupData.args)>);";
 					}
 				}else{
 					if(defaultStyle){
-						toReturn += "<markupData.nod.id>($out, $nil";
+						toReturn += "<markupData.nod.node_type>($out, $nil";
 						endings += ");";
 					}else{
-						toReturn += "<markupData.nod.id>($out, new Markup() {
+						toReturn += "<markupData.nod.node_type>($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {\n
 ";
@@ -309,17 +309,17 @@ public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defau
 					}
 				}
 			}
-			else if("<markupData.nod.id>.call" in k){
+			else if("<markupData.nod.node_type>.call" in k){
 				if(markupData.args!=[]){
-					toReturn += "<markupData.nod.id>.call($out, $nil";
+					toReturn += "<markupData.nod.node_type>.call($out, $nil";
 					endings += "<getArgs(markupData.args)>);";
 				}
 				else{
 					if(defaultStyle){
-						toReturn += "<markupData.nod.id>.call($out, $nil";
+						toReturn += "<markupData.nod.node_type>.call($out, $nil";
 						endings += ");";
 					}else{
-						toReturn += "<markupData.nod.id>.call($out, new Markup() {
+						toReturn += "<markupData.nod.node_type>.call($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
 ";
@@ -332,7 +332,7 @@ public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defau
 			theName = ""; theParms = []; theVals = [];
 			for(met <- metho){
 				markupData = getMarkupData(m);
-				methname2 = printMethodName(markupData.nod.id);
+				methname2 = printMethodName(markupData.nod.node_type);
 				if(met.id==methname2){
 					functionExists = true;
 					theName = met.id;
@@ -367,7 +367,7 @@ public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defau
 						for(arg <- args){
 							parame += arg;
 						}			
-						toReturn += "<printMethodName(markupData.nod.id)>($out, $nil<parame>);";
+						toReturn += "<printMethodName(markupData.nod.node_type)>($out, $nil<parame>);";
 					}
 				}
 			}
@@ -376,7 +376,7 @@ public tuple[str, str] getMuda(Markup m, list[Allocatie] assignments, bool defau
 	return <toReturn, endings>;
 }
 /* FUNCTION (3->1): getStatementData -> getMuda, getStatementData, printExpression, getEmbedding, printIf, getPredicate, getIfElse, getAssignment, getMultipleStatementsData, getEach */
-public str getStatementData(Statement stat, list[Allocatie] assignments, bool defaultStyle){
+public str getStatementData(Statement stat, list[Allocation] assignments, bool defaultStyle){
 	switch(stat){
 		case (Statement) `<Markup+ ms> <Statement s>`: {
 			toReturn = "";
@@ -469,13 +469,13 @@ public str getStatementData(Statement stat, list[Allocatie] assignments, bool de
 	};
 }
 /* FUNCTION (3->1): getEmbedding */
-public str getEmbedding(Embedding embedding, list[Allocatie] assignments, bool defaultStyle){
+public str getEmbedding(Embedding embedding, list[Allocation] assignments, bool defaultStyle){
 	if((Embedding) `<preText:_> <Embed e> <TextTail tail>` <- embedding){
 		return getEmbedding("<preText>", e, tail, assignments, defaultStyle);
 	}
 }
 /* FUNCTION (3->1): getEmbeddingRec -> toString, substring */
-public str getEmbeddingRec(TextTail textTail, list[Allocatie] assignments, bool defaultStyle){
+public str getEmbeddingRec(TextTail textTail, list[Allocation] assignments, bool defaultStyle){
 	if((TextTail) `<PostText text>` <- textTail){
 		post = toString(text);
 		return "$out.write(\"" + substring(post, 1, size(post)-1) + "\");\n";
@@ -485,7 +485,7 @@ public str getEmbeddingRec(TextTail textTail, list[Allocatie] assignments, bool 
 	}
 }
 /* FUNCTION (5->1): getEmbedding -> substring, printMarkupData, getMarkupData, printMarkupEnding, printExpression, getEmbeddingRec, getMu1, markupCalculation, reverse*/
-public str getEmbedding(str pre, Embed e, TextTail textTail, list[Allocatie] assignments, bool defaultStyle){
+public str getEmbedding(str pre, Embed e, TextTail textTail, list[Allocation] assignments, bool defaultStyle){
 	toReturn = "$out.write(\"" + substring(pre, 1, size(pre)-1) + "\");\n";
 	if((Embed) `<Markup* ms><Expression _>` := e || (Embed) `<Markup* ms><Markup _>` := e){
 		muStats = [m|Markup m <- ms];
@@ -508,7 +508,7 @@ public str getEmbedding(str pre, Embed e, TextTail textTail, list[Allocatie] ass
 	}
 }
 /* FUNCTION (3->1): getMultipleStatementsData -> getStatementData */
-public str getMultipleStatementsData(Statement* stat, list[Allocatie] assignments, bool defaultStyle){
+public str getMultipleStatementsData(Statement* stat, list[Allocation] assignments, bool defaultStyle){
 	return (""|it+getStatementData(s, assignments, defaultStyle)+"    "|s<-stat);
 }
 /*FUNCTION (1->1): getMarkupData -> getDesignator */
