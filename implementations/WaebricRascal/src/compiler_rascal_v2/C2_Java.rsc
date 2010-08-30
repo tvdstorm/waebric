@@ -1,9 +1,9 @@
 module compiler_rascal_v2::C2_Java
 import compiler_rascal_v2::Tools;
 import compiler_rascal_v2::Datatypes;
+import languages::waebric::syntax::Waebric;
 import List;
 import String;
-import languages::waebric::syntax::Waebric;
 import ParseTree; 
 import IO; 
 import Set; 
@@ -22,7 +22,7 @@ public str printJava(list[str] modul, list[Method] metho, list[Website] sites){ 
 }
 /* FUNCTION (1->1): printMarkupData -> printMarkupParametersRec, printAttributes */
 public str printMarkupData(MarkupData markupData){ 
-	toReturn = "$out.write(\"\<<markupData.nod.id>";
+	toReturn = "$out.write(\"\<<markupData.nod.node_type>";
 	if(markupData.args==[] && markupData.nod.atrs==[]){
 		return toReturn + "\>\");\n";
 	}else{
@@ -89,7 +89,7 @@ public str printMarkupData2(str name){ return
 ";}
 /* FUNCTION (1->1): printMarkupEnding */
 public str printMarkupEnding(MarkupData markupData){ return
-"$out.write(\"\</<markupData.nod.id>\>\");
+"$out.write(\"\</<markupData.nod.node_type>\>\");
 ";}
 /* FUNCTION (1->1): printMarkupParametersRec -> head, getExpression_NOT_FIRST_TIME, printMarkupParametersRec, tail */
 public str printMarkupParametersRec(list[Argument] args){
