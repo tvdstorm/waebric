@@ -165,13 +165,13 @@ $out.write(\"\<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\
 ";}
 /* FUNCTION (1->1): printFunction -> printConstuctorParams, printMarkup, printMethodParams */
 private str printFunction(Method me){ return
-"private void <me.id>(final Writer $out, final Markup $markup" + printConstuctorParams(me.args) + ") 
+"private void <me.getName>(final Writer $out, final Markup $markup" + printConstuctorParams(me.args) + ") 
 	throws IOException, SQLException {
 	<printMarkup(me.body)>
 }
-public void " + me.id + "(final Writer $out"+printConstuctorParams(me.args)+")
+public void " + me.getName + "(final Writer $out"+printConstuctorParams(me.args)+")
 	throws IOException, SQLException {
-	"+ me.id +"($out, $nil"+printMethodParams(me.args)+");
+	"+ me.getName +"($out, $nil"+printMethodParams(me.args)+");
 }
 ";}
 /* FUNCTION (1->1): printConstuctorParams */
