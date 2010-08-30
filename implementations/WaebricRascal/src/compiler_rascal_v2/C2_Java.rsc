@@ -22,14 +22,14 @@ public str printJava(list[str] modul, list[Method] metho, list[Website] sites){ 
 }
 /* FUNCTION (1->1): printMarkupData -> printMarkupParametersRec, printAttributes */
 public str printMarkupData(MarkupData markupData){ 
-	toReturn = "$out.write(\"\<<markupData.nod.node_type>";
-	if(markupData.args==[] && markupData.nod.atrs==[]){
+	toReturn = "$out.write(\"\<<markupData.getXmlnode.getType>";
+	if(markupData.getArgs==[] && markupData.getXmlnode.atrs==[]){
 		return toReturn + "\>\");\n";
 	}else{
-		if(markupData.args!=[]){
-			return toReturn + "\");\n" + printMarkupParametersRec(markupData.args);
+		if(markupData.getArgs!=[]){
+			return toReturn + "\");\n" + printMarkupParametersRec(markupData.getArgs);
 		}else{
-			return toReturn + printAttributes(markupData.nod.atrs) + "\n$out.write(\"\>\");\n";
+			return toReturn + printAttributes(markupData.getXmlnode.atrs) + "\n$out.write(\"\>\");\n";
 		}
 	}
 }
@@ -89,7 +89,7 @@ public str printMarkupData2(str name){ return
 ";}
 /* FUNCTION (1->1): printMarkupEnding */
 public str printMarkupEnding(MarkupData markupData){ return
-"$out.write(\"\</<markupData.nod.node_type>\>\");
+"$out.write(\"\</<markupData.getXmlnode.getType>\>\");
 ";}
 /* FUNCTION (1->1): printMarkupParametersRec -> head, getExpression_NOT_FIRST_TIME, printMarkupParametersRec, tail */
 public str printMarkupParametersRec(list[Argument] args){
