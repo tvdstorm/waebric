@@ -171,9 +171,9 @@ public void getData(Module source, bool defaultStyle){
 /* FUNCTION (2->1): markupCalculation -> getMarkupData, unQuote, toString, getQuotedString, printAttributes, getStatementData, getArgs */
 public str markupCalculation(Markup m, list[Allocation] assignments){
 	markupData = getMarkupData(m);
-	xmlarglist = markupData.nod.atrs;
+	xmlarglist = markupData.getXmlnode.atrs;
 	toReturn = "";
-	for(par <- markupData.args){
+	for(par <- markupData.getArgs){
 		if(/`<IdCon idc> = <Expression expr>`:=par){
 			str string = "\"<unQuote(toString(expr))>\"";
 			for(key <- ["class", "id", "name", "type"]){
@@ -190,9 +190,9 @@ public str markupCalculation(Markup m, list[Allocation] assignments){
 		toReturn += ";\n$out.write(\" /\>\");\n";
 		return toReturn;
 	}else{
-		for(/`<Expression par>` <- markupData.args){
+		for(/`<Expression par>` <- markupData.getArgs){
 			for(ass <- assignments){
-				if(ass.id==markupData.nod.id){	
+				if(ass.id==markupData.getXmlnode.id){	
 					k = visit(ass.val){
 						case (Expression) `<Expression var>` => par 
 					}
@@ -200,17 +200,17 @@ public str markupCalculation(Markup m, list[Allocation] assignments){
 				}
 			}
 		}
-		str pars = getArgs(markupData.args);
+		str pars = getArgs(markupData.getArgs);
 		if(toReturn==""){
 			for(me <- metho, <name, list[Statement] statementList> <- metho0){ 
-				if(name==markupData.nod.node_type && name==me.id){ 
+				if(name==markupData.getXmlnode.getType && name==me.id){ 
 					if(me.body==[]){ 
 						me.body = [getStatementData(s, assignments, false)| Statement s <- statementList]; 
 					} 
 					return "<name>($out, $nil<pars>);\n";
 				}
 			}
-			return "$out.write(\"\<\" + \"<"<markupData.nod.node_type>">\" + \" /\>\");\n";
+			return "$out.write(\"\<\" + \"<"<markupData.getXmlnode.getType>">\" + \" /\>\");\n";
 		}
 		return toReturn;
 	}
@@ -271,8 +271,8 @@ public str getPredicate(Predicate p, bool defaultStyle){
 /* FUNCTION (1->1): getMu1 -> getMarkupData */
 public str getMu1(Markup m){
 	markupData = getMarkupData(m);
-	if(markupData.nod.atrs!=[]){
-		return "$out.write(\"\<\" + \"<markupData.nod.node_type>";
+	if(markupData.getXmlnode.atrs!=[]){
+		return "$out.write(\"\<\" + \"<markupData.getXmlnode.getType>";
 	}
 	return "";
 }
@@ -286,22 +286,22 @@ public tuple[str, str] getMuda(Markup m, list[Allocation] assignments, bool defa
 		}
 		markupData = getMarkupData(m);
 		k = {namcall| var <- assignments, namcall := "<var.id>.call"};
-		if(markupData.nod.node_type==me.id || "<markupData.nod.node_type>.call" in k){
-			if(markupData.nod.node_type==me.id){
-				if(markupData.args!=[]){
+		if(markupData.getXmlnode.getType==me.id || "<markupData.getXmlnode.getType>.call" in k){
+			if(markupData.getXmlnode.getType==me.id){
+				if(markupData.getArgs!=[]){
 					if(defaultStyle){
-						toReturn += "<markupData.nod.node_type>($out, $nil<getArgs(markupData.args)>";
+						toReturn += "<markupData.getXmlnode.getType>($out, $nil<getArgs(markupData.getArgs)>";
 						endings += ");\n";
 					}else{
-						toReturn += printMarkupData2("<markupData.nod.node_type>");
-						endings += "}}<getArgs(markupData.args)>);";
+						toReturn += printMarkupData2("<markupData.getXmlnode.getType>");
+						endings += "}}<getArgs(markupData.getArgs)>);";
 					}
 				}else{
 					if(defaultStyle){
-						toReturn += "<markupData.nod.node_type>($out, $nil";
+						toReturn += "<markupData.getXmlnode.getType>($out, $nil";
 						endings += ");";
 					}else{
-						toReturn += "<markupData.nod.node_type>($out, new Markup() {
+						toReturn += "<markupData.getXmlnode.getType>($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {\n
 ";
@@ -309,17 +309,17 @@ public tuple[str, str] getMuda(Markup m, list[Allocation] assignments, bool defa
 					}
 				}
 			}
-			else if("<markupData.nod.node_type>.call" in k){
-				if(markupData.args!=[]){
-					toReturn += "<markupData.nod.node_type>.call($out, $nil";
-					endings += "<getArgs(markupData.args)>);";
+			else if("<markupData.getXmlnode.getType>.call" in k){
+				if(markupData.getArgs!=[]){
+					toReturn += "<markupData.getXmlnode.getType>.call($out, $nil";
+					endings += "<getArgs(markupData.getArgs)>);";
 				}
 				else{
 					if(defaultStyle){
-						toReturn += "<markupData.nod.node_type>.call($out, $nil";
+						toReturn += "<markupData.getXmlnode.getType>.call($out, $nil";
 						endings += ");";
 					}else{
-						toReturn += "<markupData.nod.node_type>.call($out, new Markup() {
+						toReturn += "<markupData.getXmlnode.getType>.call($out, new Markup() {
 			public void render(Writer $out) 
 				throws IOException, SQLException {
 ";
@@ -332,11 +332,11 @@ public tuple[str, str] getMuda(Markup m, list[Allocation] assignments, bool defa
 			theName = ""; theParms = []; theVals = [];
 			for(met <- metho){
 				markupData = getMarkupData(m);
-				methname2 = printMethodName(markupData.nod.node_type);
+				methname2 = printMethodName(markupData.getXmlnode.getType);
 				if(met.id==methname2){
 					functionExists = true;
 					theName = met.id;
-					theVals = markupData.args;
+					theVals = markupData.getArgs;
 				}
 			}
 			if(!functionExists){
@@ -359,15 +359,15 @@ public tuple[str, str] getMuda(Markup m, list[Allocation] assignments, bool defa
 						}
 						endings += ");\n";
 				}else{
-					if(markupData.args==[]){
+					if(markupData.getArgs==[]){
 						toReturn += "<theName>($out, $nil);\n";
 					}else{
-						args = getArgs(markupData.args);
+						args = getArgs(markupData.getArgs);
 						parame = ""; 
 						for(arg <- args){
 							parame += arg;
 						}			
-						toReturn += "<printMethodName(markupData.nod.node_type)>($out, $nil<parame>);";
+						toReturn += "<printMethodName(markupData.getXmlnode.getType)>($out, $nil<parame>);";
 					}
 				}
 			}
