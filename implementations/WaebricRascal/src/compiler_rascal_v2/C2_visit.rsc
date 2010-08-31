@@ -171,7 +171,7 @@ public void getData(Module source, bool defaultStyle){
 /* FUNCTION (2->1): markupCalculation -> getMarkupData, unQuote, toString, getQuotedString, printAttributes, getStatementData, getArgs */
 public str markupCalculation(Markup m, list[Allocation] assignments){
 	markupData = getMarkupData(m);
-	xmlarglist = markupData.getXmlnode.atrs;
+	xmlarglist = markupData.getXmlnode.getXmlarguments;
 	toReturn = "";
 	for(par <- markupData.getArgs){
 		if(/`<IdCon idc> = <Expression expr>`:=par){
@@ -192,7 +192,7 @@ public str markupCalculation(Markup m, list[Allocation] assignments){
 	}else{
 		for(/`<Expression par>` <- markupData.getArgs){
 			for(ass <- assignments){
-				if(ass.id==markupData.getXmlnode.id){	
+				if(ass.getId==markupData.getXmlnode.getId){	
 					k = visit(ass.val){
 						case (Expression) `<Expression var>` => par 
 					}
@@ -228,11 +228,11 @@ public str getIfElse(Predicate p, Statement s, Statement s2){
 		case `<Expression expr> . <Type tpe> ?` : 
 			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>"); //ben ik hier een asf+sdf bug aan het wegwerken?
 		case `! <Predicate p1>` : 
-			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>"); 	//ben ik hier een asf+sdf bug aan het wegwerken?
+			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>"); //ben ik hier een asf+sdf bug aan het wegwerken?
 		case `<Predicate p1> && <Predicate p2>` : 
-			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>");	//ben ik hier een asf+sdf bug aan het wegwerken?
+			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>"); //ben ik hier een asf+sdf bug aan het wegwerken?
 		case `<Predicate p1> || <Predicate p2>` : 
-			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>");	//ben ik hier een asf+sdf bug aan het wegwerken?
+			return printIfElseALT(getPredicate(p, false), "<s>", "<s2>"); //ben ik hier een asf+sdf bug aan het wegwerken?
 		default: {
 			return ""; 
 		}
@@ -271,7 +271,7 @@ public str getPredicate(Predicate p, bool defaultStyle){
 /* FUNCTION (1->1): getMu1 -> getMarkupData */
 public str getMu1(Markup m){
 	markupData = getMarkupData(m);
-	if(markupData.getXmlnode.atrs!=[]){
+	if(markupData.getXmlnode.getXmlarguments!=[]){
 		return "$out.write(\"\<\" + \"<markupData.getXmlnode.getType>";
 	}
 	return "";
@@ -285,7 +285,7 @@ public tuple[str, str] getMuda(Markup m, list[Allocation] assignments, bool defa
 			me.getName = subString(me.getName, 0, size(me.getName)-1);
 		}
 		markupData = getMarkupData(m);
-		k = {namcall| var <- assignments, namcall := "<var.id>.call"};
+		k = {namcall| var <- assignments, namcall := "<var.getId>.call"};
 		if(markupData.getXmlnode.getType==me.getName || "<markupData.getXmlnode.getType>.call" in k){
 			if(markupData.getXmlnode.getType==me.getName){
 				if(markupData.getArgs!=[]){

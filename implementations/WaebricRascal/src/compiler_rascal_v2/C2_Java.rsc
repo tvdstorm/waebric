@@ -23,13 +23,13 @@ public str printJava(list[str] modul, list[Method] metho, list[Website] sites){ 
 /* FUNCTION (1->1): printMarkupData -> printMarkupParametersRec, printAttributes */
 public str printMarkupData(MarkupData markupData){ 
 	toReturn = "$out.write(\"\<<markupData.getXmlnode.getType>";
-	if(markupData.getArgs==[] && markupData.getXmlnode.atrs==[]){
+	if(markupData.getArgs==[] && markupData.getXmlnode.getXmlarguments==[]){
 		return toReturn + "\>\");\n";
 	}else{
 		if(markupData.getArgs!=[]){
 			return toReturn + "\");\n" + printMarkupParametersRec(markupData.getArgs);
 		}else{
-			return toReturn + printAttributes(markupData.getXmlnode.atrs) + "\n$out.write(\"\>\");\n";
+			return toReturn + printAttributes(markupData.getXmlnode.getXmlarguments) + "\n$out.write(\"\>\");\n";
 		}
 	}
 }
@@ -60,8 +60,8 @@ public tuple[str, int] getAttributeList(list[XmlArgument] attr, str attribute_ty
 	default3 = "$out.write(";
 	int currSize = iterator;
 	toReturn = "";
-	attributeList = [ xmlarg.attribute | xmlarg <- attr, attribute_type:=xmlarg.id];
-	attrLength = [xmlarg.id| xmlarg <- attr];
+	attributeList = [ xmlarg.getArgument | xmlarg <- attr, attribute_type:=xmlarg.getId];
+	attrLength = [xmlarg.getId| xmlarg <- attr];
 	if(attributeList!=[]){
 		currSize += 1;
 		headVal = getOneFrom(head(attributeList, 1));
@@ -146,7 +146,7 @@ public class <module_id> {
 ";}
 /* FUNCTION (1->1): printSites -> printSite */
 private str printSites(list[Website] sites) { 
-	return (""|printSite(siteId)+printSiteParameters(siteVal)+it|site<-sites, siteId:=site.id, siteVal:=site.val);
+	return (""|printSite(sitePath)+printSiteParameters(siteMu)+it|site<-sites, sitePath:=site.getPath, siteMu:=site.getMarkup);
 }
 /* FUNCTION (1->1): printSite */
 private str printSite(str site) { return 
