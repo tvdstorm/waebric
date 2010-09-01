@@ -176,11 +176,7 @@ public void " + me.getName + "(final Writer $out"+printConstuctorParams(me.args)
 ";}
 /* FUNCTION (1->1): printConstuctorParams */
 public str printConstuctorParams(list[str] pars){ 
-	toReturn = "";
-	for(str p <- pars){
-		toReturn += ", final Object "+p;
-	}
-	return toReturn;
+	return (""|it+", final Object <p>"|p<-pars);
 }
 /* FUNCTION (1->1): printMarkup */
 public str printMarkup(list[str] mu){
