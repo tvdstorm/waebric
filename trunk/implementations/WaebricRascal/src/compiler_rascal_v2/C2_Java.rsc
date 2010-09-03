@@ -106,27 +106,31 @@ $out.write(\"\\\"\");\n"
 	}
 }
 /* FUNCTION (3->1): printIfElse */
-public str printIfElse(str condition, str doIf, str doElse){ return "
+public str printIfElse(str condition, str doIf, str doElse){ 
+	return "
 			if (<condition>) {
 				<doIf>
 			}
 			else {
 				<doElse>
 			}
-";}
+";
+}
 /* FUNCTION (3->1): printIfElseALT */
 public str printIfElseALT(str condition, str doIf, str doElse){ // Is dit wel de bedoeling?
 	return "stat-to-jstats(if (<condition>)
 			<doIf>
 		else
 			<doElse>)
-";}
+";
+}
 /* FUNCTION (2->1): printIf */
 public str printIf(str condition, str doIf){ return "
 			if (<condition>) {
 				<doIf>
 			}
-";}
+";
+}
 /* FUNCTION (2->1): printConstructor */
 private str printConstructor(str module_id, list[Website] sites){ return 
 "@SuppressWarnings(\"unchecked\")
