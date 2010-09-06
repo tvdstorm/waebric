@@ -10,8 +10,10 @@ class MetricCalculation
 		@val_in = {}
 		@val_out = {}
 		@inf_fl_comp = {}
-		transf_languages.each do |info, filetype, dir, printDependencies|
 		
+		order = []
+		transf_languages.each do |info, filetype, dir, printDependencies|
+			order += [info]
 			$filetype = filetype
 			$dir = dir
 			$doPrint = printDependencies
@@ -36,19 +38,22 @@ class MetricCalculation
 			puts "======"
 		end
 				
-		createRFiles("val in", @val_in)
-		createRFiles("val out", @val_out)
-		createRFiles("fan in", @fan_in)
-		createRFiles("fan out", @fan_out)
-		createRFiles("information flow complexity", @inf_fl_comp)
+		createRFiles("val in", @val_in, order)
+		createRFiles("val out", @val_out, order)
+		createRFiles("fan in", @fan_in, order)
+		createRFiles("fan out", @fan_out, order)
+		createRFiles("information flow complexity", @inf_fl_comp, order)
 			
 	end
 	
-	def createRFiles(metric, valueList)
+	
+	def createRFiles(metric, valueList, order)
 		sampleSize = 100
 		data = ""
 		dataName = ""	
-		valueList.each do |key, values|
+		
+		order.each do |key|
+			values = valueList[key]
 			data += "approx(c(" + printFunctionMetric(values) + "), n=#{sampleSize}), "
 			dataName += "\"#{key}\", "
 		end
@@ -57,7 +62,7 @@ class MetricCalculation
 			
 		filename = "R_Generated_Graphs/#{metric.gsub(" ", "_")}"
 		content = "
-		pdf(\"R_Generated_Graphs/#{metric}.pdf\")
+		pdf(\"#{filename}.pdf\")
 		numOfLines <- #{valueList.size}
 		
 		dataset <- data.frame(
