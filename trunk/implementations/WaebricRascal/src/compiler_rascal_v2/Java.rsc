@@ -1,4 +1,4 @@
-module compiler_rascal_v2::C2_Java
+module compiler_rascal_v2::Java
 import compiler_rascal_v2::Tools;
 import compiler_rascal_v2::Datatypes;
 import languages::waebric::syntax::Waebric;
